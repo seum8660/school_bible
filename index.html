@@ -7,268 +7,260 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
 <style>
   :root{
-    --blue:#3182F6;
-    --blue-weak:#E8F3FF;
-    --blue-press:#1B64DA;
-    --red:#F04452;
-    --red-weak:#FEF1F1;
-    --text:#191F28;
-    --sub:#4E5968;
-    --tertiary:#8B95A1;
-    --disabled:#B0B8C1;
-    --line:#E5E8EB;
-    --fill:#F2F4F6;
-    --bg:#F9FAFB;
-    --card:#FFFFFF;
-    --radius:20px;
+    --blue:#3182F6; --blue-weak:#E8F3FF; --blue-deep:#1B64DA;
+    --red:#F04452; --red-weak:#FEF1F1;
+    --text:#191F28; --sub:#4E5968; --tertiary:#8B95A1; --disabled:#B0B8C1;
+    --line:#E5E8EB; --fill:#F2F4F6; --bg:#F2F4F6; --card:#FFFFFF;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-  html{-webkit-text-size-adjust:100%;}
   body{
-    font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.5;
-    letter-spacing:-0.02em;
-    font-feature-settings:'tnum';
-  }
-  .wrap{max-width:520px;margin:0 auto;padding:0 20px 120px;}
-
-  /* ── 헤더 ── */
-  header{padding:44px 0 28px;}
-  .eyebrow{
-    font-size:13px;font-weight:600;color:var(--blue);
-    margin-bottom:10px;letter-spacing:0;
-  }
-  h1{
-    font-size:28px;font-weight:700;line-height:1.35;
-    letter-spacing:-0.035em;
-  }
-  h1 em{font-style:normal;color:var(--blue);}
-  .lede{margin-top:12px;font-size:15px;color:var(--tertiary);font-weight:500;}
-
-  /* ── 섹션 ── */
-  .sec-title{
-    font-size:13px;font-weight:700;color:var(--tertiary);
-    margin:32px 4px 12px;letter-spacing:0;
+    font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo',sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.5;
+    letter-spacing:-0.02em; font-feature-settings:'tnum';
   }
 
-  /* ── 입력 카드 ── */
-  .card{
-    background:var(--card);border-radius:var(--radius);
-    padding:24px 20px;
+  .page{max-width:1240px; margin:0 auto; padding:36px 32px 56px;}
+
+  /* ── 상단 바 ── */
+  .topbar{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    gap:24px; padding-bottom:22px; margin-bottom:22px;
+    border-bottom:1px solid var(--line);
   }
-  .field + .field{margin-top:26px;}
+  .brand .eyebrow{font-size:12px; font-weight:700; color:var(--blue); letter-spacing:0;}
+  .brand h1{font-size:26px; font-weight:700; letter-spacing:-0.04em; margin-top:5px;}
+  .brand p{font-size:13px; color:var(--tertiary); font-weight:500; margin-top:5px;}
+
+  .score{display:flex; align-items:center; gap:14px; flex-shrink:0;}
+  .score .txt{text-align:right;}
+  .score .cap{font-size:12px; font-weight:600; color:var(--tertiary);}
+  .score .big{font-size:32px; font-weight:800; letter-spacing:-0.04em; line-height:1.2;}
+  .score .big b{color:var(--blue);}
+  .score .big span{color:var(--disabled); font-size:20px;}
+  .donut circle{fill:none; stroke-linecap:round;}
+  .donut .track{stroke:var(--line);}
+  .donut .val{stroke:var(--blue); transition:stroke-dashoffset .5s cubic-bezier(.22,1,.36,1);}
+
+  /* ── 2단 레이아웃 ── */
+  .cols{display:grid; grid-template-columns:312px 1fr; gap:20px; align-items:start;}
+
+  .panel{background:var(--card); border-radius:18px; padding:22px 20px;}
+  .panel-title{
+    font-size:12px; font-weight:700; color:var(--tertiary);
+    letter-spacing:0; margin-bottom:16px;
+  }
+
+  /* ── 입력 ── */
+  aside{position:sticky; top:24px;}
+  .field + .field{margin-top:22px;}
   .label{
-    display:flex;align-items:baseline;justify-content:space-between;
-    font-size:15px;font-weight:600;color:var(--text);margin-bottom:12px;
+    display:flex; align-items:baseline; justify-content:space-between; gap:8px;
+    font-size:14px; font-weight:600; margin-bottom:10px;
   }
-  .label .hint{font-size:12px;font-weight:500;color:var(--disabled);letter-spacing:0;}
+  .label .hint{font-size:11px; font-weight:500; color:var(--disabled); letter-spacing:0;}
 
-  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chips{display:flex; flex-wrap:wrap; gap:6px;}
   .chip{
-    border:none;cursor:pointer;
-    background:var(--fill);color:var(--sub);
-    font:inherit;font-size:14px;font-weight:600;
-    padding:10px 16px;border-radius:12px;
-    transition:background .15s ease,color .15s ease,transform .08s ease;
+    border:none; cursor:pointer; font:inherit;
+    background:var(--fill); color:var(--sub);
+    font-size:13px; font-weight:600; padding:8px 13px; border-radius:10px;
+    transition:background .15s, color .15s, transform .08s;
   }
   .chip:hover{background:#E8EBED;}
-  .chip:active{transform:scale(.96);}
-  .chip[aria-pressed="true"]{background:var(--blue);color:#fff;}
-  .chip:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+  .chip:active{transform:scale(.95);}
+  .chip[aria-pressed="true"]{background:var(--blue); color:#fff;}
+  .chip:focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
 
   .numrow{
-    display:flex;align-items:center;gap:6px;
-    border-bottom:2px solid var(--line);padding-bottom:10px;
-    transition:border-color .15s ease;
+    display:flex; align-items:center; gap:6px;
+    border-bottom:2px solid var(--line); padding-bottom:8px;
+    transition:border-color .15s;
   }
   .numrow:focus-within{border-color:var(--blue);}
   .numrow input{
-    flex:1;min-width:0;border:none;outline:none;background:transparent;
-    font:inherit;font-size:26px;font-weight:700;letter-spacing:-0.03em;
-    color:var(--text);
+    flex:1; min-width:0; border:none; outline:none; background:transparent; font:inherit;
+    font-size:24px; font-weight:700; letter-spacing:-0.03em; color:var(--text);
   }
+  .numrow input::placeholder{color:var(--line); font-weight:700;}
   .numrow input::-webkit-outer-spin-button,
-  .numrow input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .numrow input::-webkit-inner-spin-button{-webkit-appearance:none; margin:0;}
   .numrow input[type=number]{-moz-appearance:textfield;}
-  .unit{font-size:17px;font-weight:600;color:var(--disabled);flex-shrink:0;}
+  .unit{font-size:15px; font-weight:600; color:var(--disabled);}
 
-  .quick{display:flex;gap:6px;margin-top:10px;}
-  .quick button{
-    border:none;cursor:pointer;background:transparent;color:var(--blue);
-    font:inherit;font-size:13px;font-weight:600;padding:5px 9px;
-    border-radius:8px;
+  /* ── 매트릭스 ── */
+  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+  .tile{
+    border:none; cursor:pointer; font:inherit; text-align:left;
+    background:var(--fill); border-radius:14px; padding:16px 15px;
+    min-height:104px; display:flex; flex-direction:column; justify-content:space-between;
+    transition:background .2s, transform .08s, box-shadow .2s;
   }
-  .quick button:hover{background:var(--blue-weak);}
+  .tile:hover{transform:translateY(-2px);}
+  .tile:focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
+  .tile.on{background:var(--blue-weak);}
+  .tile.sel{box-shadow:inset 0 0 0 2px var(--blue);}
+  .tile.off.sel{box-shadow:inset 0 0 0 2px var(--disabled);}
+  .tile .dot{width:7px; height:7px; border-radius:50%; background:var(--disabled);}
+  .tile.on .dot{background:var(--blue); box-shadow:0 0 0 4px rgba(49,130,246,.15);}
+  .tile .t-name{
+    display:block; margin-top:12px;
+    font-size:14px; font-weight:700; letter-spacing:-0.035em; line-height:1.3;
+    color:var(--disabled);
+  }
+  .tile.on .t-name{color:var(--text);}
+  .tile .t-key{
+    display:block; margin-top:5px; font-size:12px; font-weight:600;
+    letter-spacing:-0.02em; color:var(--disabled);
+  }
+  .tile.on .t-key{color:var(--blue);}
 
-  /* ── 요약 ── */
-  .summary{
-    background:var(--card);border-radius:var(--radius);
-    padding:26px 22px;margin-top:12px;
-    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  /* ── 상세 ── */
+  .detail{margin-top:20px;}
+  .d-head{display:flex; align-items:center; gap:10px;}
+  .d-name{font-size:19px; font-weight:700; letter-spacing:-0.04em;}
+  .badge{font-size:11px; font-weight:700; padding:4px 9px; border-radius:7px; letter-spacing:0;}
+  .badge.yes{background:var(--blue-weak); color:var(--blue);}
+  .badge.no{background:var(--fill); color:var(--disabled);}
+  .d-grade{
+    margin-top:14px; background:var(--fill); border-radius:12px;
+    padding:16px 18px; font-size:16px; font-weight:700; letter-spacing:-0.03em;
   }
-  .summary .cap{font-size:14px;font-weight:600;color:var(--sub);}
-  .summary .big{
-    font-size:40px;font-weight:800;letter-spacing:-0.04em;line-height:1.15;
-    margin-top:4px;
+  .d-grade.yes{background:var(--blue-weak); color:var(--blue-deep);}
+  .d-meta{
+    margin-top:16px; display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
   }
-  .summary .big b{color:var(--blue);font-weight:800;}
-  .summary .big span{color:var(--disabled);font-size:26px;font-weight:700;}
-  .donut{flex-shrink:0;}
-  .donut circle{fill:none;stroke-linecap:round;}
-  .donut .track{stroke:var(--fill);}
-  .donut .val{stroke:var(--blue);transition:stroke-dashoffset .5s cubic-bezier(.22,1,.36,1);}
-
-  /* ── 결과 리스트 ── */
-  .list{margin-top:12px;display:flex;flex-direction:column;gap:10px;}
-  .item{
-    background:var(--card);border-radius:16px;
-    padding:18px 20px;position:relative;overflow:hidden;
-    transition:opacity .2s ease;
-  }
-  .item.off{opacity:.55;}
-  .item::before{
-    content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
-    background:var(--blue);transform:scaleY(0);transform-origin:center;
-    transition:transform .35s cubic-bezier(.22,1,.36,1);
-  }
-  .item.on::before{transform:scaleY(1);}
-  .item-head{display:flex;align-items:center;justify-content:space-between;gap:12px;}
-  .name{font-size:16px;font-weight:700;letter-spacing:-0.03em;}
-  .badge{
-    flex-shrink:0;font-size:12px;font-weight:700;padding:5px 10px;border-radius:8px;
-    letter-spacing:0;
-  }
-  .badge.yes{background:var(--blue-weak);color:var(--blue);}
-  .badge.no{background:var(--fill);color:var(--disabled);}
-  .grade{
-    margin-top:10px;font-size:15px;font-weight:600;color:var(--text);
-    letter-spacing:-0.025em;
-  }
-  .item.off .grade{color:var(--disabled);font-weight:500;}
-  .meta{
-    margin-top:12px;padding-top:12px;border-top:1px solid var(--line);
-    display:flex;flex-direction:column;gap:5px;
-  }
-  .meta div{font-size:12.5px;color:var(--tertiary);font-weight:500;letter-spacing:-0.01em;}
-  .meta b{color:var(--sub);font-weight:600;margin-right:6px;}
+  .d-meta div{border-top:1px solid var(--line); padding-top:10px;}
+  .d-meta dt{font-size:11px; font-weight:700; color:var(--disabled); letter-spacing:0;}
+  .d-meta dd{margin-top:4px; font-size:12.5px; font-weight:500; color:var(--sub); line-height:1.55;}
   .note{
-    margin-top:10px;background:var(--red-weak);color:var(--red);
-    font-size:12.5px;font-weight:600;padding:9px 12px;border-radius:10px;
-    letter-spacing:-0.01em;
+    margin-top:14px; background:var(--red-weak); color:var(--red);
+    font-size:12.5px; font-weight:600; padding:10px 14px; border-radius:10px;
   }
 
-  /* ── 참고표 토글 ── */
-  details.ref{
-    margin-top:12px;background:var(--card);border-radius:16px;
-    padding:0 20px;overflow:hidden;
-  }
+  /* ── 총괄표 ── */
+  details.ref{margin-top:20px; background:var(--card); border-radius:18px; padding:0 22px;}
   details.ref summary{
-    list-style:none;cursor:pointer;padding:18px 0;
-    font-size:15px;font-weight:600;
-    display:flex;align-items:center;justify-content:space-between;
+    list-style:none; cursor:pointer; padding:18px 0;
+    font-size:14px; font-weight:700;
+    display:flex; align-items:center; justify-content:space-between;
   }
   details.ref summary::-webkit-details-marker{display:none;}
   details.ref summary::after{
-    content:"";width:8px;height:8px;border-right:2px solid var(--disabled);
-    border-bottom:2px solid var(--disabled);transform:rotate(45deg);
-    margin-right:4px;transition:transform .2s ease;
+    content:""; width:7px; height:7px;
+    border-right:2px solid var(--disabled); border-bottom:2px solid var(--disabled);
+    transform:rotate(45deg); transition:transform .2s;
   }
   details.ref[open] summary::after{transform:rotate(-135deg);}
-  .ref-body{padding-bottom:18px;}
-  .ref-block{padding:14px 0;border-top:1px solid var(--line);}
-  .ref-block h3{font-size:14px;font-weight:700;letter-spacing:-0.03em;}
-  .ref-block .scope{font-size:12px;color:var(--tertiary);font-weight:500;margin-top:3px;}
-  .ref-block ul{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:6px;}
-  .ref-block li{
-    display:flex;gap:10px;font-size:13px;
-    background:var(--fill);border-radius:8px;padding:7px 10px;
+  .ref-grid{
+    padding:4px 0 22px; display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px;
   }
-  .ref-block li b{flex-shrink:0;width:70px;font-weight:700;color:var(--sub);}
-  .ref-block li span{color:var(--tertiary);font-weight:500;}
-  .ref-block .law{margin-top:9px;font-size:11.5px;color:var(--disabled);font-weight:500;white-space:pre-line;}
+  .ref-block{background:var(--fill); border-radius:12px; padding:14px 15px;}
+  .ref-block h3{font-size:13.5px; font-weight:700; letter-spacing:-0.035em;}
+  .ref-block .scope{font-size:11px; color:var(--tertiary); font-weight:500; margin-top:3px; line-height:1.45;}
+  .ref-block ul{list-style:none; margin-top:9px; display:flex; flex-direction:column; gap:4px;}
+  .ref-block li{display:flex; gap:8px; font-size:12px;}
+  .ref-block li b{flex-shrink:0; width:64px; font-weight:700; color:var(--sub);}
+  .ref-block li span{color:var(--tertiary); font-weight:500;}
+  .ref-block .law{
+    margin-top:9px; padding-top:9px; border-top:1px solid var(--line);
+    font-size:10.5px; color:var(--disabled); font-weight:500; white-space:pre-line; line-height:1.5;
+  }
 
-  footer{margin-top:28px;text-align:center;font-size:12px;color:var(--disabled);font-weight:500;line-height:1.7;}
+  footer{margin-top:26px; font-size:11.5px; color:var(--disabled); font-weight:500; line-height:1.7;}
 
-  @media (max-width:400px){
-    h1{font-size:25px;}
-    .summary .big{font-size:34px;}
+  @media (max-width:900px){
+    .page{padding:24px 18px 48px;}
+    .topbar{flex-direction:column; align-items:flex-start; gap:18px;}
+    .cols{grid-template-columns:1fr;}
+    aside{position:static;}
+    .grid{grid-template-columns:repeat(2,1fr);}
+    .d-meta{grid-template-columns:1fr;}
   }
-  @media (prefers-reduced-motion:reduce){
-    *{transition:none !important;animation:none !important;}
-  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important;}}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="page">
 
-  <header>
-    <div class="eyebrow">건축물 인증 대상 판정</div>
-    <h1>이 건물,<br /><em>어떤 인증</em>을 받아야 할까요?</h1>
-    <p class="lede">공사 조건을 입력하면 9개 인증의 해당 여부와 적용 등급을 바로 확인할 수 있습니다.</p>
-  </header>
-
-  <div class="sec-title">공사 조건</div>
-  <div class="card">
-    <div class="field">
-      <div class="label"><span>공사 유형</span></div>
-      <div class="chips" id="chips-type"></div>
+  <div class="topbar">
+    <div class="brand">
+      <div class="eyebrow">건축물 인증 대상 판정</div>
+      <h1>이 건물, 어떤 인증을 받아야 할까요?</h1>
+      <p>공사 조건을 입력하면 9개 인증의 해당 여부와 적용 등급이 바로 계산됩니다.</p>
     </div>
-
-    <div class="field">
-      <div class="label"><span>연면적</span><span class="hint">증·개축은 전체 연면적 기준</span></div>
-      <div class="numrow">
-        <input id="area" type="number" inputmode="numeric" min="0" step="10" value="500" />
-        <span class="unit">㎡</span>
+    <div class="score">
+      <div class="txt">
+        <div class="cap">받아야 하는 인증</div>
+        <div class="big"><b id="cnt">0</b><span> / 9개</span></div>
       </div>
-      <div class="quick" id="quick"></div>
-    </div>
-
-    <div class="field">
-      <div class="label"><span>시설 용도</span></div>
-      <div class="chips" id="chips-use"></div>
-    </div>
-
-    <div class="field">
-      <div class="label"><span>공공건축물</span><span class="hint">에너지절약계획서 EPI 기준</span></div>
-      <div class="chips" id="chips-public"></div>
-    </div>
-
-    <div class="field">
-      <div class="label"><span>설치계획서 접수 연도</span><span class="hint">한국에너지공단 접수일 기준</span></div>
-      <div class="numrow">
-        <input id="year" type="number" inputmode="numeric" min="2020" max="2040" step="1" value="2026" />
-        <span class="unit">년</span>
-      </div>
+      <svg class="donut" width="60" height="60" viewBox="0 0 60 60" aria-hidden="true">
+        <circle class="track" cx="30" cy="30" r="25" stroke-width="7" />
+        <circle class="val" id="arc" cx="30" cy="30" r="25" stroke-width="7"
+                stroke-dasharray="157.1" stroke-dashoffset="157.1" transform="rotate(-90 30 30)" />
+      </svg>
     </div>
   </div>
 
-  <div class="sec-title">판정 결과</div>
-  <div class="summary">
-    <div>
-      <div class="cap">받아야 하는 인증</div>
-      <div class="big"><b id="cnt">0</b><span> / 9개</span></div>
-    </div>
-    <svg class="donut" width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
-      <circle class="track" cx="36" cy="36" r="30" stroke-width="8" />
-      <circle class="val" id="arc" cx="36" cy="36" r="30" stroke-width="8"
-              stroke-dasharray="188.5" stroke-dashoffset="188.5"
-              transform="rotate(-90 36 36)" />
-    </svg>
+  <div class="cols">
+    <!-- 좌: 입력 -->
+    <aside>
+      <div class="panel">
+        <div class="panel-title">공사 조건</div>
+
+        <div class="field">
+          <div class="label"><span>공사 유형</span></div>
+          <div class="chips" id="chips-type"></div>
+        </div>
+
+        <div class="field">
+          <div class="label"><span>연면적</span><span class="hint">증·개축은 전체 기준</span></div>
+          <div class="numrow">
+            <input id="area" type="number" inputmode="numeric" min="0" step="1" placeholder="500" />
+            <span class="unit">㎡</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label"><span>시설 용도</span></div>
+          <div class="chips" id="chips-use"></div>
+        </div>
+
+        <div class="field">
+          <div class="label"><span>공공건축물</span><span class="hint">EPI 기준</span></div>
+          <div class="chips" id="chips-public"></div>
+        </div>
+
+        <div class="field">
+          <div class="label"><span>설치계획서 접수 연도</span><span class="hint">에너지공단 접수일</span></div>
+          <div class="numrow">
+            <input id="year" type="number" inputmode="numeric" min="2020" max="2040" step="1" placeholder="2026" />
+            <span class="unit">년</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 우: 결과 -->
+    <main>
+      <div class="panel">
+        <div class="panel-title">판정 결과 · 카드를 클릭하면 상세가 열립니다</div>
+        <div class="grid" id="grid"></div>
+
+        <div class="detail" id="detail"></div>
+      </div>
+
+      <details class="ref">
+        <summary>인증 기준 총괄표</summary>
+        <div class="ref-grid" id="ref"></div>
+      </details>
+
+      <footer>
+        본 판정은 참고용이며, 설계 조건에 따라 제출 대상 여부가 달라질 수 있습니다.
+        최종 적용 기준은 관계 법령과 인증기관 확인이 필요합니다.
+      </footer>
+    </main>
   </div>
-
-  <div class="list" id="list"></div>
-
-  <details class="ref">
-    <summary>인증 기준 총괄표 보기</summary>
-    <div class="ref-body" id="ref"></div>
-  </details>
-
-  <footer>
-    본 판정은 참고용이며, 설계 조건에 따라 제출 대상 여부가 달라질 수 있습니다.<br />
-    최종 적용 기준은 관계 법령과 인증기관 확인이 필요합니다.
-  </footer>
 </div>
 
 <script>
@@ -276,118 +268,111 @@ const TYPES  = ['신축','증축','개축','리모델링'];
 const USES   = ['학교(유치원·초·중등)','학생수련원·도서관','대학시설 등','업무시설(청사)','기타'];
 const PUBLIC = ['O','X'];
 
-const state = { type:'신축', area:500, use:'학교(유치원·초·중등)', pub:'O', year:2026 };
+const state = { type:'신축', area:0, use:'학교(유치원·초·중등)', pub:'O', year:2026, sel:1 };
 
-/* 인증 정의 — 원본 판정표 로직 그대로 */
 const CERTS = [
-  {
-    id:1, name:'에너지절약계획서',
+  { id:1, name:'에너지절약계획서', short:'에너지절약<br>계획서',
     types:['신축','증축','개축'], area:()=>500,
+    key:s => s.pub==='O' ? 'EPI 74점' : 'EPI 65점',
     grade:s => s.pub==='O' ? 'EPI 74점 이상 (공공건축물)' : 'EPI 65점 이상 (민간건축물 기준 확인 필요)',
     law:'녹색건축물 조성 지원법 제14조',
-    memo:'설계 조건에 따라 제출 대상 여부 상이'
-  },
-  {
-    id:2, name:'녹색건축 인증',
+    memo:'설계 조건에 따라 제출 대상 여부 상이' },
+
+  { id:2, name:'녹색건축 인증', short:'녹색건축<br>인증',
     types:['신축','증축'], area:()=>3000,
+    key:s => s.use==='업무시설(청사)' ? '우수 70점' : '일반 50점',
     grade:s => s.use==='업무시설(청사)' ? '우수(그린2등급) 70점 이상 【청사 의무】' : '일반(그린4등급) 50점 이상 (일반적 적용)',
     law:'녹색건축물 조성 지원법 시행령 제11조의3',
-    memo:'최우수 80 / 우수 70 / 우량 60 / 일반 50점'
-  },
-  {
-    id:3, name:'건축물 에너지효율등급',
+    memo:'최우수 80 / 우수 70 / 우량 60 / 일반 50점' },
+
+  { id:3, name:'건축물 에너지효율등급', short:'에너지<br>효율등급',
     types:['신축','증축'], area:()=>500,
+    key:()=>'1++ 등급',
     grade:()=>'1++ 등급 (80 이상 ~ 140 미만 kWh/㎡·년) 적용',
     law:'녹색건축물 조성 지원법 시행령 제12조',
-    memo:'1+++ 80 미만 / 1++ 80~140 / 1+ 140~200 / 1 200~260'
-  },
-  {
-    id:4, name:'제로에너지건축물(ZEB) 인증',
+    memo:'1+++ 80 미만 / 1++ 80~140 / 1+ 140~200 / 1 200~260' },
+
+  { id:4, name:'제로에너지건축물(ZEB) 인증', short:'제로에너지<br>(ZEB)',
     types:['신축','증축'], area:()=>500,
+    key:()=>'ZEB 5등급',
     grade:()=>'ZEB 5등급 (에너지자립률 20% 이상 ~ 40% 미만) 적용',
     law:'동법 시행령 제12조, 건축물에너지효율등급 인증 및 제로에너지건축물 인증에 관한 규칙 제8조',
-    memo:'효율등급 1++ 이상 + BEMS + 전자식 원격검침계량기 설치'
-  },
-  {
-    id:5, name:'장애물 없는 생활환경(BF) 인증',
+    memo:'효율등급 1++ 이상 + BEMS + 전자식 원격검침계량기 설치' },
+
+  { id:5, name:'장애물 없는 생활환경(BF) 인증', short:'생활환경<br>(BF)',
     types:['신축','증축','개축'], area:()=>0,
+    key:()=>'일반 70%',
     grade:()=>'일반 등급 (70% 이상 ~ 80% 미만) 적용',
     law:'장애인·노인·임산부 등의 편의증진 보장에 관한 법률 제10조의2',
-    memo:'최우수 90% / 우수 80~90% / 일반 70~80%'
-  },
-  {
-    id:6, name:'범죄예방 환경설계(CPTED)',
+    memo:'최우수 90% / 우수 80~90% / 일반 70~80%' },
+
+  { id:6, name:'범죄예방 환경설계(CPTED)', short:'범죄예방<br>(CPTED)',
     types:['신축','증축','개축','리모델링'], area:()=>0,
+    key:()=>'우수 70점',
     grade:()=>'(필요시 적용) 우수 70점 이상 ~ 85점 미만',
     law:'범죄예방 건축기준 고시',
-    memo:'최우수 85점 이상 / 우수 70~85점 미만'
-  },
-  {
-    id:7, name:'신재생에너지 공급의무비율',
+    memo:'최우수 85점 이상 / 우수 70~85점 미만' },
+
+  { id:7, name:'신재생에너지 공급의무비율', short:'신재생<br>공급의무',
     types:['신축','증축','개축'], area:()=>1000,
-    grade:s => s.year<=2025 ? '34% (2025년까지)'
-             : s.year<=2027 ? '36% (2027년까지)'
-             : s.year<=2029 ? '38% (2029년까지)'
-             : '40% (2030년 이후)',
+    key:s => s.year<=2025?'34%':s.year<=2027?'36%':s.year<=2029?'38%':'40%',
+    grade:s => s.year<=2025 ? '34% (2025년까지)' : s.year<=2027 ? '36% (2027년까지)'
+             : s.year<=2029 ? '38% (2029년까지)' : '40% (2030년 이후)',
     law:'신에너지 및 재생에너지 개발·이용·보급 촉진법 시행령 제15조',
-    memo:'한국에너지공단 전자민원 설치계획서 접수일자 기준'
-  },
-  {
-    id:8, name:'건물에너지관리시스템(BEMS)',
+    memo:'한국에너지공단 전자민원 설치계획서 접수일자 기준' },
+
+  { id:8, name:'건물에너지관리시스템(BEMS)', short:'에너지관리<br>(BEMS)',
     types:['신축','증축'], area:()=>10000,
+    key:()=>'일반 등급',
     grade:()=>'일반 등급 적용 (우수 등급 선택 가능)',
     law:'공공기관 에너지이용 합리화 추진에 관한 규정 제6조',
-    memo:'우수 / 일반 등급'
-  },
-  {
-    id:9, name:'교육시설 안전인증',
+    memo:'우수 / 일반 등급' },
+
+  { id:9, name:'교육시설 안전인증', short:'교육시설<br>안전인증',
     types:['신축','증축','개축'],
     area:s => s.use==='학교(유치원·초·중등)' ? 100
             : s.use==='학생수련원·도서관'   ? 1000
-            : s.use==='대학시설 등'         ? 3000
-            : Infinity,
+            : s.use==='대학시설 등'         ? 3000 : Infinity,
+    key:s => s.use==='학교(유치원·초·중등)' ? '우수 78점'
+           : (s.use==='학생수련원·도서관'||s.use==='대학시설 등') ? '우수 69점' : '대상 아님',
     grade:s => s.use==='학교(유치원·초·중등)' ? '우수 : 평균 78점 이상 (최우수 89점 이상)'
-             : (s.use==='학생수련원·도서관' || s.use==='대학시설 등') ? '우수 : 평균 69점 이상 (최우수 79점 이상)'
+             : (s.use==='학생수련원·도서관'||s.use==='대학시설 등') ? '우수 : 평균 69점 이상 (최우수 79점 이상)'
              : '교육시설이 아니므로 대상 아님',
     law:'교육시설 안전 인증 운영 규정',
     memo:'설계에 반영된 내용으로 예비인증 신청 가능',
-    alert:s => s.area>=500 ? '500㎡ 이상 증·개축 → 사용승인 후 2년 이내 재인증 신청' : null
-  }
+    alert:s => s.area>=500 ? '500㎡ 이상 증·개축 → 사용승인 후 2년 이내 재인증 신청' : null }
 ];
 
-/* ── 참고 총괄표 ── */
 const REF = [
-  {n:'에너지절약계획서', scope:'신·증·개축 · 연면적 500㎡ 이상',
-   rows:[['-','EPI 74점 이상(공공건축물)']], law:'녹색건축물 조성 지원법 제14조\n설계조건에 따라 제출대상 여부 상이'},
-  {n:'녹색건축 인증', scope:'신·증축 · 연면적 3,000㎡ 이상',
+  {n:'에너지절약계획서', scope:'신·증·개축 · 500㎡ 이상',
+   rows:[['-','EPI 74점 이상(공공)']], law:'녹색건축물 조성 지원법 제14조'},
+  {n:'녹색건축 인증', scope:'신·증축 · 3,000㎡ 이상',
    rows:[['최우수','80점 이상'],['우수','70점 이상'],['우량','60점 이상'],['일반','50점 이상']],
-   law:'녹색건축물 조성 지원법 시행령 제11조의3\n업무시설(청사)은 그린 2등급(우수) 이상'},
-  {n:'건축물 에너지효율등급', scope:'신·증축 · 연면적 500㎡ 이상',
-   rows:[['1+++','80 미만 kWh/㎡·년'],['1++','80 ~ 140 미만'],['1+','140 ~ 200 미만'],['1','200 ~ 260 미만']],
-   law:'녹색건축물 조성 지원법 시행령 제12조'},
-  {n:'제로에너지건축물(ZEB)', scope:'신·증축 · 연면적 500㎡ 이상',
-   rows:[['ZEB 1등급','에너지자립률 100% 이상'],['ZEB 2등급','80 ~ 100% 미만'],['ZEB 3등급','60 ~ 80% 미만'],['ZEB 4등급','40 ~ 60% 미만'],['ZEB 5등급','20 ~ 40% 미만']],
-   law:'효율등급 1++ 이상, BEMS, 전자식 원격검침계량기 설치 필요'},
-  {n:'장애물 없는 생활환경(BF)', scope:'신·증·개축 · 면적 기준 없음',
-   rows:[['최우수','90% 이상'],['우수','80 ~ 90% 미만'],['일반','70 ~ 80% 미만']],
-   law:'장애인·노인·임산부 등의 편의증진 보장에 관한 법률 제10조의2'},
-  {n:'범죄예방 환경설계(CPTED)', scope:'신·증·개축 · 리모델링 (필요시)',
-   rows:[['최우수','85점 이상'],['우수','70 ~ 85점 미만']], law:'범죄예방 건축기준 고시'},
-  {n:'신재생에너지 공급의무비율', scope:'신·증·개축 · 연면적 1,000㎡ 이상',
+   law:'시행령 제11조의3 · 업무시설(청사)은 우수 이상'},
+  {n:'건축물 에너지효율등급', scope:'신·증축 · 500㎡ 이상',
+   rows:[['1+++','80 미만'],['1++','80~140 미만'],['1+','140~200 미만'],['1','200~260 미만']],
+   law:'시행령 제12조 · 단위 kWh/㎡·년'},
+  {n:'제로에너지건축물(ZEB)', scope:'신·증축 · 500㎡ 이상',
+   rows:[['1등급','자립률 100% 이상'],['2등급','80~100% 미만'],['3등급','60~80% 미만'],['4등급','40~60% 미만'],['5등급','20~40% 미만']],
+   law:'효율등급 1++ 이상 + BEMS + 원격검침계량기'},
+  {n:'생활환경(BF) 인증', scope:'신·증·개축 · 면적 기준 없음',
+   rows:[['최우수','90% 이상'],['우수','80~90% 미만'],['일반','70~80% 미만']],
+   law:'편의증진 보장법 제10조의2'},
+  {n:'범죄예방(CPTED)', scope:'신·증·개축 · 리모델링 (필요시)',
+   rows:[['최우수','85점 이상'],['우수','70~85점 미만']], law:'범죄예방 건축기준 고시'},
+  {n:'신재생 공급의무비율', scope:'신·증·개축 · 1,000㎡ 이상',
    rows:[['~2025년','34%'],['~2027년','36%'],['~2029년','38%'],['2030년~','40%']],
-   law:'신에너지 및 재생에너지 개발·이용·보급 촉진법 시행령 제15조\n한국에너지공단 전자민원 설치계획서 접수일자 기준'},
-  {n:'건물에너지관리시스템(BEMS)', scope:'신·증축 · 연면적 10,000㎡ 이상',
-   rows:[['우수 등급','-'],['일반 등급','-']], law:'공공기관 에너지이용 합리화 추진에 관한 규정 제6조'},
-  {n:'교육시설 안전인증', scope:'신·증·개축 · 학교 100㎡ / 수련원·도서관 1,000㎡ / 대학 3,000㎡ 이상',
-   rows:[['최우수','유치원·초·중등 89점 / 기타 79점 이상'],['우수','유치원·초·중등 78점 / 기타 69점 이상']],
-   law:'교육시설안전 인증 운영 규정\n500㎡ 이상 증·개축 시 사용승인 후 2년 이내 재인증 신청'}
+   law:'신재생에너지법 시행령 제15조 · 설치계획서 접수일 기준'},
+  {n:'BEMS', scope:'신·증축 · 10,000㎡ 이상',
+   rows:[['우수 등급','-'],['일반 등급','-']], law:'공공기관 에너지이용 합리화 규정 제6조'},
+  {n:'교육시설 안전인증', scope:'신·증·개축 · 학교 100 / 수련원·도서관 1,000 / 대학 3,000㎡ 이상',
+   rows:[['최우수','유·초·중등 89 / 기타 79점'],['우수','유·초·중등 78 / 기타 69점']],
+   law:'교육시설안전 인증 운영 규정 · 500㎡ 이상 증·개축 시 2년 내 재인증'}
 ];
 
-/* ── 렌더 ── */
 function chipGroup(el, items, key){
   el.innerHTML = items.map(v =>
-    `<button class="chip" type="button" role="button" data-v="${v}" aria-pressed="${state[key]===v}">${v==='O'?'공공':v==='X'?'민간':v}</button>`
-  ).join('');
+    `<button class="chip" type="button" data-v="${v}" aria-pressed="${state[key]===v}">${v==='O'?'공공':v==='X'?'민간':v}</button>`).join('');
   el.onclick = e => {
     const b = e.target.closest('.chip'); if(!b) return;
     state[key] = b.dataset.v;
@@ -397,53 +382,52 @@ function chipGroup(el, items, key){
 }
 
 function render(){
-  const results = CERTS.map(c => {
-    const need  = c.area(state);
-    const match = c.types.includes(state.type) && state.area >= need;
-    return {c, match, need, grade: match ? c.grade(state) : '해당 없음'};
+  const R = CERTS.map(c => {
+    const need = c.area(state);
+    return {c, need, match: c.types.includes(state.type) && state.area >= need};
   });
 
-  const hit = results.filter(r => r.match).length;
+  const hit = R.filter(r=>r.match).length;
   document.getElementById('cnt').textContent = hit;
-  const C = 2*Math.PI*30;
-  document.getElementById('arc').style.strokeDashoffset = C - (C*hit/9);
+  const C = 2*Math.PI*25;
+  document.getElementById('arc').style.strokeDashoffset = C - C*hit/9;
 
-  document.getElementById('list').innerHTML = results.map(r => {
-    const need = r.need === Infinity ? '대상 아님'
-               : r.need === 0 ? '면적 기준 없음'
-               : `${r.need.toLocaleString()}㎡ 이상`;
-    const alertMsg = r.match && r.c.alert ? r.c.alert(state) : null;
-    return `
-      <article class="item ${r.match?'on':'off'}">
-        <div class="item-head">
-          <div class="name">${r.c.name}</div>
-          <div class="badge ${r.match?'yes':'no'}">${r.match?'해당':'미해당'}</div>
-        </div>
-        <div class="grade">${r.grade}</div>
-        <div class="meta">
-          <div><b>대상</b>${r.c.types.join(' · ')} / ${need}</div>
-          <div><b>근거</b>${r.c.law}</div>
-          <div><b>비고</b>${r.c.memo}</div>
-        </div>
-        ${alertMsg ? `<div class="note">${alertMsg}</div>` : ''}
-      </article>`;
-  }).join('');
+  document.getElementById('grid').innerHTML = R.map(r => `
+    <button class="tile ${r.match?'on':'off'} ${state.sel===r.c.id?'sel':''}" type="button" data-id="${r.c.id}">
+      <span class="dot"></span>
+      <span>
+        <span class="t-name">${r.c.short}</span>
+        <span class="t-key">${r.match ? r.c.key(state) : '미해당'}</span>
+      </span>
+    </button>`).join('');
+
+  const r = R.find(x => x.c.id === state.sel);
+  const need = r.need === Infinity ? '대상 아님' : r.need === 0 ? '면적 기준 없음' : `${r.need.toLocaleString()}㎡ 이상`;
+  const alertMsg = r.match && r.c.alert ? r.c.alert(state) : null;
+
+  document.getElementById('detail').innerHTML = `
+    <div class="d-head">
+      <div class="d-name">${r.c.name}</div>
+      <div class="badge ${r.match?'yes':'no'}">${r.match?'해당':'미해당'}</div>
+    </div>
+    <div class="d-grade ${r.match?'yes':''}">${r.match ? r.c.grade(state) : '적용 대상이 아닙니다'}</div>
+    <dl class="d-meta">
+      <div><dt>대상 공사</dt><dd>${r.c.types.join(' · ')}</dd></div>
+      <div><dt>면적 기준</dt><dd>${need}</dd></div>
+      <div><dt>근거 법령</dt><dd>${r.c.law}</dd></div>
+    </dl>
+    <div class="note" style="${alertMsg?'':'display:none'}">${alertMsg || ''}</div>
+    <dl class="d-meta"><div><dt>비고</dt><dd>${r.c.memo}</dd></div></dl>`;
 }
 
-/* 초기화 */
 chipGroup(document.getElementById('chips-type'),   TYPES,  'type');
 chipGroup(document.getElementById('chips-use'),    USES,   'use');
 chipGroup(document.getElementById('chips-public'), PUBLIC, 'pub');
 
-const quick = document.getElementById('quick');
-quick.innerHTML = [100,500,1000,3000,10000].map(v=>`<button type="button" data-v="${v}">${v.toLocaleString()}㎡</button>`).join('');
-quick.onclick = e => {
-  const b = e.target.closest('button'); if(!b) return;
-  state.area = +b.dataset.v;
-  document.getElementById('area').value = state.area;
-  render();
-};
-
+document.getElementById('grid').addEventListener('click', e => {
+  const t = e.target.closest('.tile'); if(!t) return;
+  state.sel = +t.dataset.id; render();
+});
 document.getElementById('area').addEventListener('input', e => {
   state.area = Math.max(0, +e.target.value || 0); render();
 });

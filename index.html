@@ -1,449 +1,1489 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>건축물 인증 대상 판정</title>
-<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>학교시설사업 실무 바이블</title>
 <style>
   :root{
-    --blue:#3182F6; --blue-weak:#E8F3FF; --blue-deep:#1B64DA;
-    --red:#F04452; --red-weak:#FEF1F1;
-    --text:#191F28; --sub:#4E5968; --tertiary:#8B95A1; --disabled:#B0B8C1;
-    --line:#E5E8EB; --fill:#F2F4F6; --bg:#F2F4F6; --card:#FFFFFF;
+    --navy:#191F28; --navy-d:#0F1419; --blue:#3182F6; --green:#3182F6; --green-d:#1B64DA;
+    --ink:#191F28; --muted:#8B95A1; --line:#E5E8EB; --bg:#F2F4F6; --card:#ffffff;
+    --amber:#C08400; --shadow:0 1px 3px rgba(0,0,0,.06),0 6px 20px rgba(0,0,0,.06);
+    --p-plan:#3182F6; --p-design:#00C471; --p-const:#FF9500; --p-cm:#8B5CF6; --p-comp:#1B64DA; --p-calc:#3182F6; --p-cert:#00C471;
   }
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-  body{
-    font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo',sans-serif;
-    background:var(--bg); color:var(--text); line-height:1.5;
-    letter-spacing:-0.02em; font-feature-settings:'tnum';
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',system-ui,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px;}
+
+  /* ===== 표지 (토스 블루) ===== */
+  .cover{background:#3182F6;color:#fff;position:relative;overflow:hidden;}
+  .cover-inner{position:relative;z-index:2;padding:56px 20px 48px;max-width:1180px;margin:0 auto;}
+  .badge-org{display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.5px;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+    padding:6px 14px;border-radius:100px;backdrop-filter:blur(4px);}
+  .badge-org b{color:#66B2FF;font-weight:700;}
+  .cover h1{font-size:clamp(28px,4.4vw,46px);font-weight:800;margin:0 0 12px;letter-spacing:-1px;line-height:1.15;
+    cursor:pointer;display:inline-block;transition:opacity .15s;}
+  .cover h1:hover{opacity:.82;}
+  .cover .badge-org{margin-bottom:6px;}
+  .cover .sub{font-size:clamp(15px,2vw,19px);color:#cdd8ea;font-weight:400;}
+  .cover-bar{height:4px;width:120px;margin:20px 0 24px;border-radius:100px;background:rgba(255,255,255,.85);}
+  .cover-meta{display:flex;flex-wrap:wrap;gap:26px;margin-top:26px;font-size:14px;color:#b9c6dc;}
+  .cover-meta div span{display:block;color:#7f92b3;font-size:12px;margin-bottom:2px;}
+  .cover-meta div b{color:#fff;font-weight:600;font-size:15px;}
+
+  /* ===== 지표 스트립 ===== */
+  .strip{background:#fff;border-bottom:1px solid var(--line);}
+  .strip-inner{display:grid;grid-template-columns:repeat(5,1fr);gap:0;max-width:1180px;margin:0 auto;}
+  .strip-item{padding:18px 16px;text-align:center;border-right:1px solid var(--line);}
+  .strip-item:last-child{border-right:0;}
+  .strip-item .n{font-size:26px;font-weight:800;color:var(--navy);line-height:1;}
+  .strip-item .l{font-size:12.5px;color:var(--muted);margin-top:6px;}
+  @media(max-width:720px){.strip-inner{grid-template-columns:repeat(2,1fr);}
+    .strip-item:nth-child(2n){border-right:0;}}
+
+  /* ===== 레이아웃 (좌측 사이드바 + 콘텐츠) ===== */
+  .layout{display:flex;align-items:flex-start;gap:26px;max-width:1260px;margin:0 auto;padding:26px 20px 0;}
+  .sidebar{flex:0 0 240px;position:sticky;top:16px;align-self:flex-start;}
+  .side-nav{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid var(--line);
+    border-radius:14px;padding:12px;box-shadow:var(--shadow);}
+  .nav-grp{align-self:flex-start;font-size:12.5px;font-weight:800;color:#fff;background:#3182F6;
+    letter-spacing:0;text-transform:none;padding:6px 15px;border-radius:8px;margin:16px 0 9px;}
+  .nav-grp:first-child{margin-top:2px;}
+  .content{flex:1;min-width:0;padding:2px 0 70px;}
+  /* ===== 세로 탭 ===== */
+  .tab{width:100%;border:1px solid transparent;background:#fff;color:var(--muted);
+    padding:10px 13px;border-radius:10px;font-size:13.5px;font-weight:600;cursor:pointer;
+    transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:9px;text-align:left;}
+  .tab .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:0 0 auto;}
+  .tab:hover{background:#f4f7fb;color:var(--navy);}
+  /* 외부 사이트 바로가기 */
+  .extlink{width:100%;display:flex;align-items:center;gap:9px;text-decoration:none;
+    border:1px solid var(--line);background:#fff;color:var(--muted);
+    padding:10px 13px;border-radius:10px;font-size:13px;font-weight:600;transition:.15s;}
+  .extlink .dot{width:8px;height:8px;border-radius:50%;background:#3182F6;flex:0 0 auto;}
+  .extlink .lb{flex:1;line-height:1.3;}
+  .extlink .ext{color:#9aa7b8;font-size:12px;flex:0 0 auto;}
+  .extlink:hover{border-color:#3182F6;color:var(--navy);background:#F4F6F9;}
+  .extlink:hover .ext{color:#3182F6;}
+  .tab.active{color:#fff;border-color:transparent;box-shadow:0 2px 8px rgba(20,40,80,.14);}
+  .tab.active .dot{background:rgba(255,255,255,.9);}
+  .tab.active[data-p="overview"]{background:var(--navy);}
+  .tab.active[data-p="plan"]{background:var(--p-plan);}
+  .tab.active[data-p="design"]{background:var(--p-design);}
+  .tab.active[data-p="const"]{background:var(--p-const);}
+  .tab.active[data-p="cm"]{background:var(--p-cm);}
+  .tab.active[data-p="comp"]{background:var(--p-comp);}
+  .tab.active[data-p="cert"]{background:var(--p-cert);}
+  .tab.active[data-p="calc"]{background:var(--p-calc);color:#fff;}
+  .tab[data-p="calc"]:not(.active){border-color:#c7cbe8;color:var(--p-calc);font-weight:700;}
+  /* 모바일: 사이드바 → 상단 가로 스크롤 */
+  @media(max-width:860px){
+    .layout{flex-direction:column;gap:0;padding:0;max-width:none;}
+    .sidebar{position:sticky;top:0;z-index:50;flex:none;width:100%;
+      background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+    .side-nav{flex-direction:row;overflow-x:auto;border:0;border-radius:0;box-shadow:none;padding:10px 16px;gap:6px;}
+    .nav-grp{display:none;}
+    .tab{width:auto;flex:0 0 auto;border:1px solid var(--line);border-radius:100px;padding:9px 15px;}
+    .extlink{width:auto;flex:0 0 auto;white-space:nowrap;}.extlink .lb{flex:0 0 auto;}
+    .content{padding:24px 16px 60px;}
   }
 
-  .page{max-width:1240px; margin:0 auto; padding:36px 32px 56px;}
+  /* ===== 판정기 ===== */
+  .calc-form{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+    padding:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px 20px;margin-bottom:8px;}
+  @media(max-width:820px){.calc-form{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:520px){.calc-form{grid-template-columns:1fr;}}
+  .cfield label{display:block;font-size:12.5px;font-weight:800;color:var(--navy);margin-bottom:6px;letter-spacing:.3px;}
+  .cfield .u{font-weight:600;color:var(--muted);font-size:11.5px;margin-left:4px;}
+  .cfield input,.cfield select{width:100%;border:1.5px solid var(--line);border-radius:9px;
+    padding:11px 13px;font-size:15px;font-family:inherit;color:var(--ink);outline:none;transition:.15s;background:#fff;}
+  .cfield input:focus,.cfield select:focus{border-color:var(--p-calc);box-shadow:0 0 0 3px rgba(74,83,168,.12);}
+  .cfield .hint{font-size:11px;color:var(--muted);margin-top:4px;}
+  .cfield.chk{display:flex;align-items:center;gap:9px;background:#f6f7fc;border:1px solid #e4e6f4;
+    border-radius:9px;padding:11px 13px;align-self:end;cursor:pointer;}
+  .cfield.chk input{width:18px;height:18px;accent-color:var(--p-calc);cursor:pointer;}
+  .cfield.chk label{margin:0;font-size:13px;color:#3a3f5c;cursor:pointer;}
+  .calc-actions{display:flex;justify-content:space-between;align-items:center;margin:16px 0 20px;flex-wrap:wrap;gap:10px;}
+  .calc-summary{font-size:15px;color:var(--ink);}
+  .calc-summary b{color:var(--p-calc);font-size:22px;font-weight:800;}
+  .calc-reset{border:1px solid var(--line);background:#fff;color:var(--muted);font-size:13px;
+    padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;}
+  .calc-reset:hover{border-color:var(--p-calc);color:var(--p-calc);}
+  .res-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  @media(max-width:640px){.res-grid{grid-template-columns:1fr;}}
+  .res-card{border:1px solid var(--line);border-left-width:5px;border-radius:10px;padding:13px 15px;
+    background:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:0 1px 2px rgba(20,40,80,.04);}
+  .res-card .rc-l .nm{font-weight:700;font-size:14.5px;}
+  .res-card .rc-l .bs{font-size:12px;color:var(--muted);margin-top:2px;}
+  .res-card .rc-r{text-align:right;flex:0 0 auto;}
+  .res-card .rc-r .thr{font-size:12px;font-weight:700;background:#f0f2f8;color:var(--p-calc);padding:3px 9px;border-radius:100px;white-space:nowrap;}
+  .res-empty{background:#f7f9fc;border:1px dashed var(--line);border-radius:12px;padding:32px;text-align:center;color:var(--muted);font-size:14px;}
+  .res-head{display:flex;align-items:center;gap:9px;margin:22px 0 12px;font-size:15px;font-weight:800;color:var(--navy);}
+  .res-head .cnt{background:var(--p-calc);color:#fff;font-size:12px;padding:2px 10px;border-radius:100px;}
+  .res-head.muted{color:var(--muted);}.res-head.muted .cnt{background:#aab4c2;}
+  .na-list{display:flex;flex-wrap:wrap;gap:7px;}
+  .na-list span{font-size:12.5px;color:#8894a4;background:#f4f6fa;border:1px solid var(--line);padding:5px 11px;border-radius:7px;}
+  .common-box{background:#eef2fb;border:1px solid #d7deef;border-radius:12px;padding:16px 18px;margin-top:22px;}
+  .common-box h4{margin:0 0 8px;font-size:13px;color:var(--navy);font-weight:800;}
+  .common-box .doc-chips span{background:#fff;border-color:#d7deef;color:var(--navy);}
 
-  /* ── 상단 바 ── */
-  .topbar{
-    display:flex; align-items:flex-end; justify-content:space-between;
-    gap:24px; padding-bottom:22px; margin-bottom:22px;
-    border-bottom:1px solid var(--line);
-  }
-  .brand .eyebrow{font-size:12px; font-weight:700; color:var(--blue); letter-spacing:0;}
-  .brand h1{font-size:26px; font-weight:700; letter-spacing:-0.04em; margin-top:5px;}
-  .brand p{font-size:13px; color:var(--tertiary); font-weight:500; margin-top:5px;}
+  /* ===== 섹션 ===== */
+  main{padding:30px 0 70px;}
+  .panel{display:none;animation:fade .3s ease;}
+  .panel.show{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .sec-head{display:flex;align-items:center;gap:14px;margin:6px 0 20px;}
+  .sec-head .chip{font-size:12px;font-weight:700;color:#fff;padding:5px 12px;border-radius:6px;letter-spacing:.5px;}
+  .sec-head h2{font-size:24px;font-weight:800;margin:0;letter-spacing:-.5px;}
+  .sec-head p{margin:0;color:var(--muted);font-size:14px;}
 
-  .score{display:flex; align-items:center; gap:14px; flex-shrink:0;}
-  .score .txt{text-align:right;}
-  .score .cap{font-size:12px; font-weight:600; color:var(--tertiary);}
-  .score .big{font-size:32px; font-weight:800; letter-spacing:-0.04em; line-height:1.2;}
-  .score .big b{color:var(--blue);}
-  .score .big span{color:var(--disabled); font-size:20px;}
-  .donut circle{fill:none; stroke-linecap:round;}
-  .donut .track{stroke:var(--line);}
-  .donut .val{stroke:var(--blue); transition:stroke-dashoffset .5s cubic-bezier(.22,1,.36,1);}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+  .toolbar .hint{font-size:13px;color:var(--muted);}
+  .expand-btns button{border:1px solid var(--line);background:#fff;color:var(--muted);
+    font-size:12.5px;padding:6px 12px;border-radius:7px;cursor:pointer;font-weight:600;}
+  .expand-btns button:hover{border-color:var(--blue);color:var(--navy);}
 
-  /* ── 2단 레이아웃 ── */
-  .cols{display:grid; grid-template-columns:312px 1fr; gap:20px; align-items:start;}
+  /* ===== 아코디언 카드 ===== */
+  .acc{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    margin-bottom:10px;overflow:hidden;box-shadow:0 1px 2px rgba(20,40,80,.04);transition:.2s;}
+  .acc.open{box-shadow:var(--shadow);}
+  .acc-head{display:flex;align-items:center;gap:14px;padding:15px 18px;cursor:pointer;user-select:none;}
+  .acc-head:hover{background:#fafcff;}
+  .acc-num{flex:0 0 auto;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;
+    justify-content:center;font-weight:800;font-size:13px;color:#fff;}
+  .acc-title{flex:1;min-width:0;}
+  .acc-title .t{font-weight:700;font-size:15.5px;}
+  .acc-title .d{font-size:12.5px;color:var(--muted);margin-top:1px;}
+  .acc-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:44%;}
+  .mtag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;}
+  .mtag.money{background:#fdf0da;color:var(--amber);}
+  .mtag.law{background:#EAF0FF;color:var(--green-d);}
+  .mtag.doc{background:#EEF2F8;color:var(--green-d);}
+  .chev{flex:0 0 auto;color:#aab4c2;transition:transform .25s;font-size:18px;}
+  .acc.open .chev{transform:rotate(180deg);}
+  .acc-body{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+  .acc.open .acc-body{max-height:2600px;}
+  .acc-body-in{padding:4px 18px 20px;border-top:1px solid var(--line);}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr;}.acc-tags{display:none;}}
+  .block h4{font-size:12px;font-weight:800;color:var(--navy);margin:0 0 8px;
+    text-transform:uppercase;letter-spacing:.6px;display:flex;align-items:center;gap:6px;}
+  .block h4::before{content:"";width:14px;height:2px;background:var(--green);display:inline-block;}
+  .block ul{margin:0;padding-left:16px;}
+  .block li{font-size:13.5px;margin-bottom:4px;color:#2c3644;}
+  .block .law-item{background:#f7f9fc;border:1px solid var(--line);border-radius:8px;
+    padding:9px 12px;font-size:13px;margin-bottom:7px;}
+  .block .law-item b{color:var(--navy);}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px;}
+  .flow .step{background:#eef2f8;border:1px solid #dbe3ef;border-radius:7px;padding:6px 11px;font-size:12.5px;font-weight:600;color:#324;}
+  .flow .arr{color:#9aa7b8;font-weight:700;}
+  .full{grid-column:1/-1;}
+  .doc-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
+  .doc-chips span{background:#EEF2F8;color:var(--green-d);font-size:12.5px;font-weight:600;
+    padding:5px 11px;border-radius:7px;border:1px solid #DBE2EC;}
 
-  .panel{background:var(--card); border-radius:18px; padding:22px 20px;}
-  .panel-title{
-    font-size:12px; font-weight:700; color:var(--tertiary);
-    letter-spacing:0; margin-bottom:16px;
-  }
+  /* ===== 개요 프로세스 맵 ===== */
+  .map{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px;}
+  @media(max-width:860px){.map{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:480px){.map{grid-template-columns:1fr;}}
+  .mcard{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);
+    cursor:pointer;transition:.2s;}
+  .mcard:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(20,40,80,.12);}
+  .mcard-top{padding:14px 16px;color:#fff;}
+  .mcard-top .ph{font-size:12px;opacity:.85;font-weight:600;}
+  .mcard-top .nm{font-size:19px;font-weight:800;margin-top:2px;}
+  .mcard-body{padding:14px 16px;}
+  .mcard-body .row{font-size:13px;padding:6px 0;border-bottom:1px dashed var(--line);color:#33404f;}
+  .mcard-body .row:last-child{border-bottom:0;}
+  .mcard-body .row b{color:var(--navy);}
+  .mflow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:0 0 28px;
+    background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:var(--shadow);}
+  .mflow .node{padding:10px 18px;border-radius:100px;color:#fff;font-weight:800;font-size:15px;}
+  .mflow .a{color:#c3cede;font-size:20px;font-weight:700;}
 
-  /* ── 입력 ── */
-  aside{position:sticky; top:24px;}
-  .field + .field{margin-top:22px;}
-  .label{
-    display:flex; align-items:baseline; justify-content:space-between; gap:8px;
-    font-size:14px; font-weight:600; margin-bottom:10px;
-  }
-  .label .hint{font-size:11px; font-weight:500; color:var(--disabled); letter-spacing:0;}
+  /* ===== 금액 기준표 ===== */
+  .tbl-wrap{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin-top:8px;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  thead th{background:var(--navy);color:#fff;text-align:left;padding:12px 14px;font-weight:700;font-size:13px;}
+  tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top;}
+  tbody tr:hover{background:#fafcff;}
+  .thr{font-weight:800;color:var(--amber);white-space:nowrap;}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;margin:1px 3px 1px 0;}
+  .pill.plan{background:#EAF0FF;color:var(--green-d);}
+  .pill.design{background:#EEF2F8;color:var(--green-d);}
+  .pill.const{background:#fdf0da;color:var(--amber);}
 
-  .chips{display:flex; flex-wrap:wrap; gap:6px;}
-  .chip{
-    border:none; cursor:pointer; font:inherit;
-    background:var(--fill); color:var(--sub);
-    font-size:13px; font-weight:600; padding:8px 13px; border-radius:10px;
-    transition:background .15s, color .15s, transform .08s;
-  }
-  .chip:hover{background:#E8EBED;}
-  .chip:active{transform:scale(.95);}
-  .chip[aria-pressed="true"]{background:var(--blue); color:#fff;}
-  .chip:focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
+  footer{border-top:1px solid var(--line);background:#fff;padding:22px 0;color:var(--muted);font-size:12.5px;text-align:center;}
+  footer b{color:var(--navy);}
+  .note{background:#F4F6F9;border:1px solid var(--line);border-left:3px solid #3182F6;border-radius:3px;padding:12px 16px;
+    font-size:13px;color:#3A4650;margin-bottom:18px;}
 
-  .numrow{
-    display:flex; align-items:center; gap:6px;
-    border-bottom:2px solid var(--line); padding-bottom:8px;
-    transition:border-color .15s;
-  }
-  .numrow:focus-within{border-color:var(--blue);}
-  .numrow input{
-    flex:1; min-width:0; border:none; outline:none; background:transparent; font:inherit;
-    font-size:24px; font-weight:700; letter-spacing:-0.03em; color:var(--text);
-  }
-  .numrow input::placeholder{color:var(--line); font-weight:700;}
-  .numrow input::-webkit-outer-spin-button,
-  .numrow input::-webkit-inner-spin-button{-webkit-appearance:none; margin:0;}
-  .numrow input[type=number]{-moz-appearance:textfield;}
-  .unit{font-size:15px; font-weight:600; color:var(--disabled);}
+  /* ===== 실무 운영 공통 ===== */
+  :root{ --ops:#00C471; --ops-d:#00A15C; }
+  .nav-div{flex:0 0 auto;width:1px;background:var(--line);margin:2px 4px;}
+  .nav-label{flex:0 0 auto;display:flex;align-items:center;font-size:11px;font-weight:800;
+    color:#9aa7b8;letter-spacing:.5px;padding:0 4px;text-transform:uppercase;}
+  .tab.active[data-p="proc"],.tab.active[data-p="check"],.tab.active[data-p="law"],.tab.active[data-p="deleg"]{background:var(--ops);color:#fff;}
+  .tab[data-p="proc"]:not(.active),.tab[data-p="check"]:not(.active),.tab[data-p="law"]:not(.active),.tab[data-p="deleg"]:not(.active){border-color:#bfe0e2;color:var(--ops-d);}
+  /* 타임라인 */
+  .fchips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;}
+  .fchip{border:1px solid var(--line);background:#fff;color:var(--muted);padding:7px 15px;border-radius:100px;
+    font-size:13px;font-weight:600;cursor:pointer;transition:.15s;}
+  .fchip:hover{border-color:var(--ops);color:var(--ops-d);}
+  .fchip.on{background:var(--ops);color:#fff;border-color:transparent;}
+  .tl-row{display:flex;align-items:flex-start;gap:13px;background:#fff;border:1px solid var(--line);
+    border-left-width:4px;border-radius:10px;padding:12px 15px;margin-bottom:8px;box-shadow:0 1px 2px rgba(20,40,80,.04);}
+  .tl-no{flex:0 0 auto;width:28px;height:28px;border-radius:7px;color:#fff;font-weight:800;font-size:12px;
+    display:flex;align-items:center;justify-content:center;margin-top:1px;}
+  .tl-main{flex:1;min-width:0;}
+  .tl-task{font-weight:700;font-size:14.5px;color:var(--ink);}
+  .tl-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;align-items:center;}
+  .pb{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:6px;}
+  .pb.from{background:#eef2f8;color:#3a4a63;}
+  .pb.to{background:#EAEFF5;color:#1A34C7;}
+  .pb.arr{color:#9aa7b8;font-weight:800;padding:0 1px;}
+  .pm{font-size:11.5px;padding:3px 9px;border-radius:100px;}
+  .pm.note{background:#fff3d9;color:#8a6413;}
+  .pm.law{background:#EEF2F8;color:var(--green-d);}
+  .tl-ph{flex:0 0 auto;font-size:12px;font-weight:800;align-self:center;}
+  /* 실무 절차 뷰 토글 + 스윔레인 */
+  .proc-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
+  .pv-toggle{display:flex;gap:4px;background:#F2F4F6;border-radius:12px;padding:4px;}
+  .pvbtn{border:0;background:transparent;color:var(--muted);font-size:13px;font-weight:700;padding:7px 14px;border-radius:9px;cursor:pointer;font-family:inherit;transition:.15s;}
+  .pvbtn.on{background:#fff;color:var(--ops-d);box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .swim{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);overflow-x:auto;}
+  .swim-inner{min-width:820px;}
+  .swim-legend{font-size:12px;color:var(--muted);margin-bottom:10px;}
+  .sl-row{display:grid;grid-template-columns:38px minmax(180px,230px) 1fr;align-items:center;gap:10px;padding:2px 0;}
+  .sl-head{position:sticky;top:0;background:#fff;z-index:2;border-bottom:2px solid var(--line);padding-bottom:6px;margin-bottom:4px;}
+  .sl-no{font-size:11px;font-weight:800;color:#B0B8C1;text-align:center;}
+  .sl-task{font-size:12.5px;color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sl-head .sl-task{color:var(--muted);font-weight:800;}
+  .sl-lanehead{display:grid;grid-template-columns:repeat(7,1fr);}
+  .sl-lanehead div{font-size:11px;font-weight:800;color:var(--navy);text-align:center;line-height:1.25;padding:0 2px;}
+  .sl-track{position:relative;height:26px;background:repeating-linear-gradient(to right,#EEF2F7 0,#EEF2F7 1px,transparent 1px,transparent calc(100%/7));border-radius:4px;}
+  .sl-conn{position:absolute;top:12px;height:2px;border-radius:2px;opacity:.55;}
+  .sl-node{position:absolute;top:6px;width:14px;height:14px;border-radius:50%;transform:translateX(-50%);box-shadow:0 1px 3px rgba(0,0,0,.2);border:2px solid #fff;z-index:2;}
+  .sl-arrow{position:absolute;top:5px;transform:translateX(-50%);font-size:14px;line-height:16px;font-weight:900;z-index:2;}
+  .sl-phase{grid-column:1/-1;margin:10px 0 4px;font-size:12px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;}
+  .sl-note{position:absolute;top:4px;font-size:9.5px;color:#8a6413;background:#fff3d9;padding:0 5px;border-radius:6px;line-height:18px;white-space:nowrap;transform:translateX(-50%);z-index:1;}
+  /* 체크리스트 */
+  .subswitch{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .subbtn{border:1.5px solid var(--line);background:#fff;color:var(--muted);padding:9px 18px;border-radius:10px;
+    font-size:14px;font-weight:700;cursor:pointer;transition:.15s;}
+  .subbtn:hover{border-color:var(--ops);}
+  .subbtn.on{background:var(--ops);color:#fff;border-color:transparent;box-shadow:var(--shadow);}
+  .ck-progress{font-size:13px;color:var(--muted);margin-bottom:12px;}
+  .ck-progress b{color:var(--ops-d);font-weight:800;}
+  .chk-acc .acc-num,.chk-acc .ck-badge{}
+  .ck-badge{flex:0 0 auto;min-width:28px;height:24px;padding:0 8px;border-radius:100px;background:#E9EEF5;
+    color:var(--ops-d);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;}
+  .ck-in{display:flex;flex-direction:column;gap:2px;padding-top:10px;}
+  .ck{display:flex;align-items:flex-start;gap:10px;padding:8px 6px;border-radius:7px;cursor:pointer;font-size:13.5px;line-height:1.5;}
+  .ck:hover{background:#F5F7FA;}
+  .ck input{width:17px;height:17px;margin-top:2px;flex:0 0 auto;accent-color:var(--ops);cursor:pointer;}
+  .ck input:checked + span{color:#9aa7b8;text-decoration:line-through;}
+  /* 검색 테이블 */
+  .search-box{position:relative;margin-bottom:14px;}
+  .search-box input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px 12px 40px;
+    font-size:15px;font-family:inherit;outline:none;transition:.15s;}
+  .search-box input:focus{border-color:var(--ops);box-shadow:0 0 0 3px rgba(13,125,132,.12);}
+  .search-box .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#9aa7b8;font-size:16px;}
+  .lawtbl td:nth-child(1){font-weight:700;color:var(--navy);width:26%;}
+  .lawtbl td:nth-child(2){width:34%;color:#33465e;font-size:12.5px;}
+  .lawtbl td:nth-child(3){color:var(--muted);font-size:12.5px;}
+  .hl{background:#fff2ac;border-radius:3px;padding:0 1px;}
+  /* 위임전결 */
+  .dl-block{background:#fff;border:1px solid var(--line);border-radius:11px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 2px rgba(20,40,80,.04);}
+  .dl-head{background:#eef2f8;padding:11px 16px;font-weight:800;font-size:14px;color:var(--navy);border-bottom:1px solid var(--line);}
+  .dl-row{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px dashed var(--line);}
+  .dl-row:last-child{border-bottom:0;}
+  .dl-detail{flex:1;font-size:13.5px;color:#2c3644;}
+  .dl-detail .amt{color:var(--amber);font-weight:700;}
+  .dl-who{flex:0 0 auto;display:flex;gap:6px;align-items:center;}
+  .who-pill{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:100px;white-space:nowrap;}
+  .who-pill.draft{background:#eef2f8;color:#54637a;}
+  .who-pill.final{background:#E9EEF5;color:var(--ops-d);}
+  .dl-extra{font-size:11px;color:#b06a1a;background:#fdf3e2;padding:2px 8px;border-radius:6px;margin-left:6px;}
 
-  /* ── 매트릭스 ── */
-  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
-  .tile{
-    border:none; cursor:pointer; font:inherit; text-align:left;
-    background:var(--fill); border-radius:14px; padding:16px 15px;
-    min-height:104px; display:flex; flex-direction:column; justify-content:space-between;
-    transition:background .2s, transform .08s, box-shadow .2s;
-  }
-  .tile:hover{transform:translateY(-2px);}
-  .tile:focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
-  .tile.on{background:var(--blue-weak);}
-  .tile.sel{box-shadow:inset 0 0 0 2px var(--blue);}
-  .tile.off.sel{box-shadow:inset 0 0 0 2px var(--disabled);}
-  .tile .dot{width:7px; height:7px; border-radius:50%; background:var(--disabled);}
-  .tile.on .dot{background:var(--blue); box-shadow:0 0 0 4px rgba(49,130,246,.15);}
-  .tile .t-name{
-    display:block; margin-top:12px;
-    font-size:14px; font-weight:700; letter-spacing:-0.035em; line-height:1.3;
-    color:var(--disabled);
-  }
-  .tile.on .t-name{color:var(--text);}
-  .tile .t-key{
-    display:block; margin-top:5px; font-size:12px; font-weight:600;
-    letter-spacing:-0.02em; color:var(--disabled);
-  }
-  .tile.on .t-key{color:var(--blue);}
+  /* ===== 토스증권 톤 (라운드·소프트·산세리프) ===== */
+  .acc{border-radius:16px;} .mcard{border-radius:18px;} .mflow{border-radius:18px;}
+  .side-nav{border-radius:20px;padding:14px;} .tab{border-radius:12px;padding:11px 14px;}
+  .calc-form{border-radius:20px;} .common-box{border-radius:18px;}
+  .cfield input,.cfield select,.search-box input,#global-q{border-radius:12px;}
+  .tbl-wrap{border-radius:16px;} .res-card{border-radius:14px;} .dl-block{border-radius:16px;}
+  .tl-row{border-radius:14px;} .note{border-radius:14px;} .certcard{border-radius:14px;}
+  .calc-reset,.expand-btns button,.fchip,.subbtn{border-radius:10px;}
+  .mtag,.pill,.who-pill,.doc-chips span,.pm,.pb{border-radius:8px;}
+  .badge-org,.acc-num,.tl-no,.ck-badge,.cc-badge{border-radius:8px;}
+  .sec-head .chip{border-radius:8px;}
+  .cover h1,.sec-head h2,.mcard-top .nm{font-family:inherit;letter-spacing:-.7px;font-weight:800;}
+  .strip{border-bottom:1px solid var(--line);box-shadow:none;}
+  .tab.active{box-shadow:0 4px 12px rgba(49,130,246,.24);}
+  thead th{background:var(--navy);} .dl-head{background:#F2F4F6;}
+  body::-webkit-scrollbar,.side-nav::-webkit-scrollbar{width:9px;height:9px;}
+  body::-webkit-scrollbar-thumb,.side-nav::-webkit-scrollbar-thumb{background:#D1D6DB;border-radius:9px;}
+  body::-webkit-scrollbar-thumb:hover{background:#B0B8C1;}
 
-  /* ── 상세 ── */
-  .detail{margin-top:20px;}
-  .d-head{display:flex; align-items:center; gap:10px;}
-  .d-name{font-size:19px; font-weight:700; letter-spacing:-0.04em;}
-  .badge{font-size:11px; font-weight:700; padding:4px 9px; border-radius:7px; letter-spacing:0;}
-  .badge.yes{background:var(--blue-weak); color:var(--blue);}
-  .badge.no{background:var(--fill); color:var(--disabled);}
-  .d-grade{
-    margin-top:14px; background:var(--fill); border-radius:12px;
-    padding:16px 18px; font-size:16px; font-weight:700; letter-spacing:-0.03em;
-  }
-  .d-grade.yes{background:var(--blue-weak); color:var(--blue-deep);}
-  .d-meta{
-    margin-top:16px; display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
-  }
-  .d-meta div{border-top:1px solid var(--line); padding-top:10px;}
-  .d-meta dt{font-size:11px; font-weight:700; color:var(--disabled); letter-spacing:0;}
-  .d-meta dd{margin-top:4px; font-size:12.5px; font-weight:500; color:var(--sub); line-height:1.55;}
-  .note{
-    margin-top:14px; background:var(--red-weak); color:var(--red);
-    font-size:12.5px; font-weight:600; padding:10px 14px; border-radius:10px;
-  }
+  /* ===== 전체 키워드 검색 ===== */
+  .topsearch{background:#fff;border-bottom:1px solid var(--line);}
+  .topsearch-in{max-width:1260px;margin:0 auto;padding:14px 20px;position:relative;}
+  .ts-ic{position:absolute;left:34px;top:50%;transform:translateY(-50%);font-size:15px;color:#9aa7b8;pointer-events:none;}
+  #global-q{width:100%;border:2px solid #3182F6;border-radius:4px;padding:12px 16px 12px 42px;
+    font-size:15px;font-family:inherit;outline:none;transition:.15s;background:#fff;color:var(--ink);}
+  #global-q:focus{border-color:#3182F6;box-shadow:0 0 0 3px rgba(49,130,246,.10);}
+  .gresults{position:absolute;top:calc(100% - 4px);left:20px;right:20px;background:#fff;
+    border:1px solid var(--line);border-radius:4px;box-shadow:0 8px 30px rgba(5,28,44,.14);
+    z-index:200;max-height:440px;overflow:auto;display:none;}
+  .gresults.show{display:block;}
+  .gres-head{padding:8px 16px;font-size:11px;font-weight:800;color:#9aa7b8;letter-spacing:.5px;
+    background:#F7F8FA;border-bottom:1px solid var(--line);position:sticky;top:0;}
+  .gres-item{padding:10px 16px;cursor:pointer;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;}
+  .gres-item:last-child{border-bottom:0;}
+  .gres-item:hover,.gres-item.on{background:#EAF0FF;}
+  .gres-item .gk{flex:0 0 auto;font-size:10px;font-weight:800;color:#fff;background:var(--navy);
+    padding:2px 7px;border-radius:2px;min-width:52px;text-align:center;}
+  .gres-item .gt{flex:1;min-width:0;}
+  .gres-item .gl{font-weight:600;font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .gres-item .gs{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .gres-empty{padding:20px 16px;text-align:center;color:#9aa7b8;font-size:13px;}
+  .gres-item .hl{background:#fff2ac;border-radius:2px;}
+  /* 푸터 기관 배지 */
+  .badge-org.foot{background:#F4F6F9;border:1px solid var(--line);color:var(--navy);font-weight:600;}
+  .badge-org.foot b{color:#3182F6;}
 
-  /* ── 총괄표 ── */
-  details.ref{margin-top:20px; background:var(--card); border-radius:18px; padding:0 22px;}
-  details.ref summary{
-    list-style:none; cursor:pointer; padding:18px 0;
-    font-size:14px; font-weight:700;
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  details.ref summary::-webkit-details-marker{display:none;}
-  details.ref summary::after{
-    content:""; width:7px; height:7px;
-    border-right:2px solid var(--disabled); border-bottom:2px solid var(--disabled);
-    transform:rotate(45deg); transition:transform .2s;
-  }
-  details.ref[open] summary::after{transform:rotate(-135deg);}
-  .ref-grid{
-    padding:4px 0 22px; display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px;
-  }
-  .ref-block{background:var(--fill); border-radius:12px; padding:14px 15px;}
-  .ref-block h3{font-size:13.5px; font-weight:700; letter-spacing:-0.035em;}
-  .ref-block .scope{font-size:11px; color:var(--tertiary); font-weight:500; margin-top:3px; line-height:1.45;}
-  .ref-block ul{list-style:none; margin-top:9px; display:flex; flex-direction:column; gap:4px;}
-  .ref-block li{display:flex; gap:8px; font-size:12px;}
-  .ref-block li b{flex-shrink:0; width:64px; font-weight:700; color:var(--sub);}
-  .ref-block li span{color:var(--tertiary); font-weight:500;}
-  .ref-block .law{
-    margin-top:9px; padding-top:9px; border-top:1px solid var(--line);
-    font-size:10.5px; color:var(--disabled); font-weight:500; white-space:pre-line; line-height:1.5;
-  }
+  /* ===== 인증 대상 판정 카드 ===== */
+  .certgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:6px;}
+  @media(max-width:640px){.certgrid{grid-template-columns:1fr;}}
+  .certcard{border:1px solid var(--line);border-left:4px solid #CDD3DA;border-radius:3px;background:#fff;overflow:hidden;}
+  .certcard.on{border-left-color:var(--p-cert);}
+  .certcard-h{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none;}
+  .certcard-h:hover{background:#fafcff;}
+  .cc-badge{font-size:11px;font-weight:800;padding:3px 9px;border-radius:2px;background:#EEF1F5;color:#8894a4;flex:0 0 auto;white-space:nowrap;}
+  .certcard.on .cc-badge{background:#E4F5EE;color:var(--p-cert);}
+  .cc-name{flex:1;font-weight:700;font-size:14px;color:var(--ink);}
+  .cc-chev{color:#aab4c2;transition:transform .2s;flex:0 0 auto;}
+  .certcard.open .cc-chev{transform:rotate(180deg);}
+  .certcard-b{max-height:0;overflow:hidden;transition:max-height .25s;}
+  .certcard.open .certcard-b{max-height:480px;}
+  .certcard-b .r{padding:8px 14px;border-top:1px solid var(--line);font-size:13px;color:#33404f;line-height:1.5;}
+  .certcard-b .r b{color:var(--navy);}
+  .certcard-b .cc-alert{color:#9C6B12;background:#FBF3E4;}
+  .certcard-b .cc-no{color:#8894a4;background:#F7F8FA;}
 
-  footer{margin-top:26px; font-size:11.5px; color:var(--disabled); font-weight:500; line-height:1.7;}
+  /* ===== 사이드바 조정: 동그라미 제거 · 글자 확대 · 각진 테두리 ===== */
+  .side-nav{border-radius:2px;}
+  .tab,.extlink{border-radius:2px;font-size:15px;font-weight:700;}
+  .tab .dot,.extlink .dot{display:none;}
+  .nav-grp{border-radius:2px;}
+  @media(max-width:860px){ .tab{border-radius:2px;} }
 
-  @media (max-width:900px){
-    .page{padding:24px 18px 48px;}
-    .topbar{flex-direction:column; align-items:flex-start; gap:18px;}
-    .cols{grid-template-columns:1fr;}
-    aside{position:static;}
-    .grid{grid-template-columns:repeat(2,1fr);}
-    .d-meta{grid-template-columns:1fr;}
-  }
-  @media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important;}}
+  /* ===== 판정 입력폼 블루 톤 (약하게) ===== */
+  .calc-form{background:#F4F8FF;border-color:#DCE9FF;}
+  .cfield label{color:#2B6CE0;}
+  .cfield input,.cfield select{border-color:#CBDDFF;background:#fff;}
+  .cfield input:focus,.cfield select:focus{border-color:#3182F6;box-shadow:0 0 0 3px rgba(49,130,246,.12);}
 </style>
 </head>
 <body>
-<div class="page">
 
-  <div class="topbar">
-    <div class="brand">
-      <div class="eyebrow">건축물 인증 대상 판정</div>
-      <h1>이 건물, 어떤 인증을 받아야 할까요?</h1>
-      <p>공사 조건을 입력하면 9개 인증의 해당 여부와 적용 등급이 바로 계산됩니다.</p>
-    </div>
-    <div class="score">
-      <div class="txt">
-        <div class="cap">받아야 하는 인증</div>
-        <div class="big"><b id="cnt">0</b><span> / 9개</span></div>
-      </div>
-      <svg class="donut" width="60" height="60" viewBox="0 0 60 60" aria-hidden="true">
-        <circle class="track" cx="30" cy="30" r="25" stroke-width="7" />
-        <circle class="val" id="arc" cx="30" cy="30" r="25" stroke-width="7"
-                stroke-dasharray="157.1" stroke-dashoffset="157.1" transform="rotate(-90 30 30)" />
-      </svg>
-    </div>
+<!-- ================= 표지 ================= -->
+<header class="cover">
+  <div class="cover-inner">
+    <h1 id="homeLink" title="홈으로 (전체 개요)">학교시설사업 실무 바이블</h1>
+    <div class="sub">가이드라인부터 자가테스트까지</div>
+    <div class="cover-bar"></div>
   </div>
+</header>
 
-  <div class="cols">
-    <!-- 좌: 입력 -->
-    <aside>
-      <div class="panel">
-        <div class="panel-title">공사 조건</div>
-
-        <div class="field">
-          <div class="label"><span>공사 유형</span></div>
-          <div class="chips" id="chips-type"></div>
-        </div>
-
-        <div class="field">
-          <div class="label"><span>연면적</span><span class="hint">증·개축은 전체 기준</span></div>
-          <div class="numrow">
-            <input id="area" type="number" inputmode="numeric" min="0" step="1" placeholder="500" />
-            <span class="unit">㎡</span>
-          </div>
-        </div>
-
-        <div class="field">
-          <div class="label"><span>시설 용도</span></div>
-          <div class="chips" id="chips-use"></div>
-        </div>
-
-        <div class="field">
-          <div class="label"><span>공공건축물</span><span class="hint">EPI 기준</span></div>
-          <div class="chips" id="chips-public"></div>
-        </div>
-
-        <div class="field">
-          <div class="label"><span>설치계획서 접수 연도</span><span class="hint">에너지공단 접수일</span></div>
-          <div class="numrow">
-            <input id="year" type="number" inputmode="numeric" min="2020" max="2040" step="1" placeholder="2026" />
-            <span class="unit">년</span>
-          </div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- 우: 결과 -->
-    <main>
-      <div class="panel">
-        <div class="panel-title">판정 결과 · 카드를 클릭하면 상세가 열립니다</div>
-        <div class="grid" id="grid"></div>
-
-        <div class="detail" id="detail"></div>
-      </div>
-
-      <details class="ref">
-        <summary>인증 기준 총괄표</summary>
-        <div class="ref-grid" id="ref"></div>
-      </details>
-
-      <footer>
-        본 판정은 참고용이며, 설계 조건에 따라 제출 대상 여부가 달라질 수 있습니다.
-        최종 적용 기준은 관계 법령과 인증기관 확인이 필요합니다.
-      </footer>
-    </main>
+<!-- ================= 전체 키워드 검색 ================= -->
+<div class="topsearch">
+  <div class="topsearch-in">
+    <span class="ts-ic">🔍</span>
+    <input type="text" id="global-q" autocomplete="off" placeholder="전체 키워드 검색  (예: VE, 일상감사, 준공검사, 설계변경, 인증, 전결)">
+    <div id="global-results" class="gresults"></div>
   </div>
 </div>
 
-<script>
-const TYPES  = ['신축','증축','개축','리모델링'];
-const USES   = ['학교(유치원·초·중등)','학생수련원·도서관','대학시설 등','업무시설(청사)','기타'];
-const PUBLIC = ['O','X'];
+<!-- ================= 레이아웃: 사이드바 + 콘텐츠 ================= -->
+<div class="layout">
+  <aside class="sidebar">
+    <nav class="side-nav">
+      <div class="nav-grp">제도 · 법령</div>
+      <button class="tab active" data-p="overview"><span class="dot"></span>전체 개요</button>
+      <button class="tab" data-p="plan"><span class="dot"></span>제1장 기획</button>
+      <button class="tab" data-p="design"><span class="dot"></span>제2장 설계</button>
+      <button class="tab" data-p="const"><span class="dot"></span>제3장 시공</button>
+      <button class="tab" data-p="cm"><span class="dot"></span>제4장 건설사업관리</button>
+      <button class="tab" data-p="comp"><span class="dot"></span>제5장 준공</button>
+      <button class="tab" data-p="cert"><span class="dot"></span>제6장 인증</button>
+      <button class="tab" data-p="calc"><span class="dot"></span>⚖ 규모별 절차 판정기</button>
+      <div class="nav-grp">실무 운영</div>
+      <button class="tab" data-p="proc"><span class="dot"></span>📋 실무 절차 타임라인</button>
+      <button class="tab" data-p="check"><span class="dot"></span>✅ 단계별 체크리스트</button>
+      <button class="tab" data-p="law"><span class="dot"></span>📖 법령 검색</button>
+      <button class="tab" data-p="deleg"><span class="dot"></span>🗂 위임전결</button>
+      <div class="nav-grp">관련 사이트</div>
+      <a class="extlink" href="https://www.moleg.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">법제처</span><span class="ext">↗</span></a>
+      <a class="extlink" href="http://www.ekacem.or.kr/" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">한국건설엔지니어링협회</span><span class="ext">↗</span></a>
+      <a class="extlink" href="https://www.csi.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">건설공사 안전관리 통합정보망(CSI)</span><span class="ext">↗</span></a>
+      <a class="extlink" href="https://work.keiis.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">교육시설통합정보망</span><span class="ext">↗</span></a>
+      <a class="extlink" href="https://shop.g2b.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">나라장터 종합쇼핑몰</span><span class="ext">↗</span></a>
+    </nav>
+  </aside>
+  <main class="content">
 
-const state = { type:'신축', area:0, use:'학교(유치원·초·중등)', pub:'O', year:2026, sel:1 };
-
-const CERTS = [
-  { id:1, name:'에너지절약계획서', short:'에너지절약<br>계획서',
-    types:['신축','증축','개축'], area:()=>500,
-    key:s => s.pub==='O' ? 'EPI 74점' : 'EPI 65점',
-    grade:s => s.pub==='O' ? 'EPI 74점 이상 (공공건축물)' : 'EPI 65점 이상 (민간건축물 기준 확인 필요)',
-    law:'녹색건축물 조성 지원법 제14조',
-    memo:'설계 조건에 따라 제출 대상 여부 상이' },
-
-  { id:2, name:'녹색건축 인증', short:'녹색건축<br>인증',
-    types:['신축','증축'], area:()=>3000,
-    key:s => s.use==='업무시설(청사)' ? '우수 70점' : '일반 50점',
-    grade:s => s.use==='업무시설(청사)' ? '우수(그린2등급) 70점 이상 【청사 의무】' : '일반(그린4등급) 50점 이상 (일반적 적용)',
-    law:'녹색건축물 조성 지원법 시행령 제11조의3',
-    memo:'최우수 80 / 우수 70 / 우량 60 / 일반 50점' },
-
-  { id:3, name:'건축물 에너지효율등급', short:'에너지<br>효율등급',
-    types:['신축','증축'], area:()=>500,
-    key:()=>'1++ 등급',
-    grade:()=>'1++ 등급 (80 이상 ~ 140 미만 kWh/㎡·년) 적용',
-    law:'녹색건축물 조성 지원법 시행령 제12조',
-    memo:'1+++ 80 미만 / 1++ 80~140 / 1+ 140~200 / 1 200~260' },
-
-  { id:4, name:'제로에너지건축물(ZEB) 인증', short:'제로에너지<br>(ZEB)',
-    types:['신축','증축'], area:()=>500,
-    key:()=>'ZEB 5등급',
-    grade:()=>'ZEB 5등급 (에너지자립률 20% 이상 ~ 40% 미만) 적용',
-    law:'동법 시행령 제12조, 건축물에너지효율등급 인증 및 제로에너지건축물 인증에 관한 규칙 제8조',
-    memo:'효율등급 1++ 이상 + BEMS + 전자식 원격검침계량기 설치' },
-
-  { id:5, name:'장애물 없는 생활환경(BF) 인증', short:'생활환경<br>(BF)',
-    types:['신축','증축','개축'], area:()=>0,
-    key:()=>'일반 70%',
-    grade:()=>'일반 등급 (70% 이상 ~ 80% 미만) 적용',
-    law:'장애인·노인·임산부 등의 편의증진 보장에 관한 법률 제10조의2',
-    memo:'최우수 90% / 우수 80~90% / 일반 70~80%' },
-
-  { id:6, name:'범죄예방 환경설계(CPTED)', short:'범죄예방<br>(CPTED)',
-    types:['신축','증축','개축','리모델링'], area:()=>0,
-    key:()=>'우수 70점',
-    grade:()=>'(필요시 적용) 우수 70점 이상 ~ 85점 미만',
-    law:'범죄예방 건축기준 고시',
-    memo:'최우수 85점 이상 / 우수 70~85점 미만' },
-
-  { id:7, name:'신재생에너지 공급의무비율', short:'신재생<br>공급의무',
-    types:['신축','증축','개축'], area:()=>1000,
-    key:s => s.year<=2025?'34%':s.year<=2027?'36%':s.year<=2029?'38%':'40%',
-    grade:s => s.year<=2025 ? '34% (2025년까지)' : s.year<=2027 ? '36% (2027년까지)'
-             : s.year<=2029 ? '38% (2029년까지)' : '40% (2030년 이후)',
-    law:'신에너지 및 재생에너지 개발·이용·보급 촉진법 시행령 제15조',
-    memo:'한국에너지공단 전자민원 설치계획서 접수일자 기준' },
-
-  { id:8, name:'건물에너지관리시스템(BEMS)', short:'에너지관리<br>(BEMS)',
-    types:['신축','증축'], area:()=>10000,
-    key:()=>'일반 등급',
-    grade:()=>'일반 등급 적용 (우수 등급 선택 가능)',
-    law:'공공기관 에너지이용 합리화 추진에 관한 규정 제6조',
-    memo:'우수 / 일반 등급' },
-
-  { id:9, name:'교육시설 안전인증', short:'교육시설<br>안전인증',
-    types:['신축','증축','개축'],
-    area:s => s.use==='학교(유치원·초·중등)' ? 100
-            : s.use==='학생수련원·도서관'   ? 1000
-            : s.use==='대학시설 등'         ? 3000 : Infinity,
-    key:s => s.use==='학교(유치원·초·중등)' ? '우수 78점'
-           : (s.use==='학생수련원·도서관'||s.use==='대학시설 등') ? '우수 69점' : '대상 아님',
-    grade:s => s.use==='학교(유치원·초·중등)' ? '우수 : 평균 78점 이상 (최우수 89점 이상)'
-             : (s.use==='학생수련원·도서관'||s.use==='대학시설 등') ? '우수 : 평균 69점 이상 (최우수 79점 이상)'
-             : '교육시설이 아니므로 대상 아님',
-    law:'교육시설 안전 인증 운영 규정',
-    memo:'설계에 반영된 내용으로 예비인증 신청 가능',
-    alert:s => s.area>=500 ? '500㎡ 이상 증·개축 → 사용승인 후 2년 이내 재인증 신청' : null }
-];
-
-const REF = [
-  {n:'에너지절약계획서', scope:'신·증·개축 · 500㎡ 이상',
-   rows:[['-','EPI 74점 이상(공공)']], law:'녹색건축물 조성 지원법 제14조'},
-  {n:'녹색건축 인증', scope:'신·증축 · 3,000㎡ 이상',
-   rows:[['최우수','80점 이상'],['우수','70점 이상'],['우량','60점 이상'],['일반','50점 이상']],
-   law:'시행령 제11조의3 · 업무시설(청사)은 우수 이상'},
-  {n:'건축물 에너지효율등급', scope:'신·증축 · 500㎡ 이상',
-   rows:[['1+++','80 미만'],['1++','80~140 미만'],['1+','140~200 미만'],['1','200~260 미만']],
-   law:'시행령 제12조 · 단위 kWh/㎡·년'},
-  {n:'제로에너지건축물(ZEB)', scope:'신·증축 · 500㎡ 이상',
-   rows:[['1등급','자립률 100% 이상'],['2등급','80~100% 미만'],['3등급','60~80% 미만'],['4등급','40~60% 미만'],['5등급','20~40% 미만']],
-   law:'효율등급 1++ 이상 + BEMS + 원격검침계량기'},
-  {n:'생활환경(BF) 인증', scope:'신·증·개축 · 면적 기준 없음',
-   rows:[['최우수','90% 이상'],['우수','80~90% 미만'],['일반','70~80% 미만']],
-   law:'편의증진 보장법 제10조의2'},
-  {n:'범죄예방(CPTED)', scope:'신·증·개축 · 리모델링 (필요시)',
-   rows:[['최우수','85점 이상'],['우수','70~85점 미만']], law:'범죄예방 건축기준 고시'},
-  {n:'신재생 공급의무비율', scope:'신·증·개축 · 1,000㎡ 이상',
-   rows:[['~2025년','34%'],['~2027년','36%'],['~2029년','38%'],['2030년~','40%']],
-   law:'신재생에너지법 시행령 제15조 · 설치계획서 접수일 기준'},
-  {n:'BEMS', scope:'신·증축 · 10,000㎡ 이상',
-   rows:[['우수 등급','-'],['일반 등급','-']], law:'공공기관 에너지이용 합리화 규정 제6조'},
-  {n:'교육시설 안전인증', scope:'신·증·개축 · 학교 100 / 수련원·도서관 1,000 / 대학 3,000㎡ 이상',
-   rows:[['최우수','유·초·중등 89 / 기타 79점'],['우수','유·초·중등 78 / 기타 69점']],
-   law:'교육시설안전 인증 운영 규정 · 500㎡ 이상 증·개축 시 2년 내 재인증'}
-];
-
-function chipGroup(el, items, key){
-  el.innerHTML = items.map(v =>
-    `<button class="chip" type="button" data-v="${v}" aria-pressed="${state[key]===v}">${v==='O'?'공공':v==='X'?'민간':v}</button>`).join('');
-  el.onclick = e => {
-    const b = e.target.closest('.chip'); if(!b) return;
-    state[key] = b.dataset.v;
-    [...el.children].forEach(c => c.setAttribute('aria-pressed', c===b));
-    render();
-  };
-}
-
-function render(){
-  const R = CERTS.map(c => {
-    const need = c.area(state);
-    return {c, need, match: c.types.includes(state.type) && state.area >= need};
-  });
-
-  const hit = R.filter(r=>r.match).length;
-  document.getElementById('cnt').textContent = hit;
-  const C = 2*Math.PI*25;
-  document.getElementById('arc').style.strokeDashoffset = C - C*hit/9;
-
-  document.getElementById('grid').innerHTML = R.map(r => `
-    <button class="tile ${r.match?'on':'off'} ${state.sel===r.c.id?'sel':''}" type="button" data-id="${r.c.id}">
-      <span class="dot"></span>
-      <span>
-        <span class="t-name">${r.c.short}</span>
-        <span class="t-key">${r.match ? r.c.key(state) : '미해당'}</span>
-      </span>
-    </button>`).join('');
-
-  const r = R.find(x => x.c.id === state.sel);
-  const need = r.need === Infinity ? '대상 아님' : r.need === 0 ? '면적 기준 없음' : `${r.need.toLocaleString()}㎡ 이상`;
-  const alertMsg = r.match && r.c.alert ? r.c.alert(state) : null;
-
-  document.getElementById('detail').innerHTML = `
-    <div class="d-head">
-      <div class="d-name">${r.c.name}</div>
-      <div class="badge ${r.match?'yes':'no'}">${r.match?'해당':'미해당'}</div>
+  <!-- ============ 전체 개요 ============ -->
+  <section class="panel show" id="overview">
+    <div class="sec-head">
+      <span class="chip" style="background:var(--navy)">제0장</span>
+      <div><h2>학교시설사업 업무 PROCESS</h2><p>전 생애주기 4단계 흐름과 단계별 주요 업무 · 대상기준</p></div>
     </div>
-    <div class="d-grade ${r.match?'yes':''}">${r.match ? r.c.grade(state) : '적용 대상이 아닙니다'}</div>
-    <dl class="d-meta">
-      <div><dt>대상 공사</dt><dd>${r.c.types.join(' · ')}</dd></div>
-      <div><dt>면적 기준</dt><dd>${need}</dd></div>
-      <div><dt>근거 법령</dt><dd>${r.c.law}</dd></div>
-    </dl>
-    <div class="note" style="${alertMsg?'':'display:none'}">${alertMsg || ''}</div>
-    <dl class="d-meta"><div><dt>비고</dt><dd>${r.c.memo}</dd></div></dl>`;
+
+    <div class="mflow">
+      <span class="node" style="background:var(--p-plan)">기획</span><span class="a">→</span>
+      <span class="node" style="background:var(--p-design)">설계</span><span class="a">→</span>
+      <span class="node" style="background:var(--p-const)">시공</span><span class="a">→</span>
+      <span class="node" style="background:var(--p-comp)">준공</span>
+    </div>
+
+    <div class="map">
+      <div class="mcard" data-goto="plan">
+        <div class="mcard-top" style="background:var(--p-plan)"><div class="ph">STEP 01</div><div class="nm">기획</div></div>
+        <div class="mcard-body">
+          <div class="row"><b>사업계획 수립</b> · 도시군계획·학생배치 검토</div>
+          <div class="row"><b>사전기획</b> · 설계비 1억↑</div>
+          <div class="row"><b>투자심사</b> · 자체 40억↑/중앙 300억↑</div>
+          <div class="row"><b>공유재산심의·공공건축심의</b> · 설계비 5천↑</div>
+        </div>
+      </div>
+      <div class="mcard" data-goto="design">
+        <div class="mcard-top" style="background:var(--p-design)"><div class="ph">STEP 02</div><div class="nm">설계</div></div>
+        <div class="mcard-body">
+          <div class="row"><b>설계발주</b> · 설계공모·계약심의·일상감사</div>
+          <div class="row"><b>설계검토</b> · 기술자문·VE·안전성·인증</div>
+          <div class="row"><b>시행계획·건축승인</b></div>
+          <div class="row"><b>예비인증</b> · ZEB·녹색건축·BF</div>
+        </div>
+      </div>
+      <div class="mcard" data-goto="const">
+        <div class="mcard-top" style="background:var(--p-const)"><div class="ph">STEP 03</div><div class="nm">시공</div></div>
+        <div class="mcard-body">
+          <div class="row"><b>공사발주</b> · 공사·관급·감리 발주</div>
+          <div class="row"><b>착공</b> · 안전보건·사전신고</div>
+          <div class="row"><b>공사추진</b> · 공사관리·설계변경</div>
+          <div class="row"><b>공사검토</b> · 건설사업관리 100억↑</div>
+        </div>
+      </div>
+      <div class="mcard" data-goto="comp">
+        <div class="mcard-top" style="background:var(--p-comp)"><div class="ph">STEP 04</div><div class="nm">준공</div></div>
+        <div class="mcard-body">
+          <div class="row"><b>준공검사</b> · 예비준공 30일 전</div>
+          <div class="row"><b>사용승인</b> · 14일 이내 검사</div>
+          <div class="row"><b>개교준비</b> · 건축물대장·인수인계</div>
+          <div class="row"><b>정산</b> · 시운전·유지관리 서류</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-head" style="margin-top:34px">
+      <span class="chip" style="background:var(--amber)">기준</span>
+      <div><h2>금액 · 규모별 절차 기준</h2><p>사업 규모에 따라 필수 절차를 한눈에 확인</p></div>
+    </div>
+    <div class="note">💡 사업의 <b>총사업비·공사비·설계비</b> 규모에 따라 적용 절차가 달라집니다. 아래 금액을 기준으로 해당 단계 상세를 확인하세요.</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th style="width:110px">금액</th><th>절차</th><th style="width:230px">근거</th></tr></thead>
+        <tbody>
+          <tr><td class="thr">5,000만원</td><td>일상감사(물품·용역) · 공공건축심의(설계비)</td><td>일상감사지침 §4 / 건축서비스산업법 §19-2</td></tr>
+          <tr><td class="thr">1억원</td><td>사전기획(설계비) · 설계공모 우선적용(설계비)</td><td>교육시설법 시행령 §23-2</td></tr>
+          <tr><td class="thr">2억원</td><td>일상감사(시설공사) · 건설사업관리 의무(전문공사)</td><td>일상감사지침 §4</td></tr>
+          <tr><td class="thr">5억원</td><td>건설사업관리계획 수립(토목) · 감리 의무(토목)</td><td>건설기술진흥법 §39-2</td></tr>
+          <tr><td class="thr">25억원</td><td>대규모 사업 시설 일상감사(사립 예산액)</td><td>감사관-11302</td></tr>
+          <tr><td class="thr">40억원</td><td>자체투자심사(총사업비)</td><td>지방재정법</td></tr>
+          <tr><td class="thr">50억원</td><td>기본·설계·공사 안전보건대장 · 기술자문위(학교)</td><td>산업안전보건법 §55·§67</td></tr>
+          <tr><td class="thr">100억원</td><td>설계 경제성 검토(VE) · 기술자문위 · 건설사업관리(감독권한대행)</td><td>건설기술진흥법 시행령 §75</td></tr>
+          <tr><td class="thr">300억원</td><td>중앙투자심사(총사업비)</td><td>지방재정법</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:14px" class="note">🏗️ <b>연면적 기준</b> — 660㎡↑ 건축(건설사업관리·감리 의무) · 1,000㎡↑ 교육연구시설(ZEB 4등급 의무) · 3,000㎡↑ (녹색건축 인증) · 10,000㎡↑ (BEMS 설치).</div>
+  </section>
+
+  <!-- ============ 제1장 기획 ============ -->
+  <section class="panel" id="plan">
+    <div class="sec-head">
+      <span class="chip" style="background:var(--p-plan)">제1장</span>
+      <div><h2>기획단계</h2><p>사업의 방향과 타당성을 확정하는 단계 — 사전기획 · 안전보건 · 심의</p></div>
+    </div>
+    <div class="toolbar"><span class="hint">항목을 클릭하면 세부 내용이 펼쳐집니다.</span>
+      <span class="expand-btns"><button data-all="open" data-t="plan">모두 펼치기</button> <button data-all="close" data-t="plan">모두 접기</button></span></div>
+    <div data-list="plan"></div>
+  </section>
+
+  <!-- ============ 제2장 설계 ============ -->
+  <section class="panel" id="design">
+    <div class="sec-head">
+      <span class="chip" style="background:var(--p-design)">제2장</span>
+      <div><h2>설계단계</h2><p>설계 발주·검토와 각종 심의·인증 — 품질과 안전성 확보</p></div>
+    </div>
+    <div class="toolbar"><span class="hint">항목을 클릭하면 세부 내용이 펼쳐집니다.</span>
+      <span class="expand-btns"><button data-all="open" data-t="design">모두 펼치기</button> <button data-all="close" data-t="design">모두 접기</button></span></div>
+    <div data-list="design"></div>
+  </section>
+
+  <!-- ============ 제3장 시공 ============ -->
+  <section class="panel" id="const">
+    <div class="sec-head">
+      <span class="chip" style="background:var(--p-const)">제3장</span>
+      <div><h2>시공단계</h2><p>공사·감리·용역 발주와 안전관리 — 착공부터 공사추진까지</p></div>
+    </div>
+    <div class="toolbar"><span class="hint">항목을 클릭하면 세부 내용이 펼쳐집니다.</span>
+      <span class="expand-btns"><button data-all="open" data-t="const">모두 펼치기</button> <button data-all="close" data-t="const">모두 접기</button></span></div>
+    <div data-list="const"></div>
+  </section>
+
+  <!-- ============ 제4장 건설사업관리 ============ -->
+  <section class="panel" id="cm">
+    <div class="sec-head">
+      <span class="chip" style="background:var(--p-cm)">제4장</span>
+      <div><h2>감독권한대행 등 건설사업관리 용역</h2><p>조항별 주체 역할과 설계변경 · 계약금액 조정 업무흐름</p></div>
+    </div>
+    <div class="toolbar"><span class="hint">항목을 클릭하면 세부 내용이 펼쳐집니다.</span>
+      <span class="expand-btns"><button data-all="open" data-t="cm">모두 펼치기</button> <button data-all="close" data-t="cm">모두 접기</button></span></div>
+    <div data-list="cm"></div>
+  </section>
+
+  <!-- ============ 제5장 준공 ============ -->
+  <section class="panel" id="comp">
+    <div class="sec-head">
+      <span class="chip" style="background:var(--p-comp)">제5장</span>
+      <div><h2>준공단계</h2><p>준공검사 · 사용승인 · 건축물대장 — 사업의 마무리와 인계</p></div>
+    </div>
+    <div class="toolbar"><span class="hint">항목을 클릭하면 세부 내용이 펼쳐집니다.</span>
+      <span class="expand-btns"><button data-all="open" data-t="comp">모두 펼치기</button> <button data-all="close" data-t="comp">모두 접기</button></span></div>
+    <div data-list="comp"></div>
+  </section>
+
+  <!-- ============ 제6장 인증 (인증 대상 판정) ============ -->
+  <section class="panel" id="cert">
+    <div class="sec-head">
+      <span class="chip" style="background:var(--p-cert)">제6장</span>
+      <div><h2>인증 대상 판정</h2><p>이 건물, 어떤 인증을 받아야 할까요? — 공사 조건 입력 시 9개 인증 자동 판정</p></div>
+    </div>
+    <div class="note">본 판정은 참고용이며, 설계 조건에 따라 제출 대상 여부가 달라질 수 있습니다.</div>
+
+    <div class="calc-form">
+      <div class="cfield"><label>공사 유형</label>
+        <select id="ct-type"><option>신축</option><option>증축</option><option>개축</option><option>리모델링</option></select>
+        <div class="hint">인증별 대상 공사유형 판정</div></div>
+      <div class="cfield"><label>연면적 <span class="u">㎡</span></label>
+        <input type="number" id="ct-area" min="0" step="1" placeholder="예: 5000" inputmode="numeric">
+        <div class="hint">증·개축은 전체 면적 기준</div></div>
+      <div class="cfield"><label>시설 용도</label>
+        <select id="ct-use"><option>학교(유치원·초·중등)</option><option>학생수련원·도서관</option><option>대학시설 등</option><option>업무시설(청사)</option><option>기타</option></select>
+        <div class="hint">교육시설 안전인증·녹색건축 기준</div></div>
+      <div class="cfield"><label>공공건축물 여부</label>
+        <select id="ct-pub"><option value="O">공공건축물</option><option value="X">민간건축물</option></select>
+        <div class="hint">에너지절약계획서 EPI 기준</div></div>
+      <div class="cfield"><label>설치계획서 접수연도</label>
+        <input type="number" id="ct-year" min="2020" max="2040" step="1" value="2026" inputmode="numeric">
+        <div class="hint">신재생 공급의무비율(34~40%) 기준</div></div>
+    </div>
+
+    <div class="calc-actions">
+      <div class="calc-summary">받아야 하는 인증 <b id="cert-count">0</b> / 9개</div>
+      <button class="calc-reset" id="cert-reset">입력 초기화</button>
+    </div>
+    <div id="cert-results"></div>
+
+    <div class="sec-head" style="margin-top:36px">
+      <span class="chip" style="background:var(--p-cert)">총괄표</span>
+      <div><h2>인증 기준 총괄표</h2><p>9개 인증 적용대상·등급 체계·근거</p></div>
+    </div>
+    <div class="tbl-wrap"><table><thead><tr><th>인증명</th><th style="text-align:center">대상 공사유형</th><th style="text-align:center">연면적 기준</th><th>등급 체계</th><th>근거</th></tr></thead><tbody id="cert-ref"></tbody></table></div>
+  </section>
+
+  <!-- ============ 규모별 절차 판정기 ============ -->
+  <section class="panel" id="calc">
+    <div class="sec-head">
+      <span class="chip" style="background:var(--p-calc)">판정기</span>
+      <div><h2>규모별 필수 절차 판정기</h2><p>사업 규모를 입력하면 필요한 절차가 자동으로 추려집니다</p></div>
+    </div>
+    <div class="note">💡 이 문서의 금액 기준은 <b>총사업비 · 공사비 · 설계비</b>가 서로 다른 축입니다. 각 항목을 정확히 입력하세요. (예: 5천만원 = 0.5억, 1억 = 1)</div>
+
+    <div class="calc-form">
+      <div class="cfield">
+        <label>총사업비 <span class="u">억원</span></label>
+        <input type="number" id="c-total" min="0" step="0.1" placeholder="예: 45" inputmode="decimal">
+        <div class="hint">투자심사 판정 기준</div>
+      </div>
+      <div class="cfield">
+        <label>공사비 <span class="u">억원</span></label>
+        <input type="number" id="c-const" min="0" step="0.1" placeholder="예: 60" inputmode="decimal">
+        <div class="hint">안전보건·VE·CM·기술자문 기준</div>
+      </div>
+      <div class="cfield">
+        <label>설계비(추정가격) <span class="u">억원</span></label>
+        <input type="number" id="c-design" min="0" step="0.1" placeholder="예: 1.5" inputmode="decimal">
+        <div class="hint">사전기획·설계공모·심의 기준 (0.5 = 5천만)</div>
+      </div>
+      <div class="cfield">
+        <label>연면적 <span class="u">㎡</span></label>
+        <input type="number" id="c-area" min="0" step="1" placeholder="예: 3200" inputmode="numeric">
+        <div class="hint">감리·ZEB·녹색건축·BEMS 기준</div>
+      </div>
+      <div class="cfield">
+        <label>공사 종류</label>
+        <select id="c-type">
+          <option value="건축">건축공사</option>
+          <option value="토목">토목공사</option>
+          <option value="전문">전문공사</option>
+        </select>
+        <div class="hint">건설사업관리·감리 기준 결정</div>
+      </div>
+      <div class="cfield">
+        <label>기관 유형</label>
+        <select id="c-org">
+          <option value="head">본청(도교육청)</option>
+          <option value="support">교육지원청·직속기관</option>
+          <option value="school">학교(고·특수·각종)</option>
+        </select>
+        <div class="hint">일상감사·기술자문위 기준 결정</div>
+      </div>
+    </div>
+
+    <div class="calc-actions">
+      <div class="calc-summary">적용 절차 <b id="c-count">0</b> 건</div>
+      <button class="calc-reset" id="c-reset">입력 초기화</button>
+    </div>
+
+    <div id="c-results"></div>
+
+    <div class="common-box">
+      <h4>📌 규모와 무관하게 공통 적용되는 절차</h4>
+      <div class="doc-chips">
+        <span>일상감사(물품 제조·구매 1억↑·예산 이용전용 1억↑)</span><span>시설사업 시행계획 승인</span><span>건축 승인·신고</span>
+        <span>공사·관급자재·감리 발주</span><span>폐기물처리용역</span><span>준공검사</span><span>사용승인</span><span>건축물대장</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 실무 절차 타임라인 ============ -->
+  <section class="panel" id="proc">
+    <div class="sec-head"><span class="chip" style="background:var(--ops)">실무</span>
+      <div><h2>실무 절차 타임라인</h2><p>사전기획부터 착공·해체까지 발신→수신 시간순 실무 흐름 (총 <span id="proc-count"></span>단계)</p></div></div>
+    <div class="note">💡 각 스텝의 <b>발신 → 수신</b> 주체와 비고(기한·내부결재 등)·근거를 함께 표시합니다. 단계 필터로 좁혀 보세요.</div>
+    <div class="proc-controls">
+      <div class="fchips">
+        <button class="fchip on" data-f="all">전체</button>
+        <button class="fchip" data-f="plan">기획</button>
+        <button class="fchip" data-f="design">설계</button>
+        <button class="fchip" data-f="const">시공</button>
+      </div>
+      <div class="pv-toggle">
+        <button class="pvbtn on" data-v="list">📋 리스트</button>
+        <button class="pvbtn" data-v="swim">🔀 스윔레인</button>
+      </div>
+    </div>
+    <div id="proc-list"></div>
+    <div id="proc-swim" style="display:none"></div>
+  </section>
+
+  <!-- ============ 단계별 체크리스트 ============ -->
+  <section class="panel" id="check">
+    <div class="sec-head"><span class="chip" style="background:var(--ops)">실무</span>
+      <div><h2>단계별 확인사항 체크리스트</h2><p>설계·시공 공정별 점검항목과 감리비 정산 기준</p></div></div>
+    <div class="note">💡 항목을 클릭하면 체크됩니다. (체크 상태는 저장되지 않는 현장 점검용입니다.) 공정 그룹을 눌러 펼치세요.</div>
+    <div class="subswitch">
+      <button class="subbtn on" data-w="design">설계용역 점검</button>
+      <button class="subbtn" data-w="const">시공 점검</button>
+      <button class="subbtn" data-w="cm">감리비 정산</button>
+    </div>
+    <div class="ck-progress">진행 <b><span id="ck-done">0</span> / <span id="ck-total">0</span></b> 항목 확인</div>
+    <div id="check-list"></div>
+  </section>
+
+  <!-- ============ 법령 검색 ============ -->
+  <section class="panel" id="law">
+    <div class="sec-head"><span class="chip" style="background:var(--ops)">실무</span>
+      <div><h2>법령 · 근거 검색</h2><p>업무 항목별 근거 법조항 레퍼런스 (총 <span id="law-count"></span>건)</p></div></div>
+    <div class="search-box"><span class="ic">🔍</span><input type="text" id="law-q" placeholder="항목·법령 키워드 검색 (예: 안전, VE, 감리, 해체)"></div>
+    <div class="tbl-wrap"><table class="lawtbl"><thead><tr><th>항목</th><th>법 · 조항</th><th>비고</th></tr></thead><tbody id="law-body"></tbody></table></div>
+  </section>
+
+  <!-- ============ 위임전결 ============ -->
+  <section class="panel" id="deleg">
+    <div class="sec-head"><span class="chip" style="background:var(--ops)">실무</span>
+      <div><h2>위임전결 규정</h2><p>단위업무·금액 구간별 기안자와 전결권자</p></div></div>
+    <div class="note">💡 <span class="who-pill draft" style="display:inline-block">기안</span> 은 기안 주체, <span class="who-pill final" style="display:inline-block">전결</span> 은 최종 전결권자입니다. 검색으로 업무를 찾아보세요.</div>
+    <div class="search-box"><span class="ic">🔍</span><input type="text" id="dl-q" placeholder="업무 키워드 검색 (예: 설계변경, 준공, 관급자재)"></div>
+    <div id="deleg-list"></div>
+  </section>
+
+  </main>
+</div>
+
+<footer class="wrap">
+  <span class="badge-org foot">전남광주통합특별시교육청 · 행정국 <b>교육시설과</b></span><br><br>
+  <b>학교시설사업 실무 바이블</b> — 가이드라인부터 자가테스트까지<br>
+  본 자료는 「교육시설과 업무 전달 회의(2025. 1.)」를 기반으로 재구성한 실무 참조용 문서입니다. 실제 적용 시 최신 법령·지침을 반드시 확인하시기 바랍니다.<br>
+  <span style="display:inline-block;margin-top:10px;color:var(--muted);font-size:12px">작성자 <b style="color:var(--navy)">claude_min</b> · 작성일 2026-07-20 · <b style="color:#3182F6">ver 1.0</b></span>
+</footer>
+
+<script>
+// ================= 데이터 =================
+const DATA = {
+  plan:[
+    {n:"1",t:"사전기획",d:"신축·리모델링 사업의 사전 기획 및 적정성 검토",
+     money:["설계비 1억↑"],law:["교육시설법 시행령 §23-2"],
+     detail:{
+       obj:["학교 시설·설비를 신축하거나 리모델링하는 사업으로, 추정 설계비 1억원 이상인 사업"],
+       laws:[["교육시설법 시행령 제23조의2","사전기획 대상 및 절차 규정"]],
+       flow2:[["건축서비스산업 진흥법","건축기획","사업계획 사전검토(공공건축지원센터)","공공건축심의"],
+              ["교육시설법","사전기획","사전기획 적정성 검토(한국교육시설안전원)","공공건축심의"]],
+       note:"사전기획 업무 수행 시 「건축서비스산업 진흥법」 제22조의2에 따른 건축기획 업무를 수행한 것으로 간주"
+     }},
+    {n:"2",t:"기본안전보건대장",d:"발주 단계 안전보건 관리계획 수립",
+     money:["공사비 50억↑"],law:["산업안전보건법 §55"],
+     detail:{
+       obj:["총 공사금액(하나의 건설공사를 완성하기 위해 발주한 공사금액의 합)이 50억원 이상인 건설공사"],
+       laws:[["산업안전보건법 제55조",""],["건설공사 안전보건대장의 작성 등에 관한 고시 제3조","교육시설과-2858(2022.3.29.)"]],
+       flow:["기본안전보건대장 작성(발주청)","설계안전보건대장 작성(설계자)","적정성 검토·확인(발주청)","공사안전보건대장(시공자)","적정성 검토·이행여부 확인(발주청)"]
+     }},
+    {n:"3",t:"공공건축심의",d:"공공건축사업위원회 심의",
+     money:["설계비 5천↑"],law:["건축서비스산업법 §19-2"],
+     detail:{
+       obj:["설계비 추정가격 5천만원 이상인 공공건축 사업","설계비 추정가격 산정 범위: 건축설계가 주공종인 사업으로 부속공종(전기·기계분야 등) 포함 전체 설계비","그 밖에 공공기관이 건축기획에 관하여 심의가 필요하다고 인정하는 사업"],
+       laws:[["건축서비스산업 진흥법 제19조의2","교육시설과-1482(2023.4.10.), 교육시설과-2702(2023.5.11.)"]],
+       timing:["시기: 설계용역 입찰공고 전 (사업계획서 검토 요청 대상은 그 검토 완료 후) — 「건축서비스산업 진흥법」 제22조의2"]
+     }}
+  ],
+  design:[
+    {n:"1",t:"일상감사",d:"주요 정책·계약·예산관리 업무 대상 감사",
+     money:["정책 10억↑ · 계약 규모별"],law:["교육부 일상감사지침 §4"],
+     detail:{
+       obj:["(주요 정책의 집행 업무) 주요 정책 사업 중 10억원 이상의 신규사업","(계약 업무) 시설공사·용역·물품 제조·구매 등 — 아래 대상기관별 기준 적용","(예산관리 업무) 건당 1억원 이상의 이용·전용 사업","(기타) 교육감(교육장)이 필요하다고 인정하는 사항"],
+       laws:[["교육부 일상감사지침 제4조",""],["감사관-819 (2026. 1. 26.)","2026년 자체감사 계획 알림 · ※ 개선사항 별도 검토 후 안내 예정"]],
+       timing:["시기: 집행부서 최종결재자의 결재 전에 실시"],
+       table:{
+         label:"계약 업무 대상기관별 기준 (추정가격)",
+         head:["대상기관","시설공사","설계·감리·기술용역","기타 용역","물품 제조·구매"],
+         rows:[
+           ["도교육청·직속기관·교육지원청","10억원 이상","2억원 이상","2억원 이상","1억원 이상"],
+           ["고등학교·특수학교·각종학교·학교형태 학력인정평생교육시설","1억원 이상","2천만원 이상","1억원 이상","1억원 이상"]
+         ],
+         foot:"비고 · 시설공사: 조달청 관급액 제외 · 물품 제조·구매: 조달청 구매액 제외"
+       },
+       groups:[
+         {h:"계약금액 조정 시 대상 (설계·수량 변경 등)",items:[
+           "일상감사를 받은 사업 중 증액되는 금액이 계약금액 기준 10% 이상에 해당하는 계약",
+           "일상감사를 받지 않은 사업 중 계약금액 변경 후 일상감사 대상에 해당하는 계약",
+           "→ 물가변동으로 인한 계약금액 조정은 제외"]},
+         {h:"신청에 의한 일상감사",items:[
+           "인·허가 등 규제 관련 업무",
+           "규제 관련 법령의 해석에 대한 이견 등으로 인하여 발생한 민원 업무",
+           "업무 추진 시 절차 위반 등 논란의 소지가 예상되는 경우",
+           "업무 추진 시 불명확한 해석으로 적용에 어려움이 있는 경우"]}
+       ]
+     }},
+    {n:"2",t:"설계공모",d:"우수 설계안 선정을 위한 공모",
+     money:["설계비 1억↑ 우선적용"],law:["건축서비스산업법 §21"],
+     detail:{
+       obj:["설계비 추정가격 1억원 이상인 건축물","지역자치센터·유치원·노유자시설 등 다수 주민 이용 시설로 국토부장관 고시 용도"],
+       laws:[["건축서비스산업 진흥법 제21조","우선적용 대상"],["건축서비스산업 진흥법 시행령 제17조","업무 수행방식"]],
+       docs:["일반설계공모","2단계 설계공모","제안공모","제한공모","지명공모"],
+       docsLabel:"설계공모의 종류",
+       note:"추정가격 5억원 이상 설계공모 심사는 조달청 대행 가능(조달청 기술용역 계약업무 처리규정)"
+     }},
+    {n:"3",t:"대규모 사업의 시설 일상감사",d:"신·이설 및 대규모 사업 감사",
+     money:["사립 예산 25억↑"],law:["감사관-11302"],
+     detail:{
+       obj:["(공립) 신·이설사업","(사립) 예산액 25억원 이상 사업"],
+       laws:[["감사관-11302(2021.11.9.)",""]],
+       timing:["시기: 계획·중간설계 완료 후 및 실시설계 완료 전(後)"]
+     }},
+    {n:"4",t:"기술자문위원회",d:"설계·시공 적정성 심의",
+     money:["공사비 100억↑ (학교 50억↑)"],law:["건설기술진흥법 §6"],
+     detail:{
+       obj:["총공사비 100억원(시·군 교육지원청·직속·학교의 경우 50억) 이상 건설공사의 공사기간 산정 적정성","동 규모 공법변경 등 중대 설계변경 적정성","설계·시공 종합계획, 구조물 안전상 적정성, 신공법 적용 적정성 등 발주청 자문사항"],
+       laws:[["건설기술진흥법 제6조 / 시행령 제19조","시설과-3325(2022.4.13.)"]],
+       timing:["계획설계 및 실시설계 적정성 심의: 설계용역 완료 전 1회 이상 실시"]
+     }},
+    {n:"5",t:"설계의 경제성 검토 (VE)",d:"Value Engineering",
+     money:["공사비 100억↑"],law:["건설기술진흥법 시행령 §75"],
+     detail:{
+       obj:["총공사비 100억원 이상 건설공사의 기본·실시설계","100억 이상 공사 중 총공사비 또는 공종별 공사비 10% 이상 조정 설계변경(단순 물량·물가변동 제외)","100억 이상 실시설계 완료일로부터 3년 이상 지난 후 발주하는 경우"],
+       laws:[["건설기술진흥법 시행령 제75조",""],["설계공모·기본설계 등의 시행 및 설계의 경제성 등 검토에 관한 지침 제49조","실시시기 및 횟수"]],
+       timing:["일반: 기본설계·실시설계 각 1회 이상 / 일괄입찰: 실시설계적격자 선정 후 1회 이상 / 시공단계: 발주청·시공자가 필요 인정 시"]
+     }},
+    {n:"6",t:"설계의 안전성 검토 (DfS)",d:"Design for Safety",
+     money:["안전관리계획 대상"],law:["건설기술진흥법 시행령 §75-2"],
+     detail:{
+       obj:["안전관리계획 수립 대상 건설공사","1·2종시설물 건설공사 / 지하 10m 이상 굴착 / 폭발물 사용(20m 내 시설·100m 내 축사) / 10~16층 미만 건축물 / 10층 이상 리모델링·해체 / 수직증축형 리모델링 등"],
+       laws:[["건설기술진흥법 시행령 제75조의2",""]],
+       timing:["검토시기: 설계도면·시방서·내역서·구조 및 수리계산서가 완료된 시점 제출 원칙(발주청이 별도 정할 수 있음)"]
+     }},
+    {n:"7",t:"설계안전보건대장",d:"설계자 작성 안전보건대장",
+     money:["공사비 50억↑"],law:["산업안전보건법 §67"],
+     detail:{
+       obj:["총 공사금액 50억원 이상인 건설공사","시간적·장소적으로 분리된 공사를 일정기간 총액 계약한 경우 개별 공사금액 50억원 이상 시 적용"],
+       laws:[["산업안전보건법 제67조 / 고시 제3조·제6조","교육시설과-2858(2022.3.29.)"]],
+       note:"설계자는 기본안전보건대장을 반영하여 작성, 안전보건 전문가 검토 후 발주자에게 제출 — 발주자는 입찰 시 미리 고지하고 계약 체결 시 수급인에게 제공"
+     }},
+    {n:"8",hideInList:true,t:"각종 인증사항",d:"사업별 법령에 맞게 적용기준 선택 (9종)",
+     money:["연면적 기준"],law:["녹색건축물법 등"],
+     detail:{
+       obj:["사업 유형·규모·용도에 따라 아래 인증의 적용대상·등급을 선택 적용","예비인증은 건축물 설계도서 반영 내용만 신청 가능 (제도적·재정적 지원 시 예비인증 등급 이상 본인증 취득 필요)"],
+       laws:[["녹색건축물 조성 지원법 / 편의증진보장법 / 신재생에너지법 등","각 인증별 근거 — 아래 표 참조"]],
+       certsLabel:"각종 인증사항 적용기준",
+       certs:[
+         {name:"에너지절약계획서",type:"신·증축",target:"연면적 500㎡ 이상",
+          grades:[{g:"EPI 74점 이상 (공공건축물)",applied:true}],
+          note:"설계조건에 따라 제출대상 여부 상이",law:"녹색건축물 조성 지원법 (에너지절약계획서 제출대상)"},
+         {name:"녹색건축 인증",type:"신·증축",target:"연면적 3,000㎡ 이상",
+          grades:[{g:"최우수(그린 1등급)",c:"80점 이상"},{g:"우수(그린 2등급)",c:"70점 이상"},{g:"우량(그린 3등급)",c:"60점 이상"},{g:"일반(그린 4등급)",c:"50점 이상",applied:true}],
+          note:"의무 인증(청사)은 그린 2등급(우수) 이상",law:"녹색건축물 조성 지원법 시행령 제11조의3"},
+         {name:"건축물에너지효율등급",type:"신·증축",target:"연면적 500㎡ 이상",
+          grades:[{g:"1+++",c:"80 미만 kWh/㎡·년"},{g:"1++",c:"80 이상~140 미만 kWh/㎡·년"},{g:"1+",c:"140 이상~200 미만 kWh/㎡·년"},{g:"1",c:"200 이상~260 미만 kWh/㎡·년"}],
+          note:"제로에너지건축물 인증 시 1++ 이상 필요",law:"녹색건축물 조성 지원법 시행령 제12조"},
+         {name:"제로에너지건축물(ZEB) 인증",type:"신·증축",target:"연면적 1,000㎡ 이상 (교육연구시설)",
+          grades:[{g:"ZEB 1등급",c:"에너지자립률 100% 이상"},{g:"ZEB 2등급",c:"80 이상~100% 미만"},{g:"ZEB 3등급",c:"60 이상~80% 미만"},{g:"ZEB 4등급",c:"40 이상~60% 미만"},{g:"ZEB 5등급",c:"20 이상~40% 미만",applied:true}],
+          note:"건축물에너지효율등급 1++ 이상 + BEMS + 전자식 원격검침 계량기 설치",law:"녹색건축물 조성 지원법 시행령 제12조의2 / 인증 운영규칙 제8조의2"},
+         {name:"장애물 없는 생활환경(BF) 인증",type:"신·증개축",target:"공공건축·공중이용시설",
+          grades:[{g:"최우수",c:"90% 이상"},{g:"우수",c:"80 이상~90% 미만"},{g:"일반",c:"70 이상~80% 미만",applied:true}],
+          law:"장애인·노인·임산부 등의 편의증진 보장에 관한 법률 제10조의2"},
+         {name:"범죄예방 환경설계(CPTED) [필요시]",type:"신·증개축 / 리모델링",target:"",
+          grades:[{g:"최우수",c:"85점 이상"},{g:"우수",c:"70점 이상~85점 미만"}],
+          law:"범죄예방 건축기준 고시"},
+         {name:"신·재생에너지 공급의무비율",type:"신·증축",target:"연면적 1,000㎡ 이상",
+          grades:[{g:"34%",c:"2025년까지"},{g:"36%",c:"2027년까지"},{g:"38%",c:"2029년까지"},{g:"40%",c:"2030년 이후",applied:true}],
+          note:"공급의무비율 = 신·재생에너지 생산량 ÷ 예상 에너지사용량 · 전자민원시스템 설계계획서 접수일자 기준",law:"신에너지 및 재생에너지 개발·이용·보급 촉진법 시행령 제15조"},
+         {name:"건물에너지관리시스템(BEMS)",type:"신·증축",target:"연면적 10,000㎡ 이상",
+          grades:[{g:"우수 등급"},{g:"일반 등급",applied:true}],
+          law:"공공기관 에너지이용 합리화 추진에 관한 규정 제6조의5"},
+         {name:"교육시설 안전인증",type:"신·증축",target:"학교 전체 연면적 100㎡↑ / 대학시설 등 1,000㎡↑",
+          grades:[{g:"최우수",c:"유치원·초중등 평균 79점 이상 (기타교육시설 평균 79점)"},{g:"우수",c:"유치원·초중등 평균 78점 / 기타교육시설 평균 69점 이상"}],
+          note:"연면적 500㎡ 이상 준공 후 2년 이내 · 설계 반영 내용 대상 예비인증 신청 가능",law:"교육시설 안전인증 운영규정"}
+       ]
+     }},
+    {n:"8",t:"설계용역평가",d:"기본·실시설계 용역 평가",
+     money:["국가계약 고시금액↑"],law:["건설기술진흥법 시행령 §82"],
+     detail:{
+       obj:["계약금액이 「국가계약법」 제4조1항 고시금액 이상","기본설계용역·실시설계용역·기본+실시설계 동시 시행 사업"],
+       laws:[["건설기술진흥법 시행령 제82조",""]],
+       timing:["기본설계: 완료일로부터 1개월 이내(과정 1회+결과 1회) / 실시설계: 착공일 6개월 이내 결과평가 / 동시시행: 각각 준용"]
+     }},
+    {n:"9",t:"시설사업 시행계획 및 건축 승인",d:"시행계획 승인·건축 승인·신고",
+     money:[],law:["학교시설사업 촉진법 §5"],
+     detail:{
+       obj:["시행계획 승인: 실시설계도서 납품 이후, 사업개요·면적·규모·재원 등 포함","건축 승인: 「건축법」 §11(건축허가)·§14(건축신고)에도 불구하고 감독청 승인·신고 (승인 후 착공 전)","건축(축소) 신고: 바닥면적 합계 85㎡ 이내 증·개축 또는 재축 등"],
+       laws:[["학교시설사업 촉진법 제5조","시행계획 승인"],["학교시설사업 촉진법 제2조","변경승인"],["학교시설사업 촉진법 시행령 제9조","건축 신고"]],
+       note:"시행계획 승인 시 국토계획법·도로법·하수도법·자연공원법·산지관리법 등 관계 법령의 인가·허가·협의·신고 의제 처리"
+     }}
+  ],
+  const:[
+    {n:"1",t:"시설공사 일상감사",d:"대상기관별 추정가격 기준 감사",
+     money:["도교육청 10억↑ / 학교 1억↑"],law:["교육부 일상감사지침 §4"],
+     detail:{
+       obj:["시설공사 추정가격이 대상기관별 기준 이상인 계약 (아래 표 참조)","설계·수량 변경 등으로 계약금액이 10% 이상 증액되는 계약","일상감사를 받지 않은 사업 중 변경 후 일상감사 대상에 해당하는 계약 (물가변동 조정 제외)"],
+       laws:[["교육부 일상감사지침 제4조",""],["감사관-819 (2026. 1. 26.)","2026년 자체감사 계획 알림 · ※ 개선사항 별도 검토 후 안내 예정"]],
+       timing:["시기: 집행부서 최종결재자의 결재 전에 실시"],
+       table:{
+         label:"시설공사 대상기관별 기준 (추정가격)",
+         head:["대상기관","시설공사","설계·감리·기술용역","기타 용역","물품 제조·구매"],
+         rows:[
+           ["도교육청·직속기관·교육지원청","10억원 이상","2억원 이상","2억원 이상","1억원 이상"],
+           ["고등학교·특수학교·각종학교·학교형태 학력인정평생교육시설","1억원 이상","2천만원 이상","1억원 이상","1억원 이상"]
+         ],
+         foot:"비고 · 시설공사: 조달청 관급액 제외 · 물품 제조·구매: 조달청 구매액 제외"
+       }
+     }},
+    {n:"2",t:"기술자문위원회",d:"설계변경·공법변경 등 심의",
+     money:["공사비 100억↑ (학교 50억↑)"],law:["건설기술진흥법 §6"],
+     detail:{
+       obj:["총공사비 100억원(시·군 교육지원청·직속·학교 50억) 이상 공사기간 산정 적정성","공법변경 등 중대 설계변경 적정성 / 정밀안전진단 적정성 등"],
+       laws:[["건설기술진흥법 제6조 / 시행령 제19조","시설과-3325(2022.4.13.)"]],
+       timing:["계획·실시설계 적정성 심의: 설계용역 완료 전 1회 이상"]
+     }},
+    {n:"3",t:"건설사업관리계획 수립",d:"CM 계획 수립·공고",
+     money:["토목 5억↑ / 전문 2억↑"],law:["건설기술진흥법 §39-2"],
+     detail:{
+       obj:["총공사비 5억원 이상 토목공사","연면적 660㎡ 이상 건축물의 건축공사","총공사비 2억원 이상 전문공사","부실시공·안전사고 예방 등 발주청이 필요 인정하는 공사"],
+       laws:[["건설기술진흥법 제39조의2 / 시행령 제59조의2",""]],
+       flow:["건설사업관리계획 수립(발주청)","기술자문위원회 심의","계획 확정 및 대가 산정","한국건설엔지니어링협회 접수","건설사업관리 입찰공고"]
+     }},
+    {n:"4",t:"시설사업 집행계획 / 공사발주",d:"공사·관급자재·분리발주",
+     money:[],law:["지방계약법 시행령 §77"],
+     detail:{
+       obj:["전기·정보통신·소방시설공사 분리발주 의무(공사 성질·긴급성 예외)","일반용역: 공사·폐기물용역·감리용역 발주 / 관급자재 구입 건의","관급자재 공사용자재 직접구매 대상: 중소기업제품 구매촉진법 시행령 §11"],
+       laws:[["지방계약법 시행령 제77조",""],["전기공사업법 §11 / 정보통신공사업법 §25 / 소방시설공사업법 §21","분리발주"],["","관급자재: 교육시설과-12788(2024.8.5.)"]]
+     }},
+    {n:"5",t:"감리발주 (건설사업관리)",d:"감독 방식별 감리 발주",
+     money:["토목 5억↑ / 전문 2억↑ / 건축 660㎡↑"],law:["교육시설과-4067"],
+     detail:{
+       obj:["건설사업관리 의무화 대상: 총공사비 5억↑ 토목 / 2억↑ 전문공사 / 연면적 660㎡↑ 건축","방식: 직접감독(건축사 상주감리) / 건축사 상주감리 / 건설사업관리 실시 / 감독권한대행 등 건설사업관리"],
+       laws:[["교육시설과-4067(2023.6.19.)",""]],
+       note:"감독권한대행 등 건설사업관리: 임대형민자(BTL)·통합발주사업·CM 적정성 검토기준 결과 필요 인정 공사 등"
+     }},
+    {n:"6",t:"폐기물처리용역 발주",d:"건설폐기물 처리용역",
+     money:["폐기물 100톤↑ 분리발주"],law:["건설폐기물법"],
+     detail:{
+       obj:["건설폐기물 100톤 이상: 분리발주 대상","5톤 이상: 폐기물처리업체가 폐기물 처리 사항 지자체 신고","5톤 이상 배출자: 올바로시스템 입력","지정폐기물(석면폐기물): 중량 관계없이 분리발주"],
+       laws:[["건설폐기물의 재활용촉진에 관한 법률",""]]
+     }},
+    {n:"7",t:"기타용역 발주",d:"기술지도·설계의도구현·안전보건대장",
+     money:["기술지도 1억↑(토목 150억↑)"],law:["산업안전보건법 §73"],
+     detail:{
+       obj:["건설재해예방 기술지도: 공사금액 1억원 이상 120억원 미만(토목 150억 미만)","설계의도 구현 용역: 설계비 추정가격 1억원 이상 학교","공사안전보건대장 검토 및 이행 확인 용역"],
+       laws:[["산업안전보건법 제73조","기술지도 — 시설과-7232(2022.8.22.)"],["건축서비스산업 진흥법 시행령 제19조","설계의도 구현 — 시설과-7284(2022.8.23.)"],["건설공사 안전보건대장 작성 등에 관한 고시 제7조","안전보건대장 검토"]]
+     }},
+    {n:"8",t:"본인증 용역 발주",d:"ZEB·녹색건축·BF 본인증",
+     money:["연면적 기준"],law:["녹색건축물법"],
+     detail:{
+       obj:["제로에너지건축물 인증: 예비인증 결과 토대로 현장실사 거쳐 인증(1++등급 이상 유효기간)","녹색건축 인증: 사용승인·사용검사 후 신청, 유효기간 10년","BF 인증: 개별시설 공사 완료 후 신청, 유효기간 10년","BEMS 설치: 연면적 10,000㎡ 이상 신축·별동 증축 시(한국에너지공단 설치확인)"],
+       laws:[["녹색건축물 조성 지원법 제14조·제17조",""]]
+     }},
+    {n:"9",t:"학교건축물 해체공사 안전관리",d:"해체 신고·허가 절차",
+     money:[],law:["건축물관리법 §30"],
+     detail:{
+       obj:["신고대상: 주요구조부 해체 없이 일부 해체 / 연면적 500㎡ 미만·건축물 높이 12m 미만·지상3층 이하 전체 해체 / 바닥면적 85㎡ 이내 증개축 재축 등","허가대상: 신고 대상에 해당하지 않는 모든 건축물"],
+       laws:[["건축물관리법 제30조","교육시설과-472(2023.3.14.)"]],
+       flow:["해체 허가(신고) 신청","건축위원회 심의","해체감리자 지정","착공신고","해체공사","완료·멸실 신고"]
+     }},
+    {n:"10",t:"공사추진 (안전성평가)",d:"교육시설 안전성평가",
+     money:[],law:["교육시설법 §19"],
+     detail:{
+       obj:["대상: 건축허가·건축승인 대상에 해당하는 교육시설의 건축(교육시설이용자 없는 상태의 신축·개축·이전 등 제외)","공사 시행 및 공사관리 / 설계변경 / 본인증 취득"],
+       laws:[["교육시설 등의 안전 및 유지관리에 관한 법률 제19조",""]]
+     }}
+  ],
+  cm:[
+    {n:"1",t:"사업관리 업무 추진 (조항별 역할)",d:"시공사·사업관리·발주청 R&R",
+     money:[],law:["건설기술진흥법 §11~"],
+     detail:{
+       obj:["조항별로 시공사·사업관리·발주청의 작성/검토/확인/승인 역할 구분","제11조(건설사업관리기술인 교체)~제111조(하자보수지원)까지 조항 단위 관리"],
+       laws:[["건설사업관리 절차서 작성·운영 제14조",""]],
+       raci:[
+         ["제12조 발주청 지도·감독","협의·확인·승인","공사중지·시정지시"],
+         ["제77조 일반행정업무","서류검토·현장비치·공사일지","작성/확인"],
+         ["제78조 보고서 작성·제출","각종 보고서 작성·제출","검토·확인"],
+         ["제83조 하도급 적정성","하도급 적정성·이행 확인","작성/검토/확인"],
+         ["제87·88조 사용자재 적정성","주요기자재 승인·수급계획","작성/검토/승인"],
+         ["제90조 품질시험·성과검토","품질관리계획·성과검토","작성/검토/승인"],
+         ["제92조 기술검토·공법변경","공법변경 요구","작성/검토/확인"]
+       ]
+     }},
+    {n:"2",t:"설계변경 — 발주청 요청(지시)",d:"발주청 → 사업관리 → 시공자",
+     money:[],law:["설계변경 업무흐름도"],
+     detail:{
+       obj:["발주청이 서면지시 → 건설사업관리기술인 기술검토 → 시공자 접수","시공자 이행 가능여부 판단 → 이행 가능 시 설계변경 구비서류(개요서·도면·시방서·계산서·수량산출조서) 제출"],
+       flow:["발주청 서면지시","사업관리 기술검토·통보","시공자 접수·이행판단","실정보고·기술검토","발주청 승인","설계변경 통보→변경시행"]
+     }},
+    {n:"3",t:"설계변경 — 시공자 요청",d:"시공자 → 사업관리 → 발주청",
+     money:[],law:["설계변경 업무흐름도"],
+     detail:{
+       obj:["시공자 설계변경 필요 의견제시(사유서·도면·개략 증감내역·공사비 증감내역)","건설사업관리기술인 설계변경 기술검토(상주+기술지원) → 실정보고 → 기술검토팀(T/F) 구성 → 발주청 승인"],
+       flow:["시공자 의견제시","사업관리 접수·기술검토","실정보고·대안선정","기술검토팀(T/F) 구성","발주청 승인","설계변경 통보→변경시행"]
+     }},
+    {n:"4",t:"설계변경 — 설계상 하자",d:"설계자 협의 포함",
+     money:[],law:["설계변경 업무흐름도"],
+     detail:{
+       obj:["설계검토 결과 설계하자 판단 → 설계자에게 의견서 제출 지시","설계자 의견서 검토 → 기술검토의견서 작성 → 발주청 승인 → 설계변경 작성·제출"],
+       flow:["설계검토 결과·하자판단","설계자 의견서 제출","사업관리 기술검토의견서","발주청 승인","설계변경 작성·시행"]
+     }},
+    {n:"5",t:"계약금액 조정",d:"설계변경에 의한 계약금액 조정",
+     money:[],law:["계약금액 조정 처리절차"],
+     detail:{
+       obj:["시공자 계약금액 조정 요청 → 건설사업관리기술인 계약금액조정요청서 검토·확인·보고(기술검토의견서, 산출수량·적용단가)","건설사업관리용역업자 대표자 접수·검토 지시 → 기술지원기술인 검토·확인 → 발주청 검토·확인·승인 → 계약변경"],
+       flow:["시공자 조정 요청","사업관리 검토·보고","용역업자 대표 접수·지시","기술지원기술인 검토","발주청 승인","계약변경 통보"]
+     }}
+  ],
+  comp:[
+    {n:"1",t:"준공검사",d:"예비준공검사 및 준공검사",
+     money:[],law:["건설기술진흥법 시행령 §78"],
+     detail:{
+       obj:["예비준공검사: 준공 30일 전 시행(발주청이 공사 성격·규모 고려)","건설공사 예비준공검사자는 품질시험·검사성과 총괄표 검토","준공 통보(준공서류 제출) → 준공검사 일정 통보 → 준공검사 실시 및 결과 통보 → 준공검사필증 발급 → 준공검사 합격 통보"],
+       laws:[["건설기술진흥법 시행령 제78조","교육시설과-17164(2024.10.7.)"]],
+       flow:["준공 통보(준공서류 제출)","준공서류 확인·일정 통보","준공검사 실시·결과 통보","준공검사필증 발급","준공검사 합격 통보"],
+       docs:["준공검사원","준공신고서","요금납부 확인서","준공사진","준공도서(도면·내역서)","품질기록(시험대장·성적서)","안전관리(교육일지·정산)","환경관리(환경보전비 정산)","4대보험 증빙","하도급대금 지급보증","폐기물 인계서·계량증명","시운전 평가결과서","유지관리 인수인계 서류"],
+       docsLabel:"준공 통보 제출서류"
+     }},
+    {n:"2",t:"사용승인",d:"임시사용승인 및 사용승인",
+     money:[],law:["건축법 시행령 §17"],
+     detail:{
+       obj:["임시사용승인: 공사완료 부분이 적합한 경우 임시사용 승인(기간 2년 이내, 대형·암반공사 등 연장 가능)","허가권자는 신청서 받은 날부터 7일 이내 임시사용승인서 교부","학교시설사업 완료 신고 받은 날부터 14일 이내 준공검사 실시"],
+       laws:[["건축법 시행령 제17조","임시사용승인"],["학교시설사업 촉진법 시행령 제18조","준공검사 합격 통보"]],
+       note:"준공검사 합격 시 준공검사증명서 발급(소방시설공사 완공검사필증 발급 미리 확인)"
+     }},
+    {n:"3",t:"건축물대장",d:"사용승인 및 대장 기재",
+     money:[],law:["건축법 §38"],
+     detail:{
+       obj:["사용승인: 학교시설 건축등 완료 시 감독청으로부터 사용승인(사용승인서 발급 및 소관 행정기관장·시장군수구청장 통보)","감독청 사용승인서 발급·통보 시 「건축법」 §22 사용검사 합격 간주","건축물대장 기재: 「건축법」 §38 대상 — 사용승인서 발급, 증·개축·재축·이전·대수선·용도변경 시 표시 변경 등"],
+       laws:[["학교시설사업 촉진법 제13조","사용승인"],["건축법 제38조","건축물대장"]],
+       note:"국가·지자체는 완료 시 소관행정기관장 통보, 시장군수구청장에게 건축물대장기재신청서·건축물현황도면 첨부 통보"
+     }}
+  ]
+};
+const PCOLOR={plan:'var(--p-plan)',design:'var(--p-design)',const:'var(--p-const)',cm:'var(--p-cm)',comp:'var(--p-comp)'};
+
+// ================= 카드 렌더링 =================
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function renderItem(it,pk){
+  const c=PCOLOR[pk];
+  const tags=[];
+  (it.money||[]).forEach(m=>tags.push(`<span class="mtag money">${esc(m)}</span>`));
+  (it.law||[]).forEach(m=>tags.push(`<span class="mtag law">${esc(m)}</span>`));
+  const dt=it.detail;
+  let body='<div class="grid2">';
+  // 대상 / 시기
+  body+='<div class="block"><h4>대상 · 요건</h4><ul>'+dt.obj.map(o=>`<li>${esc(o)}</li>`).join('')+'</ul>';
+  if(dt.timing) body+='<div style="margin-top:10px">'+dt.timing.map(t=>`<div class="law-item">${esc(t)}</div>`).join('')+'</div>';
+  body+='</div>';
+  // 근거법령
+  if(dt.laws && dt.laws.length){
+    body+='<div class="block"><h4>근거 법령 · 지침</h4>'+dt.laws.map(l=>`<div class="law-item"><b>${esc(l[0])}</b>${l[1]?'<br><span style="color:var(--muted);font-size:12px">'+esc(l[1])+'</span>':''}</div>`).join('')+'</div>';
+  }
+  body+='</div>';
+  // 절차 flow
+  if(dt.flow){
+    body+='<div class="block full" style="margin-top:16px"><h4>업무 절차</h4><div class="flow">';
+    body+=dt.flow.map((s,i)=>`<span class="step">${esc(s)}</span>${i<dt.flow.length-1?'<span class="arr">→</span>':''}`).join('');
+    body+='</div></div>';
+  }
+  if(dt.flow2){
+    body+='<div class="block full" style="margin-top:16px"><h4>업무 절차 (병행 트랙)</h4>';
+    dt.flow2.forEach(fl=>{body+='<div class="flow" style="margin-bottom:8px">'+fl.map((s,i)=>`<span class="step">${esc(s)}</span>${i<fl.length-1?'<span class="arr">→</span>':''}`).join('')+'</div>';});
+    body+='</div>';
+  }
+  // RACI
+  if(dt.raci){
+    body+='<div class="block full" style="margin-top:16px"><h4>조항별 주체 역할</h4><div class="tbl-wrap"><table><thead><tr><th>조항 / 업무</th><th>추진 항목</th><th style="width:170px">역할</th></tr></thead><tbody>';
+    body+=dt.raci.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('');
+    body+='</tbody></table></div></div>';
+  }
+  // 대상기관별 기준표
+  if(dt.table){
+    const tb=dt.table;
+    body+='<div class="block full" style="margin-top:16px"><h4>'+esc(tb.label||'대상기관별 기준')+'</h4><div class="tbl-wrap"><table><thead><tr>'+tb.head.map((h,i)=>`<th${i===0?'':' style="text-align:center"'}>${esc(h)}</th>`).join('')+'</tr></thead><tbody>';
+    body+=tb.rows.map(r=>'<tr>'+r.map((cell,ci)=>ci===0?`<td style="font-weight:700;color:var(--navy)">${esc(cell)}</td>`:`<td style="text-align:center">${esc(cell)}</td>`).join('')+'</tr>').join('');
+    body+='</tbody></table></div>';
+    if(tb.foot) body+=`<div class="note" style="margin:10px 0 0">${esc(tb.foot)}</div>`;
+    body+='</div>';
+  }
+  // 세부 그룹
+  if(dt.groups){
+    body+=dt.groups.map(g=>`<div class="block full" style="margin-top:16px"><h4>${esc(g.h)}</h4><ul>${g.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>`).join('');
+  }
+  // 인증사항 (인증명·유형·적용대상·등급·근거)
+  if(dt.certs){
+    body+='<div class="block full" style="margin-top:16px"><h4>'+esc(dt.certsLabel||'각종 인증사항')+'</h4>';
+    body+='<div class="note" style="margin:0 0 12px">● 표시는 우리청 표준 적용기준(최소 등급)입니다. 사업별로 법령에 맞게 선택 적용합니다.</div>';
+    body+=dt.certs.map(cr=>{
+      const meta=[cr.type,cr.target].filter(Boolean).map(x=>esc(x)).join(' · ');
+      const grades=(cr.grades||[]).map(g=>`<div class="dl-row"${g.applied?' style="background:#EAF0FF"':''}><div class="dl-detail">${esc(g.g)}${g.c?' <span style="color:var(--muted)">· '+esc(g.c)+'</span>':''}</div><div class="dl-who">${g.applied?'<span class="who-pill final">● 적용</span>':''}</div></div>`).join('');
+      const nt=cr.note?`<div class="dl-row"><div class="dl-detail" style="font-size:12px;color:var(--muted)">※ ${esc(cr.note)}</div></div>`:'';
+      const law=cr.law?`<div class="dl-row" style="background:#fafbfc"><div class="dl-detail" style="font-size:12px;color:var(--navy)">근거 · ${esc(cr.law)}</div></div>`:'';
+      return `<div class="dl-block"><div class="dl-head">${esc(cr.name)}${meta?` <span style="font-weight:500;color:var(--muted);font-size:12px">${meta}</span>`:''}</div>${grades}${nt}${law}</div>`;
+    }).join('');
+    body+='</div>';
+  }
+  // docs
+  if(dt.docs){
+    body+=`<div class="block full" style="margin-top:16px"><h4>${esc(dt.docsLabel||'제출 서류')}</h4><div class="doc-chips">`+dt.docs.map(d=>`<span>${esc(d)}</span>`).join('')+'</div></div>';
+  }
+  // note
+  if(dt.note){
+    body+=`<div class="block full" style="margin-top:14px"><div class="note" style="margin:0">📌 ${esc(dt.note)}</div></div>`;
+  }
+  return `<div class="acc" data-t="${pk}">
+    <div class="acc-head">
+      <span class="acc-num" style="background:${c}">${it.n}</span>
+      <div class="acc-title"><div class="t">${esc(it.t)}</div><div class="d">${esc(it.d)}</div></div>
+      <div class="acc-tags">${tags.join('')}</div>
+      <span class="chev">⌄</span>
+    </div>
+    <div class="acc-body"><div class="acc-body-in">${body}</div></div>
+  </div>`;
 }
-
-chipGroup(document.getElementById('chips-type'),   TYPES,  'type');
-chipGroup(document.getElementById('chips-use'),    USES,   'use');
-chipGroup(document.getElementById('chips-public'), PUBLIC, 'pub');
-
-document.getElementById('grid').addEventListener('click', e => {
-  const t = e.target.closest('.tile'); if(!t) return;
-  state.sel = +t.dataset.id; render();
-});
-document.getElementById('area').addEventListener('input', e => {
-  state.area = Math.max(0, +e.target.value || 0); render();
-});
-document.getElementById('year').addEventListener('input', e => {
-  state.year = +e.target.value || 2026; render();
+Object.keys(DATA).forEach(pk=>{
+  const host=document.querySelector(`[data-list="${pk}"]`);
+  if(host) host.innerHTML=DATA[pk].filter(it=>!it.hideInList).map(it=>renderItem(it,pk)).join('');
 });
 
-document.getElementById('ref').innerHTML = REF.map(r => `
-  <div class="ref-block">
-    <h3>${r.n}</h3>
-    <div class="scope">${r.scope}</div>
-    <ul>${r.rows.map(([a,b])=>`<li><b>${a}</b><span>${b}</span></li>`).join('')}</ul>
-    <div class="law">${r.law}</div>
-  </div>`).join('');
+// ================= 인터랙션 =================
+// 탭 전환
+function activate(p){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.p===p));
+  document.querySelectorAll('.panel').forEach(pn=>pn.classList.toggle('show',pn.id===p));
+  // 데스크톱: 콘텐츠 상단 정렬 / 모바일(가로탭): 최상단
+  const lay=document.querySelector('.layout');
+  if(window.innerWidth>860 && lay){
+    const y=lay.getBoundingClientRect().top+window.scrollY-14;
+    if(window.scrollY>y) window.scrollTo({top:y,behavior:'smooth'});
+  } else {
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>activate(t.dataset.p)));
+document.querySelectorAll('[data-goto]').forEach(c=>c.addEventListener('click',()=>activate(c.dataset.goto)));
+// 제목(홈) 클릭 → 전체 개요 + 최상단
+document.getElementById('homeLink').addEventListener('click',()=>{
+  activate('overview');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
 
-render();
+// 아코디언 토글
+document.addEventListener('click',e=>{
+  const head=e.target.closest('.acc-head');
+  if(head){head.parentElement.classList.toggle('open');}
+});
+// 모두 펼치기/접기
+document.querySelectorAll('.expand-btns button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const t=b.dataset.t, open=b.dataset.all==='open';
+    document.querySelectorAll(`.acc[data-t="${t}"]`).forEach(a=>a.classList.toggle('open',open));
+  });
+});
+
+// ================= 규모별 절차 판정기 =================
+const PLABEL={plan:'기획',design:'설계',const:'시공',cm:'건설사업관리',comp:'준공'};
+const CALC_RULES=[
+  {ph:'plan', nm:'자체투자심사', bs:'총사업비', test:v=>v.total>=40, thr:'40억 이상'},
+  {ph:'plan', nm:'중앙투자심사', bs:'총사업비', test:v=>v.total>=300, thr:'300억 이상'},
+  {ph:'plan', nm:'공공건축심의', bs:'설계비', test:v=>v.design>=0.5, thr:'5천만원 이상'},
+  {ph:'plan', nm:'사전기획', bs:'설계비', test:v=>v.design>=1, thr:'1억 이상'},
+  {ph:'design', nm:'설계공모(우선적용)', bs:'설계비', test:v=>v.design>=1, thr:'1억 이상'},
+  {ph:'const', nm:'설계의도 구현 용역', bs:'설계비', test:v=>v.design>=1, thr:'1억 이상'},
+  {ph:'plan', nm:'주요 정책 집행 일상감사', bs:'총사업비', test:v=>v.total>=10, thr:'10억 이상(주요 정책 신규사업)'},
+  {ph:'const', nm:'시설공사 일상감사', bs:'공사비', test:v=>v.constr>=(v.org==='school'?1:10), thr:v=>v.org==='school'?'1억 이상(학교)':'10억 이상(본청·지원청·직속)'},
+  {ph:'design', nm:'용역(설계·감리·기술) 일상감사', bs:'설계비', test:v=>v.design>=(v.org==='school'?0.2:2), thr:v=>v.org==='school'?'2천만원 이상(학교)':'2억 이상(본청·지원청·직속)'},
+  {ph:'const', nm:'건설재해예방 기술지도', bs:'공사비', test:v=>v.constr>=1 && v.constr<(v.type==='토목'?150:120), thr:v=>'1억~'+(v.type==='토목'?'150억':'120억')+' 미만'},
+  {ph:'design', nm:'안전보건대장(기본·설계·공사)', bs:'공사비', test:v=>v.constr>=50, thr:'50억 이상'},
+  {ph:'design', nm:'설계 경제성 검토(VE)', bs:'공사비', test:v=>v.constr>=100, thr:'100억 이상'},
+  {ph:'design', nm:'기술자문위원회', bs:'공사비', test:v=>v.constr>=(v.org==='head'?100:50), thr:v=>v.org==='head'?'100억 이상(본청)':'50억 이상(지원청·직속·학교)'},
+  {ph:'const', nm:'건설사업관리계획 · 감리', bs:'공사비/연면적', test:v=>(v.type==='토목'&&v.constr>=5)||(v.type==='전문'&&v.constr>=2)||(v.type==='건축'&&v.area>=660), thr:v=>v.type==='토목'?'토목 5억 이상':v.type==='전문'?'전문 2억 이상':'건축 660㎡ 이상'},
+  {ph:'const', nm:'감독권한대행 등 건설사업관리', bs:'공사비', test:v=>v.constr>=100, thr:'100억 이상'},
+  {ph:'design', nm:'제로에너지건축물(ZEB) 인증', bs:'연면적', test:v=>v.area>=1000, thr:'1,000㎡ 이상'},
+  {ph:'design', nm:'녹색건축 인증', bs:'연면적', test:v=>v.area>=3000, thr:'3,000㎡ 이상'},
+  {ph:'const', nm:'BEMS(건축물에너지관리시스템) 설치', bs:'연면적', test:v=>v.area>=10000, thr:'10,000㎡ 이상'}
+];
+function calcVals(){
+  const num=id=>{const x=parseFloat(document.getElementById(id).value);return isNaN(x)?0:x;};
+  return {total:num('c-total'),constr:num('c-const'),design:num('c-design'),area:num('c-area'),
+          type:document.getElementById('c-type').value,org:document.getElementById('c-org').value};
+}
+function runCalc(){
+  const v=calcVals();
+  const any=v.total||v.constr||v.design||v.area;
+  const applied=[],na=[];
+  CALC_RULES.forEach(r=>{(r.test(v)?applied:na).push(r);});
+  document.getElementById('c-count').textContent=applied.length;
+  const host=document.getElementById('c-results');
+  if(!any){
+    host.innerHTML='<div class="res-empty">사업 규모(총사업비·공사비·설계비·연면적)를 입력하면<br>필요한 필수 절차가 여기에 표시됩니다.</div>';
+    return;
+  }
+  let html='<div class="res-head">✅ 적용되는 절차 <span class="cnt">'+applied.length+'</span></div>';
+  if(applied.length){
+    html+='<div class="res-grid">'+applied.map(r=>{
+      const thr=typeof r.thr==='function'?r.thr(v):r.thr;
+      return `<div class="res-card" style="border-left-color:${PCOLOR[r.ph]}">
+        <div class="rc-l"><div class="nm">${esc(r.nm)}</div><div class="bs">${esc(PLABEL[r.ph])} · ${esc(r.bs)} 기준</div></div>
+        <div class="rc-r"><span class="thr">${esc(thr)}</span></div></div>`;
+    }).join('')+'</div>';
+  } else {
+    html+='<div class="res-empty">현재 입력 규모에서는 규모 기준으로 적용되는 추가 절차가 없습니다. (공통 절차는 하단 참조)</div>';
+  }
+  if(na.length){
+    html+='<div class="res-head muted">➖ 미적용 절차 <span class="cnt">'+na.length+'</span></div>';
+    html+='<div class="na-list">'+na.map(r=>{const thr=typeof r.thr==='function'?r.thr(v):r.thr;return `<span>${esc(r.nm)} <b style="color:#aab4c2">(${esc(thr)})</b></span>`;}).join('')+'</div>';
+  }
+  host.innerHTML=html;
+}
+['c-total','c-const','c-design','c-area','c-type','c-org'].forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener('input',runCalc);el.addEventListener('change',runCalc);
+});
+document.getElementById('c-reset').addEventListener('click',()=>{
+  ['c-total','c-const','c-design','c-area'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('c-type').value='건축';document.getElementById('c-org').value='head';
+  runCalc();
+});
+runCalc();
+
+// ================= 실무 운영 데이터 =================
+const EDATA = {"procedure": [{"task": "사전기획 용역 발주", "from": "행정과", "to": "사전기획가", "note": "6개월", "law": "", "phase": "plan", "no": 1}, {"task": "사전기획 용역 완료", "from": "사전기획가", "to": "행정과", "note": "", "law": "", "phase": "plan", "no": 2}, {"task": "공공건축 사업계획 사전검토 요청", "from": "사전기획 담당부서", "to": "건축도시공간연구소", "note": "설계비(추정가격)1억이상", "law": "공용건축물 적용", "phase": "plan", "no": 3}, {"task": "공공건축심의위원회 자문회의 추진계획 수립", "from": "시설과", "to": "", "note": "내부결재", "law": "", "phase": "plan", "no": 4}, {"task": "공공건축심의위원회 자문회의 개최 알림", "from": "시설과", "to": "외부위원", "note": "", "law": "", "phase": "plan", "no": 5}, {"task": "공공건축심의위원회 자문회의 경비품의", "from": "시설과", "to": "기획팀", "note": "", "law": "", "phase": "plan", "no": 6}, {"task": "공공건축심의위원회 자문회의 실시", "from": "시설과", "to": "", "note": "", "law": "", "phase": "plan", "no": 7}, {"task": "공공건축심의위원회 자문회의 결과보고", "from": "시설과", "to": "", "note": "내부결재", "law": "", "phase": "plan", "no": 8}, {"task": "공공건축심의위원회 자문회의 외부위원 수당지급", "from": "시설과", "to": "기획팀", "note": "", "law": "", "phase": "plan", "no": 9}, {"task": "사전기획 적정성 검토 의뢰", "from": "행정과(사전기획가)", "to": "한국교육시설안전원, 한국교육계발원", "note": "1 ~ 2달 소요", "law": "학교부지 공사만 적용", "phase": "plan", "no": 10}, {"task": "교육부 검토위원회", "from": "한국교육시설안전원", "to": "교육부", "note": "그린스마트 사업만 해당됨(1달 소요)", "law": "", "phase": "plan", "no": 11}, {"task": "교육부 검토위원회 결과 통보", "from": "교육부", "to": "행정과", "note": "", "law": "", "phase": "plan", "no": 12}, {"task": "사전기획 적정성 검토 결과 통보", "from": "한국교육시설안전원", "to": "행정과", "note": "", "law": "", "phase": "plan", "no": 13}, {"task": "사전기획 활용계획 제출 안내", "from": "행정과", "to": "시설과", "note": "", "law": "", "phase": "plan", "no": 14}, {"task": "사전기획 활용계획 제출", "from": "행정과", "to": "한국교육시설안전원", "note": "", "law": "", "phase": "plan", "no": 15}, {"task": "공공건축심의위원회 추진계획 수립", "from": "시설과", "to": "", "note": "내부결재", "law": "", "phase": "plan", "no": 16}, {"task": "공공건축심의위원회 개최 알림", "from": "시설과", "to": "외부위원", "note": "", "law": "", "phase": "plan", "no": 17}, {"task": "공공건축심의위원회 경비 품의", "from": "시설과", "to": "기획팀", "note": "", "law": "", "phase": "plan", "no": 18}, {"task": "공공건축심의위원회 실시", "from": "시설과", "to": "", "note": "내부위원(건축직)", "law": "", "phase": "plan", "no": 19}, {"task": "공공건축심의위원회 결과보고", "from": "시설과", "to": "", "note": "내부결재", "law": "", "phase": "plan", "no": 20}, {"task": "공공건축심의위원회 외부위원 수당지급 품의", "from": "시설과", "to": "기획팀", "note": "", "law": "", "phase": "plan", "no": 21}, {"task": "도시(군)관리계획 결정", "from": "시설과", "to": "도시계획위원회", "note": "설계용역 착수전", "law": "", "phase": "plan", "no": 22}, {"task": "설계용역 일상감사", "from": "시설과", "to": "감사관", "note": "용역비,공사기간", "law": "", "phase": "design", "no": 23}, {"task": "설계용역 일상감사 회신", "from": "감사관", "to": "시설과", "note": "", "law": "", "phase": "design", "no": 24}, {"task": "시설사업 추진계획 수립", "from": "시설과", "to": "내부결재", "note": "1억이상 국장", "law": "", "phase": "design", "no": 25}, {"task": "설계공모 제안서 평가용역 품의", "from": "시설과", "to": "재정과", "note": "", "law": "설계공모 용역 발주 시", "phase": "design", "no": 26}, {"task": "설계공모 관련 서류 검토 요청", "from": "시설과", "to": "용역사", "note": "", "law": "", "phase": "design", "no": 27}, {"task": "설계공모 관련 서류 검토 회신", "from": "용역사", "to": "시설과", "note": "", "law": "", "phase": "design", "no": 28}, {"task": "설계공모 심사위원 선정", "from": "용역사", "to": "", "note": "", "law": "", "phase": "design", "no": 29}, {"task": "설계공모 공고 협조요청", "from": "시설과", "to": "재정과", "note": "", "law": "", "phase": "design", "no": 30}, {"task": "설계공모 공고", "from": "재정과", "to": "조달청", "note": "", "law": "", "phase": "design", "no": 31}, {"task": "설계공모 참가신청", "from": "참가업체", "to": "용역사", "note": "", "law": "", "phase": "design", "no": 32}, {"task": "설계공모 참가신청 결과보고", "from": "용역사", "to": "시설과", "note": "", "law": "", "phase": "design", "no": 33}, {"task": "설계공모 질의", "from": "참가업체", "to": "용역사", "note": "", "law": "", "phase": "design", "no": 34}, {"task": "설계공모 질의 답변서 작성 및 검토", "from": "용역사", "to": "시설과", "note": "", "law": "", "phase": "design", "no": 35}, {"task": "설계공모 답변", "from": "시설과", "to": "홈페이지", "note": "", "law": "", "phase": "design", "no": 36}, {"task": "설계공모 제안서 제출", "from": "참가업체", "to": "용역사", "note": "", "law": "", "phase": "design", "no": 37}, {"task": "설계공모 기술심사", "from": "용역사", "to": "", "note": "일반공모 해당", "law": "", "phase": "design", "no": 38}, {"task": "설계공모 본심사", "from": "용역사", "to": "", "note": "", "law": "", "phase": "design", "no": 39}, {"task": "설계공모 심사 결과보고", "from": "용역사", "to": "시설과", "note": "", "law": "", "phase": "design", "no": 40}, {"task": "설계용역 당선작, 입선작 발표", "from": "시설과", "to": "홈페이지,세움터", "note": "", "law": "", "phase": "design", "no": 41}, {"task": "설계공모 입선작 보상금 지급", "from": "시설과", "to": "재정과", "note": "", "law": "", "phase": "design", "no": 42}, {"task": "설계용역 품의", "from": "시설과", "to": "재정과", "note": "", "law": "", "phase": "design", "no": 43}, {"task": "안전보건대장 작성 및 검토용역 품의", "from": "시설과", "to": "재정과", "note": "", "law": "", "phase": "design", "no": 44}, {"task": "경제성 등(VE)용역 품의", "from": "시설과", "to": "재정과", "note": "", "law": "100억 이상", "phase": "design", "no": 45}, {"task": "기술자문위원회 추진계획 수립", "from": "시설과", "to": "", "note": "내부결재", "law": "100억 이상", "phase": "design", "no": 46}, {"task": "기술자문위원회 위원위촉 및 개최 알림", "from": "시설과", "to": "기술위원", "note": "", "law": "", "phase": "design", "no": 47}, {"task": "기술자문위원회 지출경비 품의", "from": "시설과", "to": "기획팀", "note": "", "law": "", "phase": "design", "no": 48}, {"task": "기술자문위원회 실시", "from": "시설과", "to": "", "note": "", "law": "", "phase": "design", "no": 49}, {"task": "기술자문위원회 결과보고", "from": "시설과", "to": "", "note": "내부결재", "law": "", "phase": "design", "no": 50}, {"task": "기술자문위원외 외부위원 수당지급", "from": "시설과", "to": "기획팀", "note": "", "law": "", "phase": "design", "no": 51}, {"task": "기본계획(안) 설명회 알림", "from": "시설과", "to": "지역교육청", "note": "", "law": "100억 이상", "phase": "design", "no": 52}, {"task": "기본계획(안) 설명회 실시", "from": "시설과", "to": "", "note": "", "law": "", "phase": "design", "no": 53}, {"task": "기본계획(안), 기술자문위원회 검토 결과 통보", "from": "시설과", "to": "용역사", "note": "", "law": "", "phase": "design", "no": 54}, {"task": "기본계획(안), 기술자문위원회 검토 결과 회신", "from": "용역사", "to": "시설과", "note": "", "law": "", "phase": "design", "no": 55}, {"task": "계획설계(안) 설명회 알림", "from": "시설과", "to": "지역교육청", "note": "", "law": "100억 이상", "phase": "design", "no": 56}, {"task": "계획설계(안) 설명회 실시", "from": "시설과", "to": "", "note": "", "law": "", "phase": "design", "no": 57}, {"task": "설계용역 손해배상보험 가입", "from": "용역사", "to": "시설과", "note": "실시설계중", "law": "", "phase": "design", "no": 58}, {"task": "설계의 안전성 검토 의뢰", "from": "용역사", "to": "", "note": "실시설계중 작성", "law": "", "phase": "design", "no": 59}, {"task": "설계의 안전성 검토 의뢰", "from": "시설과", "to": "국토안전관리원", "note": "공문시행", "law": "", "phase": "design", "no": 60}, {"task": "BF예비인증 공문발송", "from": "시설과", "to": "용역사", "note": "", "law": "", "phase": "design", "no": 61}, {"task": "녹색건축 예비인증", "from": "", "to": "", "note": "신청서 작성", "law": "신축, 재축, 별동증축 연면적3,000㎡이상", "phase": "design", "no": 62}, {"task": "에너지효율등급 예비인증", "from": "", "to": "", "note": "ID: jne015 PW: 전남1!", "law": "신축, 재축, 별동증축 연면적500㎡이상", "phase": "design", "no": 63}, {"task": "제로에너지건축물 예비인증", "from": "", "to": "", "note": "ID: jne015 PW: 전남1!", "law": "신축, 재축, 별동증축 연면적500㎡이상", "phase": "design", "no": 64}, {"task": "일상감사", "from": "시설과", "to": "감사실", "note": "", "law": "", "phase": "design", "no": 65}, {"task": "설계용역 납품", "from": "", "to": "", "note": "", "law": "", "phase": "design", "no": 66}, {"task": "건설엔지니어링(설계용역) 평가", "from": "", "to": "", "note": "착공후6개월이내", "law": "", "phase": "design", "no": 67}, {"task": "시설공사 집행계획 수립", "from": "시설과", "to": "", "note": "내부결재", "law": "", "phase": "const", "no": 68}, {"task": "시설공사 품의", "from": "시설과", "to": "", "note": "재정과", "law": "", "phase": "const", "no": 69}, {"task": "공사감독 배치기준(안) 공개", "from": "시설과", "to": "홈페이지 공개자료실", "note": "1주일", "law": "", "phase": "const", "no": 70}, {"task": "시공단계의 건설사업관리계획 수립(CEMS)", "from": "시설과", "to": "CEMS", "note": "전산 입력", "law": "", "phase": "const", "no": 71}, {"task": "기술자문위원회 추진 계획 수립", "from": "시설과", "to": "", "note": "내부결재", "law": "100억 이상", "phase": "const", "no": 72}, {"task": "기술자문위원회 위원위촉 및 개최 알림", "from": "시설과", "to": "기술위원", "note": "", "law": "", "phase": "const", "no": 73}, {"task": "기술자문위원회 지출경비 품의", "from": "시설과", "to": "기획팀", "note": "", "law": "", "phase": "const", "no": 74}, {"task": "기술자문위원회 실시", "from": "시설과", "to": "", "note": "공기, 감독자 배치기준", "law": "", "phase": "const", "no": 75}, {"task": "기술자문위원회 결과보고", "from": "시설과", "to": "", "note": "내부결재", "law": "", "phase": "const", "no": 76}, {"task": "기술자문위원외 외부위원 수당 품의", "from": "시설과", "to": "기획팀", "note": "", "law": "", "phase": "const", "no": 77}, {"task": "시공단계의 건설사업관리계획 수립 및 집행계획(안)", "from": "시설과", "to": "", "note": "내부결재", "law": "", "phase": "const", "no": 78}, {"task": "감독권한대행등 건설사업관리용역 일상감사 의뢰", "from": "시설과", "to": "감사관", "note": "", "law": "", "phase": "const", "no": 79}, {"task": "감독권한대행등 건설사업관리용역 일상감사 회신", "from": "감사관", "to": "시설과", "note": "", "law": "", "phase": "const", "no": 80}, {"task": "건축감리용역 품의", "from": "시설과", "to": "재정과", "note": "", "law": "", "phase": "const", "no": 81}, {"task": "설계의도구현 용역 품의", "from": "시설과", "to": "재정과", "note": "", "law": "", "phase": "const", "no": 82}, {"task": "안전보건대장 작성 및 검토용역 품의", "from": "시설과", "to": "재정과", "note": "", "law": "", "phase": "const", "no": 83}, {"task": "재해예방 기술지도 용역 발주", "from": "시설과", "to": "", "note": "", "law": "50억 미만공사", "phase": "const", "no": 84}, {"task": "관급자재 발주", "from": "시설과", "to": "재정과", "note": "", "law": "", "phase": "const", "no": 85}, {"task": "등의계획 통보", "from": "시설과", "to": "지자체", "note": "", "law": "", "phase": "const", "no": 86}, {"task": "시설공사 착공", "from": "", "to": "", "note": "", "law": "", "phase": "const", "no": 87}, {"task": "교육시설 안전성 평가 제출", "from": "시공사", "to": "시설과", "note": "착공시", "law": "", "phase": "const", "no": 88}, {"task": "교육시설 안전성 평가 검토의뢰", "from": "시설과", "to": "한국교육시설안전원", "note": "edusafety1204@koies.or.kr", "law": "", "phase": "const", "no": 89}, {"task": "교육시설 안전성 평가 검토결과 회신", "from": "한국교육시설안전원", "to": "시설과", "note": "02-781-6872(한은영)", "law": "", "phase": "const", "no": 90}, {"task": "교육시설 안전성 평가 수수료 납부", "from": "시설과", "to": "", "note": "", "law": "", "phase": "const", "no": 91}, {"task": "교육시설 안전성 평가 검토결과 알림", "from": "시설과", "to": "시공사", "note": "", "law": "", "phase": "const", "no": 92}, {"task": "안전점검 수행기관 지정 요청", "from": "시공사", "to": "시설과", "note": "착공시", "law": "", "phase": "const", "no": 93}, {"task": "안전점검 수행기관 지정 계획수립", "from": "시설과", "to": "", "note": "내부결재", "law": "", "phase": "const", "no": 94}, {"task": "안전점검 수행기관 지정 공고", "from": "시설과", "to": "", "note": "내부결재", "law": "", "phase": "const", "no": 95}, {"task": "안전점검 수행기관 지정 공고", "from": "시설과", "to": "홈페이지", "note": "", "law": "", "phase": "const", "no": 96}, {"task": "안전점검 수행기관 지정 신청서 제출", "from": "용역사", "to": "시설과", "note": "", "law": "", "phase": "const", "no": 97}, {"task": "안전점검 수행기관 지정 결과", "from": "시설과", "to": "", "note": "내부결재", "law": "", "phase": "const", "no": 98}, {"task": "안전점검 수행기관 지정 통보서 보냄", "from": "시설과", "to": "시공사", "note": "", "law": "", "phase": "const", "no": 99}, {"task": "안전관리계획서 제출", "from": "시공사", "to": "감리", "note": "착공전", "law": "", "phase": "const", "no": 100}, {"task": "안전관리계획서 검토 보고", "from": "감리", "to": "시설과", "note": "", "law": "", "phase": "const", "no": 101}, {"task": "안전관리계획서 검토용역 발주", "from": "시설과", "to": "", "note": "", "law": "", "phase": "const", "no": 102}, {"task": "안전관리계획서 검토 결과 통보", "from": "시공사", "to": "시공사", "note": "", "law": "", "phase": "const", "no": 103}, {"task": "공사안전보건대장 제출", "from": "시공사", "to": "시설과", "note": "착공시", "law": "", "phase": "const", "no": 104}, {"task": "공사안전보건대장 검토 의견서 제출", "from": "용역사", "to": "시설과", "note": "", "law": "", "phase": "const", "no": 105}, {"task": "공사안전보건대장 검토 결과보냄", "from": "시설과", "to": "시공사", "note": "", "law": "", "phase": "const", "no": 106}, {"task": "CSI 등록(감리단, 용역사 검토결과)", "from": "시공사", "to": "", "note": "", "law": "", "phase": "const", "no": 107}, {"task": "CSI 승인", "from": "감리단", "to": "", "note": "", "law": "", "phase": "const", "no": 108}, {"task": "CSI 승인", "from": "공사감독", "to": "", "note": "", "law": "", "phase": "const", "no": 109}, {"task": "해체계획서 건축위원회 심의 의뢰", "from": "시설과", "to": "지자체건설과", "note": "", "law": "", "phase": "const", "no": 110}, {"task": "해체계획서 건축위원회 심의 회신", "from": "지자체건설과", "to": "시설과", "note": "", "law": "", "phase": "const", "no": 111}, {"task": "해체공사 감리지정 요청", "from": "시설과", "to": "지자체건설과", "note": "", "law": "", "phase": "const", "no": 112}, {"task": "어린이 활동공간 확인검사", "from": "", "to": "", "note": "", "law": "", "phase": "const", "no": 113}], "design_check": [{"group": "인증 / 법규 /", "items": ["공사규모 적정성 검토(최근 발주 3개학교 ㎡당 단가비교)", "100억이상 계획설계(안) 설명회 준비", "100억이상 기술자문위원회 준비", "BF완화 기준 확인", "건설사업관리계획 수립(건설사업관리기술인 또는 공사감독자 배치계획, 공사기간 산정 등)", "구조안전 및 내진 설계확인서(건축사 및 건축구조기술사 날인 필수) 및 중요도(특, 1) 반드시 체크 - 다목적강당: 중요도 특 적용 - 그 외(교육연구시설): 중요도 1 적용", "내진철근 반영", "녹색건축 신축, 재축, 별동증축 연면적3,000㎡이상", "설계도서 시공사, 감리단 수령 지시", "설계안전보건대장 대상 확인", "설계의 경제성 등 검토(VE) 총공사비 100억원 이상(전기,통신,소방 제외)", "설계의 안전성 검토 대상 확인", "에너지절약계획서 건축허가 연면적 500㎡ 이상(제로에너지 인증 받을시 면제)", "에너지효율등급 신축, 재축, 별동증축 연면적500㎡이상(2025. 1. 1. 부터 제로에너지건축물로 통합)", "제로에너지건축물 신축, 재축, 별동증축 연면적500㎡이상", "조달청 입찰 관련 후속업무 지원", "집행계획 수립용 관급자재 정리 파일"]}, {"group": "배치 / 계획", "items": ["1층 바닥레벨 GL+150mm이상 확보", "1층 외부 출입문 반드시 방풍실 설치", "1층 외부 출입문 외부 트렌치(배수시설) 설치 권장", "신설학교 강당(대피시설) 교사동 분리(조인트 설치)", "건물 1F레벨 참고 대지 배수고려", "건축면적 5,000㎡이상 학교 지하 빗물저류조 설치", "급식실 배수고려한 그리스트렙 레벨 확인(사용자 사용성 고려)", "기준층 옥상 및 외부공간 계획시 우수계획 수립(물구배)", "기준층 옥상 외부 출입문 계획시 우수 고려(시스템도어)", "대지 우수계획 수립시 주변 민원발생 고려", "대지내 소방차로 동선 확보", "대지내 우수계획 수립시 레벨 변화 반영(수평 동일레벨 지양)", "방화구획 확인(10층 이하의 층은 바닥면적 1,000㎡ 마다 구획)", "외부 민원인 개방공간과 학생사용공간 동선 분리(강당)", "자하주차장 계획시 렘프부분 우수계획 수립", "주차대기공간(픽업) 필요시 교내 설치", "주차대수 법적기준 확인", "지하(기계실, 주차장) 부분 경제성 고려 최소화", "차량 진출입로 학생안전 고려(1개소 설치)"]}, {"group": "가설", "items": ["300mm 표준시방 이내, 600mm 까지 가능 입면돌출부위 초과시 비계 재설치로 인한 공기 지연(패널, 눈썹)", "가설사무소 위치 확보", "기준점 규준틀", "작업차량 및 소방차량 동선 확인", "주변 상황 고려한 가설울타리 설계(방음, 높이)", "지주식 가설휀스의 경우 버팀기둥 지지폭 확보 여부 검토", "통상 4m 이상의 경우 시스템동바리 반영, (5m 이상 규정이나 4.5m의경우 자재수급 어려움)"]}, {"group": "파일", "items": ["Ø500 파일 사용(Ø450 자재는 주문생산 공기 지연 사유 해당)", "기술사 확인 가능한, 명확한 구조값 산출가능 지정공법만 인정", "두부정리 1000mm인정", "오픈컷의 경우 경사면 노출되는 파일의 인입 깊이 검토", "정재하시험을 위한 서비스파일 필요 여부 검토(동재하로 변경)", "주심도 파일위치 검토(기둥 중앙부, 흙막이 스트러트 간섭 등)", "지하층 파일공사 공삭공 인정", "토질기술사 의견 반영하여 경제성 검토 후 결정(치환공법)", "파일공사 시작지점 기초 하단 기준", "파일두부캡 건축용 사용(HD-13*6EA, D500), 통상 토목용 두부캡 반영 원가 증가 요인", "파일장비 조립 및 해체 비용 검토(공기산정자료, 별동건물 2회 반영 등)"]}, {"group": "기초 토공", "items": ["가급적 잡석다짐 지양", "구조물, 기초 접하는 지면부 다짐공정 반영", "기초 측변부 돌출은 외벽 마감재와 일치하도록 설계", "버림CONC + 비닐 + 단열재 + 기초CONC", "상세도 C급 콘크리트 반영 여부 검토", "온통기초 하단부는 단차 없는 수평구조로 설계", "지상 태양광(PV) 시설이 있을시 반드시 전기설계와 협의후 기초 타설 여부 결정", "토사반출량 검토(공사장 내 여유부지 확보가능 시)", "특이사항 없을 시 온통기초로 설계", "파일 상부 온통기초의 경우 기초 측변부가 외벽마감재보다 튀어나오지 않도록 편심설계(타설횟수 감소)"]}, {"group": "철콘 지하", "items": ["DA 공기 순환에 저해되는 벽체, 창호 지양", "DA 출입을 통한 자재 반출입 및 점검 필요 크기 확보", "PIT실 방수공사 시 경제성 고려(내부방수 지양)", "PIT실 최소 천정고 2M이상 확보", "계단 참, 계단실-기계실 간 방습계획 검토", "지하 1.5m이상 흙막이 시공 검토", "지하 바닥 배수판 설치 시 방수 지양", "지하 바닥 배수판 용수 배출 고려 설계", "지하 방습벽과 면하는 계단 등 방습계획 검토", "지하공사 가능 여부 판단, 지반조사보고서 검토(연암층, 실트질 확인)", "지하실 방습벽 특이사항 없을 시 기성품 사용", "지하실 외벽 아스팔트프라이머 + 비닐(내부방수 지양)", "특이사항 없을 시 집수정을 기성품 사용"]}, {"group": "철콘 지상", "items": ["1층 바닥 단열재, 배수판 시공 지양", "1층 바닥레벨 GL+150mm이상 확보", "1층 시스템박스 설치 실에 대한 FL, 지하수위, 우수계획 검토", "GL과 만나는 외벽 마감재 마감위치, 방법 확인", "골조해석시스템에 따른 철근 이음방법 검토(겹침이음 위치), 기계식이음(커플러는 사용불가(잔류변형량 표준시험 결과 획득 어려움), 나사식,용접식 비용 과다)", "공기순환기 배관 규격 Ø250을 위한 슬리브는 Ø350 필요 기계감독과 협의 필 보과통 불가", "내진성능 확보(내진철근, 콘크리트 강도)", "내진철근 사급반영, (SD500S 규격 사용) 400의 경우 자재수급 어려움", "데크플레이트 사용 지양(자재인양 공간 확보 필요, 공기단축 효과 없음, 시공성 용이하지 않음), 연속 반복되는 오피스 건물의 경우 반영", "보하단 천정마감 사이 최소 300mm이상 확보", "스리브 보관통 절대 불가", "슬라브 단차 발생시 반드시 보 시공(구조도)", "외부슬라브, 화장실 등 다운슬라브 반영(구조도)", "인방 벽 만나는 부분 방수 고려(신축성 확보)", "인방 설치 가능 여부 검토(모듈 축소), 수벽 설치", "창대석, 전자칠판, 사물함 위치를 고려한 날개벽 확보", "창틀 설치(고정)를 고려한 개구부 설계(누수대책)", "특이사항 없을시 단열재 부착타설 원칙"]}, {"group": "철콘 옥상", "items": ["BIPV 패드 구조 검토 내용 포함", "배수계획 집중호우 반영 설계", "옥상층 우수구배는 CONC 구체구배 적용", "외벽 마감재, 외부슬라브 맞닿은 시공 지양", "외부슬라브, 옹벽 만나는 부분 CONC 방수용 턱 설치", "외부슬라브와 옹벽 만나는 부분 지수판 설치", "적정규모이상 옥상패드 설치시 물구멍 고려"]}, {"group": "철골", "items": ["기본 시공상세도 첨부", "내화성능 확보", "지붕 벽 브레이스 보강"]}, {"group": "조적", "items": ["개구부 인방 기성품 적용", "내,외부 개구부 상단 인방없는 조적공사 지양", "치장벽돌 상부 반드시 빗물가림 설치 및 벽돌 돌출 지양", "치장벽돌 우수 우려부분 공기구멍 배수구멍 설치 지양", "치장벽돌 지지철물 설계 시 단열재 회손 및 시공성 고려"]}, {"group": "방수", "items": ["방수턱 적용 여부 확인", "옥상 방수 구배 확인(슬라브 구체구배 적용)"]}, {"group": "타일", "items": ["물구배 고려한 다운슬라브", "화장실 벽 타일 떠붙임 시공"]}, {"group": "돌", "items": ["계단 디딤판 바닥돌 붙이기 마찰계수 확인", "옥외 공간 바닥돌 시공시 방수공법, 석회수 하자 고려", "옥외계단 돌 시공시 벽체 마감제 맞닿는 부분 시공성 고려(누수)", "외벽 돌붙이기 공법 및 상세도 첨부(핀공법 지양)", "외부 1층계단 통석시공 원칙(기타 외부 디딤판 50mm이상 시공)"]}, {"group": "금속", "items": ["계단 손스침 가급적 기성품사용(H: 1,200mm이상)", "계단실 최상층, 보이드 부분 난간 안정성고려 높이 확보(H: 1,500mm이상)", "철구조물 콘크리트 고정 시공성 내구성 확보 상세도 첨부"]}, {"group": "미장", "items": ["바닥미장(레미탈 타설, 방통) 지양", "외부 미장공사 지양"]}, {"group": "창호", "items": ["구조용 코킹 적용", "외부 창호 주위 모르타르 사춤", "커튼월 노출바 지양"]}, {"group": "유리", "items": ["유리 물량산출시 85%로 설계(감사 지적사항)", "창호바 고려한 로이복층유리 규격 확인"]}, {"group": "수장", "items": ["내부 마감재료 준불연 이상 등급 확인"]}, {"group": "지붕", "items": ["루프드레인 위치 표시 확인", "옥상 구배 확인(슬라브 구체구배 적용)", "지붕의 익스팬션 조인트 설치 위치와 조인트구조 검토"]}, {"group": "철거", "items": ["특수공법 지양"]}, {"group": "운반", "items": ["자재운반 현장상황 확인(타워트레인)"]}], "const_check": [{"group": "착공", "items": ["고용,산재보험 가입증명원, 한전,환경 및 품질관리계획서 등 확인", "공사공정 예정표 확인", "공정별 인력 및 장비투입계획서, 착공전 현장사진 확인", "착공내역서 검토(총액입찰 공사 낙찰율 적용 관련)", "착공시 공정회의 통한 설계변경 추진", "현장대리인 선임계, 재직증명서, 경력증명서, 기술자격증 사본 등 확인", "안전관리계획서 제출 및 안전관리계획서 검토 용역 계약 체결(CSI 입력)", "안전관리계획서 변경(조직도,안전점검 내용,공법변경) 시 변경 승인(CSI 입력)", "공사안전보건대장 제출 및 안전보건대장 검토 및 이행점검 용역 계약 체결", "안전점검 수행기관 지정 요청", "안전보건조정자 선임", "올바로 대행입력 안내", "토사이클(토석정보공유시스템) 입력 안내(1000㎥ 이상)", "선철거 공사의 경우 해체계획서 제출 촉구"]}, {"group": "배치", "items": ["건물 1F레벨 참고 대지 배수 확인", "공정율 반영 토공사 시기 및 공법 변경 고려", "확인측량 결과 설계서 비교", "지장물 조사 결과 제출"]}, {"group": "가설", "items": ["가설사무소 위치 확보", "감독사무실 및 컴퓨터 집기류 반드시 확보", "기준점 규준틀", "세륜시설 위치 및 설치 확인", "주변 상황 고려한 가설울타리 설계(방음, 높이)", "가설휀스 설치 가능 여부 확인(지주식, 자립식) 유효폭 등", "가설휀스 구조안전확인 검토", "외부비계 설치 시 마감재 돌출부 간섭여부 검토", "공기단축을 위한 외부비계-건물중심선 이격거리 변경 검토(안전관리계획서 변경 필요)", "작업 중 외부지계 임의해체 절대금지", "혹서기 온열질환 대비 작업자 휴게소 운영"]}, {"group": "파일", "items": ["관급 시멘트 벌크로 사급전환", "기술사 확인 가능한 지정공법만 인정", "두부정리 1000mm인정", "밀크주입 시 투입 비용 정산(내역물량 전체가 투입 될 수 없음)", "시항타 일정 파일이음부 점검 일정 동, 정 재하시험 일정", "지하층 파일공사 공삭공 인정", "파일공사 시작지점 기초 하단 기준", "파일항타 장비 반입을 위한 지반개량 실정보고 수용 여부 논의(설계도서 불일치 사유 해당하지 않음)", "현장 부지정리 후 토질 상태 확인(필요시 치환)", "정재하 시험을 위한 파일 위치 사전 확인 및 서비스 파일 필요시 사전 실정보고", "파일 주심도 확인(기둥 중심여부, 흙막이 스트럿 간섭 여부)"]}, {"group": "기초 토공", "items": ["구조물, 기초 접하는 지면부 다짐", "기존 지반과 기초하단부 레벨확인(들뜬부분 없도록)", "기초 측변부 돌출은 외벽 마감재와 일치여부 확인", "버림CONC + 비닐 + 단열재 + 기초CONC", "온통기초 하단부는 단차 없는 수평구조 확인", "지하층 오픈컷 공법 적용 시 인접한 1층 지지 파일의 자립 가능 여부 확인"]}, {"group": "철콘 지하", "items": ["DA 공기 흐름에 저해되는 벽체, 창호 지양", "DA 출입을 통한 자재 반출입 및 점검 필요 크기 확인", "PIT실 최소 천정고 확인", "지하 바닥 배수판 설치 시 방수 없음", "지하 바닥 배수판 용수 배출 가능여부 확인", "지하 방습벽과 면하는 계단 등 방습계획 검토", "지하실 외벽 방수공법 확인", "특이사항 없을 시 집수정을 기성품 사용", "흙막이 계측기 설치 여부 확인", "흙막이 시공상세도 확인", "지하층 천정 상부 마감재 논의 필요", "지하, PIT 집수정 배수 계획 및 토목배관 연결 구배 가능 여부 확인"]}, {"group": "철콘 지상", "items": ["1층 바닥 단열재, 배수판 시공 지양", "1층 바닥레벨 GL+150mm이상 확보", "GL과 만나는 벽 마감재 마감위치 확인", "보하단 천정마감 사이 최소 200mm이상 확보", "스리브 보관통 절대 불가", "슬라브 단차 발생시 반드시 보 시공(구조도)", "외부, 화장실 등 다운슬라브 반영(구조도)", "인방 벽 만나는 부분 방수 고려(신축성 확보)", "창틀 설치를 고려한 개구부 설계(누수대책)", "4M~5M이상 동바리 V5강관동바리 적용 시 시스템 동바리 변경 논의(자재수급, 안전확보)", "건식 바닥난방 적용 여부 논의", "타설계획서에 타공종(전기, 통신, 소방) 감리, 소장 결재를 득하여 사업관리단 제출", "구조체 혼합타설 불가, 혼용타설 감독자의 승인을 얻은 후 가능"]}, {"group": "철콘 옥상", "items": ["배수계획 집중호우 반영 설계", "옥상층 우수구배는 CONC구체구배 적용", "외벽 마감재, 외부슬라브 맞닿은 시공 지양", "외부, 물쓰는 슬라브 벽 만나는 부분 지수판 설치", "외부슬라브, 벽 만나는 부분 방수용 턱 설치", "지수판 설치 벽체 중심선에 맞춰 일직선으로 설치 되었는지 확인"]}, {"group": "철골", "items": ["기본 시공상세도 첨부", "내화성능 확보", "SRC 구조의 경우 철골과 철근이 맞닿으면 전위 부식 발생", "노출되는 철골기둥의 경우 페인트 작업을위한 이형철근 용접 사다리 제거"]}, {"group": "조적", "items": ["우수 우려부분 공기구멍 배수구멍 설치 지양", "조적 지지철물 설계 시 단열재 파손 및 시공성 고려", "시공상세도 나누기(배관, 슬리브, 소화전 등) 매립 위치 반영 및 작업시 타공종 사전 매립", "피난경로의 복도방향 조적벽면은 내진보강"]}, {"group": "방수", "items": ["옥상 방수 구배 확인", "콜드조인트 보수 대첵", "외부 계단 화강석 하부 방수 필요"]}, {"group": "타일", "items": ["물구배 고려한 다운슬라브", "화장실 벽 타일 떠붙임 시공", "벽체 오목한 부위 코킹 시공"]}, {"group": "돌", "items": ["디딤판 바닥돌 마찰계수 확인", "옥외 공간 바닥돌 시공 시 방수공법, 석회수 하자 고려", "옥외계단 돌시공 시 벽체 마감제와의 시공성 고려(누수)", "외벽 돌붙이기 공법 및 상세도 첨부(핀공법 지양)", "외부 1층계단 통석시공 원칙(디딤판 50mm이상 시공)"]}, {"group": "금속", "items": ["계단 손스침 가급적 기성품사용(H: 1200mm이상)", "계단실 최상층 보이드 부분 난간 안정성고려 높이 확보", "철구조물 콘크리트 고정 시공성 내구성 확보 상세도 첨부"]}, {"group": "미장", "items": ["KS(한국산업표준) 자재 확인", "창호가 설치되지 않은 상태에서 미장시공은 하자 발생", "조적벽-구조체 교차하는 구간 실리콘 시공하여 미장균열 예방"]}, {"group": "창호", "items": ["외부 창호 주위 모르타르 사춤 확인", "창호 정산 확인", "창호 호차(조시) 확인"]}, {"group": "유리", "items": ["유리 정산 확인", "창호 사양 변경에 따른 유리 사양 변경 실정보고"]}, {"group": "도장", "items": ["KS(한국산업표준) 자재 확인", "도장이 끝난면 오염, 보양 여부 확인"]}, {"group": "지붕", "items": ["신축줄눈 설치여부 확인", "옥상 구배 확인"]}, {"group": "운반", "items": ["자재운반 현장상황 확인(타워트레인)"]}, {"group": "설계 변경", "items": ["구조부 설계변경 반드시 구조기술사 확인 요", "명확한 설계 오류 및 발주청 요구시 설계변경금액 조정 지양", "발주청 요구 협의율적용, 시공사 요구 낙찰율 적용", "설계변경시 시공사 득실 판단하여 일부금액 시공사 부담", "착공시 시공사, 감리, 설계용역사, 발주청 참여 시공타당성 검토"]}], "cm_settle": [{"group": "상주 감리원 근무일 (직접 인건비)", "items": ["법정공휴일 및 근로자의 날은 출근유무와 상관없이 인정", "휴가, 병가 등 기타사항으로 인한 대체 근무자 출근시 인정 - 대체근무자: 용역 본사에서 나온 대체 근무자", "휴가, 병가 등 기타사항으로 인한 대행 근무자 출근시 불인정 - 대행근무자: 현재 용역중인 상주감리원중 한명", "용역 완료일 기준 월 22일만 인정. 단, 총 근무일 기준 /22로 계산 가능 - 예시: 1월 23일 근무, 2월 21일 근무시 평균 22일 근무 인정", "산출 용역일 기준 초과 근무를 했을시, 산출 용역일만 인정", "일요일 공사 승인을 시공사 사유로 인해 승인을 해줬을시, 건설사업관리인중 일부는 반드시 출근하여야 하며, 출근하는 대가(금액)은 발주청에서 지급하는것이 아닌, 시공사와 건설사업관리단의 협의를 통해 대가를 지급하여야함. 단, 발주청 사유로 인해 일요일 공사를 할 경우 발주청에서 대가(금액)을 지급하여야함(사실상, 거의 이런경우는 없음)"]}, {"group": "직접경비 (숙식비)", "items": ["임대비: 월세, 전세 등 실비 적용 인정", "관리비: 전기, 수도 등 실비 적용 인정", "식대: 공무원 여비규정에 의거 1인 1일 2.5만원 인정"]}, {"group": "직접경비 (교통비)", "items": ["출근시 시내버스 대중교통비 인정(출근부로 갈음 가능)", "기차, 배, 시외버스 이용시 실비 적용 인정", "월 4회 현장과 주거지 교통비는 편도 4회임(왕복 4회 아님) - 자차 이용시 시외버스 요금으로 인정 단, 부득이하게 자차를 이용해야 할시 증빙 자료 제출시 하이패스 및 연비계산서 인정(거의 해당 조건 없음) - 영수증 일시 반드시 확인(18시 퇴근인데 이미 영수증에 15시에 퇴근을 한 사례가 꽤 많음, 근무지 무단이탈임) - 반드시 사업 시작시에 출퇴근시간이 미리 협의가 되있어야 함"]}, {"group": "직접경비 (운영경비)", "items": ["직접경비는 반드시 모든 항목 영수증(확인증) 증빙되어야 함", "사무용품비 - 사무기기 임대료 실비 적용 인정 - 소모품비는 반드시 영수증 품목 확인(사무로 쓰이는 용품인지 확인)", "안전용품비 - 개인 안전장구 관련 실비 적용 인정(안전화, 안전모, 각반 등)", "통신비 - 인터넷, 공용전화 등 실비 적용 인정(설치비 포함) - 개인 핸드폰 이용 금액 불인정", "복리후생비 - 음료, 간식, 회의비용, 회식 등 1인 1월 5만원 인정(술 포함되도 됨)", "사무실비 - 사무실 임대료, 공과금 등 실비 적용 인정"]}, {"group": "직접경비 (차량운행비)", "items": ["차량운행비 - 차량 임대비, 유류비 등 실비 적용 인정 - 회사차라는게 확인되어야하고, 실제 공사하는 지역에서만 사용된다는 증빙자료 필요 - 현실적으로 거의 쓰이는 경우 없음"]}, {"group": "직접경비 (출장비)", "items": ["숙박비 - 공무원 여비규정에 의거 시단위: 7만원, 광역시 8만원, 서울특별시: 10만원 실비 적용 - 여기서 숙박비라고 함은, 비상주기술지원인의 숙박비를 뜻함 - 현실적으로 비상주기술지원인이 숙박하는 경우는 없음(숙박하는 사유 증빙 필요)", "일비 - 공무원 여비규정에 의거 일일 2.5만원 인정(영수증 필요없음)", "식비 - 공무원 여비규정에 의거 일일 2.5만원 까지 인정(영수증 없으면 인정안함)", "교통비 - 공무원 여비규정에 의거 기차, 배, 시외버스 이용시 실비 적용 인정 - 자차 이용시 시외버스 요금으로 인정 단, 부득이하게 자차를 이용해야 할시 증빙 자료 제출시 하이패스 및 연비계산서 인정(거의 해당 조건 없음)"]}, {"group": "직접경비 (현지사무원비)", "items": ["급여 - 실비 적용 인정(근로기준법 준수) - 재직증명서, 급여지출내역, 수령확인증 확인 - 세전 월급 전체 지급이 아닌, 세후 금액+(국민연금1/2 + 건강보험1/2 + 고용보험 1/2 + 장기요양보험료 1/2) 지급"]}, {"group": "도서 인쇄비", "items": ["인쇄비 - 인쇄, 제본 등 실비 적용 인정(영수증 확인)"]}, {"group": "기타사항", "items": ["착수내역서 확인시 손해보상보험 가입여부 및 금액 반드시 확인 후 정산", "정산자료 확인시 반드시 부가가치세 제외 금액으로 적용 하여야 함(공급가액)", "모든 자료는 영수증(증빙 자료)가 있어야함"]}], "laws": [{"item": "가설구조물 구조검토 및 구조안전성 확인", "law": "건설기술진흥법 제48조 5항 건설기술진흥법 제62조 7항 건설기술진흥법시행령 제102조", "note": "비계31m이상 거푸집,동바리5m이상 흙막이지보공2m이상 설계시 구조검토 실시, 시공시 구조적 안전성 확인 건축구조, 토목구조, 토질 및 기초기술사 중 2015.07.06.시행"}, {"item": "BF인증 대상", "law": "", "note": "공공건축 및 공중이용시설"}, {"item": "VE발주대상 공사", "law": "", "note": "총공사비 100억 이상 기본설계, 실시설계"}, {"item": "감리 감리자 지정", "law": "건축법 제25조 건축법시행령 제12조 건축법시행령 제19조", "note": "공사감리자는 수시로 또는 필요할 때 공사현장에서 감리업무를 수행하여야 하며, 다음 각 호의 건축공사를 감리하는 경우에는 「건축사법」 제2조제2호에 따른 건축사보(「기술사법」 제6조에 따른 기술사사무소 또는 「건축사법」 제23조제8항 각 호의 감리전문회사 등에 소속되어 있는 자로서 「국가기술자격법」에 따른 해당 분야 기술계 자격을 취득한 자와 「건설기술 진흥법 시행령」 제4조에 따른 건설사업관리를 수행할 자격이 있는 자를 포함한다) 중 건축 분야의 건축사보 한 명 이상을 전체 공사기간 동안, 토목ㆍ전기 또는 기계 분야의 건축사보 한 명 이상을 각 분야별 해당 공사기간 동안 각각 공사현장에서 감리업무를 수행하게 하여야 한다. 이 경우 건축사보는 해당 분야의 건축공사의 설계ㆍ시공ㆍ시험ㆍ검사ㆍ공사감독 또는 감리업무 등에 2년 이상 종사한 경력이 있는 자이어야 한다"}, {"item": "감리 상주감리", "law": "건축법시행령 제19조 5항 4조 건축법시행령 제2조 17의2 건축사법 제2조제2호 건축사법 제23조 8항 3조 기술사법 제6조 건설기술진흥법 시행령 제4조", "note": "2016.09.23. 시행"}, {"item": "감리 직접경비 사용항목", "law": "건설엔지니어링 대가 등에 관한 기준 제11조(직접경비)", "note": "① 직접경비는 건설사업관리 업무에 필요한 현장주재비, 숙박비, 출장여비, 특수자료비, 제출도서의 인쇄 및 복사비, 시험비 또는 조사비, 현지 차량운행비, 현장 운영경비(직접인건비에 포함되지 아니한 보조요원의 급여와 현장사무실의 운영비를 말한다), 건설사업관리 업무수행을 위한 사무공간 임대비(별도의 현장사무실 제공비용 제외) 등으로서 별표 2에 따른 실제 소요비용으로 한다. ② 계약시 당사자간 계약문서 및 과업지시서에 직접경비에 대하여 추후 그 실제 소요비용으로 정산함을 명시하여야 한다."}, {"item": "감리 책임감리", "law": "건설기술관리법 제27조 건설기술관리법시행령 제50조", "note": ""}, {"item": "건설공사 참여자의 안전관리 수준평가", "law": "건설기술진흥법 제62조10항 건설기술진흥법시행령 101조의3 국토교통부 고시 제2016-718호", "note": "관급자재비 포함 200억이상 건설공사 공기 50%이상 건설공사 현장 건설공사 안전관리 업무수행지침"}, {"item": "건설기술용역 및 시공평가", "law": "건설기술진흥법 제50조, 제91조", "note": "기본설계: 해당 기본설계에 관한 실시설계가 준공된 때부터 다음 해 2월 말일까지 실시설계: 해당 건설공사가 착공된 때부터 6개월 이내 감독 권한대행 등 건설사업관리: 해당 건설공사가 90퍼센트 이상 진척되었을 때부터 해당 건설공사의 준공 후 60일까지"}, {"item": "건설기술자의 업무정지 등", "law": "건설기술관리법 제6조4항", "note": ""}, {"item": "건설기술자현장배치기준", "law": "건설산업기본법시행령 제35조 별표5", "note": ""}, {"item": "건설사고 신고대상", "law": "건설기술진흥법 제67조 사고입력: 건설안전정보시스템(COSMIS, 시설안전공단 운영)", "note": "발주청 및 인ㆍ허가기관의 장은 모든건설사고에 대해 대통령령으로 정하는 바에 따라 국토교통부장관에게 제출하여야 한다. 건설사고: 사망 또는 3일이상 휴업이 필요한 인명피해, 1천만원이상 재산피해 중대건설현장사고: 사망자 3명 이상 부상자 10명 이상 등"}, {"item": "건설사업관리계획 수립", "law": "건설기술진흥법시행렬 제59조의2 건설기술진흥법 제 39조의2, 제91조제1항", "note": "총공사비가 5억원 이상인 토목공사 연면적이 660제곱미터 이상인 건축물의 건축공사 총공사비가 2억원 이상인 전문공사 그 밖에 건설공사의 부실시공 및 안전사고의 예방 등을 위해 발주청이 건설사업관리계획을 수립할 필요가 있다고 인정하는 건설공사 발주청은 제62조에 따른 안전관리계획을 수립하여야 하는 건설공사(관람집회시설,연면적 5천제곱미터 이상인 공용청사,전시시설) 및 총공사비가 100억원 이상인 건설공사 중 대통령령으로 정하는 건설공사에 대하여 건설사업관리계획을 수립할 때에는 제6조에 따른 기술자문위원회의 심의를 받아야 한다. 건설사업관리계획을 변경하려는 경우에도 또한 같다 수립하거나 변경한 때에는 이를 국토교통부장관에게 제출"}, {"item": "건설사업관리보고서 작성의무 및 벌칙", "law": "건설기술진흥법 제 39조의4항, 제88조제1호의3", "note": "건설기술용역사업자는 건설공사의 주요 구조부에 대한 시공, 검사 및 시험 등 세부적인 업무내용을 포함한 보고서를 국토교통부령으로 정하는 바에 따라 작성하여 발주청에 제출하여야 한다. 이 경우 건설사업관리보고서는 건설기술용역사업자의 소속 건설기술인 중 대통령령으로 정하는 건설기술인이 작성하여야 한다"}, {"item": "건설자재 품질관리 처벌규정", "law": "건설기술진흥법 제57조, 88조 건설기술진흥법시행령 제 95조 건설공사 품질관리 업무지침(국토교통부 고시) 제3편 제31조, 32조, 38조, 41조", "note": ""}, {"item": "건설재해예방기술지도", "law": "산업안전보건법 제30조 산업안전보건시행령 제26조4, 5 산업안전보건시행규칙 제32조 2항", "note": "건설재해예방기술지도 예외규정 (시행규칙 제32조 공기 3월 미만, 도서지역)"}, {"item": "건축물에너지효율등급 인증 대상", "law": "", "note": "신축, 재축, 증축 (에너지절약계획서 제출대상이며 연면적 500㎡이상)"}, {"item": "계단, 복도 기준", "law": "건축물의 피난 방화구조 등의 기준에 관한 규칙 15조", "note": ""}, {"item": "공공건축심의위원회구성 및 운영", "law": "건축서비스산업진흥법 제 22조 건축서비스산업진흥법 시행령 제19조의3 시설과-6397(2018.5.1.) 통합인력풀 구성 운영 계획(안)", "note": ""}, {"item": "공사중지명령 및 제재", "law": "건설기술진흥법 제40조, 제87조의2", "note": "공사감독자는 건설사업자가 건설공사의 설계도서ㆍ시방서(示方書), 그 밖의 관계 서류의 내용과 맞지 아니하게 그 건설공사를 시공하는 경우 또는 제62조에 따른 안전관리 의무를 위반하거나, 제66조에 따른 환경관리 의무를 위반하여 인적ㆍ물적 피해가 우려되는 경우에는 재시공ㆍ공사중지(부분 공사중지를 포함한다) 명령이나 그 밖에 필요한 조치를 할 수 있다. 공사감독자는 시정 여부를 확인한 후 공사재개 지시 등 필요한 조치를 하여야 하며, 이 경우 지체 없이 이에 관한 사항을 해당 건설공사의 발주청에 보고하여야 한다."}, {"item": "공사중지명령에 대한 불이익조치 금지, 손해면책", "law": "건설기술진흥법 제40조의2, 제40조의3", "note": "재시공ㆍ공사중지 명령 등의 조치로 발주청이나 건설사업자에게 손해가 발생한 경우 건설기술용역사업자ㆍ공사감독자 또는 제40조제5항에 따른 책임건설기술인은 그 명령에 고의 또는 중대한 과실이 없는 때에는 그 손해에 대한 책임을 지지 아니한다."}, {"item": "공용건축물", "law": "건축법 제29조", "note": "제1항에 따라 협의한 건축물에는 제22조제1항부터 제3항(사용승인)까지의 규정을 적용하지 아니한다. 다만, 건축물의 공사가 끝난 경우에는 지체 없이 허가권자에게 통보하여야 한다."}, {"item": "교육시설 안전성 평가 완료일 기준", "law": "교육시설 안전성평가 운영기준 제6조 교육시설등의 안전 및 유지관리등에 관한 볍률 시행령 제20조", "note": ""}, {"item": "녹색건축 인증 대상", "law": "녹색건축물조성지원법 시행령 제11조의3항", "note": "신축, 재축, 별동증축 연면적 3,000㎡이상"}, {"item": "녹지점용(보존,완충,공원)", "law": "도시군계획시설의 결정 구조 및 설치에 관한 규칙 제89조 도시공원 및 녹지등에 관한 법률 시행령 제43조 도시공원 및 녹지등에 관한 법률 시행령 제22조 별표 1", "note": ""}, {"item": "물가변동으로 인한 계약금액의 조정", "law": "국가를 당사자로 하는 계약에 관한 법률 제19조 국가를 당사자로 하는 계약에 관한 법률 시행령 제64조", "note": "에스컬레이션 예정가격 20억 이상 조달청 검토 요청"}, {"item": "불연, 준불연재 사용기준", "law": "건축법 제52조(건축물의 내부 마감재료) 건축법시행령 제61조(건축물의 내부 마감재료) 건축물의 피난 방화구조 등의 기준에 관한 규칙 제24조(건축물의 내부 마감재료)", "note": "대상 건축물(학교시설) 가. 초등학교, 수련시설 나. 5층 이상인 층 거실의 바닥면적의 합계가 500㎡ 이상인 건축물 다. 공동주택(기숙사)으로서 3층 이상인 층의 그 용도로 쓰는 거실의 바닥면적의 합계가 200㎡(주요구조부가 내화구조 또는 불연 재료로 된 건축물의 경우에는 400㎡)이상인 건축물 예외) 주요구조부가 내화구조 또는 불연재료로 되어 있고 그 거실의 바닥면적(스프링클러나 그 밖에 이와 비슷한 자동식 소화설비를 설치한 바닥면적을 뺀 면적) 200㎡ 이내마다 방화구획이 되어 있는 건축물은 제외"}, {"item": "빗물이용시설 설치 의무대상", "law": "물의 재이용촉진 및 지원에 관한 법률 시행령 제10조", "note": "건축면적 5000㎡ 이상인 학교의 신축, 재축, 개축(증축으로 건축면적이 5000㎡ 인경우 포함)"}, {"item": "석면 비산 정도 측정", "law": "석면안전관리법 제28조 석면안전관리법 시행령 제39조", "note": "500㎡이상 비산 정도 측정 800㎡철거공사 감리용역"}, {"item": "선급금 반환 및 정산", "law": "지방자치단체 입찰 및 계약집행기준 제6장 제2절 5-나-1 지방자치단체 입찰 및 계약집행기준 제6장 제2절 5-라-1", "note": "선금수령일로부터 15일 이내에 공동수급체구성원이나 하수급자에게 선금을 분배하지 않은 경우 선금액X(기성(대납)부분의대가사상당액/계약금액)"}, {"item": "선급금 신청 및 지급", "law": "국고금관리법 제26조 시행령 제41조 정부입찰계약집행기준 제9장 제34조 제37조 지방재정법시행령 제96조13항 건설산업기본법시행령 제25조,제34조 하도급거래공정화에관한법률 제6조 지방자치단체 입찰 및 계약집행기준 제6장 제2절 2-가", "note": "14일내 도급사에 지급"}, {"item": "선급금 의무지급률", "law": "지방자치단체 입찰 및 계약집행기준 제6장 제2절 2-가-2", "note": "계약금액의 30% 공사 100억이상 물품제조용역 10억이상 계약금액의 40% 공사 20억이상 물품제조용역 3억이상 계약금액의 50% 공사 20억미만 물품제조용역 3억미만"}, {"item": "선급금 정산", "law": "정부입찰계약집행기준 제10장 제34조", "note": "36조 20일이내 증빙서류제출"}, {"item": "선급금 지출", "law": "건설산업기본법시행령 제25조,제34조 하도급거래공정화에관한법률 제6조 지방자치단체 입찰 및 계약집행기준 제6장 제2절 5-가-2", "note": "15일 이내 하도급사에 지급"}, {"item": "설계안전성 검토(DFS)", "law": "건설기술진흥법 제62조, 제91조 건설기술진흥법시행령제75조의2", "note": "발주청은 대통령령으로 정하는 방법과 절차에 따라 설계의 안전성을 검토하고 그 결과를 국토교통부장관에게 제출하여야 한다. 안전관리계획을 수립해야 하는 건설공사(같은 항 제5호 각 목의 어느 하나에 해당하는 건설기계가 사용되는 건설공사는 제외한다)의 실시설계를 할 때에는 시공과정의 안전성 확보 여부를 확인하기 위해 법 제62조제18항에 따른 설계의 안전성 검토를 한국시설안전공단에 의뢰해야 한다."}, {"item": "설계의 안전성 검토 대상", "law": "", "note": "지하10m이상, 건진법 시행령제101조의1제1항의 가설구조물사용, 기타 건설공사"}, {"item": "시설부대비", "law": "지방자치단체 세출예산 집행기준", "note": ""}, {"item": "시스템비계 설치 의무", "law": "산업안전보건기준에 관한 규칙 제56조 국토교통부 공공공사 추락사고 방지에 관한 지침", "note": "높이 2m이상 일체형 작업발판(시스템비계) 설치 의무"}, {"item": "실정보고", "law": "건설기술진흥법 제 39조의3, 제89조", "note": "건설사업자가 현지여건의 변경이나 건설공사의 품질향상 등을 위한 개선사항의 검토를 요청하는 경우 이를 검토하고, 발주청에 관련 서류를 첨부하여 보고하는 등 필요한 조치(이하 \"실정보고\"라 한다)를 하여야 한다."}, {"item": "안전 보건관리비 사용 기준", "law": "고용노동부 고시 제2012-126호 고용도동부고시 제2014-37호 고용도동부고시 제2014-37호 개정", "note": "교통신호수 가능 건설기술진흥법 공사기간 연장에 따른 정산 가능 소화기, 핫팩, 발열조끼, 마스트 콜토시 사용 사용불가 항목"}, {"item": "안전관리계획 수립 대상", "law": "건설기술진흥법시행령 제98조", "note": "1종시설물 및 2종시설물의 건설공사 지하 10미터 이상을 굴착하는 건설공사 폭발물을 사용하는 건설공사로서 20미터 안에 시설물이 있거나 100미터 안에 사육하는 가축이 있어 해당 건설공사로 인한 영향을 받을 것이 예상되는 건설공사 10층 이상 16층 미만인 건축물의 건설공사 다음 각 목의 어느 하나에 해당하는 건설기계가 사용되는 건설공사 가. 천공기(높이가 10미터 이상인 것만 해당한다) 나. 항타 및 항발기 다. 타워크레인"}, {"item": "안전관리계획서 제출 대상", "law": "", "note": "지하10m이상굴착, 천공기높이 10m이상, 항타 및 항발기, 타워크레인, 높이 31m이상 비계, 5m이상 거푸집 및 동바리, 높이 10m이상 가설구조물"}, {"item": "안전관리계획의 승인 안전관리계획의 수립(안전관리기술사) 안전점검에 관한 종합보고서의 작성 및 보존 안전관리계획 및 안전점검 결과 국토부 제출", "law": "건설기술진흥법 제 62조 건설기술진흥법시행령 제98조 시설물의 안전 및 유지관리에 관한 특별법 건설공사 안전관리 업무 매뉴얼(국토교통부) 건설기술진흥법시행령 제101조", "note": "제62조제1항에 따라 안전관리계획을 수립하여 발주청 또는 인ㆍ허가기관의 장에게 제출하는 경우에는 미리 공사감독자 또는 건설사업관리기술인의 검토ㆍ확인을 받아야 하며, 건설공사를 착공하기 전에 발주청 에게 제출하여 승인을 받아야 한다. 안전관리계획을 제출받은 발주청은 20일 이내에 건설업자에게 그 결과를 통보하여야 한다. 발주청 제100조제2항에 따른 건설안전점검기관에 검토를 의뢰하여야 한다. 다만, 「시설물의 안전 및 유지관리에 관한 특별법」 제7조제1호 및 제2호에 따른 1종시설물 및 2종시설물의 건설공사의 경우에는 한국시설안전공단에 안전관리계획의 검토를 의뢰하여야 한다. 발주청 승인서를 건설업자에게 발급하여야 한다. 발주청은 종합보고서를 해당 건설공사의 하자담보책임기간 만료일까지 보존할 것 건설사업자와 주택건설등록업자는 제4항에 따라 실시한 안전점검 결과를 국토교통부장관에게 제출하여야 한다."}, {"item": "안전관리자의 선임", "law": "산업안전보건법 시행령 제16조", "note": "공사금액 50억 이상 별표 3"}, {"item": "안전보건관리책임자의 선임", "law": "산업안전보건법 시행령 제9조", "note": "공사금액 20억 이상"}, {"item": "안전보건대장 작성 대상", "law": "", "note": "총공사비 50억 이상"}, {"item": "안전보건조정자의 선임 안전보전조정자의 업무", "law": "산업안전보건법 시행령 제24조2항 산업안전보건법 시행령 제24조3항", "note": "공사금액이 50억원 이상인 건설공사 공사감독자, 책임감리자, 종합공사에 해당하는 건설현장에서 관리책임자로서 3년 이상 재직한 사람, 산업안전지도사, 건설안전기술사, 건설안전기사를 취득한 후 건설안전 분야에서 5년 이상, 건설안전산업기사를 취득한 후 건설안전 분야에서 7년 이상 각각의 공사 간에 혼재된 작업의 파악 혼재된 작업으로 인한 산업재해 발생의 위험성 파악 산업재해를 예방하기 위한 작업의 시기ㆍ내용 및 안전보건 조치 등의 조정 관리책임자 간 작업 내용에 관한 정보 공유 여부의 확인"}, {"item": "에너지소요량 평가서 제출 대상", "law": "", "note": "연면적 3,000㎡이상 교육연구시설, 연면적 500㎡이상 공공건축물"}, {"item": "에너지절약계획서 제출 대상", "law": "", "note": "연면적 500㎡이상"}, {"item": "완강기, 구조대 설치 기준", "law": "피난기구의 화재안전기준 화재예방,소방시설설치 유지 및 안전에관한법률 시행령 별표1,별표5", "note": ""}, {"item": "운반비 관련 설계변경", "law": "지방자치단체 입찰 및 계약 집행기준 제7철 3항 지방자치단체를 당사자로하는 계약에 관한 법률 시행령 제75조", "note": "행정자치부 공사기간ㆍ운반거리의 변경 등 계약내용의 변경으로 계약금액을 조정하여야 할 필요가 있는 경우에는 그 변경된 내용에 따라 실비를 초과하지 아니하는 범위에서 조정한다."}, {"item": "임시소방시설", "law": "소방시설설치유지 및 안전관리에관한법률시행령 제15조의4", "note": ""}, {"item": "재조 공급 계약 방법", "law": "조달청고시 제 2021-5호 제3조", "note": "나라장터 종합쇼핑몰 ⇒ 쇼핑도우미 ⇒ 관련규정다운로드"}, {"item": "제로에너지건축물 인증 대상", "law": "", "note": "신축, 재축, 별동증축 연면적 500㎡이상"}, {"item": "준공검사자 지정", "law": "건축법시행령 제20조", "note": "허가권자는 건축물의 사용승인 및 임시사용승인과 관련된 현장조사ㆍ검사 및 확인업무를 대행할 건축사를 다음 각 호의 기준에 따라 선정하여야 한다 1. 해당 건축물의 설계자 또는 공사감리자가 아닐 것 2. 건축주의 추천을 받지 아니하고 직접 선정할 것"}, {"item": "직접시공 관련", "law": "건설산업기본법 제28조2", "note": "도급 금액별 직접시공 금액"}, {"item": "직접시공계획서 제출", "law": "건설산업기본법 28조 2항 건설산업기본법시행령 30조 2항 건설산업기본법시행규칙 25조 5항", "note": "4천만윈 이상, 30일 이상 공사 적용 노무비 기준 직접시공계획서는 건설산업기본법 적용대상공사만 해당됨 전기공사는 전기공사업법 적용으로 해당없음 1. 도급금액이 3억원 미만인 경우: 100분의 50 2. 도급금액이 3억원 이상 10억원 미만인 경우: 100분의 30 3. 도급금액이 10억원 이상 30억원 미만인 경우: 100분의 20 4. 도급금액이 30억원 이상 50억원 미만인 경우: 100분의 10"}, {"item": "착공내역서", "law": "", "note": "고정값,A값(국민건강보험료, 노인장기요양보험료, 국민연금보험료, 퇴직공제부금, 산업안전보건관리비, 품질관리비)"}, {"item": "태풍, 강풍, 악천우 조치", "law": "산업안전보건기준에 관란 규칙 37조, 140조, 143조, 154조, 161조, 162조, 340조, 349조, 360조, 378조, 388조", "note": ""}, {"item": "폐기물 불리발주", "law": "건설폐기물의 재활용촉지에 관한 법률 ㄹ제15조1항", "note": "국가, 지방자치단체 및 제2조제15호 각 목의 어느 하나에 해당하는 자는 대통령령으로 정하는 규모 이상의 건설공사를 발주하려는 경우에는 건설공사와 건설폐기물 처리용역을 분리하여 발주하여야 한다. 100톤 이상"}, {"item": "폐기물 초과 발생", "law": "공사계약 일반조건 제23조의3", "note": "제23조의3(건설폐기물량의 초과발생에 따른 계약금액의 조정) 시행령 제78조에 따라 체결된 계약에 있어서 「건설폐기물의 재활용 촉진에 관한 법률」제15조에 따라 건설공사와 건설폐기물처리용역을 분리발주한 경우로서 공사수행과정에서 건설폐기물이 계약상대자가 설계시 산출한 물량을 초과하여 발생한 때에는 당해 초과물량에 대하여 발주기관이 실제 폐기물처리업체에 지급한 처리비용만큼 계약금액에서 감액조정한다."}, {"item": "폐기물처리분부담금", "law": "자원순환기본법 제21조, 제29조", "note": "2018.01.01. 시행"}, {"item": "품질관리비 반영 및 정산", "law": "건설기술진흥법 제56조, 제53조 제1항 별표 6", "note": "발주자는 건설공사 계약을 체결할 때에는 건설공사의 품질관리에 필요한 비용(이하 \"품질관리비\"라 한다)을 국토교통부령으로 정하는 바에 따라 공사금액에 계상하여야 한다."}, {"item": "하도급 계약시 원도급액 산정필수 항목", "law": "", "note": "재료비,노무비,경비,간접노무비,건강,노인장기,연금,건설기계,기타경비,일반관리비,이윤"}, {"item": "하도급 계약시 하도급계약 산정 항목", "law": "", "note": "재료비,노무비,경비,건강,노인장기,연금,건설기계"}, {"item": "하자담보 책임기간", "law": "건설산업기본법시행령 제30조 별표4", "note": ""}, {"item": "하자보수 공문발송", "law": "지방자치단체를 당사자로하는 계약에 관한 법률 제20조 3 지방자치단체를 당사자로하는 계약에 관한 법률 시행령 제71조 2 지방자치단체 공사계약일반조건 11 공사계약일반조건 제33조 나라장터 정부계약 제도", "note": ""}, {"item": "학교시설 유해물질예방 및 관리 기준", "law": "학교보건법 시행규칙 3조", "note": "제3조(환경위생 및 식품위생의 유지관리) ①「학교보건법」(이하 “법”이라 한다) 제4조에 따라 학교의 장이 유지ㆍ관리해야 하는 학교시설[교사대지(校舍垈地)ㆍ체육장, 교사ㆍ체육관ㆍ기숙사 및 급식시설, 교사대지 또는 체육장 안에 설치되는 강당 등을 말한다. 이하 같다]에서의 환경위생 및 식품위생에 관한 기준은 다음 각 호와 같다. 유해중금속 등 유해물질의 예방 및 관리 기준은 별표 2의2와 같다."}, {"item": "현장대리인 교체", "law": "건설공사 사업관리방식 검토기준 및 업무수행지침 제 49조", "note": "현장대리인 등의 교체"}, {"item": "현장대리인 배치기준", "law": "건설산업기본법 시행령 별표 5", "note": ""}, {"item": "현장대리인 상주", "law": "건설산업기본법 제 40조 건설기술관리법 제6조4항 지방자치단체를 당사자로 하는 계약에 관한 벌률 제30조 2", "note": ""}, {"item": "화장실칸막이 문 높이 및 하부틈 기준", "law": "공중화장실등의 설치기준 제6조제3항 및 제6조의2", "note": ""}, {"item": "환경관리비 적용", "law": "건설기술진흥법 제 66조 건설기술진흥법 시행규칙 제61조 별표 8 환경관리비 세부 산출기준", "note": ""}, {"item": "전기설계 자격", "law": "전력기술관리법 제 11조(전력시설물의 설계도서의 작성) 시행령 제17조(설계사의 면허)", "note": "① 전력시설물의 설계도서는 「국가기술자격법」에 따른 전기 분야 기술사가 작성 ② 일반용전기설비의 전력시설물의 설계도서와 자가용전기설비 중 용량 증설이 수반되지 아니하는 보수 공사는 「국가기술자격법」에 따른 전기 분야 기술자격 취득자로서 대통령령으로 정하는 바에 따라 설계사 면허를 받은 사람이 작성 가능 1. 「국가기술자격법」에 따른 전기 분야의 기사 자격을 취득한 후 2년 이상 전력기술업무를 수행한 사람 2. 「국가기술자격법」에 따른 전기 분야의 산업기사 자격을 취득한 후 5년 이상 전력기술업무를 수행한 사람 ⑤ 전력시설물의 설계 용역은 설계업자에게 발주(發注)하여야 한다."}, {"item": "전기감리 대상", "law": "전력기술관리법 제12조(공사감리등) 전기사업법 제61조 및 제62조시행규칙 제 28조 및 29조 2항", "note": "1. 모든 전력시설물 2. 공사계획 인가 또는 신고 대상인 보수공사 가.신고대상(전기사업법 시행규칙[별표7]) -수전전압 20만볼트 미만의 수용설비 설치. 다만, 설비용량 1,000킬로와트 미만의 수용설비의 구내배전설비는 제외 -고압 이상 수전용차단기와 특고압 이상 20만볼트 미만의 차단기 설치 또는 대체 -특고압 이상 20만볼트 미만의 변압기 설치 또는 대체 -고압 이상 20만볼트 미만의 전선로 설치ㆍ연장 또는 변경 3. 전압 600볼트 미만인 전력시설물의 보수공사로서 자가용전기설비 중 총공사비 5천만원 이상인 보수공사와 함께 시행되는 보수공사"}, {"item": "전기자체감리 가 능", "law": "전력기술관리법 제12조(공사감리등) 전기사업법 제61조 및 제62조 시행규칙 제 28조 및 29조 2항", "note": "1. 설계감리대상기관 시행 - 소속 직원 중 감리원 수첩을 교부받은 자로 하여금 감리업무를 수행하게 하는 공사 2. 전기안전관리자 시행 - 비상용예비발전설비의 설치·변경 공사로서 총 공사비가 1억원 미만인 공사 - 전기수용설비의 증설 또는 변경공사로서 총 공사비가 5천만원 미만인 공사"}, {"item": "전기감리 제외대상", "law": "전력기술관리법 제12조(공사감리등) 전기사업법 제61조 및 제62조 시행규칙 제 28조 및 29조 2항", "note": "1. 국가, 지방자치단체, 공기업, 그 밖에 대통령령으로 정하는 기관 또는 단체가 시행하는 전력시설물 공사로서 그 소속 직원 중 감리원 수첩을 발급받은 사람에게 제4항에 따른 배치 기준에 따라 감리업무를 수행하게 하는 공사 2. 일반용전기설비(계약전력74KW 이하)의 전력시설물 공사 3. 임시전력을 공급받기 위한 전력시설물 공사 4. 소방시설공사업에 따른 비상전원, 비상조명등 및 비상콘센트설비공사 5. 전기사업용전기설비 중 인입선 및 저압배전설비 공사 6. 총 도급공사비 5천만원 미만인 전력시설물 공사로서 소속 전력 기술인으로 하여금 감리업무를 수행하게 하는 공사 일반용전기설비 7. 토목/건축 및 기계부문설비공사 8. 발전기 또는 전압 600볼트 이상의 변압기/차단기/전설로의 용량변경이 수반되지 아니하는 전력시설물의 보수공사"}, {"item": "전기감리 자격", "law": "전력기술관리법 제12조(공사감리등) 시행령 제 21조(감리원의 자격 등) 별표2", "note": "1. 특급감리원: 기술사 2. 고급감리원: 기능장 취득 후 2년 이상, 기사 취득 후 5년 이상, 산업기사 자격 취득 후 8년 이상 3. 중급감리원: 기능장 취득, 기사 취득 후 2년 이상, 산업기사 취득 후 5년 이상, 기능사 취득 10년 이상, 석사 이상 3년 이상/ 대졸 6년 이상/전대 9년 이상,고졸 12년 이상 전력기술업무를 수행한 사람(관련 학과) 4. 초급감리원: 기사 또는 산업기사의 자격 취득한 사람, 기능사 취득한 후 6년 이상, 석사 이상, 대졸 1년 이상, 전대 3년 이상, 고졸 6년 이상 전력시술업무를 수행한 사람(관련 학과), 전력기술업무를 8년 이상 수행한 사람으로서 제7조의7에 따라 감리원 양성에 관한 교육을 이수한 사람"}, {"item": "전기감리 배치기준", "law": "「전력기술관리법 시행령」 제 22조(감리원의 배치기준 등) 별표3", "note": "*공사 종류: 수전ㆍ구내배전ㆍ가로등ㆍ전력사용설비 및 그 밖의 설비 책임감리원, 보조감리원 배치기준 총공사비 20억원 이상: 특급감리원+초급감리원 이상 총공사비 10억원 이상 20억원 미만 고급감리원 이상+초급감리원 이상"}, {"item": "전기감리 착공", "law": "전력시설물 공사감리업무 수행지침 제8조(감리업무 수행계획서 등 행정업무)", "note": "① 용역업자는 감리용역계약 즉시 상주 및 기술지원감리원의 투입 등 감리업무 수행준비에 대하여 발주자와 협의하여야 하며, 계약서상 착수일에 감리용역을 착수한다. ② 용역업자는 감리용역 착수 시 다음 각 호의 서류를 첨부한 착수신고서(별지서식 3)를 제출하여 발주자의 승인을 받아야 한다."}, {"item": "전기감리 준공", "law": "전력시설물 공사감리업무 수행지침 제55조(기성 및 준공검사자의 임명)", "note": "① 감리원은 공사업자로부터 기성부분검사원 또는 준공검사원을 접수하였을 때에는 신속히 검토․확인하고, 기성부분 감리조서와 다음 각 호의 서류를 첨부하여 지체 없이 용역업자에게 제출하여야 한다. ② 감리업자는 기성부분 검사원 또는 준공 검사원을 접수하였을 때에는 3일 이내에 비상주 감리원을 임명."}, {"item": "통신설계 자격", "law": "정보통신공사업법 제7조(설계 등)", "note": "① 발주자는 용역업자에게 공사의 설계를 발주. 특급기술자: 기술사 고급기술자: 기사(산업) 취득 후 5년(8년) 이상 공사 업무 수행. 기능사(13년) 중급기술자: 기사(산업) 취득 후 2년(5년) 이상 공사 업무 수행. 기능사(10년), (석사 3년, 학사 6년, 전문대(3년제) 9년(8년), 고졸 12년이상) 관련 학과 초급기술자: 산업기사(기능사) 이상 취득(기능사 4년) 이상 업무 수행. 기능사(13년), (학사 이상, 전문대(3년제) 2년(1년), 고졸 4년이상) 관련 학과"}, {"item": "통신착공설계 검토", "law": "정보통신공사업법 제36조(공사의 사용전검사 등) 시행령 제35조(착공전 설계도 확인 및 사용전검사의 대상공사) 시행령 제35조의2(착공전 설계도 확인)", "note": "① 대통령령으로 정하는 공사를 발주한 자(자신의 공사를 스스로 시공한 공사업자 및 제3조제2호에 따라 자신의 공사를 스스로 시공한 자를 포함하며, 이하 이 조에서 “발주자등”이라 한다) 공사를 시작하기 전에 설계도를 특별자치시장ㆍ특별자치도지사ㆍ시장ㆍ군수ㆍ구청장(자치구의 구청장을 말한다. 이하 같다)에게 제출하여 제6조에 따른 기술기준에 적합한지를 확인받아야 하며, 그 공사를 끝냈을 때에는 특별자치시장ㆍ특별자치도지사ㆍ시장ㆍ군수ㆍ구청장의 사용전검사를 받고 정보통신설비를 사용 구내통신선로ㆍ이동통신구내선로ㆍ방송공동수신설비의 공사 착공전 설계도 확인 대상: 연면적 150제곱미터 초과인 증축, 신축 건축물에 설치되는 공사"}, {"item": "통신감리 대상", "law": "정보통신공사업법 제8조(감리 등) 시행령 제8조(감리대상인 공사의 범위) 시행령 제10조 1항(감리원의 자격)", "note": "① 발주자는 용역업자에게 공사의 감리를 발주 6층 이상으로서 연면적 5천 제곱미터 이상의 건축물에 설치되는 정보통신설비의 설치공사 1. 총공사금액 100억원 이상 공사: 특급감리원(기술사 자격을 가진 자로 한정한다). 2. 총공사금액 70억원 이상 100억원 미만인 공사: 특급감리원 3. 총공사금액 30억원 이상 70억원 미만인 공사: 고급감리원 이상의 감리원 4. 총공사금액 5억원 이상 30억원 미만인 공사: 중급감리원 이상의 감리원 5. 총공사금액 5억원 미만의 공사: 초급감리원 이상의 감리원 특급감리원: 기술사 고급감리원: 기사(기능장포함) 취득 6년, 산업기사 9년, 기능사 14년 이상 중급감리원: 기사 취득 3년, 산업기사 6년, 기능사 12년, 석사 3년 이상, 학사 6년, 전대 9년, 고졸 12년 이상 초급감리원: 산업기사 이상, 기능사 6년, 학사 이상 1년, 전대 3년, 고졸 6년 이상"}, {"item": "통신감리 착공", "law": "정보통신공사 감리업무 수행기준 제8조(감리업무 수행계획서 등 행정업무)", "note": "① 용역업자는 감리용역계약 즉시 상주 및 기술지원감리원(고급감리원 이상)의 투입 등 감리업무 수행준비에 대하여 발주자와 협의. ② 용역업자는 감리용역 착수 시 다음 각 호의 서류를 첨부한 착수신고서를 제출 1. 감리업무 수행계획서 2. 감리비 산출내역서 3. 상주감리원, 기술지원감리원 배치계획서와 감리원의 경력확인서 4. 감리원 조직 구성내용과 감리원별 투입기간 및 담당업무"}, {"item": "통신 사용전검사", "law": "정보통신공사업법 제36조(공사의 사용전검사 등) 시행령 제36조(사용전검사 등)", "note": "사용전검사: 착공전 설계도 확인 대상"}, {"item": "통신감리 준공", "law": "정보통신공사 감리업무 수행기준 제60조(기성 및 준공검사자의 임명)", "note": "① 감리원은 공사업자로부터 기성부분검사원 또는 준공검사원을 접수하였을 때에는 용역업자에게 제출. ② 용역업자는 기성부분검사원 또는 준공검사원을 접수하였을 때에는 3일 이내 기술지원감리원을 임명 검사하도록 하며, 즉시 검사자로 임명된 자에게 통보하고, 발주자에게 보고 다만, ｢국가를 당사자로 하는 계약에 관한 법률 시행령｣ 제55조제7항 본문에 따른 약식 기성검사 시에는 책임감리원을 검사자로 임명하여 검사가능."}, {"item": "소방설계 자격", "law": "「소방시설공사업법」 제4조(소방시설업의 등록) 제11조(설계) 소방관계법령 제정에 따른 운용지침(소방방재청 소방정책과)", "note": "제4조(소방시설업의 등록) ① 특정소방대상물의 소방시설공사등을 하려는 자는 업종별로 자본금(개인인 경우에는 자산 평가액을 말한다), 기술인력 등 대통령령으로 정하는 요건을 갖추어 특별시장ㆍ광역시장ㆍ특별자치시장ㆍ도지사 또는 특별자치도지사(이하“시ㆍ도지사”라 한다)에게 소방시설업을 등록 업체 제11조(설계) ① 제4조제1항에 따라 소방시설설계업을 등록한 자(이하 “설계업자”라 한다) *설계업자가 설계를 하지 아니하여도 가능한 소방시설의 종류 및 공사(소방설비기사, 소방설비산업기사. 소방기술사 자격을 취득한 자) 1. 소화기구, 단독경보형감지기 2. 스프링클러설비 또는 물분무등소화설비의 헤드 5개 이하 증설 3. 자동화재탐지설비의 감지기 10개 이하 증설 4. 유도등 또는 비상조명등 10개 이하의 증설 5. 유도표지 및 휴대용비상조명등 설치 6. 연결살수설비 살수헤드 5개 이하 증설 7. 옥내소화전설비 방수구 2개 이하 증설"}, {"item": "소방감리 대상", "law": "소방시설공사업법 제17조(공사감리자의 지정 등)", "note": "① 대통령령으로 정하는 특정소방대상물의 관계인이 특정소방대상물에 대하여 자동화재탐지설비, 옥내소화전설비 등 대통령령으로 정하는 소방시설물 *특정소방대상물 1. 옥내소화전설비를 신설ㆍ개설 또는 증설 2. 스프링클러설비등(캐비닛형 간이스프링클러설비는 제외한다)을 신설ㆍ개설하거나 방호ㆍ방수 구역을 증설 3. 물분무등소화설비(호스릴 방식의 소화설비는 제외한다)를 신설ㆍ개설하거나 방호ㆍ방수 구역을 증설 4. 옥외소화전설비를 신설ㆍ개설 또는 증설 5. 자동화재탐지설비를 신설 또는 개설 6. 통합감시시설을 신설 또는 개설 7. 소화용수설비를 신설 또는 개설 8. 제연설비를 신설ㆍ개설하거나 제연구역을 증설할 때 9. 연결송수관설비를 신설 또는 개설할 때 10. 연결살수설비를 신설ㆍ개설하거나 송수구역을 증설할 때 11. 비상콘센트설비를 신설ㆍ개설하거나 전용회로를 증설할 때 12. 무선통신보조설비를 신설 또는 개설할 때 13. 연소방지설비를 신설ㆍ개설하거나 살수구역을 증설할 때"}, {"item": "소방감리 자격", "law": "소방시설공사업법 제16조(감리) 소방시설공사업법 시행규칙[별표 4의2](소방공사감리원의 기술등급 자격) 소방시설공사업법 시행령 제10조 시행령 제11조", "note": "① 제4조제1항에 따라 소방공사감리업을 등록한 자(이하 \"감리업자\"라 한다) 특급감리원 기계, 전기분야: 소방기술사, 소방설비(산업)기사 기계(전기)분야 취득 8년(12년) 이상 소방관련 업무 수행 고급감리원 기계, 전기분야: 소방설비(산업)기사 기계(전기)분야 취득 5년(8년) 이상 소방관련 업무 수행 중급감리원 기계, 전기분야: 소방설비(산업)기사 기계(전기)분야 취득 3년(6년) 이상 소방관련 업무 수행 초급감리원 기계, 전기분야: 관련 학과 학사학위(전문학사학위) 취득 1년(3년)이상 소방관련 업무 수행, 소방공무원 3년 이상 근무 경력, 5년이상 소방 관련 업무를 수행 상주감리 1. 연면적 30.000제곱미터 이상의 특정소방대상물 일반감리 2. 소방시설의 신설, 개설, 증설, 방화(방수)구역, 경계구역,제역구역, 송수구역, 전용회로, 살수구역, 증설공사(캐비넷형 간이스프링클러, 물분무 등 소화설비의 호스릴 방식제외) 감리원 배치기준 *중급감리원 이상의 소방공사 감리원(기계분야 및 전기분야) 연면적 5천제곱미터 이상 3만제곱미터미만인 특정소방대상물의 공사 현장 *초급감리원 이상의 소방공사 감리원(기계분야 및 전기분야) 연면적 5천제곱미터 미만인 특정소방대상물의 공사 현장"}, {"item": "소방감리 착수", "law": "소방공사감리 업무철차서 2.1감리업무의 착수", "note": "감리자는 감리용역을 착수할 경우에는 다음 각 호의 서류를 첨부한 착수신고서를 제출"}, {"item": "소방감리 준공", "law": "소방공사감리 업무철차서(기성 및 완공 검사자 임명)", "note": "1. 감리원은 시공자로부터 공사 기성부분 검사원 또는 완공검사원을 접수하였을 경우 책임감리원은 감리원(기성부분, 완공) 감리조서를 첨부 감리자 대표에게 제출. 2. 감리자는 감리원(기성부분, 완공) 감리조서를 감리원으로부터 접수하였을 경우 접수된 날로부터 3일 이내 소속 감리원 중에서 검사자, 입회자를 임명. 3. 감리원은 시공자로부터 완공검사원을 접수하였을 경우에는 계약서, 시방서, 설계도면 기타 관계서류의 내용대로 시공이 완료되었는지의 여부를 확인하고 완공검사원의 내용이 정산 설계도서와의 합치여부 등을 검토․ 확인"}, {"item": "소방시설공사 완공검사 절차", "law": "건축법 제22조 및 시행규칙 제16조 소방시설 완공검사제도 개선,시행지침('20.8.17부터) 학교시설사업 촉진법 제13조 및 시행령 제18조, 시행규칙 제8조", "note": "공용건축물: 공사완료→사용승인 신청→소방완공검사 신청→검사실시→사용승인서 발급 학교건축물: 공사완료→소방완공검사 사전 신청→준공검사 신고→준공검사 실시→ 준공검사 중명서 발급"}, {"item": "소방동의 (학교시설)", "law": "화재예방, 소방시설 설치ㆍ유지 및 안전관리에 관한 법률 3장 1절 제7조(건축허가등의 동의 등)", "note": "1. 건축물 등의 신축ㆍ증축ㆍ개축ㆍ재축ㆍ이전ㆍ용도변경 또는 대수선의 허가ㆍ협의 및 사용승인(이하 \"건축허가등\"이라 한다)의 동의요구는 다음 각 호의 구분에 따른 기관이 건축물 등의 시공지(施工地) 또는 소재지를 관할하는 소방본부장 또는 소방서장에게 하여야 한다."}, {"item": "소방동의 (일반시설)", "law": "화재예방, 소방시설 설치ㆍ유지 및 안전관리에 관한 법률 3장 1절 제7조(건축허가등의 동의 등)", "note": "1. 건축물 등의 신축ㆍ증축ㆍ개축ㆍ재축ㆍ이전ㆍ용도변경 또는 대수선의 허가ㆍ협의 및 사용승인(이하 \"건축허가등\"이라 한다)의 동의요구는 다음 각 호의 구분에 따른 기관이 건축물 등의 시공지(施工地) 또는 소재지를 관할하는 소방본부장 또는 소방서장에게 하여야 한다."}], "delegation": [{"unit": "1. 시설사업 계획 (예산액)", "detail": "1.시설사업 집행계획 수립 및 변경(사업별)", "who": [], "extra": ""}, {"unit": "1. 시설사업 계획 (예산액)", "detail": "가. 100억원 이상", "who": ["팀장", "교육감"], "extra": ""}, {"unit": "1. 시설사업 계획 (예산액)", "detail": "나. 20억원 이상", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "1. 시설사업 계획 (예산액)", "detail": "나. 2억원 이상", "who": ["실무자", "국장"], "extra": ""}, {"unit": "1. 시설사업 계획 (예산액)", "detail": "다. 2억원 미만", "who": ["실무자", "과장"], "extra": ""}, {"unit": "2. 예산집행품의", "detail": "1. 시설공사", "who": [], "extra": ""}, {"unit": "2. 예산집행품의", "detail": "가. 20억원 이상", "who": ["실무자", "국장"], "extra": "조달요청 30억"}, {"unit": "2. 예산집행품의", "detail": "나. 20억원 미만", "who": ["실무자", "과장"], "extra": ""}, {"unit": "2. 예산집행품의", "detail": "2. 시설공사 용역 / 관급자재", "who": [], "extra": ""}, {"unit": "2. 예산집행품의", "detail": "가. 1억원 이상", "who": ["실무자", "국장"], "extra": "조달요청 5억"}, {"unit": "2. 예산집행품의", "detail": "나. 1억원 미만", "who": ["실무자", "과장"], "extra": ""}, {"unit": "3.관급자재", "detail": "1. 관급자재 출고, 납품 관리", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "3.관급자재", "detail": "2. 관급자재 검수, 연기", "who": ["실무자", "과장"], "extra": ""}, {"unit": "4.공사설계기술지원", "detail": "1. 시설공사관련 유관기관 (교육지원청) 협의‧ 조정", "who": ["실무자", "과장"], "extra": ""}, {"unit": "4.공사설계기술지원", "detail": "2. 교육지원청 설계도 심사 및 지원업무(신설학교)", "who": ["실무자", "과장"], "extra": ""}, {"unit": "4.공사설계기술지원", "detail": "3. 직속기관 자체 집행 공사 설계 검사", "who": ["실무자", "과장"], "extra": ""}, {"unit": "5.시설공사 용역", "detail": "1. 기본설계 검토 승인", "who": ["실무자", "과장"], "extra": ""}, {"unit": "5.시설공사 용역", "detail": "2. 용역의 변경에 관한 사항(2천만원 초과)", "who": ["실무자", "국장"], "extra": ""}, {"unit": "5.시설공사 용역", "detail": "3. 용역의 변경에 관한 사항(2천만원 이하)", "who": ["실무자", "과장"], "extra": ""}, {"unit": "5.시설공사 용역", "detail": "4. 용역의 연기, 검수 처리", "who": ["실무자", "과장"], "extra": ""}, {"unit": "5.시설공사 용역", "detail": "5. 설계자문위원회", "who": [], "extra": ""}, {"unit": "5.시설공사 용역", "detail": "가. 추진계획 수립", "who": ["실무자", "국장"], "extra": ""}, {"unit": "5.시설공사 용역", "detail": "나. 결과 보고 및 처리", "who": ["실무자", "과장"], "extra": ""}, {"unit": "6.시설공사 관리", "detail": "1. 공사 감독, 검사, 업무담당자 지명", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "6.시설공사 관리", "detail": "2. 실정보고 검토", "who": ["실무자", "과장"], "extra": ""}, {"unit": "6.시설공사 관리", "detail": "3. 설계변경 검토 및 추진(5천만원 이상)", "who": ["실무자", "국장"], "extra": ""}, {"unit": "6.시설공사 관리", "detail": "4. 설계변경 검토 및 추진(5천만원 미만)", "who": ["실무자", "과장"], "extra": ""}, {"unit": "6.시설공사 관리", "detail": "5. 공사 연기 검토", "who": ["실무자", "과장"], "extra": ""}, {"unit": "6.시설공사 관리", "detail": "6. 시설공사 검사(준공, 기성, 예비준공)", "who": ["실무자", "과장"], "extra": ""}, {"unit": "6.시설공사 관리", "detail": "7. 공사(용역), 계약관련 문서관리", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "6.시설공사 관리", "detail": "8. 설계용역·시공평가 계획 수립 및 실시", "who": ["실무자", "과장"], "extra": ""}, {"unit": "6.시설공사 관리", "detail": "9. 현장 사전조사, 점검 등 결과 보고(중요사항)", "who": ["실무자", "국장"], "extra": ""}, {"unit": "6.시설공사 관리", "detail": "10. 건설사고 발생 상황보고(사망, 3일이상 휴업)", "who": ["팀장", "교육감"], "extra": ""}, {"unit": "6.시설공사 관리", "detail": "11. 건설사고 조치계획 수립", "who": ["팀장", "교육감"], "extra": ""}, {"unit": "7.하자관리", "detail": "1. 하자지시 및 처리", "who": ["실무자", "과장"], "extra": ""}, {"unit": "7.하자관리", "detail": "2. 하자보수 검사 및 대장관리", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "8.시설사업 단가 책정", "detail": "1. 시설공사 일위대가표 작성", "who": ["실무자", "과장"], "extra": ""}, {"unit": "8.시설사업 단가 책정", "detail": "2. 시설사업 단가 책정", "who": ["실무자", "과장"], "extra": ""}, {"unit": "9.학교시설사업촉진법 운용", "detail": "1. 학교시설사업시행계획 협의 및 승인", "who": ["실무자", "과장"], "extra": ""}, {"unit": "9.학교시설사업촉진법 운용", "detail": "2. 학교시설 건축 승인 및 건축협의", "who": ["실무자", "과장"], "extra": ""}, {"unit": "9.학교시설사업촉진법 운용", "detail": "3. 건축물 사용승인 및 유관기관 통보", "who": ["실무자", "과장"], "extra": ""}, {"unit": "9.학교시설사업촉진법 운용", "detail": "4. 기타 유관기관 협의", "who": ["실무자", "과장"], "extra": ""}, {"unit": "10.시설물 안전점검", "detail": "1. 각종 안전 점검계획 수립", "who": ["실무자", "과장"], "extra": ""}, {"unit": "10.시설물 안전점검", "detail": "2. 각종 안전점검 실시 및 결과", "who": ["실무자", "과장"], "extra": ""}, {"unit": "10.시설물 안전점검", "detail": "3. 위험 시설물에 대한 조치", "who": [], "extra": ""}, {"unit": "10.시설물 안전점검", "detail": "가. 교사동 철거 또는 개축", "who": ["실무자", "국장"], "extra": ""}, {"unit": "10.시설물 안전점검", "detail": "나. 정밀안전진단 실시 및 보수 보강", "who": ["실무자", "과장"], "extra": ""}, {"unit": "10.시설물 안전점검", "detail": "다. 기타 경미한 사항", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "11.재난위험시설 관리", "detail": "1. 재난위험시설 지정․해소", "who": ["실무자", "국장"], "extra": ""}, {"unit": "11.재난위험시설 관리", "detail": "2. 재난위험시설 관리 일반", "who": ["실무자", "과장"], "extra": ""}, {"unit": "11.재난위험시설 관리", "detail": "3. 학교시설 개축․재난 위험시설 철거 및 개축 추진계획 수립", "who": ["실무자", "국장"], "extra": ""}, {"unit": "12. 기금관리", "detail": "1. 교육시설환경개선 기금 운용계획 수립", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "12. 기금관리", "detail": "2. 결산보고서 작성", "who": ["실무자", "국장"], "extra": ""}, {"unit": "1.복무", "detail": "1. 국외 출장", "who": [], "extra": ""}, {"unit": "1.복무", "detail": "가. 과장이상", "who": ["실무자", "교육감"], "extra": ""}, {"unit": "1.복무", "detail": "나. 팀장", "who": ["실무자", "국장"], "extra": ""}, {"unit": "1.복무", "detail": "다. 6급이하(장학사 포함)", "who": ["실무자", "과장"], "extra": ""}, {"unit": "1.복무", "detail": "2. 국내 출장", "who": [], "extra": ""}, {"unit": "1.복무", "detail": "가. 국장[담당관,단 포함]", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "1.복무", "detail": "나. 과장", "who": ["실무자", "국장"], "extra": ""}, {"unit": "1.복무", "detail": "다. 팀장", "who": ["실무자", "과장"], "extra": ""}, {"unit": "1.복무", "detail": "라. 6급이하(장학사 포함) 근무지외출장", "who": ["실무자", "과장"], "extra": ""}, {"unit": "1.복무", "detail": "마. 6급이하(장학사 포함) 근무지내출장", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "1.복무", "detail": "3. 휴가", "who": [], "extra": ""}, {"unit": "1.복무", "detail": "가. 국장[담당관,단 포함]", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "1.복무", "detail": "나. 과장", "who": ["실무자", "국장"], "extra": ""}, {"unit": "1.복무", "detail": "다. 팀장", "who": ["실무자", "과장"], "extra": ""}, {"unit": "1.복무", "detail": "라. 6급이하(장학사 포함)", "who": ["실무자", "과장"], "extra": ""}, {"unit": "1.복무", "detail": "마. 교육장, 직속기관장", "who": ["실무자", "국장"], "extra": ""}, {"unit": "1.복무", "detail": "바. 특수․고등학교장", "who": ["실무자", "과장"], "extra": ""}, {"unit": "1.복무", "detail": "4. 조퇴․외출·지각", "who": [], "extra": ""}, {"unit": "1.복무", "detail": "가. 국장[담당관,단 포함]", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "1.복무", "detail": "나. 과장", "who": ["실무자", "국장"], "extra": ""}, {"unit": "1.복무", "detail": "다. 팀장", "who": ["실무자", "과장"], "extra": ""}, {"unit": "1.복무", "detail": "라. 6급이하(장학사 포함)", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "1.복무", "detail": "5. 시간외 근무명령", "who": ["과장"], "extra": ""}, {"unit": "1.복무", "detail": "6. 부서의 연가계획", "who": ["실무자", "과장"], "extra": ""}, {"unit": "2.예산관리", "detail": "1. 주요사업 예산집행계획 수립", "who": ["팀장", "부교육감"], "extra": ""}, {"unit": "2.예산관리", "detail": "2. 주관사업 예산", "who": [], "extra": ""}, {"unit": "2.예산관리", "detail": "가. 예산 재배정 및 배부 계획", "who": ["실무자", "국장"], "extra": ""}, {"unit": "2.예산관리", "detail": "나. 예산 재배정 및 배부", "who": ["실무자", "과장"], "extra": ""}, {"unit": "3.예산집행품의", "detail": "1. 물품의 제조구매 용역 및 기타 집행 품의 <교육시설과 소관 사업 제외>", "who": [], "extra": ""}, {"unit": "3.예산집행품의", "detail": "가. 1억원 초과", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "3.예산집행품의", "detail": "나. 1억원 이하", "who": ["실무자", "국장"], "extra": ""}, {"unit": "3.예산집행품의", "detail": "다. 5천만원 이하", "who": ["실무자", "과장"], "extra": ""}, {"unit": "3.예산집행품의", "detail": "2. 공사 및 공유재산 취득 집행 품의 <교육시설과 소관 사업 제외>", "who": [], "extra": ""}, {"unit": "3.예산집행품의", "detail": "가. 50억원 이상", "who": ["팀장", "교육감"], "extra": ""}, {"unit": "3.예산집행품의", "detail": "나. 20억원 이상", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "3.예산집행품의", "detail": "다. 2억원 이상", "who": ["실무자", "국장"], "extra": ""}, {"unit": "3.예산집행품의", "detail": "라. 2억원 미만", "who": ["실무자", "과장"], "extra": ""}, {"unit": "3.예산집행품의", "detail": "3. 기타 의무적 경비(인건비, 여비, 업무 추진비, 일상경비 등", "who": ["실무자", "과장"], "extra": ""}, {"unit": "4.보조금(지원금)관리", "detail": "1. 보조금(지원금) 지원지침 (계획)수립", "who": ["팀장", "교육감"], "extra": ""}, {"unit": "4.보조금(지원금)관리", "detail": "2. 보조금(지원금)교부(변경‧취소)결정", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "4.보조금(지원금)관리", "detail": "3. 보조금(지원금) 자금 교부 계획수립 및 교부", "who": ["실무자", "국장"], "extra": ""}, {"unit": "4.보조금(지원금)관리", "detail": "4. 보조(지원)사업 실적보고 및 정산", "who": ["실무자", "과장"], "extra": ""}, {"unit": "5.공무원,일반인 및 기관 표창", "detail": "1. 정부우수․모범공무원 및 외부기관 표창 추천", "who": [], "extra": ""}, {"unit": "5.공무원,일반인 및 기관 표창", "detail": "가. 국무총리 이상 표창", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "5.공무원,일반인 및 기관 표창", "detail": "나. 장관급이상 표창", "who": ["실무자", "국장"], "extra": ""}, {"unit": "5.공무원,일반인 및 기관 표창", "detail": "다. 기타 표창", "who": ["실무자", "과장"], "extra": ""}, {"unit": "5.공무원,일반인 및 기관 표창", "detail": "2. 교육감 표창", "who": [], "extra": ""}, {"unit": "5.공무원,일반인 및 기관 표창", "detail": "가. 표창기본계획 수립", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "5.공무원,일반인 및 기관 표창", "detail": "나. 표창대상자 결정", "who": ["실무자", "국장"], "extra": ""}, {"unit": "6.학생표창", "detail": "1. 표창기본계획 수립", "who": ["실무자", "국장"], "extra": ""}, {"unit": "6.학생표창", "detail": "2. 표창대상자 결정", "who": ["실무자", "과장"], "extra": ""}, {"unit": "7.민원업무", "detail": "1. 민원사항 조사 처리", "who": [], "extra": ""}, {"unit": "7.민원업무", "detail": "가. 중대한 사항", "who": ["팀장", "부교육감"], "extra": ""}, {"unit": "7.민원업무", "detail": "나. 경미한 사항", "who": ["실무자", "과장"], "extra": ""}, {"unit": "7.민원업무", "detail": "2. 각종 신청서의 경유 전달", "who": ["실무자", "과장"], "extra": ""}, {"unit": "7.민원업무", "detail": "3. 민원문서의 보완", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "7.민원업무", "detail": "4. 민원처리기간 연장, 반려, 이송", "who": ["실무자", "과장"], "extra": ""}, {"unit": "7.민원업무", "detail": "5. 정보공개 결정", "who": ["실무자", "과장"], "extra": ""}, {"unit": "7.민원업무", "detail": "6. 각종 증명서 교부 및 정정", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "7.민원업무", "detail": "7. 제증명 조회 및 회보", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "8.법제업무", "detail": "1. 법령의 제․개정 건의", "who": ["실무자", "국장"], "extra": ""}, {"unit": "8.법제업무", "detail": "2. 자치법규 제정 및 개폐 계획 수립", "who": [], "extra": ""}, {"unit": "8.법제업무", "detail": "가. 중요한 사항", "who": ["팀장", "교육감"], "extra": ""}, {"unit": "8.법제업무", "detail": "나. 경미한 사항(상위법령 개정사항반영 및 단순자구수정)", "who": ["실무자", "국장"], "extra": ""}, {"unit": "8.법제업무", "detail": "3. 자치법규안 심사 요청", "who": ["실무자", "과장"], "extra": ""}, {"unit": "8.법제업무", "detail": "4. 자치법규 제정 및 개폐안 확정", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "8.법제업무", "detail": "5. 입법예고", "who": [], "extra": ""}, {"unit": "8.법제업무", "detail": "가. 예고문 작성", "who": ["실무자", "과장"], "extra": ""}, {"unit": "8.법제업무", "detail": "나. 결과반영 처리", "who": ["실무자", "과장"], "extra": ""}, {"unit": "8.법제업무", "detail": "6. 법제심의 의뢰 및 해석질의", "who": ["실무자", "과장"], "extra": ""}, {"unit": "9.행정심판 및 소청 심사", "detail": "1. 청구에 대한 답변서 작성 (중앙행정심판위원회 행정심판)", "who": ["실무자", "국장"], "extra": ""}, {"unit": "9.행정심판 및 소청 심사", "detail": "2. 소청심사 청구에 대한 변명서 작성", "who": ["실무자", "국장"], "extra": ""}, {"unit": "10.소송업무", "detail": "1. 소송자료 제출 및 수행자 추천", "who": ["실무자", "과장"], "extra": ""}, {"unit": "10.소송업무", "detail": "2. 소송 종결 결과처리", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "11.각종위원회 및 협의회 운영", "detail": "1. 위원회(협의회) 위원 위‧해촉 및 방침 결정", "who": [], "extra": ""}, {"unit": "11.각종위원회 및 협의회 운영", "detail": "가. 위원장이 교육감 또는 외부 인사인 경우", "who": ["팀장", "교육감"], "extra": ""}, {"unit": "11.각종위원회 및 협의회 운영", "detail": "나. 위원장이 부교육감인 경우", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "11.각종위원회 및 협의회 운영", "detail": "다. 위원장이 국장인 경우", "who": ["실무자", "국장"], "extra": ""}, {"unit": "11.각종위원회 및 협의회 운영", "detail": "라. 위원장이 과장(담당관, 단)인 경우", "who": ["실무자", "과장"], "extra": ""}, {"unit": "11.각종위원회 및 협의회 운영", "detail": "2. 회의개최결정 및 안건상정", "who": ["실무자", "과장"], "extra": ""}, {"unit": "11.각종위원회 및 협의회 운영", "detail": "3. 회의결과 접수 및 결과 처리", "who": ["실무자", "과장"], "extra": ""}, {"unit": "11.각종위원회 및 협의회 운영", "detail": "4. 그 밖의 위원회에 관한 일반사항", "who": ["실무자", "과장"], "extra": ""}, {"unit": "12.국외연수", "detail": "1. 연수 계획 수립", "who": ["실무자", "부교육감"], "extra": ""}, {"unit": "12.국외연수", "detail": "2. 연수 대상자 추천 및 선정", "who": ["실무자", "국장"], "extra": ""}, {"unit": "12.국외연수", "detail": "3. 사후 관리", "who": ["실무자", "과장"], "extra": ""}, {"unit": "13.기타일반", "detail": "1. 기존방침에 부수된 지시사항", "who": ["실무자", "과장"], "extra": ""}, {"unit": "13.기타일반", "detail": "2. 주관사무에 관한 관계자 출석요구 및 서류 제출", "who": ["실무자", "과장"], "extra": ""}, {"unit": "13.기타일반", "detail": "3. 경미한 지시, 건의 및 각종 보고 처리", "who": ["실무자", "과장"], "extra": ""}, {"unit": "13.기타일반", "detail": "4. 부서간 경미한 자료 통보", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "13.기타일반", "detail": "5. 소관사무에 관한 경미한 조사,복명 처리", "who": ["실무자", "과장"], "extra": ""}, {"unit": "13.기타일반", "detail": "6. 소관사무에 관한 자료 수집", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "13.기타일반", "detail": "7. 각종도서 및 간행물 배부", "who": ["실무자", "과장"], "extra": ""}, {"unit": "13.기타일반", "detail": "8. 홍보자료 수집 및 제출", "who": ["실무자", "과장"], "extra": ""}, {"unit": "13.기타일반", "detail": "9. 소속 직원에 대한 과내 근무 부서 지정 및 사무분장", "who": ["실무자", "과장"], "extra": ""}, {"unit": "13.기타일반", "detail": "10. 경미한 회의 개최", "who": ["실무자", "과장"], "extra": ""}, {"unit": "13.기타일반", "detail": "11. 보안점검표 등 과비치 경미한 대장, 장부 기록 정리․ 확인", "who": ["실무자", "팀장"], "extra": ""}, {"unit": "13.기타일반", "detail": "12. 각종 공부 열람허가", "who": ["실무자", "과장"], "extra": ""}, {"unit": "13.기타일반", "detail": "13. 소관물품의 출납명령", "who": ["실무자", "과장"], "extra": ""}, {"unit": "13.기타일반", "detail": "14. 외부기관, 단체 등의 행사에 대한 후원 명칭 사용 승인", "who": ["실무자", "과장"], "extra": ""}]};
+const PH_LABEL={plan:'기획',design:'설계',const:'시공'};
+
+// --- 실무 절차 타임라인 ---
+function renderProc(f){
+  const host=document.getElementById('proc-list');
+  const rows=EDATA.procedure.filter(s=>!f||f==='all'||s.phase===f);
+  host.innerHTML=rows.map(s=>{
+    const c=PCOLOR[s.phase];
+    let b='';
+    if(s.from) b+=`<span class="pb from">${esc(s.from)}</span>`;
+    if(s.to) b+=`<span class="pb arr">→</span><span class="pb to">${esc(s.to)}</span>`;
+    if(s.note) b+=`<span class="pm note">${esc(s.note)}</span>`;
+    if(s.law) b+=`<span class="pm law">${esc(s.law)}</span>`;
+    return `<div class="tl-row" style="border-left-color:${c}"><div class="tl-no" style="background:${c}">${s.no}</div>`+
+      `<div class="tl-main"><div class="tl-task">${esc(s.task)}</div><div class="tl-badges">${b}</div></div>`+
+      `<span class="tl-ph" style="color:${c}">${PH_LABEL[s.phase]}</span></div>`;
+  }).join('');
+  document.getElementById('proc-count').textContent=EDATA.procedure.length;
+}
+let procFilter='all', procView='list';
+document.querySelectorAll('.fchip').forEach(ch=>ch.addEventListener('click',()=>{
+  document.querySelectorAll('.fchip').forEach(x=>x.classList.remove('on'));
+  ch.classList.add('on'); procFilter=ch.dataset.f; renderProc(procFilter); renderSwim(procFilter);
+}));
+document.querySelectorAll('.pvbtn').forEach(bt=>bt.addEventListener('click',()=>{
+  document.querySelectorAll('.pvbtn').forEach(x=>x.classList.remove('on'));
+  bt.classList.add('on'); procView=bt.dataset.v;
+  document.getElementById('proc-list').style.display = procView==='list'?'':'none';
+  document.getElementById('proc-swim').style.display = procView==='swim'?'':'none';
+}));
+// ---- 스윔레인 흐름도 (주체별 레인 · 발신→수신 핸드오프) ----
+const SLANES=['발주청','감사관','설계·용역사','시공사','감리','심의·검토기관','유관부서·게시'];
+function laneIdx(a){
+  if(!a) return -1;
+  if(/감사관|감사실/.test(a)) return 1;
+  if(/시공사/.test(a)) return 3;
+  if(/감리|공사감독/.test(a)) return 4;
+  if(/용역사|참가업체|설계자/.test(a)) return 2;
+  if(/시설과|행정과|사전기획가|담당부서/.test(a)) return 0;
+  if(/안전원|교육부|교육개발원|건축도시공간|외부위원|기술위원|위원회|국토안전|지자체/.test(a)) return 5;
+  return 6;
+}
+function renderSwim(f){
+  const N=SLANES.length, cx=i=>((i+0.5)/N*100);
+  const rows=EDATA.procedure.filter(s=>!f||f==='all'||s.phase===f);
+  // 레인 헤더
+  const laneHead=SLANES.map(l=>`<div>${esc(l)}</div>`).join('');
+  let html=`<div class="swim"><div class="swim-inner">`+
+    `<div class="swim-legend">● 발신 주체 · ▶ 수신 주체 · 색상 = 단계(기획·설계·시공) · 가로 = 업무 핸드오프</div>`+
+    `<div class="sl-row sl-head"><div class="sl-no">#</div><div class="sl-task">업무</div><div class="sl-lanehead">${laneHead}</div></div>`;
+  let lastPhase=null;
+  rows.forEach(s=>{
+    if(s.phase!==lastPhase){ lastPhase=s.phase;
+      html+=`<div class="sl-phase" style="background:${PCOLOR[s.phase]}">${PH_LABEL[s.phase]} 단계</div>`;
+    }
+    const c=PCOLOR[s.phase];
+    let si=laneIdx(s.from); if(si<0) si=0;
+    const ri=laneIdx(s.to);
+    let track=`<div class="sl-node" style="left:${cx(si)}%;background:${c}" title="발신: ${esc(s.from||'-')}"></div>`;
+    if(ri>=0 && ri!==si){
+      const a=Math.min(si,ri), bi=Math.max(si,ri);
+      track+=`<div class="sl-conn" style="left:${cx(a)}%;width:${cx(bi)-cx(a)}%;background:${c}"></div>`;
+      track+=`<div class="sl-arrow" style="left:${cx(ri)}%;color:${c}" title="수신: ${esc(s.to)}">▶</div>`;
+    }
+    const noteTag=s.note?` <span style="color:#B08512;font-weight:600">· ${esc(s.note.length>12?s.note.slice(0,12)+'…':s.note)}</span>`:'';
+    html+=`<div class="sl-row"><div class="sl-no">${s.no}</div><div class="sl-task" title="${esc(s.task)}${s.note?' ('+esc(s.note)+')':''}">${esc(s.task)}${noteTag}</div><div class="sl-track">${track}</div></div>`;
+  });
+  html+=`</div></div>`;
+  document.getElementById('proc-swim').innerHTML=html;
+}
+renderSwim('all');
+
+// --- 체크리스트 ---
+const CK_MAP={design:'design_check',const:'const_check',cm:'cm_settle'};
+function cleanGroup(g){return g.replace(/\s*\/\s*$/,'').replace(/\s*\/\s*/g,' · ');}
+function renderCheck(w){
+  const data=EDATA[CK_MAP[w]];const host=document.getElementById('check-list');let total=0;
+  host.innerHTML=data.map(g=>{
+    total+=g.items.length;
+    const items=g.items.map(it=>`<label class="ck"><input type="checkbox" class="ckbox"><span>${esc(it)}</span></label>`).join('');
+    return `<div class="acc chk-acc" data-t="ck"><div class="acc-head"><span class="ck-badge">${g.items.length}</span>`+
+      `<div class="acc-title"><div class="t">${esc(cleanGroup(g.group))}</div></div><span class="chev">⌄</span></div>`+
+      `<div class="acc-body"><div class="acc-body-in ck-in">${items}</div></div></div>`;
+  }).join('');
+  document.getElementById('ck-total').textContent=total;
+  document.getElementById('ck-done').textContent=0;
+  host.querySelectorAll('.ckbox').forEach(cb=>cb.addEventListener('change',updateCkProgress));
+}
+function updateCkProgress(){
+  const done=document.querySelectorAll('#check-list .ckbox:checked').length;
+  document.getElementById('ck-done').textContent=done;
+}
+document.querySelectorAll('.subbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.subbtn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); renderCheck(b.dataset.w);
+}));
+
+// --- 법령 검색 ---
+function hlt(t,q){ if(!q) return esc(t); const i=t.toLowerCase().indexOf(q); if(i<0) return esc(t);
+  return esc(t.slice(0,i))+'<span class="hl">'+esc(t.slice(i,i+q.length))+'</span>'+esc(t.slice(i+q.length)); }
+function renderLaws(q){
+  q=(q||'').trim().toLowerCase();
+  const rows=EDATA.laws.filter(l=>!q||(l.item+' '+l.law+' '+l.note).toLowerCase().includes(q));
+  document.getElementById('law-body').innerHTML = rows.length? rows.map(l=>
+    `<tr><td>${hlt(l.item,q)}</td><td>${hlt(l.law,q)}</td><td>${hlt(l.note,q)}</td></tr>`).join('')
+    : '<tr><td colspan="3" style="text-align:center;color:#9aa7b8;padding:26px">검색 결과가 없습니다.</td></tr>';
+  document.getElementById('law-count').textContent=EDATA.laws.length;
+}
+document.getElementById('law-q').addEventListener('input',e=>renderLaws(e.target.value));
+
+// --- 위임전결 ---
+function renderDeleg(q){
+  q=(q||'').trim().toLowerCase();
+  const units=[];const map={};
+  EDATA.delegation.forEach(r=>{
+    if(!r.detail) return;
+    if(q && !((r.unit+' '+r.detail).toLowerCase().includes(q))) return;
+    if(!map[r.unit]){map[r.unit]={unit:r.unit,rows:[]};units.push(map[r.unit]);}
+    map[r.unit].rows.push(r);
+  });
+  const host=document.getElementById('deleg-list');
+  if(!units.length){host.innerHTML='<div class="res-empty">검색 결과가 없습니다.</div>';return;}
+  host.innerHTML=units.map(u=>{
+    const rows=u.rows.map(r=>{
+      let who='';
+      if(r.who.length>=2){who=`<span class="who-pill draft">기안 ${esc(r.who[0])}</span><span class="who-pill final">전결 ${esc(r.who[r.who.length-1])}</span>`;}
+      else if(r.who.length===1){who=`<span class="who-pill final">전결 ${esc(r.who[0])}</span>`;}
+      const det=esc(r.detail).replace(/(\d+억원?\s*(이상|미만)|\d+천만원)/g,'<span class="amt">$1</span>');
+      const ex=r.extra?`<span class="dl-extra">${esc(r.extra)}</span>`:'';
+      return `<div class="dl-row"><div class="dl-detail">${det}${ex}</div><div class="dl-who">${who}</div></div>`;
+    }).join('');
+    return `<div class="dl-block"><div class="dl-head">${esc(u.unit||'기타')}</div>${rows}</div>`;
+  }).join('');
+}
+document.getElementById('dl-q').addEventListener('input',e=>renderDeleg(e.target.value));
+
+// 초기 렌더
+renderProc('all'); renderCheck('design'); renderLaws(''); renderDeleg('');
+
+// ================= 전체 키워드 검색 =================
+const TABLABEL={plan:'제1장 기획',design:'제2장 설계',const:'제3장 시공',cm:'제4장 건설사업관리',comp:'제5장 준공',cert:'제6장 인증',proc:'실무 절차',law:'법령',deleg:'위임전결',calc:'판정기'};
+const SEARCH_INDEX=[];
+// 제도 아코디언 항목
+Object.keys(DATA).forEach(pk=>{
+  let vis=0;
+  DATA[pk].forEach((it)=>{
+    const dt=it.detail||{};
+    if(it.hideInList){ // 인증 항목 → 제6장 인증 탭
+      SEARCH_INDEX.push({label:it.t, sub:'각종 인증사항', tab:'cert', kind:'tab', text:[it.t,it.d].concat(dt.obj||[]).join(' ')});
+      (dt.certs||[]).forEach(c=>SEARCH_INDEX.push({label:c.name, sub:'제6장 인증', tab:'cert', kind:'tab', text:c.name+' '+(c.law||'')}));
+      return;
+    }
+    const parts=[it.t,it.d].concat(dt.obj||[]).concat((dt.laws||[]).map(l=>l.join(' ')));
+    SEARCH_INDEX.push({label:it.t, sub:it.d, tab:pk, kind:'acc', accIdx:vis, text:parts.join(' ')});
+    vis++;
+  });
+});
+// 실무 절차
+EDATA.procedure.forEach(s=>SEARCH_INDEX.push({label:s.task, sub:(PH_LABEL[s.phase]||'')+' · '+(s.from||'')+(s.to?' → '+s.to:''), tab:'proc', kind:'proc', text:[s.task,s.from,s.to,s.note,s.law].join(' ')}));
+// 법령
+EDATA.laws.forEach(l=>SEARCH_INDEX.push({label:l.item, sub:l.law, tab:'law', kind:'law', q:l.item, text:[l.item,l.law,l.note].join(' ')}));
+// 위임전결
+EDATA.delegation.forEach(r=>{ if(r.detail) SEARCH_INDEX.push({label:r.detail, sub:r.unit, tab:'deleg', kind:'deleg', q:r.detail, text:[r.unit,r.detail].join(' ')}); });
+
+const gq=document.getElementById('global-q'), gres=document.getElementById('global-results');
+function ghl(t,q){const i=t.toLowerCase().indexOf(q);if(i<0)return esc(t.slice(0,60));return esc(t.slice(0,i))+'<span class="hl">'+esc(t.slice(i,i+q.length))+'</span>'+esc(t.slice(i+q.length,60));}
+function runGlobalSearch(){
+  const q=gq.value.trim().toLowerCase();
+  if(q.length<1){gres.classList.remove('show');gres.innerHTML='';return;}
+  const hits=SEARCH_INDEX.filter(x=>x.text.toLowerCase().includes(q)).slice(0,20);
+  if(!hits.length){gres.innerHTML='<div class="gres-empty">검색 결과가 없습니다.</div>';gres.classList.add('show');return;}
+  gres.innerHTML='<div class="gres-head">검색 결과 '+hits.length+'건 — 클릭하면 해당 항목으로 이동</div>'+
+    hits.map((h,idx)=>`<div class="gres-item" data-idx="${idx}"><span class="gk">${esc(TABLABEL[h.tab]||'').replace(/제\\d+장 /,'')}</span><div class="gt"><div class="gl">${ghl(h.label,q)}</div><div class="gs">${esc(h.sub||'')}</div></div></div>`).join('');
+  gres.classList.add('show');
+  gres._hits=hits;
+}
+function gotoResult(h){
+  activate(h.tab);
+  gres.classList.remove('show');
+  setTimeout(()=>{
+    if(h.kind==='acc'){
+      const host=document.querySelector(`[data-list="${h.tab}"]`);
+      if(host){const acc=host.querySelectorAll('.acc')[h.accIdx];
+        if(acc){acc.classList.add('open');acc.scrollIntoView({behavior:'smooth',block:'center'});}}
+    } else if(h.kind==='law'){ const el=document.getElementById('law-q'); el.value=h.q; renderLaws(h.q); }
+    else if(h.kind==='deleg'){ const el=document.getElementById('dl-q'); el.value=h.q; renderDeleg(h.q); }
+  },120);
+}
+gq.addEventListener('input',runGlobalSearch);
+gq.addEventListener('focus',()=>{ if(gq.value.trim())runGlobalSearch(); });
+gres.addEventListener('mousedown',e=>{ // mousedown: blur보다 먼저 실행
+  const item=e.target.closest('.gres-item'); if(!item||!gres._hits)return;
+  gotoResult(gres._hits[+item.dataset.idx]);
+});
+document.addEventListener('click',e=>{ if(!e.target.closest('.topsearch-in')) gres.classList.remove('show'); });
+gq.addEventListener('keydown',e=>{ if(e.key==='Escape'){gq.value='';gres.classList.remove('show');} });
+
+// ================= 제6장 인증 대상 판정 =================
+const CERTS9=[
+  {id:1,name:'에너지절약계획서',types:['신축','증축','개축'],area:()=>500,areaLabel:'500㎡ 이상',
+   grade:s=>s.pub==='O'?'EPI 74점 이상 (공공건축물)':'EPI 65점 이상 (민간건축물 기준 확인 필요)',
+   law:'녹색건축물 조성 지원법 제14조',memo:'설계 조건에 따라 제출 대상 여부 상이'},
+  {id:2,name:'녹색건축 인증',types:['신축','증축'],area:()=>3000,areaLabel:'3,000㎡ 이상',
+   grade:s=>s.use==='업무시설(청사)'?'우수(그린2등급) 70점 이상 【청사 의무】':'일반(그린4등급) 50점 이상 (일반적 적용)',
+   law:'녹색건축물 조성 지원법 시행령 제11조의3',memo:'최우수 80 / 우수 70 / 우량 60 / 일반 50점'},
+  {id:3,name:'건축물 에너지효율등급',types:['신축','증축'],area:()=>500,areaLabel:'500㎡ 이상',
+   grade:()=>'1++ 등급 (80 이상 ~ 140 미만 kWh/㎡·년) 적용',
+   law:'녹색건축물 조성 지원법 시행령 제12조',memo:'1+++ 80 미만 / 1++ 80~140 / 1+ 140~200 / 1 200~260'},
+  {id:4,name:'제로에너지건축물(ZEB) 인증',types:['신축','증축'],area:()=>500,areaLabel:'500㎡ 이상',
+   grade:()=>'ZEB 5등급 (에너지자립률 20% 이상 ~ 40% 미만) 적용',
+   law:'동법 시행령 제12조, 인증 운영규칙 제8조',memo:'효율등급 1++ 이상 + BEMS + 전자식 원격검침계량기 설치'},
+  {id:5,name:'장애물 없는 생활환경(BF) 인증',types:['신축','증축','개축'],area:()=>0,areaLabel:'면적 무관',
+   grade:()=>'일반 등급 (70% 이상 ~ 80% 미만) 적용',
+   law:'장애인·노인·임산부 등의 편의증진 보장에 관한 법률 제10조의2',memo:'최우수 90% / 우수 80~90% / 일반 70~80%'},
+  {id:6,name:'범죄예방 환경설계(CPTED)',types:['신축','증축','개축','리모델링'],area:()=>0,areaLabel:'면적 무관',
+   grade:()=>'(필요시 적용) 우수 70점 이상 ~ 85점 미만',
+   law:'범죄예방 건축기준 고시',memo:'최우수 85점 이상 / 우수 70~85점 미만'},
+  {id:7,name:'신재생에너지 공급의무비율',types:['신축','증축','개축'],area:()=>1000,areaLabel:'1,000㎡ 이상',
+   grade:s=>s.year<=2025?'34% (2025년까지)':s.year<=2027?'36% (2027년까지)':s.year<=2029?'38% (2029년까지)':'40% (2030년 이후)',
+   law:'신에너지 및 재생에너지 개발·이용·보급 촉진법 시행령 제15조',memo:'한국에너지공단 전자민원 설치계획서 접수일자 기준'},
+  {id:8,name:'건물에너지관리시스템(BEMS)',types:['신축','증축'],area:()=>10000,areaLabel:'10,000㎡ 이상',
+   grade:()=>'일반 등급 적용 (우수 등급 선택 가능)',
+   law:'공공기관 에너지이용 합리화 추진에 관한 규정 제6조',memo:'우수 / 일반 등급'},
+  {id:9,name:'교육시설 안전인증',types:['신축','증축','개축'],
+   area:s=>s.use==='학교(유치원·초·중등)'?100:s.use==='학생수련원·도서관'?1000:s.use==='대학시설 등'?3000:Infinity,
+   areaLabel:'용도별 100 / 1,000 / 3,000㎡',
+   grade:s=>s.use==='학교(유치원·초·중등)'?'우수 : 평균 78점 이상 (최우수 89점 이상)':(s.use==='학생수련원·도서관'||s.use==='대학시설 등')?'우수 : 평균 69점 이상 (최우수 79점 이상)':'교육시설이 아니므로 대상 아님',
+   law:'교육시설 안전 인증 운영 규정',memo:'설계에 반영된 내용으로 예비인증 신청 가능',
+   alert:s=>s.area>=500?'500㎡ 이상 증·개축 → 사용승인 후 2년 이내 재인증 신청':null}
+];
+function certState(){
+  const n=v=>{const x=parseInt(document.getElementById(v).value,10);return isNaN(x)?0:x;};
+  return {type:document.getElementById('ct-type').value,area:n('ct-area'),use:document.getElementById('ct-use').value,
+          pub:document.getElementById('ct-pub').value,year:n('ct-year')||2026};
+}
+function runCertJudge(){
+  const s=certState();
+  const R=CERTS9.map(c=>{const need=c.area(s);return {c,need,match:c.types.includes(s.type)&&s.area>=need};});
+  document.getElementById('cert-count').textContent=R.filter(r=>r.match).length;
+  document.getElementById('cert-results').innerHTML='<div class="certgrid">'+R.map((r,i)=>{
+    const c=r.c, grade=c.grade(s), al=c.alert?c.alert(s):null;
+    const noReason = r.match?'':(!c.types.includes(s.type)?`대상 공사유형 아님 (${c.types.join('·')})`:(r.need===Infinity?'해당 용도는 대상 아님':`연면적 기준 미충족 (${c.areaLabel})`));
+    return `<div class="certcard ${r.match?'on open':''}" data-i="${i}">
+      <div class="certcard-h"><span class="cc-badge">${r.match?'● 대상':'대상 아님'}</span><span class="cc-name">${esc(c.name)}</span><span class="cc-chev">⌄</span></div>
+      <div class="certcard-b">
+        ${r.match?`<div class="r"><b>적용 등급</b> · ${esc(grade)}</div>`:`<div class="r cc-no">${esc(noReason)}</div>`}
+        <div class="r"><b>근거</b> · ${esc(c.law)}</div>
+        <div class="r"><b>비고</b> · ${esc(c.memo)}</div>
+        ${(r.match&&al)?`<div class="r cc-alert">⚠ ${esc(al)}</div>`:''}
+      </div></div>`;
+  }).join('')+'</div>';
+}
+document.getElementById('cert-results').addEventListener('click',e=>{
+  const card=e.target.closest('.certcard'); if(card) card.classList.toggle('open');
+});
+['ct-type','ct-area','ct-use','ct-pub','ct-year'].forEach(id=>{
+  const el=document.getElementById(id); el.addEventListener('input',runCertJudge); el.addEventListener('change',runCertJudge);
+});
+document.getElementById('cert-reset').addEventListener('click',()=>{
+  document.getElementById('ct-type').value='신축'; document.getElementById('ct-area').value='';
+  document.getElementById('ct-use').value='학교(유치원·초·중등)'; document.getElementById('ct-pub').value='O';
+  document.getElementById('ct-year').value='2026'; runCertJudge();
+});
+// 총괄표
+document.getElementById('cert-ref').innerHTML=CERTS9.map(c=>
+  `<tr><td style="font-weight:700;color:var(--navy)">${esc(c.name)}</td><td style="text-align:center">${esc(c.types.join('·'))}</td><td style="text-align:center">${esc(c.areaLabel)}</td><td style="font-size:12.5px">${esc(c.memo)}</td><td style="font-size:12px;color:var(--muted)">${esc(c.law)}</td></tr>`).join('');
+runCertJudge();
 </script>
 </body>
 </html>

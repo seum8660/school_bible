@@ -226,8 +226,8 @@
   .nav-div{flex:0 0 auto;width:1px;background:var(--line);margin:2px 4px;}
   .nav-label{flex:0 0 auto;display:flex;align-items:center;font-size:11px;font-weight:800;
     color:#9aa7b8;letter-spacing:.5px;padding:0 4px;text-transform:uppercase;}
-  .tab.active[data-p="proc"],.tab.active[data-p="check"],.tab.active[data-p="law"],.tab.active[data-p="deleg"]{background:var(--ops);color:#fff;}
-  .tab[data-p="proc"]:not(.active),.tab[data-p="check"]:not(.active),.tab[data-p="law"]:not(.active),.tab[data-p="deleg"]:not(.active){border-color:#bfe0e2;color:var(--ops-d);}
+  .tab.active[data-p="proc"],.tab.active[data-p="check"],.tab.active[data-p="law"],.tab.active[data-p="deleg"],.tab.active[data-p="price"],.tab.active[data-p="glossary"],.tab.active[data-p="ratio"]{background:var(--ops);color:#fff;}
+  .tab[data-p="proc"]:not(.active),.tab[data-p="check"]:not(.active),.tab[data-p="law"]:not(.active),.tab[data-p="deleg"]:not(.active),.tab[data-p="price"]:not(.active),.tab[data-p="glossary"]:not(.active),.tab[data-p="ratio"]:not(.active){border-color:#bfe0e2;color:var(--ops-d);}
   /* 타임라인 */
   .fchips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;}
   .fchip{border:1px solid var(--line);background:#fff;color:var(--muted);padding:7px 15px;border-radius:100px;
@@ -249,6 +249,10 @@
   .pm.note{background:#fff3d9;color:#8a6413;}
   .pm.law{background:#EEF2F8;color:var(--green-d);}
   .tl-ph{flex:0 0 auto;font-size:12px;font-weight:800;align-self:center;}
+  .tl-row.lk{cursor:pointer;}
+  .tl-row.lk:hover{border-color:var(--ops);background:#f6fbfb;box-shadow:0 2px 10px rgba(0,0,0,.06);}
+  .tl-link{flex:0 0 auto;align-self:center;color:#c3cede;font-weight:900;font-size:14px;margin-left:4px;}
+  .tl-row.lk:hover .tl-link{color:var(--ops);}
   /* 실무 절차 뷰 토글 + 스윔레인 */
   .proc-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
   .pv-toggle{display:flex;gap:4px;background:#F2F4F6;border-radius:12px;padding:4px;}
@@ -425,13 +429,17 @@
       <button class="tab" data-p="proc"><span class="dot"></span>📋 실무 절차 타임라인</button>
       <button class="tab" data-p="check"><span class="dot"></span>✅ 단계별 체크리스트</button>
       <button class="tab" data-p="law"><span class="dot"></span>📖 법령 검색</button>
+      <button class="tab" data-p="price"><span class="dot"></span>📐 2026 시설단가</button>
+      <button class="tab" data-p="glossary"><span class="dot"></span>📖 용어정리</button>
+      <button class="tab" data-p="ratio"><span class="dot"></span>📊 2026 제비율표</button>
       <button class="tab" data-p="deleg"><span class="dot"></span>🗂 위임전결</button>
       <div class="nav-grp">관련 사이트</div>
       <a class="extlink" href="https://www.moleg.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">법제처</span><span class="ext">↗</span></a>
-      <a class="extlink" href="http://www.ekacem.or.kr/" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">한국건설엔지니어링협회</span><span class="ext">↗</span></a>
+      <a class="extlink" href="#" onclick="return false;" title="링크 준비중"><span class="dot"></span><span class="lb">2026년(하) 일위대가</span><span class="ext">↗</span></a>
       <a class="extlink" href="https://www.csi.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">건설공사 안전관리 통합정보망(CSI)</span><span class="ext">↗</span></a>
       <a class="extlink" href="https://work.keiis.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">교육시설통합정보망</span><span class="ext">↗</span></a>
       <a class="extlink" href="https://shop.g2b.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">나라장터 종합쇼핑몰</span><span class="ext">↗</span></a>
+      <a class="extlink" href="http://www.ekacem.or.kr/" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">한국건설엔지니어링협회</span><span class="ext">↗</span></a>
     </nav>
   </aside>
   <main class="content">
@@ -441,13 +449,6 @@
     <div class="sec-head">
       <span class="chip" style="background:var(--navy)">제0장</span>
       <div><h2>학교시설사업 업무 PROCESS</h2><p>전 생애주기 4단계 흐름과 단계별 주요 업무 · 대상기준</p></div>
-    </div>
-
-    <div class="mflow">
-      <span class="node" style="background:var(--p-plan)">기획</span><span class="a">→</span>
-      <span class="node" style="background:var(--p-design)">설계</span><span class="a">→</span>
-      <span class="node" style="background:var(--p-const)">시공</span><span class="a">→</span>
-      <span class="node" style="background:var(--p-comp)">준공</span>
     </div>
 
     <div class="map">
@@ -722,6 +723,48 @@
     <div class="note">💡 <span class="who-pill draft" style="display:inline-block">기안</span> 은 기안 주체, <span class="who-pill final" style="display:inline-block">전결</span> 은 최종 전결권자입니다. 검색으로 업무를 찾아보세요.</div>
     <div class="search-box"><span class="ic">🔍</span><input type="text" id="dl-q" placeholder="업무 키워드 검색 (예: 설계변경, 준공, 관급자재)"></div>
     <div id="deleg-list"></div>
+  </section>
+
+  <!-- ============ 2026 시설단가 ============ -->
+  <section class="panel" id="price">
+    <div class="sec-head"><span class="chip" style="background:var(--ops)">실무</span>
+      <div><h2>2026 시설단가</h2><p>전라남도교육비특별회계 2026년도 예산편성 기준 시설단가표</p></div></div>
+    <div class="note">💡 금액단위: <b>천원</b> · 예산편성 기준 단가</div>
+    <div class="search-box"><span class="ic">🔍</span><input type="text" id="price-q" placeholder="품명·규격 검색 (예: 교실, 화장실, 냉난방, 운동장)"></div>
+    <div id="price-body"></div>
+    <div id="price-footnote" class="note" style="margin-top:18px;color:#5A6672"></div>
+  </section>
+
+  <!-- ============ 용어정리 ============ -->
+  <section class="panel" id="glossary">
+    <div class="sec-head"><span class="chip" style="background:var(--ops)">실무</span>
+      <div><h2>용어정리</h2><p>학교시설사업 실무에서 자주 쓰는 용어·약어</p></div></div>
+    <div class="search-box"><span class="ic">🔍</span><input type="text" id="gl-q" placeholder="용어 검색 (예: VE, 전결, 일상감사, ZEB)"></div>
+    <div class="tbl-wrap"><table><thead><tr><th style="width:220px">용어</th><th>설명</th></tr></thead><tbody id="glossary-body"></tbody></table></div>
+  </section>
+
+  <!-- ============ 2026 제비율표 ============ -->
+  <section class="panel" id="ratio">
+    <div class="sec-head"><span class="chip" style="background:var(--ops)">실무</span>
+      <div><h2>2026 제비율표 <span style="font-size:14px;color:var(--muted);font-weight:600">(4.13. 기준)</span></h2><p>시설공사 원가계산 제비율 적용 요율표 (공사규모·기간별)</p></div></div>
+    <div class="note">💡 적용시기: <b>2026. 4. 13. 입찰공고분부터</b> · 단위 % · 공사규모·기간·공종을 선택하면 적용 요율이 계산됩니다.</div>
+
+    <div class="calc-form" style="grid-template-columns:repeat(3,1fr)">
+      <div class="cfield"><label>공사규모</label>
+        <select id="rt-size"><option>10억 미만</option><option>10억~30억</option><option>30억~50억</option><option>50억~300억</option><option>300억~1000억</option></select>
+        <div class="hint">간접노무비·고정요율 결정</div></div>
+      <div class="cfield"><label>공사기간</label>
+        <select id="rt-period"><option>6개월이하</option><option>7-12개월</option><option>13-36개월</option><option>36개월초과</option></select>
+        <div class="hint">기타경비·기간별 요율 결정</div></div>
+      <div class="cfield"><label>공종</label>
+        <select id="rt-work"><option>건축</option><option>토목</option><option>조경</option><option>설비</option></select>
+        <div class="hint">공종별 요율 결정</div></div>
+    </div>
+    <div id="ratio-result"></div>
+
+    <div class="sec-head" style="margin-top:32px"><span class="chip" style="background:var(--ops)">총괄표</span>
+      <div><h2>제비율 총괄표</h2><p>공사규모·기간별 전체 요율 및 참고 요율</p></div></div>
+    <div id="ratio-body"></div>
   </section>
 
   </main>
@@ -1220,6 +1263,32 @@ const EDATA = {"procedure": [{"task": "사전기획 용역 발주", "from": "행
 const PH_LABEL={plan:'기획',design:'설계',const:'시공'};
 
 // --- 실무 절차 타임라인 ---
+// 실무 스텝 → 관련 제도 항목 매핑 (순서: 구체적인 것 먼저)
+const STEP_MAP=[
+  ['설계용역 일상감사','design','일상감사'],['설계용역 평가','design','설계용역평가'],['설계용역 납품','design','설계용역평가'],['설계용역 손해배상','design','설계용역평가'],['설계용역 품의','design','설계공모'],
+  ['사전기획','plan','사전기획'],['공공건축','plan','공공건축심의'],['도시(군)관리','plan','시행계획'],['투자심사','plan','사전기획'],
+  ['설계공모','design','설계공모'],['기술자문','design','기술자문위원회'],['기본계획','design','기술자문위원회'],['계획설계','design','기술자문위원회'],
+  ['경제성','design','경제성'],['안전성 검토','design','안전성'],['안전보건대장','design','설계안전보건대장'],
+  ['BF','cert',''],['녹색건축','cert',''],['에너지효율','cert',''],['제로에너지','cert',''],['예비인증','cert',''],['본인증','cert',''],['인증','cert',''],
+  ['시설사업 추진계획','design','시행계획'],['시행계획','design','시행계획'],
+  ['집행계획','const','집행계획'],['시설공사 품의','const','집행계획'],['관급자재','const','집행계획'],
+  ['건설사업관리','const','건설사업관리계획'],['감리','const','감리발주'],['설계의도','const','기타용역'],['재해예방','const','기타용역'],['공사안전보건대장','const','기타용역'],['폐기물','const','폐기물'],
+  ['해체','const','해체공사'],['안전성 평가','const','공사추진'],['안전점검','const','공사추진'],['안전관리계획','const','공사추진'],['CSI','const','공사추진'],['어린이','const','공사추진'],
+  ['착공','const','시설공사 일상감사'],['일상감사','const','시설공사 일상감사'],
+  ['준공','comp','준공검사'],['사용승인','comp','사용승인'],['건축물대장','comp','건축물대장']
+];
+function stepLink(task){ for(const e of STEP_MAP){ if(task.includes(e[0])) return {tab:e[1],find:e[2]}; } return null; }
+function gotoItem(tab, find){
+  activate(tab);
+  setTimeout(()=>{
+    const host=document.querySelector(`[data-list="${tab}"]`);
+    if(!host) return;
+    let t=null;
+    if(find) t=[...host.querySelectorAll('.acc')].find(a=>a.querySelector('.t')&&a.querySelector('.t').textContent.includes(find));
+    if(!t) t=host.querySelector('.acc');
+    if(t){ t.classList.add('open'); t.scrollIntoView({behavior:'smooth',block:'center'}); }
+  },130);
+}
 function renderProc(f){
   const host=document.getElementById('proc-list');
   const rows=EDATA.procedure.filter(s=>!f||f==='all'||s.phase===f);
@@ -1230,11 +1299,14 @@ function renderProc(f){
     if(s.to) b+=`<span class="pb arr">→</span><span class="pb to">${esc(s.to)}</span>`;
     if(s.note) b+=`<span class="pm note">${esc(s.note)}</span>`;
     if(s.law) b+=`<span class="pm law">${esc(s.law)}</span>`;
-    return `<div class="tl-row" style="border-left-color:${c}"><div class="tl-no" style="background:${c}">${s.no}</div>`+
+    const lk=stepLink(s.task);
+    const attr=lk?` data-tab="${lk.tab}" data-find="${esc(lk.find)}"`:'';
+    return `<div class="tl-row${lk?' lk':''}" style="border-left-color:${c}"${attr}><div class="tl-no" style="background:${c}">${s.no}</div>`+
       `<div class="tl-main"><div class="tl-task">${esc(s.task)}</div><div class="tl-badges">${b}</div></div>`+
-      `<span class="tl-ph" style="color:${c}">${PH_LABEL[s.phase]}</span></div>`;
+      `<span class="tl-ph" style="color:${c}">${PH_LABEL[s.phase]}</span>${lk?'<span class="tl-link" title="관련 제도 보기">↗</span>':''}</div>`;
   }).join('');
   document.getElementById('proc-count').textContent=EDATA.procedure.length;
+  host.querySelectorAll('.tl-row.lk').forEach(row=>row.addEventListener('click',()=>gotoItem(row.dataset.tab,row.dataset.find)));
 }
 let procFilter='all', procView='list';
 document.querySelectorAll('.fchip').forEach(ch=>ch.addEventListener('click',()=>{
@@ -1484,6 +1556,136 @@ document.getElementById('cert-reset').addEventListener('click',()=>{
 document.getElementById('cert-ref').innerHTML=CERTS9.map(c=>
   `<tr><td style="font-weight:700;color:var(--navy)">${esc(c.name)}</td><td style="text-align:center">${esc(c.types.join('·'))}</td><td style="text-align:center">${esc(c.areaLabel)}</td><td style="font-size:12.5px">${esc(c.memo)}</td><td style="font-size:12px;color:var(--muted)">${esc(c.law)}</td></tr>`).join('');
 runCertJudge();
+
+// ================= 2026 시설단가 =================
+const PRICE = {"foot": "\u203b \ubcf8 \ub2e8\uac00\ub294 \uc721\uc9c0\ub2e8\uac00\uc774\uba70, \ub3c4\uc11c\uc758 \uacbd\uc6b0 \uac00\uc9c0\uc5ed 35%, \ub098\uc9c0\uc5ed 25%, \ub2e4\uc9c0\uc5ed 15%, \ub77c\uc9c0\uc5ed 5% \uac00\uc0b0 (\uc124\uacc4\uc6a9\uc5ed\ube44 \ubc0f \uac10\ub9ac\ube44 \uc81c\uc678) \u203b \uc801\uc6a9\uae30\uc900: \uc2e0\ucd95, \uc99d\ucd95 \ub610\ub294 \uac1c\ucd95 \uac74\ucd95\ubb3c\uc740 [\uc5d0\ub108\uc9c0\uc808\uc57d\uc124\uacc4\uae30\uc900] \ubc0f [\uc624\uc218\uc815\ud654\uc870(\uc2e0\ucd95\uc81c\uc678)] \ud3ec\ud568 \ub2e8\uac00", "cats": [{"cat": "\uac1c\ucd95 \ubc0f \ubcf4\uc218", "items": [{"name": "\uad50\uc2e4 \uac1c\ucd95", "rows": [["90\u33a1\uae30\uc900(\ucca0\uac70\ud3ec\ud568), \uc11d\uba74\ucca0\uac70 \uc81c\uc678", "183,189"]]}, {"name": "\uac74\ubb3c \ucca0\uac70", "rows": [["90\u33a1\uae30\uc900(\uc77c\ubc18)", "15,846"], ["90\u33a1\uae30\uc900(\uc11d\uba74\ud14d\uc2a4)", "9,176"]]}, {"name": "\ub178\ud6c4\uad50\uc2e4 \uc911\uc218", "rows": [["90\u33a1\uae30\uc900[\ubc14\ub2e5, \ucc3d\ud638(\ub0b4\u00b7\uc678\ubd80), \ucc9c\uc7a5, \ub3c4\uc7a5(\ub0b4\u00b7\uc678\ubd80) \ud3ec\ud568]", "57,665"]]}, {"name": "\ud654\uc7a5\uc2e4 \uc911\uc218", "rows": [["45\u33a1(10\uce78) \uae30\uc900", "96,282"]]}, {"name": "\ud654\uc7a5\uc2e4 \ubcf4\uc218", "rows": [["45\u33a1(10\uce78) \uae30\uc900(\ubc30\uad00, \uc704\uc0dd \uae30\uad6c \uc81c\uc678)", "62,327"]]}, {"name": "\uc0ac\ud0dd \uc911\uc218", "rows": [["45\u33a1\uae30\uc900", "44,444"], ["33\u33a1\uae30\uc900", "28,617"]]}, {"name": "\uad50\uc2e4 \ub204\uc218 \ubcf4\uc218", "rows": [["\uc9c0\ubd95(\uc2e4\ub2f990\u33a1\uae30\uc900)", "13,928"], ["\ubcbd\uccb4(\uc2e4\ub2f990\u33a1\uae30\uc900)", "1,990"]]}, {"name": "\ucc3d\uace0 \uc911\uc218", "rows": [["33\u33a1\uae30\uc900", "9,552"]]}, {"name": "\uc219\uc9c1\uc2e4 \uc911\uc218", "rows": [["33\u33a1\uae30\uc900", "19,923"]]}, {"name": "\ucc3d\ud638 \ubcf4\uc218(90\u33a1\uae30\uc900) [\uc5d0\ub108\uc9c0 \uc18c\ube44 \ud6a8\uc728 \uc81c\ud488 \uc801\uc6a9]", "rows": [["\uad50\uc2e4 \ucd9c\uc785\ubb38 2\uac1c\uc18c", "4,919"], ["\uad50\uc2e4 \ucd9c\uc785\ubb38 2\uac1c\uc18c, \ubcf5\ub3c4\ucc3d 2\uac1c\uc18c", "8,591"], ["\uc678\ubd80\ucc3d(\uc774\uc911\ucc3d)", "25,838"], ["\uad50\uc2e4 \uc804\uccb4\ucc3d(\ucd9c\uc785\ubb38, \ubcf5\ub3c4, \uc678\ubd80 \uc774\uc911\ucc3d)", "32,928"]]}, {"name": "\uad50\uc2e4 \ub3c4\uc7a5(90\u33a1\uae30\uc900)", "rows": [["\ub0b4\ubd80(2\ud68c\uce60 \uae30\uc900)", "1,839"], ["\uc678\ubd80(\ubc29\uc218\uc81c\uc678, 2\ud68c\uce60 \uae30\uc900)", "1,687"]]}, {"name": "\uae09\uc2dd\uc2e4 \uac1c\ucd95(\u33a1\ub2f9)", "rows": [["\uc2dd\ub2f9(\ucca0\uac70 \uc81c\uc678)", "2,490"], ["\uc870\ub9ac\uc2e4(\ucca0\uac70 \uc81c\uc678)", "4,314"]]}, {"name": "\uae09\uc2dd\uc2e4 \uc911\uc218(\u33a1\ub2f9)", "rows": [["\uc2dd\ub2f9", "677"], ["\uc870\ub9ac\uc2e4", "1,529"]]}, {"name": "\uad50\uc2e4 \ubcbd\uccb4 \ubcf4\uc218(90\u33a1\uae30\uc900)", "rows": [["\ud398\uc778\ud2b8 \uc678 \ud0c0 \uc7ac\ub8cc \ub9c8\uac10(\uc801\ubcbd\ub3cc, \ubcf5\ud569\ud328\ub110 \ub4f1)", "24,616"]]}, {"name": "\uad50\uc2e4 \ubc14\ub2e5 \ubcf4\uc218(90\u33a1\uae30\uc900)", "rows": [["\ub3d9\ubc14\ub9ac \uae30\ucd08, \uad50\uc2e4 \ubc0f \ubcf5\ub3c4 \ud6c4\ub85c\ub9c1", "22,895"], ["\ub3d9\ubc14\ub9ac \uae30\ucd08, \uad50\uc2e4 \ubc0f \ubcf5\ub3c4 PVC \ud0c0\uc77c", "17,085"], ["\ucf58\ud06c\ub9ac\ud2b8 \ubc14\ub2e5, \uad50\uc2e4 \ud6c4\ub85c\ub9c1, \ubcf5\ub3c4 PVC \ud0c0\uc77c", "15,590"], ["\ucf58\ud06c\ub9ac\ud2b8 \ubc14\ub2e5, \uad50\uc2e4 \ubc0f \ubcf5\ub3c4 PVC \ud0c0\uc77c", "13,412"], ["\ucf58\ud06c\ub9ac\ud2b8 \ubc14\ub2e5, \uad50\uc2e4 \uc774\uc911 \ubc14\ub2e5\uc7ac, \ubcf5\ub3c4 PVC \ud0c0\uc77c", "23,232"], ["1\uce35 1\uac1c\uc18c \uacc4\ub2e8\uc2e4, \uace0\ubb34\ud0c0\uc77c 40\u33a1\uae30\uc900", "5,255"]]}, {"name": "\ucc9c\uc7a5 \ubcf4\uc218(90\u33a1\uae30\uc900)", "rows": [["\ub9c8\uac10\uce35, \ub2e8\uc5f4\uc7ac \uad50\uccb4 \ud3ec\ud568", "12,821"], ["\uc77c\ubc18\uce35", "8,658"], ["\uc77c\ubc18\uce35, \uc11d\uba74\ucca0\uac70 \ud3ec\ud568", "16,613"], ["\uc77c\ubc18\uce35, \uc11d\uba74\ucca0\uac70 \ubc0f \uc804\uae30\uc2dc\uc124 \ud3ec\ud568", "21,574"]]}]}, {"cat": "\ud1a0\ubaa9\u00b7\uc124\ube44", "items": [{"name": "\ubc30\uc218\ub85c\uc2dc\uc124, \ucf58\ud06c\ub9ac\ud2b8(m\ub2f9)", "rows": [["0.3 \u00d7 0.3m", "315"], ["0.4 \u00d7 0.4m", "367"], ["0.4 \u00d7 0.4m, \uc2a4\ud2f8\uadf8\ub808\uc774\ud305", "504"]]}, {"name": "\uc2a4\ud0e0\ub4dc\uc2dc\uc124(m\ub2f9)", "rows": [["2\ub2e8(\ubc30\uc218\ub85c \ud3ec\ud568)", "695"], ["3\ub2e8(\ubc30\uc218\ub85c \ud3ec\ud568)", "827"], ["4\ub2e8(\ubc30\uc218\ub85c \ud3ec\ud568)", "936"]]}, {"name": "\uc624\uc218\uc815\ud654\uc870", "rows": [["5\ud1a4\uc6a9", "33,348"], ["10\ud1a4\uc6a9", "46,003"], ["20\ud1a4\uc6a9", "89,030"], ["30\ud1a4\uc6a9", "113,283"], ["40\ud1a4\uc6a9", "156,381"]]}, {"name": "\uc6b0\ucc9c\ub85c \ud3ec\uc7a5(\ucf58\ud06c\ub9ac\ud2b8)", "rows": [["T 15cm(\u33a1\ub2f9)", "71"], ["T 12cm(\uc544\uc2a4\ucf58)", "98"], ["\uace0\uc555\ube14\ub85d(\ubcf4\ub3c4)", "85"], ["\uace0\uc555\ube14\ub85d(\ucc28\ub3c4)", "126"]]}, {"name": "\uc639\ubcbd \uc2dc\uc124(\u33a1\ub2f9)", "rows": [["\uc639\ubcbd \uae30\ucd08\ub192\uc774 1m \ucd94\uac00\uc0b0\ucd9c \ud3ec\ud568", "438"]]}, {"name": "\uc9c0\ud558\uc218 \uac1c\ubc1c \uc6b4\ub3d9\uc7a5 \uc131\ud1a0(\u33a1\ub2f9)", "rows": [["H : 80m\uae30\uc900", "55,308"], ["T : 20cm\uae30\uc900", "32"]]}, {"name": "\ub2f4\uc7a5 \uc2dc\uc124(m\ub2f9)", "rows": [["\uc801\ubcbd\ub3cc \ub2f4(H=1.7m\uae30\uc900)", "596"], ["\ud700\uc2a4(H=1.7m\uae30\uc900)", "222"], ["\uc870\uacbd\uc11d(\u33a1\uae30\uc900)", "882"]]}, {"name": "\uc74c\uc6a9\uc218, \uc800\uc218\uc870", "rows": [["\uc625\uc0c1\uc218\uc870, \uc2a4\ud150\uc778\ub9ac\uc2a4(\uac1c\uc18c\ub2f9)", "25,448"]]}, {"name": "\ub0c9\u00b7\ub09c\ubc29 \uc2dc\uc124", "rows": [["1\uc2e4[EHP(\uc804\uae30),\uc804\uae30\uc2dc\uc124 \ubbf8\ud3ec\ud568]", "6,685"], ["1\uc2e4[EHP(\uc804\uae30),\uc804\uae30\uc2dc\uc124 \ud3ec\ud568]", "7,093"], ["1\uc2e4[EHP(\uc804\uae30),GHP(\uac00\uc2a4)\uc804\uae30\uc2dc\uc124 \ubbf8\ud3ec\ud568]", "7,093"], ["1\uc2e4[EHP(\uc804\uae30),GHP(\uac00\uc2a4)\uc804\uae30\uc2dc\uc124 \ud3ec\ud568]", "7,502"]]}, {"name": "\ub0c9\u00b7\ub09c\ubc29 \uad50\uccb4", "rows": [["1\uc2e4[EHP(\uc804\uae30),\ucca0\uac70\ud3ec\ud568, \uc804\uae30\uc2dc\uc124 \ubbf8\ud3ec\ud568]", "6,966"], ["1\uc2e4[EHP(\uc804\uae30),\ucca0\uac70\ud3ec\ud568, \uc804\uae30\uc2dc\uc124 \ud3ec\ud568]", "7,373"], ["1\uc2e4[EHP(\uc804\uae30),GHP(\uac00\uc2a4) \ud63c\uc6a9, \ucca0\uac70 \ud3ec\ud568, \uc804\uae30\uc2dc\uc124 \ubbf8\ud3ec\ud568]", "7,373"], ["1\uc2e4[EHP(\uc804\uae30),GHP(\uac00\uc2a4) \ud63c\uc6a9, \ucca0\uac70 \ud3ec\ud568, \uc804\uae30\uc2dc\uc124 \ud3ec\ud568]", "7,781"]]}, {"name": "\uc218\uc804 \uc124\ube44", "rows": [["200kVA \uc774\ud558(7~20\uc2e4)", "130,544"], ["300kVA \uc774\ud558(21~35\uc2e4)", "132,460"], ["300kVA \uc774\uc0c1(36\uc2e4 \uc774\uc0c1)", "135,363"]]}, {"name": "\uc2b9\uc555 \uc2dc\uc124", "rows": [["\ubcf4\ud1b5\uad50\uc2e4 \uae30\uc900(\uc2e4\ub2f9)", "2,381"], ["\ubcc0\uc555\uae30 \uc6a9\ub7c9 \uc99d\uc124", "60,088"]]}, {"name": "\uc804\ub4f1 \uad50\uccb4", "rows": [["LED, \uad50\uc2e4 9\ub4f1, \ubcf5\ub3c4 1\ub4f1(\ubc30\uad00, \ubc30\uc120 \ud3ec\ud568)", "3,930"]]}, {"name": "\ub3c4\ubcf5\ub3c4(\ud3ec\uc7a5 \ud3ec\ud568)", "rows": [["\ud3ed 2.4m, 1m\ub2f9", "1,178"], ["\ud3ed 2.0m, 1m\ub2f9", "1,058"], ["\ud3ed 1.5m, 1m\ub2f9", "882"], ["\ucc28\ub7c9\ud1b5\ud589, \uac1c\uc18c\ub2f9", "8,917"]]}, {"name": "\uc870\ud68c\ub300 \uc2dc\uc124", "rows": [["\uc9c0\ubd95 \uc124\uce58", "65,814"], ["\uc9c0\ubd95 \ubbf8\uc124\uce58", "43,325"]]}, {"name": "\uad50\ubb38 \uc2dc\uc124", "rows": [["\uc2a4\ud0e0\ub4dc \uc790\ubc14\ub77c \uae30\uc900", "27,852"]]}]}, {"cat": "\uc99d\ucd95", "items": [{"name": "\ud604\uad00 \uc99d\ucd95(\uac1c\uc18c)", "rows": [["\ucca0\ucf58, 55\u33a1\uae30\uc900", "100,658"]]}, {"name": "\ub3c5\ub9bd\uad00\uc0ac(1\ub3d9)", "rows": [["\uc870\uc801\uc2ac\ub798\ube0c, \uc628\ub3cc\ub09c\ubc29, 38\u33a1", "120,129"], ["\uc870\uc801\uc2ac\ub798\ube0c, \uc628\ub3cc\ub09c\ubc29, 42\u33a1", "130,032"], ["\uc870\uc801\uc2ac\ub798\ube0c, \uc628\ub3cc\ub09c\ubc29, 48\u33a1", "145,048"], ["\uc870\uc801\uc2ac\ub798\ube0c, \uc628\ub3cc\ub09c\ubc29, 58\u33a1", "169,774"]]}, {"name": "\uc5f0\ub9bd\uad00\uc0ac(1\uc138\ub300)", "rows": [["\ucca0\ucf58, \uc628\ub3cc\ub09c\ubc29, 9\uc138\ub300\uc6a9, 500\u33a1 \uc138\ub300\ub2f9 55\u33a1\uae30\uc900", "157,125"]]}, {"name": "\ucc3d\uace0 \uc99d\ucd95", "rows": [["66\u33a1(\uc870\uc801\uc2ac\ub798\ube0c)", "72,956"], ["59\u33a1(\uc870\ub9bd)", "50,324"]]}, {"name": "\ud654\uc7a5\uc2e4(1\ub3d9) \uc219\uc9c1\uc2e4(1\ub3d9)", "rows": [["45\u33a1\uae30\uc900(\ube44\ub09c\ubc29, \uc124\ube44, \uae30\uad6c \ud3ec\ud568, \uc815\ud654\uc870 \ubcc4\ub3c4)", "176,260"], ["\uc870\uc801\uc2ac\ub798\ube0c, \uc628\ub3cc\ub09c\ubc29, 33\u33a1\uae30\uc900", "75,917"]]}, {"name": "\uae09\uc2dd\uc2e4 \uc99d\ucd95(\u33a1\ub2f9)", "rows": [["\uc2dd\ub2f9", "2,419"], ["\uc870\ub9ac\uc2e4", "4,204"]]}, {"name": "\uacc4\ub2e8\uc2e4 \uc99d\ucd95", "rows": [["1\uce35\uc6a9 40\u33a1(\uac1c\uc18c\ub2f9)", "70,852"], ["2\uce35\uc6a9 80\u33a1(\uac1c\uc18c\ub2f9)", "134,892"], ["3\uce35\uc6a9 120\u33a1(\uac1c\uc18c\ub2f9)", "205,565"], ["4\uce35\uc6a9 160\u33a1(\uac1c\uc18c\ub2f9)", "269,577"]]}]}, {"cat": "\uad50\uc2e4 \uc99d\ucd95", "items": [{"name": "\uc77c\ubc18\uad50\uc2e4(90\u33a1)", "rows": [["\ube44\ub09c\ubc29, \ubcf5\ub3c4 \ud3ec\ud568 (\ud751\ud310, \uac8c\uc2dc\ud310, \uc2e0\ubc1c\uc7a5 \uc81c\uc678)", "162,037"]]}, {"name": "\ud2b9\ubcc4\uad50\uc2e4(\uacfc\ud559\uc2e4, \uc74c\uc545\uc2e4, \ucef4\ud4e8\ud130\uc2e4 \ub4f1\uc758 \ubd80\ub300\uc2dc\uc124 \uc81c\uc678)", "rows": [["\ube44\ub09c\ubc29 90\u33a1(\ubcf5\ub3c4 \ud3ec\ud568)", "173,975"], ["\ube44\ub09c\ubc29 180\u33a1(\ubcf5\ub3c4 \ud3ec\ud568)", "347,612"]]}, {"name": "\ub0b4\uc9c4\ubcf4\uac15(\u33a1\ub2f9)", "rows": [["\uc5f0\uba74\uc801 \uae30\uc900", "159"]]}]}, {"cat": "\uad50\uc2e4 \uc2e0\ucd95", "items": [{"name": "\uc77c\ubc18\ud559\uad50(\u33a1\ub2f9)", "rows": [["\uc911\uc559 \uc9d1\uc911\uc2dd \ub0c9\u00b7\ub09c\ubc29, \ud1a0\ubaa9 \ubc0f \uc625\uc678\uc2dc\uc124 \uc81c\uc678, \uce60\ud310\u00b7\uac8c\uc2dc\ud310\u00b7\uc2e0\ubc1c\uc7a5 \uc81c\uc678", "2,247"]]}, {"name": "\ud2b9\uc218\ud559\uad50(\u33a1\ub2f9)", "rows": [["\uc911\uc559 \uc9d1\uc911\uc2dd \ub0c9\u00b7\ub09c\ubc29, \ud1a0\ubaa9 \ubc0f \uc625\uc678\uc2dc\uc124 \uc81c\uc678, \uce60\ud310\u00b7\uac8c\uc2dc\ud310\u00b7\uc2e0\ubc1c\uc7a5 \uc81c\uc678", "2,558"]]}, {"name": "\uc2e0\uc124\ud30c\uc77c", "rows": [["1\uce35 20\uc2e4 \u03a6400 20\u339c, \uc2e4\ub2f9 18\uac1c\uc18c", "529,038"]]}]}, {"cat": "\uac15\ub2f9 \ubc0f \uc0dd\ud65c\uad00", "items": [{"name": "\uac15\ub2f9 \uc99d\ucd95", "rows": [["850\u33a1\uae30\uc900, \ud30c\uc77c \ud3ec\ud568(\ud559\uc0dd\uc218 500\uba85 \uc774\ud558)", "2,330,079"], ["950\u33a1\uae30\uc900, \ud30c\uc77c \ud3ec\ud568(\ud559\uc0dd\uc218 1,000\uba85 \uc774\ud558)", "2,604,205"], ["1,000\u33a1\uae30\uc900, \ud30c\uc77c \ud3ec\ud568(\ud559\uc0dd\uc218 1,000\uba85 \uc774\uc0c1)", "2,741,267"]]}, {"name": "\uae30\uc219\uc0ac \uc99d\ucd95(\u33a1\ub2f9)", "rows": [["1\uc778\ub2f9 12\u33a1\uae30\uc900, \ube44\ud488\ube44 \uc81c\uc678", "3,002"]]}]}, {"cat": "\uc6b4\ub3d9\uc7a5", "items": [{"name": "\uc6b4\ub3d9\uc7a5", "rows": [["\ucc9c\uc5f0\uc794\ub514(\u33a1\ub2f9), \ubc30\uc218\ub85c \uc81c\uc678", "185"], ["\uc778\uc870\uc794\ub514(\u33a1\ub2f9), \ubc30\uc218\ub85c \uc81c\uc678", "173"], ["\ub9c8\uc0ac\ud1a0(\u33a1\ub2f9), \ubc30\uc218\ub85c \uc81c\uc678", "173"]]}, {"name": "\uc6b4\ub3d9\uc7a5 \ud2b8\ub799", "rows": [["\ucc9c\uc5f0\uc794\ub514(\u33a1\ub2f9), \ubc30\uc218\ub85c \uc81c\uc678", "173"]]}, {"name": "\uc2e0\uc7ac\uc0dd\uc5d0\ub108\uc9c0(\uc2e0\u00b7\uc99d\ucd95 \ubc0f \uac1c\ucd95 \ubd80\ubd84, \uc5f0\uba74\uc801 1\ucc9c\u33a1 \uc774\uc0c1)", "rows": [["\ud0dc\uc591\uad11(\uace0\uc815\uc2dd \uc5f0\uba74\uc801\ub2f9)", "143"], ["\ud0dc\uc591\uc5f4(\uc774\uc911\uc9c4\uacf5\uad00 1\u33a1\ub2f9)", "1,623"], ["\uc9c0\uc5f4(\ubc00\ud3d0\ud615 1kW\ub2f9)", "2,664"]]}]}, {"cat": "\ud1b5\uc2e0\uc7a5\ube44\ub2e8\uac00(\uad50\uc2e4 \uc2e0\u30fb\uc99d\ucd95 \uc2dc)", "items": [{"name": "\ubb34\uc120AP", "rows": [["\uc99d\ucd95\uad50\uc2e4 1\uc2e4\ub2f9", "1,350"]]}, {"name": "\ud1b5\uc2e0\uc7a5\ube44(\uc720\u30fb\ubb34\uc120)", "rows": [["6\ud559\uae09 \uc774\ud558, \uc720\uc120\ub9dd\uc6a9(L2\uc2a4\uc704\uce58), \ubb34\uc120\ub9dd\uc6a9(L2\ubcf4\uc548\uc2a4\uc704\uce58, L2PoE\uc2a4\uc704\uce58, \ubb34\uc120AP)", "26,760"], ["12\ud559\uae09 \uc774\ud558, \uc720\uc120\ub9dd\uc6a9(L2\uc2a4\uc704\uce58), \ubb34\uc120\ub9dd\uc6a9(L2\ubcf4\uc548\uc2a4\uc704\uce58, L2PoE\uc2a4\uc704\uce58, \ubb34\uc120AP)", "41,350"], ["18\ud559\uae09 \uc774\ud558, \uc720\uc120\ub9dd\uc6a9(L2\uc2a4\uc704\uce58), \ubb34\uc120\ub9dd\uc6a9(L2\ubcf4\uc548\uc2a4\uc704\uce58, L2PoE\uc2a4\uc704\uce58, \ubb34\uc120AP)", "50,450"], ["24\ud559\uae09 \uc774\ud558, \uc720\uc120\ub9dd\uc6a9(L2\uc2a4\uc704\uce58), \ubb34\uc120\ub9dd\uc6a9(L2\ubcf4\uc548\uc2a4\uc704\uce58, L2PoE\uc2a4\uc704\uce58, \ubb34\uc120AP)", "63,250"], ["30\ud559\uae09 \uc774\ud558, \uc720\uc120\ub9dd\uc6a9(L2\uc2a4\uc704\uce58), \ubb34\uc120\ub9dd\uc6a9(L2\ubcf4\uc548\uc2a4\uc704\uce58, L2PoE\uc2a4\uc704\uce58, \ubb34\uc120AP)", "73,700"], ["36\ud559\uae09 \uc774\ud558, \uc720\uc120\ub9dd\uc6a9(L2\uc2a4\uc704\uce58), \ubb34\uc120\ub9dd\uc6a9(L2\ubcf4\uc548\uc2a4\uc704\uce58, L2PoE\uc2a4\uc704\uce58, \ubb34\uc120AP)", "90,990"], ["36\ud559\uae09 \ucd08\uacfc, \uc720\uc120\ub9dd\uc6a9(L2\uc2a4\uc704\uce58), \ubb34\uc120\ub9dd\uc6a9(L2\ubcf4\uc548\uc2a4\uc704\uce58, L2PoE\uc2a4\uc704\uce58, \ubb34\uc120AP)", "97,390"]]}]}]};
+function nl2br(t){return esc(t).replace(/\n/g,'<br>');}
+function renderPrice(q){
+  q=(q||'').trim().toLowerCase();
+  let html='';
+  PRICE.cats.forEach(c=>{
+    const items=c.items.filter(it=>!q||((it.name+' '+it.rows.map(r=>r[0]).join(' ')).toLowerCase().includes(q)));
+    if(!items.length) return;
+    html+=`<div class="sec-head" style="margin:22px 0 10px"><span class="chip" style="background:var(--ops)">${esc(c.cat)}</span></div>`;
+    html+='<div class="tbl-wrap"><table><thead><tr><th style="width:230px">품명</th><th>규격</th><th style="width:150px;text-align:right">단가 (천원)</th></tr></thead><tbody>';
+    html+=items.map(it=>{
+      const n=it.rows.length||1;
+      return (it.rows.length?it.rows:[['','']]).map((rw,ri)=>{
+        const nameTd = ri===0 ? `<td rowspan="${n}" style="font-weight:700;color:var(--navy);vertical-align:top">${esc(it.name)}</td>` : '';
+        return `<tr>${nameTd}<td style="font-size:12.5px">${esc(rw[0])}</td><td style="text-align:right;font-weight:700;white-space:nowrap">${esc(rw[1])}</td></tr>`;
+      }).join('');
+    }).join('');
+    html+='</tbody></table></div>';
+  });
+  document.getElementById('price-body').innerHTML = html || '<div class="res-empty">검색 결과가 없습니다.</div>';
+  document.getElementById('price-footnote').innerHTML = '📌 '+esc(PRICE.foot||'');
+}
+document.getElementById('price-q').addEventListener('input',e=>renderPrice(e.target.value));
+renderPrice('');
+
+// ================= 용어정리 =================
+const GLOSSARY=[
+  ['일상감사','집행부서 최종결재 전에 계약·예산집행의 적정성을 사전 점검하는 감사 (교육부 일상감사지침)'],
+  ['투자심사','일정 규모 이상 사업의 타당성·재정건전성을 사전 심사 (자체 40억↑ / 중앙 300억↑)'],
+  ['VE (설계 경제성 검토)','Value Engineering. 기능은 유지하며 비용을 낮추는 설계 대안 검토 (총공사비 100억↑)'],
+  ['DfS (설계 안전성 검토)','Design for Safety. 설계 단계에서 시공·유지관리 위험요소를 사전 검토'],
+  ['기술자문위원회','설계·시공·공법변경 등의 적정성을 전문가가 자문·심의하는 위원회'],
+  ['건설사업관리 (CM)','발주청을 대신·지원해 공사 전반을 관리하는 용역 (Construction Management)'],
+  ['감독권한대행','발주청의 감독 권한을 건설사업관리기술인이 대행하는 방식 (공사비 100억↑)'],
+  ['안전보건대장','건설공사 안전보건 관리를 위해 발주자·설계자·시공자가 단계별로 작성하는 문서 (기본·설계·공사)'],
+  ['ZEB (제로에너지건축물)','에너지 자립률에 따라 1~5등급으로 인증하는 건축물 (교육연구시설 4등급 이상 의무)'],
+  ['BF (장애물 없는 생활환경)','Barrier Free. 이동·이용에 불편이 없도록 설계된 시설 인증'],
+  ['CPTED','범죄예방 환경설계. 건축·조경으로 범죄 기회를 줄이는 설계기준'],
+  ['BEMS','건물에너지관리시스템. 에너지 사용을 실시간 관리하는 시스템 (연면적 1만㎡↑)'],
+  ['EPI','에너지성능지표. 에너지절약계획서 평가 점수 (공공건축물 74점↑)'],
+  ['녹색건축 인증','에너지·환경 성능을 평가해 최우수~일반 등급을 부여하는 인증 (연면적 3천㎡↑)'],
+  ['위임전결','기관장의 결재권을 하위 직위에 위임해 대신 최종 결재하게 하는 규정'],
+  ['전결','위임받은 사항을 위임전결권자가 최종 결재하는 것'],
+  ['예비인증 / 본인증','예비인증은 설계도서 기준의 사전 인증, 본인증은 준공 후 실제 확인 인증'],
+  ['관급자재','발주청이 직접 구매해 시공사에 지급하는 자재 (나라장터 종합쇼핑몰 등)'],
+  ['실정보고','현장의 실제 여건·문제를 발주청에 보고해 설계변경 등을 요청하는 절차'],
+  ['일위대가','단위작업당 재료비·노무비·경비를 산출한 표준 원가 산정 기준'],
+  ['CSI','건설공사 안전관리 종합정보망. 안전관리계획·점검 결과를 등록하는 시스템'],
+  ['예비준공검사','준공 30일 전에 시행하는 사전 준공검사'],
+  ['임시사용승인','공사 완료 부분을 준공 전 임시로 사용하도록 허가하는 것'],
+  ['건축물대장','건축물의 위치·면적·구조·용도 등을 등록·관리하는 공적 장부'],
+  ['설계공모','우수 설계안을 경쟁으로 선정하는 방식 (설계비 1억↑ 우선적용)'],
+  ['건설사업관리계획','부실시공·안전사고 예방을 위해 감리·관리 방식을 정하는 계획']
+];
+function glHl(t,q){if(!q)return esc(t);const i=t.toLowerCase().indexOf(q);if(i<0)return esc(t);return esc(t.slice(0,i))+'<span class="hl">'+esc(t.slice(i,i+q.length))+'</span>'+esc(t.slice(i+q.length));}
+function renderGlossary(q){
+  q=(q||'').trim().toLowerCase();
+  const rows=GLOSSARY.filter(g=>!q||(g[0]+' '+g[1]).toLowerCase().includes(q));
+  document.getElementById('glossary-body').innerHTML = rows.length? rows.map(g=>`<tr><td style="font-weight:700;color:var(--navy)">${glHl(g[0],q)}</td><td style="font-size:13px">${glHl(g[1],q)}</td></tr>`).join('') : '<tr><td colspan="2" style="text-align:center;color:#9aa7b8;padding:24px">검색 결과가 없습니다.</td></tr>';
+}
+document.getElementById('gl-q').addEventListener('input',e=>renderGlossary(e.target.value));
+renderGlossary('');
+
+// ================= 2026 제비율표 =================
+const RATIO = {"asof": "2026. 4. 13. \uc785\ucc30\uacf5\uace0\ubd84\ubd80\ud130", "main": [{"size": "10\uc5b5 \ubbf8\ub9cc", "period": "6\uac1c\uc6d4\uc774\ud558", "il": "17.5", "util": "0.169", "etc": "4.83", "sum": "5"}, {"size": "", "period": "7-12\uac1c\uc6d4", "il": "17.9", "util": "0.185", "etc": "5.02", "sum": "5.2"}, {"size": "", "period": "13-36\uac1c\uc6d4", "il": "18.2", "util": "0.198", "etc": "5.3", "sum": "5.5"}, {"size": "", "period": "36\uac1c\uc6d4\ucd08\uacfc", "il": "19.4", "util": "0.197", "etc": "5.9", "sum": "6.1"}, {"size": "10\uc5b5~30\uc5b5", "period": "6\uac1c\uc6d4\uc774\ud558", "il": "17.4", "util": "0.169", "etc": "5.03", "sum": "5.2"}, {"size": "", "period": "7-12\uac1c\uc6d4", "il": "17.8", "util": "0.186", "etc": "5.21", "sum": "5.4"}, {"size": "", "period": "13-36\uac1c\uc6d4", "il": "18.1", "util": "0.199", "etc": "5.5", "sum": "5.7"}, {"size": "", "period": "36\uac1c\uc6d4\ucd08\uacfc", "il": "19.2", "util": "0.201", "etc": "6.2", "sum": "6.4"}, {"size": "30\uc5b5~50\uc5b5", "period": "6\uac1c\uc6d4\uc774\ud558", "il": "17.4", "util": "0.175", "etc": "5.02", "sum": "5.2"}, {"size": "", "period": "7-12\uac1c\uc6d4", "il": "17.8", "util": "0.19", "etc": "5.21", "sum": "5.4"}, {"size": "", "period": "13-36\uac1c\uc6d4", "il": "18.1", "util": "0.203", "etc": "5.5", "sum": "5.7"}, {"size": "", "period": "36\uac1c\uc6d4\ucd08\uacfc", "il": "19.2", "util": "0.207", "etc": "6.19", "sum": "6.4"}, {"size": "50\uc5b5~300\uc5b5", "period": "6\uac1c\uc6d4\uc774\ud558", "il": "17.5", "util": "0.219", "etc": "5.68", "sum": "5.9"}, {"size": "", "period": "7-12\uac1c\uc6d4", "il": "17.9", "util": "0.23", "etc": "5.77", "sum": "6"}, {"size": "", "period": "13-36\uac1c\uc6d4", "il": "18.2", "util": "0.246", "etc": "6.15", "sum": "6.4"}, {"size": "", "period": "36\uac1c\uc6d4\ucd08\uacfc", "il": "19.4", "util": "0.246", "etc": "6.75", "sum": "7"}, {"size": "300\uc5b5~1000\uc5b5", "period": "6\uac1c\uc6d4\uc774\ud558", "il": "17.5", "util": "0.235", "etc": "5.87", "sum": "6.1"}, {"size": "", "period": "7-12\uac1c\uc6d4", "il": "17.9", "util": "0.248", "etc": "6.05", "sum": "6.3"}, {"size": "", "period": "13-36\uac1c\uc6d4", "il": "18.2", "util": "0.261", "etc": "6.34", "sum": "6.6"}, {"size": "", "period": "36\uac1c\uc6d4\ucd08\uacfc", "il": "19.4", "util": "0.26", "etc": "6.94", "sum": "7.2"}], "fixed": [{"size": "10\uc5b5 \ubbf8\ub9cc", "gen": "8", "profit": "15", "sanjae": "3.56", "health": "3.595", "longcare": "13.14", "pension": "4.75", "emp": "1.01", "retire": "2.3", "env": "0.5", "subg": "0.081"}, {"size": "10\uc5b5~30\uc5b5", "gen": "8", "profit": "15", "sanjae": "3.56", "health": "3.595", "longcare": "13.14", "pension": "4.75", "emp": "1.01", "retire": "2.3", "env": "0.5", "subg": "0.081"}, {"size": "30\uc5b5~50\uc5b5", "gen": "8", "profit": "15", "sanjae": "3.56", "health": "3.595", "longcare": "13.14", "pension": "4.75", "emp": "1.01", "retire": "2.3", "env": "0.5", "subg": "0.081"}, {"size": "50\uc5b5~300\uc5b5", "gen": "6.5", "profit": "12", "sanjae": "3.56", "health": "3.595", "longcare": "13.14", "pension": "4.75", "emp": "130\uc5b5\uc6d0 \ubbf8\ub9cc  1.01 210\uc5b5\uc6d0 \ubbf8\ub9cc  1.02 340\uc5b5\uc6d0 \ubbf8\ub9cc  1.03", "retire": "2.3", "env": "0.5", "subg": "50\uc5b5\uc6d0-100\uc5b5\uc6d0 \ubbf8\ub9cc 0.08  100\uc5b5\uc6d0-300\uc5b5\uc6d0 \ubbf8\ub9cc 0.075"}, {"size": "300\uc5b5~1000\uc5b5", "gen": "5", "profit": "10", "sanjae": "3.56", "health": "3.545", "longcare": "12.95", "pension": "4.5", "emp": "520\uc5b5\uc6d0 \ubbf8\ub9cc  1.06 800\uc5b5\uc6d0 \ubbf8\ub9cc  1.13 1200\uc5b5\uc6d0 \ubbf8\ub9cc  1.30", "retire": "2.3", "env": "0.5", "subg": "300\uc5b5\uc6d0 \uc774\uc0c1 \uc885\uc2ec\u00b7\uc885\ud3c9\uc81c 0.068"}], "side1": [["5\uc5b5 \ubbf8\ub9cc", "0.154"], ["5\uc5b5 \uc774\uc0c1 ~ 30\uc5b5 \ubbf8\ub9cc", "0.199"], ["30\uc5b5 \uc774\uc0c1 ~ 50\uc5b5 \ubbf8\ub9cc", "0.331"], ["50\uc5b5 \uc774\uc0c1 ~ 300\uc5b5 \ubbf8\ub9cc", "0.611"], ["300\uc5b5 \uc774\uc0c1 ~ 1000\uc5b5 \ubbf8\ub9cc", "0.726"]], "side2": [["6\uac1c\uc6d4 \uc774\ud558", "0.232"], ["6\uac1c\uc6d4 \ucd08\uacfc ~ 12\uac1c\uc6d4 \uc774\ud558", "0.41"], ["12\uac1c\uc6d4 \ucd08\uacfc ~ 36\uac1c\uc6d4 \uc774\ud558", "0.509"], ["36\uac1c\uc6d4 \ucd08\uacfc", "0.596"]], "side3": [["\uac74\ucd95", "0.479"], ["\ud1a0\ubaa9", "0.597"], ["\uc870\uacbd", "0.36"], ["\uc124\ube44", "0.422"]], "notes": ["\u203b \uc0b0\uc5c5\uc548\uc804\ubcf4\uac74\uad00\ub9ac\ube44 : \ub3c4\uae09\uc790\uad00\uae09\ud3ec\ud568(a,b\uc911 \uc791\uc740\uae08\uc561)  a.(\uc7ac+\uc9c1\ub178+\ub3c4\uae09\uc790\uad00\uae09)x\uc728,   b.(\uc7ac+\uc9c1\ub178)x\uc728x1.2", "\uc0b0\uc5c5\uc548\uc804\ubcf4\uac74\uad00\ub9ac\ube44 \uc801\uc6a9\ubc94\uc704 \ubcc0\uacbd: 2020. 7. 1. \uc774\ud6c4 \ucd1d\uacf5\uc0ac\uae08\uc561 2\ucc9c\ub9cc\uc6d0 \uc774\uc0c1 \uc801\uc6a9", "\u203b \ud488\uc9c8\uad00\ub9ac\ube44: \ucd1d\uacf5\uc0ac\ube44 5\uc5b5\uc6d0 \uc774\uc0c1\uc778 \ud1a0\ubaa9\uacf5\uc0ac, \uc5f0\uba74\uc801 660\uc81c\uacf1\ubbf8\ud130 \uc774\uc0c1\uc778 \uac74\ucd95\ubb3c\uc758 \uac74\ucd95\uacf5\uc0ac, \ucd1d\uacf5\uc0ac\ube44\uac00 2\uc5b5\uc6d0 \uc774\uc0c1\uc778 \uc804\ubb38\uacf5\uc0ac, \ubc18\uc601 \ud6c4 \uc815\uc0b0", "\u203b \uc548\uc804\uad00\ub9ac\ube44: \ud574\ub2f9 \uacf5\uc0ac \ud3ec\ud568 \uc2dc \ubc18\uc601 \ud6c4 \uc815\uc0b0", "\u203b \uc804\uae30\u00b7\ud1b5\uc2e0\u00b7\uc18c\ubc29\u00b7\uc804\ubb38 \ubc0f \uae30\ud0c0\uacf5\uc0ac\uc758 \uacbd\uc6b0 \uc77c\ubc18\uad00\ub9ac\ube44\uc694\uc728\uc744 \uc81c\uc678\ud55c \uac01\uc885 \uc81c\ube44\uc728\uc740 \uc8fc \uacf5\uc885\uc744 \ub530\ub77c \uc801\uc6a9(\u203b\ub2e8, \uacf5\uc0ac\uaddc\ubaa8 \ubc0f \uae30\uac04\uc740 \ud574\ub2f9 \uacf5\uc885<\uc804\uae30\u00b7\ud1b5\uc2e0\u00b7\uc18c\ubc29\u00b7\uc804\ubb38 \ubc0f \uae30\ud0c0\uacf5\uc0ac>\uc744 \uae30\uc900\uc73c\ub85c \ud568)", "\u203b \uc804\ubb38.\uc804\uae30.\ud1b5\uc2e0.\uc18c\ubc29.\uae30\ud0c0 : \uc77c\ubc18\uad00\ub9ac\ube44 5\uc5b5\ubbf8\ub9cc 8.0%, 5~30\uc5b5\ubbf8\ub9cc 6.5%, 30~100\uc5b5\ubbf8\ub9cc 5.0%", "\u203b \uc804\ubb38.\uc804\uae30.\ud1b5\uc2e0.\uc18c\ubc29.\uae30\ud0c0 \ub2e8\ub3c5\uacf5\uc0ac\uc77c \uacbd\uc6b0 : \uc0b0\uc5c5\uc548\uc804\ubcf4\uac74\uad00\ub9ac\ube44 (\ud2b9\uc218 \ubc0f \uae30\ud0c0) 5\uc5b5\uc6d0\ubbf8\ub9cc 2.07%, 5\uc5b5\uc6d0\uc774\uc0c1-50\uc5b5\uc6d0\ubbf8\ub9cc 1.59+2,450\ucc9c\uc6d0, 50\uc5b5\uc6d0\uc774\uc0c1 1.64%", "\u203b \ud658\uacbd\ubcf4\uc804\ube44: \uc8fc\ud0dd(\uc7ac\uac74\ucd95) 0.3, \uc8fc\ud0dd\uc678 \uac74\ucd95 0.5, \uc870\uacbd,\uae30\ud0c0(\uc804\ubb38,\uac1c\ubcf4\uc218) 0.3"]};
+function renderRatio(){
+  const R=RATIO; let h='';
+  // 공사규모/기간별 (간접노무비·기타경비)
+  h+='<div class="sec-head" style="margin:6px 0 10px"><span class="chip" style="background:var(--ops)">공사규모·기간별</span><div><p style="margin:0;color:var(--muted);font-size:13px">간접노무비 · 기타경비 요율 (%)</p></div></div>';
+  h+='<div class="tbl-wrap"><table><thead><tr><th>구분(공사규모)</th><th>공사기간</th><th style="text-align:right">간접노무비</th><th style="text-align:right">기타경비<br>수도광열비</th><th style="text-align:right">기타경비<br>일반</th><th style="text-align:right">기타경비<br>소계</th></tr></thead><tbody>';
+  // 4행씩 rowspan
+  R.main.forEach((m,i)=>{
+    const first=(i%4===0);
+    const sizeTd=first?`<td rowspan="4" style="font-weight:700;color:var(--navy);vertical-align:middle">${esc(R.main[i].size||R.main[i-0].size)}</td>`:'';
+    h+=`<tr>${first?`<td rowspan="4" style="font-weight:700;color:var(--navy);vertical-align:middle">${esc(m.size)}</td>`:''}<td>${esc(m.period)}</td><td style="text-align:right;font-weight:700">${esc(m.il)}</td><td style="text-align:right">${esc(m.util)}</td><td style="text-align:right">${esc(m.etc)}</td><td style="text-align:right;font-weight:700">${esc(m.sum)}</td></tr>`;
+  });
+  h+='</tbody></table></div>';
+  // 공사규모별 고정요율
+  h+='<div class="sec-head" style="margin:24px 0 10px"><span class="chip" style="background:var(--ops)">공사규모별 고정요율</span><div><p style="margin:0;color:var(--muted);font-size:13px">일반관리비·이윤·보험료 등 (%)</p></div></div>';
+  h+='<div class="tbl-wrap"><table><thead><tr><th>구분</th><th style="text-align:right">일반<br>관리비</th><th style="text-align:right">이윤</th><th style="text-align:right">산재<br>보험</th><th style="text-align:right">국민<br>건강</th><th style="text-align:right">노인<br>장기요양</th><th style="text-align:right">국민<br>연금</th><th style="text-align:right">고용<br>보험</th><th style="text-align:right">퇴직<br>공제</th><th style="text-align:right">환경<br>보전비</th><th style="text-align:right">하도급<br>지급보증</th></tr></thead><tbody>';
+  R.fixed.forEach(f=>{ h+=`<tr><td style="font-weight:700;color:var(--navy)">${esc(f.size)}</td><td style="text-align:right;font-weight:700">${esc(f.gen)}</td><td style="text-align:right;font-weight:700">${esc(f.profit)}</td><td style="text-align:right">${esc(f.sanjae)}</td><td style="text-align:right">${esc(f.health)}</td><td style="text-align:right">${esc(f.longcare)}</td><td style="text-align:right">${esc(f.pension)}</td><td style="text-align:right">${esc(f.emp)}</td><td style="text-align:right">${esc(f.retire)}</td><td style="text-align:right">${esc(f.env)}</td><td style="text-align:right">${esc(f.subg)}</td></tr>`; });
+  h+='</tbody></table></div>';
+  // 사이드 3표
+  const side=(title,rows)=>{let s=`<div style="flex:1;min-width:220px"><div class="sec-head" style="margin:0 0 8px"><span class="chip" style="background:var(--p-cert)">${esc(title)}</span></div><div class="tbl-wrap"><table><thead><tr><th>구분</th><th style="text-align:right">요율(%)</th></tr></thead><tbody>`; rows.forEach(r=>{s+=`<tr><td>${esc(r[0])}</td><td style="text-align:right;font-weight:700">${esc(r[1])}</td></tr>`;}); return s+'</tbody></table></div></div>';};
+  h+='<div class="sec-head" style="margin:24px 0 10px"><span class="chip" style="background:var(--ops)">참고 요율</span><div><p style="margin:0;color:var(--muted);font-size:13px">공사비·공사기간·공종에 따른 요율</p></div></div>';
+  h+='<div style="display:flex;gap:14px;flex-wrap:wrap">'+side('공사비별',R.side1)+side('공사기간별',R.side2)+side('공종별',R.side3)+'</div>';
+  // 주석
+  h+='<div class="common-box" style="margin-top:22px"><h4>📌 적용 유의사항</h4><ul style="margin:0;padding-left:18px">'+R.notes.map(n=>`<li style="font-size:12.5px;color:#3A4650;margin-bottom:5px">${esc(n)}</li>`).join('')+'</ul></div>';
+  document.getElementById('ratio-body').innerHTML=h;
+}
+renderRatio();
+
+// ---- 제비율 조회기 ----
+function runRatioCalc(){
+  const sizes=['10억 미만','10억~30억','30억~50억','50억~300억','300억~1000억'];
+  const gi=sizes.indexOf(document.getElementById('rt-size').value);
+  const pi=document.getElementById('rt-period').selectedIndex;
+  const wi=document.getElementById('rt-work').selectedIndex;
+  const m=RATIO.main[gi*4+pi], f=RATIO.fixed[gi];
+  const work=RATIO.side3[wi], per=RATIO.side2[pi];
+  const cell=(label,val)=>{
+    const isNum=/^[\d.]+$/.test(String(val).replace(/,/g,'').trim());
+    if(isNum) return `<div class="res-card" style="border-left-color:var(--ops)"><div class="rc-l"><div class="nm">${esc(label)}</div></div><div class="rc-r"><span class="thr" style="font-size:15px;background:#E6F5EF;color:var(--ops-d)">${esc(val)} %</span></div></div>`;
+    return `<div class="res-card" style="border-left-color:var(--ops);display:block"><div class="nm" style="font-weight:700">${esc(label)}</div><div style="font-size:12px;color:#3A4650;margin-top:5px;line-height:1.45">${esc(val)}</div></div>`;
+  };
+  let html='<div class="res-head">✅ 적용 요율 <span class="cnt">'+esc(document.getElementById('rt-size').value)+' · '+esc(m.period)+' · '+esc(work[0])+'</span></div>';
+  html+='<div class="res-grid">'+
+    cell('간접노무비', m.il)+
+    cell('기타경비 · 수도광열비', m.util)+
+    cell('기타경비 · 일반', m.etc)+
+    cell('기타경비 · 소계', m.sum)+
+    cell('일반관리비', f.gen)+
+    cell('이윤', f.profit)+
+    cell('산재보험료', f.sanjae)+
+    cell('국민건강보험료', f.health)+
+    cell('노인장기요양보험료', f.longcare)+
+    cell('국민연금보험료', f.pension)+
+    cell('고용보험료', f.emp)+
+    cell('퇴직공제부금비', f.retire)+
+    cell('환경보전비', f.env)+
+    cell('하도급대금 지급보증', f.subg)+
+    cell('공종별 요율('+esc(work[0])+')', work[1])+
+    cell('공사기간별 요율', per[1])+
+    '</div>';
+  document.getElementById('ratio-result').innerHTML=html;
+}
+['rt-size','rt-period','rt-work'].forEach(id=>document.getElementById(id).addEventListener('change',runRatioCalc));
+runRatioCalc();
 </script>
 </body>
 </html>

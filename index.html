@@ -56,16 +56,24 @@
   .nav-util{display:flex;align-items:center;gap:8px;}
   /* ===== 히어로 ===== */
   .hero{background:var(--bg);border-bottom:1.5px solid var(--border);}
-  .hero-in{max-width:1180px;margin:0 auto;padding:46px 20px 40px;display:flex;align-items:center;justify-content:space-between;gap:32px;}
-  .hero-main{flex:1;min-width:0;}
+  .hero-in{max-width:1560px;margin:0 auto;padding:24px 20px 22px;display:flex;align-items:center;justify-content:space-between;gap:48px;}
+  .hero-main{flex:0 1 auto;min-width:0;}
   .hero-brand{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;}
   .hero-brand-logo{width:96px;height:96px;object-fit:contain;border-radius:20px;}
   .hero-brand-tt{font-size:20px;font-weight:900;letter-spacing:-.6px;color:var(--ink);display:flex;flex-direction:column;gap:3px;line-height:1.2;}
   .hero-brand-tt b{font-family:'Pretendard',sans-serif;font-weight:800;color:var(--accent);font-size:12px;letter-spacing:.3px;}
   .hero-brand-line{display:block;width:40px;height:2px;background:var(--accent);border-radius:2px;margin:5px auto;}
-  @media(max-width:860px){.hero-in{flex-direction:column;align-items:flex-start;} .hero-brand{flex-direction:row;}}
-  .hero-eyebrow{font-size:13px;font-weight:800;letter-spacing:0;color:var(--accent);text-transform:uppercase;margin:0 0 16px;padding-left:1px;}
-  .hero-h1{font-size:clamp(28px,4.4vw,48px);font-weight:900;letter-spacing:-1.8px;line-height:1.12;margin:0 0 28px;color:var(--ink);}
+  @media(max-width:860px){.hero-in{flex-direction:column;align-items:flex-start;} .hero-brand{flex-direction:row;} .hero-notice{width:100%;}}
+  .hero-notice{flex:0 0 250px;margin-left:auto;align-self:stretch;background:var(--surface);border:var(--glassbd);border-radius:var(--rad);box-shadow:var(--cardsh);padding:16px 18px;display:flex;flex-direction:column;gap:10px;}
+  .hn-head{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:800;color:var(--ink);}
+  .hn-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);}
+  .hn-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;}
+  .hn-list li{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:var(--ink-2);line-height:1.45;}
+  .hn-list li b{font-weight:700;color:var(--ink);}
+  .hn-tag{flex:0 0 auto;font-size:10px;font-weight:800;padding:2px 7px;border-radius:100px;background:var(--accent-soft);color:var(--accent);margin-top:1px;}
+  .hn-foot{margin-top:auto;font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:9px;}
+  .hero-eyebrow{font-size:12.5px;font-weight:800;letter-spacing:0;color:var(--accent);text-transform:uppercase;margin:0 0 8px;padding-left:1px;}
+  .hero-h1{font-size:clamp(24px,3.4vw,36px);font-weight:900;letter-spacing:-1.4px;line-height:1.14;margin:0 0 18px;color:var(--ink);}
   .hero .ts-field{width:100%;max-width:640px;min-width:0;}
   @media(max-width:860px){.nav-title{font-size:16px;} .nav-title b{display:none;} .hero-in{padding:34px 16px 30px;}}
   .badge-org{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.5px;font-family:'Pretendard',sans-serif;
@@ -698,10 +706,17 @@
         <div id="global-results" class="gresults"></div>
       </div>
     </div>
+    <aside class="hero-notice">
+      <div class="hn-head"><span class="hn-dot"></span>업데이트 · 공지</div>
+      <ul class="hn-list">
+        <li><span class="hn-tag">NEW</span><div><b>표준품셈 검색</b> 내장 — 표준품셈 체크 메뉴에서 바로 검색</div></li>
+        <li><span class="hn-tag">기능</span><div><b>그래프 뷰</b> 추가 — 업무·법령·인증 관계도 시각화</div></li>
+        <li><span class="hn-tag">개선</span><div>공사기간·설계용역비 산출 대시보드 연동</div></li>
+      </ul>
+      <div class="hn-foot">ver 3.0 · 2026-07-21</div>
+    </aside>
   </div>
 </section>
-
-<!-- ================= 레이아웃: 사이드바 + 콘텐츠 ================= -->
 <div class="layout">
   <aside class="sidebar">
     <nav class="side-nav">
@@ -987,9 +1002,9 @@
   <section class="panel" id="bom">
     <div class="sec-head">
       <span class="chip" style="background:#6d28d9">체크</span>
-      <div><h2>표준품셈 체크</h2><p>공종별 표준품셈 적용·수량 산출 검토 (준비 중)</p></div>
+      <div><h2>2026 건설공사 표준품셈 검색</h2></div>
     </div>
-    <div class="note">준비 중인 기능입니다. 표준품셈 기준 항목·수량 검토 대시보드가 곳 제공됩니다.</div>
+    <iframe src="표준품셈_검색_대시보드.html" title="표준품셈 검색" loading="lazy" style="width:100%;height:78vh;min-height:560px;border:1.5px solid var(--border);border-radius:var(--radsm);background:var(--surface);box-shadow:var(--shadow-sm);"></iframe>
   </section>
 
   <!-- ============ 규모별 절차 판정기 ============ -->
@@ -1157,7 +1172,7 @@
       <div class="nav-grp" style="background:#6d28d9;color:#fff;">⚖ PROCESS</div>
       <button class="tab" data-p="calc"><span class="dot"></span>☑️ 규모별 절차 체크</button>
       <button class="tab" data-p="cert"><span class="dot"></span>☑️ 인증 체크</button>
-      <a class="tab" href="표준품셈_검색_대시보드.html" target="_blank" rel="noopener noreferrer" data-p="bom"><span class="dot"></span>☑️ 표준품셈 체크</a>
+      <button class="tab" data-p="bom"><span class="dot"></span>☑️ 표준품셈 체크</button>
     </nav>
 
     <div class="qbox">
@@ -2414,11 +2429,21 @@ window.__gvInit = (function(){
       });
     }catch(e){}
   }
+  function syncBom(theme){
+    document.querySelectorAll('#bom iframe').forEach(f=>{
+      try{ f.contentDocument.documentElement.setAttribute('data-theme', theme); }catch(e){}
+    });
+  }
   if(btn) btn.addEventListener('click',()=>{
     const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
     root.setAttribute('data-theme',next);
     chime(next==='dark');
     try{localStorage.setItem('bible-theme',next);}catch(e){}
+    syncBom(next);
+  });
+  // iframe 로드 시 현재 테마 반영
+  document.querySelectorAll('#bom iframe').forEach(f=>{
+    f.addEventListener('load',()=>syncBom(root.getAttribute('data-theme')));
   });
 })();
 

@@ -31,45 +31,45 @@
   @media (prefers-color-scheme: dark) {
     :root:where(:not([data-theme="light"])) .viz-root {
       color-scheme: dark;
-      --surface-1:      #262c49;
-      --surface-page:   #1b2140;
-      --text-primary:   #f1f4fb;
-      --text-secondary: #d3d9ea;
-      --text-muted:     #9aa3bd;
-      --grid:           rgba(255,255,255,0.12);
-      --baseline:       rgba(255,255,255,0.18);
-      --border:         rgba(255,255,255,0.14);
-      --series-1:       #8fb8ff;
-      --series-2:       #9aa3bd;
-      --series-3:       #d3d9ea;
-      --series-4:       #5a6486;
-      --good:           #8fb8ff;
-      --warn-bg:        rgba(143,184,255,0.12);
-      --warn-text:      #8fb8ff;
-      --yellow-bg:      rgba(143,184,255,0.12);
-      --yellow-bg-hover:rgba(143,184,255,0.20);
-      --yellow-border:  rgba(143,184,255,0.45);
+      --surface-1:      #2a3356;
+      --surface-page:   #161b33;
+      --text-primary:   #f4f6fc;
+      --text-secondary: #c9d0e2;
+      --text-muted:     #9aa4c0;
+      --grid:           rgba(255,255,255,0.14);
+      --baseline:       rgba(255,255,255,0.22);
+      --border:         rgba(255,255,255,0.16);
+      --series-1:       #6fa8ff;
+      --series-2:       #aeb7c9;
+      --series-3:       #d7dcec;
+      --series-4:       #808ba8;
+      --good:           #6fe0b4;
+      --warn-bg:        rgba(111,168,255,0.14);
+      --warn-text:      #9cc2ff;
+      --yellow-bg:      rgba(111,168,255,0.16);
+      --yellow-bg-hover:rgba(111,168,255,0.26);
+      --yellow-border:  rgba(143,184,255,0.55);
     }
   }
   :root[data-theme="dark"] .viz-root {
     color-scheme: dark;
-    --surface-1:      #262c49;
-    --surface-page:   #1b2140;
-    --text-primary:   #f1f4fb;
-    --text-secondary: #d3d9ea;
-    --text-muted:     #9aa3bd;
-    --grid:           rgba(255,255,255,0.12);
-    --baseline:       rgba(255,255,255,0.18);
-    --border:         rgba(255,255,255,0.14);
-    --series-1:       #8fb8ff;
-    --series-2:       #9aa3bd;
-    --series-3:       #d3d9ea;
-    --series-4:       #5a6486;
-    --good:           #8fb8ff;
-    --warn-bg:        rgba(143,184,255,0.12);
-    --warn-text:      #8fb8ff;
-    --yellow-bg:      rgba(143,184,255,0.12);
-    --yellow-bg-hover:rgba(143,184,255,0.20);
+    --surface-1:      #2a3356;
+    --surface-page:   #161b33;
+    --text-primary:   #f4f6fc;
+    --text-secondary: #c9d0e2;
+    --text-muted:     #9aa4c0;
+    --grid:           rgba(255,255,255,0.14);
+    --baseline:       rgba(255,255,255,0.22);
+    --border:         rgba(255,255,255,0.16);
+    --series-1:       #6fa8ff;
+    --series-2:       #aeb7c9;
+    --series-3:       #d7dcec;
+    --series-4:       #808ba8;
+    --good:           #6fe0b4;
+    --warn-bg:        rgba(111,168,255,0.14);
+    --warn-text:      #9cc2ff;
+    --yellow-bg:      rgba(111,168,255,0.16);
+    --yellow-bg-hover:rgba(111,168,255,0.20);
     --yellow-border:  rgba(143,184,255,0.45);
   }
 
@@ -156,6 +156,8 @@
     border-radius: 20px; padding: 7px 13px; cursor: pointer; transition: background .12s ease, color .12s ease;
   }
   .reset-btn:hover { background: var(--series-1); color: #fff; border-color: var(--series-1); }
+  .reset-btn:active { transform: scale(0.94); }
+  .reset-btn.done { background: var(--good); color: #fff; border-color: var(--good); }
 
   .sub-block { border-top: 1px dashed var(--grid); margin-top: 10px; padding-top: 10px; }
   .sub-block-title { font-size: 11.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; display:flex; align-items:center; justify-content:space-between; }
@@ -670,11 +672,11 @@
   }
   const DEFAULTS = captureDefaults();
   function resetAll(){
-    Object.keys(DEFAULTS).forEach(id => {
-      const el = document.getElementById(id);
-      const d = DEFAULTS[id];
-      if (!el || !d) return;
-      if (d.checkbox) el.checked = d.checked; else el.value = d.value;
+    document.querySelectorAll('.input-col input, .input-col select').forEach(el => {
+      if (!el.id) return;
+      if (el.type === 'checkbox') el.checked = false;
+      else if (el.tagName === 'SELECT') el.selectedIndex = 0;
+      else el.value = '';
     });
     render();
   }
@@ -995,7 +997,11 @@
     el.addEventListener('change', render);
   });
 
-  document.getElementById('resetBtn').addEventListener('click', resetAll);
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    resetAll();
+    const b=this; b.classList.add('done'); const t=b.textContent; b.textContent='✓ 초기화됨';
+    setTimeout(()=>{ b.classList.remove('done'); b.textContent=t; }, 1000);
+  });
 
   render();
 

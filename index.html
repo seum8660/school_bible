@@ -111,10 +111,9 @@
   .tab.active[data-p="const"]{background:var(--p-const);color:#fff;}
   .tab.active[data-p="cm"]{background:var(--p-cm);color:#fff;}
   .tab.active[data-p="comp"]{background:var(--p-comp);}
-  .tab.active[data-p="cert"]{background:var(--p-cert);}
-  .tab.active[data-p="calc"]{background:var(--p-calc);color:var(--accent-ink);}
-  .tab.active[data-p="cert"]{background:var(--accent);color:var(--accent-ink);}
-  .tab[data-p="calc"]:not(.active),.tab[data-p="cert"]:not(.active){border-color:var(--accent);color:var(--accent);}
+  .tab.active[data-p="cert"]{background:#6d28d9;color:#fff;}
+  .tab.active[data-p="calc"]{background:#6d28d9;color:#fff;}
+  .tab[data-p="calc"]:not(.active),.tab[data-p="cert"]:not(.active){border-color:#7c3aed;color:#7c3aed;}
   @media(max-width:860px){
     .layout{flex-direction:column;gap:0;padding:0;max-width:none;}
     .sidebar{position:sticky;top:0;z-index:50;flex:none;width:100%;
@@ -353,7 +352,8 @@
   .ov-tab{border:0;background:var(--surface-2);color:var(--muted);font:inherit;font-size:14.5px;font-weight:800;padding:11px 20px;border-radius:100px;cursor:pointer;transition:color .12s,background .12s;}
   .ov-tab:hover{color:var(--ink);}
   .ov-tab[data-ov="proc"].on{background:var(--accent);color:var(--accent-ink);}
-  .ov-tab[data-ov="graph"].on{background:var(--p-cm);color:#fff;}
+  .ov-tab[data-ov="graph"]{background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;box-shadow:0 2px 10px rgba(124,58,237,.45);}
+  .ov-tab[data-ov="graph"].on{background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;}
   /* 그래프 뷰 플로우 */
   .pflow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;}
   .pnode{flex:1;min-width:150px;background:var(--surface);border:1.5px solid var(--border);border-top:5px solid var(--pc);border-radius:14px;padding:16px 16px 18px;box-shadow:var(--cardsh-sm);cursor:pointer;transition:transform .14s,box-shadow .14s;}
@@ -370,10 +370,10 @@
   .gv-chip{height:36px;padding:0 14px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font:inherit;font-size:13px;font-weight:700;cursor:pointer;}
   .gv-chip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
   #gv-reset{height:36px;padding:0 14px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font:inherit;font-size:13px;font-weight:700;cursor:pointer;margin-left:auto;}
-  .gv-canvas{position:relative;background:var(--surface-2);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;}
-  #gv-tip{position:absolute;pointer-events:none;background:var(--surface);color:var(--ink);font-size:12px;padding:6px 10px;border-radius:8px;opacity:0;transition:opacity .1s;max-width:220px;line-height:1.4;border:1.5px solid var(--border);box-shadow:var(--cardsh-sm);}
-  #gv-graph text{fill:var(--ink-2);}
-  #gv-graph line{stroke:var(--muted);}
+  .gv-canvas{position:relative;background:#1a1b26;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;}
+  #gv-tip{position:absolute;pointer-events:none;background:#2a2c3d;color:#e6e6ef;font-size:12px;padding:6px 10px;border-radius:8px;opacity:0;transition:opacity .1s;max-width:220px;line-height:1.4;border:1.5px solid #3a3d52;box-shadow:0 6px 18px rgba(0,0,0,.4);}
+  #gv-graph text{fill:#c8cad8;}
+  #gv-graph line{stroke:#4a4d66;}
   .gv-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted);}
   .gv-legend span{display:inline-flex;align-items:center;gap:5px;}
   .gv-dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
@@ -387,7 +387,9 @@
   /* ===== 전체 키워드 검색 ===== */
   .topsearch{background:var(--bg);border-bottom:1.5px solid var(--border);}
   .topsearch-in{max-width:1260px;margin:0 auto;padding:16px 20px;position:relative;display:flex;justify-content:center;align-items:center;gap:12px;}
-  .topsearch-in .theme-toggle{position:absolute;right:20px;top:50%;transform:translateY(-50%);}
+  .topsearch-in .theme-toggle{position:absolute;top:50%;transform:translateY(-50%);}
+  .topsearch-in #themeToggle{right:20px;}
+  .topsearch-in #homeBtn{right:120px;background:#3a3d46;border-color:#3a3d46;}
   .ts-field{position:relative;width:60%;min-width:340px;}
   .ts-ic{position:absolute;right:18px;left:auto;top:50%;transform:translateY(-50%);font-size:22px;color:var(--muted);pointer-events:none;}
   #global-q{width:100%;border:1.5px solid var(--border);padding:13px 16px 13px 44px;
@@ -491,7 +493,7 @@
   .tab:hover,.extlink:hover,.fchip:hover,.subbtn:hover,.calc-reset:hover,.expand-btns button:hover{transform:none;box-shadow:var(--inset);}
   .tab.active{box-shadow:var(--cardsh-sm);border:var(--glassbd);}
   .tab.active[data-p="overview"]{background:var(--accent);color:var(--accent-ink);}
-  .tab[data-p="calc"]:not(.active),.tab[data-p="cert"]:not(.active){border:1px solid var(--accent);color:var(--accent);}
+  .tab[data-p="calc"]:not(.active),.tab[data-p="cert"]:not(.active){border:1px solid #7c3aed;color:#7c3aed;}
   .cfield input,.cfield select,.search-box input,#global-q{border:var(--glassbd);border-radius:var(--radsm);background:var(--surface-2);box-shadow:var(--inset);}
   .cfield input:focus,.cfield select:focus,.search-box input:focus,#global-q:focus{box-shadow:var(--inset),0 0 0 3px var(--accent-soft);}
 
@@ -660,6 +662,7 @@
       <input type="text" id="global-q" autocomplete="off" placeholder="전체 키워드 검색  (예: VE, 일상감사, 준공검사, 설계변경, 인증)">
       <div id="global-results" class="gresults"></div>
     </div>
+    <button class="theme-toggle" id="homeBtn" title="홈으로 (전체 개요)" aria-label="홈" style="padding:0;"><span style="width:34px;height:34px;color:#fff;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/></svg></span></button>
     <button class="theme-toggle" id="themeToggle" title="라이트 / 다크 전환" aria-label="테마 전환"><span class="tg-sun">☀︎</span><span class="tg-moon">☾</span></button>
   </div>
 </div>
@@ -705,7 +708,7 @@
       <button class="ov-tab on" data-ov="std">📊 절차 기준</button>
       <button class="ov-tab" data-ov="law">🏛 간단 법령 체크</button>
       <button class="ov-tab" data-ov="proc">🗺 업무 프로세스</button>
-      <button class="ov-tab" data-ov="graph">🔗 그래프 뷰</button></div>
+      <button class="ov-tab" data-ov="graph"><svg width="17" height="15" viewBox="0 0 17 15" fill="none" style="vertical-align:-2px;margin-right:6px"><line x1="3.5" y1="3" x2="13.5" y2="3" stroke="#fff" stroke-width="1.4"/><line x1="3.5" y1="3" x2="8.5" y2="12" stroke="#fff" stroke-width="1.4"/><circle cx="3.5" cy="3" r="2.4" fill="#fff"/><circle cx="13.5" cy="3" r="2.4" fill="#fff"/><circle cx="8.5" cy="12" r="2.4" fill="#fff"/></svg>그래프 뷰</button></div>
 
     <div class="ov-frame">
     <div class="ov-view" data-ovv="proc">
@@ -1108,7 +1111,7 @@
       <a class="extlink" href="#" onclick="return false;" title="링크 준비중"><span class="lb">감리용역비 산출</span><span class="ext">⬇</span></a>
       <a class="extlink" href="#" onclick="return false;" title="링크 준비중"><span class="lb">건설사업관리용역비 산출</span><span class="ext">⬇</span></a>
       <a class="extlink" href="공사기간_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">공사기간 산출</span><span class="ext">↗</span></a>
-      <div class="nav-grp">⚖ 절차 판정</div>
+      <div class="nav-grp" style="background:#6d28d9;color:#fff;">⚖ 절차 판정</div>
       <button class="tab" data-p="calc"><span class="dot"></span>규모별 절차 판정기</button>
       <button class="tab" data-p="cert"><span class="dot"></span>인증 판정기</button>
     </nav>
@@ -1127,7 +1130,7 @@
   <span class="badge-org foot">전남광주통합특별시교육청 · 행정운영국 <b>교육시설과</b></span><br><br>
   <b>🏫 학교시설업무 치트키 🔑 SCHOOL BIBLE</b> — 가이드라인부터 자가테스트까지<br>
   본 자료는 「교육시설과 업무 전달 회의(2025. 1.)」를 기반으로 재구성한 실무 참조용 문서입니다. 실제 적용 시 최신 법령·지침을 반드시 확인하시기 바랍니다.<br>
-  <span style="display:inline-block;margin-top:10px;color:var(--muted);font-size:12px">작성자 <b style="color:var(--navy)">claude_min</b> · 작성일 2026-07-20 · <b style="color:#3182F6">ver 2.0</b></span>
+  <span style="display:inline-block;margin-top:10px;color:var(--muted);font-size:12px">작성자 <b style="color:var(--navy)">claude_min</b> · 작성일 2026-07-20 · <b style="color:#3182F6">ver 3.0</b></span>
 </footer>
 
 <script>
@@ -1535,11 +1538,15 @@ function activate(p){
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>activate(t.dataset.p)));
 document.querySelectorAll('[data-goto]').forEach(c=>c.addEventListener('click',()=>activate(c.dataset.goto)));
 // 제목(홈) 클릭 → 전체 개요 + 최상단
+// 홈/치트키 클릭 사운드
+var __homeAC=null;
+function __homeChime(){try{__homeAC=__homeAC||new(window.AudioContext||window.webkitAudioContext)();if(__homeAC.state==='suspended')__homeAC.resume();var t0=__homeAC.currentTime;[[523.25,0],[783.99,0.1]].forEach(function(p){var o=__homeAC.createOscillator(),g=__homeAC.createGain();o.type='triangle';o.frequency.value=p[0];var t=t0+p[1];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.18,t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+0.28);o.connect(g).connect(__homeAC.destination);o.start(t);o.stop(t+0.3);});}catch(e){}}
 document.getElementById('homeLink').addEventListener('click',()=>{
+  __homeChime();
   activate('overview');
   window.scrollTo({top:0,behavior:'smooth'});
 });
-['homeLogo'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('click',()=>{activate('overview');window.scrollTo({top:0,behavior:'smooth'});});});
+['homeLogo','homeBtn'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('click',()=>{__homeChime();activate('overview');window.scrollTo({top:0,behavior:'smooth'});});});
 
 // 아코디언 토글
 document.addEventListener('click',e=>{
@@ -2160,9 +2167,10 @@ runRatioCalc();
 
 // ===== 그래프 뷰 (D3 관계 그래프) =====
 window.__gvInit = (function(){
-  let done=false;
+  let done=false; let reheat=null;
   return function(){
-    if(done || typeof d3==='undefined') return; done=true;
+    if(done){ if(reheat) reheat(); return; }
+    if(typeof d3==='undefined') return; done=true;
     var RAW={"nodes":[{"id":"phase:plan","label":"제1장 기획","group":"phase","color":"var(--p-plan)"},{"id":"phase:design","label":"제2장 설계","group":"phase","color":"var(--p-design)"},{"id":"phase:const","label":"제3장 시공","group":"phase","color":"var(--p-const)"},{"id":"phase:cm","label":"제4장 건설사업관리","group":"phase","color":"var(--p-cm)"},{"id":"phase:comp","label":"제5장 준공","group":"phase","color":"var(--p-comp)"},{"id":"root","label":"학교시설업무 치트키","group":"root","color":"var(--accent)"},{"id":"item:plan:1","label":"사전기획","group":"item:plan","color":"var(--p-plan)"},{"id":"law:0","label":"교육시설법 시행령 §23-2","group":"law","color":"#c93a52"},{"id":"item:plan:2","label":"기본안전보건대장","group":"item:plan","color":"var(--p-plan)"},{"id":"law:1","label":"산업안전보건법 §55","group":"law","color":"#c93a52"},{"id":"item:plan:3","label":"공공건축심의","group":"item:plan","color":"var(--p-plan)"},{"id":"law:2","label":"건축서비스산업법 §19-2","group":"law","color":"#c93a52"},{"id":"item:design:1","label":"일상감사","group":"item:design","color":"var(--p-design)"},{"id":"law:3","label":"교육부 일상감사지침 §4","group":"law","color":"#c93a52"},{"id":"item:design:2","label":"설계공모","group":"item:design","color":"var(--p-design)"},{"id":"law:4","label":"건축서비스산업법 §21","group":"law","color":"#c93a52"},{"id":"item:design:3","label":"대규모 사업의 시설 일상감사","group":"item:design","color":"var(--p-design)"},{"id":"law:5","label":"감사관-11302","group":"law","color":"#c93a52"},{"id":"item:design:4","label":"기술자문위원회","group":"item:design","color":"var(--p-design)"},{"id":"law:6","label":"건설기술진흥법 §6","group":"law","color":"#c93a52"},{"id":"item:design:5","label":"설계의 경제성 검토 (VE)","group":"item:design","color":"var(--p-design)"},{"id":"law:7","label":"건설기술진흥법 시행령 §75","group":"law","color":"#c93a52"},{"id":"item:design:6","label":"설계의 안전성 검토 (DfS)","group":"item:design","color":"var(--p-design)"},{"id":"law:8","label":"건설기술진흥법 시행령 §75-2","group":"law","color":"#c93a52"},{"id":"item:design:7","label":"설계안전보건대장","group":"item:design","color":"var(--p-design)"},{"id":"law:9","label":"산업안전보건법 §67","group":"law","color":"#c93a52"},{"id":"item:design:8","label":"각종 인증사항","group":"item:design","color":"var(--p-design)"},{"id":"law:10","label":"녹색건축물법 등","group":"law","color":"#c93a52"},{"id":"cert:c1","label":"에너지절약계획서","group":"cert","color":"#9a9a9a"},{"id":"cert:c2","label":"녹색건축 인증","group":"cert","color":"#9a9a9a"},{"id":"cert:c3","label":"건축물에너지효율등급","group":"cert","color":"#9a9a9a"},{"id":"cert:c4","label":"제로에너지건축물(ZEB) 인증","group":"cert","color":"#9a9a9a"},{"id":"cert:c5","label":"장애물 없는 생활환경(BF) 인증","group":"cert","color":"#9a9a9a"},{"id":"cert:c6","label":"범죄예방 환경설계(CPTED)","group":"cert","color":"#9a9a9a"},{"id":"cert:c7","label":"신·재생에너지 공급의무비율","group":"cert","color":"#9a9a9a"},{"id":"cert:c8","label":"건물에너지관리시스템(BEMS)","group":"cert","color":"#9a9a9a"},{"id":"cert:c9","label":"교육시설 안전인증","group":"cert","color":"#9a9a9a"},{"id":"law:11","label":"건설기술진흥법 시행령 §82","group":"law","color":"#c93a52"},{"id":"item:design:9","label":"시설사업 시행계획 및 건축 승인","group":"item:design","color":"var(--p-design)"},{"id":"law:12","label":"학교시설사업 촉진법 §5","group":"law","color":"#c93a52"},{"id":"item:const:1","label":"시설공사 일상감사","group":"item:const","color":"var(--p-const)"},{"id":"item:const:2","label":"기술자문위원회","group":"item:const","color":"var(--p-const)"},{"id":"item:const:3","label":"건설사업관리계획 수립","group":"item:const","color":"var(--p-const)"},{"id":"law:13","label":"건설기술진흥법 §39-2","group":"law","color":"#c93a52"},{"id":"item:const:4","label":"시설사업 집행계획 / 공사발주","group":"item:const","color":"var(--p-const)"},{"id":"law:14","label":"지방계약법 시행령 §77","group":"law","color":"#c93a52"},{"id":"item:const:5","label":"감리발주 (공사감리·감독 방식)","group":"item:const","color":"var(--p-const)"},{"id":"law:15","label":"공사감리(감독)방식 개선","group":"law","color":"#c93a52"},{"id":"item:const:6","label":"폐기물처리용역 발주","group":"item:const","color":"var(--p-const)"},{"id":"law:16","label":"건설폐기물법","group":"law","color":"#c93a52"},{"id":"item:const:7","label":"기타용역 발주","group":"item:const","color":"var(--p-const)"},{"id":"law:17","label":"산업안전보건법 §73","group":"law","color":"#c93a52"},{"id":"item:const:8","label":"본인증 용역 발주","group":"item:const","color":"var(--p-const)"},{"id":"law:18","label":"녹색건축물법","group":"law","color":"#c93a52"},{"id":"item:const:9","label":"학교건축물 해체공사 안전관리","group":"item:const","color":"var(--p-const)"},{"id":"law:19","label":"건축물관리법 §30","group":"law","color":"#c93a52"},{"id":"item:const:10","label":"공사추진 (안전성평가)","group":"item:const","color":"var(--p-const)"},{"id":"law:20","label":"교육시설법 §19","group":"law","color":"#c93a52"},{"id":"item:cm:1","label":"사업관리 업무 추진 (조항별 역할)","group":"item:cm","color":"var(--p-cm)"},{"id":"law:21","label":"건설기술진흥법 §11~","group":"law","color":"#c93a52"},{"id":"item:cm:2","label":"설계변경 — 발주청 요청(지시)","group":"item:cm","color":"var(--p-cm)"},{"id":"law:22","label":"설계변경 업무흐름도","group":"law","color":"#c93a52"},{"id":"item:cm:3","label":"설계변경 — 시공자 요청","group":"item:cm","color":"var(--p-cm)"},{"id":"item:cm:4","label":"설계변경 — 설계상 하자","group":"item:cm","color":"var(--p-cm)"},{"id":"item:cm:5","label":"계약금액 조정","group":"item:cm","color":"var(--p-cm)"},{"id":"law:23","label":"계약금액 조정 처리절차","group":"law","color":"#c93a52"},{"id":"item:comp:1","label":"준공검사","group":"item:comp","color":"var(--p-comp)"},{"id":"law:24","label":"건설기술진흥법 시행령 §78","group":"law","color":"#c93a52"},{"id":"item:comp:2","label":"사용승인","group":"item:comp","color":"var(--p-comp)"},{"id":"law:25","label":"건축법 시행령 §17","group":"law","color":"#c93a52"},{"id":"item:comp:3","label":"건축물대장","group":"item:comp","color":"var(--p-comp)"},{"id":"law:26","label":"건축법 §38","group":"law","color":"#c93a52"}],"links":[{"source":"root","target":"phase:plan","kind":"flow"},{"source":"root","target":"phase:design","kind":"flow"},{"source":"root","target":"phase:const","kind":"flow"},{"source":"root","target":"phase:cm","kind":"flow"},{"source":"root","target":"phase:comp","kind":"flow"},{"source":"phase:plan","target":"item:plan:1","kind":"phase"},{"source":"item:plan:1","target":"law:0","kind":"law"},{"source":"phase:plan","target":"item:plan:2","kind":"phase"},{"source":"item:plan:2","target":"law:1","kind":"law"},{"source":"phase:plan","target":"item:plan:3","kind":"phase"},{"source":"item:plan:3","target":"law:2","kind":"law"},{"source":"phase:design","target":"item:design:1","kind":"phase"},{"source":"item:design:1","target":"law:3","kind":"law"},{"source":"phase:design","target":"item:design:2","kind":"phase"},{"source":"item:design:2","target":"law:4","kind":"law"},{"source":"phase:design","target":"item:design:3","kind":"phase"},{"source":"item:design:3","target":"law:5","kind":"law"},{"source":"phase:design","target":"item:design:4","kind":"phase"},{"source":"item:design:4","target":"law:6","kind":"law"},{"source":"phase:design","target":"item:design:5","kind":"phase"},{"source":"item:design:5","target":"law:7","kind":"law"},{"source":"phase:design","target":"item:design:6","kind":"phase"},{"source":"item:design:6","target":"law:8","kind":"law"},{"source":"phase:design","target":"item:design:7","kind":"phase"},{"source":"item:design:7","target":"law:9","kind":"law"},{"source":"phase:design","target":"item:design:8","kind":"phase"},{"source":"item:design:8","target":"law:10","kind":"law"},{"source":"item:design:8","target":"cert:c1","kind":"cert"},{"source":"item:design:8","target":"cert:c2","kind":"cert"},{"source":"item:design:8","target":"cert:c3","kind":"cert"},{"source":"item:design:8","target":"cert:c4","kind":"cert"},{"source":"item:design:8","target":"cert:c5","kind":"cert"},{"source":"item:design:8","target":"cert:c6","kind":"cert"},{"source":"item:design:8","target":"cert:c7","kind":"cert"},{"source":"item:design:8","target":"cert:c8","kind":"cert"},{"source":"item:design:8","target":"cert:c9","kind":"cert"},{"source":"item:design:9","target":"law:12","kind":"law"},{"source":"phase:design","target":"item:design:9","kind":"phase"},{"source":"phase:const","target":"item:const:1","kind":"phase"},{"source":"item:const:1","target":"law:3","kind":"law"},{"source":"phase:const","target":"item:const:2","kind":"phase"},{"source":"item:const:2","target":"law:6","kind":"law"},{"source":"phase:const","target":"item:const:3","kind":"phase"},{"source":"item:const:3","target":"law:13","kind":"law"},{"source":"phase:const","target":"item:const:4","kind":"phase"},{"source":"item:const:4","target":"law:14","kind":"law"},{"source":"phase:const","target":"item:const:5","kind":"phase"},{"source":"item:const:5","target":"law:15","kind":"law"},{"source":"phase:const","target":"item:const:6","kind":"phase"},{"source":"item:const:6","target":"law:16","kind":"law"},{"source":"phase:const","target":"item:const:7","kind":"phase"},{"source":"item:const:7","target":"law:17","kind":"law"},{"source":"phase:const","target":"item:const:8","kind":"phase"},{"source":"item:const:8","target":"law:18","kind":"law"},{"source":"phase:const","target":"item:const:9","kind":"phase"},{"source":"item:const:9","target":"law:19","kind":"law"},{"source":"phase:const","target":"item:const:10","kind":"phase"},{"source":"item:const:10","target":"law:20","kind":"law"},{"source":"phase:cm","target":"item:cm:1","kind":"phase"},{"source":"item:cm:1","target":"law:21","kind":"law"},{"source":"phase:cm","target":"item:cm:2","kind":"phase"},{"source":"item:cm:2","target":"law:22","kind":"law"},{"source":"phase:cm","target":"item:cm:3","kind":"phase"},{"source":"item:cm:3","target":"law:22","kind":"law"},{"source":"phase:cm","target":"item:cm:4","kind":"phase"},{"source":"item:cm:4","target":"law:22","kind":"law"},{"source":"phase:cm","target":"item:cm:5","kind":"phase"},{"source":"item:cm:5","target":"law:23","kind":"law"},{"source":"phase:comp","target":"item:comp:1","kind":"phase"},{"source":"item:comp:1","target":"law:24","kind":"law"},{"source":"phase:comp","target":"item:comp:2","kind":"phase"},{"source":"item:comp:2","target":"law:25","kind":"law"},{"source":"phase:comp","target":"item:comp:3","kind":"phase"},{"source":"item:comp:3","target":"law:26","kind":"law"}]};
     var svg=d3.select("#gv-graph"); var width=svg.node().getBoundingClientRect().width||900, height=520;
     svg.attr("viewBox",[0,0,width,height]);
@@ -2170,20 +2178,54 @@ window.__gvInit = (function(){
     var linked={}; RAW.links.forEach(function(l){linked[l.source+"|"+l.target]=1;linked[l.target+"|"+l.source]=1;});
     var deg={}; RAW.nodes.forEach(function(n){deg[n.id]=0;}); RAW.links.forEach(function(l){deg[l.source]=(deg[l.source]||0)+1;deg[l.target]=(deg[l.target]||0)+1;});
     function rad(d){return Math.max(4,Math.min(20,4+Math.sqrt(deg[d.id]||1)*3));}
+    RAW.nodes.forEach(function(n){n.x=width/2+(Math.random()-0.5)*4;n.y=height/2+(Math.random()-0.5)*4;});
     var sim=d3.forceSimulation(RAW.nodes)
       .force("link",d3.forceLink(RAW.links).id(function(d){return d.id;}).distance(function(l){return l.kind==="flow"?130:l.kind==="phase"?80:50;}).strength(0.55))
       .force("charge",d3.forceManyBody().strength(-160))
       .force("center",d3.forceCenter(width/2,height/2))
-      .force("collide",d3.forceCollide().radius(function(d){return rad(d)+8;}));
+      .force("collide",d3.forceCollide().radius(function(d){return rad(d)+8;}))
+      .alpha(1).alphaDecay(0.006).velocityDecay(0.5);
     var linkSel=g.append("g").attr("stroke-opacity",0.6).selectAll("line").data(RAW.links).join("line").attr("stroke-width",1);
     var nodeG=g.append("g").selectAll("g").data(RAW.nodes).join("g").attr("cursor","pointer")
       .call(d3.drag().on("start",function(e,d){if(!e.active)sim.alphaTarget(0.25).restart();d.fx=d.x;d.fy=d.y;})
         .on("drag",function(e,d){d.fx=e.x;d.fy=e.y;}).on("end",function(e,d){if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}));
-    var nodeSel=nodeG.append("circle").attr("r",rad).attr("fill",function(d){return d.color;}).attr("stroke","var(--surface)").attr("stroke-width",1.4);
+    var nodeSel=nodeG.append("circle").attr("r",rad).attr("fill",function(d){return d.color;}).attr("stroke","#1a1b26").attr("stroke-width",1.4);
     var labelSel=nodeG.append("text").text(function(d){return d.label.length>11?d.label.slice(0,11)+"…":d.label;})
       .attr("dy",function(d){return rad(d)+12;}).attr("text-anchor","middle")
       .attr("font-size",function(d){return d.group==="phase"||d.group==="root"?11:9;}).style("pointer-events","none");
     function nb(a,b){return linked[a+"|"+b];}
+    var gvac=null;
+    function gvac_(){gvac=gvac||new(window.AudioContext||window.webkitAudioContext)();if(gvac.state==='suspended')gvac.resume();return gvac;}
+    function gvtone(){try{var ac2=gvac_();var t0=ac2.currentTime;
+      [[1318.5,0],[1760,0.14]].forEach(function(p){
+        var o=ac2.createOscillator(),g=ac2.createGain();o.type='sine';o.frequency.value=p[0];
+        var t=t0+p[1];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.16,t+0.005);
+        g.gain.exponentialRampToValueAtTime(0.0001,t+0.22);
+        o.connect(g).connect(ac2.destination);o.start(t);o.stop(t+0.24);
+      });
+    }catch(e){}}
+    function gvfanfare(){try{var ac2=gvac_();var t0=ac2.currentTime+0.03;
+      var master=ac2.createGain();master.gain.value=0.22;master.connect(ac2.destination);
+      // 단순한 3음 상승 (도-미-솔)
+      [[392,0],[493.88,0.18],[587.33,0.36]].forEach(function(p){
+        var o=ac2.createOscillator(),g=ac2.createGain();o.type='triangle';o.frequency.value=p[0];
+        var t=t0+p[1];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.5,t+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001,t+0.5);
+        o.connect(g).connect(master);o.start(t);o.stop(t+0.55);
+      });
+    }catch(e){}}
+    nodeG.on("click",function(e,d){
+      gvtone();
+      var t=null;
+      if(d.group==="phase"){t=d.id.split(":")[1];}
+      else if(d.group.indexOf("item:")===0){t=d.group.split(":")[1];}
+      else if(d.group==="cert"){t="cert";}
+      else if(d.group==="law"){
+        var lk=RAW.links.find(function(l){return (l.target.id||l.target)===d.id;});
+        if(lk){var src=((lk.source.group)||"");if(src.indexOf("item:")===0)t=src.split(":")[1];}
+      }
+      if(t&&typeof activate==="function"){activate(t);window.scrollTo({top:0,behavior:"smooth"});}
+    });
     nodeG.on("mouseenter",function(e,d){
       tip.style("opacity",1).text(d.label).style("left",(d.x+14)+"px").style("top",(d.y-10)+"px");
       nodeSel.attr("opacity",function(o){return o.id===d.id||nb(d.id,o.id)?1:0.15;});
@@ -2195,6 +2237,13 @@ window.__gvInit = (function(){
       linkSel.attr("x1",function(d){return d.source.x;}).attr("y1",function(d){return d.source.y;}).attr("x2",function(d){return d.target.x;}).attr("y2",function(d){return d.target.y;});
       nodeG.attr("transform",function(d){return "translate("+d.x+","+d.y+")";});
     });
+    reheat=function(){
+      RAW.nodes.forEach(function(n){n.fx=null;n.fy=null;n.x=width/2+(Math.random()-0.5)*6;n.y=height/2+(Math.random()-0.5)*6;});
+      nodeG.attr("opacity",0);
+      nodeG.transition().duration(2600).attr("opacity",1);
+      sim.alpha(1).alphaDecay(0.006).restart();
+      gvfanfare();
+    };
     var zoom=d3.zoom().scaleExtent([0.3,4]).on("zoom",function(e){g.attr("transform",e.transform);});
     svg.call(zoom);
     document.getElementById("gv-reset").addEventListener("click",function(){svg.transition().duration(400).call(zoom.transform,d3.zoomIdentity);});
@@ -2211,6 +2260,7 @@ window.__gvInit = (function(){
       labelSel.attr("opacity",function(d){return d.label.toLowerCase().includes(q)?1:0.08;});
       linkSel.attr("stroke-opacity",0.05);
     });
+    gvfanfare();
   };
 })();
 

@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>설계용역비 산출 대시보드 — 신안교육지원청사 이설공사</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1:      #ffffff;
+    --surface-page:   #f2f4f6;
+    --text-primary:   #191f28;
+    --text-secondary: #4e5968;
+    --text-muted:     #8b95a1;
+    --grid:           #e5e8eb;
+    --baseline:       #d1d6db;
+    --border:         #eaedf0;
+    --series-1:       #3182f6; /* 건축 / 용역비 */
+    --series-2:       #8b95a1; /* 인테리어 / 추가조사비 */
+    --series-3:       #4e5968; /* 부가가치세 */
+    --series-4:       #c1c8d0; /* 손해배상보험료 */
+    --good:           #3182f6;
+    --warn-bg:        #eef4ff;
+    --warn-text:      #1b64da;
+    --yellow-bg:      #eef4ff;
+    --yellow-bg-hover:#e2edfd;
+    --yellow-border:  #b6d4fb;
+    --radc: 20px; --radsm: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:      #262c49;
+      --surface-page:   #1b2140;
+      --text-primary:   #f1f4fb;
+      --text-secondary: #d3d9ea;
+      --text-muted:     #9aa3bd;
+      --grid:           rgba(255,255,255,0.12);
+      --baseline:       rgba(255,255,255,0.18);
+      --border:         rgba(255,255,255,0.14);
+      --series-1:       #8fb8ff;
+      --series-2:       #9aa3bd;
+      --series-3:       #d3d9ea;
+      --series-4:       #5a6486;
+      --good:           #8fb8ff;
+      --warn-bg:        rgba(143,184,255,0.12);
+      --warn-text:      #8fb8ff;
+      --yellow-bg:      rgba(143,184,255,0.12);
+      --yellow-bg-hover:rgba(143,184,255,0.20);
+      --yellow-border:  rgba(143,184,255,0.45);
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:      #262c49;
+    --surface-page:   #1b2140;
+    --text-primary:   #f1f4fb;
+    --text-secondary: #d3d9ea;
+    --text-muted:     #9aa3bd;
+    --grid:           rgba(255,255,255,0.12);
+    --baseline:       rgba(255,255,255,0.18);
+    --border:         rgba(255,255,255,0.14);
+    --series-1:       #8fb8ff;
+    --series-2:       #9aa3bd;
+    --series-3:       #d3d9ea;
+    --series-4:       #5a6486;
+    --good:           #8fb8ff;
+    --warn-bg:        rgba(143,184,255,0.12);
+    --warn-text:      #8fb8ff;
+    --yellow-bg:      rgba(143,184,255,0.12);
+    --yellow-bg-hover:rgba(143,184,255,0.20);
+    --yellow-border:  rgba(143,184,255,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',system-ui,sans-serif;
+    background: var(--surface-page);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+  :root[data-theme="dark"] body{background:linear-gradient(140deg,#1b2140 0%,#2c2456 52%,#153046 100%);background-attachment:fixed;}
+  .page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 28px 24px 64px;
+  }
+
+  h1,h2,h3 { margin: 0; }
+
+  /* ---------- Header ---------- */
+  .header {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radc);
+    padding: 26px 32px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,27,55,.04),0 6px 20px rgba(0,27,55,.06);
+  }
+  .header .kicker { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+  .header h1 { font-size: 24px; font-weight: 800; letter-spacing:-.02em; line-height: 1.35; }
+  .header .sub { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+
+  /* ---------- Layout ---------- */
+  .layout { display: grid; grid-template-columns: 400px 1fr; gap: 18px; align-items: start; }
+  .input-col { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 14px; max-height: calc(100vh - 32px); overflow-y: auto; padding-right: 4px; }
+  .result-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+  /* ---------- Cards (input) ---------- */
+  .card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .card h3 { font-size: 13.5px; font-weight: 700; margin-bottom: 2px; }
+  .card .card-desc { font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px; }
+
+  .field { margin-bottom: 11px; }
+  .field:last-child { margin-bottom: 0; }
+  .field label { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; font-weight: 600; }
+  /* 파란색 = "직접 입력" 셀. 사용자가 값을 바꾸면 결과가 자동 재계산되는 항목 */
+  .card input[type="text"], .card input[type="number"], .card select {
+    width: 100%; font-size: 13px; padding: 7px 9px; border-radius: 6px;
+    border: 1px solid var(--yellow-border); background: var(--yellow-bg); color: var(--text-primary);
+    font-family: inherit; font-weight: 600;
+  }
+  .card input[type="text"]:hover, .card input[type="number"]:hover, .card select:hover { background: var(--yellow-bg-hover); }
+  .card input:focus, .card select:focus { outline: 2px solid var(--series-1); outline-offset: 1px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+  .check-row {
+    display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--text-primary);
+    padding: 6px 9px; cursor: pointer; background: var(--yellow-bg); border: 1px solid var(--yellow-border);
+    border-radius: 6px; font-weight: 600;
+  }
+  .check-row:hover { background: var(--yellow-bg-hover); }
+  .check-row input { width: 15px; height: 15px; accent-color: var(--series-1); cursor: pointer; }
+  .check-group { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-bottom: 8px; }
+
+  /* ---------- 입력 패널 헤더 (범례 + 초기화) ---------- */
+  .input-col-header {
+    position: sticky; top: 0; z-index: 6; background: var(--surface-page);
+    padding-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  .yellow-legend {
+    display: flex; align-items: center; gap: 7px; font-size: 11.5px; color: var(--text-secondary); font-weight: 600;
+  }
+  .yellow-legend .chip { width: 16px; height: 16px; border-radius: 4px; background: var(--yellow-bg); border: 1px solid var(--yellow-border); flex: none; }
+  .reset-btn {
+    display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; white-space: nowrap;
+    background: var(--surface-1); border: 1px solid var(--border); color: var(--text-secondary);
+    border-radius: 20px; padding: 7px 13px; cursor: pointer; transition: background .12s ease, color .12s ease;
+  }
+  .reset-btn:hover { background: var(--series-1); color: #fff; border-color: var(--series-1); }
+
+  .sub-block { border-top: 1px dashed var(--grid); margin-top: 10px; padding-top: 10px; }
+  .sub-block-title { font-size: 11.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; display:flex; align-items:center; justify-content:space-between; }
+  .inline-note { font-size: 10.5px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
+
+  .badge-mini {
+    font-size: 10.5px; padding: 1px 7px; border-radius: 20px;
+    background: color-mix(in srgb, var(--series-1) 14%, transparent);
+    color: var(--series-1); font-weight: 700;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 26px 32px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .hero .label { font-size: 14px; color: var(--text-secondary); font-weight: 600; }
+  .hero .value { font-size: 46px; font-weight: 800; letter-spacing: -0.02em; color: var(--series-1); }
+  .hero .sub { font-size: 12.5px; color: var(--text-muted); max-width: 360px; text-align: right; }
+
+  /* ---------- 원본 대비 차이 배지 ---------- */
+  .diff-bar {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
+    padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap; font-size: 12.5px;
+  }
+  .diff-left { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-weight: 600; }
+  .diff-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); flex: none; }
+  .diff-right { display: flex; align-items: center; gap: 12px; }
+  .diff-ref { color: var(--text-muted); }
+  .diff-amt { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text-primary); }
+  .diff-bar.state-up .diff-dot { background: var(--series-2); }
+  .diff-bar.state-up .diff-amt { color: var(--series-2); }
+  .diff-bar.state-down .diff-dot { background: var(--series-1); }
+  .diff-bar.state-down .diff-amt { color: var(--series-1); }
+  .diff-bar.state-same .diff-dot { background: var(--good); }
+  .diff-bar.state-same .diff-amt { color: var(--good); }
+
+  /* ---------- Stat tiles ---------- */
+  .tiles { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+  .tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; }
+  .tile .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 7px; }
+  .tile .label { font-size: 12.5px; color: var(--text-secondary); font-weight: 600; }
+  .tile .value { font-size: 20px; font-weight: 700; margin-top: 8px; }
+  .tile .pct { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+  /* ---------- Panels ---------- */
+  .panels { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; }
+  .panel { background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px 16px; }
+  .panel h2 { font-size: 14.5px; font-weight: 700; margin-bottom: 2px; }
+  .panel .desc { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+  .full { grid-column: 1 / -1; }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
+  .legend .item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+  .legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+
+  .bar-chart { display: flex; align-items: flex-end; gap: 26px; height: 210px; position: relative; }
+  .bar-chart::before { content: ""; position: absolute; left: 0; right: 0; bottom: 28px; border-bottom: 1px solid var(--baseline); }
+  .bar-group { display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end; }
+  .bar-pair { display: flex; align-items: flex-end; gap: 4px; height: 182px; }
+  .bar { width: 24px; border-radius: 4px 4px 0 0; position: relative; cursor: default; transition: height .18s ease, filter .12s ease; min-height: 2px; }
+  .bar:hover { filter: brightness(1.08); }
+  .bar .val { position: absolute; top: -19px; left: 50%; transform: translateX(-50%); font-size: 10.5px; color: var(--text-secondary); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .bar-group .gname { margin-top: 8px; font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+
+  .stack-wrap { margin-top: 6px; }
+  .stack { display: flex; width: 100%; height: 34px; border-radius: 8px; overflow: hidden; }
+  .stack .seg { height: 100%; position: relative; transition: width .18s ease; }
+  .stack .seg + .seg { margin-left: 2px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  thead th { text-align: left; font-size: 11.5px; color: var(--text-muted); font-weight: 600; padding: 7px 9px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+  tbody td { padding: 8px 9px; border-bottom: 1px solid var(--grid); color: var(--text-secondary); }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr.total td { color: var(--text-primary); font-weight: 700; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.name { color: var(--text-primary); font-weight: 600; }
+  .tag { display: inline-block; font-size: 10.5px; padding: 2px 7px; border-radius: 20px; background: color-mix(in srgb, var(--series-1) 14%, transparent); color: var(--series-1); font-weight: 600; }
+
+  .info-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+  .info-row { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--grid); font-size: 12.5px; }
+  .info-row .k { color: var(--text-muted); }
+  .info-row .v { color: var(--text-primary); font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+
+  .foot-note { font-size: 11px; color: var(--text-muted); line-height: 1.7; margin-top: 8px; }
+  .callout { border-radius: 10px; padding: 12px 14px; font-size: 11.5px; line-height: 1.7; margin-top: 4px; background: var(--warn-bg); color: var(--warn-text); }
+
+  .theme-toggle { position: fixed; top: 18px; right: 18px; z-index: 20; background: var(--surface-1); border: 2px solid var(--border); border-radius: 100px; padding: 8px 14px; font-size: 12.5px; font-weight:700; color: var(--text-secondary); cursor: pointer; box-shadow:0 1px 3px rgba(0,27,55,.08); }
+
+  @media (max-width: 1100px) {
+    .layout { grid-template-columns: 1fr; }
+    .input-col { position: static; max-height: none; }
+    .tiles { grid-template-columns: repeat(2, 1fr); }
+    .panels { grid-template-columns: 1fr; }
+  }
+
+  #tooltip { position: fixed; pointer-events: none; z-index: 50; background: var(--text-primary); color: var(--surface-1); font-size: 12px; padding: 6px 10px; border-radius: 6px; opacity: 0; transition: opacity .1s ease; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="viz-root">
+<button class="theme-toggle" id="themeToggle" type="button">다크 모드</button>
+<div id="tooltip"></div>
+
+<div class="page">
+
+  <div class="header">
+    <div class="kicker">설계용역비 산출 대시보드 · 인터랙티브 계산기 (기준: 설계용역비산출서_v2 발주청테스트용)</div>
+    <h1>공사비 등 입력값을 바꾸면 설계용역비가 즉시 재계산됩니다</h1>
+    <div class="sub">국토교통부고시 제2020-635호 [별표4] 직선보간 요율표 · 제11조제4항 인증 복합대가 · 지질조사 단가 · 손해배상보험료 요율표를 반영해 실시간으로 산출합니다.</div>
+  </div>
+
+  <div class="layout">
+
+    <!-- ============ 입력 패널 ============ -->
+    <div class="input-col">
+
+      <div class="input-col-header">
+        <div class="yellow-legend"><span class="chip"></span>파란색 = 직접 입력 항목 (값을 바꾸면 자동 재계산)</div>
+        <button class="reset-btn" id="resetBtn" type="button">↺ 초기화</button>
+      </div>
+
+      <div class="card">
+        <h3>1. 사업 기본정보</h3>
+        <div class="card-desc">기초데이터 시트 입력값</div>
+        <div class="field"><label>사업명</label><input type="text" id="in_사업명" value="신안교육지원청사 이설공사"></div>
+        <div class="field"><label>발주기관</label><input type="text" id="in_발주기관" value="전남광주통합특별시교육청"></div>
+        <div class="row2">
+          <div class="field"><label>공사유형</label>
+            <select id="in_공사유형">
+              <option value="신축" selected>신축</option>
+              <option value="증축">증축</option>
+              <option value="개축">개축</option>
+              <option value="리모델링">리모델링(기타)</option>
+            </select>
+          </div>
+          <div class="field"><label>전기·통신·소방 공제율(%)</label><input type="number" id="in_공제율" value="18" min="0" max="100" step="0.1"></div>
+        </div>
+        <div class="inline-note" style="margin-bottom:10px;">참고: 시설과-9416 기준 신축·개축 23%, 증축·기타 18% 권장 — 현장 여건에 따라 직접 수정 가능</div>
+        <div class="row2">
+          <div class="field"><label>종별</label>
+            <select id="in_종별">
+              <option value="3">제3종 (복잡)</option>
+              <option value="2" selected>제2종 (보통)</option>
+              <option value="1">제1종 (단순)</option>
+            </select>
+          </div>
+          <div class="field"><label>등급</label>
+            <select id="in_등급">
+              <option value="상">상급</option>
+              <option value="중" selected>중급</option>
+              <option value="기">기본</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>설계단계 적용</label>
+          <div class="check-group">
+            <label class="check-row"><input type="checkbox" id="in_기본설계" checked> 기본설계</label>
+            <label class="check-row"><input type="checkbox" id="in_중간설계" checked> 중간설계</label>
+            <label class="check-row"><input type="checkbox" id="in_실시설계" checked> 실시설계</label>
+          </div>
+        </div>
+        <label class="check-row"><input type="checkbox" id="in_인테리어적용" checked> 인테리어(리모델링) 설계적용 <span class="badge-mini">대가 1.5배</span></label>
+      </div>
+
+      <div class="card">
+        <h3>2. 공사비 입력</h3>
+        <div class="card-desc">시설 예산액(VAT포함, 천원 단위) → 공사비 자동 산출</div>
+        <div class="field"><label>시설비 (인테리어 제외, 천원)</label><input type="number" id="in_시설비" value="1200000" step="1000"></div>
+        <div class="field"><label>시설비 (인테리어·공간혁신, 천원)</label><input type="number" id="in_인테리어시설비" value="100000" step="1000"></div>
+        <div class="foot-note" id="disp_공사비요약">건축공사비 984,000,000원 · 인테리어공사비 82,000,000원 (VAT포함, 자동계산)</div>
+      </div>
+
+      <div class="card">
+        <h3>3. 인증 추가대가</h3>
+        <div class="card-desc">제11조제4항 · 2~3개 동시 적용 시 A+½B+⅓C 복합요율 자동 산정</div>
+
+        <label class="check-row"><input type="checkbox" id="in_녹색_적용" checked> 녹색건축 인증</label>
+        <select id="in_녹색_등급">
+          <option value="9.5">최우수등급(9.5%)</option>
+          <option value="9">우수등급(9%)</option>
+          <option value="8.5">우량등급(8.5%)</option>
+          <option value="8" selected>일반등급(8%)</option>
+        </select>
+
+        <div class="sub-block">
+          <label class="check-row"><input type="checkbox" id="in_IBS_적용" checked> 지능형건축물(IBS) 인증</label>
+          <select id="in_IBS_등급">
+            <option value="7">1등급(7%)</option>
+            <option value="6.5">2등급(6.5%)</option>
+            <option value="6">3등급(6%)</option>
+            <option value="5.5">4등급(5.5%)</option>
+            <option value="5" selected>5등급(5%)</option>
+          </select>
+        </div>
+
+        <div class="sub-block">
+          <label class="check-row"><input type="checkbox" id="in_제로에너지_적용" checked> 제로에너지건축물 인증</label>
+          <select id="in_제로에너지_등급">
+            <option value="10" selected>1등급(10%)</option>
+            <option value="9.5">2등급(9.5%)</option>
+            <option value="9">3등급(9%)</option>
+            <option value="8.5">4등급(8.5%)</option>
+            <option value="8">5등급(8%)</option>
+          </select>
+          <div class="inline-note">에너지효율등급 인증은 제로에너지 인증 적용 시 자동 미적용(0 처리)됩니다.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>4. 지질조사</h3>
+        <div class="card-desc">단가: BX 900 · NX 1,400 · 탄성파 2,200 (천원/공, 부가세 별도)</div>
+        <div class="row2" style="align-items:end;">
+          <label class="check-row"><input type="checkbox" id="in_BX_적용" checked> BX</label>
+          <input type="number" id="in_BX_물량" value="1" min="0" step="1">
+        </div>
+        <div class="row2" style="align-items:end; margin-top:8px;">
+          <label class="check-row"><input type="checkbox" id="in_NX_적용"> NX</label>
+          <input type="number" id="in_NX_물량" value="0" min="0" step="1">
+        </div>
+        <div class="row2" style="align-items:end; margin-top:8px;">
+          <label class="check-row"><input type="checkbox" id="in_탄성파_적용" checked> 탄성파(NX 포함)</label>
+          <input type="number" id="in_탄성파_물량" value="1" min="0" step="1">
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>5. 기타분야</h3>
+        <div class="card-desc">BF·안전보건대장·안전성검토는 참고자료 견적가(고정) 적용</div>
+        <label class="check-row"><input type="checkbox" id="in_BF_적용" checked> BF인증 심의대응 업무 (9,105,000원)</label>
+        <label class="check-row"><input type="checkbox" id="in_안전보건대장_적용" checked> 설계안전보건대장 작성비 (1,800,000원)</label>
+        <label class="check-row"><input type="checkbox" id="in_안전성검토_적용" checked> 설계안전성검토 작성비 (2,000,000원)</label>
+        <div class="sub-block">
+          <label class="check-row"><input type="checkbox" id="in_현황측량_적용" checked> 현황측량비 (산식 자동계산)</label>
+          <div class="row2" style="margin-top:6px;">
+            <div class="field"><label>토지구분</label>
+              <select id="in_토지구분">
+                <option value="도해(토지)">도해(토지)</option>
+                <option value="도해(임야)">도해(임야)</option>
+                <option value="수치" selected>수치</option>
+              </select>
+            </div>
+            <div class="field"><label>지역구분</label>
+              <select id="in_지역구분">
+                <option value="군" selected>군지역</option>
+                <option value="시">시지역</option>
+                <option value="구">구지역</option>
+              </select>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>대상면적(㎡)</label><input type="number" id="in_대상면적" value="12236" min="0"></div>
+            <div class="field"><label>공시지가(원/㎡)</label><input type="number" id="in_공시지가" value="5600" min="0"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>6. 손해배상보험료</h3>
+        <div class="card-desc">건축사 공제조합 요율표 · 계획·중간 / 실시설계 자동 구분(실시설계 선택 시 실시요율)</div>
+        <div class="field"><label>건물용도(공사종류)</label>
+          <select id="in_건물용도"></select>
+        </div>
+        <div class="field"><label>공제가입금액 구간</label>
+          <select id="in_보험구간">
+            <option value="0">5억원 이하</option>
+            <option value="1">5억원 초과 ~ 10억원 이하</option>
+            <option value="2">10억원 초과 ~ 20억원 이하</option>
+            <option value="3">20억원 초과 ~ 30억원 이하</option>
+            <option value="4">30억원 초과 ~ 50억원 이하</option>
+          </select>
+        </div>
+        <div class="foot-note">기본요율만 적용(계약기간 초과 등 가산요율은 별도 협의)</div>
+      </div>
+
+    </div>
+
+    <!-- ============ 결과 대시보드 ============ -->
+    <div class="result-col">
+
+      <div class="hero">
+        <div>
+          <div class="label">설계용역비 총 합계</div>
+          <div class="value" id="out_총합계">0<span style="font-size:20px;font-weight:600;color:var(--text-secondary);"> 원</span></div>
+        </div>
+        <div class="sub" id="out_히어로설명">용역비 + 추가조사비(지질조사 포함) + 부가가치세 + 손해배상보험료 · 원본 산출서 오류 보정 반영(하단 안내 참조)</div>
+      </div>
+
+      <div class="diff-bar" id="diffBar">
+        <div class="diff-left">
+          <span class="diff-dot" id="diffDot"></span>
+          <span id="diffLabel">원본 산출서 대비</span>
+        </div>
+        <div class="diff-right">
+          <span class="diff-ref">원본 84,402,000원</span>
+          <span class="diff-amt" id="diffAmt">-</span>
+        </div>
+      </div>
+
+      <div class="tiles">
+        <div class="tile">
+          <span class="label"><span class="dot" style="background:var(--series-1)"></span>분야별 용역비</span>
+          <div class="value" id="out_용역비">0원</div>
+          <div class="pct" id="out_용역비pct">-</div>
+        </div>
+        <div class="tile">
+          <span class="label"><span class="dot" style="background:var(--series-2)"></span>추가조사비</span>
+          <div class="value" id="out_추가조사비">0원</div>
+          <div class="pct" id="out_추가조사비pct">-</div>
+        </div>
+        <div class="tile">
+          <span class="label"><span class="dot" style="background:var(--series-3)"></span>부가가치세</span>
+          <div class="value" id="out_VAT">0원</div>
+          <div class="pct" id="out_VATpct">과세표준×10%</div>
+        </div>
+        <div class="tile">
+          <span class="label"><span class="dot" style="background:var(--series-4)"></span>손해배상보험료</span>
+          <div class="value" id="out_보험료">0원</div>
+          <div class="pct" id="out_보험료pct">-</div>
+        </div>
+      </div>
+
+      <div class="panels">
+        <div class="panel">
+          <h2>분야별 · 설계단계별 용역비</h2>
+          <div class="desc">건축 · 인테리어(리모델링) — 기본설계 / 중간설계 / 실시설계 (단위: 원)</div>
+          <div class="legend">
+            <span class="item"><span class="swatch" style="background:var(--series-1)"></span><span id="leg_건축">건축</span></span>
+            <span class="item"><span class="swatch" style="background:var(--series-2)"></span><span id="leg_인테리어">인테리어</span></span>
+          </div>
+          <div class="bar-chart" id="barChart"></div>
+        </div>
+
+        <div class="panel">
+          <h2>총 집계 구성비</h2>
+          <div class="desc" id="out_구성비설명">설계용역비 총 합계 기준</div>
+          <div class="legend" id="stackLegend"></div>
+          <div class="stack-wrap"><div class="stack" id="stackBar"></div></div>
+          <table style="margin-top:16px;" id="tbl_구성비"></table>
+        </div>
+      </div>
+
+      <div class="panels">
+        <div class="panel">
+          <h2>용역비 산출근거 — 건축</h2>
+          <div class="desc" id="out_건축근거desc">공공발주사업 건축사 업무대가기준 [별표4]</div>
+          <table>
+            <thead><tr><th>설계단계</th><th class="num">배분비율</th><th class="num">요율(%)</th><th class="num">설계대가(원)</th></tr></thead>
+            <tbody id="tbl_건축단계"></tbody>
+          </table>
+          <div class="foot-note" id="foot_건축근거"></div>
+        </div>
+
+        <div class="panel">
+          <h2>용역비 산출근거 — 인테리어(리모델링)</h2>
+          <div class="desc">대가 1.5배 가산 · 건축 공사비 요율 준용 · 기본설계 미적용(고정)</div>
+          <table>
+            <thead><tr><th>설계단계</th><th class="num">배분비율</th><th class="num">요율(%)</th><th class="num">설계대가(원)</th></tr></thead>
+            <tbody id="tbl_인테리어단계"></tbody>
+          </table>
+          <div class="foot-note" id="foot_인테리어근거"></div>
+        </div>
+      </div>
+
+      <div class="panel full">
+        <h2>추가조사비 세부 산출근거</h2>
+        <div class="desc">공공발주사업에 대한 건축사의 업무범위와 대가기준 제11조제4항 등 관련</div>
+        <table>
+          <thead><tr><th>항목</th><th>비고</th><th class="num">금액(원)</th></tr></thead>
+          <tbody id="tbl_추가조사비"></tbody>
+        </table>
+        <div class="callout" style="background:color-mix(in srgb,var(--series-1) 10%,transparent);color:var(--text-secondary);">
+          ✅ 원본 산출서(설계용역비산출서_v2 발주청테스트용)에서 발견된 아래 4가지 계산 오류를 본 대시보드에서 모두 <b>수정 완료</b>하여 산출했습니다.<br><br>
+          ① <b>지질조사비 누락 → 수정됨</b> — 원본 종합집계표 SUM 범위에서 빠져 있던 지질조사비를 추가조사비 총계에 포함했습니다.<br>
+          ② <b>기타분야 이중 합산 → 수정됨</b> — BF·설계안전보건대장·설계안전성검토·현황측량비를 항목별로 1회만 합산하여 약 3,800,000원 과다 계상을 제거했습니다.<br>
+          ③ <b>현황측량비 연동 누락 → 수정됨</b> — 산식 연결이 비어 0원으로 표시되던 현황측량비를 “기본단가 × 면적계수 × 지가계수” 산식대로 재계산했습니다.<br>
+          ④ <b>부가가치세 과세표준 → 수정됨</b> — 건축 용역비만 삼던 과세표준을 건축+인테리어 용역비 전체로 바로잡았습니다.<br><br>
+          ※ 실제 제출 전 원본 엑셀 수식과 함께 최종 확인하시기 바랍니다.
+        </div>
+      </div>
+
+      <div class="panel full">
+        <h2>인증별 추가대가 복합산정 상세</h2>
+        <div class="desc">제11조제4항제6호 · 인증 2~3개 동시 적용 시 A + ½B + ⅓C 복합요율 자동 적용 · 기준: 건축 설계대가(단계배분 전 원가) × 요율</div>
+        <table>
+          <thead><tr><th>순위 구분</th><th>산출 요율(%)</th><th class="num">추가대가(원)</th></tr></thead>
+          <tbody id="tbl_인증복합"></tbody>
+        </table>
+      </div>
+
+      <div class="panels">
+        <div class="panel">
+          <h2>공사비 · 요율 산출근거</h2>
+          <div class="desc">기초데이터 → 요율 직선보간 근거</div>
+          <div class="info-grid" id="tbl_공사비근거"></div>
+        </div>
+        <div class="panel">
+          <h2>현황측량비 · 손해배상보험료 근거</h2>
+          <div class="desc">동적 산식 반영 결과</div>
+          <div class="info-grid" id="tbl_기타근거"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+  /* ===================== 참조 데이터 ===================== */
+  const COST_BP = [50000000,100000000,200000000,300000000,500000000,1000000000,2000000000,3000000000,5000000000,10000000000,20000000000,30000000000,50000000000,100000000000,200000000000,300000000000,500000000000];
+  const RATE_COLS = {
+    '3-상': [12.55,11.48,9.99,8.68,7.9,7.03,6.22,5.91,5.72,5.58,5.42,5.32,5.25,5.14,5.06,5.01,4.93],
+    '3-중': [10.46,9.56,8.33,7.23,6.58,5.86,5.19,4.93,4.76,4.65,4.51,4.44,4.38,4.29,4.22,4.17,4.11],
+    '3-기': [8.36,7.65,6.66,5.78,5.26,4.68,4.15,3.94,3.81,3.72,3.61,3.55,3.5,3.43,3.38,3.34,3.28],
+    '2-상': [11.41,10.43,9.08,7.88,7.18,6.39,5.66,5.38,5.2,5.07,4.92,4.84,4.77,4.68,4.6,4.55,4.48],
+    '2-중': [9.51,8.69,7.57,6.57,5.98,5.32,4.72,4.48,4.33,4.22,4.1,4.03,3.98,3.9,3.84,3.79,3.73],
+    '2-기': [7.61,6.95,6.05,5.26,4.79,4.26,3.77,3.58,3.46,3.38,3.28,3.23,3.18,3.12,3.07,3.03,2.99],
+    '1-상': [10.22,9.38,8.16,7.08,6.46,5.75,5.09,4.84,4.68,4.56,4.43,4.36,4.3,4.21,4.14,4.1,4.03],
+    '1-중': [8.51,7.82,6.8,5.9,5.38,4.79,4.24,4.03,3.9,3.8,3.69,3.63,3.58,3.5,3.45,3.42,3.36],
+  };
+  const LAND_COEF = [[0,0.7],[9001,0.85],[26001,1.0],[51001,1.3],[170001,1.5],[1710001,1.6],[8530001,1.7],[17060001,1.8],[25590001,1.9],[34120001,2.0],[42650001,2.1],[51180001,2.2],[59710001,2.3],[68240001,2.4],[77000001,2.5]];
+  const SURVEY_BASE = {
+    '도해(토지)': { 기준면적:1500, 군:251000, 시:325000, 구:371000 },
+    '도해(임야)': { 기준면적:5000, 군:315000, 시:398000, 구:443000 },
+    '수치':       { 기준면적:1500, 군:242000, 시:313000, 구:360000 },
+  };
+  // 손해배상보험료 요율표 [5억이하, ~10억, ~20억, ~30억, ~50억] 기본요율(%)
+  function ins(name, plan, real){ return {name, plan, real}; }
+  const INSURANCE_ROWS = [
+    ins('가설건축물', [0.289,0.28,0.272,0.263,0.254], [0.432,0.42,0.406,0.394,0.382]),
+    ins('공작물(굴뚝·옹벽·고가수조 등)', [0.289,0.28,0.272,0.263,0.254], [0.432,0.42,0.406,0.394,0.382]),
+    ins('문화 및 집회시설', [0.289,0.28,0.272,0.263,0.254], [0.432,0.42,0.406,0.394,0.382]),
+    ins('종교시설', [0.289,0.28,0.272,0.263,0.254], [0.432,0.42,0.406,0.394,0.382]),
+    ins('장례시설', [0.289,0.28,0.272,0.263,0.254], [0.432,0.42,0.406,0.394,0.382]),
+    ins('묘지 관련 시설', [0.289,0.28,0.272,0.263,0.254], [0.432,0.42,0.406,0.394,0.382]),
+    ins('단독주택', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('제1종 근린생활시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('제2종 근린생활시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('판매시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('운수시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('의료시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('교육연구시설', [0.346,0.336,0.326,0.315,0.305], [0.492,0.503,0.488,0.472,0.457]),
+    ins('노유자시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('수련시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('야영장시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('운동시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('업무시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('숙박시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('위락시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('창고시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('자동차 관련 시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('동물 및 식물 관련시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('교정 및 군사 시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('방송통신시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('관광 휴게시설', [0.346,0.336,0.326,0.315,0.305], [0.52,0.503,0.488,0.472,0.457]),
+    ins('공동주택', [0.372,0.361,0.35,0.338,0.327], [0.558,0.542,0.525,0.508,0.492]),
+    ins('공장', [0.372,0.361,0.35,0.338,0.327], [0.558,0.542,0.525,0.508,0.492]),
+    ins('발전시설', [0.512,0.497,0.482,0.467,0.452], [0.769,0.746,0.723,0.7,0.677]),
+    ins('위험물 저장 및 처리 시설', [0.524,0.509,0.494,0.478,0.462], [0.788,0.763,0.74,0.717,0.692]),
+    ins('자원순환 관련 시설', [0.524,0.509,0.494,0.478,0.462], [0.788,0.763,0.74,0.717,0.692]),
+  ];
+
+  /* ===================== 엑셀 유사 반올림 ===================== */
+  function eRound(x, d){ d=d||0; const m=Math.pow(10,d); return Math.sign(x)*Math.round(Math.abs(x)*m + 1e-9)/m; }
+  function eRoundDown(x, d){ d=d||0; const m=Math.pow(10,d); return Math.floor(x*m + 1e-6)/m; }
+  function eRoundUp(x, d){ d=d||0; const m=Math.pow(10,d); return Math.ceil(x*m - 1e-6)/m; }
+
+  function interpRate(cost, col){
+    const BP = COST_BP, RT = RATE_COLS[col];
+    if (!cost || cost <= 0) return 0;
+    if (cost <= BP[0]) return RT[0];
+    let idx = -1;
+    for (let i=0;i<BP.length;i++){ if (BP[i] <= cost) idx = i; }
+    if (idx === BP.length-1) return RT[idx];
+    const x1=BP[idx], x2=BP[idx+1], y1=RT[idx], y2=RT[idx+1];
+    return eRound(y1 + (y2-y1)*(cost-x1)/(x2-x1), 4);
+  }
+  function landCoef(v){ let c = 0.7; for (const [th,co] of LAND_COEF){ if (v >= th) c = co; else break; } return c; }
+  function fmt(n){ return Math.round(n).toLocaleString('ko-KR') + '원'; }
+  function fmtN(n){ return Math.round(n).toLocaleString('ko-KR'); }
+  function pct(n){ return n.toFixed(1) + '%'; }
+
+  /* ===================== 건물용도 드롭다운 채우기 ===================== */
+  const selUse = document.getElementById('in_건물용도');
+  INSURANCE_ROWS.forEach((r,i) => {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = r.name;
+    if (r.name === '교육연구시설') o.selected = true;
+    selUse.appendChild(o);
+  });
+
+  /* ===================== 기본값 저장 (초기화 버튼용) ===================== */
+  function captureDefaults(){
+    const map = {};
+    document.querySelectorAll('.input-col input, .input-col select').forEach(el => {
+      if (!el.id) return;
+      if (el.type === 'checkbox') map[el.id] = { checkbox: true, checked: el.checked };
+      else map[el.id] = { checkbox: false, value: el.value };
+    });
+    return map;
+  }
+  const DEFAULTS = captureDefaults();
+  function resetAll(){
+    Object.keys(DEFAULTS).forEach(id => {
+      const el = document.getElementById(id);
+      const d = DEFAULTS[id];
+      if (!el || !d) return;
+      if (d.checkbox) el.checked = d.checked; else el.value = d.value;
+    });
+    render();
+  }
+  function inputsMatchDefaults(){
+    return Object.keys(DEFAULTS).every(id => {
+      const el = document.getElementById(id);
+      const d = DEFAULTS[id];
+      if (!el || !d) return true;
+      return d.checkbox ? el.checked === d.checked : el.value === d.value;
+    });
+  }
+  // 원본 산출서(설계용역비산출서_v2 발주청테스트용) 종합집계표 상 최종 합계 — 신안교육지원청사 이설공사 기준 고정값
+  const ORIGINAL_TOTAL = 84402000;
+
+  /* ===================== 계산 엔진 ===================== */
+  function val(id){ return document.getElementById(id).value; }
+  function num(id){ return parseFloat(document.getElementById(id).value) || 0; }
+  function chk(id){ return document.getElementById(id).checked; }
+
+  function compute(){
+    const 공사유형 = val('in_공사유형');
+    const 공제율 = num('in_공제율') / 100;
+
+    const 시설비 = num('in_시설비');
+    const 인테리어적용 = chk('in_인테리어적용');
+    const 인테리어시설비 = 인테리어적용 ? num('in_인테리어시설비') : 0;
+
+    const 건축VAT포함 = 시설비*1000*(1-공제율);
+    const 인테리어VAT포함 = 인테리어시설비*1000*(1-공제율);
+    const 건축VAT제외_raw = eRound(건축VAT포함/1.1, 0);
+    const 인테리어VAT제외_raw = eRound(인테리어VAT포함/1.1, 0);
+    const D6건축 = eRoundDown(건축VAT제외_raw, -3);
+    const D6인테리어 = 인테리어VAT제외_raw;
+    const 합산공사비 = 건축VAT제외_raw + 인테리어VAT제외_raw;
+
+    const 종별 = val('in_종별'), 등급 = val('in_등급');
+    const rateKey = `${종별}-${등급}`;
+    const rate = interpRate(합산공사비, rateKey);
+
+    const 기본체크 = chk('in_기본설계'), 중간체크 = chk('in_중간설계'), 실시체크 = chk('in_실시설계');
+    const 기본율 = eRoundDown(rate*0.2, 3);
+    const 중간율 = eRoundDown(rate*0.3, 3);
+    const 실시율 = eRoundDown(rate*0.5, 3);
+
+    const 건축기본비 = 기본체크 ? eRoundDown(D6건축*기본율/100, -4) : 0;
+    const 건축중간비 = 중간체크 ? eRoundDown(D6건축*중간율/100, -4) : 0;
+    const 건축실시비 = 실시체크 ? eRoundDown(D6건축*실시율/100, -4) : 0;
+    const 건축계 = 건축기본비 + 건축중간비 + 건축실시비;
+
+    const 인테리어중간비 = (인테리어적용 && 중간체크) ? eRoundDown(D6인테리어*중간율/100*1.5, -4) : 0;
+    const 인테리어실시비 = (인테리어적용 && 실시체크) ? eRoundDown(D6인테리어*실시율/100*1.5, -4) : 0;
+    const 인테리어계 = 인테리어중간비 + 인테리어실시비;
+
+    const 용역비총계 = 건축계 + 인테리어계;
+    const F26건축설계대가 = eRound(D6건축*rate/100, 0);
+
+    // 인증 복합산정
+    const certs = [
+      { name:'녹색건축 인증', 적용: chk('in_녹색_적용'), rate: parseFloat(val('in_녹색_등급')) },
+      { name:'지능형건축물(IBS) 인증', 적용: chk('in_IBS_적용'), rate: parseFloat(val('in_IBS_등급')) },
+      { name:'제로에너지건축물 인증', 적용: chk('in_제로에너지_적용'), rate: parseFloat(val('in_제로에너지_등급')) },
+    ];
+    const activeCerts = certs.filter(c => c.적용 && c.rate > 0).sort((a,b) => b.rate - a.rate);
+    const A = activeCerts[0] ? activeCerts[0].rate : 0;
+    const Bh = activeCerts[1] ? activeCerts[1].rate/2 : 0;
+    const Ct = activeCerts[2] ? activeCerts[2].rate/3 : 0;
+    const 복합요율 = A + Bh + Ct;
+    const 인증추가대가 = eRound(F26건축설계대가*복합요율/100, 0);
+    const A금액 = eRound(F26건축설계대가*A/100,0), B금액 = eRound(F26건축설계대가*Bh/100,0), C금액 = eRound(F26건축설계대가*Ct/100,0);
+
+    // 지질조사
+    const BX = chk('in_BX_적용') ? eRound(num('in_BX_물량')*900*1000,0) : 0;
+    const NX = chk('in_NX_적용') ? eRound(num('in_NX_물량')*1400*1000,0) : 0;
+    const 탄성파 = chk('in_탄성파_적용') ? eRound(num('in_탄성파_물량')*2200*1000,0) : 0;
+    const 지질조사비 = BX + NX + 탄성파;
+
+    // 기타분야
+    const BF = chk('in_BF_적용') ? 9105000 : 0;
+    const 안전보건대장 = chk('in_안전보건대장_적용') ? 1800000 : 0;
+    const 안전성검토 = chk('in_안전성검토_적용') ? 2000000 : 0;
+
+    let 현황측량비 = 0, 현황측량상세 = null;
+    if (chk('in_현황측량_적용')){
+      const 토지구분 = val('in_토지구분'), 지역구분 = val('in_지역구분');
+      const row = SURVEY_BASE[토지구분];
+      const 기준면적 = row.기준면적;
+      const 기본단가 = row[지역구분];
+      const 대상면적 = num('in_대상면적');
+      const n = Math.max(0, eRoundUp((대상면적-기준면적)/기준면적, 0));
+      const 면적계수 = n<=5 ? 1+0.2*n : 1.5+0.1*n;
+      const 공시지가 = num('in_공시지가');
+      const 지가계수값 = landCoef(공시지가);
+      현황측량비 = eRound(기본단가*면적계수*지가계수값, 0);
+      현황측량상세 = {토지구분,지역구분,기준면적,기본단가,대상면적,n,면적계수,공시지가,지가계수값};
+    }
+
+    const 추가조사비총계 = 인증추가대가 + BF + 안전보건대장 + 안전성검토 + 현황측량비 + 지질조사비;
+
+    const VAT = eRound((용역비총계 + 추가조사비총계)*0.1, 0);
+
+    // 보험료
+    const useIdx = parseInt(val('in_건물용도'),10);
+    const useRow = INSURANCE_ROWS[useIdx] || INSURANCE_ROWS[0];
+    const band = parseInt(val('in_보험구간'),10);
+    const stage = 실시체크 ? '실시설계' : (중간체크 || 기본체크 ? '계획·중간설계' : '실시설계');
+    const insRate = 실시체크 ? useRow.real[band] : useRow.plan[band];
+    const 보험료 = eRound(용역비총계*insRate/100, 0);
+
+    const 총합계_raw = 용역비총계 + 추가조사비총계 + VAT + 보험료;
+    const 총합계 = eRoundDown(총합계_raw, -3);
+
+    return {
+      공사유형, 공제율, 건축VAT포함, 인테리어VAT포함, 건축VAT제외_raw, 인테리어VAT제외_raw, D6건축, D6인테리어, 합산공사비,
+      종별, 등급, rateKey, rate, 기본율, 중간율, 실시율,
+      기본체크, 중간체크, 실시체크, 인테리어적용,
+      건축기본비, 건축중간비, 건축실시비, 건축계,
+      인테리어중간비, 인테리어실시비, 인테리어계,
+      용역비총계, F26건축설계대가,
+      activeCerts, A, Bh, Ct, 복합요율, 인증추가대가, A금액, B금액, C금액,
+      BX, NX, 탄성파, 지질조사비,
+      BF, 안전보건대장, 안전성검토, 현황측량비, 현황측량상세,
+      추가조사비총계, VAT, useRow, band, stage, insRate, 보험료,
+      총합계_raw, 총합계,
+    };
+  }
+
+  /* ===================== 렌더 ===================== */
+  const tooltip = document.getElementById('tooltip');
+  function attachTip(el, text){
+    el.addEventListener('mousemove', (e) => {
+      tooltip.textContent = text;
+      tooltip.style.left = (e.clientX + 14) + 'px';
+      tooltip.style.top = (e.clientY + 14) + 'px';
+      tooltip.style.opacity = '1';
+    });
+    el.addEventListener('mouseleave', () => { tooltip.style.opacity = '0'; });
+  }
+
+  function render(){
+    const r = compute();
+
+    document.getElementById('disp_공사비요약').textContent =
+      `건축공사비 ${fmt(r.건축VAT포함)} · 인테리어공사비 ${fmt(r.인테리어VAT포함)} (VAT포함, 자동계산)`;
+
+    document.getElementById('out_총합계').innerHTML = fmtN(r.총합계) + '<span style="font-size:20px;font-weight:600;color:var(--text-secondary);"> 원</span>';
+
+    // 원본 산출서 대비 실시간 차이 배지
+    (function renderDiffBar(){
+      const bar = document.getElementById('diffBar');
+      const diff = r.총합계 - ORIGINAL_TOTAL;
+      const diffPct = ORIGINAL_TOTAL ? (diff/ORIGINAL_TOTAL*100) : 0;
+      const matched = inputsMatchDefaults();
+      bar.classList.remove('state-up','state-down','state-same');
+      let labelText, amtText;
+      if (Math.abs(diff) < 500){
+        bar.classList.add('state-same');
+        labelText = '원본 산출서와 일치';
+        amtText = '±0원';
+      } else if (diff > 0){
+        bar.classList.add('state-up');
+        labelText = matched ? '원본 산출서 대비 (오류 보정분 반영)' : '원본 산출서 대비 (입력값 변경됨 · 참고용)';
+        amtText = `+${fmtN(diff)}원 (+${pct(Math.abs(diffPct))})`;
+      } else {
+        bar.classList.add('state-down');
+        labelText = matched ? '원본 산출서 대비 (오류 보정분 반영)' : '원본 산출서 대비 (입력값 변경됨 · 참고용)';
+        amtText = `−${fmtN(Math.abs(diff))}원 (−${pct(Math.abs(diffPct))})`;
+      }
+      document.getElementById('diffLabel').textContent = labelText;
+      document.getElementById('diffAmt').textContent = amtText;
+    })();
+
+    document.getElementById('out_용역비').textContent = fmt(r.용역비총계);
+    document.getElementById('out_추가조사비').textContent = fmt(r.추가조사비총계);
+    document.getElementById('out_VAT').textContent = fmt(r.VAT);
+    document.getElementById('out_보험료').textContent = fmt(r.보험료);
+
+    const base = r.총합계_raw || 1;
+    document.getElementById('out_용역비pct').textContent = `총액의 ${pct(r.용역비총계/base*100)}`;
+    document.getElementById('out_추가조사비pct').textContent = `총액의 ${pct(r.추가조사비총계/base*100)}`;
+    document.getElementById('out_VATpct').textContent = `총액의 ${pct(r.VAT/base*100)} · 과세표준×10%`;
+    document.getElementById('out_보험료pct').textContent = `총액의 ${pct(r.보험료/base*100)} · ${r.stage} 기본요율`;
+
+    document.getElementById('leg_건축').textContent = `건축 (${fmt(r.건축계)})`;
+    document.getElementById('leg_인테리어').textContent = `인테리어 (${fmt(r.인테리어계)})`;
+
+    // 막대그래프
+    const chart = document.getElementById('barChart');
+    chart.innerHTML = '';
+    const barData = [
+      { group:'기본설계', a:r.건축기본비, b:0 },
+      { group:'중간설계', a:r.건축중간비, b:r.인테리어중간비 },
+      { group:'실시설계', a:r.건축실시비, b:r.인테리어실시비 },
+    ];
+    const max = Math.max(1, ...barData.flatMap(d => [d.a,d.b]));
+    barData.forEach(d => {
+      const group = document.createElement('div'); group.className = 'bar-group';
+      const pair = document.createElement('div'); pair.className = 'bar-pair';
+      const barA = document.createElement('div'); barA.className = 'bar';
+      barA.style.height = (d.a>0 ? Math.max(2,(d.a/max)*100) : 0) + '%';
+      barA.style.background = 'var(--series-1)';
+      if (d.a>0){ const v=document.createElement('div'); v.className='val'; v.textContent=fmtN(d.a); barA.appendChild(v); }
+      attachTip(barA, `건축 · ${d.group}: ${fmt(d.a)}`);
+      const barB = document.createElement('div'); barB.className = 'bar';
+      barB.style.height = (d.b>0 ? Math.max(2,(d.b/max)*100) : 0) + '%';
+      barB.style.background = 'var(--series-2)';
+      if (d.b>0){ const v=document.createElement('div'); v.className='val'; v.textContent=fmtN(d.b); barB.appendChild(v); }
+      attachTip(barB, `인테리어 · ${d.group}: ${fmt(d.b)}`);
+      pair.appendChild(barA); pair.appendChild(barB);
+      const label = document.createElement('div'); label.className='gname'; label.textContent=d.group;
+      group.appendChild(pair); group.appendChild(label);
+      chart.appendChild(group);
+    });
+
+    // 구성비 스택
+    document.getElementById('out_구성비설명').textContent = `설계용역비 총 합계 ${fmt(r.총합계)} 기준`;
+    const stackData = [
+      { key:'용역비', value:r.용역비총계, color:'var(--series-1)' },
+      { key:'추가조사비', value:r.추가조사비총계, color:'var(--series-2)' },
+      { key:'부가가치세', value:r.VAT, color:'var(--series-3)' },
+      { key:'손해배상보험료', value:r.보험료, color:'var(--series-4)' },
+    ];
+    const total = stackData.reduce((s,d)=>s+d.value,0) || 1;
+    const stackEl = document.getElementById('stackBar'); stackEl.innerHTML = '';
+    const legendEl = document.getElementById('stackLegend'); legendEl.innerHTML = '';
+    stackData.forEach(d => {
+      const p = d.value/total*100;
+      const seg = document.createElement('div'); seg.className='seg';
+      seg.style.width = p + '%'; seg.style.background = d.color;
+      attachTip(seg, `${d.key}: ${fmt(d.value)} (${pct(p)})`);
+      stackEl.appendChild(seg);
+      const li = document.createElement('span'); li.className='item';
+      li.innerHTML = `<span class="swatch" style="background:${d.color}"></span>${d.key} ${pct(p)}`;
+      legendEl.appendChild(li);
+    });
+    document.getElementById('tbl_구성비').innerHTML = `<tbody>
+      <tr><td class="name">용역비</td><td class="num">${fmt(r.용역비총계)}</td></tr>
+      <tr><td class="name">추가조사비</td><td class="num">${fmt(r.추가조사비총계)}</td></tr>
+      <tr><td class="name">부가가치세</td><td class="num">${fmt(r.VAT)}</td></tr>
+      <tr><td class="name">손해배상보험료</td><td class="num">${fmt(r.보험료)}</td></tr>
+      <tr class="total"><td class="name">합계</td><td class="num">${fmt(r.총합계)}</td></tr>
+    </tbody>`;
+
+    // 건축 단계 테이블
+    document.getElementById('out_건축근거desc').textContent = `공공발주사업 건축사 업무대가기준 [별표4] 제${r.종별}종 / ${r.등급}급`;
+    document.getElementById('tbl_건축단계').innerHTML = `
+      <tr><td class="name">기본설계</td><td class="num">20%${r.기본체크?'':' (미적용)'}</td><td class="num">${r.기본율.toFixed(3)}</td><td class="num">${fmtN(r.건축기본비)}</td></tr>
+      <tr><td class="name">중간설계</td><td class="num">30%${r.중간체크?'':' (미적용)'}</td><td class="num">${r.중간율.toFixed(3)}</td><td class="num">${fmtN(r.건축중간비)}</td></tr>
+      <tr><td class="name">실시설계</td><td class="num">50%${r.실시체크?'':' (미적용)'}</td><td class="num">${r.실시율.toFixed(3)}</td><td class="num">${fmtN(r.건축실시비)}</td></tr>
+      <tr class="total"><td class="name">합계</td><td class="num">100%</td><td class="num">${r.rate.toFixed(4)}</td><td class="num">${fmtN(r.건축계)}</td></tr>`;
+    document.getElementById('foot_건축근거').textContent =
+      `적용공사비(VAT제외) ${fmtN(r.D6건축)}원 × 직선보간 요율 ${r.rate.toFixed(4)}% (건축+인테리어 합산공사비 ${fmtN(r.합산공사비)}원 기준)`;
+
+    document.getElementById('tbl_인테리어단계').innerHTML = `
+      <tr><td class="name">기본설계</td><td class="num">20% (미적용 고정)</td><td class="num">${r.기본율.toFixed(3)}</td><td class="num">0</td></tr>
+      <tr><td class="name">중간설계</td><td class="num">30%${r.중간체크 && r.인테리어적용?'':' (미적용)'}</td><td class="num">${r.중간율.toFixed(3)}</td><td class="num">${fmtN(r.인테리어중간비)}</td></tr>
+      <tr><td class="name">실시설계</td><td class="num">50%${r.실시체크 && r.인테리어적용?'':' (미적용)'}</td><td class="num">${r.실시율.toFixed(3)}</td><td class="num">${fmtN(r.인테리어실시비)}</td></tr>
+      <tr class="total"><td class="name">합계</td><td class="num">100%</td><td class="num">${r.rate.toFixed(4)}</td><td class="num">${fmtN(r.인테리어계)}</td></tr>`;
+    document.getElementById('foot_인테리어근거').textContent = r.인테리어적용
+      ? `적용공사비(VAT제외) ${fmtN(r.D6인테리어)}원 × 직선보간 요율 ${r.rate.toFixed(4)}%(건축 요율 준용) × 1.5배`
+      : `인테리어 설계적용이 미적용으로 설정되어 있어 대가가 산정되지 않습니다.`;
+
+    // 추가조사비 테이블
+    document.getElementById('tbl_추가조사비').innerHTML = `
+      <tr><td class="name">인증 추가대가 <span class="tag">복합 인증</span></td><td>제11조제4항 · A+½B+⅓C · 요율 ${r.복합요율.toFixed(3)}%</td><td class="num">${fmtN(r.인증추가대가)}</td></tr>
+      <tr><td class="name">BF인증 심의대응 업무</td><td>${r.BF>0?'적용 · 참고자료 견적가':'미적용'}</td><td class="num">${fmtN(r.BF)}</td></tr>
+      <tr><td class="name">설계안전보건대장 작성비</td><td>${r.안전보건대장>0?'적용 · 참고자료 견적가':'미적용'}</td><td class="num">${fmtN(r.안전보건대장)}</td></tr>
+      <tr><td class="name">설계안전성검토 작성비</td><td>${r.안전성검토>0?'적용 · 참고자료 견적가':'미적용'}</td><td class="num">${fmtN(r.안전성검토)}</td></tr>
+      <tr><td class="name">현황측량비</td><td>${r.현황측량비>0?'기본단가×면적계수×지가계수':'미적용'}</td><td class="num">${fmtN(r.현황측량비)}</td></tr>
+      <tr><td class="name">지질조사비</td><td>BX ${fmtN(r.BX)} + NX ${fmtN(r.NX)} + 탄성파 ${fmtN(r.탄성파)}</td><td class="num">${fmtN(r.지질조사비)}</td></tr>
+      <tr class="total"><td class="name">추가조사비 총계</td><td>전 항목 합산</td><td class="num">${fmtN(r.추가조사비총계)}</td></tr>`;
+
+    // 인증 복합
+    const rows = [];
+    const labels = ['A (최상위 요율)','½B (차상위 × ½)','⅓C (차차상위 × ⅓)'];
+    const amounts = [r.A금액, r.B금액, r.C금액];
+    const rates = [r.A, r.Bh, r.Ct];
+    for (let i=0;i<3;i++){
+      const cert = r.activeCerts[i];
+      rows.push(`<tr><td class="name">${labels[i]}</td><td class="num">${rates[i].toFixed(3)}</td><td class="num">${fmtN(amounts[i])}</td></tr>`);
+    }
+    rows.push(`<tr class="total"><td class="name">복합 추가대가 합계</td><td class="num">${r.복합요율.toFixed(3)}</td><td class="num">${fmtN(r.인증추가대가)}</td></tr>`);
+    document.getElementById('tbl_인증복합').innerHTML = rows.join('');
+
+    // 공사비 근거
+    document.getElementById('tbl_공사비근거').innerHTML = `
+      <div class="info-row"><span class="k">건축공사비 (VAT포함)</span><span class="v">${fmt(r.건축VAT포함)}</span></div>
+      <div class="info-row"><span class="k">건축공사비 (VAT제외)</span><span class="v">${fmt(r.건축VAT제외_raw)}</span></div>
+      <div class="info-row"><span class="k">인테리어공사비 (VAT포함)</span><span class="v">${fmt(r.인테리어VAT포함)}</span></div>
+      <div class="info-row"><span class="k">인테리어공사비 (VAT제외)</span><span class="v">${fmt(r.인테리어VAT제외_raw)}</span></div>
+      <div class="info-row"><span class="k">합산공사비 (VAT제외, 요율기준)</span><span class="v">${fmt(r.합산공사비)}</span></div>
+      <div class="info-row"><span class="k">전기·통신·소방 공제율</span><span class="v">${pct(r.공제율*100)} (${r.공사유형})</span></div>
+      <div class="info-row"><span class="k">적용 요율표</span><span class="v">제${r.종별}종 / ${r.등급}급</span></div>
+      <div class="info-row"><span class="k">직선보간 요율</span><span class="v">${r.rate.toFixed(4)}%</span></div>
+      <div class="info-row"><span class="k">건축 설계대가(단계배분 전)</span><span class="v">${fmt(r.F26건축설계대가)}</span></div>`;
+
+    let 측량HTML = '';
+    if (r.현황측량상세){
+      const s = r.현황측량상세;
+      측량HTML = `
+      <div class="info-row"><span class="k">토지구분 / 지역구분</span><span class="v">${s.토지구분} / ${s.지역구분}지역</span></div>
+      <div class="info-row"><span class="k">기준면적 / 대상면적</span><span class="v">${fmtN(s.기준면적)}㎡ / ${fmtN(s.대상면적)}㎡</span></div>
+      <div class="info-row"><span class="k">가산횟수(n) / 면적계수</span><span class="v">${s.n} / ${s.면적계수.toFixed(2)}</span></div>
+      <div class="info-row"><span class="k">공시지가 / 지가계수</span><span class="v">${fmtN(s.공시지가)}원 / ${s.지가계수값}</span></div>
+      <div class="info-row"><span class="k">기본단가 × 면적계수 × 지가계수</span><span class="v">${fmt(r.현황측량비)}</span></div>`;
+    } else {
+      측량HTML = `<div class="info-row"><span class="k">현황측량비</span><span class="v">미적용</span></div>`;
+    }
+    document.getElementById('tbl_기타근거').innerHTML = 측량HTML + `
+      <div class="info-row"><span class="k">보험료 건물용도</span><span class="v">${r.useRow.name}</span></div>
+      <div class="info-row"><span class="k">적용 설계단계 / 요율</span><span class="v">${r.stage} / ${r.insRate}%</span></div>
+      <div class="info-row"><span class="k">보험료 산출 기준액(용역비 총계)</span><span class="v">${fmt(r.용역비총계)}</span></div>
+      <div class="info-row"><span class="k">손해배상보험료</span><span class="v">${fmt(r.보험료)}</span></div>`;
+  }
+
+  // 입력 변경 시 재계산
+  document.querySelectorAll('#step-hook, input, select').forEach(el => {
+    el.addEventListener('input', render);
+    el.addEventListener('change', render);
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', resetAll);
+
+  render();
+
+  // 다크모드 토글
+  const root = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  let dark = false;
+  btn.addEventListener('click', () => {
+    dark = !dark;
+    root.setAttribute('data-theme', dark ? 'dark' : 'light');
+    btn.textContent = dark ? '라이트 모드' : '다크 모드';
+  });
+})();
+</script>
+
+</body>
+</html>

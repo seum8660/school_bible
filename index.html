@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <title>🏫학교시설업무 치트키 · SCHOOL BIBLE</title>
 <style>
 
@@ -45,13 +46,13 @@
   a{color:var(--accent);} a:hover{color:var(--green-d);}
 
   /* ===== 표지 ===== */
-  .cover{position:relative;overflow:hidden;border-bottom:4px solid var(--border);background:var(--accent);color:var(--accent-ink);}
+  .cover{position:relative;overflow:hidden;border-bottom:1.5px solid var(--border);background:var(--accent);color:var(--accent-ink);}
   .cover-inner{position:relative;z-index:2;padding:32px 20px;max-width:1180px;margin:0 auto;min-height:150px;display:flex;justify-content:flex-start;align-items:center;gap:24px;flex-wrap:wrap;}
   .cover-logo{flex:0 0 auto;width:132px;height:132px;object-fit:contain;border-radius:22px;margin-left:-6px;}
   .theme-toggle{margin-left:auto;}
   .cover-txt{flex:1;min-width:260px;}
   .badge-org{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.5px;font-family:'Pretendard',sans-serif;
-    background:var(--surface);border:2.5px solid var(--border);color:var(--ink);
+    background:var(--surface);border:1.5px solid var(--border);color:var(--ink);
     padding:6px 13px;box-shadow:3px 3px 0 var(--border);}
   .badge-org b{color:var(--accent);font-weight:700;}
   .cover h1{font-size:clamp(26px,4vw,42px);font-weight:900;margin:0;letter-spacing:-1.5px;line-height:1.05;color:var(--accent-ink);
@@ -62,7 +63,7 @@
   .cover-meta{display:flex;flex-wrap:wrap;gap:24px;margin-top:22px;font-size:14px;}
   .cover-meta div span{display:block;font-size:11px;margin-bottom:2px;opacity:.75;text-transform:uppercase;letter-spacing:.5px;}
   .cover-meta div b{font-weight:800;font-size:15px;}
-  .theme-toggle{position:relative;z-index:6;flex:0 0 auto;display:flex;align-items:center;gap:5px;background:var(--surface);border:3px solid var(--border);
+  .theme-toggle{position:relative;z-index:6;flex:0 0 auto;display:flex;align-items:center;gap:5px;background:var(--surface);border:1.5px solid var(--border);
     padding:5px;cursor:pointer;box-shadow:4px 4px 0 var(--border);}
   .theme-toggle span{width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid transparent;color:var(--ink-2);}
   .theme-toggle .tg-sun{background:var(--accent);border-color:var(--border);color:var(--accent-ink);}
@@ -71,9 +72,9 @@
   [data-theme="dark"] .theme-toggle .tg-moon{background:var(--surface-3);border-color:transparent;color:var(--ink);}
 
   /* ===== 지표 스트립 ===== */
-  .strip{background:var(--surface);border-bottom:4px solid var(--border);}
+  .strip{background:var(--surface);border-bottom:1.5px solid var(--border);}
   .strip-inner{display:grid;grid-template-columns:repeat(5,1fr);gap:0;max-width:1180px;margin:0 auto;}
-  .strip-item{padding:18px 16px;text-align:center;border-right:2px solid var(--border);}
+  .strip-item{padding:18px 16px;text-align:center;}
   .strip-item:last-child{border-right:0;}
   .strip-item .n{font-size:28px;font-weight:900;color:var(--ink);line-height:1;letter-spacing:-1px;}
   .strip-item .l{font-size:12px;color:var(--muted);margin-top:6px;font-weight:600;}
@@ -83,21 +84,21 @@
   /* ===== 레이아웃 ===== */
   .layout{display:flex;align-items:flex-start;gap:24px;max-width:1260px;margin:0 auto;padding:26px 20px 0;}
   .sidebar{flex:0 0 244px;position:sticky;top:16px;align-self:flex-start;}
-  .side-nav{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:3px solid var(--border);
+  .side-nav{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1.5px solid var(--border);
     padding:14px;box-shadow:var(--shadow);}
   .nav-grp{align-self:flex-start;font-size:11px;font-weight:700;color:var(--accent-ink);background:var(--accent);
-    letter-spacing:.5px;text-transform:uppercase;padding:5px 12px;border:2.5px solid var(--border);margin:16px 0 8px;box-shadow:2px 2px 0 var(--border);}
+    letter-spacing:.5px;text-transform:uppercase;padding:5px 12px;border:1.5px solid var(--border);margin:16px 0 8px;box-shadow:2px 2px 0 var(--border);}
   .nav-grp:first-child{margin-top:2px;}
   .content{flex:1;min-width:0;padding:2px 0 70px;}
 
   /* ===== 세로 탭 ===== */
-  .tab{width:100%;border:2.5px solid var(--border);background:var(--surface);color:var(--ink);
+  .tab{width:100%;border:1.5px solid var(--border);background:var(--surface);color:var(--ink);
     padding:11px 13px;font-size:14px;font-weight:700;cursor:pointer;
     transition:transform .12s,box-shadow .12s;white-space:nowrap;display:flex;align-items:center;gap:9px;text-align:left;}
   .tab .dot{display:none;}
   .tab:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--border);}
   .extlink{width:100%;display:flex;align-items:center;gap:9px;text-decoration:none;
-    border:2.5px solid var(--border);background:var(--surface);color:var(--ink);
+    border:1.5px solid var(--border);background:var(--surface);color:var(--ink);
     padding:11px 13px;font-size:13.5px;font-weight:700;transition:transform .12s,box-shadow .12s;}
   .extlink .dot{display:none;}
   .extlink .lb{flex:1;line-height:1.3;}
@@ -117,7 +118,7 @@
   @media(max-width:860px){
     .layout{flex-direction:column;gap:0;padding:0;max-width:none;}
     .sidebar{position:sticky;top:0;z-index:50;flex:none;width:100%;
-      background:var(--bg);border-bottom:3px solid var(--border);}
+      background:var(--bg);border-bottom:1.5px solid var(--border);}
     .side-nav{flex-direction:row;overflow-x:auto;border:0;box-shadow:none;padding:10px 16px;gap:8px;}
     .nav-grp{display:none;}
     .tab{width:auto;flex:0 0 auto;padding:9px 15px;}
@@ -130,41 +131,41 @@
   .tab.active[data-p="proc"],.tab.active[data-p="check"],.tab.active[data-p="law"],.tab.active[data-p="deleg"],.tab.active[data-p="price"],.tab.active[data-p="glossary"],.tab.active[data-p="ratio"]{background:var(--ops);color:#fff;}
 
   /* ===== 판정기 ===== */
-  .calc-form{background:var(--surface);border:3px solid var(--border);box-shadow:var(--shadow);
+  .calc-form{background:var(--surface);border:1.5px solid var(--border);box-shadow:var(--shadow);
     padding:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px 20px;margin-bottom:8px;}
   @media(max-width:820px){.calc-form{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:520px){.calc-form{grid-template-columns:1fr;}}
   .cfield label{display:block;font-size:12px;font-weight:800;color:var(--accent);margin-bottom:6px;letter-spacing:.3px;text-transform:uppercase;}
   .cfield .u{font-weight:600;color:var(--muted);font-size:11.5px;margin-left:4px;}
-  .cfield input,.cfield select{width:100%;border:2.5px solid var(--border);
+  .cfield input,.cfield select{width:100%;border:1.5px solid var(--border);
     padding:11px 13px;font-size:15px;font-family:inherit;color:var(--ink);outline:none;transition:.12s;background:var(--surface);}
   .cfield input:focus,.cfield select:focus{box-shadow:3px 3px 0 var(--accent);}
   .cfield .hint{font-size:11px;color:var(--muted);margin-top:4px;}
-  .cfield.chk{display:flex;align-items:center;gap:9px;background:var(--surface-2);border:2.5px solid var(--border);
+  .cfield.chk{display:flex;align-items:center;gap:9px;background:var(--surface-2);border:1.5px solid var(--border);
     padding:11px 13px;align-self:end;cursor:pointer;}
   .cfield.chk input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer;}
   .cfield.chk label{margin:0;font-size:13px;color:var(--ink);cursor:pointer;text-transform:none;}
   .calc-actions{display:flex;justify-content:space-between;align-items:center;margin:16px 0 20px;flex-wrap:wrap;gap:10px;}
   .calc-summary{font-size:15px;color:var(--ink);}
   .calc-summary b{color:var(--accent);font-size:24px;font-weight:900;}
-  .calc-reset{border:2.5px solid var(--border);background:var(--surface);color:var(--ink);font-size:13px;
+  .calc-reset{border:1.5px solid var(--border);background:var(--surface);color:var(--ink);font-size:13px;
     padding:9px 16px;cursor:pointer;font-weight:700;transition:.12s;}
   .calc-reset:hover{box-shadow:3px 3px 0 var(--border);transform:translate(-1px,-1px);}
   .res-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
   @media(max-width:640px){.res-grid{grid-template-columns:1fr;}}
-  .res-card{border:2.5px solid var(--border);border-left-width:7px;padding:13px 15px;
+  .res-card{border:1.5px solid var(--border);border-left-width:7px;padding:13px 15px;
     background:var(--surface);display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:var(--shadow-sm);}
   .res-card .rc-l .nm{font-weight:800;font-size:14.5px;}
   .res-card .rc-l .bs{font-size:12px;color:var(--muted);margin-top:2px;}
   .res-card .rc-r{text-align:right;flex:0 0 auto;}
-  .res-card .rc-r .thr{font-size:12px;font-weight:800;background:var(--accent);color:var(--accent-ink);padding:3px 9px;border:2px solid var(--border);white-space:nowrap;}
+  .res-card .rc-r .thr{font-size:12px;font-weight:800;background:var(--accent);color:var(--accent-ink);padding:3px 9px;border:1.5px solid var(--border);white-space:nowrap;}
   .res-empty{background:var(--surface-2);border:2.5px dashed var(--border);padding:32px;text-align:center;color:var(--muted);font-size:14px;}
   .res-head{display:flex;align-items:center;gap:9px;margin:22px 0 12px;font-size:15px;font-weight:900;color:var(--ink);}
-  .res-head .cnt{background:var(--accent);color:var(--accent-ink);font-size:12px;padding:2px 10px;border:2px solid var(--border);}
+  .res-head .cnt{background:var(--accent);color:var(--accent-ink);font-size:12px;padding:2px 10px;border:1.5px solid var(--border);}
   .res-head.muted{color:var(--muted);}.res-head.muted .cnt{background:var(--muted);color:var(--surface);}
   .na-list{display:flex;flex-wrap:wrap;gap:7px;}
-  .na-list span{font-size:12.5px;color:var(--muted);background:var(--surface-2);border:2px solid var(--border);padding:5px 11px;}
-  .common-box{background:var(--surface-2);border:3px solid var(--border);padding:16px 18px;margin-top:22px;box-shadow:var(--shadow-sm);}
+  .na-list span{font-size:12.5px;color:var(--muted);background:var(--surface-2);border:1.5px solid var(--border);padding:5px 11px;}
+  .common-box{background:var(--surface-2);border:1.5px solid var(--border);padding:16px 18px;margin-top:22px;box-shadow:var(--shadow-sm);}
   .common-box h4{margin:0 0 8px;font-size:13px;color:var(--ink);font-weight:800;}
   .common-box .doc-chips span{background:var(--surface);color:var(--ink);}
 
@@ -174,29 +175,29 @@
   .panel.show{display:block;}
   @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
   .sec-head{display:flex;align-items:center;gap:14px;margin:6px 0 20px;}
-  .sec-head .chip{font-size:12px;font-weight:800;color:#fff;padding:5px 12px;letter-spacing:.5px;border:2.5px solid var(--border);box-shadow:2px 2px 0 var(--border);font-family:'Pretendard',sans-serif;}
+  .sec-head .chip{font-size:12px;font-weight:800;color:#fff;padding:5px 12px;letter-spacing:.5px;border:1.5px solid var(--border);box-shadow:2px 2px 0 var(--border);font-family:'Pretendard',sans-serif;}
   .sec-head h2{font-size:26px;font-weight:900;margin:0;letter-spacing:-.8px;}
   .sec-head p{margin:0;color:var(--muted);font-size:14px;}
 
   .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
   .toolbar .hint{font-size:13px;color:var(--muted);}
-  .expand-btns button{border:2.5px solid var(--border);background:var(--surface);color:var(--ink);
+  .expand-btns button{border:1.5px solid var(--border);background:var(--surface);color:var(--ink);
     font-size:12.5px;padding:7px 12px;cursor:pointer;font-weight:700;transition:.12s;}
   .expand-btns button:hover{box-shadow:3px 3px 0 var(--border);transform:translate(-1px,-1px);}
 
   /* ===== 아코디언 ===== */
-  .acc{background:var(--card);border:3px solid var(--border);
+  .acc{background:var(--card);border:1.5px solid var(--border);
     margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow .15s;}
   .acc.open{box-shadow:var(--shadow);}
   .acc-head{display:flex;align-items:center;gap:14px;padding:15px 18px;cursor:pointer;user-select:none;}
   .acc-head:hover{background:var(--surface-2);}
-  .acc-num{flex:0 0 auto;width:32px;height:32px;border:2.5px solid var(--border);display:flex;align-items:center;
+  .acc-num{flex:0 0 auto;width:32px;height:32px;border:1.5px solid var(--border);display:flex;align-items:center;
     justify-content:center;font-weight:900;font-size:13px;color:#fff;}
   .acc-title{flex:1;min-width:0;}
   .acc-title .t{font-weight:800;font-size:15.5px;}
   .acc-title .d{font-size:12.5px;color:var(--muted);margin-top:1px;}
   .acc-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:44%;}
-  .mtag{font-size:11px;font-weight:700;padding:3px 9px;white-space:nowrap;border:2px solid var(--border);}
+  .mtag{font-size:11px;font-weight:700;padding:3px 9px;white-space:nowrap;border:1.5px solid var(--border);}
   .mtag.money{background:var(--surface-2);color:var(--amber);}
   .mtag.law{background:var(--surface-2);color:var(--accent);}
   .mtag.doc{background:var(--surface-2);color:var(--ink-2);}
@@ -204,7 +205,7 @@
   .acc.open .chev{transform:rotate(180deg);}
   .acc-body{max-height:0;overflow:hidden;transition:max-height .3s ease;}
   .acc.open .acc-body{max-height:2600px;}
-  .acc-body-in{padding:4px 18px 20px;border-top:2.5px solid var(--border);}
+  .acc-body-in{padding:4px 18px 20px;border-top:1.5px solid var(--border);}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;}
   @media(max-width:640px){.grid2{grid-template-columns:1fr;}.acc-tags{display:none;}}
   .block h4{font-size:12px;font-weight:700;color:var(--ink);margin:0 0 8px;
@@ -212,63 +213,63 @@
   .block h4::before{content:"";width:14px;height:3px;background:var(--accent);display:inline-block;}
   .block ul{margin:0;padding-left:16px;}
   .block li{font-size:13.5px;margin-bottom:4px;color:var(--ink-2);}
-  .block .law-item{background:var(--surface-2);border:2px solid var(--border);
+  .block .law-item{background:var(--surface-2);border:1.5px solid var(--border);
     padding:9px 12px;font-size:13px;margin-bottom:7px;}
   .block .law-item b{color:var(--ink);}
   .flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px;}
-  .flow .step{background:var(--surface-2);border:2px solid var(--border);padding:6px 11px;font-size:12.5px;font-weight:700;color:var(--ink);}
+  .flow .step{background:var(--surface-2);border:1.5px solid var(--border);padding:6px 11px;font-size:12.5px;font-weight:700;color:var(--ink);}
   .flow .arr{color:var(--muted);font-weight:800;}
   .full{grid-column:1/-1;}
   .doc-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
   .doc-chips span{background:var(--surface-2);color:var(--ink-2);font-size:12.5px;font-weight:700;
-    padding:5px 11px;border:2px solid var(--border);}
+    padding:5px 11px;border:1.5px solid var(--border);}
 
   /* ===== 개요 프로세스 맵 ===== */
   .map{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
   @media(max-width:860px){.map{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:480px){.map{grid-template-columns:1fr;}}
-  .mcard{background:var(--surface);border:3px solid var(--border);overflow:hidden;box-shadow:var(--shadow);
+  .mcard{background:var(--surface);border:1.5px solid var(--border);overflow:hidden;box-shadow:var(--shadow);
     cursor:pointer;transition:transform .16s,box-shadow .16s;}
   .mcard:hover,.mcard.active{transform:scale(1.09);box-shadow:var(--cardsh);z-index:5;position:relative;}
-  .mcard-top{padding:14px 16px;color:#fff;border-bottom:3px solid var(--border);transition:background .14s;}
+  .mcard-top{padding:14px 16px;color:#fff;border-bottom:1.5px solid var(--border);transition:background .14s;}
   .mcard:hover .mcard-top,.mcard.active .mcard-top{background:var(--muted)!important;}
   .mcard-top .ph{font-size:11px;opacity:.9;font-weight:700;font-family:'Pretendard',sans-serif;letter-spacing:1px;}
   .mcard-top .nm{font-size:21px;font-weight:900;margin-top:2px;letter-spacing:-.5px;}
   .mcard-body{padding:12px 16px;}
-  .mcard-body .row{font-size:13px;padding:8px 0;border-bottom:2px solid var(--surface-2);color:var(--ink-2);}
+  .mcard-body .row{font-size:13px;padding:9px 0;border-bottom:2px solid var(--surface-2);color:var(--ink-2);line-height:1.5;word-break:keep-all;}
   .mcard-body .row:last-child{border-bottom:0;}
   .mcard-body .row b{color:var(--ink);font-weight:800;}
   .mflow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:0 0 28px;
-    background:var(--surface);border:3px solid var(--border);padding:18px;box-shadow:var(--shadow);}
-  .mflow .node{padding:10px 18px;color:#fff;font-weight:800;font-size:15px;border:2.5px solid var(--border);}
+    background:var(--surface);border:1.5px solid var(--border);padding:18px;box-shadow:var(--shadow);}
+  .mflow .node{padding:10px 18px;color:#fff;font-weight:800;font-size:15px;border:1.5px solid var(--border);}
   .mflow .a{color:var(--muted);font-size:20px;font-weight:800;}
 
   /* ===== 금액 기준표 ===== */
-  .tbl-wrap{background:var(--surface);border:3px solid var(--border);overflow:hidden;box-shadow:var(--shadow);margin-top:8px;}
+  .tbl-wrap{background:var(--surface);border:1.5px solid var(--border);overflow:hidden;box-shadow:var(--shadow);margin-top:8px;}
   table{width:100%;border-collapse:collapse;font-size:13.5px;}
-  thead th{background:var(--accent);color:var(--accent-ink);text-align:left;padding:12px 14px;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.3px;border-bottom:3px solid var(--border);}
+  thead th{background:var(--accent);color:var(--accent-ink);text-align:left;padding:12px 14px;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.3px;border-bottom:1.5px solid var(--border);}
   tbody td{padding:12px 14px;border-top:2px solid var(--surface-2);vertical-align:top;}
   tbody tr:hover{background:var(--surface-2);}
   .thr{font-weight:900;color:var(--accent);white-space:nowrap;font-family:'Pretendard',sans-serif;}
-  .pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;margin:1px 3px 1px 0;border:2px solid var(--border);}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;margin:1px 3px 1px 0;border:1.5px solid var(--border);}
   .pill.plan{background:var(--surface-2);color:var(--p-plan);}
   .pill.design{background:var(--surface-2);color:var(--p-design);}
   .pill.const{background:var(--surface-2);color:var(--amber);}
 
   footer{border-top:4px solid var(--border);background:var(--surface);padding:26px 0;color:var(--muted);font-size:12.5px;text-align:center;}
   footer b{color:var(--ink);}
-  .note{background:var(--surface-2);border:2.5px solid var(--border);border-left:7px solid var(--accent);padding:12px 16px;
+  .note{background:var(--surface-2);border:1.5px solid var(--border);border-left:7px solid var(--accent);padding:12px 16px;
     font-size:13px;color:var(--ink-2);margin-bottom:18px;}
 
   /* ===== 실무 운영 ===== */
   .fchips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
-  .fchip{border:2.5px solid var(--border);background:var(--surface);color:var(--ink);padding:8px 15px;
+  .fchip{border:1.5px solid var(--border);background:var(--surface);color:var(--ink);padding:8px 15px;
     font-size:13px;font-weight:700;cursor:pointer;transition:.12s;}
   .fchip:hover{box-shadow:3px 3px 0 var(--border);transform:translate(-1px,-1px);}
   .fchip.on{background:var(--ops);color:#fff;}
-  .tl-row{display:flex;align-items:flex-start;gap:13px;background:var(--surface);border:2.5px solid var(--border);
+  .tl-row{display:flex;align-items:flex-start;gap:13px;background:var(--surface);border:1.5px solid var(--border);
     border-left-width:7px;padding:13px 15px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
-  .tl-no{flex:0 0 auto;width:30px;height:30px;color:#fff;font-weight:900;font-size:12px;border:2.5px solid var(--border);
+  .tl-no{flex:0 0 auto;width:30px;height:30px;color:#fff;font-weight:900;font-size:12px;border:1.5px solid var(--border);
     display:flex;align-items:center;justify-content:center;margin-top:1px;}
   .tl-main{flex:1;min-width:0;}
   .tl-task{font-weight:800;font-size:14.5px;color:var(--ink);}
@@ -286,15 +287,15 @@
   .tl-link{flex:0 0 auto;align-self:center;color:var(--muted);font-weight:900;font-size:14px;margin-left:4px;}
   .tl-row.lk:hover .tl-link{color:var(--ops);}
   .proc-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
-  .pv-toggle{display:flex;gap:0;background:var(--surface);border:2.5px solid var(--border);padding:0;box-shadow:var(--shadow-sm);}
-  .pvbtn{border:0;border-right:2.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;padding:9px 16px;cursor:pointer;font-family:inherit;transition:.12s;}
+  .pv-toggle{display:flex;gap:0;background:var(--surface);border:1.5px solid var(--border);padding:0;box-shadow:var(--shadow-sm);}
+  .pvbtn{border:0;border-right:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;padding:9px 16px;cursor:pointer;font-family:inherit;transition:.12s;}
   .pvbtn:last-child{border-right:0;}
   .pvbtn.on{background:var(--ops);color:#fff;}
-  .swim{background:var(--surface);border:3px solid var(--border);padding:14px 16px;box-shadow:var(--shadow);overflow-x:auto;}
+  .swim{background:var(--surface);border:1.5px solid var(--border);padding:14px 16px;box-shadow:var(--shadow);overflow-x:auto;}
   .swim-inner{min-width:820px;}
   .swim-legend{font-size:12px;color:var(--muted);margin-bottom:10px;}
   .sl-row{display:grid;grid-template-columns:38px minmax(180px,230px) 1fr;align-items:center;gap:10px;padding:2px 0;}
-  .sl-head{position:sticky;top:0;background:var(--surface);z-index:2;border-bottom:3px solid var(--border);padding-bottom:6px;margin-bottom:4px;}
+  .sl-head{position:sticky;top:0;background:var(--surface);z-index:2;border-bottom:1.5px solid var(--border);padding-bottom:6px;margin-bottom:4px;}
   .sl-no{font-size:11px;font-weight:800;color:var(--muted);text-align:center;}
   .sl-task{font-size:12.5px;color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .sl-head .sl-task{color:var(--muted);font-weight:800;}
@@ -302,19 +303,19 @@
   .sl-lanehead div{font-size:11px;font-weight:800;color:var(--ink);text-align:center;line-height:1.25;padding:0 2px;}
   .sl-track{position:relative;height:26px;background:repeating-linear-gradient(to right,var(--surface-2) 0,var(--surface-2) 2px,transparent 2px,transparent calc(100%/7));border:1px solid var(--surface-3);}
   .sl-conn{position:absolute;top:12px;height:3px;opacity:.7;}
-  .sl-node{position:absolute;top:6px;width:14px;height:14px;transform:translateX(-50%);border:2.5px solid var(--border);z-index:2;}
+  .sl-node{position:absolute;top:6px;width:14px;height:14px;transform:translateX(-50%);border:1.5px solid var(--border);z-index:2;}
   .sl-arrow{position:absolute;top:5px;transform:translateX(-50%);font-size:14px;line-height:16px;font-weight:900;z-index:2;}
-  .sl-phase{grid-column:1/-1;margin:10px 0 4px;font-size:12px;font-weight:800;color:#fff;padding:5px 12px;border:2.5px solid var(--border);display:inline-block;}
+  .sl-phase{grid-column:1/-1;margin:10px 0 4px;font-size:12px;font-weight:800;color:#fff;padding:5px 12px;border:1.5px solid var(--border);display:inline-block;}
   .sl-note{position:absolute;top:4px;font-size:9.5px;color:var(--amber);background:var(--surface-2);padding:0 5px;line-height:18px;white-space:nowrap;transform:translateX(-50%);z-index:1;border:1px solid var(--border);}
   /* 체크리스트 */
   .subswitch{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
-  .subbtn{border:2.5px solid var(--border);background:var(--surface);color:var(--ink);padding:9px 18px;
+  .subbtn{border:1.5px solid var(--border);background:var(--surface);color:var(--ink);padding:9px 18px;
     font-size:14px;font-weight:700;cursor:pointer;transition:.12s;}
   .subbtn:hover{box-shadow:3px 3px 0 var(--border);transform:translate(-1px,-1px);}
   .subbtn.on{background:var(--ops);color:#fff;box-shadow:3px 3px 0 var(--border);}
   .ck-progress{font-size:13px;color:var(--muted);margin-bottom:12px;}
   .ck-progress b{color:var(--ops-d);font-weight:900;}
-  .ck-badge{flex:0 0 auto;min-width:30px;height:26px;padding:0 8px;background:var(--surface-2);border:2px solid var(--border);
+  .ck-badge{flex:0 0 auto;min-width:30px;height:26px;padding:0 8px;background:var(--surface-2);border:1.5px solid var(--border);
     color:var(--ops-d);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;}
   .ck-in{display:flex;flex-direction:column;gap:2px;padding-top:10px;}
   .ck{display:flex;align-items:flex-start;gap:10px;padding:8px 6px;cursor:pointer;font-size:13.5px;line-height:1.5;}
@@ -323,7 +324,7 @@
   .ck input:checked + span{color:var(--muted);text-decoration:line-through;}
   /* 검색 */
   .search-box{position:relative;margin-bottom:14px;}
-  .search-box input{width:100%;border:2.5px solid var(--border);padding:12px 14px 12px 42px;
+  .search-box input{width:100%;border:1.5px solid var(--border);padding:12px 14px 12px 42px;
     font-size:15px;font-family:inherit;outline:none;transition:.12s;background:var(--surface);color:var(--ink);}
   .search-box input:focus{box-shadow:3px 3px 0 var(--accent);}
   .search-box .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;}
@@ -332,14 +333,14 @@
   .lawtbl td:nth-child(3){color:var(--muted);font-size:12.5px;}
   .hl{background:var(--accent);color:var(--accent-ink);padding:0 2px;}
   /* 위임전결 */
-  .dl-block{background:var(--surface);border:3px solid var(--border);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-sm);}
-  .dl-head{background:var(--surface-2);padding:11px 16px;font-weight:800;font-size:14px;color:var(--ink);border-bottom:3px solid var(--border);}
+  .dl-block{background:var(--surface);border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-sm);}
+  .dl-head{background:var(--surface-2);padding:11px 16px;font-weight:800;font-size:14px;color:var(--ink);border-bottom:1.5px solid var(--border);}
   .dl-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:2px solid var(--surface-2);}
   .dl-row:last-child{border-bottom:0;}
   .dl-detail{flex:1;font-size:13.5px;color:var(--ink-2);}
   .dl-detail .amt{color:var(--amber);font-weight:800;}
   .dl-who{flex:0 0 auto;display:flex;gap:6px;align-items:center;}
-  .who-pill{font-size:11.5px;font-weight:700;padding:3px 10px;white-space:nowrap;border:2px solid var(--border);display:inline-block;min-width:120px;text-align:center;box-sizing:border-box;}
+  .who-pill{font-size:11.5px;font-weight:700;padding:3px 10px;white-space:nowrap;border:1.5px solid var(--border);display:inline-block;min-width:120px;text-align:center;box-sizing:border-box;}
   .who-pill.draft{background:var(--surface-2);color:var(--ink-2);}
   .who-pill.final{background:var(--surface-2);color:var(--ops-d);}
   .dl-extra{font-size:11px;color:var(--amber);background:var(--surface-2);padding:2px 8px;margin-left:6px;border:1px solid var(--border);}
@@ -347,40 +348,77 @@
   body::-webkit-scrollbar,.side-nav::-webkit-scrollbar{width:11px;height:11px;}
   body::-webkit-scrollbar-thumb,.side-nav::-webkit-scrollbar-thumb{background:var(--border);}
 
+  /* ===== 전체 개요 서브탭 ===== */
+  .ov-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px;}
+  .ov-tab{border:0;background:var(--surface-2);color:var(--muted);font:inherit;font-size:14.5px;font-weight:800;padding:11px 20px;border-radius:100px;cursor:pointer;transition:color .12s,background .12s;}
+  .ov-tab:hover{color:var(--ink);}
+  .ov-tab[data-ov="proc"].on{background:var(--accent);color:var(--accent-ink);}
+  .ov-tab[data-ov="graph"].on{background:var(--p-cm);color:#fff;}
+  /* 그래프 뷰 플로우 */
+  .pflow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;}
+  .pnode{flex:1;min-width:150px;background:var(--surface);border:1.5px solid var(--border);border-top:5px solid var(--pc);border-radius:14px;padding:16px 16px 18px;box-shadow:var(--cardsh-sm);cursor:pointer;transition:transform .14s,box-shadow .14s;}
+  .pnode:hover{transform:translateY(-3px);box-shadow:var(--shadow);}
+  .pnode .pn-step{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--pc);font-family:'Pretendard',sans-serif;}
+  .pnode .pn-nm{font-size:22px;font-weight:900;letter-spacing:-.5px;margin:3px 0 8px;}
+  .pnode .pn-sub{font-size:12.5px;color:var(--muted);line-height:1.5;word-break:keep-all;}
+  .pn-arr{align-self:center;font-size:24px;font-weight:900;color:var(--muted);flex:0 0 auto;}
+  @media(max-width:760px){.pn-arr{transform:rotate(90deg);width:100%;text-align:center;}}
+  /* 그래프 뷰 (D3) */
+  .gv-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;}
+  #gv-search{height:36px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);padding:0 12px;font:inherit;font-size:13px;color:var(--ink);flex:1;min-width:140px;outline:none;}
+  #gv-search:focus{border-color:var(--accent);}
+  .gv-chip{height:36px;padding:0 14px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font:inherit;font-size:13px;font-weight:700;cursor:pointer;}
+  .gv-chip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
+  #gv-reset{height:36px;padding:0 14px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font:inherit;font-size:13px;font-weight:700;cursor:pointer;margin-left:auto;}
+  .gv-canvas{position:relative;background:var(--surface-2);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;}
+  #gv-tip{position:absolute;pointer-events:none;background:var(--surface);color:var(--ink);font-size:12px;padding:6px 10px;border-radius:8px;opacity:0;transition:opacity .1s;max-width:220px;line-height:1.4;border:1.5px solid var(--border);box-shadow:var(--cardsh-sm);}
+  #gv-graph text{fill:var(--ink-2);}
+  #gv-graph line{stroke:var(--muted);}
+  .gv-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted);}
+  .gv-legend span{display:inline-flex;align-items:center;gap:5px;}
+  .gv-dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+  .ov-tab[data-ov="std"].on{background:var(--amber);color:#fff;}
+  .ov-tab[data-ov="law"].on{background:var(--p-design);color:#fff;}
+  .ov-frame{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:26px 26px 24px;box-shadow:var(--shadow);}
+  .ov-frame .sec-head:first-child{margin-top:0;}
+  .ov-view{display:none;}
+  .ov-view.on{display:block;animation:fade .3s ease;}
+
   /* ===== 전체 키워드 검색 ===== */
-  .topsearch{background:var(--bg);border-bottom:3px solid var(--border);}
-  .topsearch-in{max-width:1260px;margin:0 auto;padding:16px 20px;position:relative;display:flex;justify-content:flex-end;align-items:center;gap:12px;}
-  .ts-field{position:relative;width:50%;min-width:340px;}
+  .topsearch{background:var(--bg);border-bottom:1.5px solid var(--border);}
+  .topsearch-in{max-width:1260px;margin:0 auto;padding:16px 20px;position:relative;display:flex;justify-content:center;align-items:center;gap:12px;}
+  .topsearch-in .theme-toggle{position:absolute;right:20px;top:50%;transform:translateY(-50%);}
+  .ts-field{position:relative;width:60%;min-width:340px;}
   .ts-ic{position:absolute;right:18px;left:auto;top:50%;transform:translateY(-50%);font-size:22px;color:var(--muted);pointer-events:none;}
-  #global-q{width:100%;border:3px solid var(--border);padding:13px 16px 13px 44px;
+  #global-q{width:100%;border:1.5px solid var(--border);padding:13px 16px 13px 44px;
     font-size:15px;font-family:inherit;outline:none;transition:.12s;background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm);}
   #global-q:focus{box-shadow:5px 5px 0 var(--accent);}
   .gresults{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--surface);
-    border:3px solid var(--border);box-shadow:var(--shadow);
+    border:1.5px solid var(--border);box-shadow:var(--shadow);
     z-index:200;max-height:440px;overflow:auto;display:none;}
   .gresults.show{display:block;}
   .gres-head{padding:8px 16px;font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.5px;
-    background:var(--surface-2);border-bottom:2.5px solid var(--border);position:sticky;top:0;}
+    background:var(--surface-2);border-bottom:1.5px solid var(--border);position:sticky;top:0;}
   .gres-item{padding:10px 16px;cursor:pointer;border-bottom:2px solid var(--surface-2);display:flex;align-items:center;gap:10px;}
   .gres-item:last-child{border-bottom:0;}
   .gres-item:hover,.gres-item.on{background:var(--accent-soft);}
   .gres-item .gk{flex:0 0 auto;font-size:10px;font-weight:800;color:var(--accent-ink);background:var(--accent);
-    padding:3px 7px;min-width:52px;text-align:center;border:2px solid var(--border);}
+    padding:3px 7px;min-width:52px;text-align:center;border:1.5px solid var(--border);}
   .gres-item .gt{flex:1;min-width:0;}
   .gres-item .gl{font-weight:700;font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .gres-item .gs{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .gres-empty{padding:20px 16px;text-align:center;color:var(--muted);font-size:13px;}
-  .badge-org.foot{background:var(--surface-2);border:2.5px solid var(--border);color:var(--ink);font-weight:700;box-shadow:3px 3px 0 var(--border);}
+  .badge-org.foot{background:var(--surface-2);border:1.5px solid var(--border);color:var(--ink);font-weight:700;box-shadow:3px 3px 0 var(--border);}
   .badge-org.foot b{color:var(--accent);}
 
   /* ===== 인증 판정 카드 ===== */
   .certgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:6px;}
   @media(max-width:640px){.certgrid{grid-template-columns:1fr;}}
-  .certcard{border:2.5px solid var(--border);border-left:7px solid var(--surface-3);background:var(--surface);overflow:hidden;box-shadow:var(--shadow-sm);}
+  .certcard{border:1.5px solid var(--border);border-left:7px solid var(--surface-3);background:var(--surface);overflow:hidden;box-shadow:var(--shadow-sm);}
   .certcard.on{border-left-color:var(--p-cert);}
   .certcard-h{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none;}
   .certcard-h:hover{background:var(--surface-2);}
-  .cc-badge{font-size:11px;font-weight:800;padding:3px 9px;background:var(--surface-2);color:var(--muted);flex:0 0 auto;white-space:nowrap;border:2px solid var(--border);}
+  .cc-badge{font-size:11px;font-weight:800;padding:3px 9px;background:var(--surface-2);color:var(--muted);flex:0 0 auto;white-space:nowrap;border:1.5px solid var(--border);}
   .certcard.on .cc-badge{background:var(--p-cert);color:#fff;}
   .cc-name{flex:1;font-weight:800;font-size:14px;color:var(--ink);}
   .cc-chev{color:var(--muted);transition:transform .2s;flex:0 0 auto;font-weight:800;}
@@ -461,7 +499,25 @@
   .pb,.pm,.mtag,.pill,.who-pill,.doc-chips span,.na-list span,.flow .step{border:var(--glassbd);border-radius:100px;box-shadow:none;background:var(--surface-2);}
   .sec-head .chip{border:0;border-radius:9px;box-shadow:none;text-align:center;display:inline-flex;align-items:center;justify-content:center;}
   .nav-grp{border:0;border-radius:10px;box-shadow:none;}
+  @media(min-width:1101px){
+    .side-right{display:flex;flex-direction:column;max-height:calc(100vh - 32px);}
+    .side-right .side-nav{flex:0 1 auto;min-height:0;overflow-y:auto;cursor:grab;}
+    .side-right .qbox{flex:0 0 auto;}
+  }
   .side-right .nav-grp:last-of-type{background:var(--accent);color:var(--accent-ink);}
+  /* 질문 채팅박스 */
+  .qbox{margin-top:16px;background:var(--surface);border:var(--glassbd);border-radius:var(--rad);padding:14px;box-shadow:var(--cardsh);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);display:flex;flex-direction:column;gap:9px;min-height:0;}
+  .qbox-h{font-size:14px;font-weight:800;color:var(--ink);}
+  .qbox-list{display:flex;flex-direction:column;gap:7px;max-height:96px;overflow-y:auto;cursor:grab;}
+  .qbox-msg{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12.5px;color:var(--ink-2);line-height:1.5;position:relative;}
+  .qbox-msg .qt{display:block;font-size:10.5px;color:var(--muted);margin-top:3px;}
+  .qbox-msg .qdel{position:absolute;top:6px;right:8px;cursor:pointer;color:var(--muted);font-weight:800;font-size:12px;border:0;background:none;}
+  .qbox-empty{font-size:12px;color:var(--muted);text-align:center;padding:8px 0;}
+  .qbox textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 10px;font:inherit;font-size:13px;color:var(--ink);background:var(--surface);outline:none;resize:vertical;box-sizing:border-box;}
+  .qbox textarea:focus{border-color:var(--accent);}
+  #qbox-send{border:0;border-radius:10px;background:var(--accent);color:var(--accent-ink);font:inherit;font-size:13.5px;font-weight:800;padding:10px;cursor:pointer;}
+  #qbox-send:hover{opacity:.92;}
+  .qbox-note{font-size:10.5px;color:var(--muted);}
   .badge-org,.badge-org.foot{border:var(--glassbd);border-radius:100px;box-shadow:var(--cardsh-sm);background:var(--surface);}
   .ck-badge,.cc-badge,.res-card .rc-r .thr,.res-head .cnt,.res-head.muted .cnt{border:0;border-radius:100px;}
   .acc-num,.tl-no{border:0;border-radius:10px;}
@@ -480,7 +536,7 @@
 
   /* 전체 키워드 검색 강조 */
   .ts-ic{font-size:22px;color:var(--muted);opacity:.9;}
-  #global-q{border:3px solid var(--ink);padding:15px 52px 15px 20px;font-size:15.5px;font-weight:600;box-shadow:var(--cardsh-sm);width:100%;display:block;text-align:left;}
+  #global-q{border:1.5px solid var(--border);padding:15px 52px 15px 20px;font-size:15.5px;font-weight:600;box-shadow:var(--cardsh-sm);width:100%;display:block;text-align:left;}
   #global-q:focus{border-color:var(--accent);box-shadow:var(--cardsh-sm),0 0 0 3px var(--accent-soft);}
   #global-q::placeholder{color:var(--muted);font-weight:500;}
   /* 사이드바: 스크롤 고정 + 내부 스크롤 */
@@ -505,12 +561,12 @@
     .side-right .nav-grp{display:inline-block;}
   }
   /* ===== 금액·규모별 절차 기준 : 판정기 연동 하이라이트 ===== */
-  .gz-panel{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--surface);border:3px solid var(--border);
+  .gz-panel{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--surface);border:1.5px solid var(--border);
     box-shadow:var(--shadow-sm);border-radius:var(--rad);padding:16px 18px;margin-bottom:12px}
   .gz-field{display:flex;flex-direction:column;gap:6px;align-items:center}
   .gz-field label{font-size:15px;font-weight:800;color:var(--accent);text-transform:none;text-align:center;width:100%}
   .gz-field label span{color:var(--muted);font-weight:600}
-  .gz-field input{width:130px;border:2.5px solid var(--border);border-radius:var(--radsm);padding:10px 12px;font-size:15px;
+  .gz-field input{width:130px;border:1.5px solid var(--border);border-radius:var(--radsm);padding:10px 12px;font-size:15px;
     font-family:inherit;font-weight:700;color:var(--ink);background:var(--surface-2);outline:none;text-align:center}
   .gz-field input:focus{box-shadow:0 0 0 3px var(--accent-soft)}
   .gz-count{margin-left:auto;align-self:center;display:flex;align-items:center;font-size:20px;font-weight:800;color:var(--ink-2)}
@@ -523,7 +579,7 @@
   .gz-dash{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
   @media(max-width:860px){.gz-dash{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:480px){.gz-dash{grid-template-columns:1fr}}
-  .gz-tile{position:relative;min-height:88px;background:var(--surface);border:2.5px solid var(--border);border-radius:var(--radsm);
+  .gz-tile{position:relative;min-height:88px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radsm);
     padding:14px 15px;box-shadow:var(--shadow-sm);opacity:.5;transition:opacity .15s,box-shadow .15s,transform .15s}
   .gz-tile .gz-t-h{font-size:15px;font-weight:800;color:var(--ink)}
   .gz-tile .gz-t-b{font-size:12px;color:var(--muted);margin-top:3px}
@@ -534,23 +590,23 @@
   .gz-tile.on .gz-t-s{background:#e5484d;color:#fff}
   .gz-tile.on .gz-t-s::after{content:"적용"}
   /* 건축법령 체크 도구 (bl) */
-  .bl-form{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--surface);border:3px solid var(--border);
+  .bl-form{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--surface);border:1.5px solid var(--border);
     box-shadow:var(--shadow-sm);border-radius:var(--rad);padding:18px;margin-bottom:14px}
   @media(max-width:860px){.bl-form{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:480px){.bl-form{grid-template-columns:1fr}}
   .bl-field{display:flex;flex-direction:column;gap:6px}
   .bl-field label{font-size:12.5px;font-weight:800;color:var(--accent)}
   .bl-field label span{color:var(--muted);font-weight:600}
-  .bl-field input,.bl-field select{width:100%;border:2.5px solid var(--border);border-radius:var(--radsm);padding:10px 12px;
+  .bl-field input,.bl-field select{width:100%;border:1.5px solid var(--border);border-radius:var(--radsm);padding:10px 12px;
     font-size:15px;font-family:inherit;font-weight:700;color:var(--ink);background:var(--surface-2);outline:none}
   .bl-field input:focus,.bl-field select:focus{box-shadow:0 0 0 3px var(--accent-soft)}
-  .bl-chk{display:flex;align-items:center;gap:9px;background:var(--surface-2);border:2.5px solid var(--border);border-radius:var(--radsm);
+  .bl-chk{display:flex;align-items:center;gap:9px;background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--radsm);
     padding:10px 12px;align-self:end;cursor:pointer;font-size:13.5px;font-weight:700;color:var(--ink)}
   .bl-chk input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer;flex:0 0 auto}
   .bl-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
   @media(max-width:860px){.bl-cards{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:480px){.bl-cards{grid-template-columns:1fr}}
-  .bl-card{position:relative;min-height:88px;background:var(--surface);border:2.5px solid var(--border);border-radius:var(--radsm);padding:14px 15px;box-shadow:var(--shadow-sm)}
+  .bl-card{position:relative;min-height:88px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radsm);padding:14px 15px;box-shadow:var(--shadow-sm)}
   .bl-card .bl-cs{position:absolute;top:12px;right:12px;font-size:11px;font-weight:800;padding:2px 9px;border-radius:100px;background:var(--surface-3);color:var(--muted)}
   .bl-card .bl-cs::after{content:"해당없음"}
   .bl-card.on .bl-cs{background:#e5484d;color:#fff}
@@ -561,8 +617,8 @@
   .bl-card.on .bl-c-v{color:#1b64da}
   .bl-cats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
   @media(max-width:720px){.bl-cats{grid-template-columns:1fr}}
-  .bl-cat{background:var(--surface);border:2.5px solid var(--border);border-radius:var(--radsm);box-shadow:var(--shadow-sm);overflow:hidden}
-  .bl-cat-h{background:var(--surface-2);padding:11px 15px;font-size:14px;font-weight:800;color:var(--ink);border-bottom:2.5px solid var(--border)}
+  .bl-cat{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radsm);box-shadow:var(--shadow-sm);overflow:hidden}
+  .bl-cat-h{background:var(--surface-2);padding:11px 15px;font-size:14px;font-weight:800;color:var(--ink);border-bottom:1.5px solid var(--border)}
   .bl-item{display:flex;align-items:flex-start;gap:11px;padding:11px 15px;border-top:2px solid color-mix(in oklch,var(--border) 18%,transparent)}
   .bl-item:first-of-type{border-top:none}
   .bl-item .bl-s{flex:0 0 auto;font-size:11px;font-weight:800;padding:3px 9px;border-radius:100px;white-space:nowrap;margin-top:1px}
@@ -626,6 +682,7 @@
       <button class="tab" data-p="price"><span class="dot"></span>📐 2026 시설단가</button>
       <button class="tab" data-p="glossary"><span class="dot"></span>📖 용어정리</button>
       <button class="tab" data-p="ratio"><span class="dot"></span>📊 2026 제비율표</button>
+      <a class="extlink" href="https://www.jge.go.kr/open/na/ntt/selectNttList.do?mi=860&bbsId=416&searchCate=17" target="_blank" rel="noopener noreferrer" style="border:var(--glassbd);font-size:15.5px;font-weight:700"><span class="dot"></span><span class="lb" style="white-space:nowrap">2026(하) 일위대가</span><span class="ext">↗</span></a>
       <div class="nav-grp">관련 사이트</div>
       <a class="extlink" href="https://www.moleg.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">법제처</span><span class="ext">↗</span></a>
       <a class="extlink" href="https://www.csi.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">건설공사 안전관리 통합정보망(CSI)</span><span class="ext">↗</span></a>
@@ -640,17 +697,25 @@
   <!-- ============ 전체 개요 ============ -->
   <section class="panel show" id="overview">
     <div class="sec-head">
-      <span class="chip" style="background:var(--accent)">전체 개요</span>
-      <div><h2>학교시설사업 업무 PROCESS</h2><p>전 생애주기 4단계 흐름과 단계별 주요 업무 · 대상기준</p></div>
+      <span class="chip" id="ovChip" style="background:var(--amber)">기준</span>
+      <div><h2 id="ovH2">간단 기준 프로세스 안내</h2><p id="ovP">사업 규모에 따라 필수 절차를 한눈에 확인</p></div>
     </div>
 
+    <div class="ov-tabs">
+      <button class="ov-tab on" data-ov="std">📊 절차 기준</button>
+      <button class="ov-tab" data-ov="law">🏛 간단 법령 체크</button>
+      <button class="ov-tab" data-ov="proc">🗺 업무 프로세스</button>
+      <button class="ov-tab" data-ov="graph">🔗 그래프 뷰</button></div>
+
+    <div class="ov-frame">
+    <div class="ov-view" data-ovv="proc">
     <div class="map">
       <div class="mcard" data-goto="plan">
         <div class="mcard-top" style="background:var(--p-plan)"><div class="ph">STEP 01</div><div class="nm">기획</div></div>
         <div class="mcard-body">
           <div class="row"><b>사업계획 수립</b> · 도시군계획·학생배치 검토</div>
           <div class="row"><b>사전기획</b> · 설계비 1억↑</div>
-          <div class="row" style="white-space:nowrap"><b>투자심사</b> · 자체 40억↑/중앙 300억↑</div>
+          <div class="row"><b>투자심사</b> · 자체 40억↑ / 중앙 300억↑</div>
           <div class="row"><b>공유재산심의</b><br>·공공건축심의 · 설계비 5천↑</div>
         </div>
       </div>
@@ -683,11 +748,33 @@
       </div>
     </div>
 
-    <div class="sec-head" style="margin-top:34px">
-      <span class="chip" style="background:var(--amber)">기준</span>
-      <div><h2>금액 · 규모별 절차 기준</h2><p>사업 규모에 따라 필수 절차를 한눈에 확인</p></div>
     </div>
-    <div class="note">💡 사업의 <b>총사업비·공사비·설계비</b> 규모에 따라 적용 절차가 달라집니다. 아래 입력값을 바꾸면 해당 절차 행이 <b style="color:var(--ops-d)">초록</b>으로 켜집니다.</div>
+
+    <div class="ov-view" data-ovv="graph">
+    <div class="gv-toolbar">
+      <input id="gv-search" type="text" placeholder="노드 검색">
+      <button class="gv-chip on" data-g="all">전체</button>
+      <button class="gv-chip" data-g="plan">기획</button>
+      <button class="gv-chip" data-g="design">설계</button>
+      <button class="gv-chip" data-g="const">시공</button>
+      <button class="gv-chip" data-g="cm">건설관리</button>
+      <button class="gv-chip" data-g="comp">준공</button>
+      <button id="gv-reset">초기화</button>
+    </div>
+    <div class="gv-canvas"><svg id="gv-graph" width="100%" height="520" style="display:block"></svg><div id="gv-tip"></div></div>
+    <div class="gv-legend">
+      <span><i class="gv-dot" style="background:var(--p-plan)"></i>기획</span>
+      <span><i class="gv-dot" style="background:var(--p-design)"></i>설계</span>
+      <span><i class="gv-dot" style="background:var(--p-const)"></i>시공</span>
+      <span><i class="gv-dot" style="background:var(--p-cm)"></i>건설사업관리</span>
+      <span><i class="gv-dot" style="background:var(--p-comp)"></i>준공</span>
+      <span><i class="gv-dot" style="background:#c93a52"></i>근거 법령</span>
+      <span><i class="gv-dot" style="background:#9a9a9a"></i>인증 항목</span>
+    </div>
+    </div>
+
+    <div class="ov-view on" data-ovv="std">
+    <div class="note">💡 사업의 <b>총사업비·공사비·설계비</b> 규모에 따라 적용 절차가 달라집니다. 아래 입력값을 바꾸면 해당 절차 행이 <b style="color:var(--accent)">파랑</b>으로 켜집니다.</div>
     <div class="gz-panel">
       <div class="gz-field"><label>총사업비 <span>억원</span></label><input type="number" id="gz-total" min="0" step="0.1" value="30"></div>
       <div class="gz-field"><label>공사비 <span>억원</span></label><input type="number" id="gz-const" min="0" step="0.1" value="8"></div>
@@ -712,7 +799,7 @@
     </div>
     <div style="margin-top:14px;display:none" class="note">🏗️ <b>연면적 기준</b> — 660㎡↑ 건축(건설사업관리·감리 의무) · 1,000㎡↑ 교육연구시설(ZEB 4등급 의무) · 3,000㎡↑ (녹색건축 인증) · 10,000㎡↑ (BEMS 설치).</div>
 
-    <div class="sec-head" style="margin-top:34px">
+    <div class="sec-head" style="margin-top:30px">
       <span class="chip" style="background:var(--accent)">요약</span>
       <div><h2>사업 절차 요약</h2><p>위 입력값 기준으로 필수 절차가 자동 판정됩니다</p></div>
     </div>
@@ -727,10 +814,9 @@
       <div class="gz-tile" data-ax="total" data-amt="300"><div class="gz-t-h">중앙투자심사</div><div class="gz-t-b">총사업비 300억↑</div><span class="gz-t-s"></span></div>
     </div>
 
-    <div class="sec-head" style="margin-top:34px">
-      <span class="chip" style="background:var(--p-design)">도구</span>
-      <div><h2>간단 건축법령 체크</h2><p>연면적·층수·용도를 입력하면 건축법령상 적용 규정과 근거 조문을 즉시 확인</p></div>
     </div>
+
+    <div class="ov-view" data-ovv="law">
     <div class="note">💡 신축·증축·대수선 시 <b>건축법·건축법 시행령·주차장법 시행령</b> 기준으로 자동 판정합니다. 결재문서·업무보고 참고용이며 최종 판단은 소관 부서·건축사 검토가 필요합니다.</div>
 
     <div class="bl-form">
@@ -762,6 +848,8 @@
 
     <div class="bl-cards" id="bl-cards"></div>
     <div class="bl-cats" id="bl-cats" style="display:none"></div>
+    </div>
+    </div>
   </section>
 
   <!-- ============ 제1장 기획 ============ -->
@@ -1015,21 +1103,28 @@
   <aside class="sidebar side-right">
     <nav class="side-nav">
       <div class="nav-grp">📚 통합자료실</div>
-      <a class="extlink" href="#" onclick="return false;" title="링크 준비중"><span class="lb">각종 양식모음</span><span class="ext">⬇</span></a>
+      <a class="extlink" href="https://jne365-my.sharepoint.com/:f:/g/personal/seum8660_o365_jne_go_kr/IgB3esNJMRYBSZsEMOjgGQbMAZKDjWMuY1J0BUQjk0scxks?e=GcNgkV" target="_blank" rel="noopener noreferrer"><span class="lb">각종 양식모음</span><span class="ext">↗</span></a>
       <a class="extlink" href="설계용역비_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">설계용역비 산출</span><span class="ext">↗</span></a>
       <a class="extlink" href="#" onclick="return false;" title="링크 준비중"><span class="lb">감리용역비 산출</span><span class="ext">⬇</span></a>
       <a class="extlink" href="#" onclick="return false;" title="링크 준비중"><span class="lb">건설사업관리용역비 산출</span><span class="ext">⬇</span></a>
       <a class="extlink" href="공사기간_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">공사기간 산출</span><span class="ext">↗</span></a>
-      <a class="extlink" href="https://www.jge.go.kr/open/na/ntt/selectNttList.do?mi=860&bbsId=416&searchCate=17" target="_blank" rel="noopener noreferrer"><span class="lb">2026(하) 일위대가</span><span class="ext">↗</span></a>
       <div class="nav-grp">⚖ 절차 판정</div>
       <button class="tab" data-p="calc"><span class="dot"></span>규모별 절차 판정기</button>
       <button class="tab" data-p="cert"><span class="dot"></span>인증 판정기</button>
     </nav>
+
+    <div class="qbox">
+      <div class="qbox-h">💬 질문 남기기</div>
+      <div class="qbox-list" id="qbox-list"></div>
+      <textarea id="qbox-input" rows="2" placeholder="궁금한 점을 남겨주세요"></textarea>
+      <button id="qbox-send" type="button">등록</button>
+      <div class="qbox-note">※ 브라우저에 저장되는 현장 메모용입니다.</div>
+    </div>
   </aside>
 </div>
 
 <footer class="wrap">
-  <span class="badge-org foot">전남광주통합특별시교육청 · 행정국 <b>교육시설과</b></span><br><br>
+  <span class="badge-org foot">전남광주통합특별시교육청 · 행정운영국 <b>교육시설과</b></span><br><br>
   <b>🏫 학교시설업무 치트키 🔑 SCHOOL BIBLE</b> — 가이드라인부터 자가테스트까지<br>
   본 자료는 「교육시설과 업무 전달 회의(2025. 1.)」를 기반으로 재구성한 실무 참조용 문서입니다. 실제 적용 시 최신 법령·지침을 반드시 확인하시기 바랍니다.<br>
   <span style="display:inline-block;margin-top:10px;color:var(--muted);font-size:12px">작성자 <b style="color:var(--navy)">claude_min</b> · 작성일 2026-07-20 · <b style="color:#3182F6">ver 2.0</b></span>
@@ -2026,6 +2121,116 @@ runRatioCalc();
     const el=$(id); if(el) el.addEventListener('input',compute);
   });
   compute();
+})();
+
+// ===== 드래그 스크롤 (통합자료실·질문목록) =====
+(function(){
+  function drag(el){ if(!el) return; let down=false,sy,st;
+    el.addEventListener('pointerdown',e=>{if(e.target.closest('a,button,textarea,input,select'))return;down=true;sy=e.clientY;st=el.scrollTop;el.style.cursor='grabbing';el.setPointerCapture&&el.setPointerCapture(e.pointerId);});
+    el.addEventListener('pointermove',e=>{if(!down)return;el.scrollTop=st-(e.clientY-sy);});
+    const up=()=>{down=false;el.style.cursor='grab';};
+    el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up); el.addEventListener('pointerleave',up);
+  }
+  document.querySelectorAll('.side-right .side-nav, #qbox-list').forEach(drag);
+})();
+
+// ===== 질문 채팅박스 =====
+(function(){
+  const list=document.getElementById('qbox-list'),input=document.getElementById('qbox-input'),send=document.getElementById('qbox-send');
+  if(!list||!send) return;
+  const KEY='bible-questions';
+  function load(){ try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];} }
+  function save(a){ try{localStorage.setItem(KEY,JSON.stringify(a));}catch(e){} }
+  function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+  function render(){
+    const a=load();
+    list.innerHTML = a.length ? a.map((m,i)=>`<div class="qbox-msg"><button class="qdel" data-i="${i}" title="삭제">×</button>${esc(m.t)}<span class="qt">${m.d}</span></div>`).join('')
+      : '<div class="qbox-empty">아직 등록된 질문이 없습니다.</div>';
+    list.querySelectorAll('.qdel').forEach(b=>b.addEventListener('click',()=>{const a=load();a.splice(+b.dataset.i,1);save(a);render();}));
+  }
+  send.addEventListener('click',()=>{
+    const t=input.value.trim(); if(!t) return;
+    const a=load(); const d=new Date();
+    a.push({t,d:`${d.getMonth()+1}.${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`});
+    save(a); input.value=''; render();
+  });
+  input.addEventListener('keydown',e=>{ if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)) send.click(); });
+  render();
+})();
+
+// ===== 그래프 뷰 (D3 관계 그래프) =====
+window.__gvInit = (function(){
+  let done=false;
+  return function(){
+    if(done || typeof d3==='undefined') return; done=true;
+    var RAW={"nodes":[{"id":"phase:plan","label":"제1장 기획","group":"phase","color":"var(--p-plan)"},{"id":"phase:design","label":"제2장 설계","group":"phase","color":"var(--p-design)"},{"id":"phase:const","label":"제3장 시공","group":"phase","color":"var(--p-const)"},{"id":"phase:cm","label":"제4장 건설사업관리","group":"phase","color":"var(--p-cm)"},{"id":"phase:comp","label":"제5장 준공","group":"phase","color":"var(--p-comp)"},{"id":"root","label":"학교시설업무 치트키","group":"root","color":"var(--accent)"},{"id":"item:plan:1","label":"사전기획","group":"item:plan","color":"var(--p-plan)"},{"id":"law:0","label":"교육시설법 시행령 §23-2","group":"law","color":"#c93a52"},{"id":"item:plan:2","label":"기본안전보건대장","group":"item:plan","color":"var(--p-plan)"},{"id":"law:1","label":"산업안전보건법 §55","group":"law","color":"#c93a52"},{"id":"item:plan:3","label":"공공건축심의","group":"item:plan","color":"var(--p-plan)"},{"id":"law:2","label":"건축서비스산업법 §19-2","group":"law","color":"#c93a52"},{"id":"item:design:1","label":"일상감사","group":"item:design","color":"var(--p-design)"},{"id":"law:3","label":"교육부 일상감사지침 §4","group":"law","color":"#c93a52"},{"id":"item:design:2","label":"설계공모","group":"item:design","color":"var(--p-design)"},{"id":"law:4","label":"건축서비스산업법 §21","group":"law","color":"#c93a52"},{"id":"item:design:3","label":"대규모 사업의 시설 일상감사","group":"item:design","color":"var(--p-design)"},{"id":"law:5","label":"감사관-11302","group":"law","color":"#c93a52"},{"id":"item:design:4","label":"기술자문위원회","group":"item:design","color":"var(--p-design)"},{"id":"law:6","label":"건설기술진흥법 §6","group":"law","color":"#c93a52"},{"id":"item:design:5","label":"설계의 경제성 검토 (VE)","group":"item:design","color":"var(--p-design)"},{"id":"law:7","label":"건설기술진흥법 시행령 §75","group":"law","color":"#c93a52"},{"id":"item:design:6","label":"설계의 안전성 검토 (DfS)","group":"item:design","color":"var(--p-design)"},{"id":"law:8","label":"건설기술진흥법 시행령 §75-2","group":"law","color":"#c93a52"},{"id":"item:design:7","label":"설계안전보건대장","group":"item:design","color":"var(--p-design)"},{"id":"law:9","label":"산업안전보건법 §67","group":"law","color":"#c93a52"},{"id":"item:design:8","label":"각종 인증사항","group":"item:design","color":"var(--p-design)"},{"id":"law:10","label":"녹색건축물법 등","group":"law","color":"#c93a52"},{"id":"cert:c1","label":"에너지절약계획서","group":"cert","color":"#9a9a9a"},{"id":"cert:c2","label":"녹색건축 인증","group":"cert","color":"#9a9a9a"},{"id":"cert:c3","label":"건축물에너지효율등급","group":"cert","color":"#9a9a9a"},{"id":"cert:c4","label":"제로에너지건축물(ZEB) 인증","group":"cert","color":"#9a9a9a"},{"id":"cert:c5","label":"장애물 없는 생활환경(BF) 인증","group":"cert","color":"#9a9a9a"},{"id":"cert:c6","label":"범죄예방 환경설계(CPTED)","group":"cert","color":"#9a9a9a"},{"id":"cert:c7","label":"신·재생에너지 공급의무비율","group":"cert","color":"#9a9a9a"},{"id":"cert:c8","label":"건물에너지관리시스템(BEMS)","group":"cert","color":"#9a9a9a"},{"id":"cert:c9","label":"교육시설 안전인증","group":"cert","color":"#9a9a9a"},{"id":"law:11","label":"건설기술진흥법 시행령 §82","group":"law","color":"#c93a52"},{"id":"item:design:9","label":"시설사업 시행계획 및 건축 승인","group":"item:design","color":"var(--p-design)"},{"id":"law:12","label":"학교시설사업 촉진법 §5","group":"law","color":"#c93a52"},{"id":"item:const:1","label":"시설공사 일상감사","group":"item:const","color":"var(--p-const)"},{"id":"item:const:2","label":"기술자문위원회","group":"item:const","color":"var(--p-const)"},{"id":"item:const:3","label":"건설사업관리계획 수립","group":"item:const","color":"var(--p-const)"},{"id":"law:13","label":"건설기술진흥법 §39-2","group":"law","color":"#c93a52"},{"id":"item:const:4","label":"시설사업 집행계획 / 공사발주","group":"item:const","color":"var(--p-const)"},{"id":"law:14","label":"지방계약법 시행령 §77","group":"law","color":"#c93a52"},{"id":"item:const:5","label":"감리발주 (공사감리·감독 방식)","group":"item:const","color":"var(--p-const)"},{"id":"law:15","label":"공사감리(감독)방식 개선","group":"law","color":"#c93a52"},{"id":"item:const:6","label":"폐기물처리용역 발주","group":"item:const","color":"var(--p-const)"},{"id":"law:16","label":"건설폐기물법","group":"law","color":"#c93a52"},{"id":"item:const:7","label":"기타용역 발주","group":"item:const","color":"var(--p-const)"},{"id":"law:17","label":"산업안전보건법 §73","group":"law","color":"#c93a52"},{"id":"item:const:8","label":"본인증 용역 발주","group":"item:const","color":"var(--p-const)"},{"id":"law:18","label":"녹색건축물법","group":"law","color":"#c93a52"},{"id":"item:const:9","label":"학교건축물 해체공사 안전관리","group":"item:const","color":"var(--p-const)"},{"id":"law:19","label":"건축물관리법 §30","group":"law","color":"#c93a52"},{"id":"item:const:10","label":"공사추진 (안전성평가)","group":"item:const","color":"var(--p-const)"},{"id":"law:20","label":"교육시설법 §19","group":"law","color":"#c93a52"},{"id":"item:cm:1","label":"사업관리 업무 추진 (조항별 역할)","group":"item:cm","color":"var(--p-cm)"},{"id":"law:21","label":"건설기술진흥법 §11~","group":"law","color":"#c93a52"},{"id":"item:cm:2","label":"설계변경 — 발주청 요청(지시)","group":"item:cm","color":"var(--p-cm)"},{"id":"law:22","label":"설계변경 업무흐름도","group":"law","color":"#c93a52"},{"id":"item:cm:3","label":"설계변경 — 시공자 요청","group":"item:cm","color":"var(--p-cm)"},{"id":"item:cm:4","label":"설계변경 — 설계상 하자","group":"item:cm","color":"var(--p-cm)"},{"id":"item:cm:5","label":"계약금액 조정","group":"item:cm","color":"var(--p-cm)"},{"id":"law:23","label":"계약금액 조정 처리절차","group":"law","color":"#c93a52"},{"id":"item:comp:1","label":"준공검사","group":"item:comp","color":"var(--p-comp)"},{"id":"law:24","label":"건설기술진흥법 시행령 §78","group":"law","color":"#c93a52"},{"id":"item:comp:2","label":"사용승인","group":"item:comp","color":"var(--p-comp)"},{"id":"law:25","label":"건축법 시행령 §17","group":"law","color":"#c93a52"},{"id":"item:comp:3","label":"건축물대장","group":"item:comp","color":"var(--p-comp)"},{"id":"law:26","label":"건축법 §38","group":"law","color":"#c93a52"}],"links":[{"source":"root","target":"phase:plan","kind":"flow"},{"source":"root","target":"phase:design","kind":"flow"},{"source":"root","target":"phase:const","kind":"flow"},{"source":"root","target":"phase:cm","kind":"flow"},{"source":"root","target":"phase:comp","kind":"flow"},{"source":"phase:plan","target":"item:plan:1","kind":"phase"},{"source":"item:plan:1","target":"law:0","kind":"law"},{"source":"phase:plan","target":"item:plan:2","kind":"phase"},{"source":"item:plan:2","target":"law:1","kind":"law"},{"source":"phase:plan","target":"item:plan:3","kind":"phase"},{"source":"item:plan:3","target":"law:2","kind":"law"},{"source":"phase:design","target":"item:design:1","kind":"phase"},{"source":"item:design:1","target":"law:3","kind":"law"},{"source":"phase:design","target":"item:design:2","kind":"phase"},{"source":"item:design:2","target":"law:4","kind":"law"},{"source":"phase:design","target":"item:design:3","kind":"phase"},{"source":"item:design:3","target":"law:5","kind":"law"},{"source":"phase:design","target":"item:design:4","kind":"phase"},{"source":"item:design:4","target":"law:6","kind":"law"},{"source":"phase:design","target":"item:design:5","kind":"phase"},{"source":"item:design:5","target":"law:7","kind":"law"},{"source":"phase:design","target":"item:design:6","kind":"phase"},{"source":"item:design:6","target":"law:8","kind":"law"},{"source":"phase:design","target":"item:design:7","kind":"phase"},{"source":"item:design:7","target":"law:9","kind":"law"},{"source":"phase:design","target":"item:design:8","kind":"phase"},{"source":"item:design:8","target":"law:10","kind":"law"},{"source":"item:design:8","target":"cert:c1","kind":"cert"},{"source":"item:design:8","target":"cert:c2","kind":"cert"},{"source":"item:design:8","target":"cert:c3","kind":"cert"},{"source":"item:design:8","target":"cert:c4","kind":"cert"},{"source":"item:design:8","target":"cert:c5","kind":"cert"},{"source":"item:design:8","target":"cert:c6","kind":"cert"},{"source":"item:design:8","target":"cert:c7","kind":"cert"},{"source":"item:design:8","target":"cert:c8","kind":"cert"},{"source":"item:design:8","target":"cert:c9","kind":"cert"},{"source":"item:design:9","target":"law:12","kind":"law"},{"source":"phase:design","target":"item:design:9","kind":"phase"},{"source":"phase:const","target":"item:const:1","kind":"phase"},{"source":"item:const:1","target":"law:3","kind":"law"},{"source":"phase:const","target":"item:const:2","kind":"phase"},{"source":"item:const:2","target":"law:6","kind":"law"},{"source":"phase:const","target":"item:const:3","kind":"phase"},{"source":"item:const:3","target":"law:13","kind":"law"},{"source":"phase:const","target":"item:const:4","kind":"phase"},{"source":"item:const:4","target":"law:14","kind":"law"},{"source":"phase:const","target":"item:const:5","kind":"phase"},{"source":"item:const:5","target":"law:15","kind":"law"},{"source":"phase:const","target":"item:const:6","kind":"phase"},{"source":"item:const:6","target":"law:16","kind":"law"},{"source":"phase:const","target":"item:const:7","kind":"phase"},{"source":"item:const:7","target":"law:17","kind":"law"},{"source":"phase:const","target":"item:const:8","kind":"phase"},{"source":"item:const:8","target":"law:18","kind":"law"},{"source":"phase:const","target":"item:const:9","kind":"phase"},{"source":"item:const:9","target":"law:19","kind":"law"},{"source":"phase:const","target":"item:const:10","kind":"phase"},{"source":"item:const:10","target":"law:20","kind":"law"},{"source":"phase:cm","target":"item:cm:1","kind":"phase"},{"source":"item:cm:1","target":"law:21","kind":"law"},{"source":"phase:cm","target":"item:cm:2","kind":"phase"},{"source":"item:cm:2","target":"law:22","kind":"law"},{"source":"phase:cm","target":"item:cm:3","kind":"phase"},{"source":"item:cm:3","target":"law:22","kind":"law"},{"source":"phase:cm","target":"item:cm:4","kind":"phase"},{"source":"item:cm:4","target":"law:22","kind":"law"},{"source":"phase:cm","target":"item:cm:5","kind":"phase"},{"source":"item:cm:5","target":"law:23","kind":"law"},{"source":"phase:comp","target":"item:comp:1","kind":"phase"},{"source":"item:comp:1","target":"law:24","kind":"law"},{"source":"phase:comp","target":"item:comp:2","kind":"phase"},{"source":"item:comp:2","target":"law:25","kind":"law"},{"source":"phase:comp","target":"item:comp:3","kind":"phase"},{"source":"item:comp:3","target":"law:26","kind":"law"}]};
+    var svg=d3.select("#gv-graph"); var width=svg.node().getBoundingClientRect().width||900, height=520;
+    svg.attr("viewBox",[0,0,width,height]);
+    var g=svg.append("g"); var tip=d3.select("#gv-tip");
+    var linked={}; RAW.links.forEach(function(l){linked[l.source+"|"+l.target]=1;linked[l.target+"|"+l.source]=1;});
+    var deg={}; RAW.nodes.forEach(function(n){deg[n.id]=0;}); RAW.links.forEach(function(l){deg[l.source]=(deg[l.source]||0)+1;deg[l.target]=(deg[l.target]||0)+1;});
+    function rad(d){return Math.max(4,Math.min(20,4+Math.sqrt(deg[d.id]||1)*3));}
+    var sim=d3.forceSimulation(RAW.nodes)
+      .force("link",d3.forceLink(RAW.links).id(function(d){return d.id;}).distance(function(l){return l.kind==="flow"?130:l.kind==="phase"?80:50;}).strength(0.55))
+      .force("charge",d3.forceManyBody().strength(-160))
+      .force("center",d3.forceCenter(width/2,height/2))
+      .force("collide",d3.forceCollide().radius(function(d){return rad(d)+8;}));
+    var linkSel=g.append("g").attr("stroke-opacity",0.6).selectAll("line").data(RAW.links).join("line").attr("stroke-width",1);
+    var nodeG=g.append("g").selectAll("g").data(RAW.nodes).join("g").attr("cursor","pointer")
+      .call(d3.drag().on("start",function(e,d){if(!e.active)sim.alphaTarget(0.25).restart();d.fx=d.x;d.fy=d.y;})
+        .on("drag",function(e,d){d.fx=e.x;d.fy=e.y;}).on("end",function(e,d){if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}));
+    var nodeSel=nodeG.append("circle").attr("r",rad).attr("fill",function(d){return d.color;}).attr("stroke","var(--surface)").attr("stroke-width",1.4);
+    var labelSel=nodeG.append("text").text(function(d){return d.label.length>11?d.label.slice(0,11)+"…":d.label;})
+      .attr("dy",function(d){return rad(d)+12;}).attr("text-anchor","middle")
+      .attr("font-size",function(d){return d.group==="phase"||d.group==="root"?11:9;}).style("pointer-events","none");
+    function nb(a,b){return linked[a+"|"+b];}
+    nodeG.on("mouseenter",function(e,d){
+      tip.style("opacity",1).text(d.label).style("left",(d.x+14)+"px").style("top",(d.y-10)+"px");
+      nodeSel.attr("opacity",function(o){return o.id===d.id||nb(d.id,o.id)?1:0.15;});
+      labelSel.attr("opacity",function(o){return o.id===d.id||nb(d.id,o.id)?1:0.1;});
+      linkSel.attr("stroke-opacity",function(l){return(l.source.id===d.id||l.target.id===d.id)?0.95:0.05;});
+    }).on("mousemove",function(e,d){tip.style("left",(d.x+14)+"px").style("top",(d.y-10)+"px");})
+      .on("mouseleave",function(){tip.style("opacity",0);nodeSel.attr("opacity",1);labelSel.attr("opacity",1);linkSel.attr("stroke-opacity",0.6);});
+    sim.on("tick",function(){
+      linkSel.attr("x1",function(d){return d.source.x;}).attr("y1",function(d){return d.source.y;}).attr("x2",function(d){return d.target.x;}).attr("y2",function(d){return d.target.y;});
+      nodeG.attr("transform",function(d){return "translate("+d.x+","+d.y+")";});
+    });
+    var zoom=d3.zoom().scaleExtent([0.3,4]).on("zoom",function(e){g.attr("transform",e.transform);});
+    svg.call(zoom);
+    document.getElementById("gv-reset").addEventListener("click",function(){svg.transition().duration(400).call(zoom.transform,d3.zoomIdentity);});
+    document.querySelectorAll(".gv-chip").forEach(function(ch){ch.addEventListener("click",function(){
+      document.querySelectorAll(".gv-chip").forEach(function(c){c.classList.remove("on");}); ch.classList.add("on");
+      var grp=ch.dataset.g;
+      nodeG.attr("opacity",function(d){if(grp==="all")return 1;if(d.group==="phase"||d.group==="root")return 1;return d.group===("item:"+grp)?1:0.08;});
+      linkSel.attr("stroke-opacity",function(l){if(grp==="all")return 0.6;var s=(l.source.group||""),t=(l.target.group||"");return(s===("item:"+grp)||t===("item:"+grp)||l.kind==="flow")?0.6:0.04;});
+    });});
+    document.getElementById("gv-search").addEventListener("input",function(e){
+      var q=e.target.value.trim().toLowerCase();
+      if(!q){nodeSel.attr("opacity",1);labelSel.attr("opacity",1);linkSel.attr("stroke-opacity",0.6);return;}
+      nodeSel.attr("opacity",function(d){return d.label.toLowerCase().includes(q)?1:0.08;});
+      labelSel.attr("opacity",function(d){return d.label.toLowerCase().includes(q)?1:0.08;});
+      linkSel.attr("stroke-opacity",0.05);
+    });
+  };
+})();
+
+// ===== 전체 개요 서브탭 =====
+(function(){
+  const tabs=document.querySelectorAll('.ov-tab');
+  const META={
+    std:{chip:'기준',color:'var(--amber)',h2:'간단 기준 프로세스 안내',p:'사업 규모에 따라 필수 절차를 한눈에 확인'},
+    law:{chip:'체크',color:'var(--p-design)',h2:'법령 Checking',p:'연면적·층수·용도를 입력하면 건축법령상 적용 규정과 근거 조문을 즉시 확인'},
+    proc:{chip:'업무',color:'var(--accent)',h2:'학교시설사업 4단계 안내',p:'전 생애주기 4단계 흐름과 단계별 주요 업무 · 대상기준'},
+    graph:{chip:'흐름',color:'var(--p-cm)',h2:'업무 프로세스 그래프 뷰',p:'문서 전체를 단계·업무·법령·인증 노드로 연결한 관계 그래프'}
+  };
+  const chip=document.getElementById('ovChip'),h2=document.getElementById('ovH2'),p=document.getElementById('ovP');
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    const v=t.dataset.ov;
+    tabs.forEach(x=>x.classList.toggle('on',x===t));
+    document.querySelectorAll('.ov-view').forEach(x=>x.classList.toggle('on',x.dataset.ovv===v));
+    const m=META[v]; if(m&&chip){chip.textContent=m.chip;chip.style.background=m.color;h2.textContent=m.h2;p.textContent=m.p;}
+    if(v==='graph' && window.__gvInit) window.__gvInit();
+  }));
 })();
 
 // ===== 테마 (라이트/다크) 토글 =====

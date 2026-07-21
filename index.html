@@ -628,9 +628,9 @@
       <button class="tab" data-p="ratio"><span class="dot"></span>📊 2026 제비율표</button>
       <div class="nav-grp">관련 사이트</div>
       <a class="extlink" href="https://www.moleg.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">법제처</span><span class="ext">↗</span></a>
-      <a class="extlink" href="#" onclick="return false;" title="링크 준비중"><span class="dot"></span><span class="lb">2026년(하) 일위대가</span><span class="ext">↗</span></a>
       <a class="extlink" href="https://www.csi.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">건설공사 안전관리 통합정보망(CSI)</span><span class="ext">↗</span></a>
       <a class="extlink" href="https://work.keiis.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">교육시설통합정보망</span><span class="ext">↗</span></a>
+      <a class="extlink" href="https://www.cems.kr/" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">건설엔지니어링관리시스템</span><span class="ext">↗</span></a>
       <a class="extlink" href="https://shop.g2b.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">나라장터 종합쇼핑몰</span><span class="ext">↗</span></a>
       <a class="extlink" href="http://www.ekacem.or.kr/" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">한국건설엔지니어링협회</span><span class="ext">↗</span></a>
     </nav>
@@ -1223,12 +1223,20 @@ const DATA = {
        obj:["전기·정보통신·소방시설공사 분리발주 의무(공사 성질·긴급성 예외)","일반용역: 공사·폐기물용역·감리용역 발주 / 관급자재 구입 건의","관급자재 공사용자재 직접구매 대상: 중소기업제품 구매촉진법 시행령 §11"],
        laws:[["지방계약법 시행령 제77조",""],["전기공사업법 §11 / 정보통신공사업법 §25 / 소방시설공사업법 §21","분리발주"],["","관급자재: 교육시설과-12788(2024.8.5.)"]]
      }},
-    {n:"5",t:"감리발주 (건설사업관리)",d:"감독 방식별 감리 발주",
-     money:["토목 5억↑ / 전문 2억↑ / 건축 660㎡↑"],law:["교육시설과-4067"],
+    {n:"5",t:"감리발주 (공사감리·감독 방식)",d:"개선된 공사감리(감독)방식 적용",
+     money:["토목 5억↑ / 전문 2억↑ / 건축 660㎡↑"],law:["공사감리(감독)방식 개선"],
      detail:{
-       obj:["건설사업관리 의무화 대상: 총공사비 5억↑ 토목 / 2억↑ 전문공사 / 연면적 660㎡↑ 건축","방식: 직접감독(건축사 상주감리) / 건축사 상주감리 / 건설사업관리 실시 / 감독권한대행 등 건설사업관리"],
-       laws:[["교육시설과-4067(2023.6.19.)",""]],
-       note:"감독권한대행 등 건설사업관리: 임대형민자(BTL)·통합발주사업·CM 적정성 검토기준 결과 필요 인정 공사 등"
+       obj:[
+         "① 직접감독 또는 상주·비상주감리(감독권한대행 등 CM 적용 가능): 건설사업관리계획 수립 의무대상이 아닌 공사(연면적 660㎡ 미만)·구조물 미포함 보수공사. 구조물 포함 공사는 상주감리 우선 적용하되, 현장여건에 따라 담당자 판단 하 비상주감리 적용(소규모 보수·보강 등)",
+         "② 건축신고 대상(연면적 100㎡ 이하 신축, 85㎡ 이하 증·개·재축)은 비상주감리 권장(안전관리자 포함) / 건축허가 대상은 상주감리 권장(안전관리자 포함, 660㎡ 미만 적용)",
+         "③ 직접감독 자격 완화: 건축(토목) 산업기사 이상 자격 소지자 [종전 기사 이상 또는 산업기사+경력 3년 → 완화]",
+         "④ (시공단계) 건설사업관리 실시: 건설사업관리계획 수립 의무 대상 공사·증개축 공사(연면적 660㎡ 이상)",
+         "⑤ 감독권한대행 등 건설사업관리 실시: 총공사비 200억↑ 신설·이설·개축 / BTL / 통합 CM / 그린스마트스쿨(공간재구조화) 중 개축공사 / CM 적정성 검토 결과 필요 인정 공사",
+         "그린스마트스쿨(공간재구조화) 중 리모델링 공사: 건축사 상주감리 적용",
+         "통합 CM: 직선거리 20km 이내 최대 3개 현장 통합 가능(공사비 합산 용역비 산출). 통합 공사 중 1개 총공사비 300억↑ 시 특급기술자 1명 추가 배치"
+       ],
+       laws:[["공사감리(감독)방식 적용 개선","건설기술진흥법 시행령 §55·§59-2"]],
+       note:"⚠ 건설사업관리계획 수립 의무 대상임에도 미수립 착공 또는 계획 미준수 시 2천만원 이하 과태료. 계획 수립·변경 시 국토부장관에게 반드시 제출(www.cems.kr)"
      }},
     {n:"6",t:"폐기물처리용역 발주",d:"건설폐기물 처리용역",
      money:["폐기물 100톤↑ 분리발주"],law:["건설폐기물법"],

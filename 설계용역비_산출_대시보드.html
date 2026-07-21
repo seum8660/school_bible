@@ -8,6 +8,7 @@
 <style>
   .viz-root {
     color-scheme: light;
+    color: var(--text-primary);
     --surface-1:      #ffffff;
     --surface-page:   #f2f4f6;
     --text-primary:   #191f28;
@@ -455,17 +456,6 @@
         <div class="sub" id="out_히어로설명">용역비 + 추가조사비(지질조사 포함) + 부가가치세 + 손해배상보험료 · 원본 산출서 오류 보정 반영(하단 안내 참조)</div>
       </div>
 
-      <div class="diff-bar" id="diffBar">
-        <div class="diff-left">
-          <span class="diff-dot" id="diffDot"></span>
-          <span id="diffLabel">원본 산출서 대비</span>
-        </div>
-        <div class="diff-right">
-          <span class="diff-ref">원본 84,402,000원</span>
-          <span class="diff-amt" id="diffAmt">-</span>
-        </div>
-      </div>
-
       <div class="tiles">
         <div class="tile">
           <span class="label"><span class="dot" style="background:var(--series-1)"></span>분야별 용역비</span>
@@ -538,14 +528,6 @@
           <thead><tr><th>항목</th><th>비고</th><th class="num">금액(원)</th></tr></thead>
           <tbody id="tbl_추가조사비"></tbody>
         </table>
-        <div class="callout" style="background:color-mix(in srgb,var(--series-1) 10%,transparent);color:var(--text-secondary);">
-          ✅ 원본 산출서(설계용역비산출서_v2 발주청테스트용)에서 발견된 아래 4가지 계산 오류를 본 대시보드에서 모두 <b>수정 완료</b>하여 산출했습니다.<br><br>
-          ① <b>지질조사비 누락 → 수정됨</b> — 원본 종합집계표 SUM 범위에서 빠져 있던 지질조사비를 추가조사비 총계에 포함했습니다.<br>
-          ② <b>기타분야 이중 합산 → 수정됨</b> — BF·설계안전보건대장·설계안전성검토·현황측량비를 항목별로 1회만 합산하여 약 3,800,000원 과다 계상을 제거했습니다.<br>
-          ③ <b>현황측량비 연동 누락 → 수정됨</b> — 산식 연결이 비어 0원으로 표시되던 현황측량비를 “기본단가 × 면적계수 × 지가계수” 산식대로 재계산했습니다.<br>
-          ④ <b>부가가치세 과세표준 → 수정됨</b> — 건축 용역비만 삼던 과세표준을 건축+인테리어 용역비 전체로 바로잡았습니다.<br><br>
-          ※ 실제 제출 전 원본 엑셀 수식과 함께 최종 확인하시기 바랍니다.
-        </div>
       </div>
 
       <div class="panel full">
@@ -826,6 +808,7 @@
     // 원본 산출서 대비 실시간 차이 배지
     (function renderDiffBar(){
       const bar = document.getElementById('diffBar');
+      if (!bar) return;
       const diff = r.총합계 - ORIGINAL_TOTAL;
       const diffPct = ORIGINAL_TOTAL ? (diff/ORIGINAL_TOTAL*100) : 0;
       const matched = inputsMatchDefaults();

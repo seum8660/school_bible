@@ -2513,5 +2513,40 @@ window.__gvInit = (function(){
   });
 })();
 </script>
+<script>
+// ===== 임시 블라인드 (교육시설과 · 감사관) — 다음 오픈 시 이 블록만 삭제 =====
+(function(){
+  var WORDS=['교육시설과','감사관'];
+  var re=new RegExp('('+WORDS.join('|')+')','g');
+  function blindNode(tn){
+    var t=tn.nodeValue; if(!t||t.indexOf('교육시설과')<0&&t.indexOf('감사관')<0) return;
+    var p=tn.parentNode; if(!p||p.closest&&p.closest('.blind-skip')) return;
+    if(p.classList&&p.classList.contains('blinded')) return;
+    var frag=document.createDocumentFragment(), last=0, m;
+    re.lastIndex=0;
+    while((m=re.exec(t))){
+      if(m.index>last) frag.appendChild(document.createTextNode(t.slice(last,m.index)));
+      var s=document.createElement('span'); s.className='blinded'; s.textContent=m[0];
+      s.style.cssText='background:currentColor;color:transparent;border-radius:3px;filter:blur(.5px);user-select:none;';
+      s.title='비공개 (준비 중)';
+      frag.appendChild(s); last=m.index+m[0].length;
+    }
+    if(last<t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(frag,tn);
+  }
+  function walk(root){
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);
+    var list=[],n; while((n=w.nextNode())) list.push(n);
+    list.forEach(blindNode);
+  }
+  function run(){ walk(document.body); }
+  if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded',run);
+  new MutationObserver(function(muts){
+    muts.forEach(function(mu){ mu.addedNodes.forEach(function(nd){
+      if(nd.nodeType===3) blindNode(nd); else if(nd.nodeType===1) walk(nd);
+    }); });
+  }).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
 </body>
 </html>

@@ -722,15 +722,9 @@
     <aside class="hero-notice">
       <div class="hn-head"><span class="hn-dot"></span>업데이트 · 공지</div>
       <ul class="hn-list">
-<<<<<<< HEAD
         <li><span class="hn-tag">NEW</span><div>🔥 <b>일위대가 검색</b> 추가 — 공종별 단가·자재단가·호표 내역 검색</div></li>
         <li><span class="hn-tag">NEW</span><div><b>표준품셈 검색</b> 내장 — 표준품셈 체크 메뉴에서 바로 검색</div></li>
         <li><span class="hn-tag">기능</span><div><b>그래프 뷰</b> 추가 — 업무·법령·인증 관계도 시각화</div></li>
-=======
-        <li><span class="hn-tag">NEW</span><div><b>표준품셈 검색</b> 내장 — 표준품셈 체크 메뉴에서 바로 검색</div></li>
-        <li><span class="hn-tag">기능</span><div><b>그래프 뷰</b> 추가 — 업무·법령·인증 관계도 시각화</div></li>
-        <li><span class="hn-tag">개선</span><div>공사기간·설계용역비 산출 대시보드 연동</div></li>
->>>>>>> c4cd541c388a21403e308d3c9376d6dcc58dcfd6
       </ul>
       <div class="hn-foot">ver 3.0 · 2026-07-21</div>
     </aside>
@@ -753,11 +747,7 @@
       <button class="tab" data-p="price"><span class="dot"></span>📐 2026 시설단가</button>
       <button class="tab" data-p="glossary"><span class="dot"></span>📖 용어정리</button>
       <button class="tab" data-p="ratio"><span class="dot"></span>📊 2026 제비율표</button>
-<<<<<<< HEAD
       <button class="tab" data-p="ilwidan"><span class="dot"></span>📊 2026(하) 일위대가</button>
-=======
-      <a class="extlink" href="https://www.jge.go.kr/open/na/ntt/selectNttList.do?mi=860&bbsId=416&searchCate=17" target="_blank" rel="noopener noreferrer" style="border:var(--glassbd);font-size:14px;font-weight:700"><span class="dot"></span><span class="lb" style="white-space:nowrap">2026(하) 일위대가</span><span class="ext">↗</span></a>
->>>>>>> c4cd541c388a21403e308d3c9376d6dcc58dcfd6
       <div class="nav-grp">관련 사이트</div>
       <a class="extlink" href="https://www.moleg.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">법제처</span><span class="ext">↗</span></a>
       <a class="extlink" href="https://www.csi.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">건설공사 안전관리 통합정보망(CSI)</span><span class="ext">↗</span></a>
@@ -1021,7 +1011,6 @@
     <div class="tbl-wrap"><table><thead><tr><th>인증명</th><th style="text-align:center">대상 공사유형</th><th style="text-align:center">연면적 기준</th><th>등급 체계</th><th>근거</th></tr></thead><tbody id="cert-ref"></tbody></table></div>
   </section>
 
-<<<<<<< HEAD
   <!-- ============ 일위대가 검색 ============ -->
   <section class="panel" id="ilwidan">
     <div class="sec-head">
@@ -1031,8 +1020,6 @@
     <iframe src="단가검색_대시보드.html" title="일위대가 검색" loading="lazy" style="width:100%;height:78vh;min-height:560px;border:1.5px solid var(--border);border-radius:var(--radsm);background:var(--surface);box-shadow:var(--shadow-sm);"></iframe>
   </section>
 
-=======
->>>>>>> c4cd541c388a21403e308d3c9376d6dcc58dcfd6
   <!-- ============ 표준품셈 체크 ============ -->
   <section class="panel" id="bom">
     <div class="sec-head">
@@ -2307,21 +2294,12 @@ window.__gvInit = (function(){
       .alpha(1).alphaDecay(0.006).velocityDecay(0.5);
     var linkSel=g.append("g").attr("stroke-opacity",0.6).selectAll("line").data(RAW.links).join("line").attr("stroke-width",1);
     var nodeG=g.append("g").selectAll("g").data(RAW.nodes).join("g").attr("cursor","pointer")
-<<<<<<< HEAD
       .call(d3.drag().on("start",function(e,d){if(!e.active)sim.alphaTarget(0.25).restart();d.fx=d.x;d.fy=d.y;d.__sx=e.x;d.__sy=e.y;d.__moved=false;})
         .on("drag",function(e,d){d.fx=e.x;d.fy=e.y;if(Math.abs(e.x-d.__sx)>4||Math.abs(e.y-d.__sy)>4)d.__moved=true;}).on("end",function(e,d){if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}));
     var nodeSel=nodeG.append("circle").attr("r",rad).attr("fill",function(d){return d.color;}).attr("stroke","#1a1b26").attr("stroke-width",1.4);
     var labelSel=nodeG.append("text").text(function(d){return d.label.length>11?d.label.slice(0,11)+"…":d.label;})
       .attr("dy",function(d){return rad(d)+10;}).attr("text-anchor","middle")
       .attr("font-size",function(d){return d.group==="phase"||d.group==="root"?9:7;}).style("cursor","pointer");
-=======
-      .call(d3.drag().on("start",function(e,d){if(!e.active)sim.alphaTarget(0.25).restart();d.fx=d.x;d.fy=d.y;})
-        .on("drag",function(e,d){d.fx=e.x;d.fy=e.y;}).on("end",function(e,d){if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}));
-    var nodeSel=nodeG.append("circle").attr("r",rad).attr("fill",function(d){return d.color;}).attr("stroke","#1a1b26").attr("stroke-width",1.4);
-    var labelSel=nodeG.append("text").text(function(d){return d.label.length>11?d.label.slice(0,11)+"…":d.label;})
-      .attr("dy",function(d){return rad(d)+10;}).attr("text-anchor","middle")
-      .attr("font-size",function(d){return d.group==="phase"||d.group==="root"?9:7;}).style("pointer-events","none");
->>>>>>> c4cd541c388a21403e308d3c9376d6dcc58dcfd6
     function nb(a,b){return linked[a+"|"+b];}
     var gvac=null;
     function gvac_(){gvac=gvac||new(window.AudioContext||window.webkitAudioContext)();if(gvac.state==='suspended')gvac.resume();return gvac;}
@@ -2344,17 +2322,11 @@ window.__gvInit = (function(){
       });
     }catch(e){}}
     nodeG.on("click",function(e,d){
-<<<<<<< HEAD
       if(d.__moved){d.__moved=false;return;}
       gvtone();
       var t=null;
       if(d.group==="root"){t="overview";}
       else if(d.group==="phase"){t=d.id.split(":")[1];}
-=======
-      gvtone();
-      var t=null;
-      if(d.group==="phase"){t=d.id.split(":")[1];}
->>>>>>> c4cd541c388a21403e308d3c9376d6dcc58dcfd6
       else if(d.group.indexOf("item:")===0){t=d.group.split(":")[1];}
       else if(d.group==="cert"){t="cert";}
       else if(d.group==="law"){

@@ -82,6 +82,7 @@
   table.rt td.nm.clk{color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-color:var(--accent-line);text-underline-offset:2px;}
   table.rt td.nm.clk:hover{text-decoration-color:var(--accent);}
   table.rt td.nm.clk.open{font-weight:800;}
+<<<<<<< HEAD
   /* 호표 팝업(모달) */
   .drawer{position:fixed;inset:0;z-index:40;background:rgba(10,20,40,.5);display:none;align-items:center;justify-content:center;padding:28px;transform:none;transition:none;max-height:none;}
   .drawer.on{display:flex;}
@@ -105,6 +106,20 @@
   table.bd tfoot td{position:sticky;bottom:0;background:var(--panel2);font-weight:800;border-top:2px solid var(--line);font-size:13.5px;}
   table.bd tfoot td.sum{font-family:var(--mono);color:var(--accent);}
   .content.with-drawer{padding-bottom:0;}
+=======
+  tr.bd-row>td{padding:0;background:var(--panel);border-bottom:1.5px solid var(--line);}
+  .bd-wrap{padding:14px 18px 18px;background:var(--panel);}
+  .bd-cap{font-size:13px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .bd-cap .ho{font-family:var(--mono);font-size:11px;color:var(--code);background:var(--code-bg);border:1px solid var(--accent-line);padding:2px 8px;border-radius:100px;font-weight:600;}
+  table.bd{width:100%;border-collapse:collapse;font-size:12px;background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  table.bd th,table.bd td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:right;white-space:nowrap;}
+  table.bd thead th{background:var(--panel);color:var(--sub);font-weight:700;font-size:11px;}
+  table.bd th.l,table.bd td.l{text-align:left;}
+  table.bd td.nm{font-weight:600;}
+  table.bd td.num{font-family:var(--mono);}
+  table.bd tfoot td{background:var(--panel);font-weight:800;border-top:1.5px solid var(--line);}
+  table.bd tfoot td.sum{font-family:var(--mono);color:var(--accent);font-size:13px;}
+>>>>>>> bac58c425d35cb929ae2080aaf3df5f198225f6d
   table.rt col.c-nm{width:auto;} table.rt col.c-spec{width:15%;}
   table.rt col.c-nm{width:auto;min-width:340px;} table.rt col.c-spec{width:auto;min-width:220px;}
   table.rt col.c-num{width:120px;} table.rt col.c-sum{width:130px;} table.rt col.c-code{width:auto;} table.rt col.c-bigo{width:110px;}
@@ -153,6 +168,7 @@
     <div class="content" id="content"><div class="loading">데이터 불러오는 중…</div></div>
   </main>
 </div>
+<<<<<<< HEAD
 <div class="drawer" id="drawer">
   <div class="modal-box">
   <div class="drawer-h">
@@ -162,6 +178,8 @@
   <div class="drawer-b" id="d-body"></div>
   </div>
 </div>
+=======
+>>>>>>> bac58c425d35cb929ae2080aaf3df5f198225f6d
 <footer>
   본 검색기는 「전라남도교육청_건축(26년 상반기)」 내역 파일에서 추출한 일위대가·단가산출·자재단가 자료로, 참고용입니다. 실제 설계·적산 시에는 원본 내역서와 최신 품셈·물가정보를 반드시 확인하시기 바랍니다.
 </footer>
@@ -308,6 +326,7 @@
   }
   function bdTableHtml(item){
     var rows=(window.DANGA_BD||{})[item.id]||[];
+<<<<<<< HEAD
     if(!rows.length) return '<div style="padding:30px;text-align:center;color:var(--sub)">등록된 호표 내역이 없습니다.</div>';
     var tm=0,tl=0,te=0;
     var h='<table class="bd"><thead><tr><th class="l">품명</th><th class="l">규격</th><th>단위</th><th>수량</th><th>재료비</th><th>노무비</th><th>경비</th><th>합계</th><th class="l">비고</th></tr></thead><tbody>';
@@ -336,6 +355,32 @@
     dBody.innerHTML='<div style="padding:30px;text-align:center;color:var(--sub)">불러오는 중…</div>';
     drawer.classList.add('on'); content.classList.add('with-drawer');
     loadBd(function(){ dBody.innerHTML=bdTableHtml(item); });
+=======
+    if(!rows.length) return '<div style="padding:20px;text-align:center;color:var(--sub)">등록된 호표 내역이 없습니다.</div>';
+    var tm=0,tl=0,te=0;
+    var h='<div class="bd-wrap"><div class="bd-cap"><span class="ho">'+esc(item.ho||'호표')+'</span> '+esc(item.n)+(item.s?' · '+esc(item.s):'')+'</div>'
+      +'<table class="bd"><thead><tr><th class="l">품명</th><th class="l">규격</th><th>단위</th><th>수량</th><th>재료비</th><th>노무비</th><th>경비</th><th>합계</th><th class="l">비고</th></tr></thead><tbody>';
+    rows.forEach(function(r){ tm+=r.m;tl+=r.l;te+=r.e;
+      h+='<tr><td class="l nm">'+esc(r.n)+'</td><td class="l">'+esc(r.s||'')+'</td><td>'+esc(r.u||'')+'</td>'
+        +'<td class="num">'+(r.q||'')+'</td><td class="num">'+won(r.m)+'</td><td class="num">'+won(r.l)+'</td><td class="num">'+won(r.e)+'</td>'
+        +'<td class="num">'+won(r.t)+'</td><td class="l" style="color:var(--sub);font-size:11px">'+esc(r.x||'')+'</td></tr>';
+    });
+    h+='</tbody><tfoot><tr><td class="l" colspan="4">[ 합계 ]</td><td class="sum">'+won(tm)+'</td><td class="sum">'+won(tl)+'</td><td class="sum">'+won(te)+'</td><td class="sum">'+won(item.t)+'</td><td></td></tr></tfoot></table></div>';
+    return h;
+  }
+  content.addEventListener('click',function(e){
+    var td=e.target.closest('td.nm.clk'); if(!td || TYPE!=='ilwi') return;
+    var tr=td.parentNode, colcount=tr.children.length;
+    var next=tr.nextElementSibling;
+    if(next && next.classList.contains('bd-row')){ next.parentNode.removeChild(next); td.classList.remove('open'); return; }
+    // close any other open
+    var open=content.querySelector('tr.bd-row'); if(open){ var p=open.previousElementSibling; if(p){var c=p.querySelector('.clk'); if(c)c.classList.remove('open');} open.parentNode.removeChild(open); }
+    var idx=+td.getAttribute('data-i'); var item=lastShown[idx]; if(!item) return;
+    var row=document.createElement('tr'); row.className='bd-row';
+    var cell=document.createElement('td'); cell.colSpan=colcount; cell.innerHTML='<div style="padding:16px;text-align:center;color:var(--sub)">불러오는 중…</div>';
+    row.appendChild(cell); tr.parentNode.insertBefore(row,tr.nextElementSibling); td.classList.add('open');
+    loadBd(function(){ cell.innerHTML=bdTableHtml(item); });
+>>>>>>> bac58c425d35cb929ae2080aaf3df5f198225f6d
   });
 
   Array.prototype.forEach.call(document.querySelectorAll('.kpi button'),function(b){

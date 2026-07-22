@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<title>2026 상반기 건축 단가 검색</title>
+<style>
+  :root{
+    --bg:#f2f4f6; --panel:#ffffff; --panel2:#f2f4f6; --line:#c4ccd6;
+    --text:#191f28; --sub:#8b95a1; --accent:#3182f6; --accent-dim:#e8f2ff;
+    --accent-line:#b9d3ff; --code:#1b64da; --code-bg:#e8f2ff;
+    --mark:#1b64da; --mark-bg:#d6e6ff;
+    --mono:'D2Coding','Consolas','SFMono-Regular',monospace;
+    --sans:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',-apple-system,sans-serif;
+    --rad:20px; --radsm:14px;
+    --shadow:0 1px 3px rgba(0,27,55,.04),0 6px 20px rgba(0,27,55,.06);
+    --shadow-sm:0 1px 2px rgba(0,27,55,.06);
+    --glassbd:1px solid #c4ccd6;
+  }
+  [data-theme="dark"]{
+    --bg:#1b2140; --panel:rgba(255,255,255,.08); --panel2:rgba(255,255,255,.06);
+    --line:rgba(255,255,255,.18); --text:#f1f4fb; --sub:#9aa3bd; --accent:#8fb8ff;
+    --accent-dim:rgba(143,184,255,.20); --accent-line:rgba(143,184,255,.4);
+    --mark:#ffcf8a; --mark-bg:rgba(255,207,138,.22); --code:#8fb8ff; --code-bg:rgba(143,184,255,.16);
+    --shadow:0 8px 30px rgba(0,0,0,.35); --shadow-sm:0 4px 16px rgba(0,0,0,.28);
+    --glassbd:1px solid rgba(255,255,255,.18);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);display:flex;flex-direction:column;min-height:100vh;transition:background .2s,color .2s;}
+  header{padding:16px 28px 16px;border-bottom:1.5px solid var(--line);background:var(--panel);}
+  .hd-top{position:relative;text-align:center;margin-bottom:14px;}
+  header h1{margin:0 0 3px;font-size:20px;letter-spacing:-.6px;font-weight:900;}
+  header .sub{color:var(--sub);font-size:12.5px;}
+  .theme-toggle{position:absolute;right:0;top:2px;display:flex;align-items:center;gap:4px;background:var(--panel);border:1.5px solid var(--line);border-radius:100px;padding:4px;cursor:pointer;}
+  .theme-toggle span{width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:14px;border-radius:100px;color:var(--sub);}
+  .theme-toggle .tg-sun{background:var(--accent);color:#fff;}
+  [data-theme="dark"] .theme-toggle .tg-sun{background:transparent;color:var(--sub);}
+  [data-theme="dark"] .theme-toggle .tg-moon{background:var(--accent);color:#fff;}
+  .searchbar{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;position:relative;}
+  .sb-field{position:relative;flex:0 1 54%;min-width:300px;}
+  .sb-ic{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none;}
+  .searchbar input{width:100%;background:var(--panel);border:2.5px solid var(--accent);color:var(--text);padding:12px 16px 12px 46px;border-radius:var(--radsm);font-size:14px;font-family:var(--sans);box-shadow:var(--shadow-sm);}
+  .searchbar input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
+  .searchbar .count{color:var(--sub);font-size:12.5px;white-space:nowrap;}
+  .kpi{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+  .kpi button{background:var(--panel);border:1.5px solid var(--line);border-radius:100px;padding:7px 16px;font:inherit;font-size:13px;font-weight:700;color:var(--sub);cursor:pointer;display:flex;align-items:center;gap:7px;}
+  .kpi button .n{font-family:var(--mono);font-size:12px;color:var(--sub);background:var(--panel2);border-radius:100px;padding:1px 8px;}
+  .kpi button.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .kpi button.on .n{background:rgba(255,255,255,.22);color:#fff;}
+  .layout{display:flex;flex:1;min-height:0;}
+  nav.sidebar-gj{width:196px;flex-shrink:0;border-right:1px solid var(--line);background:var(--panel);overflow-y:auto;padding:12px 10px;}
+  nav.sidebar-gj .cat-h{padding:6px 10px;font-size:11px;font-weight:800;letter-spacing:.4px;color:var(--sub);text-transform:uppercase;}
+  nav.sidebar-gj .gj{padding:8px 12px;font-size:12.5px;color:var(--sub);cursor:pointer;border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+  nav.sidebar-gj .gj:hover{background:var(--panel2);color:var(--text);}
+  nav.sidebar-gj .gj.on{background:var(--accent);color:#fff;font-weight:700;}
+  nav.sidebar-gj .gj .cn{font-family:var(--mono);font-size:10.5px;color:var(--sub);flex-shrink:0;}
+  nav.sidebar-gj .gj.on .cn{color:#fff;}
+  nav.sidebar{width:250px;flex-shrink:0;border-right:1px solid var(--line);background:var(--panel);overflow-y:auto;padding:12px 10px;}
+  nav.sidebar .cat-h{padding:6px 10px;font-size:11px;font-weight:800;letter-spacing:.4px;color:var(--sub);text-transform:uppercase;}
+  nav.sidebar .cat{padding:8px 12px;font-size:13px;color:var(--sub);cursor:pointer;border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+  nav.sidebar .cat:hover{background:var(--panel2);color:var(--text);}
+  nav.sidebar .cat.on{background:var(--accent-dim);color:var(--accent);font-weight:700;}
+  nav.sidebar .cat .cn{font-family:var(--mono);font-size:11px;color:var(--sub);flex-shrink:0;}
+  nav.sidebar .cat.on .cn{color:var(--accent);}
+  main{flex:1;display:flex;flex-direction:column;min-width:0;}
+  .content{flex:1;overflow:auto;padding:0;}
+  .empty{padding:60px 24px;text-align:center;color:var(--sub);font-size:13.5px;}
+  table.rt{min-width:100%;table-layout:auto;border-collapse:collapse;font-size:13px;}
+  table.rt th,table.rt td{border-bottom:1px solid var(--line);padding:9px 12px;text-align:right;white-space:nowrap;}
+  table.rt thead th{position:sticky;top:0;z-index:2;background:var(--panel2);color:var(--sub);font-weight:700;font-size:11.5px;letter-spacing:.3px;border-bottom:1.5px solid var(--line);}
+  table.rt th.l,table.rt td.l{text-align:left;white-space:normal;}
+  table.rt td.nm{font-weight:700;color:var(--text);}
+  table.rt td.spec{color:var(--sub);font-size:12.5px;white-space:nowrap;}
+  table.rt td.unit,table.rt th.unit{width:52px;text-align:center;font-family:var(--mono);font-size:11.5px;color:var(--sub);}
+  table.rt td.num{font-family:var(--mono);font-size:12.5px;color:var(--text);}
+  table.rt td.sum{font-family:var(--mono);font-size:14px;font-weight:800;color:var(--accent);}
+  table.rt td.bigo,table.rt th.bigo{text-align:center;color:var(--sub);font-size:12px;}
+  table.rt td.code{text-align:left;white-space:nowrap;}
+  table.rt tbody tr:hover td{background:var(--panel2);}
+  table.rt td.nm.clk{color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-color:var(--accent-line);text-underline-offset:2px;}
+  table.rt td.nm.clk:hover{text-decoration-color:var(--accent);}
+  table.rt td.nm.clk.open{font-weight:800;}
+  /* 호표 팝업(모달) */
+  .drawer{position:fixed;inset:0;z-index:40;background:rgba(10,20,40,.5);display:none;align-items:center;justify-content:center;padding:28px;transform:none;transition:none;max-height:none;}
+  .drawer.on{display:flex;}
+  .drawer>.modal-box{background:var(--panel);border:var(--glassbd);border-radius:var(--rad);box-shadow:0 20px 60px rgba(0,27,55,.35);width:min(1100px,100%);max-height:86vh;display:flex;flex-direction:column;overflow:hidden;}
+  .drawer-h{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1.5px solid var(--line);background:var(--panel2);}
+  .dh-t{flex:1;min-width:0;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .dh-t .ho{font-family:var(--mono);font-size:12px;color:var(--code);background:var(--code-bg);border:1px solid var(--accent-line);padding:2px 9px;border-radius:100px;font-weight:600;}
+  .dh-nm{font-size:15px;font-weight:800;letter-spacing:-.3px;}
+  .dh-sub{font-size:12.5px;color:var(--sub);}
+  .drawer-x{border:0;background:var(--panel);border:1.5px solid var(--line);color:var(--sub);width:34px;height:34px;border-radius:10px;font-size:20px;cursor:pointer;flex-shrink:0;}
+  .drawer-x:hover{color:var(--text);border-color:var(--accent);}
+  .drawer-b{overflow:auto;padding:0;}
+  table.bd{width:100%;border-collapse:collapse;font-size:13px;background:var(--panel);}
+  table.bd th,table.bd td{border-bottom:1px solid var(--line);padding:9px 14px;text-align:right;white-space:nowrap;}
+  table.bd thead th{position:sticky;top:0;background:var(--panel2);color:var(--sub);font-weight:700;font-size:11.5px;z-index:1;border-bottom:1.5px solid var(--line);}
+  table.bd th.l,table.bd td.l{text-align:left;}
+  table.bd td.nm{font-weight:700;}
+  table.bd tbody tr:hover td{background:var(--panel2);}
+  table.bd td.num{font-family:var(--mono);}
+  table.bd td.sumcell{font-family:var(--mono);font-weight:700;color:var(--accent);}
+  table.bd tfoot td{position:sticky;bottom:0;background:var(--panel2);font-weight:800;border-top:2px solid var(--line);font-size:13.5px;}
+  table.bd tfoot td.sum{font-family:var(--mono);color:var(--accent);}
+  .content.with-drawer{padding-bottom:0;}
+  table.rt col.c-nm{width:auto;} table.rt col.c-spec{width:15%;}
+  table.rt col.c-nm{width:auto;min-width:340px;} table.rt col.c-spec{width:auto;min-width:220px;}
+  table.rt col.c-num{width:120px;} table.rt col.c-sum{width:130px;} table.rt col.c-code{width:auto;} table.rt col.c-bigo{width:110px;}
+  table.rt td.unit,table.rt th.unit{width:44px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--sub);}
+  table.rt td.nm{white-space:nowrap;}
+  table.rt th,table.rt td{padding:9px 8px;}
+  table.rt td.nm,table.rt td.spec{overflow:visible;text-overflow:clip;}
+  .r-code{font-family:var(--mono);font-size:11px;color:var(--code);background:var(--code-bg);border:1px solid var(--accent-line);padding:1px 7px;border-radius:100px;}
+  mark{background:var(--mark-bg);color:var(--mark);padding:0 1px;border-radius:2px;}
+  footer{padding:10px 24px;border-top:1px solid var(--line);background:var(--panel);color:var(--sub);font-size:11px;line-height:1.6;}
+  .loading{padding:60px;text-align:center;color:var(--sub);}
+  @media(max-width:760px){
+    .layout{flex-direction:column;}
+    nav.sidebar-gj,nav.sidebar{width:100%;max-height:150px;border-right:none;border-bottom:1px solid var(--line);}
+    .sb-field{flex:1 1 100%;}
+    table.rt td.spec,table.rt th.spec,table.rt td.code,table.rt th.code{display:none;}
+  }
+  @media(max-width:1080px){
+    table.rt td.code,table.rt th.code,table.rt td.spec,table.rt th.spec{display:none;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="hd-top">
+    <h1>2026 상반기 건축 단가 검색</h1>
+    <div class="sub">전라남도교육청_건축(26년 상반기) · 공종별 단가 · 자재단가</div>
+    <button class="theme-toggle" id="themeToggle" title="라이트 / 다크 전환" aria-label="테마 전환"><span class="tg-sun">☀︎</span><span class="tg-moon">☾</span></button>
+  </div>
+  <div class="searchbar">
+    <div class="sb-field">
+      <span class="sb-ic">🔍</span>
+      <input id="q" type="text" placeholder="품명·규격으로 검색 (예: 터파기, 철근, 굴착기, 페인트)" autocomplete="off">
+    </div>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="kpi" id="kpi">
+    <button data-t="ilwi" class="on">단가 항목 <span class="n" id="n-ilwi">0</span></button>
+    <button data-t="mat">자재단가 <span class="n" id="n-mat">0</span></button>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar-gj" id="sidebar-gj"></nav>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main>
+    <div class="content" id="content"><div class="loading">데이터 불러오는 중…</div></div>
+  </main>
+</div>
+<div class="drawer" id="drawer">
+  <div class="modal-box">
+  <div class="drawer-h">
+    <div class="dh-t"><span class="ho" id="d-ho"></span><span class="dh-nm" id="d-nm"></span><span class="dh-sub" id="d-sub"></span></div>
+    <button class="drawer-x" id="d-x" title="닫기 (Esc)">×</button>
+  </div>
+  <div class="drawer-b" id="d-body"></div>
+  </div>
+</div>
+<footer>
+  본 검색기는 「전라남도교육청_건축(26년 상반기)」 내역 파일에서 추출한 일위대가·단가산출·자재단가 자료로, 참고용입니다. 실제 설계·적산 시에는 원본 내역서와 최신 품셈·물가정보를 반드시 확인하시기 바랍니다.
+</footer>
+<script src="danga_data.js"></script>
+<script>
+(function(){
+  var D = window.DANGA_DATA || {ilwi:[],dan:[],mat:[]};
+  var root=document.documentElement;
+  // theme
+  var tgl=document.getElementById('themeToggle');
+  try{ if(localStorage.getItem('danga-theme')==='dark') root.setAttribute('data-theme','dark'); }catch(e){}
+  tgl.addEventListener('click',function(){
+    var d=root.getAttribute('data-theme')==='dark';
+    if(d){root.removeAttribute('data-theme');} else {root.setAttribute('data-theme','dark');}
+    try{localStorage.setItem('danga-theme',d?'light':'dark');}catch(e){}
+  });
+
+  document.getElementById('n-ilwi').textContent=(D.ilwi||[]).length.toLocaleString();
+  document.getElementById('n-mat').textContent=(D.mat||[]).length.toLocaleString();
+
+  var TYPE='ilwi', CAT='', GJ=0, Q='', CAP=300;
+  var q=document.getElementById('q'), content=document.getElementById('content'),
+      sidebar=document.getElementById('sidebar'), sidebarGj=document.getElementById('sidebar-gj'), count=document.getElementById('count');
+
+  // ===== 20개 대공종 분류 =====
+  var GJLIST=[
+    {n:'가설공사',kw:['가설','비계','동바리','규준','건축물 설치 및 해체','안전시설']},
+    {n:'기초 및 토공사',kw:['터파기','되메우기','잔토','토사','굴착','다짐','성토','절토','흙막이','파일','항타','지정','기초','운반/단지']},
+    {n:'철근콘크리트공사',kw:['철근','콘크리트','거푸집','타설','레미콘','버림','철물']},
+    {n:'철골공사',kw:['철골','세우기','데크','볼트','용접','앵커']},
+    {n:'조적공사',kw:['조적','벽돌','블록','쌓기']},
+    {n:'방수공사',kw:['방수','실링','방습필름','아스팔트','코킹']},
+    {n:'타일공사',kw:['타일','압착','떠붙이기','압착 붙이기']},
+    {n:'석공사',kw:['석공사','화강석','대리석','석재','판석','현무암']},
+    {n:'목공사',kw:['목공','합판','각재','방부','목재','졸대']},
+    {n:'금속공사',kw:['금속','스테인리스','스테인레스','알루미늄','난간','트렌치','논슬립','금속판','셔터박스']},
+    {n:'미장공사',kw:['미장','몰탈','모르타르','방바닥','시멘트바름','견출','셀프레벨링','뿜칠 미장']},
+    {n:'창호공사',kw:['창호','도어','방화문','자동문','셔터','창짝','문틀']},
+    {n:'유리공사',kw:['유리','복층','페어글라스','거울','강화유리']},
+    {n:'도장공사',kw:['페인트','도장','붓칠','롤러칠','뿜칠','녹막이','바니시','락카','에나멜','스테인 칠']},
+    {n:'수장공사',kw:['도배','바닥재','시트','카펫','걸레받이','몰딩','인조광물섬유판','흡음','천장','석고보드','단열','발포폴리스티렌','압출발포','케이싱','마루','데코타일','우물천장']},
+    {n:'지붕 및 홈통공사',kw:['지붕','홈통','기와','징크','물받이','선홈통','처마']},
+    {n:'유지보수공사',kw:['유지보수','재도장','보수','보강']},
+    {n:'철거공사',kw:['철거','해체','파쇄','절단','제거']},
+    {n:'운반비',kw:['운반비','상차','하차','소운반','기계운반']},
+    {n:'소규모건설공사',kw:['소규모']}
+  ];
+  function classify(x){
+    var s=((x.c||'')+' '+(x.n||'')).toLowerCase();
+    // 우선 분류: 소규모건설·운반비(골재류)
+    if(/소규모건설|\(소규모/.test(s)) return 20;
+    if(/(모래|자갈|잡석|골재|시멘트|조약돌|호박돌)\s*운반/.test(s)) return 19;
+    for(var i=0;i<GJLIST.length;i++){ var kw=GJLIST[i].kw; for(var j=0;j<kw.length;j++){ if(s.indexOf(kw[j].toLowerCase())>=0) return i+1; } }
+    return 0;
+  }
+  ['mat'].forEach(function(tp){ (D[tp]||[]).forEach(function(x){ x.k=classify(x); }); });
+
+  function rows(){ return (D[TYPE]||[]).filter(function(x){ if(GJ===0) return true; if(GJ===-1) return x.k===0; return x.k===GJ; }); }
+  function esc(s){return String(s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function hl(s){ if(!Q) return esc(s); var i=s.toLowerCase().indexOf(Q); if(i<0) return esc(s);
+    return esc(s.slice(0,i))+'<mark>'+esc(s.slice(i,i+Q.length))+'</mark>'+esc(s.slice(i+Q.length)); }
+  function won(n){ return (n||0).toLocaleString(); }
+
+  function buildGj(){
+    var all=D[TYPE]||[], m={};
+    all.forEach(function(x){ m[x.k]=(m[x.k]||0)+1; });
+    var html='<div class="cat-h">공종 구분</div>';
+    html+='<div class="gj'+(GJ===0?' on':'')+'" data-g="0">전체 <span class="cn">'+all.length.toLocaleString()+'</span></div>';
+    GJLIST.forEach(function(g,i){ var cnt=m[i+1]||0; html+='<div class="gj'+(GJ===i+1?' on':'')+'" data-g="'+(i+1)+'">'+esc(g.n)+' <span class="cn">'+cnt+'</span></div>'; });
+    var etc=m[0]||0; if(etc) html+='<div class="gj'+(GJ===-1?' on':'')+'" data-g="-1">기타 <span class="cn">'+etc+'</span></div>';
+    sidebarGj.innerHTML=html;
+    Array.prototype.forEach.call(sidebarGj.querySelectorAll('.gj'),function(el){
+      el.addEventListener('click',function(){ GJ=+el.getAttribute('data-g'); CAT=''; buildGj(); buildCats(); render(); });
+    });
+  }
+
+  function buildCats(){
+    var list=rows(), m={};
+    list.forEach(function(x){ var c=x.c||'기타'; m[c]=(m[c]||0)+1; });
+    var cats=Object.keys(m).sort(function(a,b){return m[b]-m[a];});
+    var html='<div class="cat-h">'+({ilwi:'세부 분류',mat:'자재 분류'}[TYPE]||'분류')+'</div>';
+    html+='<div class="cat'+(CAT===''?' on':'')+'" data-c="">전체 <span class="cn">'+list.length.toLocaleString()+'</span></div>';
+    if(TYPE!=='mat'){
+      cats.forEach(function(c){ html+='<div class="cat'+(CAT===c?' on':'')+'" data-c="'+esc(c)+'">'+esc(c)+' <span class="cn">'+m[c]+'</span></div>'; });
+    }
+    sidebar.innerHTML=html;
+    Array.prototype.forEach.call(sidebar.querySelectorAll('.cat'),function(el){
+      el.addEventListener('click',function(){ CAT=el.getAttribute('data-c'); buildCats(); render(); });
+    });
+  }
+
+  function filtered(){
+    var list=rows();
+    return list.filter(function(x){
+      if(CAT && (x.c||'기타')!==CAT) return false;
+      if(!Q) return true;
+      return (x.n+' '+x.s+' '+(x.g||'')).toLowerCase().indexOf(Q)>=0;
+    });
+  }
+
+  function render(){
+    var res=filtered();
+    count.textContent=res.length.toLocaleString()+'건'+(res.length>CAP?' (상위 '+CAP+'건 표시)':'');
+    if(!res.length){ content.innerHTML='<div class="empty">검색 결과가 없습니다.</div>'; return; }
+    var shown=res.slice(0,CAP), html;
+    if(TYPE==='mat'){
+      html='<table class="rt"><colgroup><col class="c-nm"><col class="c-spec"><col class="c-num"><col class="c-sum"></colgroup>'
+        +'<thead><tr><th class="l">품명</th><th class="l spec">규격</th><th class="unit">단위</th><th>적용단가</th></tr></thead><tbody>';
+      for(var i=0;i<shown.length;i++){ var x=shown[i];
+        html+='<tr><td class="l nm">'+hl(x.n)+'</td><td class="l spec">'+hl(x.s||'')+'</td>'
+          +'<td class="unit">'+esc(x.u||'-')+'</td><td class="sum">'+won(x.p)+'</td></tr>';
+      }
+      html+='</tbody></table>';
+    } else {
+      var hasG=shown.some(function(r){return r.g;});
+      html='<table class="rt"><colgroup><col class="c-nm"><col class="c-spec">'+(hasG?'<col class="c-code">':'')+'<col class="c-num"><col class="c-num"><col class="c-num"><col class="c-sum"><col class="c-bigo"></colgroup>'
+        +'<thead><tr><th class="l">품명</th><th class="l spec">규격</th>'+(hasG?'<th class="l code">품셈근거</th>':'')+'<th class="unit">단위</th><th>재료비</th><th>노무비</th><th>경비</th><th>합계</th><th class="bigo">비고</th></tr></thead><tbody>';
+      var clk=(TYPE==='ilwi')?' clk':'';
+      for(var j=0;j<shown.length;j++){ var y=shown[j];
+        html+='<tr><td class="l nm'+clk+'" data-id="'+esc(y.id||'')+'" data-i="'+j+'">'+hl(y.n)+'</td><td class="l spec">'+hl(y.s||'')+'</td>'
+          +(hasG?'<td class="l code">'+(y.g?'<span class="r-code">'+esc(y.g)+'</span>':'')+'</td>':'')
+          +'<td class="unit">'+esc(y.u||'-')+'</td>'
+          +'<td class="num">'+won(y.m)+'</td><td class="num">'+won(y.l)+'</td><td class="num">'+won(y.e)+'</td>'
+          +'<td class="sum">'+won(y.t)+'</td><td class="bigo"></td></tr>';
+      }
+      html+='</tbody></table>';
+    }
+    content.innerHTML=html;
+    content.scrollTop=0;
+    if(TYPE==='ilwi') lastShown=shown;
+  }
+
+  // ===== 호표 상세 모달 =====
+  var lastShown=[], bdLoading=false;
+  function closeM(){}
+  function loadBd(cb){
+    if(window.DANGA_BD){ cb(); return; }
+    var wait=setInterval(function(){ if(window.DANGA_BD){clearInterval(wait);cb();} },80);
+    if(bdLoading) return;
+    bdLoading=true;
+    var s=document.createElement('script'); s.src='danga_bd.js';
+    s.onerror=function(){ clearInterval(wait); bdLoading=false; };
+    document.body.appendChild(s);
+  }
+  function bdTableHtml(item){
+    var rows=(window.DANGA_BD||{})[item.id]||[];
+    if(!rows.length) return '<div style="padding:30px;text-align:center;color:var(--sub)">등록된 호표 내역이 없습니다.</div>';
+    var tm=0,tl=0,te=0;
+    var h='<table class="bd"><thead><tr><th class="l">품명</th><th class="l">규격</th><th>단위</th><th>수량</th><th>재료비</th><th>노무비</th><th>경비</th><th>합계</th><th class="l">비고</th></tr></thead><tbody>';
+    rows.forEach(function(r){ tm+=r.m;tl+=r.l;te+=r.e;
+      h+='<tr><td class="l nm">'+esc(r.n)+'</td><td class="l">'+esc(r.s||'')+'</td><td>'+esc(r.u||'')+'</td>'
+        +'<td class="num">'+(r.q||'')+'</td><td class="num">'+won(r.m)+'</td><td class="num">'+won(r.l)+'</td><td class="num">'+won(r.e)+'</td>'
+        +'<td class="sumcell">'+won(r.t)+'</td><td class="l" style="color:var(--sub);font-size:11.5px">'+esc(r.x||'')+'</td></tr>';
+    });
+    h+='</tbody><tfoot><tr><td class="l" colspan="4">[ 합계 ]</td><td class="sum">'+won(tm)+'</td><td class="sum">'+won(tl)+'</td><td class="sum">'+won(te)+'</td><td class="sum">'+won(item.t)+'</td><td></td></tr></tfoot></table>';
+    return h;
+  }
+  var drawer=document.getElementById('drawer'), dHo=document.getElementById('d-ho'),
+      dNm=document.getElementById('d-nm'), dSub=document.getElementById('d-sub'), dBody=document.getElementById('d-body');
+  function closeDrawer(){ drawer.classList.remove('on'); content.classList.remove('with-drawer'); var o=content.querySelector('td.nm.clk.open'); if(o)o.classList.remove('open'); }
+  document.getElementById('d-x').addEventListener('click',closeDrawer);
+  drawer.addEventListener('click',function(e){ if(e.target===drawer) closeDrawer(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeDrawer(); });
+  content.addEventListener('click',function(e){
+    var td=e.target.closest('td.nm.clk'); if(!td || TYPE!=='ilwi') return;
+    var wasOpen=td.classList.contains('open');
+    var prev=content.querySelector('td.nm.clk.open'); if(prev)prev.classList.remove('open');
+    if(wasOpen){ closeDrawer(); return; }
+    td.classList.add('open');
+    var idx=+td.getAttribute('data-i'); var item=lastShown[idx]; if(!item) return;
+    dHo.textContent=item.ho||'호표'; dNm.textContent=item.n; dSub.textContent=(item.s?item.s+'  ':'')+(item.u?'· 단위 '+item.u:'');
+    dBody.innerHTML='<div style="padding:30px;text-align:center;color:var(--sub)">불러오는 중…</div>';
+    drawer.classList.add('on'); content.classList.add('with-drawer');
+    loadBd(function(){ dBody.innerHTML=bdTableHtml(item); });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.kpi button'),function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.kpi button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on'); TYPE=b.getAttribute('data-t'); CAT=''; GJ=0; buildGj(); buildCats(); render();
+    });
+  });
+  var t;
+  q.addEventListener('input',function(){ clearTimeout(t); t=setTimeout(function(){ Q=q.value.trim().toLowerCase(); render(); },160); });
+
+  buildGj(); buildCats(); render();
+})();
+</script>
+</body>
+</html>

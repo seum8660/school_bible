@@ -722,9 +722,9 @@
     <aside class="hero-notice">
       <div class="hn-head"><span class="hn-dot"></span>업데이트 · 공지</div>
       <ul class="hn-list">
+        <li><span class="hn-tag">NEW</span><div>🔥 <b>일위대가 검색</b> 추가 — 공종별 단가·자재단가·호표 내역 검색</div></li>
         <li><span class="hn-tag">NEW</span><div><b>표준품셈 검색</b> 내장 — 표준품셈 체크 메뉴에서 바로 검색</div></li>
         <li><span class="hn-tag">기능</span><div><b>그래프 뷰</b> 추가 — 업무·법령·인증 관계도 시각화</div></li>
-        <li><span class="hn-tag">개선</span><div>공사기간·설계용역비 산출 대시보드 연동</div></li>
       </ul>
       <div class="hn-foot">ver 3.0 · 2026-07-21</div>
     </aside>
@@ -747,7 +747,7 @@
       <button class="tab" data-p="price"><span class="dot"></span>📐 2026 시설단가</button>
       <button class="tab" data-p="glossary"><span class="dot"></span>📖 용어정리</button>
       <button class="tab" data-p="ratio"><span class="dot"></span>📊 2026 제비율표</button>
-      <a class="extlink" href="https://www.jge.go.kr/open/na/ntt/selectNttList.do?mi=860&bbsId=416&searchCate=17" target="_blank" rel="noopener noreferrer" style="border:var(--glassbd);font-size:14px;font-weight:700"><span class="dot"></span><span class="lb" style="white-space:nowrap">2026(하) 일위대가</span><span class="ext">↗</span></a>
+      <button class="tab" data-p="ilwidan"><span class="dot"></span>📊 2026(하) 일위대가</button>
       <div class="nav-grp">관련 사이트</div>
       <a class="extlink" href="https://www.moleg.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">법제처</span><span class="ext">↗</span></a>
       <a class="extlink" href="https://www.csi.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">건설공사 안전관리 통합정보망(CSI)</span><span class="ext">↗</span></a>
@@ -1011,6 +1011,15 @@
     <div class="tbl-wrap"><table><thead><tr><th>인증명</th><th style="text-align:center">대상 공사유형</th><th style="text-align:center">연면적 기준</th><th>등급 체계</th><th>근거</th></tr></thead><tbody id="cert-ref"></tbody></table></div>
   </section>
 
+  <!-- ============ 일위대가 검색 ============ -->
+  <section class="panel" id="ilwidan">
+    <div class="sec-head">
+      <span class="chip" style="background:#6d28d9">단가</span>
+      <div><h2>2026(하) 일위대가 검색</h2><p>공종별 단가 · 자재단가 · 호표 내역 (4,465건)</p></div>
+    </div>
+    <iframe src="단가검색_대시보드.html" title="일위대가 검색" loading="lazy" style="width:100%;height:78vh;min-height:560px;border:1.5px solid var(--border);border-radius:var(--radsm);background:var(--surface);box-shadow:var(--shadow-sm);"></iframe>
+  </section>
+
   <!-- ============ 표준품셈 체크 ============ -->
   <section class="panel" id="bom">
     <div class="sec-head">
@@ -1110,14 +1119,14 @@
   <section class="panel" id="check">
     <div class="sec-head"><span class="chip" style="background:var(--ops)">실무</span>
       <div><h2>단계별 확인사항 체크리스트</h2><p>설계·시공 공정별 점검항목과 감리비 정산 기준</p></div></div>
-    <div class="note">💡 항목을 클릭하면 체크됩니다. (체크 상태는 저장되지 않는 현장 점검용입니다.) 공정 그룹을 눌러 펼치세요.</div>
-    <div class="subswitch">
+    <div class="note">💡 단계별 확인사항 체크리스트는 준비 중입니다. 곧 제공될 예정입니다.</div>
+    <div class="subswitch" style="display:none">
       <button class="subbtn on" data-w="design">설계용역 점검</button>
       <button class="subbtn" data-w="const">시공 점검</button>
       <button class="subbtn" data-w="cm">감리비 정산</button>
     </div>
-    <div class="ck-progress">진행 <b><span id="ck-done">0</span> / <span id="ck-total">0</span></b> 항목 확인</div>
-    <div id="check-list"></div>
+    <div class="ck-progress" style="display:none">진행 <b><span id="ck-done">0</span> / <span id="ck-total">0</span></b> 항목 확인</div>
+    <div id="check-list" style="display:none"></div>
   </section>
 
   <!-- ============ 법령 검색 ============ -->
@@ -1202,9 +1211,8 @@
 </div>
 
 <footer class="wrap">
-  <span class="badge-org foot">전남광주통합특별시교육청 · 행정운영국 <b>교육시설과</b></span><br><br>
   <b>🏫 학교시설업무 치트키 🔑 SCHOOL BIBLE</b> — 가이드라인부터 자가테스트까지<br>
-  본 자료는 「교육시설과 업무 전달 회의(2025. 1.)」를 기반으로 재구성한 실무 참조용 문서입니다. 실제 적용 시 최신 법령·지침을 반드시 확인하시기 바랍니다.<br>
+  참조용 문서입니다. 실제 적용 시 최신 법령·지침을 반드시 확인하시기 바랍니다.<br>
   <span style="display:inline-block;margin-top:10px;color:var(--muted);font-size:12px">작성자 <b style="color:var(--navy)">claude_min</b> · 작성일 2026-07-20 · <b style="color:#3182F6">ver 3.0</b> · <span>🤖 Claude와 함께 제작했습니다</span></span>
 </footer>
 
@@ -2285,12 +2293,12 @@ window.__gvInit = (function(){
       .alpha(1).alphaDecay(0.006).velocityDecay(0.5);
     var linkSel=g.append("g").attr("stroke-opacity",0.6).selectAll("line").data(RAW.links).join("line").attr("stroke-width",1);
     var nodeG=g.append("g").selectAll("g").data(RAW.nodes).join("g").attr("cursor","pointer")
-      .call(d3.drag().on("start",function(e,d){if(!e.active)sim.alphaTarget(0.25).restart();d.fx=d.x;d.fy=d.y;})
-        .on("drag",function(e,d){d.fx=e.x;d.fy=e.y;}).on("end",function(e,d){if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}));
+      .call(d3.drag().on("start",function(e,d){if(!e.active)sim.alphaTarget(0.25).restart();d.fx=d.x;d.fy=d.y;d.__sx=e.x;d.__sy=e.y;d.__moved=false;})
+        .on("drag",function(e,d){d.fx=e.x;d.fy=e.y;if(Math.abs(e.x-d.__sx)>4||Math.abs(e.y-d.__sy)>4)d.__moved=true;}).on("end",function(e,d){if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}));
     var nodeSel=nodeG.append("circle").attr("r",rad).attr("fill",function(d){return d.color;}).attr("stroke","#1a1b26").attr("stroke-width",1.4);
     var labelSel=nodeG.append("text").text(function(d){return d.label.length>11?d.label.slice(0,11)+"…":d.label;})
       .attr("dy",function(d){return rad(d)+10;}).attr("text-anchor","middle")
-      .attr("font-size",function(d){return d.group==="phase"||d.group==="root"?9:7;}).style("pointer-events","none");
+      .attr("font-size",function(d){return d.group==="phase"||d.group==="root"?9:7;}).style("cursor","pointer");
     function nb(a,b){return linked[a+"|"+b];}
     var gvac=null;
     function gvac_(){gvac=gvac||new(window.AudioContext||window.webkitAudioContext)();if(gvac.state==='suspended')gvac.resume();return gvac;}
@@ -2313,9 +2321,11 @@ window.__gvInit = (function(){
       });
     }catch(e){}}
     nodeG.on("click",function(e,d){
+      if(d.__moved){d.__moved=false;return;}
       gvtone();
       var t=null;
-      if(d.group==="phase"){t=d.id.split(":")[1];}
+      if(d.group==="root"){t="overview";}
+      else if(d.group==="phase"){t=d.id.split(":")[1];}
       else if(d.group.indexOf("item:")===0){t=d.group.split(":")[1];}
       else if(d.group==="cert"){t="cert";}
       else if(d.group==="law"){

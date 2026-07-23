@@ -48,12 +48,20 @@
   /* ===== 표지 ===== */
   /* ===== 상단 네비게이션 (네이버형) ===== */
   .navbar{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--surface) 88%,transparent);border-bottom:1.5px solid var(--border);backdrop-filter:saturate(1.4) blur(8px);-webkit-backdrop-filter:saturate(1.4) blur(8px);}
-  .nav-in{max-width:1180px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .nav-in{max-width:1560px;margin:0 auto;padding:8px 20px;min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
   .nav-brand{display:flex;align-items:center;gap:11px;cursor:pointer;}
   .nav-logo{width:34px;height:34px;object-fit:contain;border-radius:9px;}
   .nav-title{font-size:18px;font-weight:900;letter-spacing:-.6px;color:var(--ink);display:flex;align-items:baseline;gap:8px;}
   .nav-title b{font-family:'Pretendard',sans-serif;font-weight:800;color:var(--accent);font-size:12px;letter-spacing:.3px;}
-  .nav-util{display:flex;align-items:center;gap:8px;}
+  .nav-util{display:flex;align-items:center;gap:10px;flex:1;justify-content:flex-end;}
+  .mk-block{display:flex;flex-direction:column;gap:5px;border:1.5px solid var(--border);border-radius:12px;padding:8px 10px;background:var(--surface);}
+  .mk-title{font-size:11px;font-weight:800;letter-spacing:.4px;color:var(--ink);text-align:center;}
+  .mk-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+  .mk-item{display:flex;align-items:center;gap:6px;height:30px;padding:0 10px;border:1.5px solid var(--border);border-radius:9px;text-decoration:none;color:var(--ink);font-weight:800;font-size:12.5px;white-space:nowrap;background:var(--surface);}
+  .mk-item:hover{border-color:var(--accent);color:var(--accent);}
+  .mk-ic{width:18px;height:18px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;}
+  .mk-nm{flex:1;}
+  .mk-go{font-size:10.5px;font-weight:800;color:var(--accent-ink);background:var(--accent);padding:1px 7px;border-radius:100px;flex:0 0 auto;}
   /* ===== 히어로 ===== */
   .hero{background:var(--bg);border-bottom:1.5px solid var(--border);}
   .hero-in{max-width:1560px;margin:0 auto;padding:24px 20px 22px;display:flex;align-items:center;justify-content:space-between;gap:48px;}
@@ -634,9 +642,9 @@
   @media(max-width:480px){.gz-dash{grid-template-columns:1fr}}
   .gz-tile{position:relative;min-height:88px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radsm);
     padding:14px 15px;box-shadow:var(--shadow-sm);opacity:.5;transition:opacity .15s,box-shadow .15s,transform .15s}
-  .gz-tile .gz-t-h{font-size:15px;font-weight:800;color:var(--ink)}
+  .gz-tile .gz-t-h{font-size:15px;font-weight:800;color:var(--ink);padding-right:64px;line-height:1.3}
   .gz-tile .gz-t-b{font-size:12px;color:var(--muted);margin-top:3px}
-  .gz-tile .gz-t-s{position:absolute;top:12px;right:12px;font-size:11px;font-weight:800;padding:2px 9px;border-radius:100px;
+  .gz-tile .gz-t-s{position:absolute;top:12px;right:12px;font-size:11px;font-weight:800;padding:2px 9px;border-radius:100px;white-space:nowrap;
     background:var(--surface-3);color:var(--muted)}
   .gz-tile .gz-t-s::after{content:"해당없음"}
   .gz-tile.on{opacity:1;border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in oklch,var(--accent) 40%,transparent),var(--shadow-sm)}
@@ -703,6 +711,15 @@
     <div class="nav-util">
       <button class="theme-toggle" id="homeBtn" title="홈으로 (전체 개요)" aria-label="홈" style="padding:0;"><span style="width:34px;height:34px;color:var(--ink-2);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/></svg></span></button>
       <button class="theme-toggle" id="themeToggle" title="라이트 / 다크 전환" aria-label="테마 전환"><span class="tg-sun">☀︎</span><span class="tg-moon">☾</span></button>
+      <div class="mk-block">
+        <div class="mk-title">✏️ 간단 시리즈 📝</div>
+        <div class="mk-grid">
+          <a class="mk-item" id="boqBtn" href="간단내역서_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="mk-ic">🧾</span><span class="mk-nm">내역서</span><span class="mk-go">go</span></a>
+          <a class="mk-item" id="specBtn" href="#" target="_blank" rel="noopener noreferrer"><span class="mk-ic">📋</span><span class="mk-nm">시방서</span><span class="mk-go">go</span></a>
+          <a class="mk-item" id="costBtn" href="#" target="_blank" rel="noopener noreferrer"><span class="mk-ic">💰</span><span class="mk-nm">사업비</span><span class="mk-go">go</span></a>
+          <a class="mk-item" id="tripBtn" href="#" target="_blank" rel="noopener noreferrer" title="간단여비정산서 만들기"><span class="mk-ic">🧾</span><span class="mk-nm"></span><span class="mk-go">go</span></a>
+        </div>
+      </div>
     </div>
   </div>
 </header>
@@ -722,8 +739,8 @@
     <aside class="hero-notice">
       <div class="hn-head"><span class="hn-dot"></span>업데이트 · 공지</div>
       <ul class="hn-list">
-        <li><span class="hn-tag">NEW</span><div>🔥 <b>일위대가 검색</b> 추가 — 공종별 단가·자재단가·호표 내역 검색</div></li>
-        <li><span class="hn-tag">NEW</span><div><b>표준품셈 검색</b> 내장 — 표준품셈 체크 메뉴에서 바로 검색</div></li>
+        <li><span class="hn-tag">NEW</span><div>🔥 <b>간단내역서 만들기</b> 기능 추가 — 일위대가 자동참조 내역서·원가계산서·단가조사</div></li>
+        <li><span class="hn-tag">NEW</span><div><b>일위대가 검색</b> 추가 — 공종별 단가·자재단가·호표 내역 검색</div></li>
         <li><span class="hn-tag">기능</span><div><b>그래프 뷰</b> 추가 — 업무·법령·인증 관계도 시각화</div></li>
       </ul>
       <div class="hn-foot">ver 3.0 · 2026-07-21</div>
@@ -824,15 +841,14 @@
       <button class="gv-chip" data-g="const">시공</button>
       <button class="gv-chip" data-g="cm">건설관리</button>
       <button class="gv-chip" data-g="comp">준공</button>
-      <button id="gv-reset">초기화</button>
     </div>
     <div class="gv-canvas"><div id="gv-tree"></div><div class="gv-stage"><svg id="gv-graph" width="100%" height="520" style="display:block"></svg><div id="gv-tip"></div></div></div>
     <div class="gv-legend">
-      <span><i class="gv-dot" style="background:var(--p-plan)"></i>기획</span>
-      <span><i class="gv-dot" style="background:var(--p-design)"></i>설계</span>
-      <span><i class="gv-dot" style="background:var(--p-const)"></i>시공</span>
-      <span><i class="gv-dot" style="background:var(--p-cm)"></i>건설사업관리</span>
-      <span><i class="gv-dot" style="background:var(--p-comp)"></i>준공</span>
+      <span><i class="gv-dot" style="background:#3182f6"></i>기획</span>
+      <span><i class="gv-dot" style="background:#12b886"></i>설계</span>
+      <span><i class="gv-dot" style="background:#f59f00"></i>시공</span>
+      <span><i class="gv-dot" style="background:#7c3aed"></i>건설사업관리</span>
+      <span><i class="gv-dot" style="background:#4263eb"></i>준공</span>
       <span><i class="gv-dot" style="background:#c93a52"></i>근거 법령</span>
       <span><i class="gv-dot" style="background:#9a9a9a"></i>인증 항목</span>
     </div>
@@ -874,6 +890,7 @@
       <div class="gz-tile" data-ax="design" data-amt="0.5"><div class="gz-t-h">공공건축심의</div><div class="gz-t-b">설계비 5천↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="2"><div class="gz-t-h">일상감사(공사)</div><div class="gz-t-b">공사비 2억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="5"><div class="gz-t-h">건설사업관리·감리</div><div class="gz-t-b">공사비 5억↑(토목)</div><span class="gz-t-s"></span></div>
+      <div class="gz-tile" data-ax="total" data-amt="25"><div class="gz-t-h">대규모 시설 일상감사</div><div class="gz-t-b">사립 예산액 25억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="50"><div class="gz-t-h">안전보건대장</div><div class="gz-t-b">공사비 50억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">경제성 검토(VE)</div><div class="gz-t-b">공사비 100억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="total" data-amt="300"><div class="gz-t-h">중앙투자심사</div><div class="gz-t-b">총사업비 300억↑</div><span class="gz-t-s"></span></div>
@@ -1119,14 +1136,14 @@
   <section class="panel" id="check">
     <div class="sec-head"><span class="chip" style="background:var(--ops)">실무</span>
       <div><h2>단계별 확인사항 체크리스트</h2><p>설계·시공 공정별 점검항목과 감리비 정산 기준</p></div></div>
-    <div class="note">💡 항목을 클릭하면 체크됩니다. (체크 상태는 저장되지 않는 현장 점검용입니다.) 공정 그룹을 눌러 펼치세요.</div>
-    <div class="subswitch">
+    <div class="note">💡 단계별 확인사항 체크리스트는 준비 중입니다. 곧 제공될 예정입니다.</div>
+    <div class="subswitch" style="display:none">
       <button class="subbtn on" data-w="design">설계용역 점검</button>
       <button class="subbtn" data-w="const">시공 점검</button>
       <button class="subbtn" data-w="cm">감리비 정산</button>
     </div>
-    <div class="ck-progress">진행 <b><span id="ck-done">0</span> / <span id="ck-total">0</span></b> 항목 확인</div>
-    <div id="check-list"></div>
+    <div class="ck-progress" style="display:none">진행 <b><span id="ck-done">0</span> / <span id="ck-total">0</span></b> 항목 확인</div>
+    <div id="check-list" style="display:none"></div>
   </section>
 
   <!-- ============ 법령 검색 ============ -->
@@ -1174,6 +1191,17 @@
         <select id="rt-work"><option>건축</option><option>토목</option><option>조경</option><option>설비</option></select>
         <div class="hint">공종별 요율 결정</div></div>
     </div>
+    <div class="calc-form" style="grid-template-columns:repeat(3,1fr);margin-top:10px">
+      <div class="cfield"><label>재료비 <span class="u">천원</span></label>
+        <input type="number" id="rt-mat" min="0" step="1" placeholder="예: 300000" inputmode="numeric">
+        <div class="hint">산업안전보건관리비 대상액</div></div>
+      <div class="cfield"><label>직접노무비 <span class="u">천원</span></label>
+        <input type="number" id="rt-lab" min="0" step="1" placeholder="예: 120000" inputmode="numeric">
+        <div class="hint">산업안전보건관리비 대상액</div></div>
+      <div class="cfield"><label>도급자 관급 <span class="u">천원</span></label>
+        <input type="number" id="rt-sup" min="0" step="1" placeholder="예: 50000" inputmode="numeric">
+        <div class="hint">관급자재 금액(있으면 입력)</div></div>
+    </div>
     <div id="ratio-result"></div>
 
     <div class="sec-head" style="margin-top:32px"><span class="chip" style="background:var(--ops)">총괄표</span>
@@ -1211,9 +1239,8 @@
 </div>
 
 <footer class="wrap">
-  <span class="badge-org foot">전남광주통합특별시교육청 · 행정운영국 <b>교육시설과</b></span><br><br>
   <b>🏫 학교시설업무 치트키 🔑 SCHOOL BIBLE</b> — 가이드라인부터 자가테스트까지<br>
-  본 자료는 「교육시설과 업무 전달 회의(2025. 1.)」를 기반으로 재구성한 실무 참조용 문서입니다. 실제 적용 시 최신 법령·지침을 반드시 확인하시기 바랍니다.<br>
+  참조용 문서입니다. 실제 적용 시 최신 법령·지침을 반드시 확인하시기 바랍니다.<br>
   <span style="display:inline-block;margin-top:10px;color:var(--muted);font-size:12px">작성자 <b style="color:var(--navy)">claude_min</b> · 작성일 2026-07-20 · <b style="color:#3182F6">ver 3.0</b> · <span>🤖 Claude와 함께 제작했습니다</span></span>
 </footer>
 
@@ -2046,7 +2073,7 @@ document.getElementById('gl-q').addEventListener('input',e=>renderGlossary(e.tar
 renderGlossary('');
 
 // ================= 2026 제비율표 =================
-const RATIO = {"asof": "2026. 4. 13. \uc785\ucc30\uacf5\uace0\ubd84\ubd80\ud130", "main": [{"size": "10\uc5b5 \ubbf8\ub9cc", "period": "6\uac1c\uc6d4\uc774\ud558", "il": "17.5", "util": "0.169", "etc": "4.83", "sum": "5"}, {"size": "", "period": "7-12\uac1c\uc6d4", "il": "17.9", "util": "0.185", "etc": "5.02", "sum": "5.2"}, {"size": "", "period": "13-36\uac1c\uc6d4", "il": "18.2", "util": "0.198", "etc": "5.3", "sum": "5.5"}, {"size": "", "period": "36\uac1c\uc6d4\ucd08\uacfc", "il": "19.4", "util": "0.197", "etc": "5.9", "sum": "6.1"}, {"size": "10\uc5b5~30\uc5b5", "period": "6\uac1c\uc6d4\uc774\ud558", "il": "17.4", "util": "0.169", "etc": "5.03", "sum": "5.2"}, {"size": "", "period": "7-12\uac1c\uc6d4", "il": "17.8", "util": "0.186", "etc": "5.21", "sum": "5.4"}, {"size": "", "period": "13-36\uac1c\uc6d4", "il": "18.1", "util": "0.199", "etc": "5.5", "sum": "5.7"}, {"size": "", "period": "36\uac1c\uc6d4\ucd08\uacfc", "il": "19.2", "util": "0.201", "etc": "6.2", "sum": "6.4"}, {"size": "30\uc5b5~50\uc5b5", "period": "6\uac1c\uc6d4\uc774\ud558", "il": "17.4", "util": "0.175", "etc": "5.02", "sum": "5.2"}, {"size": "", "period": "7-12\uac1c\uc6d4", "il": "17.8", "util": "0.19", "etc": "5.21", "sum": "5.4"}, {"size": "", "period": "13-36\uac1c\uc6d4", "il": "18.1", "util": "0.203", "etc": "5.5", "sum": "5.7"}, {"size": "", "period": "36\uac1c\uc6d4\ucd08\uacfc", "il": "19.2", "util": "0.207", "etc": "6.19", "sum": "6.4"}, {"size": "50\uc5b5~300\uc5b5", "period": "6\uac1c\uc6d4\uc774\ud558", "il": "17.5", "util": "0.219", "etc": "5.68", "sum": "5.9"}, {"size": "", "period": "7-12\uac1c\uc6d4", "il": "17.9", "util": "0.23", "etc": "5.77", "sum": "6"}, {"size": "", "period": "13-36\uac1c\uc6d4", "il": "18.2", "util": "0.246", "etc": "6.15", "sum": "6.4"}, {"size": "", "period": "36\uac1c\uc6d4\ucd08\uacfc", "il": "19.4", "util": "0.246", "etc": "6.75", "sum": "7"}, {"size": "300\uc5b5~1000\uc5b5", "period": "6\uac1c\uc6d4\uc774\ud558", "il": "17.5", "util": "0.235", "etc": "5.87", "sum": "6.1"}, {"size": "", "period": "7-12\uac1c\uc6d4", "il": "17.9", "util": "0.248", "etc": "6.05", "sum": "6.3"}, {"size": "", "period": "13-36\uac1c\uc6d4", "il": "18.2", "util": "0.261", "etc": "6.34", "sum": "6.6"}, {"size": "", "period": "36\uac1c\uc6d4\ucd08\uacfc", "il": "19.4", "util": "0.26", "etc": "6.94", "sum": "7.2"}], "fixed": [{"size": "10\uc5b5 \ubbf8\ub9cc", "gen": "8", "profit": "15", "sanjae": "3.56", "health": "3.595", "longcare": "13.14", "pension": "4.75", "emp": "1.01", "retire": "2.3", "env": "0.5", "subg": "0.081"}, {"size": "10\uc5b5~30\uc5b5", "gen": "8", "profit": "15", "sanjae": "3.56", "health": "3.595", "longcare": "13.14", "pension": "4.75", "emp": "1.01", "retire": "2.3", "env": "0.5", "subg": "0.081"}, {"size": "30\uc5b5~50\uc5b5", "gen": "8", "profit": "15", "sanjae": "3.56", "health": "3.595", "longcare": "13.14", "pension": "4.75", "emp": "1.01", "retire": "2.3", "env": "0.5", "subg": "0.081"}, {"size": "50\uc5b5~300\uc5b5", "gen": "6.5", "profit": "12", "sanjae": "3.56", "health": "3.595", "longcare": "13.14", "pension": "4.75", "emp": "130\uc5b5\uc6d0 \ubbf8\ub9cc  1.01 210\uc5b5\uc6d0 \ubbf8\ub9cc  1.02 340\uc5b5\uc6d0 \ubbf8\ub9cc  1.03", "retire": "2.3", "env": "0.5", "subg": "50\uc5b5\uc6d0-100\uc5b5\uc6d0 \ubbf8\ub9cc 0.08  100\uc5b5\uc6d0-300\uc5b5\uc6d0 \ubbf8\ub9cc 0.075"}, {"size": "300\uc5b5~1000\uc5b5", "gen": "5", "profit": "10", "sanjae": "3.56", "health": "3.545", "longcare": "12.95", "pension": "4.5", "emp": "520\uc5b5\uc6d0 \ubbf8\ub9cc  1.06 800\uc5b5\uc6d0 \ubbf8\ub9cc  1.13 1200\uc5b5\uc6d0 \ubbf8\ub9cc  1.30", "retire": "2.3", "env": "0.5", "subg": "300\uc5b5\uc6d0 \uc774\uc0c1 \uc885\uc2ec\u00b7\uc885\ud3c9\uc81c 0.068"}], "side1": [["5\uc5b5 \ubbf8\ub9cc", "0.154"], ["5\uc5b5 \uc774\uc0c1 ~ 30\uc5b5 \ubbf8\ub9cc", "0.199"], ["30\uc5b5 \uc774\uc0c1 ~ 50\uc5b5 \ubbf8\ub9cc", "0.331"], ["50\uc5b5 \uc774\uc0c1 ~ 300\uc5b5 \ubbf8\ub9cc", "0.611"], ["300\uc5b5 \uc774\uc0c1 ~ 1000\uc5b5 \ubbf8\ub9cc", "0.726"]], "side2": [["6\uac1c\uc6d4 \uc774\ud558", "0.232"], ["6\uac1c\uc6d4 \ucd08\uacfc ~ 12\uac1c\uc6d4 \uc774\ud558", "0.41"], ["12\uac1c\uc6d4 \ucd08\uacfc ~ 36\uac1c\uc6d4 \uc774\ud558", "0.509"], ["36\uac1c\uc6d4 \ucd08\uacfc", "0.596"]], "side3": [["\uac74\ucd95", "0.479"], ["\ud1a0\ubaa9", "0.597"], ["\uc870\uacbd", "0.36"], ["\uc124\ube44", "0.422"]], "notes": ["\u203b \uc0b0\uc5c5\uc548\uc804\ubcf4\uac74\uad00\ub9ac\ube44 : \ub3c4\uae09\uc790\uad00\uae09\ud3ec\ud568(a,b\uc911 \uc791\uc740\uae08\uc561)  a.(\uc7ac+\uc9c1\ub178+\ub3c4\uae09\uc790\uad00\uae09)x\uc728,   b.(\uc7ac+\uc9c1\ub178)x\uc728x1.2", "\uc0b0\uc5c5\uc548\uc804\ubcf4\uac74\uad00\ub9ac\ube44 \uc801\uc6a9\ubc94\uc704 \ubcc0\uacbd: 2020. 7. 1. \uc774\ud6c4 \ucd1d\uacf5\uc0ac\uae08\uc561 2\ucc9c\ub9cc\uc6d0 \uc774\uc0c1 \uc801\uc6a9", "\u203b \ud488\uc9c8\uad00\ub9ac\ube44: \ucd1d\uacf5\uc0ac\ube44 5\uc5b5\uc6d0 \uc774\uc0c1\uc778 \ud1a0\ubaa9\uacf5\uc0ac, \uc5f0\uba74\uc801 660\uc81c\uacf1\ubbf8\ud130 \uc774\uc0c1\uc778 \uac74\ucd95\ubb3c\uc758 \uac74\ucd95\uacf5\uc0ac, \ucd1d\uacf5\uc0ac\ube44\uac00 2\uc5b5\uc6d0 \uc774\uc0c1\uc778 \uc804\ubb38\uacf5\uc0ac, \ubc18\uc601 \ud6c4 \uc815\uc0b0", "\u203b \uc548\uc804\uad00\ub9ac\ube44: \ud574\ub2f9 \uacf5\uc0ac \ud3ec\ud568 \uc2dc \ubc18\uc601 \ud6c4 \uc815\uc0b0", "\u203b \uc804\uae30\u00b7\ud1b5\uc2e0\u00b7\uc18c\ubc29\u00b7\uc804\ubb38 \ubc0f \uae30\ud0c0\uacf5\uc0ac\uc758 \uacbd\uc6b0 \uc77c\ubc18\uad00\ub9ac\ube44\uc694\uc728\uc744 \uc81c\uc678\ud55c \uac01\uc885 \uc81c\ube44\uc728\uc740 \uc8fc \uacf5\uc885\uc744 \ub530\ub77c \uc801\uc6a9(\u203b\ub2e8, \uacf5\uc0ac\uaddc\ubaa8 \ubc0f \uae30\uac04\uc740 \ud574\ub2f9 \uacf5\uc885<\uc804\uae30\u00b7\ud1b5\uc2e0\u00b7\uc18c\ubc29\u00b7\uc804\ubb38 \ubc0f \uae30\ud0c0\uacf5\uc0ac>\uc744 \uae30\uc900\uc73c\ub85c \ud568)", "\u203b \uc804\ubb38.\uc804\uae30.\ud1b5\uc2e0.\uc18c\ubc29.\uae30\ud0c0 : \uc77c\ubc18\uad00\ub9ac\ube44 5\uc5b5\ubbf8\ub9cc 8.0%, 5~30\uc5b5\ubbf8\ub9cc 6.5%, 30~100\uc5b5\ubbf8\ub9cc 5.0%", "\u203b \uc804\ubb38.\uc804\uae30.\ud1b5\uc2e0.\uc18c\ubc29.\uae30\ud0c0 \ub2e8\ub3c5\uacf5\uc0ac\uc77c \uacbd\uc6b0 : \uc0b0\uc5c5\uc548\uc804\ubcf4\uac74\uad00\ub9ac\ube44 (\ud2b9\uc218 \ubc0f \uae30\ud0c0) 5\uc5b5\uc6d0\ubbf8\ub9cc 2.07%, 5\uc5b5\uc6d0\uc774\uc0c1-50\uc5b5\uc6d0\ubbf8\ub9cc 1.59+2,450\ucc9c\uc6d0, 50\uc5b5\uc6d0\uc774\uc0c1 1.64%", "\u203b \ud658\uacbd\ubcf4\uc804\ube44: \uc8fc\ud0dd(\uc7ac\uac74\ucd95) 0.3, \uc8fc\ud0dd\uc678 \uac74\ucd95 0.5, \uc870\uacbd,\uae30\ud0c0(\uc804\ubb38,\uac1c\ubcf4\uc218) 0.3"]};
+const RATIO = {"asof":"2026. 4. 13. 입찰공고분부터","main":[{"size":"10억 미만","period":"6개월이하","il":"17.5","util":"0.169","etc":"4.83","sum":"5"},{"size":"","period":"7-12개월","il":"17.9","util":"0.185","etc":"5.02","sum":"5.2"},{"size":"","period":"13-36개월","il":"18.2","util":"0.198","etc":"5.3","sum":"5.5"},{"size":"","period":"36개월초과","il":"19.4","util":"0.197","etc":"5.9","sum":"6.1"},{"size":"10억~30억","period":"6개월이하","il":"17.4","util":"0.169","etc":"5.03","sum":"5.2"},{"size":"","period":"7-12개월","il":"17.8","util":"0.186","etc":"5.21","sum":"5.4"},{"size":"","period":"13-36개월","il":"18.1","util":"0.199","etc":"5.5","sum":"5.7"},{"size":"","period":"36개월초과","il":"19.2","util":"0.201","etc":"6.2","sum":"6.4"},{"size":"30억~50억","period":"6개월이하","il":"17.4","util":"0.175","etc":"5.02","sum":"5.2"},{"size":"","period":"7-12개월","il":"17.8","util":"0.19","etc":"5.21","sum":"5.4"},{"size":"","period":"13-36개월","il":"18.1","util":"0.203","etc":"5.5","sum":"5.7"},{"size":"","period":"36개월초과","il":"19.2","util":"0.207","etc":"6.19","sum":"6.4"},{"size":"50억~300억","period":"6개월이하","il":"17.5","util":"0.219","etc":"5.68","sum":"5.9"},{"size":"","period":"7-12개월","il":"17.9","util":"0.23","etc":"5.77","sum":"6"},{"size":"","period":"13-36개월","il":"18.2","util":"0.246","etc":"6.15","sum":"6.4"},{"size":"","period":"36개월초과","il":"19.4","util":"0.246","etc":"6.75","sum":"7"},{"size":"300억~1000억","period":"6개월이하","il":"17.5","util":"0.235","etc":"5.87","sum":"6.1"},{"size":"","period":"7-12개월","il":"17.9","util":"0.248","etc":"6.05","sum":"6.3"},{"size":"","period":"13-36개월","il":"18.2","util":"0.261","etc":"6.34","sum":"6.6"},{"size":"","period":"36개월초과","il":"19.4","util":"0.26","etc":"6.94","sum":"7.2"}],"fixed":[{"size":"10억 미만","gen":"8","profit":"15","sanjae":"3.56","health":"3.595","longcare":"13.14","pension":"4.75","emp":"1.01","retire":"2.3","env":"0.5","subg":"0.081"},{"size":"10억~30억","gen":"8","profit":"15","sanjae":"3.56","health":"3.595","longcare":"13.14","pension":"4.75","emp":"1.01","retire":"2.3","env":"0.5","subg":"0.081"},{"size":"30억~50억","gen":"8","profit":"15","sanjae":"3.56","health":"3.595","longcare":"13.14","pension":"4.75","emp":"1.01","retire":"2.3","env":"0.5","subg":"0.081"},{"size":"50억~300억","gen":"6.5","profit":"12","sanjae":"3.56","health":"3.595","longcare":"13.14","pension":"4.75","emp":"130억원 미만  1.01 210억원 미만  1.02 340억원 미만  1.03","retire":"2.3","env":"0.5","subg":"50억원-100억원 미만 0.08  100억원-300억원 미만 0.075"},{"size":"300억~1000억","gen":"5","profit":"10","sanjae":"3.56","health":"3.545","longcare":"12.95","pension":"4.5","emp":"520억원 미만  1.06 800억원 미만  1.13 1200억원 미만  1.30","retire":"2.3","env":"0.5","subg":"300억원 이상 종심·종평제 0.068"}],"side1":[["5억 미만","0.154"],["5억 이상 ~ 30억 미만","0.199"],["30억 이상 ~ 50억 미만","0.331"],["50억 이상 ~ 300억 미만","0.611"],["300억 이상 ~ 1000억 미만","0.726"]],"side2":[["6개월 이하","0.232"],["6개월 초과 ~ 12개월 이하","0.41"],["12개월 초과 ~ 36개월 이하","0.509"],["36개월 초과","0.596"]],"side3":[["건축","0.479"],["토목","0.597"],["조경","0.36"],["설비","0.422"]],"notes":["※ 산업안전보건관리비 : 도급자관급포함(a,b중 작은금액)  a.(재+직노+도급자관급)x율,   b.(재+직노)x율x1.2","산업안전보건관리비 적용범위 변경: 2020. 7. 1. 이후 총공사금액 2천만원 이상 적용","※ 품질관리비: 총공사비 5억원 이상인 토목공사, 연면적 660제곱미터 이상인 건축물의 건축공사, 총공사비가 2억원 이상인 전문공사, 반영 후 정산","※ 안전관리비: 해당 공사 포함 시 반영 후 정산","※ 전기·통신·소방·전문 및 기타공사의 경우 일반관리비요율을 제외한 각종 제비율은 주 공종을 따라 적용(※단, 공사규모 및 기간은 해당 공종<전기·통신·소방·전문 및 기타공사>을 기준으로 함)","※ 전문.전기.통신.소방.기타 : 일반관리비 5억미만 8.0%, 5~30억미만 6.5%, 30~100억미만 5.0%","※ 전문.전기.통신.소방.기타 단독공사일 경우 : 산업안전보건관리비 (특수 및 기타) 5억원미만 2.07%, 5억원이상-50억원미만 1.59+2,450천원, 50억원이상 1.64%","※ 환경보전비: 주택(재건축) 0.3, 주택외 건축 0.5, 조경,기타(전문,개보수) 0.3"],"safety":[["건축공사","3.11","2.28% + 4,325천원","2.37"],["토목공사","3.15","2.53% + 3,300천원","2.60"],["중건설공사","3.64","3.07% + 2,815천원","3.11"],["특수 및 기타","2.07","1.59% + 2,450천원","1.64"]]};
 function renderRatio(){
   const R=RATIO; let h='';
   // 공사규모/기간별 (간접노무비·기타경비)
@@ -2068,6 +2095,13 @@ function renderRatio(){
   const side=(title,rows)=>{let s=`<div style="flex:1;min-width:220px"><div class="sec-head" style="margin:0 0 8px"><span class="chip" style="background:var(--p-cert)">${esc(title)}</span></div><div class="tbl-wrap"><table><thead><tr><th>구분</th><th style="text-align:right">요율(%)</th></tr></thead><tbody>`; rows.forEach(r=>{s+=`<tr><td>${esc(r[0])}</td><td style="text-align:right;font-weight:700">${esc(r[1])}</td></tr>`;}); return s+'</tbody></table></div></div>';};
   h+='<div class="sec-head" style="margin:24px 0 10px"><span class="chip" style="background:var(--ops)">참고 요율</span><div><p style="margin:0;color:var(--muted);font-size:13px">공사비·공사기간·공종에 따른 요율</p></div></div>';
   h+='<div style="display:flex;gap:14px;flex-wrap:wrap">'+side('공사비별',R.side1)+side('공사기간별',R.side2)+side('공종별',R.side3)+'</div>';
+  // 산업안전보건관리비 요율
+  if(R.safety){
+    h+='<div class="sec-head" style="margin:24px 0 10px"><span class="chip" style="background:var(--ops)">산업안전보건관리비</span><div><p style="margin:0;color:var(--muted);font-size:13px">대상액(재료비+직접노무비+관급) 구간별 계상요율 (%)</p></div></div>';
+    h+='<div class="tbl-wrap"><table><thead><tr><th>공사종류</th><th style="text-align:right">5억원 미만</th><th style="text-align:right">5억원 이상 ~ 50억원 미만</th><th style="text-align:right">50억원 이상</th></tr></thead><tbody>';
+    R.safety.forEach(s=>{ h+=`<tr><td style="font-weight:700;color:var(--navy)">${esc(s[0])}</td><td style="text-align:right;font-weight:700">${esc(s[1])}</td><td style="text-align:right">${esc(s[2])}</td><td style="text-align:right;font-weight:700">${esc(s[3])}</td></tr>`; });
+    h+='</tbody></table></div>';
+  }
   // 주석
   h+='<div class="common-box" style="margin-top:22px"><h4>📌 적용 유의사항</h4><ul style="margin:0;padding-left:18px">'+R.notes.map(n=>`<li style="font-size:12.5px;color:#3A4650;margin-bottom:5px">${esc(n)}</li>`).join('')+'</ul></div>';
   document.getElementById('ratio-body').innerHTML=h;
@@ -2082,11 +2116,32 @@ function runRatioCalc(){
   const wi=document.getElementById('rt-work').selectedIndex;
   const m=RATIO.main[gi*4+pi], f=RATIO.fixed[gi];
   const work=RATIO.side3[wi], per=RATIO.side2[pi];
+  const safeMap={'건축':0,'토목':1,'조경':3,'설비':3};
+  const sf=RATIO.safety?RATIO.safety[safeMap[work[0]]!==undefined?safeMap[work[0]]:0]:null;
   const cell=(label,val)=>{
     const isNum=/^[\d.]+$/.test(String(val).replace(/,/g,'').trim());
     if(isNum) return `<div class="res-card" style="border-left-color:var(--ops)"><div class="rc-l"><div class="nm">${esc(label)}</div></div><div class="rc-r" style="text-align:right"><span class="thr" style="font-size:15px;background:var(--surface-2);color:var(--ops-d);display:inline-block;min-width:82px;text-align:right;font-variant-numeric:tabular-nums">${esc(val)} %</span></div></div>`;
     return `<div class="res-card" style="border-left-color:var(--ops);display:block"><div class="nm" style="font-weight:700">${esc(label)}</div><div style="font-size:12px;color:#3A4650;margin-top:5px;line-height:1.45">${esc(val)}</div></div>`;
   };
+  function safetyCell(){
+    if(!sf) return '';
+    const mat=parseFloat(document.getElementById('rt-mat').value)||0;
+    const lab=parseFloat(document.getElementById('rt-lab').value)||0;
+    const sup=parseFloat(document.getElementById('rt-sup').value)||0;
+    if(!(mat||lab)) return '';
+    const base=(mat+lab+sup), base2=(mat+lab); // 천원
+    const daesang=base*1000; // 원
+    let rate,fixed=0;
+    if(daesang<5e8){ rate=parseFloat(sf[1])/100; }
+    else if(daesang<5e9){ rate=parseFloat(sf[2])/100; const fm=sf[2].match(/\+\s*([\d,]+)\s*천원/); fixed=fm?parseFloat(fm[1].replace(/,/g,''))*1000:0; }
+    else { rate=parseFloat(sf[3])/100; }
+    const a=base*1000*rate+fixed;
+    const b=base2*1000*rate*1.2+fixed*1.2;
+    const amt=Math.round(Math.min(a,b));
+    const brk=daesang<5e8?'5억 미만':(daesang<5e9?'5~50억':'50억 이상');
+    const won=amt.toLocaleString()+'원';
+    return `<div class="res-card" style="border-left-color:var(--ops);display:block"><div class="nm" style="font-weight:700">산업안전보건관리비 계상액</div><div style="font-size:12px;color:#3A4650;margin-top:5px;line-height:1.5">대상액 ${daesang.toLocaleString()}원 (${brk}) · min(a,b) 적용<br><b style="font-size:15px;color:var(--ops-d)">${won}</b></div></div>`;
+  }
   let html='<div class="res-head">✅ 적용 요율 <span class="cnt">'+esc(document.getElementById('rt-size').value)+' · '+esc(m.period)+' · '+esc(work[0])+'</span></div>';
   html+='<div class="res-grid">'+
     cell('간접노무비', m.il)+
@@ -2105,10 +2160,12 @@ function runRatioCalc(){
     cell('하도급대금 지급보증', f.subg)+
     cell('공종별 요율('+esc(work[0])+')', work[1])+
     cell('공사기간별 요율', per[1])+
+    (sf?cell('산업안전보건관리비('+esc(sf[0])+')', sf[1]):'')+
+    safetyCell()+
     '</div>';
   document.getElementById('ratio-result').innerHTML=html;
 }
-['rt-size','rt-period','rt-work'].forEach(id=>document.getElementById(id).addEventListener('change',runRatioCalc));
+['rt-size','rt-period','rt-work','rt-mat','rt-lab','rt-sup'].forEach(id=>document.getElementById(id).addEventListener('input',runRatioCalc));
 runRatioCalc();
 
 // ===== 금액·규모별 절차 기준 : 판정기 연동 하이라이트 =====
@@ -2276,7 +2333,7 @@ window.__gvInit = (function(){
   return function(){
     if(done){ if(reheat) reheat(); return; }
     if(typeof d3==='undefined') return; done=true;
-    var RAW={"nodes":[{"id":"phase:plan","label":"제1장 기획","group":"phase","color":"var(--p-plan)"},{"id":"phase:design","label":"제2장 설계","group":"phase","color":"var(--p-design)"},{"id":"phase:const","label":"제3장 시공","group":"phase","color":"var(--p-const)"},{"id":"phase:cm","label":"제4장 건설사업관리","group":"phase","color":"var(--p-cm)"},{"id":"phase:comp","label":"제5장 준공","group":"phase","color":"var(--p-comp)"},{"id":"root","label":"학교시설업무 치트키","group":"root","color":"var(--accent)"},{"id":"item:plan:1","label":"사전기획","group":"item:plan","color":"var(--p-plan)"},{"id":"law:0","label":"교육시설법 시행령 제23-2","group":"law","color":"#c93a52"},{"id":"item:plan:2","label":"기본안전보건대장","group":"item:plan","color":"var(--p-plan)"},{"id":"law:1","label":"산업안전보건법 제55","group":"law","color":"#c93a52"},{"id":"item:plan:3","label":"공공건축심의","group":"item:plan","color":"var(--p-plan)"},{"id":"law:2","label":"건축서비스산업법 제19-2","group":"law","color":"#c93a52"},{"id":"item:design:1","label":"일상감사","group":"item:design","color":"var(--p-design)"},{"id":"law:3","label":"교육부 일상감사지침 제4","group":"law","color":"#c93a52"},{"id":"item:design:2","label":"설계공모","group":"item:design","color":"var(--p-design)"},{"id":"law:4","label":"건축서비스산업법 제21","group":"law","color":"#c93a52"},{"id":"item:design:3","label":"대규모 사업의 시설 일상감사","group":"item:design","color":"var(--p-design)"},{"id":"law:5","label":"감사관-11302","group":"law","color":"#c93a52"},{"id":"item:design:4","label":"기술자문위원회","group":"item:design","color":"var(--p-design)"},{"id":"law:6","label":"건설기술진흥법 제6","group":"law","color":"#c93a52"},{"id":"item:design:5","label":"설계의 경제성 검토 (VE)","group":"item:design","color":"var(--p-design)"},{"id":"law:7","label":"건설기술진흥법 시행령 제75","group":"law","color":"#c93a52"},{"id":"item:design:6","label":"설계의 안전성 검토 (DfS)","group":"item:design","color":"var(--p-design)"},{"id":"law:8","label":"건설기술진흥법 시행령 제75-2","group":"law","color":"#c93a52"},{"id":"item:design:7","label":"설계안전보건대장","group":"item:design","color":"var(--p-design)"},{"id":"law:9","label":"산업안전보건법 제67","group":"law","color":"#c93a52"},{"id":"item:design:8","label":"각종 인증사항","group":"item:design","color":"var(--p-design)"},{"id":"law:10","label":"녹색건축물법 등","group":"law","color":"#c93a52"},{"id":"cert:c1","label":"에너지절약계획서","group":"cert","color":"#9a9a9a"},{"id":"cert:c2","label":"녹색건축 인증","group":"cert","color":"#9a9a9a"},{"id":"cert:c3","label":"건축물에너지효율등급","group":"cert","color":"#9a9a9a"},{"id":"cert:c4","label":"제로에너지건축물(ZEB) 인증","group":"cert","color":"#9a9a9a"},{"id":"cert:c5","label":"장애물 없는 생활환경(BF) 인증","group":"cert","color":"#9a9a9a"},{"id":"cert:c6","label":"범죄예방 환경설계(CPTED)","group":"cert","color":"#9a9a9a"},{"id":"cert:c7","label":"신·재생에너지 공급의무비율","group":"cert","color":"#9a9a9a"},{"id":"cert:c8","label":"건물에너지관리시스템(BEMS)","group":"cert","color":"#9a9a9a"},{"id":"cert:c9","label":"교육시설 안전인증","group":"cert","color":"#9a9a9a"},{"id":"law:11","label":"건설기술진흥법 시행령 제82","group":"law","color":"#c93a52"},{"id":"item:design:9","label":"시설사업 시행계획 및 건축 승인","group":"item:design","color":"var(--p-design)"},{"id":"law:12","label":"학교시설사업 촉진법 제5","group":"law","color":"#c93a52"},{"id":"item:const:1","label":"시설공사 일상감사","group":"item:const","color":"var(--p-const)"},{"id":"item:const:2","label":"기술자문위원회","group":"item:const","color":"var(--p-const)"},{"id":"item:const:3","label":"건설사업관리계획 수립","group":"item:const","color":"var(--p-const)"},{"id":"law:13","label":"건설기술진흥법 제39-2","group":"law","color":"#c93a52"},{"id":"item:const:4","label":"시설사업 집행계획 / 공사발주","group":"item:const","color":"var(--p-const)"},{"id":"law:14","label":"지방계약법 시행령 제77","group":"law","color":"#c93a52"},{"id":"item:const:5","label":"감리발주 (공사감리·감독 방식)","group":"item:const","color":"var(--p-const)"},{"id":"law:15","label":"공사감리(감독)방식 개선","group":"law","color":"#c93a52"},{"id":"item:const:6","label":"폐기물처리용역 발주","group":"item:const","color":"var(--p-const)"},{"id":"law:16","label":"건설폐기물법","group":"law","color":"#c93a52"},{"id":"item:const:7","label":"기타용역 발주","group":"item:const","color":"var(--p-const)"},{"id":"law:17","label":"산업안전보건법 제73","group":"law","color":"#c93a52"},{"id":"item:const:8","label":"본인증 용역 발주","group":"item:const","color":"var(--p-const)"},{"id":"law:18","label":"녹색건축물법","group":"law","color":"#c93a52"},{"id":"item:const:9","label":"학교건축물 해체공사 안전관리","group":"item:const","color":"var(--p-const)"},{"id":"law:19","label":"건축물관리법 제30","group":"law","color":"#c93a52"},{"id":"item:const:10","label":"공사추진 (안전성평가)","group":"item:const","color":"var(--p-const)"},{"id":"law:20","label":"교육시설법 제19","group":"law","color":"#c93a52"},{"id":"item:cm:1","label":"사업관리 업무 추진 (조항별 역할)","group":"item:cm","color":"var(--p-cm)"},{"id":"law:21","label":"건설기술진흥법 제11~","group":"law","color":"#c93a52"},{"id":"item:cm:2","label":"설계변경 — 발주청 요청(지시)","group":"item:cm","color":"var(--p-cm)"},{"id":"law:22","label":"설계변경 업무흐름도","group":"law","color":"#c93a52"},{"id":"item:cm:3","label":"설계변경 — 시공자 요청","group":"item:cm","color":"var(--p-cm)"},{"id":"item:cm:4","label":"설계변경 — 설계상 하자","group":"item:cm","color":"var(--p-cm)"},{"id":"item:cm:5","label":"계약금액 조정","group":"item:cm","color":"var(--p-cm)"},{"id":"law:23","label":"계약금액 조정 처리절차","group":"law","color":"#c93a52"},{"id":"item:comp:1","label":"준공검사","group":"item:comp","color":"var(--p-comp)"},{"id":"law:24","label":"건설기술진흥법 시행령 제78","group":"law","color":"#c93a52"},{"id":"item:comp:2","label":"사용승인","group":"item:comp","color":"var(--p-comp)"},{"id":"law:25","label":"건축법 시행령 제17","group":"law","color":"#c93a52"},{"id":"item:comp:3","label":"건축물대장","group":"item:comp","color":"var(--p-comp)"},{"id":"law:26","label":"건축법 제38","group":"law","color":"#c93a52"}],"links":[{"source":"root","target":"phase:plan","kind":"flow"},{"source":"root","target":"phase:design","kind":"flow"},{"source":"root","target":"phase:const","kind":"flow"},{"source":"root","target":"phase:cm","kind":"flow"},{"source":"root","target":"phase:comp","kind":"flow"},{"source":"phase:plan","target":"item:plan:1","kind":"phase"},{"source":"item:plan:1","target":"law:0","kind":"law"},{"source":"phase:plan","target":"item:plan:2","kind":"phase"},{"source":"item:plan:2","target":"law:1","kind":"law"},{"source":"phase:plan","target":"item:plan:3","kind":"phase"},{"source":"item:plan:3","target":"law:2","kind":"law"},{"source":"phase:design","target":"item:design:1","kind":"phase"},{"source":"item:design:1","target":"law:3","kind":"law"},{"source":"phase:design","target":"item:design:2","kind":"phase"},{"source":"item:design:2","target":"law:4","kind":"law"},{"source":"phase:design","target":"item:design:3","kind":"phase"},{"source":"item:design:3","target":"law:5","kind":"law"},{"source":"phase:design","target":"item:design:4","kind":"phase"},{"source":"item:design:4","target":"law:6","kind":"law"},{"source":"phase:design","target":"item:design:5","kind":"phase"},{"source":"item:design:5","target":"law:7","kind":"law"},{"source":"phase:design","target":"item:design:6","kind":"phase"},{"source":"item:design:6","target":"law:8","kind":"law"},{"source":"phase:design","target":"item:design:7","kind":"phase"},{"source":"item:design:7","target":"law:9","kind":"law"},{"source":"phase:design","target":"item:design:8","kind":"phase"},{"source":"item:design:8","target":"law:10","kind":"law"},{"source":"item:design:8","target":"cert:c1","kind":"cert"},{"source":"item:design:8","target":"cert:c2","kind":"cert"},{"source":"item:design:8","target":"cert:c3","kind":"cert"},{"source":"item:design:8","target":"cert:c4","kind":"cert"},{"source":"item:design:8","target":"cert:c5","kind":"cert"},{"source":"item:design:8","target":"cert:c6","kind":"cert"},{"source":"item:design:8","target":"cert:c7","kind":"cert"},{"source":"item:design:8","target":"cert:c8","kind":"cert"},{"source":"item:design:8","target":"cert:c9","kind":"cert"},{"source":"item:design:9","target":"law:12","kind":"law"},{"source":"phase:design","target":"item:design:9","kind":"phase"},{"source":"phase:const","target":"item:const:1","kind":"phase"},{"source":"item:const:1","target":"law:3","kind":"law"},{"source":"phase:const","target":"item:const:2","kind":"phase"},{"source":"item:const:2","target":"law:6","kind":"law"},{"source":"phase:const","target":"item:const:3","kind":"phase"},{"source":"item:const:3","target":"law:13","kind":"law"},{"source":"phase:const","target":"item:const:4","kind":"phase"},{"source":"item:const:4","target":"law:14","kind":"law"},{"source":"phase:const","target":"item:const:5","kind":"phase"},{"source":"item:const:5","target":"law:15","kind":"law"},{"source":"phase:const","target":"item:const:6","kind":"phase"},{"source":"item:const:6","target":"law:16","kind":"law"},{"source":"phase:const","target":"item:const:7","kind":"phase"},{"source":"item:const:7","target":"law:17","kind":"law"},{"source":"phase:const","target":"item:const:8","kind":"phase"},{"source":"item:const:8","target":"law:18","kind":"law"},{"source":"phase:const","target":"item:const:9","kind":"phase"},{"source":"item:const:9","target":"law:19","kind":"law"},{"source":"phase:const","target":"item:const:10","kind":"phase"},{"source":"item:const:10","target":"law:20","kind":"law"},{"source":"phase:cm","target":"item:cm:1","kind":"phase"},{"source":"item:cm:1","target":"law:21","kind":"law"},{"source":"phase:cm","target":"item:cm:2","kind":"phase"},{"source":"item:cm:2","target":"law:22","kind":"law"},{"source":"phase:cm","target":"item:cm:3","kind":"phase"},{"source":"item:cm:3","target":"law:22","kind":"law"},{"source":"phase:cm","target":"item:cm:4","kind":"phase"},{"source":"item:cm:4","target":"law:22","kind":"law"},{"source":"phase:cm","target":"item:cm:5","kind":"phase"},{"source":"item:cm:5","target":"law:23","kind":"law"},{"source":"phase:comp","target":"item:comp:1","kind":"phase"},{"source":"item:comp:1","target":"law:24","kind":"law"},{"source":"phase:comp","target":"item:comp:2","kind":"phase"},{"source":"item:comp:2","target":"law:25","kind":"law"},{"source":"phase:comp","target":"item:comp:3","kind":"phase"},{"source":"item:comp:3","target":"law:26","kind":"law"}]};
+    var RAW={"nodes":[{"id":"phase:plan","label":"제1장 기획","group":"phase","color":"#3182f6"},{"id":"phase:design","label":"제2장 설계","group":"phase","color":"#12b886"},{"id":"phase:const","label":"제3장 시공","group":"phase","color":"#f59f00"},{"id":"phase:cm","label":"제4장 건설사업관리","group":"phase","color":"#7c3aed"},{"id":"phase:comp","label":"제5장 준공","group":"phase","color":"#4263eb"},{"id":"root","label":"학교시설업무 치트키","group":"root","color":"#e8590c"},{"id":"item:plan:1","label":"사전기획","group":"item:plan","color":"#3182f6"},{"id":"law:0","label":"교육시설법 시행령 제23-2","group":"law","color":"#c93a52"},{"id":"item:plan:2","label":"기본안전보건대장","group":"item:plan","color":"#3182f6"},{"id":"law:1","label":"산업안전보건법 제55","group":"law","color":"#c93a52"},{"id":"item:plan:3","label":"공공건축심의","group":"item:plan","color":"#3182f6"},{"id":"law:2","label":"건축서비스산업법 제19-2","group":"law","color":"#c93a52"},{"id":"item:design:1","label":"일상감사","group":"item:design","color":"#12b886"},{"id":"law:3","label":"교육부 일상감사지침 제4","group":"law","color":"#c93a52"},{"id":"item:design:2","label":"설계공모","group":"item:design","color":"#12b886"},{"id":"law:4","label":"건축서비스산업법 제21","group":"law","color":"#c93a52"},{"id":"item:design:3","label":"대규모 사업의 시설 일상감사","group":"item:design","color":"#12b886"},{"id":"law:5","label":"감사관-11302","group":"law","color":"#c93a52"},{"id":"item:design:4","label":"기술자문위원회","group":"item:design","color":"#12b886"},{"id":"law:6","label":"건설기술진흥법 제6","group":"law","color":"#c93a52"},{"id":"item:design:5","label":"설계의 경제성 검토 (VE)","group":"item:design","color":"#12b886"},{"id":"law:7","label":"건설기술진흥법 시행령 제75","group":"law","color":"#c93a52"},{"id":"item:design:6","label":"설계의 안전성 검토 (DfS)","group":"item:design","color":"#12b886"},{"id":"law:8","label":"건설기술진흥법 시행령 제75-2","group":"law","color":"#c93a52"},{"id":"item:design:7","label":"설계안전보건대장","group":"item:design","color":"#12b886"},{"id":"law:9","label":"산업안전보건법 제67","group":"law","color":"#c93a52"},{"id":"item:design:8","label":"각종 인증사항","group":"item:design","color":"#12b886"},{"id":"law:10","label":"녹색건축물법 등","group":"law","color":"#c93a52"},{"id":"cert:c1","label":"에너지절약계획서","group":"cert","color":"#9a9a9a"},{"id":"cert:c2","label":"녹색건축 인증","group":"cert","color":"#9a9a9a"},{"id":"cert:c3","label":"건축물에너지효율등급","group":"cert","color":"#9a9a9a"},{"id":"cert:c4","label":"제로에너지건축물(ZEB) 인증","group":"cert","color":"#9a9a9a"},{"id":"cert:c5","label":"장애물 없는 생활환경(BF) 인증","group":"cert","color":"#9a9a9a"},{"id":"cert:c6","label":"범죄예방 환경설계(CPTED)","group":"cert","color":"#9a9a9a"},{"id":"cert:c7","label":"신·재생에너지 공급의무비율","group":"cert","color":"#9a9a9a"},{"id":"cert:c8","label":"건물에너지관리시스템(BEMS)","group":"cert","color":"#9a9a9a"},{"id":"cert:c9","label":"교육시설 안전인증","group":"cert","color":"#9a9a9a"},{"id":"law:11","label":"건설기술진흥법 시행령 제82","group":"law","color":"#c93a52"},{"id":"item:design:9","label":"시설사업 시행계획 및 건축 승인","group":"item:design","color":"#12b886"},{"id":"law:12","label":"학교시설사업 촉진법 제5","group":"law","color":"#c93a52"},{"id":"item:const:1","label":"시설공사 일상감사","group":"item:const","color":"#f59f00"},{"id":"item:const:2","label":"기술자문위원회","group":"item:const","color":"#f59f00"},{"id":"item:const:3","label":"건설사업관리계획 수립","group":"item:const","color":"#f59f00"},{"id":"law:13","label":"건설기술진흥법 제39-2","group":"law","color":"#c93a52"},{"id":"item:const:4","label":"시설사업 집행계획 / 공사발주","group":"item:const","color":"#f59f00"},{"id":"law:14","label":"지방계약법 시행령 제77","group":"law","color":"#c93a52"},{"id":"item:const:5","label":"감리발주 (공사감리·감독 방식)","group":"item:const","color":"#f59f00"},{"id":"law:15","label":"공사감리(감독)방식 개선","group":"law","color":"#c93a52"},{"id":"item:const:6","label":"폐기물처리용역 발주","group":"item:const","color":"#f59f00"},{"id":"law:16","label":"건설폐기물법","group":"law","color":"#c93a52"},{"id":"item:const:7","label":"기타용역 발주","group":"item:const","color":"#f59f00"},{"id":"law:17","label":"산업안전보건법 제73","group":"law","color":"#c93a52"},{"id":"item:const:8","label":"본인증 용역 발주","group":"item:const","color":"#f59f00"},{"id":"law:18","label":"녹색건축물법","group":"law","color":"#c93a52"},{"id":"item:const:9","label":"학교건축물 해체공사 안전관리","group":"item:const","color":"#f59f00"},{"id":"law:19","label":"건축물관리법 제30","group":"law","color":"#c93a52"},{"id":"item:const:10","label":"공사추진 (안전성평가)","group":"item:const","color":"#f59f00"},{"id":"law:20","label":"교육시설법 제19","group":"law","color":"#c93a52"},{"id":"item:cm:1","label":"사업관리 업무 추진 (조항별 역할)","group":"item:cm","color":"#7c3aed"},{"id":"law:21","label":"건설기술진흥법 제11~","group":"law","color":"#c93a52"},{"id":"item:cm:2","label":"설계변경 — 발주청 요청(지시)","group":"item:cm","color":"#7c3aed"},{"id":"law:22","label":"설계변경 업무흐름도","group":"law","color":"#c93a52"},{"id":"item:cm:3","label":"설계변경 — 시공자 요청","group":"item:cm","color":"#7c3aed"},{"id":"item:cm:4","label":"설계변경 — 설계상 하자","group":"item:cm","color":"#7c3aed"},{"id":"item:cm:5","label":"계약금액 조정","group":"item:cm","color":"#7c3aed"},{"id":"law:23","label":"계약금액 조정 처리절차","group":"law","color":"#c93a52"},{"id":"item:comp:1","label":"준공검사","group":"item:comp","color":"#4263eb"},{"id":"law:24","label":"건설기술진흥법 시행령 제78","group":"law","color":"#c93a52"},{"id":"item:comp:2","label":"사용승인","group":"item:comp","color":"#4263eb"},{"id":"law:25","label":"건축법 시행령 제17","group":"law","color":"#c93a52"},{"id":"item:comp:3","label":"건축물대장","group":"item:comp","color":"#4263eb"},{"id":"law:26","label":"건축법 제38","group":"law","color":"#c93a52"}],"links":[{"source":"root","target":"phase:plan","kind":"flow"},{"source":"root","target":"phase:design","kind":"flow"},{"source":"root","target":"phase:const","kind":"flow"},{"source":"root","target":"phase:cm","kind":"flow"},{"source":"root","target":"phase:comp","kind":"flow"},{"source":"phase:plan","target":"item:plan:1","kind":"phase"},{"source":"item:plan:1","target":"law:0","kind":"law"},{"source":"phase:plan","target":"item:plan:2","kind":"phase"},{"source":"item:plan:2","target":"law:1","kind":"law"},{"source":"phase:plan","target":"item:plan:3","kind":"phase"},{"source":"item:plan:3","target":"law:2","kind":"law"},{"source":"phase:design","target":"item:design:1","kind":"phase"},{"source":"item:design:1","target":"law:3","kind":"law"},{"source":"phase:design","target":"item:design:2","kind":"phase"},{"source":"item:design:2","target":"law:4","kind":"law"},{"source":"phase:design","target":"item:design:3","kind":"phase"},{"source":"item:design:3","target":"law:5","kind":"law"},{"source":"phase:design","target":"item:design:4","kind":"phase"},{"source":"item:design:4","target":"law:6","kind":"law"},{"source":"phase:design","target":"item:design:5","kind":"phase"},{"source":"item:design:5","target":"law:7","kind":"law"},{"source":"phase:design","target":"item:design:6","kind":"phase"},{"source":"item:design:6","target":"law:8","kind":"law"},{"source":"phase:design","target":"item:design:7","kind":"phase"},{"source":"item:design:7","target":"law:9","kind":"law"},{"source":"phase:design","target":"item:design:8","kind":"phase"},{"source":"item:design:8","target":"law:10","kind":"law"},{"source":"item:design:8","target":"cert:c1","kind":"cert"},{"source":"item:design:8","target":"cert:c2","kind":"cert"},{"source":"item:design:8","target":"cert:c3","kind":"cert"},{"source":"item:design:8","target":"cert:c4","kind":"cert"},{"source":"item:design:8","target":"cert:c5","kind":"cert"},{"source":"item:design:8","target":"cert:c6","kind":"cert"},{"source":"item:design:8","target":"cert:c7","kind":"cert"},{"source":"item:design:8","target":"cert:c8","kind":"cert"},{"source":"item:design:8","target":"cert:c9","kind":"cert"},{"source":"item:design:9","target":"law:12","kind":"law"},{"source":"phase:design","target":"item:design:9","kind":"phase"},{"source":"phase:const","target":"item:const:1","kind":"phase"},{"source":"item:const:1","target":"law:3","kind":"law"},{"source":"phase:const","target":"item:const:2","kind":"phase"},{"source":"item:const:2","target":"law:6","kind":"law"},{"source":"phase:const","target":"item:const:3","kind":"phase"},{"source":"item:const:3","target":"law:13","kind":"law"},{"source":"phase:const","target":"item:const:4","kind":"phase"},{"source":"item:const:4","target":"law:14","kind":"law"},{"source":"phase:const","target":"item:const:5","kind":"phase"},{"source":"item:const:5","target":"law:15","kind":"law"},{"source":"phase:const","target":"item:const:6","kind":"phase"},{"source":"item:const:6","target":"law:16","kind":"law"},{"source":"phase:const","target":"item:const:7","kind":"phase"},{"source":"item:const:7","target":"law:17","kind":"law"},{"source":"phase:const","target":"item:const:8","kind":"phase"},{"source":"item:const:8","target":"law:18","kind":"law"},{"source":"phase:const","target":"item:const:9","kind":"phase"},{"source":"item:const:9","target":"law:19","kind":"law"},{"source":"phase:const","target":"item:const:10","kind":"phase"},{"source":"item:const:10","target":"law:20","kind":"law"},{"source":"phase:cm","target":"item:cm:1","kind":"phase"},{"source":"item:cm:1","target":"law:21","kind":"law"},{"source":"phase:cm","target":"item:cm:2","kind":"phase"},{"source":"item:cm:2","target":"law:22","kind":"law"},{"source":"phase:cm","target":"item:cm:3","kind":"phase"},{"source":"item:cm:3","target":"law:22","kind":"law"},{"source":"phase:cm","target":"item:cm:4","kind":"phase"},{"source":"item:cm:4","target":"law:22","kind":"law"},{"source":"phase:cm","target":"item:cm:5","kind":"phase"},{"source":"item:cm:5","target":"law:23","kind":"law"},{"source":"phase:comp","target":"item:comp:1","kind":"phase"},{"source":"item:comp:1","target":"law:24","kind":"law"},{"source":"phase:comp","target":"item:comp:2","kind":"phase"},{"source":"item:comp:2","target":"law:25","kind":"law"},{"source":"phase:comp","target":"item:comp:3","kind":"phase"},{"source":"item:comp:3","target":"law:26","kind":"law"},{"source":"item:const:8","target":"cert:c2","kind":"cert"},{"source":"item:const:8","target":"cert:c3","kind":"cert"},{"source":"item:const:8","target":"cert:c4","kind":"cert"},{"source":"item:const:8","target":"cert:c5","kind":"cert"},{"source":"item:const:8","target":"cert:c7","kind":"cert"},{"source":"item:const:8","target":"cert:c8","kind":"cert"},{"source":"item:design:6","target":"cert:c9","kind":"cert"},{"source":"item:design:7","target":"cert:c9","kind":"cert"},{"source":"cert:c1","target":"cert:c3","kind":"cert"},{"source":"cert:c3","target":"cert:c4","kind":"cert"},{"source":"cert:c2","target":"cert:c4","kind":"cert"},{"source":"cert:c7","target":"cert:c4","kind":"cert"},{"source":"cert:c8","target":"cert:c4","kind":"cert"},{"source":"item:design:1","target":"item:const:1","kind":"rel"},{"source":"item:design:4","target":"item:const:2","kind":"rel"},{"source":"item:design:8","target":"item:const:8","kind":"rel"},{"source":"item:design:9","target":"item:design:8","kind":"rel"},{"source":"item:design:5","target":"item:design:4","kind":"rel"}]};
     var svg=d3.select("#gv-graph"); var width=svg.node().getBoundingClientRect().width||900, height=520;
     svg.attr("viewBox",[0,0,width,height]);
     var g=svg.append("g"); var tip=d3.select("#gv-tip");
@@ -2311,15 +2368,36 @@ window.__gvInit = (function(){
         o.connect(g).connect(ac2.destination);o.start(t);o.stop(t+0.24);
       });
     }catch(e){}}
-    function gvfanfare(){try{var ac2=gvac_();var t0=ac2.currentTime+0.03;
-      var master=ac2.createGain();master.gain.value=0.22;master.connect(ac2.destination);
-      // 단순한 3음 상승 (도-미-솔)
-      [[392,0],[493.88,0.18],[587.33,0.36]].forEach(function(p){
-        var o=ac2.createOscillator(),g=ac2.createGain();o.type='triangle';o.frequency.value=p[0];
-        var t=t0+p[1];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.5,t+0.02);
-        g.gain.exponentialRampToValueAtTime(0.0001,t+0.5);
-        o.connect(g).connect(master);o.start(t);o.stop(t+0.55);
+    function gvfanfare(){try{var ac2=gvac_();var t0=ac2.currentTime+0.05;
+      var master=ac2.createGain();master.gain.value=0.0001;master.connect(ac2.destination);
+      var rev=ac2.createGain();rev.gain.value=0.6;rev.connect(master);
+      // 웅장한 상승 코드 진행 + 옥타브 레이어 + 저음 드론
+      var chords=[[220,277.18,329.63],[196,246.94,392],[261.63,329.63,392],[293.66,369.99,440]];
+      var step=0.5;
+      chords.forEach(function(ch,i){
+        var ct=t0+i*step;
+        ch.forEach(function(f){
+          [f,f*2].forEach(function(freq,k){
+            var o=ac2.createOscillator(),g=ac2.createGain();
+            o.type=k?'triangle':'sawtooth';o.frequency.value=freq;
+            g.gain.setValueAtTime(0,ct);g.gain.linearRampToValueAtTime(k?0.05:0.09,ct+0.06);
+            g.gain.setValueAtTime(k?0.05:0.09,ct+step*0.85);
+            g.gain.exponentialRampToValueAtTime(0.0001,ct+step*1.2);
+            o.connect(g).connect(rev);o.start(ct);o.stop(ct+step*1.25);
+          });
+        });
+        var lo=ac2.createOscillator(),lg=ac2.createGain();lo.type='sine';lo.frequency.value=ch[0]/2;
+        lg.gain.setValueAtTime(0,ct);lg.gain.linearRampToValueAtTime(0.14,ct+0.08);
+        lg.gain.exponentialRampToValueAtTime(0.0001,ct+step*1.15);
+        lo.connect(lg).connect(rev);lo.start(ct);lo.stop(ct+step*1.2);
       });
+      var end=t0+chords.length*step;
+      var sh=ac2.createOscillator(),sg=ac2.createGain();sh.type='triangle';
+      sh.frequency.setValueAtTime(587.33,end);sh.frequency.exponentialRampToValueAtTime(1174.66,end+0.5);
+      sg.gain.setValueAtTime(0,end);sg.gain.linearRampToValueAtTime(0.1,end+0.1);sg.gain.exponentialRampToValueAtTime(0.0001,end+1.2);
+      sh.connect(sg).connect(rev);sh.start(end);sh.stop(end+1.3);
+      master.gain.linearRampToValueAtTime(0.9,t0+0.2);
+      master.gain.setValueAtTime(0.9,end);master.gain.exponentialRampToValueAtTime(0.0001,end+1.3);
     }catch(e){}}
     nodeG.on("click",function(e,d){
       if(d.__moved){d.__moved=false;return;}
@@ -2346,15 +2424,16 @@ window.__gvInit = (function(){
       linkSel.attr("x1",function(d){return d.source.x;}).attr("y1",function(d){return d.source.y;}).attr("x2",function(d){return d.target.x;}).attr("y2",function(d){return d.target.y;});
       nodeG.attr("transform",function(d){return "translate("+d.x+","+d.y+")";});
     });
-    function autoFit(){
-      var xs=RAW.nodes.map(function(n){return n.x;}),ys=RAW.nodes.map(function(n){return n.y;});
+    function autoFit(nodes){
+      var pool=(nodes&&nodes.length)?nodes:RAW.nodes;
+      var xs=pool.map(function(n){return n.x;}),ys=pool.map(function(n){return n.y;});
       var minX=Math.min.apply(null,xs),maxX=Math.max.apply(null,xs),minY=Math.min.apply(null,ys),maxY=Math.max.apply(null,ys);
-      var bw=(maxX-minX)||1,bh=(maxY-minY)||1,pad=40;
-      var k=Math.min((width-pad*2)/bw,(height-pad*2)/bh,2);
+      var bw=(maxX-minX)||1,bh=(maxY-minY)||1,pad=50;
+      var k=Math.min((width-pad*2)/bw,(height-pad*2)/bh,2.2);
       var tx=width/2-k*(minX+maxX)/2, ty=height/2-k*(minY+maxY)/2;
       svg.transition().duration(600).call(zoom.transform,d3.zoomIdentity.translate(tx,ty).scale(k));
     }
-    sim.on("end",autoFit);
+    sim.on("end",function(){autoFit();});
     reheat=function(){
       RAW.nodes.forEach(function(n){n.fx=null;n.fy=null;n.x=width/2+(Math.random()-0.5)*6;n.y=height/2+(Math.random()-0.5)*6;});
       nodeG.attr("opacity",0);
@@ -2364,12 +2443,24 @@ window.__gvInit = (function(){
     };
     var zoom=d3.zoom().scaleExtent([0.3,4]).on("zoom",function(e){g.attr("transform",e.transform);});
     svg.call(zoom);
-    document.getElementById("gv-reset").addEventListener("click",function(){svg.transition().duration(400).call(zoom.transform,d3.zoomIdentity);});
+    function grpLinked(node,grp){
+      var pref="item:"+grp;
+      return RAW.links.some(function(l){
+        var s=(l.source.id||l.source),t=(l.target.id||l.target);
+        var sg=(l.source.group||""),tg=(l.target.group||"");
+        return (s===node.id&&tg===pref)||(t===node.id&&sg===pref);
+      });
+    }
     document.querySelectorAll(".gv-chip").forEach(function(ch){ch.addEventListener("click",function(){
       document.querySelectorAll(".gv-chip").forEach(function(c){c.classList.remove("on");}); ch.classList.add("on");
       var grp=ch.dataset.g;
-      nodeG.attr("opacity",function(d){if(grp==="all")return 1;if(d.group==="phase"||d.group==="root")return 1;return d.group===("item:"+grp)?1:0.08;});
-      linkSel.attr("stroke-opacity",function(l){if(grp==="all")return 0.6;var s=(l.source.group||""),t=(l.target.group||"");return(s===("item:"+grp)||t===("item:"+grp)||l.kind==="flow")?0.6:0.04;});
+      nodeG.attr("opacity",function(d){if(grp==="all")return 1;if(d.group==="phase"||d.group==="root")return 1;if(d.group===("item:"+grp))return 1;if(d.group==="law"||d.group==="cert")return grpLinked(d,grp)?1:0.08;return 0.08;});
+      linkSel.attr("stroke-opacity",function(l){if(grp==="all")return 0.6;var s=(l.source.group||""),t=(l.target.group||"");var sg=(l.source.id||l.source),tg=(l.target.id||l.target);return(s===("item:"+grp)||t===("item:"+grp)||l.kind==="flow")?0.6:0.04;});
+      if(grp==="all"){ autoFit(); }
+      else {
+        var vis=RAW.nodes.filter(function(d){return d.group===("item:"+grp)||d.group==="phase"||d.group==="root"||((d.group==="law"||d.group==="cert")&&grpLinked(d,grp));});
+        autoFit(vis);
+      }
     });});
     document.getElementById("gv-search").addEventListener("input",function(e){
       var q=e.target.value.trim().toLowerCase();
@@ -2382,11 +2473,11 @@ window.__gvInit = (function(){
     (function(){
       var tree=document.getElementById('gv-tree'); if(!tree) return; tree.innerHTML='';
       var GRP=[
-        {key:'plan',label:'기획',color:'var(--p-plan)'},
-        {key:'design',label:'설계',color:'var(--p-design)'},
-        {key:'const',label:'시공',color:'var(--p-const)'},
-        {key:'cm',label:'건설사업관리',color:'var(--p-cm)'},
-        {key:'comp',label:'준공',color:'var(--p-comp)'},
+        {key:'plan',label:'기획',color:'#3182f6'},
+        {key:'design',label:'설계',color:'#12b886'},
+        {key:'const',label:'시공',color:'#f59f00'},
+        {key:'cm',label:'건설사업관리',color:'#7c3aed'},
+        {key:'comp',label:'준공',color:'#4263eb'},
         {key:'law',label:'근거 법령',color:'#c93a52'},
         {key:'cert',label:'인증 항목',color:'#9a9a9a'}
       ];
@@ -2508,6 +2599,41 @@ window.__gvInit = (function(){
     el.addEventListener('mouseenter',()=>tone(880,0.07,0.05));
     el.addEventListener('click',()=>tone(1174,0.12,0.11));
   });
+})();
+</script>
+<script>
+// ===== 임시 블라인드 (교육시설과 · 감사관) — 다음 오픈 시 이 블록만 삭제 =====
+(function(){
+  var WORDS=['교육시설과','감사관'];
+  var re=new RegExp('('+WORDS.join('|')+')','g');
+  function blindNode(tn){
+    var t=tn.nodeValue; if(!t||t.indexOf('교육시설과')<0&&t.indexOf('감사관')<0) return;
+    var p=tn.parentNode; if(!p||p.closest&&p.closest('.blind-skip')) return;
+    if(p.classList&&p.classList.contains('blinded')) return;
+    var frag=document.createDocumentFragment(), last=0, m;
+    re.lastIndex=0;
+    while((m=re.exec(t))){
+      if(m.index>last) frag.appendChild(document.createTextNode(t.slice(last,m.index)));
+      var s=document.createElement('span'); s.className='blinded'; s.textContent=m[0];
+      s.style.cssText='background:currentColor;color:transparent;border-radius:3px;filter:blur(.5px);user-select:none;';
+      s.title='비공개 (준비 중)';
+      frag.appendChild(s); last=m.index+m[0].length;
+    }
+    if(last<t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+    p.replaceChild(frag,tn);
+  }
+  function walk(root){
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);
+    var list=[],n; while((n=w.nextNode())) list.push(n);
+    list.forEach(blindNode);
+  }
+  function run(){ walk(document.body); }
+  if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded',run);
+  new MutationObserver(function(muts){
+    muts.forEach(function(mu){ mu.addedNodes.forEach(function(nd){
+      if(nd.nodeType===3) blindNode(nd); else if(nd.nodeType===1) walk(nd);
+    }); });
+  }).observe(document.body,{childList:true,subtree:true});
 })();
 </script>
 </body>

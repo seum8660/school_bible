@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: 'Noto Sans CJK KR', 'Noto Sans KR', sans-serif; color: #1f2937; }
+  .page { width: 210mm; height: 297mm; padding: 11mm 12mm 9mm 12mm; display: flex; flex-direction: column; }
+  .hd { border-bottom: 2.5px solid #0f766e; padding-bottom: 5px; margin-bottom: 8px; }
+  .hd h1 { font-size: 17px; color: #0f766e; letter-spacing: -0.4px; }
+  .hd .sub { font-size: 9px; color: #6b7280; margin-top: 3px; line-height:1.4; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; align-content: start; }
+  .page > .grid { flex: 1; align-content: start; }
+  .box { border: 1px solid #d1d5db; border-radius: 5px; padding: 7px 9px; }
+  .box.full { grid-column: 1 / -1; }
+  .box h2 { font-size: 10.5px; color: #fff; background: #0f766e; display: inline-block;
+            padding: 2px 8px; border-radius: 3px; margin-bottom: 5px; letter-spacing: -0.3px; }
+  .box h2.accent { background: #b45309; }
+  p, li { font-size: 8.9px; line-height: 1.45; color: #374151; }
+  ul { list-style: none; }
+  li { padding-left: 9px; position: relative; margin-bottom: 1.5px; }
+  li::before { content: '·'; position: absolute; left: 2px; color: #0f766e; font-weight: 700; }
+  .k { color: #0f766e; font-weight: 700; }
+  .r { color: #b45309; font-weight: 700; }
+  table { width: 100%; border-collapse: collapse; margin-top: 3px; }
+  th, td { border: 1px solid #cbd5e1; padding: 2px 4px; font-size: 8.1px; text-align: center; }
+  th { background: #f0fdfa; color: #0f766e; font-weight: 700; }
+  td.l { text-align: left; }
+  .cat { display:flex; gap:5px; align-items:flex-start; margin-bottom:3px; }
+  .cat .n { flex:0 0 auto; width:15px; height:15px; background:#0f766e; color:#fff; border-radius:4px;
+            font-size:8.5px; font-weight:700; text-align:center; line-height:15px; margin-top:1px; }
+  .cat .t { font-size:8.7px; line-height:1.4; }
+  .cat .t b { color:#0f766e; font-size:9px; }
+  .ft { border-top: 1px solid #d1d5db; margin-top: 7px; padding-top: 5px; font-size: 7.6px; color: #9ca3af; text-align: center; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hd">
+    <h1>장애물 없는 생활환경(BF) 인증 기준 해설서 — 핵심 요약</h1>
+    <div class="sub">한국장애인개발원 · 2025.12. (자료 25-04) · 원문 459면 &nbsp;|&nbsp; 근거: 「장애인·노인·임산부 등의 편의증진 보장에 관한 법률」 &nbsp;|&nbsp; 대상: 건축물</div>
+  </div>
+
+  <div class="grid">
+    <!-- 개요 -->
+    <div class="box">
+      <h2>1. 제도 개요</h2>
+      <ul>
+        <li><span class="k">BF(Barrier Free)</span> 장애인·노인·임산부 등이 안전하고 편리하게 시설을 이용하도록 조성된 생활환경을 심사·인증하는 제도</li>
+        <li><span class="k">목적</span> 이동·접근·시설 이용의 불편과 제약 최소화, 모두를 위한 포용적 환경 조성</li>
+        <li><span class="k">해설서 역할</span> 인증지표·심사기준 해석 차이와 설계·시공 단계 현장 혼선 해소, 일관된 적용기준 제시</li>
+      </ul>
+    </div>
+
+    <!-- 인증구분 및 등급 -->
+    <div class="box">
+      <h2>2. 인증 구분 및 평가 등급</h2>
+      <ul>
+        <li><span class="k">예비인증</span> 설계 단계 심사 &nbsp; <span class="k">본인증</span> 준공 후 심사</li>
+        <li>각 평가항목을 <span class="k">등급별 점수(평점)</span>로 평가</li>
+      </ul>
+      <table>
+        <tr><th>등급</th><th>최우수</th><th>우수</th><th>일반</th></tr>
+        <tr><td>배점 예시<br><span style="font-size:7px;color:#6b7280;">(6점 항목)</span></td><td>6.0</td><td>4.8</td><td>4.2</td></tr>
+      </table>
+    </div>
+
+    <!-- 평가부문 체계 -->
+    <div class="box full">
+      <h2 class="accent">3. 평가부문 체계 (7개 부문 · 건축물 기준)</h2>
+      <div class="grid" style="gap:2px 14px; margin-top:3px;">
+        <div>
+          <div class="cat"><span class="n">1</span><span class="t"><b>매개시설</b> 접근로 · 장애인전용주차구역 · 출입구(문)</span></div>
+          <div class="cat"><span class="n">2</span><span class="t"><b>내부시설</b> 일반출입문 · 복도 · 계단 · 경사로 · 승강기</span></div>
+          <div class="cat"><span class="n">3</span><span class="t"><b>위생시설</b> 화장실 접근 · 대변기 · 소변기 · 세면대 · 욕실 · 샤워실·탈의실</span></div>
+          <div class="cat"><span class="n">4</span><span class="t"><b>안내시설</b> 안내설비 · 경보 및 피난설비</span></div>
+        </div>
+        <div>
+          <div class="cat"><span class="n">5</span><span class="t"><b>기타시설</b> 객실·침실 · 관람석·열람석 · 접수대·안내데스크 · 매표소·판매기·음수대 · 피난구 · 임산부 휴게시설</span></div>
+          <div class="cat"><span class="n">6</span><span class="t"><b>비치용품</b> 점자안내책자·확대경·보청기기·휠체어 등 의무/권장 비치용품</span></div>
+          <div class="cat"><span class="n">7</span><span class="t"><b>종합평가</b> 부문별 평가 결과의 종합</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 인증기준 용어 -->
+    <div class="box">
+      <h2>4. 인증기준 용어</h2>
+      <ul>
+        <li><span class="r">반드시</span> 법정의무 또는 인증의무 대상 — 평가 시 반드시 준수</li>
+        <li><span class="k">가급적</span> 의무는 아니나 이동·접근·이용에 큰 영향을 미쳐 설계·시공으로 개선을 권장하는 사항</li>
+      </ul>
+    </div>
+
+    <!-- 평가항목 해설 구성 -->
+    <div class="box">
+      <h2>5. 각 평가항목 해설 구성</h2>
+      <ul>
+        <li>① 산출기준 기본사항 &nbsp; ② 용어 해설</li>
+        <li>③ 산출 순서 및 방법 &nbsp; ④ 산출기준 해설</li>
+        <li>⑤ 제출서류(예비/본인증) &nbsp; ⑥ 참고자료(국내법률)</li>
+      </ul>
+    </div>
+
+    <!-- 실무 유의사항 -->
+    <div class="box full">
+      <h2>6. 실무 유의사항</h2>
+      <ul>
+        <li><span class="k">평가항목 구성</span> 부문 → 범주 → 항목 순으로 세분되며, 각 항목마다 평가목적·평가방법·배점·등급별 산출기준·제출서류를 규정</li>
+        <li><span class="k">제출서류</span> 예비인증은 배치도·동선계획·상세도 등 도서 중심, 본인증은 예비인증과 동일하되 일부 상세도는 준공 사진으로 대체 가능</li>
+        <li><span class="k">증축공사</span> 별동 증축 시 접근로 최소 1개소가 매개시설 기준에 모두 적합해야 인증 취득 가능하며, 기존 접근로 등은 편의증진법 제9조의2 <span class="r">편의시설 설치기준 적합성 확인</span>을 BF인증과 별도로 득해야 함</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ft">본 요약은 「장애물 없는 생활환경(BF) 인증 기준 해설서」(한국장애인개발원, 2025.12.)의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 관계 법령·고시의 최신 내용을 확인하시기 바랍니다.</div>
+</div>
+</body>
+</html>

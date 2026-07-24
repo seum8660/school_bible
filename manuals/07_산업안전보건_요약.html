@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: 'Noto Sans CJK KR', 'Noto Sans KR', sans-serif; color: #1f2937; }
+  .page {
+    width: 210mm; height: 297mm; padding: 11mm 12mm 9mm 12mm;
+    display: flex; flex-direction: column;
+  }
+  .hd { border-bottom: 2.5px solid #14532d; padding-bottom: 5px; margin-bottom: 8px; }
+  .hd h1 { font-size: 17.5px; color: #14532d; letter-spacing: -0.4px; }
+  .hd .sub { font-size: 9px; color: #6b7280; margin-top: 3px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; align-content: start; }
+  .page > .grid { flex: 1; align-content: start; }
+  .box { border: 1px solid #d1d5db; border-radius: 5px; padding: 7px 9px; }
+  .box.full { grid-column: 1 / -1; }
+  .box h2 { font-size: 10.5px; color: #fff; background: #14532d; display: inline-block;
+            padding: 2px 8px; border-radius: 3px; margin-bottom: 5px; letter-spacing: -0.3px; }
+  .box h2.accent { background: #b45309; }
+  p, li { font-size: 8.9px; line-height: 1.45; color: #374151; }
+  ul { list-style: none; }
+  li { padding-left: 9px; position: relative; margin-bottom: 1.5px; }
+  li::before { content: '·'; position: absolute; left: 2px; color: #14532d; font-weight: 700; }
+  .k { color: #14532d; font-weight: 700; }
+  .r { color: #b45309; font-weight: 700; }
+  .law { display:inline-block; background:#dcfce7; color:#14532d; font-size:7.7px; font-weight:700;
+         border-radius:3px; padding:0.5px 4px; margin-left:2px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  th, td { border: 1px solid #cbd5e1; padding: 2px 4px; font-size: 8.1px; text-align: center; }
+  th { background: #f0fdf4; color: #14532d; font-weight: 700; }
+  .stage { display:flex; gap:4px; margin:4px 0 2px; }
+  .stage div { flex:1; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:4px;
+               padding:3px 4px; font-size:7.9px; text-align:center; color:#166534; }
+  .stage span { display:block; font-weight:700; font-size:8.4px; color:#14532d; }
+  .arw { align-self:center; color:#14532d; font-weight:700; font-size:9px; }
+  .ft { border-top: 1px solid #d1d5db; margin-top: 7px; padding-top: 5px;
+        font-size: 7.6px; color: #9ca3af; text-align: center; }
+  .num { display:inline-block; width:13px; height:13px; background:#14532d; color:#fff;
+         border-radius:50%; font-size:8px; text-align:center; line-height:13px; font-weight:700; margin-right:2px;}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hd">
+    <h1>건설공사발주자의 산업안전보건업무 가이드북 — 핵심 요약</h1>
+    <div class="sub">고용노동부 산업안전보건본부 · 2024.10. · 원문 126면 &nbsp;|&nbsp; 근거: 「산업안전보건법」 제67조 ~ 제73조 (건설공사발주자의 산업재해 예방 조치)</div>
+  </div>
+
+  <div class="grid">
+    <!-- 1. 발주자 6대 책무 -->
+    <div class="box full">
+      <h2 class="accent">1. 건설공사발주자의 6대 산업안전보건 책무</h2>
+      <div class="grid" style="gap:2px 14px; margin-top:3px;">
+        <ul>
+          <li><span class="k">① 단계별 안전보건대장 작성</span><span class="law">법 §67</span> 계획·설계·시공 단계부터 위험요인 발굴 및 위험성 감소조치 마련</li>
+          <li><span class="k">② 안전보건조정자 선임</span><span class="law">법 §68</span> 같은 장소 복수공사의 혼재작업 재해 예방</li>
+          <li><span class="k">③ 공사기간 단축·공법변경 금지</span><span class="law">법 §69</span> 위험공법 사용, 정당한 사유 없는 공법 변경 금지</li>
+        </ul>
+        <ul>
+          <li><span class="k">④ 공사기간 연장</span><span class="law">법 §70</span> 지연 시 특별한 사유 없으면 연장 수용</li>
+          <li><span class="k">⑤ 설계변경 수용</span><span class="law">법 §71</span> 전문가 의견 통한 설계변경 요청 시 수용</li>
+          <li><span class="k">⑥ 관리비 계상·기술지도</span><span class="law">법 §72·73</span> 산업안전보건관리비 계상 및 중소현장 재해예방 기술지도 계약</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2. 안전보건대장 -->
+    <div class="box">
+      <h2>2. 건설공사 안전보건대장 <span style="font-weight:400;font-size:8px;">(법 §67)</span></h2>
+      <ul>
+        <li><span class="k">작성 대상</span> 총공사금액 <span class="r">50억 원 이상</span> 건설공사 (설계비용은 미포함)</li>
+        <li><span class="k">전문가 확인</span> 산업안전지도사·건설안전기술사 등이 대장의 적정성 확인 (’21.11.19. 이후 설계계약분)</li>
+        <li><span class="k">서식 변경</span> ’24.7.1. 이후 설계계약분부터 개정 서식 적용</li>
+      </ul>
+      <div class="stage">
+        <div><span>기본대장</span>발주자 작성<br>설계계약 前</div>
+        <div class="arw">›</div>
+        <div><span>설계대장</span>설계자 작성<br>시공사 선정 前</div>
+        <div class="arw">›</div>
+        <div><span>공사대장</span>시공사 작성<br>착공일 前日</div>
+      </div>
+      <p style="margin-top:2px;"><span class="r">벌칙</span> 미작성·이행확인 누락·전문가 미확인 시 과태료 1천만 원 이하</p>
+    </div>
+
+    <!-- 3. 안전보건조정자 -->
+    <div class="box">
+      <h2>3. 안전보건조정자 <span style="font-weight:400;font-size:8px;">(법 §68)</span></h2>
+      <ul>
+        <li><span class="k">선임 사유</span> 2개 이상 건설공사가 같은 장소에서 시행되는 등 작업 혼재로 재해 우려가 있는 경우</li>
+        <li><span class="k">업무</span> 공사별 시공사의 작업시기·내용 조정, 안전보건조치 개선 등으로 혼재작업 재해 예방</li>
+        <li>조정자 업무 수행만으로 발주자가 도급인 안전보건 책임을 지는 것은 아님</li>
+        <li><span class="r">벌칙</span> 미선임 시 과태료 500만 원</li>
+      </ul>
+    </div>
+
+    <!-- 4. 공사기간 연장 및 설계변경 -->
+    <div class="box">
+      <h2>4. 공사기간 연장 및 설계변경 <span style="font-weight:400;font-size:8px;">(법 §69~71)</span></h2>
+      <ul>
+        <li><span class="k">금지</span> 산정된 공사기간 임의 단축, 공사비 절감 목적 위험공법 사용·무단 공법변경 (노무·경비 절감 위한 단축 포함)</li>
+        <li><span class="k">적정 공기</span> 「공사기간 산정기준」·「적정 공사기간 확보 가이드라인」 참조하여 산정</li>
+        <li><span class="k">연장 절차</span> 불가항력·발주자 귀책 시, 사유 종료 후 <span class="r">10일 내</span> 요청 → 원청은 30일 내 조치·연장요청</li>
+        <li><span class="k">설계변경</span> 가설구조물 붕괴 등 위험 시 전문가 의견 들어 요청 → 기술적 불가 아니면 반영</li>
+      </ul>
+    </div>
+
+    <!-- 5. 기술지도 -->
+    <div class="box">
+      <h2>5. 산업재해 예방 기술지도 <span style="font-weight:400;font-size:8px;">(법 §73)</span></h2>
+      <ul>
+        <li><span class="k">대상</span> 공사금액 <span class="r">1억 원 이상 ~ 120억 원 미만</span> + 「건축법」상 건축허가 대상 공사</li>
+        <li><span class="k">계약 주체</span> ’22.8.18.부터 발주자(자기공사자 포함)가 착공일 전날까지 지도기관과 계약</li>
+        <li>전담 안전관리자 선임 의무 없는 중·소 현장 대상, 정기 지도 실시</li>
+        <li>1억 원 미만 공사는 무료 기술지도 지원</li>
+      </ul>
+    </div>
+
+    <!-- 6. 산업안전보건관리비 -->
+    <div class="box">
+      <h2>6. 산업안전보건관리비 계상 <span style="font-weight:400;font-size:8px;">(법 §72)</span></h2>
+      <ul>
+        <li>공사종류 4종 개편(’24.1) — 건축·토목·중건설·특수건설</li>
+        <li><span class="k">조정</span> 설계변경·물가변동 시 재계상 &nbsp; <span class="k">확인</span> 6개월마다 사용내역 확인, 목적 외 사용 금지</li>
+      </ul>
+      <table>
+        <tr><th>공사종류</th><th>건축</th><th>토목</th><th>중건설</th><th>특수건설</th></tr>
+        <tr><td>기초액(천원)<br><span style="font-size:7px;color:#6b7280;">’25.1.1~</span></td><td>4,325</td><td>3,300</td><td>2,975</td><td>2,450</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="ft">본 요약은 「건설공사발주자의 산업안전보건업무 가이드북」(고용노동부, 2024.10.)의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 관계 법령·고시의 최신 개정 내용을 확인하시기 바랍니다.</div>
+</div>
+</body>
+</html>

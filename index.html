@@ -559,9 +559,9 @@
   .man-search input{width:100%;border:var(--glassbd);border-radius:var(--radsm);background:var(--surface-2);box-shadow:var(--inset);padding:11px 14px 11px 42px;font:inherit;font-size:14px;color:var(--ink);outline:none;box-sizing:border-box;}
   .man-search input:focus{box-shadow:var(--inset),0 0 0 3px var(--accent-soft);}
   .man-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:14px;}
-  .man-card{display:flex;align-items:center;gap:13px;text-decoration:none;background:var(--surface);border:var(--glassbd);border-radius:var(--radsm);padding:16px 18px;box-shadow:var(--cardsh-sm);color:var(--ink);transition:transform .14s,box-shadow .14s;}
+  .man-card{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;column-gap:13px;row-gap:6px;align-items:center;text-decoration:none;background:var(--surface);border:var(--glassbd);border-radius:var(--radsm);padding:16px 18px;box-shadow:var(--cardsh-sm);color:var(--ink);transition:transform .14s,box-shadow .14s;min-height:106px;}
   .man-card:hover{transform:translateY(-3px);box-shadow:var(--cardsh);}
-  .man-no{flex:0 0 auto;width:40px;height:52px;position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;font-size:19px;font-weight:900;color:#fff;background:linear-gradient(135deg,#2e6da4,#3182f6);border-radius:2px 6px 6px 2px;border-left:6px solid rgba(0,0,0,.3);box-shadow:2px 2px 5px rgba(0,0,0,.22);font-family:'Pretendard',sans-serif;letter-spacing:-.5px;text-shadow:0 1px 2px rgba(0,0,0,.35);}
+  .man-no{flex:0 0 auto;align-self:start;width:40px;height:52px;position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;font-size:19px;font-weight:900;color:#fff;background:linear-gradient(135deg,#2e6da4,#3182f6);border-radius:2px 6px 6px 2px;border-left:6px solid rgba(0,0,0,.3);box-shadow:2px 2px 5px rgba(0,0,0,.22);font-family:'Pretendard',sans-serif;letter-spacing:-.5px;text-shadow:0 1px 2px rgba(0,0,0,.35);}
   .man-no::before{content:'';position:absolute;left:9px;right:5px;top:8px;height:2.5px;background:rgba(255,255,255,.55);border-radius:2px;box-shadow:0 6px 0 rgba(255,255,255,.4);}
   .man-card:nth-child(1) .man-no{background:linear-gradient(135deg,#7c1f1f,#b0392b);}
   .man-card:nth-child(2) .man-no{background:linear-gradient(135deg,#1f3f6b,#2e6da4);}
@@ -574,10 +574,11 @@
   .man-card:nth-child(9) .man-no{background:linear-gradient(135deg,#155e63,#1f9aa3);}
   .man-card:nth-child(10) .man-no{background:linear-gradient(135deg,#8a2f4a,#c14d6c);}
   .man-card:nth-child(11) .man-no{background:linear-gradient(135deg,#1f5a3a,#2f9e6f);}
-  .man-t{flex:1;min-width:0;line-height:1.35;}
-  .man-t b{font-weight:800;font-size:14.5px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
-  .man-t span{display:block;font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .man-go{flex:0 0 auto;font-size:11px;font-weight:700;color:var(--muted);background:var(--surface-2);border-radius:100px;padding:3px 10px;}
+  .man-t{min-width:0;line-height:1.35;align-self:center;}
+  .man-t b{font-weight:800;font-size:14px;line-height:1.32;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:keep-all;}
+  .man-t span{display:block;font-size:12px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .man-go{align-self:center;flex:0 0 auto;font-size:11px;font-weight:700;color:var(--muted);background:var(--surface-2);border-radius:100px;padding:3px 10px;white-space:nowrap;}
+  .man-tagrow{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end;}
   /* 각종 매뉴얼 — 도서관 서가 */
   .shelf{margin-top:16px;display:flex;flex-direction:column;gap:0;background:linear-gradient(#efe2cf,#e7d6bd);border:1.5px solid #c9b29a;border-radius:10px;padding:6px 26px 0;}
   .shelf-row{position:relative;display:flex;justify-content:center;gap:56px;padding:22px 0 0;margin-bottom:2px;}
@@ -782,9 +783,9 @@
     <aside class="hero-notice">
       <div class="hn-head"><span class="hn-dot"></span>업데이트 · 공지</div>
       <ul class="hn-list">
+        <li><span class="hn-tag">기능</span><div>🔥 초간단 내역작성기 <b>"톡톡이"</b> 개발중</div></li>
         <li><span class="hn-tag">NEW</span><div>🔥 <b>각종 매뉴얼 요약·보고서 업로드 중</b> — 순차 공개 예정</div></li>
         <li><span class="hn-tag">NEW</span><div>🔥 <b>간단내역서 만들기</b> 기능 추가 — 일위대가 자동참조 내역서·원가계산서·단가조사</div></li>
-        <li><span class="hn-tag">기능</span><div><b>그래프 뷰</b> 추가 — 업무·법령·인증 관계도 시각화</div></li>
       </ul>
       <div class="hn-foot">ver 4.0 · 2026-07-24</div>
     </aside>
@@ -1057,6 +1058,10 @@
       <a class="man-card" href="manuals/10_적정공사기간_요약.html" data-inline="manuals/10_적정공사기간_요약.html" data-dl="manuals/10_2026적정공사기간확보_가이드라인.pdf" data-title="2026년 적정 공사기간 확보를 위한 가이드라인 — 핵심 요약"><span class="man-no">10</span><div class="man-t"><b>2026년 적정 공사기간 확보를 위한 가이드라인</b><span>적정 공사기간 산정·확보 기준</span></div><span class="man-go">요약 ▾</span></a>
       <a class="man-card" href="https://www.schoolredesign.kr/portal/spacematerial/rschreportList.do" target="_blank" rel="noopener noreferrer"><span class="man-no">11</span><div class="man-t"><b>2025 학교건축 표준업무 매뉴얼</b><span>학교공간재구조화 포털</span></div><span class="man-go">사이트 ↗</span></a>
       <a class="man-card" href="manuals/12_관급자재_산안보_요약.html" data-inline="manuals/12_관급자재_산안보_요약.html" data-dl="manuals/12_건설업_산안보_해설_질의회시집.pdf" data-title="MAS물품 산업안전보건관리비 계상방안 — 핵심 요약"><span class="man-no">12</span><div class="man-t"><b>관급자재 산업안전보건관리비 계상 안내</b><span>관급자재 포함 산업안전보건관리비 계상 방법</span></div><span class="man-go">요약 ▾</span></a>
+      <a class="man-card" href="manuals/13_환경관리비_산출기준.html" data-inline="manuals/13_환경관리비_산출기준.html" data-title="환경관리비의 산출기준"><span class="man-no">13</span><div class="man-t"><b>환경관리비의 산출기준</b><span>환경보전비·폐기물처리비 산출</span></div><span class="man-go">요약 ▾</span></a>
+      <a class="man-card" href="manuals/14_산업안전보건관리비_해설서.pdf" data-inline="manuals/14_산업안전보건관리비_해설서.pdf" data-dl="manuals/14_산업안전보건관리비_해설서.pdf" data-title="건설업 산업안전보건관리비 해설 및 질의회시집 (2025.06.)"><span class="man-no">14</span><div class="man-t"><b>건설업 산업안전보건관리비 해설서</b><span>계상·사용기준 해설 및 질의회시집</span></div><span class="man-go">요약 ▾</span></a>
+      <a class="man-card" href="manuals/15_학교시설_석면해체제거_안내서.pdf" data-inline="manuals/15_학교시설_석면해체제거_안내서.pdf" data-dl="manuals/15_학교시설_석면해체제거_안내서.pdf" data-title="학교시설 석면 해체·제거 안내서 (2019.5.31.)"><span class="man-no">15</span><div class="man-t"><b>학교시설 석면 해체·제거 안내서</b><span>석면조사·해체 절차 및 안전관리</span></div><span class="man-go">요약 ▾</span></a>
+      <a class="man-card" href="#" onclick="return false;" title="링크 준비중"><span class="man-no">16</span><div class="man-t"><b>학교 급식조리실 환기설비 설치 가이드</b><span>조리실 환기·후드·급배기 설계 기준</span></div><span class="man-go">준비중</span></a>
     </div>
     <div id="man-inline" style="display:none;margin-top:16px"></div>
   </section>
@@ -1258,7 +1263,7 @@
         <select id="rt-size"><option>10억 미만</option><option>10억~30억</option><option>30억~50억</option><option>50억~300억</option><option>300억~1000억</option></select>
         <div class="hint">간접노무비·고정요율 결정</div></div>
       <div class="cfield"><label>공사기간</label>
-        <select id="rt-period"><option>6개월이하</option><option>7-12개월</option><option>13-36개월</option><option>36개월초과</option></select>
+        <select id="rt-period"><option>1개월미만</option><option>6개월이하</option><option>7-12개월</option><option>13-36개월</option><option>36개월초과</option></select>
         <div class="hint">기타경비·기간별 요율 결정</div></div>
       <div class="cfield"><label>공종</label>
         <select id="rt-work"><option>건축</option><option>토목</option><option>조경</option><option>설비</option></select>
@@ -2287,16 +2292,30 @@ renderRatio();
 function runRatioCalc(){
   const sizes=['10억 미만','10억~30억','30억~50억','50억~300억','300억~1000억'];
   const gi=sizes.indexOf(document.getElementById('rt-size').value);
-  const pi=document.getElementById('rt-period').selectedIndex;
+  const pi=Math.max(0,document.getElementById('rt-period').selectedIndex-1);
+  const under1m=document.getElementById('rt-period').selectedIndex===0;
   const wi=document.getElementById('rt-work').selectedIndex;
   const m=RATIO.main[gi*4+pi], f=RATIO.fixed[gi];
   const work=RATIO.side3[wi], per=RATIO.side2[pi];
   const safeMap={'건축':0,'토목':1,'조경':3,'설비':3};
   const sf=RATIO.safety?RATIO.safety[safeMap[work[0]]!==undefined?safeMap[work[0]]:0]:null;
+  const totalCost=(parseFloat(document.getElementById('rt-mat').value)||0)+(parseFloat(document.getElementById('rt-lab').value)||0)+(parseFloat(document.getElementById('rt-sup').value)||0);
+  const under2000=totalCost>0 && totalCost*1000 < 20000000;
+  const dim=(html)=>under2000?html.replace('class="res-card"','class="res-card dimmed"').replace('display:block"','display:block;opacity:.38;filter:grayscale(.6)"'):html;
   const cell=(label,val)=>{
     const isNum=/^[\d.]+$/.test(String(val).replace(/,/g,'').trim());
-    if(isNum) return `<div class="res-card" style="border-left-color:var(--ops)"><div class="rc-l"><div class="nm">${esc(label)}</div></div><div class="rc-r" style="text-align:right"><span class="thr" style="font-size:15px;background:var(--surface-2);color:var(--ops-d);display:inline-block;min-width:82px;text-align:right;font-variant-numeric:tabular-nums">${esc(val)} %</span></div></div>`;
-    return `<div class="res-card" style="border-left-color:var(--ops);display:block"><div class="nm" style="font-weight:700">${esc(label)}</div><div style="font-size:12px;color:#3A4650;margin-top:5px;line-height:1.45">${esc(val)}</div></div>`;
+    const under1e=totalCost>0 && totalCost*1000 < 100000000;
+    const noApply=(under2000 && /산업안전보건관리비/.test(label))
+      || (under1m && /국민건강|국민연금|노인장기/.test(label))
+      || (under1e && /퇴직공제/.test(label));
+    const dimStyle=noApply?';opacity:.35;filter:grayscale(.7)':'';
+    let tagTxt='(미해당)';
+    if(under1m && /국민건강|국민연금|노인장기/.test(label)) tagTxt='(1개월 미만 · 미해당)';
+    else if(under1e && /퇴직공제/.test(label)) tagTxt='(1억원 미만 · 의무 아님)';
+    else if(under2000 && /산업안전보건관리비/.test(label)) tagTxt='(2천만원 미만 · 미해당)';
+    const suffix=noApply?' <span style="font-size:10.5px;font-weight:700;color:var(--muted)">'+tagTxt+'</span>':'';
+    if(isNum) return `<div class="res-card" style="border-left-color:var(--ops)${dimStyle}"><div class="rc-l"><div class="nm">${esc(label)}${suffix}</div></div><div class="rc-r" style="text-align:right"><span class="thr" style="font-size:15px;background:var(--surface-2);color:var(--ops-d);display:inline-block;min-width:82px;text-align:right;font-variant-numeric:tabular-nums">${esc(val)} %</span></div></div>`;
+    return `<div class="res-card" style="border-left-color:var(--ops);display:block${dimStyle}"><div class="nm" style="font-weight:700">${esc(label)}${suffix}</div><div style="font-size:12px;color:#3A4650;margin-top:5px;line-height:1.45">${esc(val)}</div></div>`;
   };
   function safetyCell(){
     if(!sf) return '';
@@ -2312,10 +2331,12 @@ function runRatioCalc(){
     else { rate=parseFloat(sf[3])/100; }
     const a=base*1000*rate+fixed;
     const b=base2*1000*rate*1.2+fixed*1.2;
-    const amt=Math.round(Math.min(a,b));
+    const amt=under2000?0:Math.round(Math.min(a,b));
     const brk=daesang<5e8?'5억 미만':(daesang<5e9?'5~50억':'50억 이상');
     const won=amt.toLocaleString()+'원';
-    return `<div class="res-card" style="border-left-color:var(--ops);display:block"><div class="nm" style="font-weight:700">산업안전보건관리비 계상액</div><div style="font-size:12px;color:#3A4650;margin-top:5px;line-height:1.5">대상액 ${daesang.toLocaleString()}원 (${brk}) · min(a,b) 적용<br><b style="font-size:15px;color:var(--ops-d)">${won}</b></div></div>`;
+    const dimS=under2000?';opacity:.35;filter:grayscale(.7)':'';
+    const note=under2000?'<br><span style="font-size:11px;font-weight:700;color:var(--muted)">총공사금액 2천만원 미만 · 계상 대상 아님</span>':'';
+    return `<div class="res-card" style="border-left-color:var(--ops);display:block${dimS}"><div class="nm" style="font-weight:700">산업안전보건관리비 계상액</div><div style="font-size:12px;color:#3A4650;margin-top:5px;line-height:1.5">대상액 ${daesang.toLocaleString()}원 (${brk}) · min(a,b) 적용<br><b style="font-size:15px;color:var(--ops-d)">${won}</b>${note}</div></div>`;
   }
   let html='<div class="res-head">✅ 적용 요율 <span class="cnt">'+esc(document.getElementById('rt-size').value)+' · '+esc(m.period)+' · '+esc(work[0])+'</span></div>';
   html+='<div class="res-grid">'+
@@ -2788,11 +2809,12 @@ window.__gvInit = (function(){
     var t=c.querySelector('b')?c.querySelector('b').textContent:'';
     var d=c.querySelector('.man-t span')?c.querySelector('.man-t span').textContent:'';
     var tags=autoTags({t:t,d:d,detail:{}});
+    if(/\uc0b0\uc5c5\uc548\uc804\ubcf4\uac74\uad00\ub9ac\ube44 \ud574\uc124\uc11c/.test(t) && tags.indexOf('정산')<0) tags.push('정산');
     if(tags.length){
       var tw=c.querySelector('.man-t');
-      if(tw){var box=document.createElement('div');box.style.cssText='display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;justify-content:flex-end';
+      if(tw){var box=document.createElement('div');box.className='man-tagrow';
         box.innerHTML=tags.map(function(h){return '<span class="htag" data-tag="'+h+'">#'+h+'</span>';}).join('');
-        tw.appendChild(box);}
+        c.appendChild(box);}
     }
   });
   q.addEventListener('input',function(){

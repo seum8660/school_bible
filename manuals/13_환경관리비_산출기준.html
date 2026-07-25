@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family:'Pretendard','Noto Sans KR','Noto Sans CJK KR',sans-serif; color:#1f2937; }
+  .page { width:100%; max-width:1180px; min-height:auto; margin:0 auto; padding:26px 30px 22px; display:flex; flex-direction:column; }
+  .hd { border-bottom: 2.5px solid #1e3a5f; padding-bottom: 5px; margin-bottom: 8px; }
+  .hd h1 { font-size:26px; color:#1e3a5f; letter-spacing:-0.4px; }
+  .hd .sub { font-size:13px; color:#6b7280; margin-top:3px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px 18px; align-content:start; }
+  .page > .grid { flex:1; align-content:start; }
+  .box { border:1px solid #d1d5db; border-radius:10px; padding:16px 18px; }
+  .box.full { grid-column:1 / -1; }
+  .box h2 { font-size:14.5px; color:#fff; background:#1e3a5f; display:inline-block; padding:4px 12px; border-radius:3px; margin-bottom:5px; letter-spacing:-0.3px; }
+  .box h2.accent { background:#b45309; }
+  p, li { font-size:14px; line-height:1.7; color:#374151; }
+  ul { list-style:none; }
+  li { padding-left:14px; position:relative; margin-bottom:5px; }
+  li::before { content:'·'; position:absolute; left:2px; color:#1e3a5f; font-weight:700; }
+  .k { color:#1e3a5f; font-weight:700; }
+  .r { color:#b45309; font-weight:700; }
+  .formula { background:#eef2f7; border-left:3px solid #1e3a5f; border-radius:3px; padding:12px 14px; margin:4px 0; font-size:14.5px; text-align:center; font-weight:700; color:#1e3a5f; }
+  table { width:100%; border-collapse:collapse; margin-top:3px; }
+  th, td { border:1px solid #cbd5e1; padding:7px 9px; font-size:12.5px; text-align:center; vertical-align:middle; }
+  th { background:#f1f5f9; color:#1e3a5f; font-weight:700; }
+  .ft { border-top:1px solid #d1d5db; margin-top:8px; padding-top:6px; font-size:11.5px; color:#9ca3af; text-align:center; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hd">
+    <h1>환경관리비의 산출기준 — 핵심 요약</h1>
+    <div class="sub">건설기술 진흥법 제66조 · 시행규칙 제61조 · 「건설공사 환경관리비의 산출기준」(국토교통부 고시)</div>
+  </div>
+
+  <div class="grid">
+    <div class="box full">
+      <h2>구성</h2>
+      <div class="formula">환경관리비 = ① 환경보전비 + ② 폐기물처리비</div>
+      <ul>
+        <li><span class="k">환경보전비</span> — 공사 중 발생하는 소음·진동·비산먼지·수질오염 등을 방지하기 위한 비용 (설계서에 <b>별도 계상 의무</b>)</li>
+        <li><span class="k">폐기물처리비</span> — 건설폐기물의 수집·운반·중간처리·최종처분 비용 (「건설폐기물의 재활용촉진에 관한 법률」)</li>
+      </ul>
+    </div>
+
+    <div class="box">
+      <h2>① 환경보전비 산출</h2>
+      <div class="formula">환경보전비 = 대상액 × 요율</div>
+      <ul>
+        <li><span class="k">대상액</span> = 재료비 + 직접노무비 + 직접공사비에 포함된 관급자재비</li>
+        <li>공종별 요율 적용 (아래 표)</li>
+        <li>산출액이 실제 소요액보다 부족하면 <span class="r">실비 계상</span> 가능</li>
+        <li>설계변경·물가변동 시 <b>재계상</b></li>
+      </ul>
+    </div>
+
+    <div class="box">
+      <h2 class="accent">공종별 요율(예시)</h2>
+      <table>
+        <tr><th>공종</th><th>요율(%)</th></tr>
+        <tr><td>건축공사</td><td>0.3 ~ 0.5</td></tr>
+        <tr><td>토목공사</td><td>0.5 ~ 1.0</td></tr>
+        <tr><td>조경·기타(전문·개보수)</td><td>0.3</td></tr>
+        <tr><td>주택(재건축)</td><td>0.3</td></tr>
+      </table>
+      <p style="margin-top:6px;font-size:12.5px;color:#6b7280">※ 실제 요율은 발주청 제비율 요율표(연도별 고시)에 따름</p>
+    </div>
+
+    <div class="box">
+      <h2>② 폐기물처리비 산출</h2>
+      <ul>
+        <li>철거·해체 물량 산출 → 품목별 <b>발생량 원단위</b> 적용</li>
+        <li>수집·운반비 + 중간처리비(파쇄·선별) + 최종처분비(매립·소각)</li>
+        <li>혼합폐기물은 단가가 높으므로 <span class="r">분리배출</span>로 절감</li>
+        <li>지정폐기물(석면 등)은 별도 단가·별도 계상</li>
+      </ul>
+    </div>
+
+    <div class="box">
+      <h2>사용·정산 관리</h2>
+      <ul>
+        <li>목적 외 사용 금지 — 환경보전 용도로만 집행</li>
+        <li>수급인은 <b>사용내역서</b>를 작성·보관, 발주청이 확인</li>
+        <li>정산 시 실제 집행액 기준 <b>정산 대상</b></li>
+        <li>미계상·미집행 시 시정명령·과태료 대상</li>
+      </ul>
+    </div>
+
+    <div class="box full">
+      <h2>실무 체크포인트</h2>
+      <ul>
+        <li>설계 단계에서 환경보전비를 <b>제비율표 요율</b>로 반드시 별도 계상 (누락 빈번)</li>
+        <li>폐기물처리비는 <b>물량 산출근거(발생량 원단위)</b>를 설계서에 첨부</li>
+        <li>석면 함유 자재가 있으면 석면조사·지정폐기물 처리비를 별도 반영</li>
+        <li>공사 중 실제 소요가 계상액을 초과하면 설계변경으로 증액 가능</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ft">전남광주통합특별시교육청 · 학교시설업무 치트키 SCHOOL BIBLE — 참조용 요약자료</div>
+</div>
+</body>
+</html>

@@ -1119,42 +1119,9 @@
   <section class="panel" id="wx">
     <div class="sec-head">
       <span class="chip" style="background:#6d28d9">체크</span>
-      <div><h2>기상데이터 체크</h2><p>공사기간 산정용 기상 비작업일수 조회 (2015~2024 평년값)</p></div>
+      <div><h2>기상데이터 체크</h2></div>
     </div>
-    <div class="note">💡 「공공 건설공사의 공사기간 산정기준」 부록 ②③ 기준입니다. <b>비작업일수 = 기상 비작업일수 + 법정공휴일 − 중복일수</b>이며, 월 비작업일수가 주40시간 기준(월 8일)보다 작으면 <b>8일</b>을 적용합니다.</div>
-
-    <div class="calc-form" style="grid-template-columns:repeat(3,1fr);margin-top:12px">
-      <div class="cfield"><label>지역</label>
-        <select id="wx-region">
-          <option>광주</option><option selected>목포</option><option>여수</option><option>순천</option>
-          <option>장흥</option><option>해남</option><option>고흥</option><option>완도</option><option>진도</option><option>흑산도</option>
-        </select>
-        <div class="hint">전남·광주 관측지점</div></div>
-      <div class="cfield"><label>착공 예정월</label>
-        <select id="wx-start"></select>
-        <div class="hint">공사 시작 월</div></div>
-      <div class="cfield"><label>공사기간 <span class="u">개월</span></label>
-        <input type="number" id="wx-months" min="1" max="36" value="12" inputmode="numeric">
-        <div class="hint">개월 수 입력</div></div>
-    </div>
-
-    <div id="wx-result" style="margin-top:14px"></div>
-
-    <div class="sec-head" style="margin-top:26px"><span class="chip" style="background:var(--ops)">기준</span>
-      <div><h2>작업제한 기상조건</h2><p>공종별 작업 불가 판단 기준</p></div>
-    </div>
-    <div class="tbl-wrap">
-      <table><thead><tr><th style="text-align:left">공종</th><th>강우</th><th>강설</th><th>혹한</th><th>혹서</th><th>강풍</th></tr></thead>
-      <tbody>
-        <tr><td style="text-align:left;font-weight:700;color:var(--navy)">토공사</td><td>10mm↑</td><td>10mm↑</td><td>−5℃ 이하</td><td>33℃ 이상</td><td>10m/s↑</td></tr>
-        <tr><td style="text-align:left;font-weight:700;color:var(--navy)">철근콘크리트</td><td>5mm↑</td><td>5mm↑</td><td>0℃ 이하</td><td>33℃ 이상</td><td>10m/s↑</td></tr>
-        <tr><td style="text-align:left;font-weight:700;color:var(--navy)">철골공사</td><td>10mm↑</td><td>10mm↑</td><td>−5℃ 이하</td><td>33℃ 이상</td><td>10m/s↑</td></tr>
-        <tr><td style="text-align:left;font-weight:700;color:var(--navy)">도장·방수</td><td>1mm↑</td><td>1mm↑</td><td>5℃ 이하</td><td>33℃ 이상</td><td>10m/s↑</td></tr>
-        <tr><td style="text-align:left;font-weight:700;color:var(--navy)">조적·미장</td><td>5mm↑</td><td>5mm↑</td><td>0℃ 이하</td><td>33℃ 이상</td><td>—</td></tr>
-        <tr><td style="text-align:left;font-weight:700;color:var(--navy)">지붕·외장</td><td>5mm↑</td><td>5mm↑</td><td>−5℃ 이하</td><td>33℃ 이상</td><td>10m/s↑</td></tr>
-      </tbody></table>
-    </div>
-    <div class="note" style="margin-top:12px">⚠ 산출된 비작업일수는 <b>참고값</b>입니다. 실제 산정 시 기상청 관측자료(최근 10년)와 현장 여건을 반영하고, <b>우측 [공사기간 산출]</b> 대시보드에서 최종 검토하세요.</div>
+    <iframe src="기상데이터.html" title="기상데이터 체크" loading="lazy" style="width:100%;height:78vh;min-height:560px;border:1.5px solid var(--border);border-radius:var(--radsm);background:var(--surface);box-shadow:var(--shadow-sm);"></iframe>
   </section>
 
   <!-- ============ 규모별 절차 판정기 ============ -->

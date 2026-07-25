@@ -684,6 +684,8 @@
   .gz-tile .gz-t-s::after{content:"해당없음"}
   .gz-tile.on{opacity:1;border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in oklch,var(--accent) 40%,transparent),var(--shadow-sm)}
   .gz-tile.on .gz-t-s{background:#e5484d;color:#fff}
+  .gz-tile.on .gz-t-b{color:var(--ink-2)}
+  .gz-tile.on .gz-t-b .money-hl{color:#e5342b;font-weight:800}
   .gz-tile.on .gz-t-s::after{content:"적용"}
   /* 건축법령 체크 도구 (bl) */
   .bl-form{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--surface);border:1.5px solid var(--border);
@@ -928,11 +930,17 @@
       <div class="gz-tile" data-ax="total" data-amt="40"><div class="gz-t-h">투자심사</div><div class="gz-t-b">자체 40억↑ / 중앙 300억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">사전기획</div><div class="gz-t-b">설계비 1억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="design" data-amt="0.5"><div class="gz-t-h">공공건축심의</div><div class="gz-t-b">설계비 5천↑</div><span class="gz-t-s"></span></div>
+      <div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">설계공모</div><div class="gz-t-b">설계비 1억↑ 우선적용</div><span class="gz-t-s"></span></div>
+      <div class="gz-tile" data-ax="design" data-amt="2"><div class="gz-t-h">일상감사(용역)</div><div class="gz-t-b">설계·감리·기술용역 2억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="2"><div class="gz-t-h">일상감사(공사)</div><div class="gz-t-b">공사비 2억↑</div><span class="gz-t-s"></span></div>
+      <div class="gz-tile" data-ax="const" data-amt="5"><div class="gz-t-h">건설사업관리계획 수립</div><div class="gz-t-b">공사비 5억↑(토목)</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="5"><div class="gz-t-h">건설사업관리·감리</div><div class="gz-t-b">공사비 5억↑(토목)</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="total" data-amt="25"><div class="gz-t-h">대규모 시설 일상감사</div><div class="gz-t-b">사립 예산액 25억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="50"><div class="gz-t-h">안전보건대장</div><div class="gz-t-b">공사비 50억↑</div><span class="gz-t-s"></span></div>
+      <div class="gz-tile" data-ax="const" data-amt="50"><div class="gz-t-h">기술자문위원회</div><div class="gz-t-b">100억↑(본청) / 50억↑(지원청·학교)</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">경제성 검토(VE)</div><div class="gz-t-b">공사비 100억↑</div><span class="gz-t-s"></span></div>
+      <div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">공사기간 적정성 심의</div><div class="gz-t-b">총공사비 100억↑</div><span class="gz-t-s"></span></div>
+      <div class="gz-tile" data-ax="const" data-amt="200"><div class="gz-t-h">감독권한대행 건설사업관리</div><div class="gz-t-b">총공사비 200억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="total" data-amt="300"><div class="gz-t-h">중앙투자심사</div><div class="gz-t-b">총사업비 300억↑</div><span class="gz-t-s"></span></div>
     </div>
 
@@ -2444,7 +2452,13 @@ runRatioCalc();
     nEl.textContent=n;
     const dash=document.getElementById('gz-dash');
     if(dash) dash.querySelectorAll('.gz-tile').forEach(t=>{
-      t.classList.toggle('on',(m[t.dataset.ax]||0)>=parseFloat(t.dataset.amt));
+      const on=(m[t.dataset.ax]||0)>=parseFloat(t.dataset.amt);
+      t.classList.toggle('on',on);
+      const b=t.querySelector('.gz-t-b');
+      if(b&&!b.dataset.raw) b.dataset.raw=b.innerHTML;
+      if(b) b.innerHTML = on
+        ? b.dataset.raw.replace(/(\d[\d,.]*\s*(?:억|천만원|천|만원|원))/g,'<span class="money-hl">$1</span>')
+        : b.dataset.raw;
     });
   }
   [it,ic,id].forEach(el=>el.addEventListener('input',render));

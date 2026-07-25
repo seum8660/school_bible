@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<title>얼마니 — 소요예산 산출</title>
+<style>
+  :root{
+    --bg:#f2f4f6; --panel:#ffffff; --panel2:#f7f8fa; --line:#c4ccd6;
+    --text:#191f28; --sub:#8b95a1; --accent:#e5342b; --accent2:#b8241d;
+    --accent-dim:#fdeceb; --accent-line:#f5b9b5;
+    --mono:'D2Coding','Consolas','SFMono-Regular',monospace;
+    --sans:'Pretendard','Malgun Gothic',-apple-system,sans-serif;
+    --radsm:12px; --shadow:0 1px 3px rgba(0,27,55,.05),0 6px 20px rgba(0,27,55,.06);
+    --shadow-sm:0 1px 2px rgba(0,27,55,.06);
+  }
+  [data-theme="dark"]{
+    --bg:#181b24; --panel:#20242f; --panel2:#262b38; --line:#39404f;
+    --text:#eef1f7; --sub:#98a1b3; --accent:#ff6b60; --accent2:#ff8a80;
+    --accent-dim:rgba(255,107,96,.16); --accent-line:rgba(255,107,96,.4);
+    --shadow:0 8px 30px rgba(0,0,0,.4); --shadow-sm:0 4px 16px rgba(0,0,0,.3);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;transition:background .2s,color .2s}
+  header{background:var(--panel);border-bottom:1.5px solid var(--line);padding:16px 24px}
+  .hd{max-width:1240px;margin:0 auto;position:relative;text-align:center}
+  h1{margin:0 0 3px;font-size:21px;font-weight:900;letter-spacing:-.6px}
+  h1 .em{color:var(--accent)}
+  .hd .sub{color:var(--sub);font-size:12.5px}
+  .theme-toggle{position:absolute;right:0;top:2px;display:flex;gap:4px;background:var(--panel);border:1.5px solid var(--line);border-radius:100px;padding:4px;cursor:pointer}
+  .theme-toggle span{width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:14px;border-radius:100px;color:var(--sub)}
+  .theme-toggle .tg-sun{background:var(--accent);color:#fff}
+  [data-theme="dark"] .theme-toggle .tg-sun{background:transparent;color:var(--sub)}
+  [data-theme="dark"] .theme-toggle .tg-moon{background:var(--accent);color:#fff}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 24px 60px}
+  .panel{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--radsm);box-shadow:var(--shadow-sm);margin-bottom:16px;overflow:hidden}
+  .panel-h{padding:13px 18px;border-bottom:1.5px solid var(--line);font-size:15px;font-weight:800;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .panel-h .no{width:22px;height:22px;border-radius:7px;background:var(--accent);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:800}
+  .panel-h .spacer{margin-left:auto}
+  .panel-b{padding:16px 18px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+  .fld label{display:block;font-size:12px;font-weight:700;color:var(--sub);margin-bottom:5px}
+  .fld label .u{font-weight:600;color:var(--sub);opacity:.8}
+  .fld input,.fld select{width:100%;font:inherit;font-size:13.5px;padding:9px 11px;border:1.5px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text);outline:none}
+  .fld input:focus,.fld select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+  .fld .hint{font-size:11px;color:var(--sub);margin-top:4px}
+  .btn{font:inherit;font-size:13px;font-weight:700;padding:8px 16px;border-radius:100px;cursor:pointer;border:1.5px solid var(--line);background:var(--panel);color:var(--sub)}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn-p{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn-p:hover{background:var(--accent2);border-color:var(--accent2);color:#fff}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:11px}
+  .kpi{background:var(--panel2);border:1.5px solid var(--line);border-radius:11px;padding:13px 14px}
+  .kpi .lb{font-size:11.5px;color:var(--sub);font-weight:700}
+  .kpi .vl{font-family:var(--mono);font-size:18px;font-weight:800;margin-top:5px;letter-spacing:-.4px}
+  .kpi .vl small{font-size:11px;font-weight:600;color:var(--sub);margin-left:2px}
+  .kpi.tot{background:var(--accent-dim);border-color:var(--accent-line)}
+  .kpi.tot .vl{color:var(--accent)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:right;white-space:nowrap}
+  th{background:var(--accent-dim);color:var(--accent2);font-weight:700;font-size:11.5px;text-align:center}
+  [data-theme="dark"] th{color:var(--accent)}
+  td.l,th.l{text-align:left}
+  td.sec{background:var(--panel2);font-weight:800;text-align:left}
+  td.num{font-family:var(--mono)}
+  td.sum{font-family:var(--mono);font-weight:800;color:var(--accent)}
+  tr.big td{background:var(--accent-dim);font-weight:800}
+  .note{background:var(--panel2);border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--sub);line-height:1.6}
+  .note b{color:var(--accent)}
+  .rate{width:64px;padding:4px 6px;border:1.5px solid var(--accent);border-radius:7px;text-align:right;font:inherit;font-size:11.5px;background:var(--panel);color:var(--text)}
+  .addin{width:88px;padding:4px 6px;border:1px solid var(--line);border-radius:7px;text-align:right;font:inherit;font-size:12px;background:var(--panel);color:var(--text)}
+  .exin{padding:4px 6px;border:1px solid var(--line);border-radius:7px;font:inherit;font-size:11.5px;background:var(--panel);color:var(--text);width:100%;min-width:70px}
+  .exsel{padding:4px 6px;border:1px solid var(--line);border-radius:7px;font:inherit;font-size:11.5px;background:var(--panel);color:var(--sub);max-width:110px}
+  .exnum{width:92px;padding:4px 6px;border:1.5px solid var(--accent);border-radius:7px;text-align:right;font:inherit;font-size:11.5px;background:var(--panel);color:var(--text)}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+  @page{size:A4 portrait;margin:12mm 10mm}
+  @media print{
+    body{background:#fff}
+    .topbar,.btn,.exsel,.hint{display:none!important}
+    .wrap{max-width:none;padding:0}
+    .panel{break-inside:avoid;box-shadow:none;border-color:#999;margin-bottom:8mm}
+    .tblwrap{overflow:visible;border-color:#999}
+    table{font-size:10.5px}
+    th,td{border-color:#999!important;padding:4px 6px}
+    .exin,.exnum,.rate{border:none!important;background:none!important;padding:0!important;width:auto!important;font-size:10.5px}
+    .kpi{break-inside:avoid}
+  }
+  .tblwrap table{border:0}
+  .tblwrap th,.tblwrap td{border-left:0;border-right:0}
+  footer{max-width:1240px;margin:0 auto;padding:0 24px 40px;color:var(--sub);font-size:11.5px;line-height:1.7}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd">
+    <h1>💵 <span class="em">얼마니</span> — 소요예산 산출</h1>
+    <div class="sub">2026년 시설단가 기준 · 사업명·학생수·학급수 입력만으로 총사업비 자동 산출</div>
+    <button class="theme-toggle" id="themeToggle" title="라이트 / 다크"><span class="tg-sun">☀︎</span><span class="tg-moon">☾</span></button>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- 1. 기본 정보 -->
+  <div class="panel">
+    <div class="panel-h"><span class="no">1</span>사업 기본정보
+      <span class="spacer"></span>
+      <button class="btn" onclick="resetAll()">↺ 초기화</button>
+    </div>
+    <div class="panel-b">
+      <div class="grid">
+        <div class="fld" style="grid-column:span 2"><label>사업명</label>
+          <input id="i_name" placeholder="예) ○○초등학교 개축공사"></div>
+        <div class="fld"><label>사업유형</label>
+          <select id="i_type">
+            <option value="개축">개축</option>
+            <option value="신축">신축</option>
+            <option value="증축">증축</option>
+            <option value="리모델링">리모델링(그린스마트)</option>
+          </select></div>
+        <div class="fld"><label>학교급</label>
+          <select id="i_level"><option>초등학교</option><option>중학교</option><option>고등학교</option><option>특수학교</option></select></div>
+        <div class="fld"><label>학생 수 <span class="u">명</span></label>
+          <input id="i_stu" type="number" min="0" placeholder="예) 180"></div>
+        <div class="fld"><label>일반학급 수 <span class="u">학급</span></label>
+          <input id="i_cls" type="number" min="0" placeholder="예) 7"></div>
+        <div class="fld"><label>특수학급 수 <span class="u">학급</span></label>
+          <input id="i_sp" type="number" min="0" placeholder="예) 1"></div>
+        <div class="fld"><label>유치원 학급 수 <span class="u">학급</span></label>
+          <input id="i_kin" type="number" min="0" placeholder="예) 2"></div>
+        <div class="fld"><label>도서지역 가산</label>
+          <select id="i_isl"><option value="0">해당없음(육지)</option><option value="35">가지역 +35%</option><option value="25">나지역 +25%</option><option value="15">다지역 +15%</option><option value="5">라지역 +5%</option></select>
+          <div class="hint">설계·감리비 제외 가산</div></div>
+        <div class="fld"><label>적용 단가 <span class="u">2026 시설단가</span></label>
+          <select id="i_unit">
+            <option value="">자동 (사업유형별 기준단가)</option>
+            <option value="2247">신축 · 일반교 (2,247천원/㎡)</option>
+            <option value="2558">신축 · 특수학교 (2,558천원/㎡)</option>
+            <option value="2035">생활관·기숙사 (2,035천원/㎡)</option>
+            <option value="1888">체육관·다목적강당 (1,888천원/㎡)</option>
+            <option value="1650">급식실·조리시설 (1,650천원/㎡)</option>
+            <option value="1180">증축 · 일반교실 (1,180천원/㎡)</option>
+            <option value="1266">증축 · 특별교실 (1,266천원/㎡)</option>
+            <option value="641">리모델링 · 중수선 (641천원/㎡)</option>
+            <option value="430">리모델링 · 경수선 (430천원/㎡)</option>
+            <option value="700">대수선·개보수 (700천원/㎡)</option>
+          </select>
+          <div class="hint" id="unitHint">자동 선택 시 사업유형·학교급에 맞는 기준단가 적용</div></div>
+      </div>
+      <div class="note" style="margin-top:12px">💡 학급 수를 입력하면 <b>교육부 학교시설 기준면적</b>으로 연면적을 자동 산정하고, <b>2026년 시설단가</b>를 곱해 시설비를 계산합니다. 아래 항목은 직접 수정할 수 있습니다.</div>
+    </div>
+  </div>
+
+  <!-- 2. 면적 산정 -->
+  <div class="panel">
+    <div class="panel-h"><span class="no">2</span>면적 산정<span class="spacer"></span><span style="font-size:11.5px;color:var(--sub)">노란 칸은 직접 수정 가능</span></div>
+    <div class="panel-b">
+      <div class="grid">
+        <div class="fld"><label>교실 1실 기준면적 <span class="u">㎡</span></label>
+          <select id="a_roomSel">
+            <option value="">직접 입력</option>
+            <option value="60.48">일반교실 (60.48㎡ · 7.2×8.4)</option>
+            <option value="66.24">일반교실 확장형 (66.24㎡)</option>
+            <option value="70.00">특별교실 (70.00㎡)</option>
+            <option value="84.00">과학실·실습실 (84.00㎡)</option>
+            <option value="90.00">기술·가정실 (90.00㎡)</option>
+            <option value="50.40">유치원 보육실 (50.40㎡)</option>
+            <option value="45.00">특수학급 교실 (45.00㎡)</option>
+            <option value="30.24">소규모 모듈교실 (30.24㎡)</option>
+          </select>
+          <input id="a_room" type="number" step="0.01" value="60.48" style="margin-top:6px">
+        </div>
+        <div class="fld"><label>순면적 <span class="u">㎡</span></label><input id="a_net" type="number" step="0.01" placeholder="자동"></div>
+        <div class="fld"><label>공용면적 비율 <span class="u">%</span></label>
+          <select id="a_pubSel">
+            <option value="">직접 입력</option>
+            <option value="40">40% · 최소 (단순 배치)</option>
+            <option value="45">45% · 증축·소규모</option>
+            <option value="50">50% · 일반 신축 (권장)</option>
+            <option value="55">55% · 복합화·다기능</option>
+            <option value="60">60% · 최대 (특수학교·공간재구조화)</option>
+          </select>
+          <input id="a_pub" type="number" step="1" value="50" style="margin-top:6px">
+          <div class="hint">순면적의 40~60%</div></div>
+        <div class="fld"><label>연면적 <span class="u">㎡</span></label><input id="a_tot" type="number" step="0.01" placeholder="자동"></div>
+      </div>
+      <div class="tblwrap" style="margin-top:14px"><table id="areaTbl"></table></div>
+    </div>
+  </div>
+
+  <!-- 3. 시설비 -->
+  <div class="panel">
+    <div class="panel-h"><span class="no">3</span>시설비 산출<span class="spacer"></span><span style="font-size:11.5px;color:var(--sub)">단위: 천원</span></div>
+    <div class="panel-b"><div class="tblwrap"><table id="facTbl"></table></div>
+      <div style="margin-top:10px"><button class="btn btn-o btn-sm" onclick="addEx()">＋ 항목 추가</button></div>
+    </div>
+  </div>
+
+  <!-- 4. 용역비·부대비 -->
+  <div class="panel">
+    <div class="panel-h"><span class="no">4</span>용역비 · 예비비 · 비품비<span class="spacer"></span><span style="font-size:11.5px;color:var(--sub)">요율 직접 수정 가능</span></div>
+    <div class="panel-b"><div class="tblwrap"><table id="svcTbl"></table></div></div>
+  </div>
+
+  <!-- 5. 총괄 -->
+  <div class="panel">
+    <div class="panel-h"><span class="no">5</span>총사업비 총괄
+      <span class="spacer"></span>
+      <button class="btn btn-p" onclick="exportXls()">📥 엑셀 내보내기</button>
+      <button class="btn" onclick="window.print()">🖨 인쇄</button>
+    </div>
+    <div class="panel-b">
+      <div class="kpis" id="kpis"></div>
+      <div class="tblwrap" style="margin-top:14px"><table id="sumTbl"></table></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  ※ 본 산출서는 「전라남도교육비특별회계 2026년도 예산편성 기준 시설단가표」를 적용한 <b>개략 산출</b>입니다.<br>
+  ※ 설계비·감리비는 「엔지니어링사업대가의 기준」·예산편성지침에 따라 별도 정밀 산출이 필요하며, 본 화면은 요율 방식의 참고값입니다.<br>
+  ※ 도서지역 가산은 시설비에만 적용됩니다(설계·감리비 제외).
+</footer>
+
+<script>
+/* ===== 2026 시설단가 (천원) ===== */
+const U = {
+  신축_일반: 2247, 신축_특수: 2558,
+  개축_교실90: 183189, 증축_일반교실90: 162037, 증축_특별교실90: 173975,
+  리모델링_중수90: 57665,
+  화장실_45: 176260, 화장실중수_45: 96282,
+  식당_증축: 2419, 조리실_증축: 4204, 식당_개축: 2490, 조리실_개축: 4314,
+  냉난방_실: 7093, 수전_소: 130544, 수전_중: 132460, 수전_대: 135363,
+  신재생_태양광: 143, 파일_20실: 529038, 무선AP: 1350,
+  통신: [[6,26760],[12,41350],[18,50450],[24,63250],[30,73700],[36,90990],[999,97390]],
+  운동장_마사토: 173, 트랙: 173, 포장: 71, 배수로: 315,
+  강당_500: 2330079, 강당_1000: 2604205, 강당_초과: 2741267,
+  철거_일반90: 15846, 철거_석면90: 9176, 내진: 159
+};
+const $=id=>document.getElementById(id);
+const N=v=>{const n=parseFloat(String(v).replace(/,/g,''));return isNaN(n)?0:n;};
+const won=n=>Math.round(n||0).toLocaleString();
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+/* 요율 (%) */
+const R={design:4.0, contest:10, intent:9, ve:0, cm:3.5, contingency:3.0, furniture:0};
+/* 추가 시설 수량 */
+const ADD={renew:0, pile:0, gym:0, field:0, pave:0, demo:0};
+
+function classCount(){ return N($('i_cls').value)+N($('i_sp').value)+N($('i_kin').value); }
+
+/* ===== 면적 자동 산정 ===== */
+function calcArea(){
+  const room=N($('a_room').value)||60.48;
+  const cls=N($('i_cls').value), sp=N($('i_sp').value), kin=N($('i_kin').value);
+  const stu=N($('i_stu').value);
+  const tot=cls+sp+kin;
+  // 영역별 실수 (교육부 기준 개략)
+  const rooms={
+    '보통교실':cls,
+    '특수학급':sp,
+    '유치원교실':kin,
+    '특별교실(음악·미술·과학)':Math.max(1,Math.round(tot*0.35)),
+    '도서실·스마트도서관':tot>=12?2:1,
+    '돌봄교실':Math.max(1,Math.round(cls*0.15)),
+    '교무·행정실':Math.max(2,Math.round(tot*0.15)),
+    '보건·상담실(Wee)':2
+  };
+  const roomArea=Object.values(rooms).reduce((a,b)=>a+b,0)*room;
+  const toilet=Math.max(2,Math.ceil(tot/6))*45;
+  const dining=stu>0?Math.max(120,stu*0.9):0;
+  const kitchen=stu>0?Math.max(90,stu*0.45):0;
+  const net=roomArea+toilet+dining+kitchen;
+  return {rooms,room,roomArea,toilet,dining,kitchen,net,tot,stu};
+}
+
+function renderArea(A){
+  const pub=N($('a_pub').value)||50;
+  const net=N($('a_net').value)||A.net;
+  const total=N($('a_tot').value)|| (net*(1+pub/100));
+  let h='<thead><tr><th class="l">구분</th><th class="l">항목</th><th>실수</th><th>단위면적(㎡)</th><th>면적(㎡)</th></tr></thead><tbody>';
+  h+='<tr><td class="sec" colspan="5">교실·지원 영역</td></tr>';
+  Object.entries(A.rooms).forEach(([k,v])=>{
+    if(!v)return;
+    h+=`<tr><td class="l"></td><td class="l">${esc(k)}</td><td class="num">${v}</td><td class="num">${A.room.toFixed(2)}</td><td class="num">${(v*A.room).toFixed(2)}</td></tr>`;
+  });
+  h+=`<tr><td class="sec" colspan="5">기타 영역</td></tr>`;
+  h+=`<tr><td class="l"></td><td class="l">화장실</td><td class="num">${Math.max(2,Math.ceil(A.tot/6))}</td><td class="num">45.00</td><td class="num">${A.toilet.toFixed(2)}</td></tr>`;
+  if(A.dining) h+=`<tr><td class="l"></td><td class="l">식당</td><td class="num">1</td><td class="num">${A.dining.toFixed(2)}</td><td class="num">${A.dining.toFixed(2)}</td></tr>`;
+  if(A.kitchen) h+=`<tr><td class="l"></td><td class="l">조리실</td><td class="num">1</td><td class="num">${A.kitchen.toFixed(2)}</td><td class="num">${A.kitchen.toFixed(2)}</td></tr>`;
+  h+=`<tr class="big"><td class="l" colspan="4">순면적 계</td><td class="num">${net.toFixed(2)}</td></tr>`;
+  h+=`<tr><td class="l" colspan="4">공용면적 (순면적의 ${pub}%)</td><td class="num">${(total-net).toFixed(2)}</td></tr>`;
+  h+=`<tr class="big"><td class="l" colspan="4">연면적 합계</td><td class="num">${total.toFixed(2)}</td></tr>`;
+  h+='</tbody>';
+  $('areaTbl').innerHTML=h;
+  return {net,total,pub};
+}
+
+/* ===== 시설비 ===== */
+function facRows(area){
+  const t=$('i_type').value, lv=$('i_level').value, tot=classCount(), stu=N($('i_stu').value);
+  const isSpecial=lv==='특수학교';
+  const baseUnit = t==='신축' ? (isSpecial?U.신축_특수:U.신축_일반)
+             : t==='개축' ? (isSpecial?U.신축_특수:U.신축_일반)
+             : t==='증축' ? (isSpecial?U.신축_특수:U.신축_일반)
+             : 700;
+  const ov=N(($('i_unit')||{}).value);
+  const unit = ov>0 ? ov : baseUnit;
+  const uh=$('unitHint'); if(uh) uh.textContent = ov>0 ? ('선택 단가 '+won(ov)+'천원/㎡ 적용') : ('자동 · 2026 기준단가 '+won(baseUnit)+'천원/㎡ 적용');
+  const rows=[];
+  rows.push(['건축공사', t+' 본체 ('+area.total.toFixed(0)+'㎡ × '+won(unit)+'천원)', area.total*unit, '㎡당 단가']);
+  if(t==='개축'||t==='리모델링'){
+    rows.push(['철거공사','기존교실 철거 ('+Math.round(area.total*0.6)+'㎡)', Math.round(area.total*0.6)/90*U.철거_일반90, '90㎡ 기준']);
+    rows.push(['','석면 텍스 철거 ('+Math.round(area.total*0.3)+'㎡)', Math.round(area.total*0.3)/90*U.철거_석면90, '90㎡ 기준']);
+  }
+  rows.push(['설비공사','교실 냉·난방(EHP) '+tot+'실', tot*U.냉난방_실, '전기시설 포함']);
+  const su = tot<=20?U.수전_소:(tot<=35?U.수전_중:U.수전_대);
+  rows.push(['','수전설비 1식', su, tot<=20?'200kVA 이하':(tot<=35?'300kVA 이하':'300kVA 이상')]);
+  if(area.total>=1000) rows.push(['','신재생에너지(태양광) '+area.total.toFixed(0)+'㎡', area.total*U.신재생_태양광, '연면적 1천㎡ 이상 의무']);
+  const tg=U.통신.find(x=>tot<=x[0]);
+  rows.push(['정보통신','통신장비(유·무선) '+tot+'학급', tg?tg[1]:0, tg?tg[0]+'학급 이하':'']);
+  rows.push(['','무선AP '+tot+'실', tot*U.무선AP, '교실 1실당']);
+  if(ADD.pile) rows.push(['기초공사','기초보강(파일) '+ADD.pile+'실', ADD.pile*(U.파일_20실/20), '20실 기준 환산']);
+  if(ADD.gym){
+    const g = stu<=500?U.강당_500:(stu<=1000?U.강당_1000:U.강당_초과);
+    rows.push(['강당','강당 증축 1식', g, stu<=500?'850㎡ 기준':(stu<=1000?'950㎡ 기준':'1,000㎡ 기준')]);
+  }
+  if(ADD.field) rows.push(['토목','운동장(마사토) '+ADD.field+'㎡', ADD.field*U.운동장_마사토, '배수로 제외']);
+  if(ADD.pave) rows.push(['','포장(콘크리트 T15) '+ADD.pave+'㎡', ADD.pave*U.포장, '']);
+  return rows;
+}
+
+function renderFac(area){
+  const rows=facRows(area);
+  const isl=N($('i_isl').value);
+  let sum=0;
+  let h='<thead><tr><th class="l">구분</th><th class="l">내역</th><th>금액(천원)</th><th class="l">비고</th></tr></thead><tbody>';
+  rows.forEach(r=>{ sum+=r[2];
+    h+=`<tr><td class="l">${esc(r[0])}</td><td class="l">${esc(r[1])}</td><td class="num">${won(r[2])}</td><td class="l" style="color:var(--sub);font-size:11.5px">${esc(r[3]||'')}</td></tr>`;
+  });
+  EX.forEach((x,i)=>{ sum+=N(x.amt);
+    h+=`<tr><td class="l"><input class="exin" value="${esc(x.cat)}" placeholder="구분" onchange="setEx(${i},'cat',this.value)"></td>`
+      +`<td class="l" style="display:flex;gap:6px;align-items:center"><select class="exsel" onchange="pickEx(${i},this.value)"><option value="">목록▾</option>${PRESET.map(p=>`<option${x.name===p[1]?' selected':''}>${esc(p[1])}</option>`).join('')}</select>`
+      +`<input class="exin" style="flex:1" value="${esc(x.name)}" placeholder="항목명 직접 입력" onchange="setEx(${i},'name',this.value)"></td>`
+      +`<td class="num"><input class="exnum" value="${x.amt||''}" placeholder="0" onchange="setEx(${i},'amt',this.value)"></td>`
+      +`<td class="l" style="display:flex;gap:6px;align-items:center"><input class="exin" style="flex:1" value="${esc(x.note||'')}" placeholder="비고" onchange="setEx(${i},'note',this.value)"><button class="btn btn-o btn-sm" onclick="delEx(${i})">×</button></td></tr>`;
+  });
+  const islAmt=sum*isl/100;
+  if(isl) h+=`<tr><td class="l">가산</td><td class="l">도서지역 가산 (+${isl}%)</td><td class="num">${won(islAmt)}</td><td class="l" style="color:var(--sub);font-size:11.5px">설계·감리비 제외</td></tr>`;
+  const total=sum+islAmt;
+  h+=`<tr class="big"><td class="l" colspan="2">시설비 합계</td><td class="sum">${won(total)}</td><td></td></tr></tbody>`;
+  $('facTbl').innerHTML=h;
+  return total;
+}
+
+/* ===== 추가 항목 ===== */
+const PRESET=[
+  ['건축','증축 본체 공사'],['건축','리모델링 공사'],['건축','외부 계단·승강기'],
+  ['토목','부지 조성·토공'],['토목','올탑생산 시설'],['토목','우수 저류조'],
+  ['설비','가스공사'],['설비','소방시설'],['설비','급배수·위생설비'],['설비','환기설비(조리실)'],
+  ['전기','전기자동화 설비'],['전기','CCTV·보안설비'],['전기','전기차 충전설비'],
+  ['조경','조경식재·시설물'],['조경','놀이터·체육시설'],
+  ['기타','지질조사비'],['기타','석면해체·정밀조사'],['기타','문화재 지표조사'],
+  ['기타','인증수수료(ZEB·녹색건축·BF)'],['기타','가설교사 임대·설치']
+];
+let EX=[];
+function addEx(){ EX.push({cat:'',name:'',amt:0,note:''}); calcAll(); }
+function setEx(i,k,v){ if(!EX[i])return; EX[i][k]= k==='amt'?N(v):v; calcAll(); }
+function pickEx(i,v){ if(!v||!EX[i])return; const p=PRESET.find(x=>x[1]===v); EX[i].name=v; if(p&&!EX[i].cat)EX[i].cat=p[0]; calcAll(); }
+function delEx(i){ EX.splice(i,1); calcAll(); }
+
+/* ===== 용역비·예비비·비품비 ===== */
+function rin(k,v){return `<input class="rate" value="${v}" onchange="setRate('${k}',this.value)">`;}
+function setRate(k,v){R[k]=N(v);calcAll();}
+function renderSvc(fac,area){
+  const stu=N($('i_stu').value), tot=classCount();
+  const design=fac*R.design/100;
+  const contest=design*R.contest/100;
+  const intent=design*R.intent/100;
+  const ve=fac>=10000000?(R.ve?fac*R.ve/100:20000):0;
+  const cm=fac*R.cm/100;
+  const svcSum=design+contest+intent+ve+cm;
+  const cont=(fac+svcSum)*R.contingency/100;
+  const furn=R.furniture?fac*R.furniture/100:(tot*8000+stu*120);
+  let h='<thead><tr><th class="l">구분</th><th class="l">항목</th><th>요율(%)</th><th>금액(천원)</th><th class="l">산출근거</th></tr></thead><tbody>';
+  h+=`<tr><td class="sec" colspan="5">용역비</td></tr>`;
+  h+=`<tr><td class="l"></td><td class="l">설계용역비</td><td class="num">${rin('design',R.design)}</td><td class="num">${won(design)}</td><td class="l" style="color:var(--sub);font-size:11.5px">시설비 × 요율 (예산편성지침)</td></tr>`;
+  h+=`<tr><td class="l"></td><td class="l">설계공모 보상비</td><td class="num">${rin('contest',R.contest)}</td><td class="num">${won(contest)}</td><td class="l" style="color:var(--sub);font-size:11.5px">설계비의 10%</td></tr>`;
+  h+=`<tr><td class="l"></td><td class="l">설계의도 구현비</td><td class="num">${rin('intent',R.intent)}</td><td class="num">${won(intent)}</td><td class="l" style="color:var(--sub);font-size:11.5px">설계비의 9%</td></tr>`;
+  h+=`<tr><td class="l"></td><td class="l">설계 경제성검토(VE)</td><td class="num">${fac>=10000000?'별도':'-'}</td><td class="num">${won(ve)}</td><td class="l" style="color:var(--sub);font-size:11.5px">총공사비 100억 이상 의무</td></tr>`;
+  h+=`<tr><td class="l"></td><td class="l">감리(건설사업관리)용역비</td><td class="num">${rin('cm',R.cm)}</td><td class="num">${won(cm)}</td><td class="l" style="color:var(--sub);font-size:11.5px">시설비 × 요율</td></tr>`;
+  h+=`<tr class="big"><td class="l" colspan="3">용역비 계</td><td class="sum">${won(svcSum)}</td><td></td></tr>`;
+  h+=`<tr><td class="sec" colspan="5">기타</td></tr>`;
+  h+=`<tr><td class="l"></td><td class="l">예비비</td><td class="num">${rin('contingency',R.contingency)}</td><td class="num">${won(cont)}</td><td class="l" style="color:var(--sub);font-size:11.5px">(시설비+용역비) × 요율</td></tr>`;
+  h+=`<tr><td class="l"></td><td class="l">비품비</td><td class="num">${R.furniture?rin('furniture',R.furniture):'개산'}</td><td class="num">${won(furn)}</td><td class="l" style="color:var(--sub);font-size:11.5px">학급 8,000천원 + 학생 120천원</td></tr>`;
+  h+='</tbody>';
+  $('svcTbl').innerHTML=h;
+  return {design,contest,intent,ve,cm,svcSum,cont,furn};
+}
+
+/* ===== 총괄 ===== */
+function renderSum(fac,S,area){
+  const total=fac+S.svcSum+S.cont+S.furn;
+  $('kpis').innerHTML=
+    `<div class="kpi"><div class="lb">시설비</div><div class="vl">${won(fac)}<small>천원</small></div></div>`+
+    `<div class="kpi"><div class="lb">설계비</div><div class="vl">${won(S.design+S.contest+S.intent+S.ve)}<small>천원</small></div></div>`+
+    `<div class="kpi"><div class="lb">감리비</div><div class="vl">${won(S.cm)}<small>천원</small></div></div>`+
+    `<div class="kpi"><div class="lb">예비비</div><div class="vl">${won(S.cont)}<small>천원</small></div></div>`+
+    `<div class="kpi"><div class="lb">비품비</div><div class="vl">${won(S.furn)}<small>천원</small></div></div>`+
+    `<div class="kpi tot"><div class="lb">총사업비</div><div class="vl">${won(total)}<small>천원</small></div></div>`;
+  const nm=$('i_name').value||'(사업명 미입력)';
+  let h='<thead><tr><th class="l">구분</th><th>금액(천원)</th><th>구성비</th><th class="l">비고</th></tr></thead><tbody>';
+  const put=(k,v,note)=>{h+=`<tr><td class="l">${esc(k)}</td><td class="num">${won(v)}</td><td class="num">${total?((v/total*100).toFixed(1)+'%'):'-'}</td><td class="l" style="color:var(--sub);font-size:11.5px">${esc(note||'')}</td></tr>`;};
+  put('1. 시설비',fac,'2026 시설단가 적용');
+  put('2. 설계비',S.design+S.contest+S.intent+S.ve,'설계·공모보상·의도구현·VE');
+  put('3. 감리비',S.cm,'건설사업관리 포함');
+  put('4. 예비비',S.cont,'(시설비+용역비) × '+R.contingency+'%');
+  put('5. 비품비',S.furn,'교구·기자재');
+  h+=`<tr class="big"><td class="l">총사업비</td><td class="sum">${won(total)}</td><td class="num">100%</td><td class="l" style="color:var(--sub);font-size:11.5px">${esc(nm)} · 연면적 ${area.total.toFixed(0)}㎡</td></tr></tbody>`;
+  $('sumTbl').innerHTML=h;
+  window.__RES={nm,fac,S,total,area};
+}
+
+function calcAll(){
+  const A=calcArea();
+  if(!$('a_net').dataset.touched) $('a_net').placeholder=A.net.toFixed(2);
+  const area=renderArea(A);
+  if(!$('a_tot').dataset.touched) $('a_tot').placeholder=area.total.toFixed(2);
+  const fac=renderFac(area);
+  const S=renderSvc(fac,area);
+  renderSum(fac,S,area);
+}
+
+function resetAll(){
+  ['i_name','i_stu','i_cls','i_sp','i_kin','a_net','a_tot'].forEach(id=>{$(id).value='';$(id).dataset.touched='';});
+  $('i_type').selectedIndex=0;$('i_level').selectedIndex=0;$('i_isl').selectedIndex=0;
+  $('a_room').value='60.48';$('a_pub').value='50';
+  Object.assign(R,{design:4.0,contest:10,intent:9,ve:0,cm:3.5,contingency:3.0,furniture:0});
+  calcAll();
+}
+
+/* ===== 엑셀 내보내기 ===== */
+function xesc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function exportXls(){
+  const D=window.__RES; if(!D){toast&&0;return;}
+  const st=`<style>
+    table{border-collapse:collapse}
+    td,th{border:.5pt solid #999;padding:3px 6px;font-family:'맑은 고딕';font-size:10pt;mso-number-format:"\\#\\,\\#\\#0"}
+    th{background:#fdeceb;color:#b8241d;font-weight:bold;text-align:center}
+    .t{mso-number-format:"\\@";text-align:left}
+    .h{background:#e5342b;color:#fff;font-weight:bold;font-size:12pt;text-align:center}
+    .s{background:#f7f8fa;font-weight:bold}
+  </style>`;
+  const sheet=(name,body)=>`<x:ExcelWorksheet><x:Name>${name}</x:Name><x:WorksheetOptions><x:PageSetup><x:Layout x:Orientation="Landscape"/><x:PageMargins x:Top="0.5" x:Bottom="0.5" x:Left="0.4" x:Right="0.4"/></x:PageSetup><x:FitToPage/><x:Print><x:FitWidth>1</x:FitWidth><x:FitHeight>0</x:FitHeight><x:ValidPrinterInfo/></x:Print></x:WorksheetOptions></x:ExcelWorksheet>`;
+  const t1=`<table><tr><td class="h" colspan="4">${xesc(D.nm)} 소요예산 산출서</td></tr>
+    <tr><td class="t s">구분</td><td class="s">금액(천원)</td><td class="s">구성비</td><td class="t s">비고</td></tr>
+    <tr><td class="t">1. 시설비</td><td>${Math.round(D.fac)}</td><td class="t">${(D.fac/D.total*100).toFixed(1)}%</td><td class="t">2026 시설단가</td></tr>
+    <tr><td class="t">2. 설계비</td><td>${Math.round(D.S.design+D.S.contest+D.S.intent+D.S.ve)}</td><td class="t">${((D.S.design+D.S.contest+D.S.intent+D.S.ve)/D.total*100).toFixed(1)}%</td><td class="t">설계·공모·의도구현·VE</td></tr>
+    <tr><td class="t">3. 감리비</td><td>${Math.round(D.S.cm)}</td><td class="t">${(D.S.cm/D.total*100).toFixed(1)}%</td><td class="t">건설사업관리</td></tr>
+    <tr><td class="t">4. 예비비</td><td>${Math.round(D.S.cont)}</td><td class="t">${(D.S.cont/D.total*100).toFixed(1)}%</td><td class="t"></td></tr>
+    <tr><td class="t">5. 비품비</td><td>${Math.round(D.S.furn)}</td><td class="t">${(D.S.furn/D.total*100).toFixed(1)}%</td><td class="t">교구·기자재</td></tr>
+    <tr><td class="t s">총사업비</td><td class="s">${Math.round(D.total)}</td><td class="t s">100%</td><td class="t s">연면적 ${D.area.total.toFixed(0)}㎡</td></tr></table>`;
+  const t2=`<table><tr><td class="h" colspan="4">시설비 내역</td></tr>${$('facTbl').innerHTML.replace(/<input[^>]*value="([^"]*)"[^>]*>/g,'$1')}</table>`;
+  const t3=`<table><tr><td class="h" colspan="5">용역비·예비비·비품비</td></tr>${$('svcTbl').innerHTML.replace(/<input[^>]*value="([^"]*)"[^>]*>/g,'$1')}</table>`;
+  const html=`<html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8">${st}
+    <!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>${sheet('총괄')}${sheet('시설비')}${sheet('용역비')}</x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+    </head><body>${t1}<br>${t2}<br>${t3}</body></html>`;
+  const blob=new Blob(['\ufeff'+html],{type:'application/vnd.ms-excel'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=(D.nm||'소요예산')+'_소요예산산출서.xls';a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+}
+
+/* ===== 이벤트 ===== */
+['i_name','i_type','i_level','i_stu','i_cls','i_sp','i_kin','i_isl','i_unit','a_room','a_pub'].forEach(id=>{
+  $(id).addEventListener('input',calcAll); $(id).addEventListener('change',calcAll);
+});
+['a_net','a_tot'].forEach(id=>{
+  $(id).addEventListener('input',function(){this.dataset.touched=this.value?'1':'';calcAll();});
+});
+['a_roomSel','a_pubSel'].forEach(id=>{
+  const t=id==='a_roomSel'?'a_room':'a_pub';
+  $(id).addEventListener('change',function(){ if(this.value){ $(t).value=this.value; } calcAll(); });
+});
+(function(){
+  const root=document.documentElement, tg=$('themeToggle');
+  try{ if(localStorage.getItem('eolmani-theme')==='dark') root.setAttribute('data-theme','dark'); }catch(e){}
+  tg.addEventListener('click',()=>{
+    const d=root.getAttribute('data-theme')==='dark';
+    if(d)root.removeAttribute('data-theme'); else root.setAttribute('data-theme','dark');
+    try{localStorage.setItem('eolmani-theme',d?'light':'dark');}catch(e){}
+  });
+})();
+calcAll();
+</script>
+</body>
+</html>

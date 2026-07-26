@@ -6,6 +6,28 @@
 <title>설계용역비 산출 대시보드 — 신안교육지원청사 이설공사</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/static/pretendard.min.css">
 <style>
+  @media print{
+    @page{size:A4 portrait;margin:12mm 10mm}
+    html,body{background:#fff!important}
+    .input-col-header,.reset-btn,.hd-actions,#pdfBtn,#xlsBtn,#themeToggle,.theme-toggle{display:none!important}
+    .header .kicker,.header h1,.header .sub{display:none!important}
+    .input-col{break-inside:avoid;page-break-inside:avoid;page-break-after:always}
+    .input-col .card{break-inside:avoid;page-break-inside:avoid;margin-bottom:8px}
+    .input-col .card h3{font-size:11pt}
+    .input-col input,.input-col select{font-size:9pt!important;padding:3px 5px!important}
+    .input-col .card-desc,.input-col .inline-note,.input-col .foot-note{font-size:8pt}
+    .layout,.wrap,.container{display:block!important;max-width:none!important;padding:0!important}
+    .input-col,.result-col{width:100%!important;max-width:none!important;position:static!important;overflow:visible!important;max-height:none!important}
+    .card,.panel,.hero,.tiles{break-inside:avoid;page-break-inside:avoid;box-shadow:none!important}
+    table{width:100%!important;font-size:9.5pt}
+    input,select{border:1px solid #c9d3e0!important;background:#f7fbff!important;padding:3px 5px!important;font-weight:700;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+    .page{max-width:none!important;padding:0!important}
+    .layout{display:grid!important;grid-template-columns:1fr!important;gap:10px!important}
+    .card,.panel{border:1px solid #d7dee8!important;border-radius:8px!important}
+    .tiles{grid-template-columns:repeat(4,1fr)!important}
+    .panels{grid-template-columns:1fr!important}
+  }
   .viz-root {
     color-scheme: light;
     color: var(--text-primary);
@@ -142,19 +164,43 @@
   .check-row input { width: 15px; height: 15px; accent-color: var(--series-1); cursor: pointer; }
   .check-group { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-bottom: 8px; }
 
+  .header{ position:relative; }
+  .hd-actions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; margin-top:14px; }
+  body.pdf-mode .hd-actions,body.pdf-mode .theme-toggle,body.pdf-mode .input-col-header{ display:none!important; }
+  body.pdf-mode .header .kicker,body.pdf-mode .header h1,body.pdf-mode .header .sub{ display:none!important; }
+  body.pdf-mode .input-col{ break-inside:avoid; page-break-inside:avoid; page-break-after:always; }
+  body.pdf-mode .result-col{ page-break-before:always; }
+  body.pdf-mode table,body.pdf-mode tr{ break-inside:avoid; page-break-inside:avoid; }
+  body.pdf-mode .input-col .card{ break-inside:avoid; page-break-inside:avoid; margin-bottom:8px; }
+  body.pdf-mode .input-col .card h3{ font-size:12.5px; }
+  body.pdf-mode .input-col .field label{ font-size:10px; }
+  body.pdf-mode .input-col input,body.pdf-mode .input-col select{ font-size:11px!important; padding:4px 6px!important; }
+  body.pdf-mode .input-col .card-desc,body.pdf-mode .input-col .inline-note,body.pdf-mode .input-col .foot-note{ font-size:9.5px; }
+  body.pdf-mode .layout{ display:grid!important; grid-template-columns:1fr!important; gap:10px!important; }
+  body.pdf-mode .page{ max-width:none!important; width:780px!important; margin:0!important; padding:0!important; }
+  body.pdf-mode{ width:780px; }
+  body.pdf-mode .tiles{ grid-template-columns:repeat(2,1fr)!important; }
+  body.pdf-mode .panels{ grid-template-columns:1fr!important; }
+  body.pdf-mode .input-col,body.pdf-mode .result-col{ width:100%!important; max-width:none!important; position:static!important; overflow:visible!important; max-height:none!important; }
+  body.pdf-mode .card,body.pdf-mode .panel,body.pdf-mode .hero,body.pdf-mode .tiles{ break-inside:avoid; page-break-inside:avoid; box-shadow:none!important; }
   /* ---------- 입력 패널 헤더 (범례 + 초기화) ---------- */
   .input-col-header {
     position: sticky; top: 0; z-index: 6; background: var(--surface-page);
-    padding-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
   }
+  .input-col-header .btns { display:flex; align-items:center; gap:6px; margin-left:auto; flex:none; }
   .yellow-legend {
     display: flex; align-items: center; gap: 7px; font-size: 11.5px; color: var(--text-secondary); font-weight: 600;
+    flex: 1 1 100%; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .yellow-legend .chip { width: 16px; height: 16px; border-radius: 4px; background: var(--yellow-bg); border: 1px solid var(--yellow-border); flex: none; }
+  .num-in{ text-align:right; font-variant-numeric: tabular-nums; }
+  input[type=number]{ text-align:right; }
   .reset-btn {
-    display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; white-space: nowrap;
-    background: var(--surface-1); border: 1px solid var(--border); color: var(--text-secondary);
-    border-radius: 20px; padding: 7px 13px; cursor: pointer; transition: background .12s ease, color .12s ease;
+    display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 800; white-space: nowrap;
+    background: var(--surface-1); border: 1.5px solid var(--border); color: var(--text-primary);
+    border-radius: 22px; padding: 11px 20px; cursor: pointer; transition: background .12s ease, color .12s ease;
+    box-shadow: 0 1px 2px rgba(0,27,55,.06);
   }
   .reset-btn:hover { background: var(--series-1); color: #fff; border-color: var(--series-1); }
   .reset-btn:active { transform: scale(0.94); }
@@ -277,6 +323,11 @@
     <div class="kicker">설계용역비 산출 대시보드 · 인터랙티브 계산기 (기준: 설계용역비산출서_v2 발주청테스트용)</div>
     <h1>공사비 등 입력값을 바꾸면 설계용역비가 즉시 재계산됩니다</h1>
     <div class="sub">국토교통부고시 제2020-635호 [별표4] 직선보간 요율표 · 제11조제4항 인증 복합대가 · 지질조사 단가 · 손해배상보험료 요율표를 반영해 실시간으로 산출합니다.</div>
+    <div class="hd-actions">
+      <button class="reset-btn" id="resetBtn" type="button">↺ 초기화</button>
+      <button class="reset-btn" id="pdfBtn" type="button">📄 PDF 저장 (인쇄 → PDF)</button>
+      <button class="reset-btn" id="xlsBtn" type="button">📊 엑셀 내보내기</button>
+    </div>
   </div>
 
   <div class="layout">
@@ -286,14 +337,13 @@
 
       <div class="input-col-header">
         <div class="yellow-legend"><span class="chip"></span>파란색 = 직접 입력 항목 (값을 바꾸면 자동 재계산)</div>
-        <button class="reset-btn" id="resetBtn" type="button">↺ 초기화</button>
       </div>
 
       <div class="card">
         <h3>1. 사업 기본정보</h3>
         <div class="card-desc">기초데이터 시트 입력값</div>
-        <div class="field"><label>사업명</label><input type="text" id="in_사업명" value="신안교육지원청사 이설공사"></div>
-        <div class="field"><label>발주기관</label><input type="text" id="in_발주기관" value="전남광주통합특별시교육청"></div>
+        <div class="field"><label>사업명</label><input type="text" id="in_사업명" value="" placeholder="00초 이설공사"></div>
+        <div class="field"><label>발주기관</label><input type="text" id="in_발주기관" value="" placeholder="전남광주통합특별시교육청"></div>
         <div class="row2">
           <div class="field"><label>공사유형</label>
             <select id="in_공사유형">
@@ -336,8 +386,8 @@
       <div class="card">
         <h3>2. 공사비 입력</h3>
         <div class="card-desc">시설 예산액(VAT포함, 천원 단위) → 공사비 자동 산출</div>
-        <div class="field"><label>시설비 (인테리어 제외, 천원)</label><input type="number" id="in_시설비" value="1200000" step="1000"></div>
-        <div class="field"><label>시설비 (인테리어·공간혁신, 천원)</label><input type="number" id="in_인테리어시설비" value="100000" step="1000"></div>
+        <div class="field"><label>시설비 (인테리어 제외, 천원)</label><input type="text" inputmode="numeric" class="num-in" id="in_시설비" value="1,200,000"></div>
+        <div class="field"><label>시설비 (인테리어·공간혁신, 천원)</label><input type="text" inputmode="numeric" class="num-in" id="in_인테리어시설비" value="100,000"></div>
         <div class="foot-note" id="disp_공사비요약">건축공사비 984,000,000원 · 인테리어공사비 82,000,000원 (VAT포함, 자동계산)</div>
       </div>
 
@@ -419,8 +469,8 @@
             </div>
           </div>
           <div class="row2">
-            <div class="field"><label>대상면적(㎡)</label><input type="number" id="in_대상면적" value="12236" min="0"></div>
-            <div class="field"><label>공시지가(원/㎡)</label><input type="number" id="in_공시지가" value="5600" min="0"></div>
+            <div class="field"><label>대상면적(㎡)</label><input type="text" inputmode="numeric" class="num-in" id="in_대상면적" value="12,236"></div>
+            <div class="field"><label>공시지가(원/㎡)</label><input type="text" inputmode="numeric" class="num-in" id="in_공시지가" value="5,600"></div>
           </div>
         </div>
       </div>
@@ -675,7 +725,7 @@
 
   /* ===================== 계산 엔진 ===================== */
   function val(id){ return document.getElementById(id).value; }
-  function num(id){ return parseFloat(document.getElementById(id).value) || 0; }
+  function num(id){ return parseFloat(String(document.getElementById(id).value).replace(/,/g,'')) || 0; }
   function chk(id){ return document.getElementById(id).checked; }
 
   function compute(){
@@ -984,6 +1034,175 @@
     resetAll();
     const b=this; b.classList.add('done'); const t=b.textContent; b.textContent='✓ 초기화됨';
     setTimeout(()=>{ b.classList.remove('done'); b.textContent=t; }, 1000);
+  });
+
+  /* ===================== PDF 저장 (A4 세로, 바로 다운로드) ===================== */
+  function loadScript(src){
+    return new Promise((res,rej)=>{
+      const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej;
+      document.head.appendChild(s);
+    });
+  }
+  document.getElementById('pdfBtn').addEventListener('click', function(){
+    window.print();
+  });
+
+  /* ===================== 천단위 콤마 입력 ===================== */
+  document.querySelectorAll('.num-in').forEach(function(el){
+    function fmtIt(){
+      const raw = el.value.replace(/[^\d]/g,'');
+      el.value = raw ? Number(raw).toLocaleString() : '';
+    }
+    el.addEventListener('input', function(){
+      const pos = el.selectionStart, len = el.value.length;
+      fmtIt();
+      const diff = el.value.length - len;
+      try{ el.setSelectionRange(pos+diff, pos+diff); }catch(e){}
+      if (typeof render === 'function') render();
+    });
+    el.addEventListener('blur', fmtIt);
+    fmtIt();
+  });
+
+  /* ===================== 엑셀 내보내기 ===================== */
+  function xesc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function xlsSheet(name, rows, widths){
+    const cols=(widths||[]).map(w=>`<Column ss:Width="${w}"/>`).join('');
+    const body=rows.map(r=>'<Row>'+r.map(c=>{
+      if(c&&typeof c==='object'){
+        const st=c.s?` ss:StyleID="${c.s}"`:'';
+        const isNum=typeof c.v==='number';
+        return `<Cell${st}><Data ss:Type="${isNum?'Number':'String'}">${isNum?c.v:xesc(c.v)}</Data></Cell>`;
+      }
+      const isNum=typeof c==='number';
+      return `<Cell><Data ss:Type="${isNum?'Number':'String'}">${isNum?c:xesc(c)}</Data></Cell>`;
+    }).join('')+'</Row>').join('');
+    return `<Worksheet ss:Name="${xesc(name)}"><Table>${cols}${body}</Table>
+      <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+        <PageSetup>
+          <Layout x:Orientation="Portrait" x:CenterHorizontal="1" xmlns:x="urn:schemas-microsoft-com:office:excel"/>
+          <PageMargins x:Top="0.6" x:Bottom="0.5" x:Left="0.4" x:Right="0.35" x:Header="0.2" x:Footer="0.2" xmlns:x="urn:schemas-microsoft-com:office:excel"/>
+        </PageSetup>
+        <FitToPage/>
+        <Print>
+          <ValidPrinterInfo/>
+          <PaperSizeIndex>9</PaperSizeIndex>
+          <HorizontalResolution>600</HorizontalResolution><VerticalResolution>600</VerticalResolution>
+          <Scale>100</Scale><FitWidth>1</FitWidth><FitHeight>0</FitHeight>
+        </Print>
+      </WorksheetOptions></Worksheet>`;
+  }
+  function downloadXls(sheets, fn){
+    const B='<Borders><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/></Borders>';
+    const styles=`<Styles>
+      <Style ss:ID="Default" ss:Name="Normal"><Font ss:FontName="맑은 고딕" ss:Size="10"/><Alignment ss:Vertical="Center"/>${B}</Style>
+      <Style ss:ID="ti"><Font ss:FontName="맑은 고딕" ss:Size="15" ss:Bold="1"/><Alignment ss:Horizontal="Center" ss:Vertical="Center"/></Style>
+      <Style ss:ID="hd"><Font ss:FontName="맑은 고딕" ss:Size="10" ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#1B64DA" ss:Pattern="Solid"/><Alignment ss:Horizontal="Center" ss:Vertical="Center"/>${B}</Style>
+      <Style ss:ID="lb"><Font ss:FontName="맑은 고딕" ss:Size="10" ss:Bold="1"/><Interior ss:Color="#EEF3FB" ss:Pattern="Solid"/>${B}</Style>
+      <Style ss:ID="nm"><NumberFormat ss:Format="#,##0"/><Alignment ss:Horizontal="Right"/>${B}</Style>
+      <Style ss:ID="tot"><Font ss:FontName="맑은 고딕" ss:Size="11" ss:Bold="1"/><Interior ss:Color="#DCE9FB" ss:Pattern="Solid"/><NumberFormat ss:Format="#,##0"/><Alignment ss:Horizontal="Right"/>${B}</Style>
+      <Style ss:ID="totl"><Font ss:FontName="맑은 고딕" ss:Size="11" ss:Bold="1"/><Interior ss:Color="#DCE9FB" ss:Pattern="Solid"/>${B}</Style>
+      <Style ss:ID="sec"><Font ss:FontName="맑은 고딕" ss:Size="11" ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#334155" ss:Pattern="Solid"/><Alignment ss:Vertical="Center"/>${B}</Style>
+      <Style ss:ID="desc"><Font ss:FontName="맑은 고딕" ss:Size="9" ss:Color="#64748B"/><Alignment ss:WrapText="1" ss:Vertical="Center"/></Style>
+    </Styles>`;
+    const xml=`<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">${styles}${sheets.join('')}</Workbook>`;
+    const blob=new Blob(['\ufeff'+xml],{type:'application/vnd.ms-excel;charset=utf-8'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=fn; a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+  }
+  function tableToRows(tbl){
+    const out=[];
+    tbl.querySelectorAll('tr').forEach(tr=>{
+      const isHead = tr.closest('thead') !== null;
+      const isFoot = tr.closest('tfoot') !== null || /합계|총계/.test(tr.textContent);
+      const row=[];
+      tr.querySelectorAll('th,td').forEach(td=>{
+        let t=(td.innerText||'').trim();
+        const num=t.replace(/[,\s원]/g,'');
+        const isNum=/^-?\d+(\.\d+)?$/.test(num) && num!=='';
+        if(isHead) row.push({v:t,s:'hd'});
+        else if(isFoot) row.push(isNum?{v:parseFloat(num),s:'tot'}:{v:t,s:'totl'});
+        else row.push(isNum?{v:parseFloat(num),s:'nm'}:t);
+      });
+      if(row.length) out.push(row);
+    });
+    return out;
+  }
+  document.getElementById('xlsBtn').addEventListener('click', function(){
+    const pn=(document.getElementById('in_사업명')||{}).value||'설계용역비';
+    const gk=(document.getElementById('in_발주기관')||{}).value||'';
+    const sheets=[];
+
+    /* ===== 1시트: 입력값 (인쇄 1페이지와 동일 구성) ===== */
+    const inRows=[[{v:'설계용역비 산출 — 입력값',s:'ti'}],[]];
+    document.querySelectorAll('.input-col .card').forEach(card=>{
+      const h=(card.querySelector('h3')||{}).innerText||'';
+      if(h) inRows.push([{v:h.trim(),s:'sec'},'','']);
+      const d=(card.querySelector('.card-desc')||{}).innerText||'';
+      if(d) inRows.push([{v:d.trim(),s:'desc'},'','']);
+      card.querySelectorAll('.field').forEach(f=>{
+        const lb=(f.querySelector('label')||{}).innerText||'';
+        const el=f.querySelector('input,select');
+        if(!lb||!el) return;
+        let v = el.tagName==='SELECT' ? (el.options[el.selectedIndex]||{}).text||'' : el.value;
+        const n=String(v).replace(/,/g,'');
+        const isNum=/^-?\d+(\.\d+)?$/.test(n)&&n!=='';
+        inRows.push([{v:lb.trim(),s:'lb'}, isNum?{v:parseFloat(n),s:'nm'}:String(v)]);
+      });
+      card.querySelectorAll('.check-row').forEach(c=>{
+        const lb=(c.innerText||'').trim(); const cb=c.querySelector('input[type=checkbox]');
+        if(lb&&cb) inRows.push([{v:lb,s:'lb'}, cb.checked?'적용':'미적용']);
+      });
+      const fn=(card.querySelector('.foot-note')||{}).innerText||'';
+      if(fn) inRows.push([{v:fn.trim(),s:'desc'},'']);
+      inRows.push([]);
+    });
+    sheets.push(xlsSheet('입력값', inRows, [230,120]));
+
+    /* ===== 2시트: 결과 (요약 + 상세 표 연속) ===== */
+    const out=[[{v:'설계용역비 산출 결과',s:'ti'}],[],
+               [{v:'사업명',s:'lb'},pn],[{v:'발주기관',s:'lb'},gk],[]];
+    const hero=document.querySelector('.hero');
+    if(hero){
+      const lb=(hero.querySelector('.label')||{}).innerText||'설계용역비 총 합계';
+      const vl=(hero.querySelector('.amount')||hero.querySelector('.value')||{}).innerText||'';
+      const n=vl.replace(/[^\d.-]/g,'');
+      out.push([{v:lb.trim(),s:'totl'}, n?{v:parseFloat(n),s:'tot'}:vl.trim()]);
+      out.push([]);
+    }
+    document.querySelectorAll('.tiles .tile').forEach(el=>{
+      const lb=(el.querySelector('.label')||{}).innerText||'';
+      const vl=(el.querySelector('.value')||{}).innerText||'';
+      if(lb){ const n=vl.replace(/[^\d.-]/g,''); out.push([{v:lb.trim(),s:'lb'}, n?{v:parseFloat(n),s:'nm'}:vl.trim()]); }
+    });
+    out.push([]);
+    document.querySelectorAll('.result-col .panel').forEach(p=>{
+      const cap=(p.querySelector('h2,h3')||{}).innerText||'';
+      const desc=(p.querySelector('.desc')||{}).innerText||'';
+      const tbl=p.querySelector('table');
+      const grid=p.querySelector('.info-grid');
+      if(cap) out.push([{v:cap.trim(),s:'sec'}]);
+      if(desc) out.push([{v:desc.trim(),s:'desc'}]);
+      if(tbl){ tableToRows(tbl).forEach(r=>out.push(r)); }
+      else if(grid){
+        grid.querySelectorAll('.info-row').forEach(r=>{
+          const k=(r.querySelector('.k')||{}).innerText||'';
+          const v=(r.querySelector('.v')||{}).innerText||'';
+          const n=v.replace(/[,\s원]/g,'');
+          const isNum=/^-?\d+(\.\d+)?$/.test(n)&&n!=='';
+          out.push([{v:k.trim(),s:'lb'}, isNum?{v:parseFloat(n),s:'nm'}:v.trim()]);
+        });
+      }
+      const foot=p.querySelector('.foot-note,.callout');
+      if(foot&&foot.innerText.trim()) out.push([{v:foot.innerText.trim(),s:'desc'}]);
+      out.push([]);
+    });
+    sheets.push(xlsSheet('결과', out, [200,95,80,95,95,95,100]));
+
+    downloadXls(sheets, pn+'_설계용역비산출.xls');
+    const b=this; const t=b.textContent; b.textContent='✓ 저장됨';
+    setTimeout(()=>b.textContent=t,1200);
   });
 
   render();

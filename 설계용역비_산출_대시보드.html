@@ -270,13 +270,13 @@
   .legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
 
   .bar-chart { display: flex; align-items: flex-end; gap: 26px; height: 210px; position: relative; }
-  .bar-chart::before { content: ""; position: absolute; left: 0; right: 0; bottom: 28px; border-bottom: 1px solid var(--baseline); }
+  .bar-chart::before { content: ""; position: absolute; left: 0; right: 0; bottom: 26px; border-bottom: 1px solid var(--baseline); }
   .bar-group { display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end; }
-  .bar-pair { display: flex; align-items: flex-end; gap: 4px; height: 182px; }
+  .bar-pair { display: flex; align-items: flex-end; gap: 4px; height: 184px; }
   .bar { width: 24px; border-radius: 4px 4px 0 0; position: relative; cursor: default; transition: height .18s ease, filter .12s ease; min-height: 2px; }
   .bar:hover { filter: brightness(1.08); }
   .bar .val { position: absolute; top: -19px; left: 50%; transform: translateX(-50%); font-size: 10.5px; color: var(--text-secondary); white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .bar-group .gname { margin-top: 8px; font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+  .bar-group .gname { margin-top: 7px; font-size: 12px; line-height: 19px; height: 19px; color: var(--text-secondary); font-weight: 600; }
 
   .stack-wrap { margin-top: 6px; }
   .stack { display: flex; width: 100%; height: 34px; border-radius: 8px; overflow: hidden; }
@@ -326,7 +326,6 @@
     <div class="hd-actions">
       <button class="reset-btn" id="resetBtn" type="button">↺ 초기화</button>
       <button class="reset-btn" id="pdfBtn" type="button">📄 PDF 저장 (인쇄 → PDF)</button>
-      <button class="reset-btn" id="xlsBtn" type="button">📊 엑셀 내보내기</button>
     </div>
   </div>
 
@@ -1129,81 +1128,7 @@
     });
     return out;
   }
-  document.getElementById('xlsBtn').addEventListener('click', function(){
-    const pn=(document.getElementById('in_사업명')||{}).value||'설계용역비';
-    const gk=(document.getElementById('in_발주기관')||{}).value||'';
-    const sheets=[];
 
-    /* ===== 1시트: 입력값 (인쇄 1페이지와 동일 구성) ===== */
-    const inRows=[[{v:'설계용역비 산출 — 입력값',s:'ti'}],[]];
-    document.querySelectorAll('.input-col .card').forEach(card=>{
-      const h=(card.querySelector('h3')||{}).innerText||'';
-      if(h) inRows.push([{v:h.trim(),s:'sec'},'','']);
-      const d=(card.querySelector('.card-desc')||{}).innerText||'';
-      if(d) inRows.push([{v:d.trim(),s:'desc'},'','']);
-      card.querySelectorAll('.field').forEach(f=>{
-        const lb=(f.querySelector('label')||{}).innerText||'';
-        const el=f.querySelector('input,select');
-        if(!lb||!el) return;
-        let v = el.tagName==='SELECT' ? (el.options[el.selectedIndex]||{}).text||'' : el.value;
-        const n=String(v).replace(/,/g,'');
-        const isNum=/^-?\d+(\.\d+)?$/.test(n)&&n!=='';
-        inRows.push([{v:lb.trim(),s:'lb'}, isNum?{v:parseFloat(n),s:'nm'}:String(v)]);
-      });
-      card.querySelectorAll('.check-row').forEach(c=>{
-        const lb=(c.innerText||'').trim(); const cb=c.querySelector('input[type=checkbox]');
-        if(lb&&cb) inRows.push([{v:lb,s:'lb'}, cb.checked?'적용':'미적용']);
-      });
-      const fn=(card.querySelector('.foot-note')||{}).innerText||'';
-      if(fn) inRows.push([{v:fn.trim(),s:'desc'},'']);
-      inRows.push([]);
-    });
-    sheets.push(xlsSheet('입력값', inRows, [230,120]));
-
-    /* ===== 2시트: 결과 (요약 + 상세 표 연속) ===== */
-    const out=[[{v:'설계용역비 산출 결과',s:'ti'}],[],
-               [{v:'사업명',s:'lb'},pn],[{v:'발주기관',s:'lb'},gk],[]];
-    const hero=document.querySelector('.hero');
-    if(hero){
-      const lb=(hero.querySelector('.label')||{}).innerText||'설계용역비 총 합계';
-      const vl=(hero.querySelector('.amount')||hero.querySelector('.value')||{}).innerText||'';
-      const n=vl.replace(/[^\d.-]/g,'');
-      out.push([{v:lb.trim(),s:'totl'}, n?{v:parseFloat(n),s:'tot'}:vl.trim()]);
-      out.push([]);
-    }
-    document.querySelectorAll('.tiles .tile').forEach(el=>{
-      const lb=(el.querySelector('.label')||{}).innerText||'';
-      const vl=(el.querySelector('.value')||{}).innerText||'';
-      if(lb){ const n=vl.replace(/[^\d.-]/g,''); out.push([{v:lb.trim(),s:'lb'}, n?{v:parseFloat(n),s:'nm'}:vl.trim()]); }
-    });
-    out.push([]);
-    document.querySelectorAll('.result-col .panel').forEach(p=>{
-      const cap=(p.querySelector('h2,h3')||{}).innerText||'';
-      const desc=(p.querySelector('.desc')||{}).innerText||'';
-      const tbl=p.querySelector('table');
-      const grid=p.querySelector('.info-grid');
-      if(cap) out.push([{v:cap.trim(),s:'sec'}]);
-      if(desc) out.push([{v:desc.trim(),s:'desc'}]);
-      if(tbl){ tableToRows(tbl).forEach(r=>out.push(r)); }
-      else if(grid){
-        grid.querySelectorAll('.info-row').forEach(r=>{
-          const k=(r.querySelector('.k')||{}).innerText||'';
-          const v=(r.querySelector('.v')||{}).innerText||'';
-          const n=v.replace(/[,\s원]/g,'');
-          const isNum=/^-?\d+(\.\d+)?$/.test(n)&&n!=='';
-          out.push([{v:k.trim(),s:'lb'}, isNum?{v:parseFloat(n),s:'nm'}:v.trim()]);
-        });
-      }
-      const foot=p.querySelector('.foot-note,.callout');
-      if(foot&&foot.innerText.trim()) out.push([{v:foot.innerText.trim(),s:'desc'}]);
-      out.push([]);
-    });
-    sheets.push(xlsSheet('결과', out, [200,95,80,95,95,95,100]));
-
-    downloadXls(sheets, pn+'_설계용역비산출.xls');
-    const b=this; const t=b.textContent; b.textContent='✓ 저장됨';
-    setTimeout(()=>b.textContent=t,1200);
-  });
 
   render();
 

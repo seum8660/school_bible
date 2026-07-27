@@ -107,6 +107,19 @@ window.dispatchEvent(new Event('fb-ready'));
   @media(max-width:600px){.rolebtn{padding:0 10px;font-size:0;gap:0;} .rolebtn span{font-size:16px;}}
 
   .wrap{max-width:1180px;margin:0 auto;padding:20px 18px 90px;}
+  /* ===== 앱 모드(모바일형) ===== */
+  body.app-mode .wrap{max-width:460px;padding:14px 14px 90px;}
+  body.app-mode .tb-in{max-width:460px;}
+  body.app-mode .form-grid{grid-template-columns:1fr!important;}
+  body.app-mode #slStats{grid-template-columns:repeat(2,1fr)!important;}
+  body.app-mode .site-bar{flex-wrap:wrap;gap:8px;}
+  body.app-mode .thumbs img{width:calc(33.33% - 6px)!important;}
+  body.app-mode table{font-size:12px!important;}
+  body.app-mode .actions{flex-wrap:wrap;}
+  body.app-mode .actions .btn{flex:1 1 46%;justify-content:center;}
+  body.app-mode .brand-tt span{display:none;}
+  /* 웹 모드 강제 넓게 */
+  body.web-mode .wrap{max-width:1180px;}
   /* ===== 인트로 ===== */
   .intro{position:fixed;inset:0;z-index:90;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto;}
   .intro-card{background:var(--surface);border:1.5px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:32px 24px 26px;width:min(440px,100%);text-align:center;margin:auto;}
@@ -297,7 +310,7 @@ window.dispatchEvent(new Event('fb-ready'));
       </div>
       <div id="introCodeWrap" style="display:none;margin-top:8px">
         <div style="font-size:13px;font-weight:800;margin-bottom:6px">참여코드</div>
-        <input class="field" id="introCodeIn" placeholder="참여코드 입력 (예: 2026-A01)" style="text-align:center">
+        <input class="field" id="introCodeIn" placeholder="참여코드 입력 (예: 2026-01)" style="text-align:center">
         <div id="introCodeHint" style="font-size:11.5px;color:var(--muted);margin-top:5px"></div>
         <div id="introCodeGen" style="display:none;margin-top:6px"><button class="btn btn-o btn-sm" onclick="genCode()">🎲 코드 자동생성</button></div>
       </div>
@@ -317,6 +330,9 @@ window.dispatchEvent(new Event('fb-ready'));
       <span class="brand-tt"><b>공사현장 사진기록</b><span>현장기록 · 사진대장</span></span>
     </div>
     <div class="tb-sp"></div>
+    <button class="iconbtn" id="btnHome" title="처음 화면(역할 선택)으로" onclick="goIntro()">🏠</button>
+    <button class="iconbtn" id="btnMode" title="앱 / 웹 모드 전환" onclick="toggleMode()">📱</button>
+    <button class="iconbtn" id="btnList" title="현장 목록" onclick="showList()">📋</button>
     <div class="roleswitch">
       <button class="rolebtn" data-role="감독자" onclick="pickRoleInline('감독자')"><span>🧑‍💼</span>감독자</button>
       <button class="rolebtn" data-role="현장대리인" onclick="pickRoleInline('현장대리인')"><span>👷</span>현장대리인</button>
@@ -326,7 +342,20 @@ window.dispatchEvent(new Event('fb-ready'));
   </div>
 </header>
 
+<div class="wrap" id="siteList" style="display:none">
+  <div class="site-bar" style="justify-content:space-between">
+    <div style="font-size:17px;font-weight:800;color:var(--ink)">📋 현장 관리 목록</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input id="slQ" placeholder="현장명·관리번호 검색" style="height:38px;border:1.5px solid var(--line);border-radius:10px;padding:0 12px;font:inherit;font-size:13px;min-width:180px">
+      <button class="btn btn-g" onclick="addSite()">＋ 현장 추가</button>
+    </div>
+  </div>
+  <div id="slStats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px"></div>
+  <div id="slBody"></div>
+</div>
+
 <div class="wrap" id="appMain" style="display:none">
+  <div id="backBar" style="margin-bottom:12px"><button class="btn" onclick="showList()" style="padding:8px 14px;font-size:13px">← 현장 목록으로</button></div>
   <!-- 공사 선택 -->
   <div class="site-bar">
     <div class="site-sel">
@@ -456,7 +485,7 @@ window.dispatchEvent(new Event('fb-ready'));
 <script>
 /* ================= 저장소 ================= */
 const LS='site-mgr-v1';
-let DB={sites:[],cur:null,grants:[],pw:{'감독자':'1234','현장대리인':'5678'}};
+let DB={sites:[],cur:null,grants:[],pw:{'감독자':'0000','현장대리인':'0000'}};
 let ROLE=null, RNAME='';
 let pendPhotos=[], pendFiles=[];
 
@@ -528,6 +557,7 @@ function pickRoleInline(role){
   document.getElementById('introCodeHint').textContent = sup
     ? '이 코드를 현장대리인에게 알려주세요. 기존 코드를 입력하면 해당 현장으로 들어갑니다.'
     : '감독자에게 받은 참여코드를 입력하세요.';
+  if(sup){ const hint=document.getElementById('introCodeHint'); if(hint) hint.textContent='현장명을 비우면 목록 화면으로 바로 이동합니다.'; }
   if(sup) renderIntroSites();
   if(cw){ cw.style.display=''; const ci=document.getElementById('introCodeIn'); if(ci){ ci.value=''; if(!sup) ci.focus(); } }
   const si=document.getElementById('introSiteIn'); if(si) si.value='';
@@ -535,11 +565,19 @@ function pickRoleInline(role){
   document.getElementById('introCodeIn').onkeydown=e=>{ if(e.key==='Enter') submitIntroPw(); };
   document.getElementById('introSiteIn').onkeydown=e=>{ if(e.key==='Enter') submitIntroPw(); };
 }
+function autoCode(){
+  const y=new Date().getFullYear();
+  const used=(DB.sites||[]).map(s=>s.code||'').filter(c=>c.startsWith(y+'-'))
+    .map(c=>parseInt(c.slice(String(y).length+1),10)||0);
+  return y+'-'+String((used.length?Math.max.apply(null,used):0)+1).padStart(2,'0');
+}
 function genCode(){
   const y=new Date().getFullYear();
-  const s='ABCDEFGHJKLMNPQRSTUVWXYZ';
-  const c=y+'-'+s[Math.floor(Math.random()*s.length)]+String(Math.floor(Math.random()*90)+10);
-  document.getElementById('introCodeIn').value=c;
+  const used=(DB.sites||[]).map(s=>String(s.code||''))
+    .filter(c=>c.indexOf(y+'-')===0)
+    .map(c=>parseInt(c.slice(String(y).length+1),10)||0);
+  const next=(used.length?Math.max.apply(null,used):0)+1;
+  document.getElementById('introCodeIn').value=y+'-'+String(next).padStart(2,'0');
 }
 function renderIntroSites(){
   const box=document.getElementById('introSiteList');
@@ -579,12 +617,13 @@ function submitIntroPw(){
     const pw=document.getElementById('introPwIn').value;
     if(pw!==DB.pw[pendingRole]){ toast('비밀번호가 올바르지 않습니다.'); return; }
     const name=(document.getElementById('introSiteIn').value||'').trim();
-    if(!name){ toast('공사현장명을 입력하세요.'); document.getElementById('introSiteIn').focus(); return; }
-    if(!code){ toast('참여코드를 입력하세요.'); codeEl.focus(); return; }
-    let site=(DB.sites||[]).find(s=>(s.code||'').toLowerCase()===code.toLowerCase());
-    if(site){ site.name=name; }
-    else { site={id:uid(),name,code,records:[]}; DB.sites.push(site); }
-    DB.cur=site.id; syncWatch(site.code);
+    if(name){
+      const c = code || autoCode();
+      let site=(DB.sites||[]).find(s=>(s.code||'').toLowerCase()===c.toLowerCase());
+      if(site){ site.name=name; }
+      else { site={id:uid(),name,code:c,created:Date.now(),records:[]}; DB.sites.push(site); }
+      DB.cur=site.id; syncWatch(site.code);
+    }
   }
   save();
   enterApp();
@@ -592,6 +631,16 @@ function submitIntroPw(){
 function enterApp(){
   ROLE=pendingRole; RNAME=''; pickedRole=ROLE; cancelIntroPw();
   document.querySelectorAll('.rolebtn').forEach(b=>b.classList.toggle('on',b.dataset.role===ROLE));
+  const sq=document.getElementById('slQ'); if(sq&&!sq.dataset.b){sq.dataset.b='1';sq.addEventListener('input',renderList);}
+  const bl=document.getElementById('btnList'); if(bl) bl.style.display=(ROLE==='감독자')?'':'none';
+  const bb=document.getElementById('backBar'); if(bb) bb.style.display=(ROLE==='감독자')?'':'none';
+  document.querySelectorAll('[data-fw="1"]').forEach(el=>{ el.style.display=(ROLE==='현장대리인')?'none':''; });
+  const agent=(ROLE==='현장대리인');
+  ['btnAddSite','btnDelSite','siteLock'].forEach(id=>{ const e=document.getElementById(id); if(e) e.style.display=agent?'none':''; });
+  const sc=document.getElementById('siteCode');
+  if(sc && agent){ sc.style.setProperty('font-size','13.5px','important'); sc.style.setProperty('padding','7px 16px','important'); }
+  if(ROLE==='감독자'){ setTimeout(showList,60); }
+  else { const l=document.getElementById('siteList'); if(l) l.style.display='none'; const m=document.getElementById('appMain'); if(m) m.style.display=''; }
   document.getElementById('whoHint').textContent='작성자: '+ROLE;
   document.getElementById('intro').style.display='none';
   document.getElementById('appTop').style.display='';
@@ -618,7 +667,7 @@ function renderSites(){
   const list=visibleSites();
   if(!list.length){ sel.innerHTML='<option>'+(ROLE==='감독자'?'공사를 추가하세요':'참여코드로 현장을 등록하세요')+'</option>'; return; }
   if(!list.some(s=>s.id===DB.cur)) DB.cur=list[0].id;
-  sel.innerHTML=list.map(s=>`<option value="${s.id}"${s.id===DB.cur?' selected':''}>${esc(s.name)}${s.code?' · '+esc(s.code):''}</option>`).join('');
+  sel.innerHTML=list.map(s=>`<option value="${s.id}"${s.id===DB.cur?' selected':''}>${esc(s.name)}</option>`).join('');
   const cur=curSite(), badge=document.getElementById('siteCode');
   if(badge) badge.textContent = cur&&cur.code ? '참여코드 '+cur.code : '';
 }
@@ -662,7 +711,126 @@ function submitSiteName(){
 function cancelAddSite(){ const b=document.getElementById('siteAddBox'); if(b)b.style.display='none'; }
 function renameSite(){ if(ROLE!=='감독자'){ toast('공사명 변경은 감독자만 가능합니다.'); openRole(); return; } const s=curSite(); if(!s){toast('공사를 먼저 추가하세요.');return;} const box=document.getElementById('siteAddBox'); if(box){ box.style.display='block'; box.dataset.mode='rename'; const i=document.getElementById('siteAddIn'); i.value=s.name; i.focus(); i.select(); } }
 function delSite(){ if(ROLE!=='감독자'){ toast('공사 삭제는 감독자만 가능합니다.'); openRole(); return; } const s=curSite(); if(!s)return; if(!confirm(`"${s.name}" 공사와 모든 기록을 삭제할까요?`))return; DB.sites=DB.sites.filter(x=>x.id!==s.id); DB.cur=DB.sites[0]?DB.sites[0].id:null; save(); renderAll(); toast('삭제되었습니다.'); }
-function switchSite(id){ DB.cur=id; save(); renderAll(); }
+function goIntro(){
+  if(!confirm('처음 화면(역할 선택)으로 돌아갈까요?')) return;
+  ROLE=null; RNAME='';
+  const l=document.getElementById('siteList'); if(l) l.style.display='none';
+  const m=document.getElementById('appMain'); if(m) m.style.display='none';
+  const t=document.getElementById('appTop'); if(t) t.style.display='none';
+  const i=document.getElementById('intro'); if(i) i.style.display='';
+  if(typeof cancelIntroPw==='function') cancelIntroPw();
+}
+function applyMode(m){
+  document.body.classList.toggle('app-mode', m==='app');
+  document.body.classList.toggle('web-mode', m==='web');
+  const b=document.getElementById('btnMode');
+  if(b){ b.textContent = (m==='app') ? '🖥' : '📱'; b.title = (m==='app') ? '웹 모드로 전환' : '앱 모드로 전환'; }
+  try{ localStorage.setItem('site-view-mode', m); }catch(e){}
+}
+function toggleMode(){
+  const cur = document.body.classList.contains('app-mode') ? 'app' : 'web';
+  applyMode(cur==='app' ? 'web' : 'app');
+}
+(function initMode(){
+  let m=null; try{ m=localStorage.getItem('site-view-mode'); }catch(e){}
+  if(!m) m = (window.innerWidth<=760) ? 'app' : 'web';
+  document.addEventListener('DOMContentLoaded',()=>applyMode(m));
+  if(document.readyState!=='loading') applyMode(m);
+})();
+function switchSite(id){
+  DB.cur=id; save();
+  const l=document.getElementById('siteList'); if(l) l.style.display='none';
+  const m=document.getElementById('appMain'); if(m) m.style.display='';
+  renderAll();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function siteNo(s){
+  if(s.no) return s.no;
+  const y=new Date(s.created||Date.now()).getFullYear();
+  const same=DB.sites.filter(x=>new Date(x.created||0).getFullYear()===y).sort((a,b)=>(a.created||0)-(b.created||0));
+  const idx=same.findIndex(x=>x.id===s.id)+1;
+  s.no=y+'-'+String(idx||DB.sites.length).padStart(3,'0');
+  return s.no;
+}
+function showList(){
+  if(ROLE!=='감독자'){ toast('현장 목록은 감독자만 볼 수 있습니다.'); return; }
+  document.getElementById('appMain').style.display='none';
+  document.getElementById('siteList').style.display='';
+  renderList();
+}
+function hideList(){
+  const l=document.getElementById('siteList'); if(l) l.style.display='none';
+  const m=document.getElementById('appMain'); if(m) m.style.display='';
+}
+function pickSite(id){
+  PICK=id;
+  document.querySelectorAll('#slBody .openBtn').forEach(b=>{
+    const on=b.dataset.id===id;
+    b.style.setProperty('opacity', on?'1':'.4','important');
+    b.style.setProperty('pointer-events', on?'auto':'none','important');
+    if(on){
+      b.style.setProperty('background','#12b886','important');
+      b.style.setProperty('color','#fff','important');
+      b.style.setProperty('border-color','#12b886','important');
+      b.style.setProperty('font-weight','800','important');
+      b.style.setProperty('box-shadow','0 2px 8px rgba(18,184,134,.35)','important');
+    } else {
+      ['background','color','border-color','font-weight','box-shadow'].forEach(p=>b.style.removeProperty(p));
+    }
+    b.textContent=on?'✓ 확인':'확인';
+  });
+  document.querySelectorAll('#slBody tbody tr').forEach(tr=>{
+    const on = tr.querySelector('.openBtn')?.dataset.id===id;
+    tr.style.setProperty('background', on?'#e6f9f1':'', 'important');
+    tr.style.setProperty('box-shadow', on?'inset 3px 0 0 #12b886':'', 'important');
+  });
+}
+let PICK=null;
+function confirmOpen(id){
+  const s=DB.sites.find(x=>x.id===id); if(!s) return;
+  if(confirm('['+siteNo(s)+'] '+(s.name||'')+' 현장으로 이동할까요?')) switchSite(id);
+}
+function delSiteById(id){
+  if(ROLE!=='감독자'){ toast('현장 삭제는 감독자만 가능합니다.'); return; }
+  const s=DB.sites.find(x=>x.id===id); if(!s) return;
+  if(!confirm('['+siteNo(s)+'] '+(s.name||'')+' 현장과 모든 기록을 삭제할까요?')) return;
+  DB.sites=DB.sites.filter(x=>x.id!==id);
+  if(DB.cur===id) DB.cur=(DB.sites[0]||{}).id||null;
+  save(); renderSites(); renderAll();
+  showList();
+  toast('삭제되었습니다.');
+}
+function renderList(){
+  const q=(document.getElementById('slQ').value||'').trim().toLowerCase();
+  const list=visibleSites().filter(s=>!q||((s.name||'')+siteNo(s)+(s.code||'')).toLowerCase().includes(q));
+  const body=document.getElementById('slBody'), st=document.getElementById('slStats');
+  let tp=0,tr=0;
+  DB.sites.forEach(s=>{ (s.records||[]).forEach(r=>{ tr++; tp+=(r.photos||[]).length; }); });
+  const wk=Date.now()-7*86400000;
+  let recent=0; DB.sites.forEach(s=>(s.records||[]).forEach(r=>{ if(new Date(r.date||0).getTime()>wk) recent++; }));
+  const card=(k,v)=>'<div style="background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px"><div style="font-size:12px;color:var(--muted);font-weight:700">'+k+'</div><div style="font-size:22px;font-weight:800;color:var(--ink);margin-top:4px">'+v+'</div></div>';
+  st.innerHTML=card('전체 현장',DB.sites.length+'개')+card('총 기록',tr+'건')+card('총 사진',tp+'장')+card('최근 7일 기록',recent+'건');
+  if(!list.length){ body.innerHTML='<div style="padding:40px;text-align:center;color:var(--muted)">등록된 현장이 없습니다. [＋ 현장 추가]로 시작하세요.</div>'; return; }
+  body.innerHTML='<div style="overflow:auto;border:1.5px solid var(--line);border-radius:12px"><table style="width:100%;border-collapse:collapse;font-size:13.5px">'
+   +'<thead><tr style="background:var(--surface-2)">'
+   +['관리번호','현장명','참여코드','기록','사진','최근 등록일',''].map(t=>'<th style="padding:11px 12px;text-align:left;font-weight:700;color:var(--muted);border-bottom:1.5px solid var(--line);white-space:nowrap">'+t+'</th>').join('')
+   +'</tr></thead><tbody>'
+   +list.map(s=>{
+      const recs=s.records||[]; const ph=recs.reduce((a,r)=>a+((r.photos||[]).length),0);
+      const last=recs.length?recs.map(r=>r.date).sort().slice(-1)[0]:'—';
+      const on=s.id===DB.cur;
+      return '<tr style="border-bottom:1px solid var(--line);cursor:pointer" onclick="if(!event.target.closest(\'button\')&&!event.target.closest(\'span[onclick]\'))pickSite(\''+s.id+'\')">'
+       +'<td style="padding:11px 12px;font-weight:800;color:var(--accent);white-space:nowrap">'+siteNo(s)+'</td>'
+       +'<td style="padding:11px 12px;font-weight:700"><span style="cursor:pointer;color:var(--accent);text-decoration:underline;text-underline-offset:2px" onclick="switchSite(\''+s.id+'\')">'+esc(s.name||'')+'</span></td>'
+       +'<td style="padding:11px 12px;font-family:monospace;color:var(--muted)">'+esc(s.code||'—')+'</td>'
+       +'<td style="padding:11px 12px">'+recs.length+'건</td>'
+       +'<td style="padding:11px 12px">'+ph+'장</td>'
+       +'<td style="padding:11px 12px;color:var(--muted)">'+last+'</td>'
+       +'<td style="padding:11px 12px;text-align:right;white-space:nowrap"><button class="btn openBtn" data-id="'+s.id+'" onclick="switchSite(\''+s.id+'\')" style="padding:6px 12px;font-size:12.5px;opacity:.4;pointer-events:none">확인</button> <button class="btn" onclick="delSiteById(\''+s.id+'\')" style="padding:6px 10px;font-size:12.5px;color:#c0392b;border-color:#f0c4bf">삭제</button></td>'
+       +'</tr>';
+   }).join('')+'</tbody></table></div>';
+  save();
+}
 
 /* ================= 파일 입력 ================= */
 function readAsDataURL(f){ return new Promise(res=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(f); }); }

@@ -111,8 +111,8 @@
   /* ===== 레이아웃 ===== */
   .layout{display:flex;align-items:flex-start;gap:24px;max-width:1260px;margin:0 auto;padding:26px 20px 0;}
   .sidebar{flex:0 0 244px;position:sticky;top:16px;align-self:flex-start;}
-  .side-nav{display:flex;flex-direction:column;gap:2px;background:var(--surface);border:1.5px solid var(--border);
-    padding:9px;box-shadow:var(--shadow);}
+  .side-nav{display:flex;flex-direction:column;gap:7px;background:var(--surface);border:1.5px solid var(--border);
+    padding:12px;box-shadow:var(--shadow);}
   .nav-grp{align-self:flex-start;font-size:11px;font-weight:700;color:var(--accent-ink);background:var(--accent);
     letter-spacing:.5px;text-transform:uppercase;padding:5px 12px;border:1.5px solid var(--border);margin:16px 0 8px;box-shadow:2px 2px 0 var(--border);}
   .nav-grp:first-child{margin-top:2px;}
@@ -138,6 +138,7 @@
   .tab.active[data-p="const"]{background:var(--p-const);color:#fff;}
   .tab.active[data-p="cm"]{background:var(--p-cm);color:#fff;}
   .tab.active[data-p="comp"]{background:var(--p-comp);}
+  .tab.active[data-p="manual"]{background:var(--p-comp);color:#fff;}
   .tab.active[data-p="cert"]{background:#6d28d9;color:#fff;}
   .tab.active[data-p="calc"]{background:#6d28d9;color:#fff;}
   .tab.active[data-p="bom"]{background:#6d28d9;color:#fff;}
@@ -531,7 +532,7 @@
   [data-theme="dark"] .side-nav .tab,[data-theme="dark"] .side-nav .extlink{background:rgba(255,255,255,.07);}
   /* 사이드바 그룹 헤더 · 셀 확대 (하위메뉴와 동일) */
   .nav-grp{font-size:15.5px;font-weight:700;padding:14px 16px;align-self:stretch;width:100%;box-sizing:border-box;
-    text-transform:none;letter-spacing:0;background:var(--surface-3);color:var(--ink);border-radius:var(--radsm);box-shadow:none;margin:7px 0 3px;padding:6px 10px;}
+    text-transform:none;letter-spacing:0;background:var(--surface-3);color:var(--ink);border-radius:var(--radsm);box-shadow:none;margin:14px 0 6px;padding:10px 12px;}
   .nav-grp:first-child{margin-top:2px;}
   .nav-label{font-size:15.5px;}
   .side-nav .tab,.side-nav .extlink{font-size:14px;padding:9px 13px;}
@@ -756,6 +757,25 @@
     body.bulk-printing #bulkPrint .pp>*{margin:0!important;}
   }
 </style>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+const app = initializeApp({
+  apiKey:"AIzaSyAcj1x4W3u4AEBg0MToDDCQjlijEWmxQtc",
+  authDomain:"buildlog-2f92c.firebaseapp.com",
+  projectId:"buildlog-2f92c",
+  storageBucket:"buildlog-2f92c.firebasestorage.app",
+  messagingSenderId:"91502436724",
+  appId:"1:91502436724:web:95a0d2560fe0b71c984c21"
+});
+const db = getFirestore(app);
+const ref = doc(db,'bible_qa','board');
+window.QA_FB = {
+  save: (arr)=> setDoc(ref,{items:arr,at:Date.now()}),
+  watch: (cb)=> onSnapshot(ref, s=>{ const d=s.data(); cb(d&&d.items?d.items:[]); })
+};
+window.dispatchEvent(new Event('qa-fb-ready'));
+</script>
 </head>
 <body>
 <template id="__bundler_thumbnail" data-bg-color="#14161d">
@@ -829,20 +849,20 @@
       <div class="nav-grp">실무 운영</div>
       <button class="tab" data-p="proc"><span class="dot"></span>📋 실무 절차 타임라인</button>
       <button class="tab" data-p="check"><span class="dot"></span>✅ 단계별 체크리스트</button>
-      <button class="tab" data-p="check-jn" data-sub="check" style="display:none"><span class="dot"></span>ㄴ 전남·광주</button>
-      <button class="tab" data-p="check-etc" data-sub="check" style="display:none"><span class="dot"></span>ㄴ 타시도</button>
+      <button class="tab" data-p="check-jn" data-sub="check" style="display:none"><span class="dot"></span>전남·광주</button>
+      <button class="tab" data-p="check-etc" data-sub="check" style="display:none"><span class="dot"></span>타시도</button>
+      <a class="tab" href="발주자_체크리스트.html" target="_blank" rel="noopener noreferrer" data-sub="check" style="display:none"><span class="dot"></span>발주자 체크리스트</a>
       <button class="tab" data-p="law"><span class="dot"></span>📖 법령 검색</button>
       <button class="tab" data-p="price"><span class="dot"></span>📐 2026 시설단가</button>
       <button class="tab" data-p="glossary"><span class="dot"></span>📖 용어정리</button>
       <button class="tab" data-p="ratio"><span class="dot"></span>📊 2026 제비율표</button>
       <button class="tab" data-p="ilwidan"><span class="dot"></span>📊 2026(하) 일위대가</button>
-      <div class="nav-grp">관련 사이트</div>
-      <a class="extlink" href="https://www.moleg.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">법제처</span><span class="ext">↗</span></a>
-      <a class="extlink" href="https://www.csi.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">건설공사 안전관리 통합정보망(CSI)</span><span class="ext">↗</span></a>
-      <a class="extlink" href="https://work.keiis.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">교육시설통합정보망</span><span class="ext">↗</span></a>
-      <a class="extlink" href="https://www.cems.kr/" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">건설엔지니어링관리시스템(CEMS)</span><span class="ext">↗</span></a>
-      <a class="extlink" href="https://shop.g2b.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">나라장터 종합쇼핑몰</span><span class="ext">↗</span></a>
-      <a class="extlink" href="http://www.ekacem.or.kr/" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">한국건설엔지니어링협회</span><span class="ext">↗</span></a>
+      <div class="nav-grp" id="siteGrp" style="cursor:pointer;display:flex;align-items:center;gap:6px">관련 사이트 <span id="siteArrow" style="font-size:10px;margin-left:auto">▾</span></div>
+      <a class="extlink" data-sub="site" style="display:none;width:88%;margin-left:auto;font-size:12.5px;padding:8px 11px;min-height:36px" href="https://www.moleg.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">법제처</span><span class="ext">↗</span></a>
+      <a class="extlink" data-sub="site" style="display:none;width:88%;margin-left:auto;font-size:12.5px;padding:8px 11px;min-height:36px" href="https://www.csi.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">건설공사 안전관리 통합정보망(CSI)</span><span class="ext">↗</span></a>
+      <a class="extlink" data-sub="site" style="display:none;width:88%;margin-left:auto;font-size:12.5px;padding:8px 11px;min-height:36px" href="https://work.keiis.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">교육시설통합정보망</span><span class="ext">↗</span></a>
+      <a class="extlink" data-sub="site" style="display:none;width:88%;margin-left:auto;font-size:12.5px;padding:8px 11px;min-height:36px" href="https://www.cems.kr/" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">건설엔지니어링관리시스템(CEMS)</span><span class="ext">↗</span></a>
+      <a class="extlink" data-sub="site" style="display:none;width:88%;margin-left:auto;font-size:12.5px;padding:8px 11px;min-height:36px" href="https://shop.g2b.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb">나라장터 종합쇼핑몰</span><span class="ext">↗</span></a>
     </nav>
   </aside>
   <main class="content">
@@ -1086,12 +1106,12 @@
       <a class="man-card" href="manuals/08_폭염_요약.html" data-inline="manuals/08_폭염_요약.html" data-dl="manuals/08_폭염대비_온열질환_예방_대응지침.pdf" data-title="폭염대비 온열질환 예방을 위한 사업장 대응지침 — 핵심 요약"><span class="man-no">02</span><div class="man-t"><b>폭염대비 온열질환 예방을 위한 사업장 대응지침</b><span>'26년 폭염 대비 온열질환 예방</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="폭염">#폭염</span><span class="htag" data-tag="온열질환">#온열질환</span><span class="htag" data-tag="안전보건">#안전보건</span></div></a>
       <a class="man-card" href="manuals/09_BF인증_요약.html" data-inline="manuals/09_BF인증_요약.html" data-dl="manuals/09_BF인증_기준_해설서.pdf" data-title="장애물 없는 생활환경(BF) 인증 기준 해설서 — 핵심 요약"><span class="man-no">03</span><div class="man-t"><b>장애물 없는 생활환경(BF) 인증 기준 해설서</b><span>건축물 BF 인증 기준 해설</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="BF">#BF</span><span class="htag" data-tag="인증">#인증</span><span class="htag" data-tag="장애물없는생활환경">#장애물없는생활환경</span></div></a>
       <a class="man-card" href="manuals/10_적정공사기간_요약.html" data-inline="manuals/10_적정공사기간_요약.html" data-dl="manuals/10_2026적정공사기간확보_가이드라인.pdf" data-title="2026년 적정 공사기간 확보를 위한 가이드라인 — 핵심 요약"><span class="man-no">04</span><div class="man-t"><b>2026년 적정 공사기간 확보를 위한 가이드라인</b><span>적정 공사기간 산정·확보 기준</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="공사기간">#공사기간</span><span class="htag" data-tag="적정공기">#적정공기</span><span class="htag" data-tag="산정기준">#산정기준</span></div></a>
-      <a class="man-card" href="manuals/05_학교건축표준업무매뉴얼_요약.html" data-inline="manuals/05_학교건축표준업무매뉴얼_요약.html" data-title="2025 학교건축 표준업무 매뉴얼 — 핵심 요약"><span class="man-no">05</span><div class="man-t"><b>2025 학교건축 표준업무 매뉴얼</b><span>학교공간재구조화 포털</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-site" data-site="https://www.schoolredesign.kr/portal/spacematerial/rschreportList.do" title="학교공간재구조화 포털 열기" style="cursor:pointer">사이트 ↗</span></span></a>
+      <a class="man-card" href="manuals/11_학교건축_표준업무_요약.html" data-inline="manuals/11_학교건축_표준업무_요약.html" data-title="2025 학교건축 표준업무 매뉴얼 — 핵심 요약"><span class="man-no">05</span><div class="man-t"><b>2025 학교건축 표준업무 매뉴얼</b><span>학교공간재구조화 포털</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-site" data-site="https://www.schoolredesign.kr/portal/spacematerial/rschreportList.do" title="학교공간재구조화 포털 열기" style="cursor:pointer">사이트 ↗</span></span></a>
       <a class="man-card" href="manuals/12_관급자재_산안보_요약.html" data-inline="manuals/12_관급자재_산안보_요약.html" data-dl="manuals/12_건설업_산안보_해설_질의회시집.pdf" data-title="MAS물품 산업안전보건관리비 계상방안 — 핵심 요약"><span class="man-no">06</span><div class="man-t"><b>관급자재 산업안전보건관리비 계상 안내</b><span>관급자재 포함 산업안전보건관리비 계상 방법</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="관급자재">#관급자재</span><span class="htag" data-tag="산업안전보건관리비">#산업안전보건관리비</span><span class="htag" data-tag="계상">#계상</span></div></a>
       <a class="man-card" href="manuals/13_환경관리비_산출기준.html" data-inline="manuals/13_환경관리비_산출기준.html" data-dl="manuals/13_환경관리비_산출기준_지침.pdf" data-title="환경관리비의 산출기준"><span class="man-no">07</span><div class="man-t"><b>환경관리비의 산출기준</b><span>환경보전비·폐기물처리비 산출</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="환경관리비">#환경관리비</span><span class="htag" data-tag="환경보전비">#환경보전비</span><span class="htag" data-tag="폐기물">#폐기물</span></div></a>
       <a class="man-card" href="manuals/14_산업안전보건관리비_요약.html" data-inline="manuals/14_산업안전보건관리비_요약.html" data-dl="manuals/14_산업안전보건관리비_해설서.pdf" data-title="건설업 산업안전보건관리비 해설 및 질의회시집 (2025.06.)"><span class="man-no">08</span><div class="man-t"><b>건설업 산업안전보건관리비 해설서</b><span>계상·사용기준 해설 및 질의회시집</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="산업안전보건관리비">#산업안전보건관리비</span><span class="htag" data-tag="정산">#정산</span><span class="htag" data-tag="해설서">#해설서</span></div></a>
       <a class="man-card" href="manuals/15_학교시설석면해체제거_요약.html" data-inline="manuals/15_학교시설석면해체제거_요약.html" data-dl="manuals/15_학교시설_석면해체제거_안내서.pdf" data-title="학교시설 석면 해체·제거 안내서 (2019.5.31.)"><span class="man-no">09</span><div class="man-t"><b>학교시설 석면 해체·제거 안내서</b><span>석면조사·해체 절차 및 안전관리</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="석면">#석면</span><span class="htag" data-tag="해체">#해체</span><span class="htag" data-tag="안전관리">#안전관리</span></div></a>
-      <a class="man-card disabled" href="#" onclick="return false;" title="준비 중 — 아직 열람할 수 없습니다" aria-disabled="true"><span class="man-no">10</span><div class="man-t"><b>학교 급식조리실 환기설비 설치 가이드</b><span>조리실 환기·후드·급배기 설계 기준</span></div><span class="man-go g-soon">준비중</span><div class="man-tagrow"><span class="htag" data-tag="급식">#급식</span><span class="htag" data-tag="환기">#환기</span><span class="htag" data-tag="조리실">#조리실</span></div></a>
+      <a class="man-card" href="manuals/16_학교급식시설개선_요약.html" data-inline="manuals/16_학교급식시설개선_요약.html" data-dl="manuals/16_학교급식시설개선_매뉴얼.pdf" data-title="학교급식시설 개선 매뉴얼 — 핵심 요약"><span class="man-no">10</span><div class="man-t"><b>학교급식시설 개선 매뉴얼</b><span>급식실 시설·설비 개선 실무</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="급식">#급식</span><span class="htag" data-tag="조리실">#조리실</span><span class="htag" data-tag="환기">#환기</span></div></a>
       <a class="man-card" href="manuals/17_건설공사사업관리방식_요약.html" data-inline="manuals/17_건설공사사업관리방식_요약.html" data-dl="manuals/17_건설공사_사업관리방식_검토기준_업무수행지침.pdf" data-title="건설공사 사업관리방식 검토기준 및 업무수행지침 (국토교통부고시 제2025-105호)"><span class="man-no">11</span><div class="man-t"><b>건설공사 사업관리방식 검토기준 및 업무수행지침</b><span>국토교통부고시 제2025-105호(2025.3.5.)</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="건설사업관리">#건설사업관리</span><span class="htag" data-tag="감리">#감리</span><span class="htag" data-tag="감독권한대행">#감독권한대행</span></div></a>
       <a class="man-card" href="manuals/18_내진보강공사_기술감리_요약.html" data-inline="manuals/18_내진보강공사_기술감리_요약.html" data-dl="manuals/18_내진보강공사_기술감리_매뉴얼.pdf" data-title="내진보강공사 기술감리 — 핵심 요약"><span class="man-no">12</span><div class="man-t"><b>내진보강공사 기술감리</b><span>내진보강 설계·시공 감리 실무</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="내진보강">#내진보강</span><span class="htag" data-tag="기술감리">#기술감리</span><span class="htag" data-tag="구조안전">#구조안전</span></div></a>
     </div>
@@ -1367,12 +1387,13 @@
   <aside class="sidebar side-right">
     <nav class="side-nav">
       <div class="nav-grp">📚 통합자료실</div>
-      <a class="extlink" href="https://jne365-my.sharepoint.com/:f:/g/personal/seum8660_o365_jne_go_kr/IgB3esNJMRYBSZsEMOjgGQbMAZKDjWMuY1J0BUQjk0scxks?e=GcNgkV" target="_blank" rel="noopener noreferrer"><span class="lb">각종 양식모음</span><span class="ext">↗</span></a>
+      <a class="extlink" href="양식모음.html" target="_blank" rel="noopener noreferrer" title="각종 양식모음 (공유 자료실)"><span class="lb">각종 양식모음</span><span class="ext">↗</span></a>
       <a class="extlink" href="설계용역비_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">설계용역비 산출</span><span class="ext">↗</span></a>
       <a class="extlink" href="감리용역비_준비중.html" target="_blank" rel="noopener noreferrer" title="감리용역비 산출 (준비중)"><span class="lb">감리용역비 산출</span><span class="ext">↗</span></a>
       <a class="extlink" href="건설사업관리용역비_준비중.html" target="_blank" rel="noopener noreferrer" title="건설사업관리용역비 산출 (준비중)"><span class="lb">건설사업관리용역비 산출</span><span class="ext">↗</span></a>
       <a class="extlink" href="공사기간_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">공사기간 산출</span><span class="ext">↗</span></a>
-      <a class="extlink" href="macro_ready.html" target="_blank" rel="noopener noreferrer" title="매크로 모음 (준비중)" style="background:#1a1d21;border-color:#000;color:#fff"><span class="lb">⚙️ 매크로 모음</span><span class="ext" style="color:#fff">⬇</span></a>
+      <a class="extlink" id="macroGrp" href="#" onclick="return false;" title="매크로 모음" style="background:#1a1d21;border-color:#000;color:#fff;cursor:pointer"><span class="lb">⚙️ 매크로 모음</span><span class="ext" style="color:#fff">↗</span></a>
+      <a class="extlink" data-sub="macro" style="display:none;width:88%;margin-left:auto;font-size:12.5px;padding:8px 11px;min-height:36px" href="macros/매크로VER1.0.xlsx" download title="설계변경내역서 매크로 (VER 1.0)"><span class="lb">설계변경내역서 만들기</span><span class="ext">⬇</span></a>
       <div class="nav-grp" style="background:#6d28d9;color:#fff;">CHECK NOW</div>
       <button class="tab" data-p="calc"><span class="dot"></span>규모별 절차 체크</button>
       <button class="tab" data-p="cert"><span class="dot"></span>인증 체크</button>
@@ -1383,7 +1404,7 @@
     <div class="qbox">
       <div class="qbox-h"><img src="assets/chatbot-face.png" alt="" style="width:24px;height:24px;object-fit:contain;vertical-align:-6px;margin-right:6px">Q&amp;A 게시판<span id="qbox-admin" title="관리자 모드" style="margin-left:auto;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;">관리자</span></div>
       <div class="qbox-list" id="qbox-list"></div>
-      <textarea id="qbox-input" rows="2" placeholder="궁금한 점을 질문해 주세요"></textarea>
+      <textarea id="qbox-input" rows="2" placeholder="오타, 정정, 질문 마구마구 보내주세요"></textarea>
       <div class="qbox-emoji" id="qbox-emoji">
         <button type="button">😀</button><button type="button">🙏</button><button type="button">👍</button><button type="button">❓</button><button type="button">🚧</button><button type="button">📌</button><button type="button">✅</button><button type="button">🔥</button>
       </div>
@@ -2058,7 +2079,14 @@ Object.keys(DATA).forEach(pk=>{
 // ================= 인터랙션 =================
 // 탭 전환
 function activate(p){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.p===p));
+  document.querySelectorAll('.tab').forEach(t=>{
+    const on=(t.dataset.p===p);
+    t.classList.toggle('active',on);
+    if(on){ t.style.setProperty('color','#fff','important'); t.style.setProperty('-webkit-text-fill-color','#fff','important');
+      t.querySelectorAll('*').forEach(c=>{ c.style.setProperty('color','#fff','important'); c.style.setProperty('-webkit-text-fill-color','#fff','important'); }); }
+    else { t.style.removeProperty('color'); t.style.removeProperty('-webkit-text-fill-color');
+      t.querySelectorAll('*').forEach(c=>{ c.style.removeProperty('color'); c.style.removeProperty('-webkit-text-fill-color'); }); }
+  });
   document.querySelectorAll('.panel').forEach(pn=>pn.classList.toggle('show',pn.id===p));
   // 하위 아이콘 표시 (체크리스트 계열)
   const inCheck = (p==='check'||p==='check-jn'||p==='check-etc');
@@ -2854,10 +2882,20 @@ runRatioCalc();
   const list=document.getElementById('qbox-list'),input=document.getElementById('qbox-input'),send=document.getElementById('qbox-send');
   if(!list||!send) return;
   const KEY='bible-qa', ADMIN='2026';
+  let CLOUD=null;
   let admin=false;
   function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
-  function load(){ try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];} }
-  function save(a){ try{localStorage.setItem(KEY,JSON.stringify(a));}catch(e){} }
+  function load(){ if(CLOUD) return CLOUD; try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];} }
+  function save(a){
+    CLOUD=a;
+    try{localStorage.setItem(KEY,JSON.stringify(a));}catch(e){}
+    if(window.QA_FB) window.QA_FB.save(a).catch(()=>{});
+  }
+  function hookFB(){
+    if(!window.QA_FB) return;
+    window.QA_FB.watch(items=>{ CLOUD=items; render(); });
+  }
+  if(window.QA_FB) hookFB(); else window.addEventListener('qa-fb-ready',hookFB);
   function stamp(){ const d=new Date(); return `${d.getMonth()+1}.${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
   function render(){
     const a=load();
@@ -3196,7 +3234,50 @@ window.__gvInit = (function(){
         var doc=new DOMParser().parseFromString(txt,'text/html');
         var css=[...doc.querySelectorAll('style')].map(function(s){return s.textContent;}).join('\n').replace(/@page\s*\{[^}]*\}/g,'');
         var body=doc.body?doc.body.innerHTML:'';
-        parts.push('<section class="pp"><style>'+css+'</style>'+body+'</section>');
+        parts.push('<section class="pp"><style>'+css+'
+  .side-nav .tab:not(.active):hover{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;transform:translateX(2px);transition:all .12s}
+  .side-nav .tab:not(.active):hover .dot{background:#fff!important}
+  .side-nav .extlink:hover{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;transform:translateX(2px);transition:all .12s}
+  .side-nav .extlink:hover .lb,.side-nav .extlink:hover .ext{color:#fff!important}
+  .side-nav .extlink:hover .dot{background:#fff!important}
+  .side-nav .tab[data-p="calc"]:not(.active):hover,.side-nav .tab[data-p="cert"]:not(.active):hover,
+  .side-nav .tab[data-p="bom"]:not(.active):hover,.side-nav .tab[data-p="wx"]:not(.active):hover{background:#6d28d9!important;border-color:#6d28d9!important}
+
+  .side-nav .tab:not(.active):hover,.side-nav .extlink:hover{
+    background:var(--accent)!important;background-image:none!important;
+    color:#fff!important;border-color:var(--accent)!important;box-shadow:none!important}
+  .side-nav .tab:not(.active):hover *,.side-nav .extlink:hover *{color:#fff!important}
+  .side-nav .tab:not(.active):hover .dot,.side-nav .extlink:hover .dot{background:#fff!important;border-color:#fff!important}
+  .side-nav .tab[data-p="calc"]:not(.active):hover,.side-nav .tab[data-p="cert"]:not(.active):hover,
+  .side-nav .tab[data-p="bom"]:not(.active):hover,.side-nav .tab[data-p="wx"]:not(.active):hover{
+    background:#6d28d9!important;border-color:#6d28d9!important;color:#fff!important}
+
+  .side-nav .tab:not(.active):hover,.side-nav .extlink:hover{
+    background:#3182f6!important;background-image:none!important;
+    color:#ffffff!important;border-color:#3182f6!important;box-shadow:none!important}
+  .side-nav .tab:not(.active):hover *,.side-nav .extlink:hover *{color:#ffffff!important}
+  .side-nav .tab:not(.active):hover .dot,.side-nav .extlink:hover .dot{background:#ffffff!important;border-color:#ffffff!important}
+
+  .side-nav .tab.active,.side-nav .tab.active *{color:#ffffff!important}
+  .side-nav .tab.active .dot{background:#ffffff!important;border-color:#ffffff!important}
+
+  .side-nav .tab.active{color:#ffffff!important;-webkit-text-fill-color:#ffffff!important}
+  .side-nav .tab.active span,.side-nav .tab.active b,.side-nav .tab.active .lb{
+    color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;background:none!important;
+    background-image:none!important;background-clip:border-box!important;-webkit-background-clip:border-box!important;opacity:1!important}
+  .side-nav .tab.active .dot{background:#ffffff!important;-webkit-text-fill-color:initial!important}
+
+  .side-nav .tab.active,
+  .side-nav .tab.active *,
+  .side-nav a.tab.active,
+  .side-nav a.tab.active *,
+  .side-nav button.tab.active,
+  .side-nav button.tab.active *{
+    color:#fff!important;-webkit-text-fill-color:#fff!important;
+    text-shadow:none!important;filter:none!important;opacity:1!important}
+  .side-nav .tab.active .dot,.side-nav a.tab.active .dot,.side-nav button.tab.active .dot{
+    background:#fff!important;border-color:#fff!important}
+</style>'+body+'</section>');
       }catch(e){}
     }
     openBtn.textContent=t; openBtn.disabled=false;
@@ -3276,6 +3357,30 @@ window.__gvInit = (function(){
       if(nd.nodeType===3) blindNode(nd); else if(nd.nodeType===1) walk(nd);
     }); });
   }).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+<script>
+(function(){
+  var g=document.getElementById('siteGrp'), ar=document.getElementById('siteArrow');
+  if(!g) return;
+  g.addEventListener('click',function(){
+    var list=document.querySelectorAll('.extlink[data-sub="site"]');
+    var open=list.length && list[0].style.display!=='none';
+    list.forEach(function(a){ a.style.display=open?'none':''; });
+    if(ar) ar.textContent=open?'▾':'▴';
+  });
+})();
+</script>
+<script>
+(function(){
+  var g=document.getElementById('macroGrp');
+  if(!g) return;
+  g.addEventListener('click',function(e){
+    e.preventDefault();
+    var list=document.querySelectorAll('.extlink[data-sub="macro"]');
+    var open=list.length && list[0].style.display!=='none';
+    list.forEach(function(a){ a.style.display=open?'none':''; });
+  });
 })();
 </script>
 </body>

@@ -7,8 +7,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/static/pretendard.min.css">
 <style>
   :root{
-    --navy:#191f28; --navy2:#3d4657; --line:#eaedf0; --line2:#f2f4f6;
-    --ink:#191f28; --sub:#8b95a1; --bg:#f2f4f6; --card:#ffffff;
+    --mono:'D2Coding','Consolas','SFMono-Regular',monospace; --navy:#191f28; --navy2:#3d4657; --line:#eaedf0; --line2:#f2f4f6;
+    --ink:#0f1420; --sub:#5d6875; --bg:#f2f4f6; --card:#ffffff;
     --m1:#3182f6; --m2:#3182f6; --m3:#4e5968;
     --prep:#c1c8d0; --work:#3182f6; --nowork:#8b95a1; --fin:#4e5968; --extra:#aeb7c9;
     --gold:#3182f6; --goldbg:#e8f2ff; --yellow:#eef4ff;
@@ -48,7 +48,7 @@
 
   /* ===== 섹션 ===== */
   section{margin-top:26px}
-  .sec-title{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800;color:var(--navy);
+  .sec-title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;color:var(--navy);
          margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid var(--line)}
   .sec-title .n{display:inline-flex;width:26px;height:26px;border-radius:7px;background:var(--navy);color:#fff;
          font-size:14px;align-items:center;justify-content:center;font-weight:800}
@@ -59,20 +59,20 @@
   /* ===== 입력 그리드 ===== */
   .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 18px}
   .fld{display:flex;flex-direction:column;gap:5px}
-  .fld label{font-size:12.5px;color:var(--ink);font-weight:700}
-  .fld input,.fld select{font:inherit;font-size:14px;font-weight:600;padding:10px 12px;border:1.5px solid var(--sub);
+  .fld label{font-size:13.5px;color:var(--ink);font-weight:700}
+  .fld input,.fld select{font:inherit;font-size:14.5px;font-weight:600;padding:10px 12px;border:1.5px solid var(--sub);
          border-radius:10px;background:var(--card);color:var(--ink);width:100%}
   .fld input:focus,.fld select:focus{outline:none;border-color:var(--m2);box-shadow:0 0 0 3px rgba(49,130,246,.16)}
   .fld input[readonly]{background:var(--line2);color:var(--sub)}
   .fld.wide{grid-column:span 2}
-  .fld .hint{font-size:10.5px;color:#94a3b8}
+  .fld .hint{font-size:12px;color:#94a3b8}
   .chk{display:flex;align-items:center;gap:7px;font-size:13px;padding:7px 0}
   .chk input{width:16px;height:16px;accent-color:var(--m2)}
-  .subhead{grid-column:1/-1;font-size:12.5px;font-weight:700;color:var(--navy2);margin-top:6px;
+  .subhead{grid-column:1/-1;font-size:14.5px;font-weight:700;color:var(--navy2);margin-top:6px;
          border-left:3px solid var(--m2);padding-left:8px}
 
   /* ===== 결과 카드 3안 ===== */
-  .methods{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .methods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
   .mcard{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;
          border-top:4px solid var(--mc);transition:.2s}
   .mcard.m1{--mc:var(--m1)} .mcard.m2{--mc:var(--m2)} .mcard.m3{--mc:var(--m3)}
@@ -99,10 +99,10 @@
   .adopt-banner .reason{flex:1 1 260px;font-size:12.5px;color:var(--coversub);min-width:220px}
 
   /* ===== 차트 ===== */
-  .chart-wrap{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}
+  .chart-wrap{display:grid;grid-template-columns:1.35fr 1fr;gap:18px}
   .bars{display:flex;flex-direction:column;gap:16px;padding:6px 0}
   .barrow{display:flex;align-items:center;gap:12px}
-  .barrow .name{width:120px;font-size:12.5px;font-weight:700;color:var(--navy);flex:none}
+  .barrow .name{width:142px;font-size:13.5px;font-weight:700;color:var(--navy);flex:none}
   .barrow .name small{display:block;font-weight:500;color:var(--sub);font-size:10.5px}
   .track{flex:1;height:30px;background:#f1f5f9;border-radius:6px;overflow:hidden;display:flex}
   .seg{height:100%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10.5px;font-weight:700;
@@ -118,22 +118,22 @@
 
   /* ===== 표 ===== */
   table{width:100%;border-collapse:collapse;font-size:12.5px}
-  thead th{background:var(--line2);color:var(--sub);font-weight:700;padding:9px 10px;text-align:center;font-size:11.5px;
+  thead th{background:var(--line2);color:var(--sub);font-weight:700;padding:11px 10px;text-align:center;font-size:12.5px;
          position:sticky;top:0;border-bottom:1px solid var(--line)}
-  tbody td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:center;color:var(--sub)}
+  tbody td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:center;color:var(--sub);font-size:13.5px}
   tbody td.l{text-align:left}
   tbody tr:nth-child(even){background:#fafcff}
   tbody tr.grp td{background:var(--line2);font-weight:700;color:var(--navy2);text-align:left}
   tfoot td{padding:10px 10px;background:var(--line2);font-weight:800;color:var(--navy);border-top:2px solid var(--line)}
   .tbl-scroll{max-height:520px;overflow:auto;border:1px solid var(--line);border-radius:12px}
-  td input{width:74px;font:inherit;font-size:12.5px;text-align:center;padding:5px 6px;border:1px solid var(--line);
+  td input{width:82px;font:inherit;font-size:13.5px;text-align:center;padding:5px 6px;border:1px solid var(--line);
          border-radius:8px;background:var(--yellow)}
   td input:focus{outline:none;border-color:var(--m2);background:#fff}
   td select{font:inherit;font-size:12px;padding:3px 4px;border:1px solid var(--line);border-radius:6px;background:var(--yellow)}
   .cp-y{color:var(--ok);font-weight:800}
   .cp-n{color:#cbd5e1}
 
-  .note{font-size:11.5px;color:var(--sub);margin-top:10px;background:#f8fafc;border-left:3px solid var(--m2);
+  .note{font-size:13px;color:var(--sub);margin-top:10px;background:#f8fafc;border-left:3px solid var(--m2);
          padding:9px 12px;border-radius:0 8px 8px 0;line-height:1.7}
   .tabbar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
   .tab{font:inherit;font-size:13px;font-weight:700;padding:8px 16px;border:1px solid var(--line);background:#fff;
@@ -143,11 +143,13 @@
   .f3grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .formula-box{background:var(--navy2);color:#fff;font-family:"Consolas",monospace;font-size:14px;padding:14px 16px;
          border-radius:10px;margin:8px 0}
-  .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-  .mini .m{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}
-  .mini .m .k{font-size:11px;color:var(--sub)} .mini .m .v{font-size:20px;font-weight:800;color:var(--navy)}
-  .foot{margin-top:30px;font-size:11px;color:#94a3b8;line-height:1.8;border-top:1px solid var(--line);padding-top:16px}
-  @media(max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}.methods{grid-template-columns:1fr}
+  .mini{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}
+  .mini .m{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:11px 6px;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center}
+  .mini .m .k{font-size:11px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;max-width:100%} .mini .m .v{font-size:15.5px;font-weight:800;color:var(--navy);white-space:normal;word-break:keep-all;line-height:1.3}
+  
+  @media(max-width:1000px){#nwKpi{grid-template-columns:repeat(2,1fr)!important}#nwFactors>div:nth-child(2){grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+  .foot{margin-top:30px;font-size:12px;color:#6b7684;line-height:1.8;border-top:1px solid var(--line);padding-top:16px}
+  @media(max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}.methods{grid-template-columns:1fr}.mini{grid-template-columns:repeat(5,minmax(0,1fr))}
     .chart-wrap{grid-template-columns:1fr}.f3grid{grid-template-columns:1fr}.fld.wide{grid-column:span 2}}
 
   @media print{
@@ -160,6 +162,9 @@
     section,.card,.pane{break-inside:avoid;page-break-inside:avoid;box-shadow:none!important}
     input,select{border:1px solid #d0d7e2!important;background:#fff!important}
   }
+  input::placeholder,textarea::placeholder{color:#a3adb9;opacity:1}
+  input,select{color:#3d4657}
+  input:focus,select:focus{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -181,7 +186,7 @@
 
   <!-- ===== 1. 기본정보 입력 ===== -->
   <section>
-    <div class="sec-title"><span class="n">1</span>공사 기본정보 입력 <button type="button" id="resetBtn" style="margin-left:auto;background:var(--card);border:2px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">↺ 초기화</button><button type="button" id="printBtn" style="margin-left:6px;background:var(--card);border:2px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">🖨 출력 · PDF 저장</button></div>
+    <div class="sec-title"><span class="n">1</span>공사 기본정보 입력 <button type="button" id="resetBtn" style="margin-left:auto;background:var(--card);border:2px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">↺ 초기화</button><button type="button" id="printBtn" style="margin-left:6px;background:var(--card);border:2px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">📄 PDF 저장</button></div>
     <div class="card">
       <div class="grid">
         <div class="fld wide"><label>공사명</label><input id="i_name" value="" placeholder="00초 신축공사"></div>
@@ -218,8 +223,7 @@
     <div class="tabbar" id="mainTabs">
       <button class="tab active" data-p="pSum">종합 비교</button>
       <button class="tab" data-p="p1">검토1안 · 표준품셈</button>
-      <button class="tab" data-p="p2">검토2안 · 표준공기</button>
-      <button class="tab" data-p="p3">검토3안 · 산정공식</button>
+      <button class="tab" data-p="p3">검토2안 · 산정공식</button>
     </div>
 
     <!-- ── 종합 비교 탭 ── -->
@@ -263,10 +267,14 @@
         <div class="fld wide">
           <button type="button" id="nwToggle" style="width:100%;background:var(--card);border:2px solid var(--line);border-radius:10px;padding:10px 14px;font:inherit;font-size:13px;font-weight:800;color:var(--navy);cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:center">📊 비작업일수 산정 근거 보기 <span id="nwArrow">▾</span></button>
         </div>
-        <div class="fld wide" id="nwPanel" style="display:none">
+        </div>
+      </div>
+        <div id="nwPanel" class="card" style="display:none;margin-bottom:14px">
           <div id="nwKpi" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px"></div>
           <div id="nwChart" style="margin-bottom:12px"></div>
-          <div id="nwTable"></div>
+          <div id="nwFactors" style="margin-bottom:12px"></div>
+          <details style="border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card);margin-bottom:12px"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">📊 월별 비작업일수 산정 내역 (A·B·C)</summary><div id="nwTable" style="margin-top:10px"></div></details>
+          <details style="border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card);margin-bottom:12px"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">📅 법정공휴일 상세 (부록①)</summary><div id="nwHoliday" style="margin-top:10px"></div></details>
           <details style="margin-top:12px;border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card)">
             <summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">🌦 기상 작업제한 기준 (부록②)</summary>
             <div style="overflow:auto;margin-top:10px">
@@ -281,8 +289,7 @@
             <div style="font-size:11.5px;color:var(--sub);margin-top:8px">근거: 공공 건설공사의 공사기간 산정기준(국토부 고시 제2024-1021호) 부록② 작업제한 기상조건 · 부록③ 지역별 비작업일수</div>
           </details>
         </div>
-        </div>
-      </div>
+
       <div id="head1"></div>
       <div class="card" style="padding:16px">
         <div class="note" style="margin:0 0 12px">
@@ -293,60 +300,24 @@
           <table id="t1">
             <thead><tr>
               <th>#</th><th style="text-align:left">공종</th><th style="text-align:left">세부공종</th>
-              <th>물량</th><th>단위</th><th>표준<br>1일작업량</th><th>투입<br>조수</th><th>적용<br>작업량</th><th>소요일수</th><th>CP</th>
+              <th>물량</th><th>단위</th><th>표준<br>1일작업량</th><th>투입<br>조수</th><th>적용<br>작업량</th><th>소요일수</th><th>CP</th><th></th>
             </tr></thead>
             <tbody id="t1body"></tbody>
-            <tfoot><tr><td colspan="8" style="text-align:right">순작업일수 (주공정 CP 합계)</td><td id="t1sum">—</td><td></td></tr></tfoot>
+            <tfoot><tr><td colspan="8" style="text-align:right">순작업일수 (주공정 CP 합계)</td><td id="t1sum">—</td><td></td><td></td></tr></tfoot>
           </table>
         </div>
+        <div style="margin-top:10px"><button type="button" id="t1add" style="background:var(--card);border:2px solid var(--line);border-radius:10px;padding:8px 16px;font:inherit;font-size:12.5px;font-weight:800;color:var(--navy);cursor:pointer">＋ 공종 행 추가</button></div>
         <div class="mini">
           <div class="m"><div class="k">① 준비기간</div><div class="v" id="p1prep">—</div></div>
           <div class="m"><div class="k">② 비작업일수</div><div class="v" id="p1now">—</div></div>
           <div class="m"><div class="k">③ 작업일수(순)</div><div class="v" id="p1work">—</div></div>
-        </div>
-        <div class="mini" style="grid-template-columns:1fr 1fr">
           <div class="m"><div class="k">④ 정리기간</div><div class="v" id="p1fin">—</div></div>
-          <div class="m" style="background:var(--goldbg);border-color:var(--gold)"><div class="k">표준품셈 방식 총 공사기간</div><div class="v" id="p1tot">—</div></div>
+          <div class="m" style="background:var(--goldbg);border-color:var(--gold)"><div class="k">총 공사기간</div><div class="v" id="p1tot">—</div></div>
         </div>
       </div>
     </div>
 
-    <!-- ── 검토2안 · 표준공기 탭 ── -->
-    <div class="pane" id="p2">
-      <div id="head2"></div>
-      <div class="card" style="margin-bottom:14px">
-        <div class="grid">
-          <div class="subhead">검토2안(표준공기) 상세 조건 입력</div>
-        <div class="fld"><label>안전관리계획서 대상</label><select id="i_safety"><option value="1" selected>대상 (+45일)</option><option value="0">비대상</option></select></div>
-        <div class="fld"><label>지지력시험</label><select id="i_bear"><option value="1" selected>해당 (+11일)</option><option value="0">미해당</option></select></div>
-        <div class="fld"><label>동절기 보정</label><select id="i_winter"><option value="1" selected>적용 (지상층당 1일)</option><option value="0">미적용</option></select></div>
-        <div class="fld"><label>파일기초</label><select id="i_pile"><option value="0" selected>해당없음</option><option value="40">15m 이하 (+40)</option><option value="80">15m 이상 (+80)</option></select></div>
-        <div class="fld"><label>흙막이</label><select id="i_earth"><option value="0" selected>해당없음</option><option value="10">자립식 (10/층)</option><option value="20">어스앵커 (20/층)</option></select></div>
-        <div class="fld"><label>지하주차장</label><select id="i_park"><option value="0" selected>해당없음</option><option value="10">150대 미만 (+10)</option><option value="20">150대 이상 (+20)</option></select></div>
-        <div class="fld"><label>토목공사</label><select id="i_civil"><option value="1" selected>해당 (+15)</option><option value="0">미해당</option></select></div>
-        <div class="fld"><label>조경공사</label><select id="i_land"><option value="1" selected>해당 (+15)</option><option value="0">미해당</option></select></div>
-        <div class="fld"><label>건물철거 면적(㎡)</label><input id="i_dem" type="number" value="0"><span class="hint">90㎡당 1일</span></div>
-        <div class="fld"><label>마감재철거 면적(㎡)</label><input id="i_fdem" type="number" value="0"><span class="hint">90㎡당 1일</span></div>
-        <div class="fld"><label>석면철거 면적(㎡)</label><input id="i_asb" type="number" value="0"><span class="hint">400㎡당 7일</span></div>
-
-        </div>
-      </div>
-      <div class="card" style="padding:16px">
-        <div class="note" style="margin:0 0 12px">
-          국토부 고시 <b>표준공기(기준일)</b> × 해당여부로 산정합니다. 총공사기간 = 준비기간 + 본공사(작업일수) + 정리기간 + 도서할증.
-          위 <b>기본정보</b>의 층수·시설조건을 바꾸면 자동 반영됩니다.
-        </div>
-        <div class="tbl-scroll">
-          <table id="t2">
-            <thead><tr><th style="text-align:left">구분</th><th style="text-align:left">항목</th><th>산정 기준</th><th>일수(일)</th></tr></thead>
-            <tbody id="t2body"></tbody>
-            <tfoot><tr><td colspan="3" style="text-align:right">표준공기 방식 총 공사기간</td><td id="t2sum">—</td></tr></tfoot>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── 검토3안 · 산정공식 탭 ── -->
+    <!-- ── 검토2안 · 산정공식 탭 ── -->
     <div class="pane" id="p3">
       <div id="head3"></div>
       <div class="card">
@@ -375,7 +346,7 @@
     ※ 공사기간 = ① 준비기간 + ② 작업일수 + ③ 비작업일수 + ④ 정리기간 (가이드라인 본문 산정식) · 준비·정리기간에는 비작업일수 미계상<br>
     ※ (A) 법정공휴일수는 부록1(2026~2035), (B) 기상 비작업일수는 부록3(기상조건별·지역별, 최근 10년)의 해당 지역값으로 대체할 것 · 작업일수는 실제 공정표(Bar-chart/CPM)로 주공정 확정 후 조정<br>
     ※ 총공사비 100억원 이상(시·군·구 50억원 이상)은 공사기간 적정성 심의 대상, 입찰서류에 산정근거 명시(고시 제5조) · 본 대시보드는 예시값 기반 산정 도구이며 실제 발주 전 설계자·공정전문가 검토 필요<br>
-    출처 : 국토교통부 「2026년 적정 공사기간 확보를 위한 가이드라인」 / 고시 제2024-1021호 / 국가법령정보센터 · 예시: 신안교육지원청사 이설공사
+    출처 : 국토교통부 「2026년 적정 공사기간 확보를 위한 가이드라인」 / 고시 제2024-1021호 / 국가법령정보센터
   </div>
 </div>
 
@@ -411,7 +382,7 @@ const ITEMS1 = [
  ["조경공사","식재(흉고8~9)",100,"주",17,1,"Y"],
 ];
 
-/* ============ 검토3안 시설물별 산정공식 ============ */
+/* ============ 검토2안 시설물별 산정공식 ============ */
 const FORMULA = {
  "학교":        {t:"Y = 129.06 × X^0.2557", f:(X,A,G,B)=>129.06*Math.pow(X,0.2557)},
  "청사":        {t:"Y = 155.94 × ln(X) − 82.355", f:(X)=>155.94*Math.log(X)-82.355},
@@ -433,16 +404,17 @@ const num=v=>{const x=parseFloat(v);return isNaN(x)?0:x;};
 
 let items1 = ITEMS1.map(r=>({gong:r[0],se:r[1],qty:r[2],unit:r[3],std:r[4],crew:r[5],cp:r[6]}));
 
+function v(id,d){const e=$(id);return e?e.value:d;}
 function readState(){
  return {
-  name:$('i_name').value, cost:num($('i_cost').value), start:$('i_start').value,
-  fac:$('i_fac').value, area:num($('i_area').value), up:Math.max(0,Math.round(num($('i_up').value))),
-  down:Math.max(0,Math.round(num($('i_down').value))), roof:$('i_roof').value, isl:$('i_isl').value,
-  safety:$('i_safety').value==='1', bear:$('i_bear').value==='1', winter:$('i_winter').value==='1',
-  pile:num($('i_pile').value), earth:num($('i_earth').value), park:num($('i_park').value),
-  civil:$('i_civil').value==='1', land:$('i_land').value==='1',
-  dem:num($('i_dem').value), fdem:num($('i_fdem').value), asb:num($('i_asb').value),
-  prep:num($('i_prep').value)||60, fin:num($('i_fin').value)||30, nowork:num($('i_nowork').value),
+  name:v('i_name',''), cost:num(v('i_cost','0')), start:v('i_start',''),
+  fac:v('i_fac','학교'), area:num(v('i_area','0')), up:Math.max(0,Math.round(num(v('i_up','0')))),
+  down:Math.max(0,Math.round(num(v('i_down','0')))), roof:v('i_roof',''), isl:v('i_isl','해당없음'),
+  safety:v('i_safety','1')==='1', bear:v('i_bear','1')==='1', winter:v('i_winter','0')==='1',
+  pile:num(v('i_pile','0')), earth:num(v('i_earth','0')), park:num(v('i_park','0')),
+  civil:v('i_civil','0')==='1', land:v('i_land','0')==='1',
+  dem:num(v('i_dem','0')), fdem:num(v('i_fdem','0')), asb:num(v('i_asb','0')),
+  prep:num(v('i_prep','0'))||60, fin:num(v('i_fin','0'))||30, nowork:num(v('i_nowork','0')),
  };
 }
 
@@ -463,6 +435,88 @@ function calc1(s){
  return {prep:s.prep, nowork:nw, work, fin:s.fin, tot, autoRes, span};
 }
 
+
+
+/* ---- 기상 요인별 평년 비작업일수 (2015~2024, 부록③) ---- */
+const WXF={
+ '광주':{rain:[3,3,4,4,4,6,9,8,5,3,3,3],wind:[2,2,2,2,2,1,2,2,2,1,2,2],hot:[0,0,0,0,0,1,3,2,0,0,0,0],cold:[3,2,1,0,0,0,0,0,0,0,1,3],snow:[2,1,1,0,0,0,0,0,0,0,1,2]},
+ '목포':{rain:[3,3,4,4,4,6,8,7,5,3,4,3],wind:[3,3,3,2,2,2,2,2,2,2,3,3],hot:[0,0,0,0,0,1,2,2,0,0,0,0],cold:[2,2,1,0,0,0,0,0,0,0,1,2],snow:[2,1,1,0,0,0,0,0,0,0,1,2]},
+ '여수':{rain:[3,3,4,4,5,7,9,8,5,3,3,3],wind:[3,3,3,3,2,2,2,2,2,2,3,3],hot:[0,0,0,0,0,1,2,2,0,0,0,0],cold:[2,1,1,0,0,0,0,0,0,0,1,2],snow:[2,1,1,0,0,0,0,0,0,0,1,2]},
+ '순천':{rain:[3,3,4,4,4,6,9,8,5,3,3,3],wind:[2,2,2,2,1,1,1,1,1,1,2,2],hot:[0,0,0,0,0,1,3,2,0,0,0,0],cold:[3,2,1,0,0,0,0,0,0,0,1,3],snow:[1,1,1,0,0,0,0,0,0,0,1,1]},
+ '완도':{rain:[3,3,4,4,5,7,9,8,5,3,4,3],wind:[4,4,3,3,2,2,2,2,2,2,3,4],hot:[0,0,0,0,0,1,2,2,0,0,0,0],cold:[2,1,1,0,0,0,0,0,0,0,1,2],snow:[2,1,1,0,0,0,0,0,0,0,1,2]},
+ '해남':{rain:[3,3,4,4,4,6,8,7,5,3,4,3],wind:[3,3,2,2,2,2,2,2,2,2,2,3],hot:[0,0,0,0,0,1,2,2,0,0,0,0],cold:[2,2,1,0,0,0,0,0,0,0,1,2],snow:[2,1,1,0,0,0,0,0,0,0,1,2]},
+ '장흥':{rain:[3,3,4,4,4,6,8,7,5,3,3,3],wind:[2,2,2,2,2,2,2,2,2,1,2,2],hot:[0,0,0,0,0,1,3,2,0,0,0,0],cold:[3,2,1,0,0,0,0,0,0,0,1,3],snow:[2,1,1,0,0,0,0,0,0,0,1,2]},
+ '고흥':{rain:[3,3,4,4,4,6,8,7,5,3,3,3],wind:[3,3,2,2,2,2,2,2,2,2,2,3],hot:[0,0,0,0,0,1,2,2,0,0,0,0],cold:[2,2,1,0,0,0,0,0,0,0,1,2],snow:[2,1,1,0,0,0,0,0,0,0,1,2]},
+ '흑산도':{rain:[3,3,4,4,5,7,9,8,5,4,4,4],wind:[5,5,4,3,3,2,3,3,3,3,4,5],hot:[0,0,0,0,0,0,2,2,0,0,0,0],cold:[2,1,1,0,0,0,0,0,0,0,1,2],snow:[2,2,1,0,0,0,0,0,0,0,1,2]},
+ '진도':{rain:[3,3,4,4,5,7,9,8,5,3,4,3],wind:[4,4,3,3,2,2,2,2,2,2,3,4],hot:[0,0,0,0,0,1,2,2,0,0,0,0],cold:[2,1,1,0,0,0,0,0,0,0,1,2],snow:[2,1,1,0,0,0,0,0,0,0,1,2]}
+};
+const FKEY=[['rain','🌧 강우','일강수 5mm↑ / 시간당 3mm↑','#3182f6'],['wind','🌪 강풍','순간최대풍속 10m/s↑','#12b886'],
+ ['hot','🔥 혹서','일최고기온 33℃↑','#e8590c'],['cold','❄ 혹한','일최저기온 −5℃↓','#4263eb'],['snow','🌨 강설','일신적설 1cm↑','#7c3aed']];
+function wxFactors(startISO,totalDays,region){
+ if(!startISO||!totalDays) return null;
+ const d=new Date(startISO); if(isNaN(d)) return null;
+ const f=WXF[region]||WXF['목포'];
+ const sums={rain:0,wind:0,hot:0,cold:0,snow:0}; const rows=[];
+ let remain=totalDays; const cur=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+ while(remain>0){
+   const y=cur.getFullYear(), m=cur.getMonth();
+   const md=(m===1&&((y%4===0&&y%100!==0)||y%400===0))?29:MDAYS[m];
+   const span=Math.min(remain, Math.round((new Date(y,m,md)-cur)/86400000)+1);
+   const ratio=span/md;
+   const r={ym:y+'.'+String(m+1).padStart(2,'0'),span};
+   FKEY.forEach(([k])=>{ const v=Math.round(f[k][m]*ratio*10)/10; r[k]=v; sums[k]+=v; });
+   r.sum=Math.round(FKEY.reduce((a,[k])=>a+r[k],0)*10)/10;
+   rows.push(r); remain-=span;
+   cur.setMonth(cur.getMonth()+1); cur.setDate(1);
+ }
+ const rd=n=>Math.round(n*10)/10;
+ Object.keys(sums).forEach(k=>sums[k]=rd(sums[k]));
+ return {rows,sums,total:rd(FKEY.reduce((a,[k])=>a+sums[k],0))};
+}
+
+
+/* ---- 법정공휴일 상세 (부록①) ---- */
+const HOLD={
+ 1:[['1.1','신정',1],['설날 연휴','음력 12.31~1.2',3]],
+ 2:[['설날 연휴','해당 시 이월',1]],
+ 3:[['3.1','삼일절',1],['대체공휴일','주말 중복 시',1],['선거일','해당 연도',1]],
+ 4:[['4.10','국회의원선거일(해당 연도)',1]],
+ 5:[['5.1','근로자의 날',1],['5.5','어린이날',1],['부처님오신날','음력 4.8',1]],
+ 6:[['6.6','현충일',1]],
+ 7:[],
+ 8:[['8.15','광복절',1],['대체공휴일','주말 중복 시',1]],
+ 9:[['추석 연휴','음력 8.14~16',3]],
+ 10:[['10.3','개천절',1],['10.9','한글날',1],['추석 이월','해당 시',1],['대체공휴일','주말 중복 시',1]],
+ 11:[],
+ 12:[['12.25','성탄절',1],['12.31','연말(관공서 휴무 아님·참고)',0]]
+};
+function holPanel(startISO,totalDays){
+ const el=$('nwHoliday'); if(!el) return;
+ if(!startISO||!totalDays){ el.innerHTML='<div style="padding:10px;color:var(--sub);font-size:12.5px">착공예정일 입력 시 표시됩니다.</div>'; return; }
+ const d=new Date(startISO); if(isNaN(d)){ el.innerHTML=''; return; }
+ let remain=totalDays; const rows=[]; let sum=0;
+ const cur=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+ while(remain>0){
+   const y=cur.getFullYear(), m=cur.getMonth();
+   const md=(m===1&&((y%4===0&&y%100!==0)||y%400===0))?29:MDAYS[m];
+   const span=Math.min(remain, Math.round((new Date(y,m,md)-cur)/86400000)+1);
+   const ratio=span/md;
+   const base=HOLN[m];
+   const applied=Math.round(base*ratio*10)/10;
+   const list=(HOLD[m+1]||[]).map(x=>x[0]+'('+x[1]+')').join(' · ')||'—';
+   rows.push({ym:y+'.'+String(m+1).padStart(2,'0'),span,base,applied,list});
+   sum+=applied; remain-=span;
+   cur.setMonth(cur.getMonth()+1); cur.setDate(1);
+ }
+ el.innerHTML='<div style="overflow:auto"><table style="width:100%"><thead><tr>'
+  +'<th style="text-align:left">연·월</th><th>기간(일)</th><th>월 공휴일</th><th>적용(안분)</th><th style="text-align:left">해당 공휴일</th></tr></thead><tbody>'
+  +rows.map(r=>'<tr><td style="text-align:left;font-weight:700">'+r.ym+'</td><td>'+r.span+'</td><td>'+r.base+'</td>'
+   +'<td style="font-weight:800;color:var(--navy)">'+r.applied+'</td><td style="text-align:left;font-size:11.5px;color:var(--sub)">'+r.list+'</td></tr>').join('')
+  +'<tr style="background:var(--line2);font-weight:800"><td style="text-align:left">합계</td><td>'+totalDays+'</td><td>—</td>'
+  +'<td style="color:var(--navy)">'+Math.round(sum*10)/10+'</td><td></td></tr>'
+  +'</tbody></table></div>'
+  +'<div style="font-size:11px;color:var(--sub);margin-top:8px;line-height:1.6">※ 부록① 법정공휴일수(2026~2035) 기준 · 월 공휴일수를 해당 월 산정기간 비율로 안분 적용합니다. 설날·추석은 음력이므로 연도별로 월이 이동할 수 있습니다.</div>';
+}
 
 /* ---- 비작업일수 자동 산정 (부록②③) ---- */
 const WXN={
@@ -529,6 +583,44 @@ function nwKpiChart(res, totalDays, region){
   +'<span><i style="display:inline-block;width:9px;height:9px;background:var(--nowork);border-radius:2px;margin-right:4px"></i>B 공휴일</span>'
   +'<span>'+region+' · 산정기간 '+totalDays+'일</span></div></div>';
 }
+
+function nwFactorPanel(s, totalDays, region, autoRes){
+ const el=$('nwFactors'); if(!el) return;
+ const F=wxFactors(s.start, totalDays, region);
+ if(!F){ el.innerHTML='<div style="padding:12px;color:var(--sub);font-size:12.5px">착공예정일을 입력하면 요인별 데이터가 표시됩니다.</div>'; return; }
+ const rd=n=>Math.round(n*10)/10;
+ // 요인 카드
+ const cards=FKEY.map(([k,nm,cond,col])=>{
+   const v=F.sums[k], pct=F.total?Math.round(v/F.total*100):0;
+   return '<div style="background:var(--card);border:1.5px solid var(--line);border-left:4px solid '+col+';border-radius:10px;padding:10px 12px">'
+    +'<div style="font-size:12px;font-weight:800;color:var(--navy)">'+nm+'</div>'
+    +'<div style="font-family:var(--mono);font-size:20px;font-weight:900;color:'+col+';margin-top:3px">'+v+'<span style="font-size:11px;color:var(--sub);margin-left:3px">일</span></div>'
+    +'<div style="height:5px;background:var(--line2);border-radius:100px;margin:6px 0 5px;overflow:hidden"><i style="display:block;height:100%;width:'+pct+'%;background:'+col+'"></i></div>'
+    +'<div style="font-size:10.5px;color:var(--sub);line-height:1.45">'+cond+'<br>비중 '+pct+'%</div></div>';
+ }).join('');
+ // 월별 요인 표
+ const head='<tr><th style="text-align:left">연·월</th><th>일수</th>'+FKEY.map(([,nm])=>'<th>'+nm.replace(/^\S+\s/,'')+'</th>').join('')+'<th>기상 소계</th></tr>';
+ const body=F.rows.map(r=>'<tr><td style="text-align:left;font-weight:700">'+r.ym+'</td><td>'+r.span+'</td>'
+   +FKEY.map(([k])=>'<td'+(r[k]>=3?' style="color:#c0392b;font-weight:800"':'')+'>'+r[k]+'</td>').join('')
+   +'<td style="font-weight:800;color:var(--navy)">'+r.sum+'</td></tr>').join('');
+ const foot='<tr style="background:var(--line2);font-weight:800"><td style="text-align:left">합계</td><td>'+totalDays+'</td>'
+   +FKEY.map(([k])=>'<td>'+F.sums[k]+'</td>').join('')+'<td style="color:var(--navy)">'+F.total+'</td></tr>';
+ // 산출 근거 요약
+ const A=autoRes?autoRes.A:F.total, B=autoRes?autoRes.B:0, C=autoRes?autoRes.C:0, T=autoRes?autoRes.total:F.total;
+ const flow='<div style="background:var(--yellow);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12.5px;line-height:1.9;margin-bottom:12px">'
+  +'<b style="color:var(--navy)">산출 근거 ('+region+' · 산정기간 '+totalDays+'일)</b><br>'
+  +'① 기상 비작업일수 A = 강우 '+F.sums.rain+' + 강풍 '+F.sums.wind+' + 혹서 '+F.sums.hot+' + 혹한 '+F.sums.cold+' + 강설 '+F.sums.snow+' = <b>'+F.total+'일</b><br>'
+  +'② 법정공휴일 B = <b>'+B+'일</b> (부록① 연도별 공휴일)<br>'
+  +'③ 중복일수 C = A × B ÷ 달력일수 = <b>'+C+'일</b><br>'
+  +'④ 월 하한 적용: 월 비작업일수가 주40시간 기준(월 8일) 미달 시 8일 적용<br>'
+  +'⑤ <b style="color:var(--navy);font-size:14px">적용 비작업일수 = A + B − C = '+T+'일</b></div>';
+ el.innerHTML='<div style="margin-bottom:12px">'+flow+'</div>'
+  +'<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:12px">'+cards+'</div>'
+  +'<details style="border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card)"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">📋 월별 요인 상세 내역</summary>'
+  +'<div style="overflow:auto;margin-top:10px"><table style="width:100%"><thead>'+head+'</thead><tbody>'+body+foot+'</tbody></table></div></details>'
+  +'<div style="font-size:11px;color:var(--sub);margin-top:8px;line-height:1.6">※ 기상 데이터는 전남·광주 10개 관측지점의 2015~2024년 평년값 기준이며, 붉은 숫자는 월 3일 이상 발생 요인입니다. 실제 산정 시 기상청 관측자료(최근 10년)와 현장 여건을 확인하십시오.</div>';
+}
+
 function renderNowork(s, totalDays, preRes){
  const box=$('nwCalc'), tb=$('nwTable'); if(!box) return null;
  const region=$('i_wxregion')?$('i_wxregion').value:'목포';
@@ -556,48 +648,12 @@ function renderNowork(s, totalDays, preRes){
    }).join('')})()
   +'</tbody></table></div>';
  nwKpiChart(res, totalDays, region);
+ nwFactorPanel(s, totalDays, region, res);
+ holPanel(s.start, totalDays);
  return res.total;
 }
 
 /* ---- 검토2안 ---- */
-function calc2(s){
- const items=[];
- const P=(g,l,b,d)=>items.push({g,l,b,d});
- // 준비
- P('준비', s.cost>=10?'공사준비 (착공, 10억 이상)':'공사준비 (착공, 10억 미만)', s.cost>=10?'20':'10', s.cost>=10?20:10);
- if(s.safety) P('준비','안전관리계획서 제출대상','45',45);
- // 본공사
- if(s.down>0) P('본공사',`터파기 (지하 ${s.down}층)`,`10 × ${s.down}`,10*s.down);
- if(s.earth>0) P('본공사',`흙막이 (${s.earth===10?'자립식':'어스앵커'}, ${Math.max(s.down,1)}층)`,`${s.earth} × ${Math.max(s.down,1)}`,s.earth*Math.max(s.down,1));
- if(s.pile>0) P('본공사',`파일기초 (${s.pile===40?'15m 이하':'15m 이상'})`,`${s.pile}`,s.pile);
- if(s.bear) P('본공사','지지력시험','11',11);
- if(s.down>0) P('본공사',`지하층 골조 (${s.down}층)`,`31 × ${s.down}`,31*s.down);
- if(s.park>0) P('본공사',`지하주차장 (${s.park===10?'150대 미만':'150대 이상'})`,`${s.park}`,s.park);
- if(s.up>=1) P('본공사','지상 골조 1층','30',30);
- if(s.up>=2) P('본공사',`지상 골조 2층 이상 (${s.up-1}개층)`,`21 × ${s.up-1}`,21*(s.up-1));
- if(s.winter && s.up>0) P('본공사',`동절기 보정 (${s.up}개층)`,`1 × ${s.up}`,s.up);
- const roofD = s.roof==='콘크리트 경사지붕'?15 : (s.roof==='콘크리트 평지붕'?12:10);
- P('본공사',`지붕 (${s.roof})`,`${roofD}`,roofD);
- [['조적',5],['미장',7],['창호',6],['방수',3],['타일',2],['내장',7],['도장',3]].forEach(([n,d])=>{
-   if(s.up>0) P('본공사',`${n}공사 (${s.up}개층)`,`${d} × ${s.up}`,d*s.up);
- });
- if(s.civil) P('본공사','토목공사 (건축 완료 후)','15',15);
- if(s.land) P('본공사','조경공사 (토목 완료 후)','15',15);
- if(s.dem>0) P('본공사','건물철거 (90㎡당 1)',`⌈${fmt(s.dem)}/90⌉`,Math.ceil(s.dem/90));
- if(s.fdem>0) P('본공사','마감재철거 (90㎡당 1)',`⌈${fmt(s.fdem)}/90⌉`,Math.ceil(s.fdem/90));
- if(s.asb>0) P('본공사','석면철거 (400㎡당 7)',`⌈${fmt(s.asb)}/400⌉ × 7`,Math.ceil(s.asb/400)*7);
- // 정리
- P('정리', s.cost>=10?'준공·정리 (10억 이상)':'준공·정리 (10억 미만)', s.cost>=10?'30':'15', s.cost>=10?30:15);
- // 할증
- const ISL={'가':60,'나':45,'다':30,'라':15};
- if(ISL[s.isl]) P('할증',`도서벽지 할증 (등급 '${s.isl}')`,`${ISL[s.isl]}`,ISL[s.isl]);
- else P('할증','도서벽지 할증 (해당없음)','0',0);
- const sum=g=>items.filter(i=>i.g===g).reduce((a,b)=>a+b.d,0);
- const prep=sum('준비'),work=sum('본공사'),fin=sum('정리'),extra=sum('할증');
- return {items,prep,work,fin,extra,tot:prep+work+fin+extra};
-}
-
-/* ---- 검토3안 ---- */
 function calc3(s){
  const F=FORMULA[s.fac]||FORMULA['기타 건축물'];
  const X=s.cost, A=s.area/100, G=s.up, B=s.down;
@@ -608,7 +664,7 @@ function calc3(s){
 /* ============ 렌더 ============ */
 function render(){
  const s=readState();
- const r1=calc1(s), r2=calc2(s), r3=calc3(s);
+ const r1=calc1(s), r3=calc3(s);
 
  // 표지
  const cvn=$('cv-name'); if(cvn){
@@ -619,17 +675,15 @@ function render(){
  }
 
  // 채택안 = 최소
- const arr=[{k:'검토1안',cls:'m1',v:r1.tot},{k:'검토2안',cls:'m2',v:r2.tot},{k:'검토3안',cls:'m3',v:r3.tot}];
- const minV=Math.min(r1.tot,r2.tot,r3.tot);
+ const arr=[{k:'검토1안',cls:'m1',v:r1.tot},{k:'검토2안',cls:'m3',v:r3.tot}];
+ const minV=Math.min(r1.tot,r3.tot);
  const adopted=arr.find(a=>a.v===minV);
 
  // 3안 카드
  const meta={
   '검토1안':{tag:'검토1안 · 표준품셈 방식',desc:'주공정(CP) 순작업일수 + 준비·비작업·정리',
     rows:[['① 준비기간',r1.prep],['② 비작업일수',r1.nowork],['③ 작업일수(순)',r1.work],['④ 정리기간',r1.fin]]},
-  '검토2안':{tag:'검토2안 · 표준공기 방식',desc:'국토부 고시 표준공기(기준일) × 해당여부',
-    rows:[['① 준비기간',r2.prep],['② 작업일수(본공사)',r2.work],['③ 정리기간',r2.fin],['④ 도서할증',r2.extra]]},
-  '검토3안':{tag:'검토3안 · 시설물별 산정공식',desc:'부록5 회귀식(Y) + 준비 + 정리',
+  '검토2안':{tag:'검토2안 · 시설물별 산정공식',desc:'부록5 회귀식(Y) + 준비 + 정리',
     rows:[['① 산정공식 Y',r3.Y],['② 준비기간',r3.prep],['③ 정리기간',r3.fin]]},
  };
  $('methods').innerHTML=arr.map(a=>{
@@ -638,22 +692,21 @@ function render(){
     ${isA?'<span class="adopt-badge">★ 채택안</span>':''}
     <div class="tag">${m.tag}</div>
     <h3>${a.k}</h3><div class="desc">${m.desc}</div>
-    <div class="big">${fmt(a.v)}<small> 일</small></div>
-    <div class="mo">약 ${(a.v/30).toFixed(1)}개월</div>
+    <div style="display:flex;align-items:baseline;justify-content:flex-end;gap:10px"><div class="big">${fmt(a.v)}<small> 일</small></div><div class="mo">약 ${(a.v/30).toFixed(1)}개월</div></div>
     <div class="brk">${m.rows.map(r=>`<div class="row"><span>${r[0]}</span><b>${fmt(r[1])} 일</b></div>`).join('')}</div>
   </div>`;
  }).join('');
 
  // 채택 배너
- const workAd = adopted.k==='검토1안'?r1.work : adopted.k==='검토2안'?r2.work : r3.Y;
+ const workAd = adopted.k==='검토1안'?r1.work : r3.Y;
  const prepfin = minV-workAd;
  $('adoptBanner').innerHTML=`
    <div><div class="lbl">채택 검토안</div><div class="val">${adopted.k}</div></div>
    <div class="divider"></div>
    <div><div class="lbl">총 공사기간</div><div class="val hero">${fmt(minV)}일 <span style="font-size:16px;color:#a9c3dc">(약 ${(minV/30).toFixed(1)}개월)</span></div></div>
    <div class="divider"></div>
-   <div><div class="lbl">${adopted.k==='검토3안'?'산정식 Y(비작업 포함)':'작업일수'} / 준비·정리</div><div class="val">${fmt(workAd)}일 <span style="font-size:14px;color:#a9c3dc">(${(workAd/minV*100).toFixed(1)}%)</span> · ${fmt(prepfin)}일</div></div>
-   <div class="reason">3개 검토안 중 총 공사기간이 가장 짧아, 적정 공기 확보와 과다 산정 방지 측면에서 유리하여 <b style="color:#fff">${adopted.k}</b>을(를) 채택함. (비교: 검토1안 ${fmt(r1.tot)}일 · 검토2안 ${fmt(r2.tot)}일 · 검토3안 ${fmt(r3.tot)}일)</div>`;
+   <div><div class="lbl">${adopted.k==='검토2안'?'산정식 Y(비작업 포함)':'작업일수'} / 준비·정리</div><div class="val">${fmt(workAd)}일 <span style="font-size:14px;color:#a9c3dc">(${(workAd/minV*100).toFixed(1)}%)</span> · ${fmt(prepfin)}일</div></div>
+   <div class="reason">2개 검토안 중 총 공사기간이 가장 짧아, 적정 공기 확보와 과다 산정 방지 측면에서 유리하여 <b style="color:#fff">${adopted.k}</b>을(를) 채택함. (비교: 검토1안 ${fmt(r1.tot)}일 · 검토2안 ${fmt(r3.tot)}일)</div>`;
 
  // 검토안별 탭 상단 요약 헤더
  const headHTML=(name,method,tot,color,isA)=>`<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-left:5px solid ${color};border-radius:12px;padding:14px 18px;margin-bottom:16px${isA?';box-shadow:0 4px 16px rgba(184,134,11,.15)':''}">
@@ -664,15 +717,13 @@ function render(){
    <div style="background:${isA?'var(--gold)':'#eef2f7'};color:${isA?'#fff':'var(--sub)'};font-size:12px;font-weight:800;padding:6px 14px;border-radius:20px">${isA?'★ 채택안':'미채택'}</div>
  </div>`;
  $('head1').innerHTML=headHTML('검토1안','표준품셈 작업일수',r1.tot,'var(--m1)',r1.tot===minV);
- $('head2').innerHTML=headHTML('검토2안','표준공기(기준일)',r2.tot,'var(--m2)',r2.tot===minV);
- $('head3').innerHTML=headHTML('검토3안','시설물별 산정공식',r3.tot,'var(--m3)',r3.tot===minV);
+ $('head3').innerHTML=headHTML('검토2안','시설물별 산정공식',r3.tot,'var(--m3)',r3.tot===minV);
 
  // 비교 막대 (스택)
- const maxV=Math.max(r1.tot,r2.tot,r3.tot);
+ const maxV=Math.max(r1.tot,r3.tot);
  const barData=[
   {name:'검토1안',sub:'표준품셈',segs:[['prep',r1.prep],['nowork',r1.nowork],['work',r1.work],['fin',r1.fin]],tot:r1.tot,adopt:r1.tot===minV},
-  {name:'검토2안',sub:'표준공기',segs:[['prep',r2.prep],['work',r2.work],['fin',r2.fin],['extra',r2.extra]],tot:r2.tot,adopt:r2.tot===minV},
-  {name:'검토3안',sub:'산정공식',segs:[['prep',r3.prep],['work',r3.Y],['fin',r3.fin]],tot:r3.tot,adopt:r3.tot===minV},
+  {name:'검토2안',sub:'산정공식',segs:[['prep',r3.prep],['work',r3.Y],['fin',r3.fin]],tot:r3.tot,adopt:r3.tot===minV},
  ];
  const col={prep:'var(--prep)',work:'var(--work)',nowork:'var(--nowork)',fin:'var(--fin)',extra:'var(--extra)'};
  $('bars').innerHTML=barData.map(b=>`
@@ -690,13 +741,14 @@ function render(){
  // 검토1안 표
  $('t1body').innerHTML=items1.map((it,i)=>`
   <tr>
-   <td>${i+1}</td><td class="l">${it.gong}</td><td class="l">${it.se}</td>
+   <td>${i+1}</td><td class="l">${it.add?`<input value="${it.gong}" data-i="${i}" data-f="gong" style="width:90px">`:it.gong}</td><td class="l">${it.add?`<input value="${it.se}" data-i="${i}" data-f="se" style="width:150px">`:it.se}</td>
    <td><input type="number" data-i="${i}" data-f="qty" value="${it.qty}"></td>
    <td>${it.unit}</td><td><input type="number" data-i="${i}" data-f="std" value="${it.std}"></td>
    <td><input type="number" data-i="${i}" data-f="crew" value="${it.crew}"></td>
    <td>${fmt(it.std*it.crew)}</td>
    <td><b>${it.days}</b></td>
    <td><select data-i="${i}" data-f="cp"><option value="Y"${it.cp==='Y'?' selected':''}>Y</option><option value="N"${it.cp==='N'?' selected':''}>N</option></select></td>
+  <td>${it.add?`<button type="button" class="t1del" data-i="${i}" style="border:0;background:none;color:#c0392b;font-weight:800;cursor:pointer;font-size:14px">×</button>`:''}</td>
   </tr>`).join('');
  renderNowork(s, r1.span, r1.autoRes);
  $('t1sum').textContent=fmt(r1.work)+' 일';
@@ -705,17 +757,9 @@ function render(){
  $('p1tot').textContent=fmt(r1.tot)+' 일 (약 '+(r1.tot/30).toFixed(1)+'개월)';
  bindT1();
 
- // 검토2안 표
- let last='';
- $('t2body').innerHTML=r2.items.map(it=>{
-   let head='';
-   if(it.g!==last){last=it.g;const gl={'준비':'① 준비기간','본공사':'② 작업일수 (본공사)','정리':'③ 정리기간','할증':'④ 도서벽지 할증'}[it.g];
-     head=`<tr class="grp"><td colspan="4">${gl}</td></tr>`;}
-   return head+`<tr><td></td><td class="l">${it.l}</td><td>${it.b}</td><td><b>${fmt(it.d)}</b></td></tr>`;
- }).join('');
- $('t2sum').textContent=fmt(r2.tot)+' 일  (약 '+(r2.tot/30).toFixed(1)+'개월)';
 
- // 검토3안
+
+ // 검토2안
  $('f3fac').textContent=s.fac;
  $('f3formula').textContent=r3.formula;
  $('f3y').textContent=fmt(r3.Y)+' 일';
@@ -745,9 +789,18 @@ function drawDonut(title, b, tot){
 }
 
 function bindT1(){
+ const ab=$('t1add');
+ if(ab && !ab.dataset.b){ ab.dataset.b='1'; ab.addEventListener('click',()=>{
+   items1.push({gong:'신규공종',se:'항목명 입력',qty:0,unit:'m²',std:1,crew:1,cp:'Y',add:true});
+   render();
+ }); }
+ $('t1body').querySelectorAll('.t1del').forEach(b=>b.addEventListener('click',()=>{
+   items1.splice(+b.dataset.i,1); render();
+ }));
  $('t1body').querySelectorAll('input,select').forEach(el=>{
   el.addEventListener('input',()=>{
     const i=+el.dataset.i,f=el.dataset.f;
+    if(f==='gong'||f==='se'){ items1[i][f]=el.value; return; }
     if(f==='cp')items1[i].cp=el.value; else items1[i][f]=num(el.value);
     render();
   });
@@ -764,12 +817,16 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
 // 입력 바인딩
 ['i_name','i_cost','i_start','i_fac','i_area','i_up','i_down','i_roof','i_isl','i_safety','i_bear','i_winter',
  'i_pile','i_earth','i_park','i_civil','i_land','i_dem','i_fdem','i_asb','i_prep','i_fin','i_nowork','i_wxregion']
- .forEach(id=>{$(id).addEventListener('input',render);$(id).addEventListener('change',render);});
+ .forEach(id=>{const e=$(id);if(!e)return;e.addEventListener('input',render);e.addEventListener('change',render);});
 
 // 작성일
 (function(){const d=new Date();var e=$('cv-today');if(e)e.textContent=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');})();
 
 // 초기화 버튼 (입력값 기본값 복원)
+(function(){
+ var st=document.getElementById('i_start');
+ if(st && !st.value){ var d=new Date(); st.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+})();
 (function(){
  var tg=document.getElementById('nwToggle'), pn=document.getElementById('nwPanel'), ar=document.getElementById('nwArrow');
  if(tg) tg.addEventListener('click',function(){
@@ -786,6 +843,7 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
  if(rb) rb.addEventListener('click',function(){
    ids.forEach(function(id){var el=$(id); if(!el) return;
      if(el.tagName==='SELECT'){ var z=Array.prototype.findIndex.call(el.options,function(o){return o.value==='0'||o.value==='해당없음';}); el.selectedIndex = z>=0 ? z : 0; }
+     else if(id==='i_start'){ var d=new Date(); el.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
      else { el.value=''; }});
    items1.forEach(function(it){it.qty=0;});
    render();

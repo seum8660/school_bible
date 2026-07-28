@@ -910,7 +910,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <button class="tab" data-p="check"><span class="dot"></span>✅ 단계별 체크리스트</button>
       <button class="tab" data-p="check-jn" data-sub="check" style="display:none"><span class="dot"></span>전남·광주</button>
       <button class="tab" data-p="check-etc" data-sub="check" style="display:none"><span class="dot"></span>타시도</button>
-      <a class="tab" href="발주자_체크리스트.html" target="_blank" rel="noopener noreferrer" data-sub="check" style="display:none"><span class="dot"></span>발주자 체크리스트</a>
+      <button class="tab" data-p="check-owner" data-sub="check" style="display:none"><span class="dot"></span>발주자 체크리스트</button>
       <button class="tab" data-p="law"><span class="dot"></span>📖 법령 검색</button>
       <button class="tab" data-p="price"><span class="dot"></span>📐 2026 시설단가</button>
       <button class="tab" data-p="glossary"><span class="dot"></span>📖 용어정리</button>
@@ -1355,6 +1355,13 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     <div class="sec-head"><span class="chip" style="background:var(--p-cm)">타시도</span>
       <div><h2>단계별 체크리스트 — 타시도</h2><p>타 시·도 교육청 적용 기준 점검항목</p></div></div>
     <div class="note">💡 타시도 기준 체크리스트는 준비 중입니다. 시·도별 상이한 기준(감사·심의·요율)을 비교해 제공됩니다.</div>
+  </section>
+
+  <!-- ============ 발주자 체크리스트 ============ -->
+  <section class="panel" id="check-owner">
+    <div class="sec-head"><span class="chip" style="background:var(--ops)">실무</span>
+      <div><h2>발주자 체크리스트</h2><p>발주자 단계별 확인사항</p></div></div>
+    <iframe src="발주자_체크리스트.html" title="발주자 체크리스트" loading="lazy" style="width:100%;height:78vh;min-height:560px;border:1.5px solid var(--border);border-radius:var(--radsm);background:var(--surface);box-shadow:var(--shadow-sm);"></iframe>
   </section>
 
   <!-- ============ 법령 검색 ============ -->
@@ -2147,7 +2154,7 @@ function activate(p){
   });
   document.querySelectorAll('.panel').forEach(pn=>pn.classList.toggle('show',pn.id===p));
   // 하위 아이콘 표시 (체크리스트 계열)
-  const inCheck = (p==='check'||p==='check-jn'||p==='check-etc');
+  const inCheck = (p==='check'||p==='check-jn'||p==='check-etc'||p==='check-owner');
   document.querySelectorAll('.tab[data-sub="check"]').forEach(t=>{ t.style.display = inCheck ? '' : 'none'; });
   // 데스크톱: 콘텐츠 상단 정렬 / 모바일(가로탭): 최상단
   const lay=document.querySelector('.layout');

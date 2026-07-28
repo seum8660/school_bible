@@ -42,13 +42,17 @@
   input[type=date]::-webkit-inner-spin-button,input[type=date]::-webkit-clear-button{display:none}
   input[type=date]::-webkit-calendar-picker-indicator{margin:0 auto;cursor:pointer;opacity:.85}
   .hint{font-size:11px;color:var(--sub);margin-top:5px}
-  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+  .kpi{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:14px}
+  @media(max-width:1024px){.kpi{grid-template-columns:repeat(3,1fr)}}
   @media(max-width:720px){.kpi{grid-template-columns:repeat(2,1fr)}}
-  .kpi .c{background:var(--panel2);border:1.5px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:13px 15px}
-  .kpi .c.on{border-left-color:var(--ops)}
-  .kpi .nm{font-size:14px;color:var(--sub);font-weight:800}
-  .kpi .vl{font-size:28px;font-weight:900;letter-spacing:-1px;margin-top:4px;font-family:var(--mono)}
-  .kpi .vl span{font-size:14px;font-weight:700;color:var(--sub);margin-left:4px;font-family:var(--sans)}
+  .kpi .c{background:var(--panel2);border:1.5px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:10px 8px;min-width:0;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:2px}
+  .kpi .c.on{border:2.5px solid var(--ops);border-left-width:6px;box-shadow:0 2px 10px rgba(18,184,134,.18)}
+  .kpi .c.on .nm{font-size:13.5px}
+  .kpi .c.on .vl{font-size:34px}
+  .kpi .c.on .vl span{font-size:15px}
+  .kpi .nm{font-size:13px;color:var(--sub);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+  .kpi .vl{font-size:30px;font-weight:900;letter-spacing:-1px;margin-top:0;font-family:var(--mono);line-height:1.15}
+  .kpi .vl span{font-size:14px;font-weight:700;color:var(--sub);margin-left:3px;font-family:var(--sans)}
   .tw{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px}
   table{width:100%;border-collapse:collapse;font-size:12.5px}
   th{background:var(--accent-soft);color:var(--accent);font-weight:800;padding:9px 10px;text-align:center;border:1px solid var(--line);white-space:nowrap}
@@ -59,6 +63,21 @@
   .btn.p{background:var(--accent);border-color:var(--accent);color:#fff}
   @page{size:A4 portrait;margin:14mm 12mm}
   @media print{header .iconbtn,.btnrow{display:none!important}body{background:#fff}.panel{break-inside:avoid;box-shadow:none}}
+
+  @media print{
+    @page{size:A4 portrait;margin:10mm}
+    html,body{background:#fff!important}
+    .btn,.theme-toggle,#themeToggle,.form,.hint,select,input{}
+    .tw{max-height:none!important;overflow:visible!important}
+    .tw table{width:100%!important;font-size:8.5pt}
+    .tw th,.tw td{padding:3px 4px!important}
+    .kpi{grid-template-columns:repeat(6,1fr)!important}
+    .kpi .vl{font-size:16pt!important}
+    .kpi .c.on .vl{font-size:18pt!important}
+    .card,.sec-h,.kpi,.note{break-inside:avoid;page-break-inside:avoid}
+    tr{break-inside:avoid;page-break-inside:avoid}
+    thead{display:table-header-group}
+  }
 </style>
 </head>
 <body>
@@ -152,6 +171,7 @@
     '진도':[[10.9,4.2,6.7,0.2],[9.4,4.4,8.9,1.4],[9.9,4.6,13.1,4.9],[8.8,3.8,18.4,10.0],[9.2,3.2,22.5,14.7],[10.6,2.8,25.3,18.9],[14.6,2.6,27.7,22.9],[12.8,2.8,29.6,23.9],[9.0,2.7,26.5,20.1],[6.2,3.0,22.1,14.0],[9.1,3.6,15.3,7.4],[10.4,4.0,9.6,2.3]],
     '흑산도':[[12.8,6.4,5.7,1.2],[11.5,6.6,7.2,1.8],[11.8,6.8,10.9,4.9],[9.9,5.8,15.9,9.7],[10.5,4.8,19.9,14.2],[11.9,4.2,23.0,18.4],[15.2,3.8,26.0,22.3],[13.1,4.0,28.1,23.9],[9.9,4.2,25.1,20.3],[7.6,4.8,20.7,15.0],[10.8,5.6,14.5,8.7],[12.6,6.2,9.0,3.6]]
   };
+  const HOLI=new Set(['0101','0301','0505','0606','0815','1003','1009','1225']);
   const CRIT={rain:5,wind:10,hot:33,cold:-5};
   const KMA_KEY='018f33af076c5608e045f3388a7a6f85e3cacdaeead009c71d7f67595ff053da';
   const STN={'광주':156,'목포':165,'여수':168,'순천':174,'장흥':260,'해남':261,'고흥':262,'완도':170,'진도':175,'흑산도':169};
@@ -222,7 +242,7 @@
   function renderApi(r,s,e,rows){
     const rd=n=>Math.round(n*10)/10;
     const M={};
-    let cRain=0,cWind=0,cHot=0,cCold=0;
+    let cRain=0,cWind=0,cHot=0,cCold=0,cExt=0,cOff=0;
     rows.forEach(o=>{
       const d=o.tm; if(!d) return;
       const key=d.slice(0,7);
@@ -231,6 +251,10 @@
       M[key]=M[key]||{days:0,rain:0,wind:0,hot:0,cold:0,rainSum:0};
       const m=M[key]; m.days++; m.rainSum+=rain;
       const bad = rain>=CRIT.rain || wind>=CRIT.wind || tmax>=CRIT.hot || tmin<=CRIT.cold;
+      const dd=new Date(+d.slice(0,4), +d.slice(4,6)-1, +d.slice(6,8));
+      const off = (dd.getDay()===0) || HOLI.has(d.slice(4));
+      if(bad && !off){ m.ext=(m.ext||0)+1; cExt++; }
+      if(off){ m.off=(m.off||0)+1; cOff++; }
       if(rain>=CRIT.rain){m.rain++;cRain++;}
       if(wind>=CRIT.wind){m.wind++;cWind++;}
       if(tmax>=CRIT.hot){m.hot++;cHot++;}
@@ -277,16 +301,18 @@
         +`<td>${m.rain}</td><td>${m.wind}</td><td>${m.hot}</td><td>${m.cold}</td>`
         +`<td style="font-weight:700">${m.bad}</td><td>${hol}</td>`
         +`<td style="font-weight:800;color:var(--ops-d)">${net}</td>`
-        +`<td style="text-align:left;font-size:12px;color:var(--sub)">강수 ${rd(m.rainSum)}mm</td></tr>`;    });
+        +`<td style="font-weight:800;color:var(--ops-d)">${m.ext||0}</td>`+`<td style="text-align:left;font-size:12px;color:var(--sub)">강수 ${rd(m.rainSum)}mm</td></tr>`;    });
     out.innerHTML=`<div class="sec-h"><span class="chip">실측</span><div><h2>${r} · ${from.value} ~ ${iso(e)}</h2><p>기상청 ASOS 일자료 · 관측 ${totDays}일 · 기준: 강수 ${CRIT.rain}mm↑ / 풍속 ${CRIT.wind}m/s↑ / 최고 ${CRIT.hot}℃↑ / 최저 ${CRIT.cold}℃↓</p></div></div>
       <div class="kpi">
         <div class="c"><div class="nm">🌧 강우 초과일</div><div class="vl">${cRain}<span>일</span></div></div>
         <div class="c"><div class="nm">🌪 강풍 초과일</div><div class="vl">${cWind}<span>일</span></div></div>
         <div class="c"><div class="nm">🔥 혹서기</div><div class="vl">${cHot}<span>일</span></div></div>
         <div class="c"><div class="nm">❄ 혹한기</div><div class="vl">${cCold}<span>일</span></div></div>
+        <div class="c"><div class="nm">🗓 공휴일·일요일</div><div class="vl">${cOff}<span>일</span></div></div>
+        <div class="c on"><div class="nm">📅 연장가능일수</div><div class="vl" style="color:var(--ops-d)">${cExt}<span>일</span></div></div>
       </div>
       <div class="note" style="margin:0 0 14px;border-color:#e7a23c;color:#8a5a10;background:color-mix(in srgb,#e7a23c 10%,transparent)">⚠ 본 결과는 <b>참고용 자동 집계값</b>입니다. 공사기간 산정 · 공기연장 등 공식 자료로 활용할 때는 반드시 <b>기상청 기상자료개방포털(data.kma.go.kr)</b>에서 원본 관측자료를 직접 확인하십시오.</div>
-      <div class="tw"><table><thead><tr><th style="text-align:left">연·월</th><th>강우</th><th>강풍</th><th>혹서</th><th>혹한</th><th>기상계</th><th>공휴일</th><th>적용</th><th style="text-align:left">비고</th></tr></thead><tbody>${body}</tbody></table></div>
+      <div class="tw"><table><thead><tr><th style="text-align:left">연·월</th><th>강우</th><th>강풍</th><th>혹서</th><th>혹한</th><th>기상계</th><th>공휴일</th><th>적용</th><th>연장가능</th><th style="text-align:left">비고</th></tr></thead><tbody>${body}</tbody></table></div>
       <div class="sec-h" style="margin-top:22px"><span class="chip">일별</span><div><h2>일자별 실측 자료</h2><p>기상청 ASOS 일자료 · 기준 초과일은 붉게 표시 · 일요일·공휴일은 제외</p></div></div>
       <div class="tw" style="max-height:520px;overflow:auto"><table><thead><tr><th style="text-align:left">일자</th><th>강수량<br><span style="font-weight:600;color:var(--sub)">mm</span></th><th>최대풍속<br><span style="font-weight:600;color:var(--sub)">m/s</span></th><th>최고기온<br><span style="font-weight:600;color:var(--sub)">℃</span></th><th>최저기온<br><span style="font-weight:600;color:var(--sub)">℃</span></th><th>공휴일</th><th>판정</th></tr></thead><tbody>${dayRows}</tbody></table></div>`;
   }

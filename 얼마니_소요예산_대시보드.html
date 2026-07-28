@@ -23,65 +23,67 @@
     .note,footer{font-size:7.5pt!important;color:#333!important}
   }
   :root{
-    --bg:#f2f4f6; --card:#ffffff; --panel2:#f7f9fb; --line:#c4ccd6; --line2:#eaedf0;
-    --ink:#0f1420; --sub:#5d6875; --navy:#191f28;
-    --accent:#3182f6; --accent-dim:#e8f2ff; --accent-line:#b9d3ff;
-    --gold:#f59f00; --goldbg:#fff8e6;
-    --mono:'D2Coding','Consolas','SFMono-Regular',monospace;
-    --sans:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
-    --rad:14px; --shadow:0 1px 3px rgba(0,27,55,.05),0 8px 24px rgba(0,27,55,.06);
+    --bg:#f2f4f6; --card:#ffffff; --panel2:#f7f9fb; --line:#eaedf0; --line2:#e5e8eb;
+    --ink:#191f28; --sub:#8b95a1; --navy:#191f28;
+    --accent:#3182f6; --accent-dim:#eef4ff; --accent-line:#b6d4fb;
+    --gold:#1b64da; --goldbg:#eef4ff;
+    --mono:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',system-ui,sans-serif;
+    --sans:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',system-ui,sans-serif;
+    --rad:20px; --shadow:0 1px 3px rgba(0,27,55,.04),0 6px 20px rgba(0,27,55,.06);
   }
   [data-theme="dark"]{
-    --bg:#1b2140; --card:rgba(255,255,255,.07); --panel2:rgba(255,255,255,.05);
-    --line:rgba(255,255,255,.18); --line2:rgba(255,255,255,.1);
-    --ink:#f1f4fb; --sub:#9aa3bd; --navy:#f1f4fb;
-    --accent:#8fb8ff; --accent-dim:rgba(143,184,255,.18); --accent-line:rgba(143,184,255,.4);
-    --goldbg:rgba(245,159,0,.16);
+    --bg:#161b33; --card:#2a3356; --panel2:rgba(255,255,255,.05);
+    --line:rgba(255,255,255,.16); --line2:rgba(255,255,255,.14);
+    --ink:#f4f6fc; --sub:#9aa4c0; --navy:#f4f6fc;
+    --accent:#6fa8ff; --accent-dim:rgba(111,168,255,.16); --accent-line:rgba(143,184,255,.45);
+    --gold:#9cc2ff; --goldbg:rgba(111,168,255,.14);
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
-  header{background:var(--card);border-bottom:1.5px solid var(--line)}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  td.num,.kpi .k .v,.heroBar .big,.rin,.rsel{font-variant-numeric:tabular-nums}
+  .heroBar .big{letter-spacing:-.02em}
+  header{background:var(--card);border-bottom:1px solid var(--line)}
   .hd{max-width:1240px;margin:0 auto;padding:18px 24px;position:relative}
-  h1{margin:0;font-size:24px;font-weight:900;letter-spacing:-.7px}
+  h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.35}
   h1 .em{color:var(--accent)}
-  .sub{font-size:14px;color:var(--sub);margin-top:4px}
+  .sub{font-size:13px;color:var(--sub);margin-top:6px}
   .theme-toggle{position:absolute;right:24px;top:18px;display:flex;gap:4px;background:var(--card);
-    border:1.5px solid var(--line);border-radius:100px;padding:4px;cursor:pointer}
+    border:1px solid var(--line);border-radius:100px;padding:4px;cursor:pointer}
   .theme-toggle span{width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:14px;border-radius:100px;color:var(--sub)}
   .theme-toggle .tg-sun{background:var(--accent);color:#fff}
   [data-theme="dark"] .theme-toggle .tg-sun{background:transparent;color:var(--sub)}
   [data-theme="dark"] .theme-toggle .tg-moon{background:var(--accent);color:#fff}
   .wrap{max-width:1240px;margin:0 auto;padding:22px 24px 10px}
-  .panel{background:var(--card);border:1.5px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden}
-  .panel-h{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1.5px solid var(--line);font-size:17.5px;font-weight:800}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden}
+  .panel-h{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line);font-size:16px;font-weight:800;letter-spacing:-.01em}
   .panel-h .no{width:26px;height:26px;flex:0 0 auto;border-radius:8px;background:var(--accent);color:#fff;
     display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900}
   .panel-h .spacer{flex:1}
   .panel-b{padding:16px 18px}
-  .btn{background:var(--card);border:1.5px solid var(--line);border-radius:100px;padding:7px 15px;
+  .btn{background:var(--card);border:1px solid var(--line);border-radius:100px;padding:7px 15px;
     font:inherit;font-size:12.5px;font-weight:800;color:var(--sub);cursor:pointer}
   .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
   .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-  .fld label{display:block;font-size:14px;font-weight:700;margin-bottom:5px}
+  .fld label{display:block;font-size:12px;font-weight:600;color:var(--sub);margin-bottom:5px}
   .fld .u{font-size:11.5px;color:var(--sub);font-weight:600}
-  .fld input,.fld select{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1.5px solid var(--line);
-    border-radius:9px;background:var(--card);color:var(--ink)}
+  .fld input,.fld select{width:100%;font:inherit;font-size:14px;font-weight:600;padding:9px 11px;border:1px solid var(--accent-line);
+    border-radius:8px;background:var(--accent-dim);color:var(--ink)}
   .fld input::placeholder{color:#a3adb9}
   .fld input:focus,.fld select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
   .hint{font-size:12.5px;color:var(--sub);margin-top:4px}
   .kpi{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px}
   .kpi .k .v{font-size:18px!important}
-  .kpi .k{background:var(--panel2);border:1.5px solid var(--line);border-radius:11px;padding:13px 8px;text-align:center}
-  .kpi .k .nm{font-size:12px;color:var(--sub);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .kpi .k{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:13px 8px;text-align:center}
+  .kpi .k .nm{font-size:11.5px;color:var(--sub);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .kpi .k .v{font-family:var(--mono);font-size:21px;font-weight:900;color:var(--navy);margin-top:3px}
-  .kpi .k.hero{background:var(--goldbg);border-color:var(--gold)}
+  .kpi .k.hero{background:var(--goldbg);border-color:var(--accent-line)}
   .kpi .k.hero .v{color:var(--gold)}
   .heroBar{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;
-    background:var(--goldbg);border:1.5px solid var(--gold);border-radius:13px;padding:16px 20px;margin-bottom:12px}
-  .heroBar .lbl{font-size:13px;font-weight:800;color:var(--sub)}
+    background:var(--goldbg);border:1px solid var(--accent-line);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+  .heroBar .lbl{font-size:12.5px;font-weight:700;color:var(--sub)}
   .heroBar .big{font-family:var(--mono);font-size:34px;font-weight:900;color:var(--gold);line-height:1.1}
-  .heroBar .sub{font-size:12.5px;color:var(--sub);font-weight:700;text-align:right;line-height:1.6}
-  .compBar{display:flex;height:26px;border-radius:8px;overflow:hidden;border:1.5px solid var(--line);margin-top:14px}
+  .heroBar .sub{font-size:12.5px;color:var(--sub);font-weight:600;text-align:right;line-height:1.6}
+  .compBar{display:flex;height:26px;border-radius:8px;overflow:hidden;border:1px solid var(--line);margin-top:14px}
   .compBar span{display:block}
   .compLeg{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:9px;font-size:12.5px;color:var(--sub);font-weight:700}
   .compLeg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}
@@ -93,7 +95,7 @@
   tr.grp td{background:var(--panel2);font-weight:800;color:var(--navy);text-align:left}
   tr.sub td{background:var(--card);font-weight:700}
   tr.tot td{background:var(--accent-dim);font-weight:900;color:var(--navy)}
-  tr.grand td{background:var(--goldbg);font-weight:900;font-size:16px;color:var(--navy)}
+  tr.grand td{background:var(--goldbg);font-weight:900;font-size:15.5px;color:var(--navy)}
   /* 가독성 */
   tbody tr:not(.grp):not(.sub):not(.tot):not(.grand):nth-of-type(even){background:var(--panel2)}
   tbody tr:not(.grp):not(.sub):not(.tot):not(.grand):hover{background:var(--accent-dim)}
@@ -102,18 +104,18 @@
   th,td{padding:9px 11px}
   thead th{font-size:13.5px;letter-spacing:.2px}
   tr.grp td{font-size:14.5px;letter-spacing:.2px}
-  .tw{overflow:auto;border:1.5px solid var(--line);border-radius:11px}
-  .note{background:var(--panel2);border:1.5px solid var(--line);border-radius:10px;padding:13px 16px;font-size:13.5px;color:var(--sub);line-height:1.7;margin-bottom:12px}
+  .tw{overflow:auto;border:1px solid var(--line);border-radius:11px}
+  .note{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:13px 16px;font-size:13.5px;color:var(--sub);line-height:1.7;margin-bottom:12px}
   .note b{color:var(--accent)}
   .rin{width:82px;font:inherit;font-family:var(--mono);font-size:13.5px;text-align:right;padding:4px 6px;
-    border:1.5px solid var(--accent-line);border-radius:7px;background:var(--accent-dim);color:var(--ink)}
+    border:1px solid var(--accent-line);border-radius:7px;background:var(--accent-dim);color:var(--ink)}
   .addrow{margin-top:10px}
-  .rtx{width:100%;min-width:120px;font:inherit;font-size:13.5px;padding:5px 8px;border:1.5px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink)}
-  .euni{width:100%;min-width:56px;text-align:center;font:inherit;font-size:12px;padding:4px 4px;border:1.5px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
-  .esel{width:100%;min-width:120px;text-align:center;text-align-last:center;font:inherit;font-size:12px;padding:4px 6px;border:1.5px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+  .rtx{width:100%;min-width:120px;font:inherit;font-size:13.5px;padding:5px 8px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink)}
+  .euni{width:100%;min-width:56px;text-align:center;font:inherit;font-size:12px;padding:4px 4px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+  .esel{width:100%;min-width:120px;text-align:center;text-align-last:center;font:inherit;font-size:12px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
   .edel{border:0;background:var(--line2);color:var(--sub);width:22px;height:22px;border-radius:6px;cursor:pointer;font-size:13px}
-  .rsel2{width:100%;min-width:130px;text-align:center;text-align-last:center;font:inherit;font-size:12.5px;padding:4px 6px;border:1.5px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
-  .rsel{font:inherit;font-family:var(--mono);font-size:13.5px;padding:4px 6px;border:1.5px solid var(--accent-line);border-radius:7px;background:var(--accent-dim);color:var(--ink);width:92px;text-align:right}
+  .rsel2{width:100%;min-width:130px;text-align:center;text-align-last:center;font:inherit;font-size:12.5px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+  .rsel{font:inherit;font-family:var(--mono);font-size:13.5px;padding:4px 6px;border:1px solid var(--accent-line);border-radius:7px;background:var(--accent-dim);color:var(--ink);width:92px;text-align:right}
   .del{border:0;background:none;color:#c0392b;font-weight:900;font-size:15px;cursor:pointer;padding:0 4px}
   td.c{text-align:center}
   footer{max-width:1240px;margin:0 auto;padding:0 24px 40px;color:var(--sub);font-size:12.5px;line-height:1.7}
@@ -161,8 +163,8 @@
         <div class="fld"><label>유치원 학급 수 <span class="u">학급</span></label>
           <input id="i_kin" type="number" min="0" placeholder="예) 2"></div>
         <div class="fld"><label>도서지역 가산</label>
-          <select id="i_isl"><option value="0">해당없음(육지)</option><option value="35">가지역 +35%</option><option value="25" selected>나지역 +25%</option><option value="15">다지역 +15%</option><option value="5">라지역 +5%</option></select>
-          <div class="hint">설계·감리비 제외 가산</div></div>
+          <select id="i_isl"><option value="0">해당없음</option><option value="35">가지역 +35%</option><option value="25" selected>나지역 +25%</option><option value="15">다지역 +15%</option><option value="5">라지역 +5%</option></select>
+          <div class="hint">건축공사비에만 가산(기하·토목·용역·수수료 제외) · 선택 시 표에 할증 행 자동 생성</div></div>
         <div class="fld"><label>부지면적 <span class="u">㎡</span></label>
           <input id="i_site" type="number" min="0" placeholder="예) 20000"></div>
       </div>
@@ -190,7 +192,7 @@
         <thead><tr><th style="width:26px"></th><th class="l">영역</th><th class="l">실명</th><th>단위</th><th>실수</th><th>단위면적(㎡)</th><th>면적(㎡)</th><th>항목</th><th>단가</th><th>금액</th><th class="l">비고</th><th></th></tr></thead>
         <tbody id="tArchBody"></tbody>
       </table></div>
-      <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap"><input id="bldgName" placeholder="동 이름 입력 (예: 사택동, 유치원동)" style="flex:1;min-width:200px;font:inherit;font-size:13px;padding:8px 12px;border:1.5px solid var(--line);border-radius:8px"><button class="btn" id="addBldg">＋ 동 추가</button></div>
+      <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap"><input id="bldgName" placeholder="동 이름 입력 (예: 사택동, 유치원동)" style="flex:1;min-width:200px;font:inherit;font-size:13px;padding:8px 12px;border:1px solid var(--line);border-radius:8px"><button class="btn" id="addBldg">＋ 동 추가</button></div>
     </div>
   </div>
 
@@ -393,12 +395,12 @@ let SVC_EXTRA=[], FEE_EXTRA=[];
 const SVC_OFF={};
 const MEMO={}, NAMEOV={}, BASEOV={}, RTOV={}, AMTOV={};
 function txCell(store,k,def,al){ const cur=store[k]!==undefined?store[k]:def;
-  return '<td><input class="txov" data-s="'+({b:'b',r:'r'}[store===BASEOV?'b':'r'])+'" data-k="'+k+'" value="'+String(cur).replace(/"/g,'&quot;')+'" style="width:100%;min-width:80px;font:inherit;font-size:12.5px;padding:4px 6px;border:1.5px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);text-align:'+al+'"></td>'; }
-function rateInput(id,val){ return '<span style="display:inline-flex;align-items:center;gap:4px;justify-content:center"><input id="'+id+'" value="'+val+'" style="width:82px;font:inherit;font-family:var(--mono);font-size:13px;padding:3px 5px;border:1.5px solid var(--accent-line);border-radius:6px;background:var(--accent-dim);color:var(--ink);text-align:right"><span>%</span></span>'; }
+  return '<td><input class="txov" data-s="'+({b:'b',r:'r'}[store===BASEOV?'b':'r'])+'" data-k="'+k+'" value="'+String(cur).replace(/"/g,'&quot;')+'" style="width:100%;min-width:80px;font:inherit;font-size:12.5px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);text-align:'+al+'"></td>'; }
+function rateInput(id,val){ return '<span style="display:inline-flex;align-items:center;gap:4px;justify-content:center"><input id="'+id+'" value="'+val+'" style="width:82px;font:inherit;font-family:var(--mono);font-size:13px;padding:3px 5px;border:1px solid var(--accent-line);border-radius:6px;background:var(--accent-dim);color:var(--ink);text-align:right"><span>%</span></span>'; }
 function amtCell(k,def){ const cur=AMTOV[k]!==undefined?AMTOV[k]:def;
-  return '<td><input class="amtov" data-k="'+k+'" value="'+f1(cur)+'" style="width:100%;min-width:100px;font:inherit;font-family:var(--mono);font-size:13px;padding:4px 6px;border:1.5px solid var(--accent-line);border-radius:6px;background:var(--accent-dim);color:var(--ink);text-align:right"></td>'; }
-function nameCell(k,def){ return '<td class="l"><input class="nmov" data-n="'+k+'" value="'+((NAMEOV[k]!==undefined?NAMEOV[k]:def).replace(/"/g,'&quot;'))+'" style="width:100%;min-width:150px;font:inherit;font-size:13px;padding:4px 6px;border:1.5px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)"></td>'; }
-function memoCell(k){ return '<td class="l"><input class="memo" data-m="'+k+'" value="'+((MEMO[k]||'').replace(/"/g,'&quot;'))+'" placeholder="—" style="width:100%;min-width:110px;font:inherit;font-size:12.5px;padding:4px 6px;border:1.5px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)"></td>'; }
+  return '<td><input class="amtov" data-k="'+k+'" value="'+f1(cur)+'" style="width:100%;min-width:100px;font:inherit;font-family:var(--mono);font-size:13px;padding:4px 6px;border:1px solid var(--accent-line);border-radius:6px;background:var(--accent-dim);color:var(--ink);text-align:right"></td>'; }
+function nameCell(k,def){ return '<td class="l"><input class="nmov" data-n="'+k+'" value="'+((NAMEOV[k]!==undefined?NAMEOV[k]:def).replace(/"/g,'&quot;'))+'" style="width:100%;min-width:150px;font:inherit;font-size:13px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)"></td>'; }
+function memoCell(k){ return '<td class="l"><input class="memo" data-m="'+k+'" value="'+((MEMO[k]||'').replace(/"/g,'&quot;'))+'" placeholder="—" style="width:100%;min-width:110px;font:inherit;font-size:12.5px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)"></td>'; }
 /* 실 유형: [영역, 실명, 단위면적, 단가키, 실수계산식] */
 let ROOMS=[
   ['교실영역','보통교실',60.75,'base','cls'],
@@ -482,7 +484,8 @@ function cmRate(c){
   }
   return 46597.0266*Math.pow(c/100000,-0.364);
 }
-function rate(s){ return 1+s.isl/100; }
+function rate(s){ return 1; } /* 단가는 육지단가 기준 · 도서지역 할증은 건축공사부분에 별도 행으로 가산 */
+function islName(isl){ return isl>=35?'가지역':isl>=25?'나지역':isl>=15?'다지역':''; }
 function unitOf(k,s){
   const r=rate(s);
   if(k==='base') return s.base*r;
@@ -509,7 +512,9 @@ function calc(){
   });
   const pubArea=net*s.pub, gfa=net+pubArea;
   const pubAmt=pubArea*unitOf('base',s);
-  const archAmt=archRows.reduce((x,r)=>x+r.amt,0)+pubAmt;
+  const archBase=archRows.reduce((x,r)=>x+r.amt,0)+pubAmt;
+  const islAmt=archBase*(s.isl/100);
+  const archAmt=archBase+islAmt;
   // 기타·토목
   const roomsCnt=archRows.reduce((x,r)=>x+r.cnt,0);
   const etc=etcRows.map((r,i)=>{
@@ -544,7 +549,7 @@ function calc(){
   const total0=facil+feeAmt+svcAmt+extra+s.edu+s.dem;
   const reserve=total0*s.rsv;
   const grand=total0+reserve;
-  return {s,archRows,pubArea,pubAmt,net,gfa,archAmt,etc,etcAmt,civilAmt,facil,fees,feeAmt,
+  return {s,archRows,pubArea,pubAmt,net,gfa,archBase,islAmt,archAmt,etc,etcAmt,civilAmt,facil,fees,feeAmt,
     design,dRate,cRate,cert,pre,ve,cm,sup,svcV,svcAmt,extra,xRate,reserve,grand};
 }
 
@@ -574,7 +579,7 @@ function render(){
   $('compLeg').innerHTML=COMP.map(([n,v,c])=>`<span><i style="background:${c}"></i>${n} ${(v/cTot*100).toFixed(1)}%</span>`).join('');
   $('sumNote').innerHTML=`💡 <b>${s.name||'사업명 미입력'}</b> · ${s.level} ${s.cls}학급`
     +(s.sp?` (특수 ${s.sp})`:'')+(s.kin?` · 병설유 ${s.kin}학급`:'')
-    +` · 학생 ${s.stu}명 · ${s.isl?('도서할증 +'+s.isl+'%'):'육지단가'} · 공용면적 ${Math.round(s.pub*100)}%`;
+    +` · 학생 ${s.stu}명${s.isl?(' · 도서할증 +'+s.isl+'%'):''} · 공용면적 ${Math.round(s.pub*100)}%`;
 
   // 건축표
   let lastArea='', html='';
@@ -595,8 +600,12 @@ function render(){
       <td class="num">${fmt(r.amt)}</td>${memoCell('a'+r.idx)}
       <td class="c"><button class="del" data-i="${r.idx}">×</button></td></tr>`;
   });
-  html+=`<tr class="sub"><td></td><td class="l" colspan="5">교사동 순면적 계</td><td class="num">${f1(R.net)}</td><td></td><td></td><td class="num">${fmt(R.archAmt-R.pubAmt)}</td><td></td><td></td></tr>`;
-  html+=`<tr class="sub"><td></td><td class="l" colspan="5"><span style="display:inline-flex;align-items:center;gap:6px">공용면적<input id="pubIn" value="${PUB}" style="width:64px;font:inherit;font-size:12.5px;padding:3px 6px;border:1.5px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);text-align:right"><span>%</span></span></td><td class="num">${f1(R.pubArea)}</td><td class="l" style="font-size:12.5px;color:var(--sub)">공용부</td><td class="num">${fmt(unitOf('base',s))}</td><td class="num">${fmt(R.pubAmt)}</td><td></td><td></td></tr>`;
+  html+=`<tr class="sub"><td></td><td class="l" colspan="5">교사동 순면적 계</td><td class="num">${f1(R.net)}</td><td></td><td></td><td class="num">${fmt(R.archBase-R.pubAmt)}</td><td></td><td></td></tr>`;
+  html+=`<tr class="sub"><td></td><td class="l" colspan="5"><span style="display:inline-flex;align-items:center;gap:6px">공용면적<input id="pubIn" value="${PUB}" style="width:64px;font:inherit;font-size:12.5px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);text-align:right"><span>%</span></span></td><td class="num">${f1(R.pubArea)}</td><td class="l" style="font-size:12.5px;color:var(--sub)">공용부</td><td class="num">${fmt(unitOf('base',s))}</td><td class="num">${fmt(R.pubAmt)}</td><td></td><td></td></tr>`;
+  if(s.isl>0){
+    html+=`<tr class="sub"><td></td><td class="l" colspan="5">교사동 연면적 소계</td><td class="num">${f1(R.gfa)}</td><td></td><td></td><td class="num">${fmt(R.archBase)}</td><td></td><td></td></tr>`;
+    html+=`<tr class="sub"><td></td><td class="l" colspan="5">도서지역 할증 (${islName(s.isl)} +${s.isl}%)</td><td></td><td class="l" style="font-size:12.5px;color:var(--sub)">건설공사비만 적용</td><td class="num">${s.isl}%</td><td class="num">${fmt(R.islAmt)}</td><td></td><td></td></tr>`;
+  }
   html+=`<tr class="tot"><td></td><td class="l" colspan="5">교사동 연면적 계 (A)</td><td class="num">${f1(R.gfa)}</td><td></td><td></td><td class="num">${fmt(R.archAmt)}</td><td></td><td></td></tr>`;
   $('tArchBody').innerHTML=html;
 
@@ -606,11 +615,11 @@ function render(){
     if(r.g!==lg){ lg=r.g; h2+=`<tr class="grp"><td colspan="9">${r.g}</td></tr>`; }
     const eopts=etcOpts(r.sel);
     h2+=`<tr><td class="l"></td>
-      <td class="l"><input class="etx" data-i="${r.idx}" value="${r.nm}" style="width:100%;min-width:120px;font:inherit;font-size:12.5px;padding:4px 6px;border:1.5px solid var(--line);border-radius:6px"></td>
+      <td class="l"><input class="etx" data-i="${r.idx}" value="${r.nm}" style="width:100%;min-width:120px;font:inherit;font-size:12.5px;padding:4px 6px;border:1px solid var(--line);border-radius:6px"></td>
       <td class="c"><select class="esel" data-i="${r.idx}"><option value=""${r.sel?'':' selected'}>직접입력</option>${eopts}</select></td>
       <td class="c"><input class="euni" data-i="${r.idx}" value="${r.unit}" list="unitList" placeholder="식"></td>`
       +`<td><input class="rin" data-k="${r.key}" value="${f1(r.q)}"></td>`
-      +`<td><input class="eun" data-i="${r.idx}" value="${f1(r.u)}" style="width:100%;min-width:90px;font:inherit;font-size:12.5px;padding:4px 6px;border:1.5px solid var(--line);border-radius:6px;text-align:right"></td><td class="num">${fmt(r.amt)}</td>${memoCell('e'+r.idx)}<td class="c"><button class="edel" data-i="${r.idx}">×</button></td></tr>`;
+      +`<td><input class="eun" data-i="${r.idx}" value="${f1(r.u)}" style="width:100%;min-width:90px;font:inherit;font-size:12.5px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;text-align:right"></td><td class="num">${fmt(r.amt)}</td>${memoCell('e'+r.idx)}<td class="c"><button class="edel" data-i="${r.idx}">×</button></td></tr>`;
   });
   h2+=`<tr class="sub"><td class="l" colspan="6">기타시설비 계 (B)</td><td class="num">${fmt(R.etcAmt)}</td><td></td><td></td></tr>`;
   h2+=`<tr class="sub"><td class="l" colspan="6">토목공사비 계 (C)</td><td class="num">${fmt(R.civilAmt)}</td><td></td><td></td></tr>`;
@@ -621,23 +630,23 @@ function render(){
   let h3='<tr class="grp"><td colspan="6">수수료</td></tr>';
   R.fees.forEach(r=>{ const fi=r.fi; h3+=`<tr><td class="l"></td>${nameCell('f'+fi,r.nm)}${txCell(BASEOV,'f'+fi,r.q+r.unit,'center')}${txCell(RTOV,'f'+fi,f1(r.u),'right')}${amtCell('f'+fi,r.amt)}<td class="l" style="display:flex;gap:6px;align-items:center">${memoCell('f'+fi).replace(/^<td[^>]*>|<\/td>$/g,'')}<button class="edel svcoff" data-k="f${fi}">×</button></td></tr>`; });
   FEE_EXTRA.forEach((r,i)=>{
-    const inp=(f,v,al)=>`<input class="fx" data-i="${i}" data-f="${f}" value="${String(v).replace(/"/g,'&quot;')}" style="width:100%;min-width:80px;font:inherit;font-size:12.5px;padding:4px 6px;border:1.5px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);text-align:${al}">`;
+    const inp=(f,v,al)=>`<input class="fx" data-i="${i}" data-f="${f}" value="${String(v).replace(/"/g,'&quot;')}" style="width:100%;min-width:80px;font:inherit;font-size:12.5px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);text-align:${al}">`;
     h3+=`<tr><td class="l"></td><td class="l">${inp('nm',r[0],'left')}</td><td>${inp('base',r[1],'center')}</td><td>${inp('rate',r[2],'center')}</td><td>${inp('amt',f1(N(r[3])),'right')}</td><td class="l" style="display:flex;gap:6px;align-items:center">${memoCell('fx'+i).replace(/^<td[^>]*>|<\/td>$/g,'')}<button class="edel fxdel" data-i="${i}">×</button></td></tr>`;
   });
   h3+=`<tr class="sub"><td class="l" colspan="4">수수료 계 (D)</td><td class="num">${fmt(R.feeAmt)}</td><td></td></tr>`;
   h3+='<tr class="grp"><td colspan="6">용역비</td></tr>';
-  [['설계비','시설비','<span style="display:inline-flex;align-items:center;gap:4px;justify-content:center"><input id="dRateIn" value="'+(Math.round(R.dRate*100000)/1000)+'" style="width:82px;font:inherit;font-family:var(--mono);font-size:13px;padding:3px 5px;border:1.5px solid var(--accent-line);border-radius:6px;background:var(--accent-dim);color:var(--ink);text-align:right"><span>%</span>'+(DRATE!==null?'<button id="dRateAuto" style="border:0;background:var(--line2);color:var(--sub);border-radius:5px;font-size:11px;padding:2px 5px;cursor:pointer">자동</button>':'')+'</span>',R.design],['인증비용','1식','—',R.cert],['사전기획','설계비×60%',rateInput('pRateIn',PRER),R.pre],
-   ['설계경제성(VE)검토','시설비',rateInput('vRateIn',VER),R.ve],['건설사업관리용역','시설비','<span style="display:inline-flex;align-items:center;gap:4px;justify-content:center"><input id="cRateIn" value="'+(Math.round(R.cRate*100000)/1000)+'" style="width:82px;font:inherit;font-family:var(--mono);font-size:13px;padding:3px 5px;border:1.5px solid var(--accent-line);border-radius:6px;background:var(--accent-dim);color:var(--ink);text-align:right"><span>%</span>'+(CMRATE!==null?'<button id="cRateAuto" style="border:0;background:var(--line2);color:var(--sub);border-radius:5px;font-size:11px;padding:2px 5px;cursor:pointer">자동</button>':'')+'</span>',R.cm],
+  [['설계비','시설비','<span style="display:inline-flex;align-items:center;gap:4px;justify-content:center"><input id="dRateIn" value="'+(Math.round(R.dRate*100000)/1000)+'" style="width:82px;font:inherit;font-family:var(--mono);font-size:13px;padding:3px 5px;border:1px solid var(--accent-line);border-radius:6px;background:var(--accent-dim);color:var(--ink);text-align:right"><span>%</span>'+(DRATE!==null?'<button id="dRateAuto" style="border:0;background:var(--line2);color:var(--sub);border-radius:5px;font-size:11px;padding:2px 5px;cursor:pointer">자동</button>':'')+'</span>',R.design],['인증비용','1식','—',R.cert],['사전기획','설계비×60%',rateInput('pRateIn',PRER),R.pre],
+   ['설계경제성(VE)검토','시설비',rateInput('vRateIn',VER),R.ve],['건설사업관리용역','시설비','<span style="display:inline-flex;align-items:center;gap:4px;justify-content:center"><input id="cRateIn" value="'+(Math.round(R.cRate*100000)/1000)+'" style="width:82px;font:inherit;font-family:var(--mono);font-size:13px;padding:3px 5px;border:1px solid var(--accent-line);border-radius:6px;background:var(--accent-dim);color:var(--ink);text-align:right"><span>%</span>'+(CMRATE!==null?'<button id="cRateAuto" style="border:0;background:var(--line2);color:var(--sub);border-radius:5px;font-size:11px;padding:2px 5px;cursor:pointer">자동</button>':'')+'</span>',R.cm],
    ['감리비(전기·통신·소방)','CM',rateInput('sRateIn',SUPR),R.sup]].forEach(([nm,b,rt,v],si)=>{
     if(SVC_OFF['s'+si]) return;
     h3+=`<tr><td class="l"></td>${nameCell('s'+si,nm)}${txCell(BASEOV,'s'+si,b,'center')}<td style="text-align:center">${rt}</td>${amtCell('s'+si,R.svcV[si])}<td class="l" style="display:flex;gap:6px;align-items:center">${memoCell('s'+si).replace(/^<td[^>]*>|<\/td>$/g,'')}<button class="edel svcoff" data-k="s${si}">×</button></td></tr>`;
   });
   SVC_EXTRA.forEach((r,i)=>{
-    const inp=(f,v,al)=>`<input class="sx" data-i="${i}" data-f="${f}" value="${String(v).replace(/"/g,'&quot;')}" style="width:100%;min-width:80px;font:inherit;font-size:12.5px;padding:4px 6px;border:1.5px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);text-align:${al}">`;
+    const inp=(f,v,al)=>`<input class="sx" data-i="${i}" data-f="${f}" value="${String(v).replace(/"/g,'&quot;')}" style="width:100%;min-width:80px;font:inherit;font-size:12.5px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);text-align:${al}">`;
     h3+=`<tr><td class="l"></td><td class="l">${inp('nm',r[0],'left')}</td><td>${inp('base',r[1],'center')}</td><td>${inp('rate',r[2],'center')}</td><td>${inp('amt',f1(N(r[3])),'right')}</td><td class="l" style="display:flex;gap:6px;align-items:center">${memoCell('x'+i).replace(/^<td[^>]*>|<\/td>$/g,'')}<button class="edel sxdel" data-i="${i}">×</button></td></tr>`;
   });
   h3+=`<tr class="sub"><td class="l" colspan="4">용역비 계 (E)</td><td class="num">${fmt(R.svcAmt)}</td><td></td></tr>`;
-  h3+=`<tr class="tot"><td class="l" colspan="3">시설부대비 (F)</td><td style="text-align:center"><span style="display:inline-flex;align-items:center;gap:4px;justify-content:center"><input id="xRateIn" value="${Math.round(R.xRate*100000)/1000}" style="width:82px;font:inherit;font-family:var(--mono);font-size:13px;padding:3px 5px;border:1.5px solid var(--accent-line);border-radius:6px;background:var(--accent-dim);color:var(--ink);text-align:right"><span>%</span>${XRATE!==null?'<button id="xRateAuto" style="border:0;background:var(--line2);color:var(--sub);border-radius:5px;font-size:11px;padding:2px 5px;cursor:pointer">자동</button>':''}</span></td><td class="num">${fmt(R.extra)}</td><td></td></tr>`;
+  h3+=`<tr class="tot"><td class="l" colspan="3">시설부대비 (F)</td><td style="text-align:center"><span style="display:inline-flex;align-items:center;gap:4px;justify-content:center"><input id="xRateIn" value="${Math.round(R.xRate*100000)/1000}" style="width:82px;font:inherit;font-family:var(--mono);font-size:13px;padding:3px 5px;border:1px solid var(--accent-line);border-radius:6px;background:var(--accent-dim);color:var(--ink);text-align:right"><span>%</span>${XRATE!==null?'<button id="xRateAuto" style="border:0;background:var(--line2);color:var(--sub);border-radius:5px;font-size:11px;padding:2px 5px;cursor:pointer">자동</button>':''}</span></td><td class="num">${fmt(R.extra)}</td><td></td></tr>`;
   $('tSvcBody').innerHTML=h3;
 
   // 총계
@@ -813,8 +822,9 @@ function excelDocHtml(){
     const sc=g.rows.reduce((x,r)=>x+r.cnt,0), sa=g.rows.reduce((x,r)=>x+r.a,0), sm=g.rows.reduce((x,r)=>x+r.amt,0);
     b+=row(N9('소계','',f1(sc),'',f1(sa),'',fmt(sm),''),'sub');
   });
-  b+=row(`<td class="c grpc" rowspan="3">교사동 집계</td>`+N9('교사동 순면적 계 (C)','','',' ',f1(R.net),'',fmt(R.archAmt-R.pubAmt),''),'sub');
+  b+=row(`<td class="c grpc" rowspan="${s.isl>0?4:3}">교사동 집계</td>`+N9('교사동 순면적 계 (C)','','',' ',f1(R.net),'',fmt(R.archBase-R.pubAmt),''),'sub');
   b+=row(N9(`공유면적 (D)`,'%','',Math.round(s.pub*100)+'%',f1(R.pubArea),fmt(unitOf('base',s)),fmt(R.pubAmt),''),'sub');
+  if(s.isl>0) b+=row(N9(`도서지역 할증 (${islName(s.isl)} +${s.isl}%)`,'%','','','',s.isl+'%',fmt(R.islAmt),'건축공사비만 적용'),'sub');
   b+=row(N9('교사동 연면적 계 (E=C+D)','','','',f1(R.gfa),'',fmt(R.archAmt),''),'tot');
   const eg=[];
   R.etc.forEach(r=>{ let g=eg.find(x=>x.name===r.g); if(!g){g={name:r.g,rows:[]};eg.push(g);} g.rows.push(r); });
@@ -870,7 +880,7 @@ tr{break-inside:avoid}
 <h1>${xEsc(s.name||'사업명 미입력')} 소요예상액</h1>
 <ul>
 <li>${xEsc(s.level)} ${s.cls}학급${s.sp?`(특수 ${s.sp}학급 포함)`:''}${s.kin?`, 병설유치원 ${s.kin}학급`:''}${s.stu?` · 학생 ${s.stu}명`:''}</li>
-<li>2026년도 시설단가 적용${s.isl?` (도서할증 ${s.isl}% 반영)`:' (육지단가)'}</li>
+<li>2026년도 시설단가 적용${s.isl?` (도서할증 ${s.isl}% 반영)`:''}</li>
 <li>비품비, 이사비 등 제외</li>
 </ul>
 </div>
@@ -907,7 +917,7 @@ $('pvBtn').addEventListener('click',()=>{
       <button class="btn" id="pvClose">✕ 닫기</button>
     </div>
     <div style="background:#fff;box-shadow:0 12px 40px rgba(0,0,0,.4);border-radius:4px;overflow:hidden">
-      <iframe id="pvFrame" sandbox="" style="width:794px;height:1123px;border:0;display:block"></iframe>
+      <iframe id="pvFrame" sandbox="allow-same-origin" style="width:794px;height:1123px;border:0;display:block"></iframe>
     </div>
     <div style="color:#dfe6f0;font-size:12.5px;margin-top:10px">A4 세로 · 여백 8mm 기준 미리보기입니다. 실제 출력은 내용 길이에 따라 여러 장으로 나뉩니다.</div>`;
   document.body.appendChild(ov);
@@ -915,9 +925,9 @@ $('pvBtn').addEventListener('click',()=>{
   fr.srcdoc=src;
   fr.addEventListener('load',()=>{
     try{
-      const d=fr.contentDocument, h=d.documentElement.scrollHeight;
-      if(h>1123) fr.style.height=h+'px';
-    }catch(e){}
+      const d=fr.contentDocument, h=Math.max(d.documentElement.scrollHeight, d.body?d.body.scrollHeight:0);
+      fr.style.height=Math.max(h+24,1123)+'px';
+    }catch(e){ fr.style.height='3000px'; }
   });
   ov.querySelector('#pvClose').addEventListener('click',()=>ov.remove());
   ov.querySelector('#pvPrint').addEventListener('click',()=>{ const w=window.open('','_blank'); w.document.write(excelDocHtml()); w.document.close(); w.focus(); setTimeout(()=>w.print(),400); });

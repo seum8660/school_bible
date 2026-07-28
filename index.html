@@ -122,6 +122,9 @@
   .tab{width:100%;border:1.5px solid var(--border);background:var(--surface);color:var(--ink);
     padding:11px 13px;font-size:14px;font-weight:700;cursor:pointer;
     transition:transform .12s,box-shadow .12s;white-space:nowrap;display:flex;align-items:center;gap:9px;text-align:left;}
+  .side-nav .tab[data-sub]{width:calc(100% - 18px);margin-left:18px;padding:7px 10px;font-size:12.5px;font-weight:600;gap:6px;}
+  .side-nav a.tab{text-decoration:none;}
+  .side-nav .tab[data-sub] .dot{width:5px;height:5px;}
   .tab .dot{display:none;}
   .tab:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--border);}
   .extlink{width:100%;display:flex;align-items:center;gap:9px;text-decoration:none;
@@ -750,6 +753,62 @@
     body.bulk-printing > *:not(#bulkPrint){display:none!important;}
     body.bulk-printing #bulkPrint{display:block!important;background:#fff;}
     body.bulk-printing #bulkPrint .pp{break-after:page;page-break-after:always;}
+  }
+  </style>
+  <style>
+
+  .side-nav .tab:not(.active):hover{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;transform:translateX(2px);transition:all .12s}
+  .side-nav .tab:not(.active):hover .dot{background:#fff!important}
+  .side-nav .extlink:hover{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;transform:translateX(2px);transition:all .12s}
+  .side-nav .extlink:hover .lb,.side-nav .extlink:hover .ext{color:#fff!important}
+  .side-nav .extlink:hover .dot{background:#fff!important}
+  .side-nav .tab[data-p="calc"]:not(.active):hover,.side-nav .tab[data-p="cert"]:not(.active):hover,
+  .side-nav .tab[data-p="bom"]:not(.active):hover,.side-nav .tab[data-p="wx"]:not(.active):hover{background:#6d28d9!important;border-color:#6d28d9!important}
+
+  .side-nav .tab:not(.active):hover,.side-nav .extlink:hover{
+    background:var(--accent)!important;background-image:none!important;
+    color:#fff!important;border-color:var(--accent)!important;box-shadow:none!important}
+  .side-nav .tab:not(.active):hover *,.side-nav .extlink:hover *{color:#fff!important}
+  .side-nav .tab:not(.active):hover .dot,.side-nav .extlink:hover .dot{background:#fff!important;border-color:#fff!important}
+  .side-nav .tab[data-p="calc"]:not(.active):hover,.side-nav .tab[data-p="cert"]:not(.active):hover,
+  .side-nav .tab[data-p="bom"]:not(.active):hover,.side-nav .tab[data-p="wx"]:not(.active):hover{
+    background:#6d28d9!important;border-color:#6d28d9!important;color:#fff!important}
+
+  .side-nav .tab:not(.active):hover,.side-nav .extlink:hover{
+    background:#3182f6!important;background-image:none!important;
+    color:#ffffff!important;border-color:#3182f6!important;box-shadow:none!important}
+  .side-nav .tab:not(.active):hover *,.side-nav .extlink:hover *{color:#ffffff!important}
+  .side-nav .tab:not(.active):hover .dot,.side-nav .extlink:hover .dot{background:#ffffff!important;border-color:#ffffff!important}
+
+  .side-nav .tab.active,.side-nav .tab.active *{color:#ffffff!important}
+  .side-nav .tab.active .dot{background:#ffffff!important;border-color:#ffffff!important}
+
+  .side-nav .tab.active{color:#ffffff!important;-webkit-text-fill-color:#ffffff!important}
+  .side-nav .tab.active span,.side-nav .tab.active b,.side-nav .tab.active .lb{
+    color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;background:none!important;
+    background-image:none!important;background-clip:border-box!important;-webkit-background-clip:border-box!important;opacity:1!important}
+  .side-nav .tab.active .dot{background:#ffffff!important;-webkit-text-fill-color:initial!important}
+
+  .side-nav .tab.active,
+  .side-nav .tab.active *,
+  .side-nav a.tab.active,
+  .side-nav a.tab.active *,
+  .side-nav button.tab.active,
+  .side-nav button.tab.active *{
+    color:#fff!important;-webkit-text-fill-color:#fff!important;
+    text-shadow:none!important;filter:none!important;opacity:1!important}
+  .side-nav .tab.active .dot,.side-nav a.tab.active .dot,.side-nav button.tab.active .dot{
+    background:#fff!important;border-color:#fff!important}
+
+  .side-nav .extlink .lb{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;min-width:0}
+  .side-nav .extlink{align-items:center}
+
+  .side-nav .extlink[data-sub="site"]{border:none!important;box-shadow:none!important;background:transparent!important}
+  .side-nav .extlink[data-sub="site"]:hover{background:#3182f6!important;border:none!important}
+
+  </style>
+  <style>
+    @media print{
     body.bulk-printing #bulkPrint .pp:last-child{break-after:auto;page-break-after:auto;}
     body.bulk-printing #bulkPrint .pp .doc,
     body.bulk-printing #bulkPrint .pp .page,
@@ -1387,13 +1446,12 @@ window.dispatchEvent(new Event('qa-fb-ready'));
   <aside class="sidebar side-right">
     <nav class="side-nav">
       <div class="nav-grp">📚 통합자료실</div>
-      <a class="extlink" href="https://jne365-my.sharepoint.com/:f:/g/personal/seum8660_o365_jne_go_kr/IgB3esNJMRYBSZsEMOjgGQbMAZKDjWMuY1J0BUQjk0scxks?e=GcNgkV" target="_blank" rel="noopener noreferrer" title="각종 양식모음 (OneDrive 공유 폴더)"><span class="lb">각종 양식모음</span><span class="ext">↗</span></a>
+      <a class="extlink" href="https://jne365-my.sharepoint.com/:f:/g/personal/seum8660_o365_jne_go_kr/IgB3esNJMRYBSZsEMOjgGQbMAZKDjWMuY1J0BUQjk0scxks" target="_blank" rel="noopener noreferrer" title="각종 양식모음 (OneDrive 공유 폴더)"><span class="lb">각종 양식모음</span><span class="ext">↗</span></a>
       <a class="extlink" href="설계용역비_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">설계용역비 산출</span><span class="ext">↗</span></a>
       <a class="extlink" href="감리용역비_준비중.html" target="_blank" rel="noopener noreferrer" title="감리용역비 산출 (준비중)"><span class="lb">감리용역비 산출</span><span class="ext">↗</span></a>
       <a class="extlink" href="건설사업관리용역비_준비중.html" target="_blank" rel="noopener noreferrer" title="건설사업관리용역비 산출 (준비중)"><span class="lb">건설사업관리용역비 산출</span><span class="ext">↗</span></a>
       <a class="extlink" href="공사기간_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">공사기간 산출</span><span class="ext">↗</span></a>
-      <a class="extlink" id="macroGrp" href="#" onclick="return false;" title="매크로 모음" style="background:#1a1d21;border-color:#000;color:#fff;cursor:pointer"><span class="lb">⚙️ 매크로 모음</span><span class="ext" style="color:#fff">↗</span></a>
-      <a class="extlink" data-sub="macro" style="display:none;width:88%;margin-left:auto;font-size:12.5px;padding:8px 11px;min-height:36px" href="macros/매크로VER1.0.xlsx" download title="설계변경내역서 매크로 (VER 1.0)"><span class="lb">설계변경내역서 만들기</span><span class="ext">⬇</span></a>
+      <a class="extlink" id="macroGrp" href="https://jne365-my.sharepoint.com/:f:/g/personal/seum8660_o365_jne_go_kr/IgB3esNJMRYBSZsEMOjgGQbMAZKDjWMuY1J0BUQjk0scxks" target="_blank" rel="noopener noreferrer" title="매크로 모음 (OneDrive 공유 폴더)" style="background:#1a1d21;border-color:#000;color:#fff"><span class="lb">⚙️ 매크로 모음</span><span class="ext">↗</span></a>
       <div class="nav-grp" style="background:#6d28d9;color:#fff;">CHECK NOW</div>
       <button class="tab" data-p="calc"><span class="dot"></span>규모별 절차 체크</button>
       <button class="tab" data-p="cert"><span class="dot"></span>인증 체크</button>
@@ -3213,6 +3271,43 @@ window.__gvInit = (function(){
   var q=document.getElementById('manQ'); if(!q)return;
   var openBtn=document.getElementById('manSumOpen');
   function isSum(c){ var d=c.getAttribute('data-inline')||''; return /\.html$/i.test(d); }
+  function scopeCss(css,scope){
+    css=css.replace(/@charset[^;]*;/gi,'').replace(/@page\s*\{[^}]*\}/gi,'');
+    var out='',i=0,n=css.length;
+    function block(from){ var d=0,j=from;
+      for(;j<n;j++){ if(css[j]==='{')d++; else if(css[j]==='}'){ d--; if(!d) return j; } }
+      return n-1; }
+    while(i<n){
+      var at=css.indexOf('@',i), br=css.indexOf('{',i);
+      if(br<0){ break; }
+      if(at>=0 && at<br){
+        var head=css.slice(at,br).trim();
+        if(/^@(media|supports|layer|container)/i.test(head)){
+          var e=block(br);
+          out+=head+'{'+scopeCss(css.slice(br+1,e),scope)+'}';
+          i=e+1; continue;
+        }
+        if(/^@(font-face|keyframes|-webkit-keyframes|import|namespace)/i.test(head)){
+          var e2=block(br);
+          out+=css.slice(at,e2+1); i=e2+1; continue;
+        }
+      }
+      var e3=block(br);
+      var sels=css.slice(i,br).replace(/\/\*[\s\S]*?\*\//g,'').trim();
+      var bodyTxt=css.slice(br+1,e3);
+      if(sels){
+        var pre=sels.split(',').map(function(x){
+          x=x.trim(); if(!x) return '';
+          if(/^(html|body|:root)$/i.test(x)) return scope;
+          x=x.replace(/^(html|body|:root)\b\s*/i,'');
+          return scope+' '+x;
+        }).filter(Boolean).join(',');
+        out+=pre+'{'+bodyTxt+'}';
+      }
+      i=e3+1;
+    }
+    return out;
+  }
   function applyFilter(){
     var t=q.value.trim().toLowerCase();
     document.querySelectorAll('#manGrid .man-card').forEach(function(c){
@@ -3233,57 +3328,10 @@ window.__gvInit = (function(){
         var txt=await r.text();
         var doc=new DOMParser().parseFromString(txt,'text/html');
         var css=[...doc.querySelectorAll('style')].map(function(s){return s.textContent;}).join('\n').replace(/@page\s*\{[^}]*\}/g,'');
+        if(doc.body){ [].forEach.call(doc.body.querySelectorAll('style,link[rel="stylesheet"]'),function(n){n.remove();}); }
         var body=doc.body?doc.body.innerHTML:'';
-        parts.push('<section class="pp"><style>'+css+'
-  .side-nav .tab:not(.active):hover{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;transform:translateX(2px);transition:all .12s}
-  .side-nav .tab:not(.active):hover .dot{background:#fff!important}
-  .side-nav .extlink:hover{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;transform:translateX(2px);transition:all .12s}
-  .side-nav .extlink:hover .lb,.side-nav .extlink:hover .ext{color:#fff!important}
-  .side-nav .extlink:hover .dot{background:#fff!important}
-  .side-nav .tab[data-p="calc"]:not(.active):hover,.side-nav .tab[data-p="cert"]:not(.active):hover,
-  .side-nav .tab[data-p="bom"]:not(.active):hover,.side-nav .tab[data-p="wx"]:not(.active):hover{background:#6d28d9!important;border-color:#6d28d9!important}
-
-  .side-nav .tab:not(.active):hover,.side-nav .extlink:hover{
-    background:var(--accent)!important;background-image:none!important;
-    color:#fff!important;border-color:var(--accent)!important;box-shadow:none!important}
-  .side-nav .tab:not(.active):hover *,.side-nav .extlink:hover *{color:#fff!important}
-  .side-nav .tab:not(.active):hover .dot,.side-nav .extlink:hover .dot{background:#fff!important;border-color:#fff!important}
-  .side-nav .tab[data-p="calc"]:not(.active):hover,.side-nav .tab[data-p="cert"]:not(.active):hover,
-  .side-nav .tab[data-p="bom"]:not(.active):hover,.side-nav .tab[data-p="wx"]:not(.active):hover{
-    background:#6d28d9!important;border-color:#6d28d9!important;color:#fff!important}
-
-  .side-nav .tab:not(.active):hover,.side-nav .extlink:hover{
-    background:#3182f6!important;background-image:none!important;
-    color:#ffffff!important;border-color:#3182f6!important;box-shadow:none!important}
-  .side-nav .tab:not(.active):hover *,.side-nav .extlink:hover *{color:#ffffff!important}
-  .side-nav .tab:not(.active):hover .dot,.side-nav .extlink:hover .dot{background:#ffffff!important;border-color:#ffffff!important}
-
-  .side-nav .tab.active,.side-nav .tab.active *{color:#ffffff!important}
-  .side-nav .tab.active .dot{background:#ffffff!important;border-color:#ffffff!important}
-
-  .side-nav .tab.active{color:#ffffff!important;-webkit-text-fill-color:#ffffff!important}
-  .side-nav .tab.active span,.side-nav .tab.active b,.side-nav .tab.active .lb{
-    color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;background:none!important;
-    background-image:none!important;background-clip:border-box!important;-webkit-background-clip:border-box!important;opacity:1!important}
-  .side-nav .tab.active .dot{background:#ffffff!important;-webkit-text-fill-color:initial!important}
-
-  .side-nav .tab.active,
-  .side-nav .tab.active *,
-  .side-nav a.tab.active,
-  .side-nav a.tab.active *,
-  .side-nav button.tab.active,
-  .side-nav button.tab.active *{
-    color:#fff!important;-webkit-text-fill-color:#fff!important;
-    text-shadow:none!important;filter:none!important;opacity:1!important}
-  .side-nav .tab.active .dot,.side-nav a.tab.active .dot,.side-nav button.tab.active .dot{
-    background:#fff!important;border-color:#fff!important}
-
-  .side-nav .extlink .lb{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;min-width:0}
-  .side-nav .extlink{align-items:center}
-
-  .side-nav .extlink[data-sub="site"]{border:none!important;box-shadow:none!important;background:transparent!important}
-  .side-nav .extlink[data-sub="site"]:hover{background:#3182f6!important;border:none!important}
-</style>'+body+'</section>');
+        var scope='.bp-doc .pp[data-doc="'+i+'"]';
+        parts.push('<section class="pp" data-doc="'+i+'"><style>'+scopeCss(css,scope)+'</style>'+body+'</section>');
       }catch(e){}
     }
     openBtn.textContent=t; openBtn.disabled=false;
@@ -3291,11 +3339,29 @@ window.__gvInit = (function(){
     var host=document.getElementById('bulkPrint');
     if(!host){ host=document.createElement('div'); host.id='bulkPrint'; document.body.appendChild(host); }
     host.innerHTML='<div class="bp-doc">'+parts.join('')+'</div>';
-    document.body.classList.add('bulk-printing');
-    setTimeout(function(){
-      window.print();
-      setTimeout(function(){ document.body.classList.remove('bulk-printing'); host.innerHTML=''; }, 800);
-    }, 700);
+    var ov=document.getElementById('bpPreview');
+    if(ov) ov.remove();
+    ov=document.createElement('div');
+    ov.id='bpPreview';
+    ov.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(10,14,25,.75);display:flex;flex-direction:column;align-items:center;padding:16px 12px;overflow:auto';
+    ov.innerHTML='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;justify-content:center">'
+      +'<button type="button" id="bpPrint" style="border:0;background:#3182f6;color:#fff;font:inherit;font-size:13.5px;font-weight:800;padding:10px 18px;border-radius:100px;cursor:pointer">🖨 \uC778\uC1C4 / PDF \uC800\uC7A5</button>'
+      +'<button type="button" id="bpClose" style="border:0;background:#fff;color:#191f28;font:inherit;font-size:13.5px;font-weight:800;padding:10px 18px;border-radius:100px;cursor:pointer">\u2715 \uB2EB\uAE30</button>'
+      +'<span style="color:#dfe6f0;font-size:12.5px;align-self:center">'+list.length+'\uAC1C \uBB38\uC11C \uBBF8\uB9AC\uBCF4\uAE30</span></div>'
+      +'<div id="bpSheet" style="width:794px;max-width:100%;background:#fff;box-shadow:0 12px 40px rgba(0,0,0,.45);border-radius:4px;padding:10mm 8mm"></div>';
+    document.body.appendChild(ov);
+    ov.querySelector('#bpSheet').appendChild(host.firstElementChild);
+    function restore(){ var sh=ov.querySelector('#bpSheet'); if(sh&&sh.firstElementChild) host.appendChild(sh.firstElementChild); }
+    ov.querySelector('#bpClose').addEventListener('click',function(){ restore(); ov.remove(); host.innerHTML=''; });
+    ov.querySelector('#bpPrint').addEventListener('click',function(){
+      restore(); ov.remove();
+      document.body.classList.add('bulk-printing');
+      setTimeout(function(){
+        window.print();
+        setTimeout(function(){ document.body.classList.remove('bulk-printing'); host.innerHTML=''; }, 800);
+      }, 400);
+    });
+    ov.addEventListener('click',function(e){ if(e.target===ov){ restore(); ov.remove(); host.innerHTML=''; } });
   });
   // 매뉴얼 카드 해시태그 자동 생성
   document.querySelectorAll('#manGrid .man-card').forEach(function(c){
@@ -3378,16 +3444,6 @@ window.__gvInit = (function(){
 })();
 </script>
 <script>
-(function(){
-  var g=document.getElementById('macroGrp');
-  if(!g) return;
-  g.addEventListener('click',function(e){
-    e.preventDefault();
-    var list=document.querySelectorAll('.extlink[data-sub="macro"]');
-    var open=list.length && list[0].style.display!=='none';
-    list.forEach(function(a){ a.style.display=open?'none':''; });
-  });
-})();
 </script>
 </body>
 </html>

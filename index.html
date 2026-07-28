@@ -160,7 +160,7 @@
   .nav-div{flex:0 0 auto;width:2px;background:var(--border);margin:2px 4px;}
   .nav-label{flex:0 0 auto;display:flex;align-items:center;font-size:11px;font-weight:800;
     color:var(--muted);letter-spacing:.5px;padding:0 4px;text-transform:uppercase;}
-  .tab.active[data-p="proc"],.tab.active[data-p="check"],.tab.active[data-p="check-jn"],.tab.active[data-p="check-etc"],.tab.active[data-p="law"],.tab.active[data-p="deleg"],.tab.active[data-p="price"],.tab.active[data-p="glossary"],.tab.active[data-p="ratio"]{background:var(--ops);color:#fff;}
+  .tab.active[data-p="proc"],.tab.active[data-p="check"],.tab.active[data-p="check-jn"],.tab.active[data-p="check-etc"],.tab.active[data-p="law"],.tab.active[data-p="deleg"],.tab.active[data-p="price"],.tab.active[data-p="glossary"],.tab.active[data-p="ratio"],.tab.active[data-p="check-owner"]{background:var(--ops);color:#fff;}
 
   /* ===== 판정기 ===== */
   .calc-form{background:var(--surface);border:1.5px solid var(--border);box-shadow:var(--shadow);
@@ -908,9 +908,9 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <div class="nav-grp">실무 운영</div>
       <button class="tab" data-p="proc"><span class="dot"></span>📋 실무 절차 타임라인</button>
       <button class="tab" data-p="check"><span class="dot"></span>✅ 단계별 체크리스트</button>
+      <button class="tab" data-p="check-owner" data-sub="check" style="display:none"><span class="dot"></span>발주자 의무</button>
       <button class="tab" data-p="check-jn" data-sub="check" style="display:none"><span class="dot"></span>전남·광주</button>
       <button class="tab" data-p="check-etc" data-sub="check" style="display:none"><span class="dot"></span>타시도</button>
-      <button class="tab" data-p="check-owner" data-sub="check" style="display:none"><span class="dot"></span>발주자 체크리스트</button>
       <button class="tab" data-p="law"><span class="dot"></span>📖 법령 검색</button>
       <button class="tab" data-p="price"><span class="dot"></span>📐 2026 시설단가</button>
       <button class="tab" data-p="glossary"><span class="dot"></span>📖 용어정리</button>
@@ -2780,17 +2780,17 @@ runRatioCalc();
   function run(){
     const r=sel.value, s=+st.value, n=Math.max(1,Math.min(36,+mo.value||1));
     const d=WX[r]||WX['목포'];
-    let rows='',tw=0,th=0,tn=0;
+    let rows='',tw=0,th=0,tn=0,tdup=0;
     for(let k=0;k<n;k++){
       const m=((s-1+k)%12), mm=m+1, days=[31,28,31,30,31,30,31,31,30,31,30,31][m];
       const w=d[m], h=HOL[m], dup=Math.round(w*h/days*10)/10;
       const net=Math.max(8, Math.round((w+h-dup)*10)/10);
-      tw+=w; th+=h; tn+=net;
+      tw+=w; th+=h; tn+=net; tdup+=dup;
       const hot=(mm>=7&&mm<=8), cold=(mm===12||mm<=2);
-      rows+=`<tr><td style="text-align:left;font-weight:700;color:var(--navy)">${k+1}차월 (${mm}월)</td>`
-        +`<td>${w}</td><td>${h}</td><td>${dup}</td>`
-        +`<td style="font-weight:800;color:var(--ops-d)">${net}</td>`
-        +`<td style="text-align:left;font-size:12px;color:var(--muted)">${hot?'혹서기 · 폭염 대응 필요':cold?'혹한기 · 콘크리트 양생 주의':'—'}</td></tr>`;
+      rows+=`<tr><td style="text-align:center;font-weight:700;color:var(--navy)">${k+1}차월 (${mm}월)</td>`
+        +`<td style="text-align:center">${w}</td><td style="text-align:center">${h}</td><td style="text-align:center">${dup}</td>`
+        +`<td style="text-align:center;font-weight:800;color:var(--ops-d)">${net}</td>`
+        +`<td style="text-align:center;font-size:12px;color:var(--muted)">${hot?'혹서기 · 폭염 대응 필요':cold?'혹한기 · 콘크리트 양생 주의':'—'}</td></tr>`;
     }
     out.innerHTML=`<div class="res-head">🌦 ${r} · ${s}월 착공 ${n}개월 기준</div>
       <div class="res-grid" style="margin-bottom:12px">
@@ -2799,7 +2799,15 @@ runRatioCalc();
         <div class="res-card" style="border-left-color:var(--ops)"><div class="nm">적용 비작업일수</div><div class="vl" style="color:var(--ops-d)">${Math.round(tn*10)/10}<span>일</span></div></div>
         <div class="res-card"><div class="nm">순 작업가능일</div><div class="vl">${Math.max(0,Math.round((n*30.4-tn)*10)/10)}<span>일</span></div></div>
       </div>
-      <div class="tbl-wrap"><table><thead><tr><th style="text-align:left">구분</th><th>기상</th><th>공휴일</th><th>중복</th><th>적용</th><th style="text-align:left">비고</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+      <div class="tbl-wrap"><table><thead><tr><th style="text-align:center">구분</th><th style="text-align:center">기상</th><th style="text-align:center">공휴일</th><th style="text-align:center">중복</th><th style="text-align:center">적용</th><th style="text-align:center">비고</th></tr></thead><tbody>${rows}</tbody>
+      <tfoot><tr style="background:var(--ops-l,#eef4ff);border-top:2px solid var(--ops,#3b6fd4)">
+        <td style="text-align:center;font-weight:800;color:var(--navy)">합계 (${n}개월)</td>
+        <td style="text-align:center;font-weight:800">${Math.round(tw*10)/10}</td>
+        <td style="text-align:center;font-weight:800">${th}</td>
+        <td style="text-align:center;font-weight:800">${Math.round(tdup*10)/10}</td>
+        <td style="text-align:center;font-weight:800;color:var(--ops-d)">${Math.round(tn*10)/10}</td>
+        <td style="text-align:center;font-size:12px;color:var(--muted)">순 작업가능일 ${Math.max(0,Math.round((n*30.4-tn)*10)/10)}일</td>
+      </tr></tfoot></table></div>`;
   }
   ['wx-region','wx-start','wx-months'].forEach(id=>{const e=document.getElementById(id);e.addEventListener('input',run);e.addEventListener('change',run);});
   run();

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/static/pretendard.min.css">
 <style>
   @media print{
-    @page{size:A4 portrait;margin:12mm 10mm}
+    @page{size:A4 portrait;margin:7mm 6mm}
     html,body{background:#fff!important}
     .input-col-header,.reset-btn,.hd-actions,#pdfBtn,#xlsBtn,#themeToggle,.theme-toggle{display:none!important}
     .header .kicker,.header h1,.header .sub{display:none!important}
@@ -27,6 +27,15 @@
     .card,.panel{border:1px solid #d7dee8!important;border-radius:8px!important}
     .tiles{grid-template-columns:repeat(4,1fr)!important}
     .panels{grid-template-columns:1fr!important}
+    /* 여백 축소 */
+    .card,.panel{padding:9px 11px!important;margin-bottom:6px!important}
+    .panel h2{font-size:11.5pt!important;margin-bottom:2px!important}
+    .panel .desc{font-size:8pt!important;margin-bottom:5px!important}
+    .layout{gap:6px!important}
+    .result-col{gap:6px!important}
+    .input-col{gap:6px!important}
+    .hero{padding:10px 12px!important}
+    th,td{padding:3px 5px!important}
   }
   .viz-root {
     color-scheme: light;

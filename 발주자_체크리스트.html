@@ -63,9 +63,20 @@
   @media print{
     @page{size:A4 portrait;margin:10mm}
     body{background:#fff}
-    .btn,.filters,.bar{display:none!important}
-    .grp{break-inside:avoid;page-break-inside:avoid}
+    .btn,.filters,.bar,.kpi{display:none!important}
+    #pv{display:none!important}
+    .grp{break-inside:auto;page-break-inside:auto}
+    .grp-h{break-after:avoid;page-break-after:avoid}
+    .it{break-inside:avoid;page-break-inside:avoid}
     .grp.closed .grp-b{display:block!important}
+  }
+  @media print{
+    body.pvon>header,body.pvon>.wrap{display:none!important}
+    body.pvon #pv{display:block!important;position:static;background:#fff;overflow:visible;padding:0}
+    body.pvon #pv>div:first-child{display:none!important}
+    body.pvon #pv-body{transform:none!important;display:block;padding:0;gap:0}
+    body.pvon #pv-body>div{box-shadow:none!important;width:auto!important;height:auto!important;padding:0!important;overflow:visible!important;break-after:page;page-break-after:always}
+    body.pvon #pv-body>div:last-child{break-after:auto;page-break-after:auto}
   }
   @media(max-width:760px){ .kpi{grid-template-columns:repeat(2,1fr)} }
 </style>
@@ -78,9 +89,18 @@
     <div class="sp"></div>
     <button class="btn" id="expandAll">모두 접기</button>
     <button class="btn" id="resetBtn">↺ 초기화</button>
+    <button class="btn" id="pvBtn">📄 PDF 미리보기</button>
     <button class="btn" id="printBtn">🖨 PDF 저장</button>
   </div>
 </header>
+<div id="pv" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(20,22,30,.72);overflow:auto">
+  <div style="position:sticky;top:0;display:flex;gap:8px;justify-content:center;align-items:center;padding:12px;background:rgba(20,22,30,.9)">
+    <span style="color:#fff;font-weight:800;font-size:14px;margin-right:8px">PDF 미리보기 (A4)</span>
+    <button class="btn" style="background:var(--accent);border-color:var(--accent);color:#fff" onclick="window.print()">🖨 PDF 출력하기</button>
+    <button class="btn" style="background:#fff" onclick="pvClose()">✕ 닫기</button>
+  </div>
+  <div id="pv-body" style="display:flex;flex-direction:column;align-items:center;gap:18px;padding:18px 12px 40px"></div>
+</div>
 
 <div class="wrap">
   <div class="kpi" id="kpi"></div>
@@ -223,6 +243,40 @@ document.getElementById('resetBtn').addEventListener('click',()=>{
   render();
 });
 document.getElementById('printBtn').addEventListener('click',()=>window.print());
+window.pvClose=function(){ document.getElementById('pv').style.display='none'; document.body.classList.remove('pvon'); document.body.style.overflow=''; };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') pvClose(); });
+document.getElementById('pvBtn').addEventListener('click',function(){
+  const src=document.getElementById('list'), pv=document.getElementById('pv'), body=document.getElementById('pv-body');
+  const PAD=12, H=297, W=210, mm=n=>n*96/25.4, LIMIT=mm(H-PAD*2);
+  body.innerHTML='';
+  pv.style.display='block'; document.body.classList.add('pvon'); document.body.style.overflow='hidden';
+  const newSheet=()=>{ const s=document.createElement('div');
+    s.style.cssText=`width:${W}mm;height:${H}mm;background:#fff;padding:${PAD}mm;box-sizing:border-box;overflow:hidden;position:relative;box-shadow:0 12px 40px rgba(0,0,0,.35)`;
+    const inner=document.createElement('div'); s.appendChild(inner); body.appendChild(s); return inner; };
+  let page=newSheet();
+  const fits=()=>page.scrollHeight<=LIMIT+1;
+  const push=n=>{ page.appendChild(n); if(!fits()&&page.childNodes.length>1){ page.removeChild(n); page=newSheet(); page.appendChild(n); } };
+  const ttl=document.createElement('div');
+  ttl.style.cssText='font-size:18px;font-weight:900;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #191f28';
+  ttl.textContent='발주자 의무 체크리스트 — 학교시설사업';
+  push(ttl);
+  [...src.children].forEach(grp=>{
+    const head=grp.querySelector('.grp-h'), items=[...grp.querySelectorAll('.it')];
+    const shell=()=>{ const g=grp.cloneNode(false); g.classList.remove('closed');
+      if(head) g.appendChild(head.cloneNode(true));
+      const b=document.createElement('div'); b.className='grp-b'; g.appendChild(b); return {g,b}; };
+    let cur=shell(); push(cur.g);
+    items.forEach(it=>{ cur.b.appendChild(it.cloneNode(true));
+      if(!fits()){ cur.b.lastChild.remove(); const keep=it; cur=shell(); page=newSheet(); page.appendChild(cur.g); cur.b.appendChild(keep.cloneNode(true)); } });
+  });
+  [...body.children].forEach((s,i,a)=>{ const n=document.createElement('div');
+    n.style.cssText='position:absolute;right:12mm;bottom:6mm;font-size:9pt;color:#888';
+    n.textContent=`${i+1} / ${a.length}`; s.appendChild(n); });
+  const first=body.firstElementChild;
+  const scale=first?Math.min(1,(window.innerWidth-48)/first.offsetWidth):1;
+  body.style.transform=scale<1?'scale('+scale+')':'';
+  body.style.transformOrigin='top center';
+});
 document.getElementById('expandAll').addEventListener('click',function(){
   const any=document.querySelector('.grp.closed');
   document.querySelectorAll('.grp').forEach(g=>g.classList.toggle('closed',!any));

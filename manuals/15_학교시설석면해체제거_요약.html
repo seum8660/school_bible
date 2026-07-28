@@ -13,6 +13,7 @@
     --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
   }
   @page{ size:A4 portrait; margin:12mm; }
+  .card,.row,.row1,.row2,.doc>div,li,.num,.chips,table,tr{break-inside:avoid;page-break-inside:avoid} /* print-safe */
   *{ box-sizing:border-box; }
   html,body{ margin:0; padding:0; }
   body{
@@ -42,12 +43,12 @@
   .badge.rust{ background:var(--rust); }
 
   .list{ margin:0; padding:0; list-style:none; }
-  .list li{ font-size:6.14.5px; line-height:1.58; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:1mm; }
+  .list li{ font-size:12px; line-height:1.58; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:1mm; }
   .list li:last-child{ margin-bottom:0; }
   .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
 
   .nlist{ margin:0; padding:0; list-style:none; }
-  .nlist li{ font-size:6.14.5px; line-height:1.58; padding-left:4.4mm; text-indent:-4.4mm; margin-bottom:1.1mm; }
+  .nlist li{ font-size:12px; line-height:1.58; padding-left:4.4mm; text-indent:-4.4mm; margin-bottom:1.1mm; }
   .nlist li:last-child{ margin-bottom:0; }
   .nlist .no{ color:var(--navy); font-weight:700; margin-right:1.2mm; }
 
@@ -71,7 +72,7 @@
   .chip b{ color:var(--navy); font-weight:700; }
   .chip .num{ font-weight:700; }
 
-  .note{ text-align:center; font-size:5.14.5px; line-height:1.5; color:var(--note); margin:0; }
+  .note{ text-align:center; font-size:10px; line-height:1.5; color:var(--note); margin:0; }
 
   @media print{ body{ width:auto; min-height:auto; } }
 </style>

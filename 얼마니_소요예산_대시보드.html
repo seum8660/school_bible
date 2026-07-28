@@ -923,6 +923,26 @@ $('pvBtn').addEventListener('click',()=>{
   ov.querySelector('#pvPrint').addEventListener('click',()=>{ const w=window.open('','_blank'); w.document.write(excelDocHtml()); w.document.close(); w.focus(); setTimeout(()=>w.print(),400); });
   ov.addEventListener('click',e=>{ if(e.target===ov) ov.remove(); });
 });
+document.addEventListener('change',e=>{
+  const s2=e.target.closest('.esel');
+  if(s2){ const i=+s2.dataset.i, k=s2.value; if(k&&U[k]!==undefined){ etcRows[i][1]=UN[k]||k; etcRows[i][4]=U[k]; } render(); return; }
+  const un=e.target.closest('.euni'); if(un){ etcRows[+un.dataset.i][2]=un.value; return; }
+  const t2=e.target.closest('.etx'); if(t2){ etcRows[+t2.dataset.i][1]=t2.value; return; }
+  const u2=e.target.closest('.eun'); if(u2){ etcRows[+u2.dataset.i][4]=N(u2.value); render(); return; }
+});
+document.addEventListener('click',e=>{
+  const d=e.target.closest('.edel'); if(!d) return;
+  etcRows.splice(+d.dataset.i,1); Object.keys(manual).forEach(k=>{if(k[0]==='e')delete manual[k];}); render();
+});
+$('addEtc').addEventListener('click',()=>{ etcRows.push(['기타시설','신규항목','식',1,0]); render(); });
+$('resetBtn').addEventListener('click',()=>{
+  ['i_name','i_stu','i_cls','i_sp','i_kin','i_site','i_edu','i_dem'].forEach(id=>$(id).value='');
+  $('i_rsv').value=10;
+  $('i_type').selectedIndex=0; $('i_level').selectedIndex=0; $('i_isl').selectedIndex=2;
+  Object.keys(manual).forEach(k=>delete manual[k]);
+  render();
+});
+$('pdfBtn').addEventListener('click',()=>window.print());
 (function(){
   const t=$('themeToggle'), r=document.documentElement;
   try{ if(localStorage.getItem('eolmani-theme')==='dark') r.setAttribute('data-theme','dark'); }catch(e){}

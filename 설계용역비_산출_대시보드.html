@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/static/pretendard.min.css">
 <style>
   @media print{
-    @page{size:A4 portrait;margin:12mm 10mm}
+    @page{size:A4 portrait;margin:7mm 6mm}
     html,body{background:#fff!important}
     .input-col-header,.reset-btn,.hd-actions,#pdfBtn,#xlsBtn,#themeToggle,.theme-toggle{display:none!important}
     .header .kicker,.header h1,.header .sub{display:none!important}
@@ -27,6 +27,15 @@
     .card,.panel{border:1px solid #d7dee8!important;border-radius:8px!important}
     .tiles{grid-template-columns:repeat(4,1fr)!important}
     .panels{grid-template-columns:1fr!important}
+    /* 여백 축소 */
+    .card,.panel{padding:9px 11px!important;margin-bottom:6px!important}
+    .panel h2{font-size:11.5pt!important;margin-bottom:2px!important}
+    .panel .desc{font-size:8pt!important;margin-bottom:5px!important}
+    .layout{gap:6px!important}
+    .result-col{gap:6px!important}
+    .input-col{gap:6px!important}
+    .hero{padding:10px 12px!important}
+    th,td{padding:3px 5px!important}
   }
   .viz-root {
     color-scheme: light;
@@ -195,6 +204,8 @@
   }
   .yellow-legend .chip { width: 16px; height: 16px; border-radius: 4px; background: var(--yellow-bg); border: 1px solid var(--yellow-border); flex: none; }
   .num-in{ text-align:right; font-variant-numeric: tabular-nums; }
+  /* BF·손해배상보험료 하위 대시보드 — 패널 테두리 강조 */
+  #bfPanel, #insPanel { border: 1px solid #3182f6; }
   input[type=number]{ text-align:right; }
   .reset-btn {
     display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 800; white-space: nowrap;
@@ -380,6 +391,7 @@
           </div>
         </div>
         <label class="check-row"><input type="checkbox" id="in_인테리어적용" checked> 인테리어(리모델링) 설계적용 <span class="badge-mini">대가 1.5배</span></label>
+        <div class="field" style="margin-top:8px;"><label>연면적(㎡) <span style="font-weight:500;color:var(--text-muted);">BF 예비인증 수수료 구간 산정용</span></label><input type="text" inputmode="numeric" class="num-in" id="in_연면적" value="" placeholder="연면적 입력"></div>
       </div>
 
       <div class="card">
@@ -445,10 +457,10 @@
 
       <div class="card">
         <h3>5. 기타분야</h3>
-        <div class="card-desc">BF·안전보건대장·안전성검토는 참고자료 견적가(고정) 적용</div>
-        <label class="check-row"><input type="checkbox" id="in_BF_적용" checked> BF인증 심의대응 업무 (9,105,000원)</label>
-        <label class="check-row"><input type="checkbox" id="in_안전보건대장_적용" checked> 설계안전보건대장 작성비 (1,800,000원)</label>
-        <label class="check-row"><input type="checkbox" id="in_안전성검토_적용" checked> 설계안전성검토 작성비 (2,000,000원)</label>
+        <div class="card-desc">BF인증은 실비정액가산방식(엔지니어링사업대가기준) 상세산출 · 안전보건대장·안전성검토는 정액 적용</div>
+        <label class="check-row"><input type="checkbox" id="in_BF_적용" checked> BF인증 심의대응 업무 <span style="font-size:10px;color:var(--text-muted);">(산출근거는 우측 추가조사비 항목 클릭)</span></label>
+        <label class="check-row"><input type="checkbox" id="in_안전보건대장_적용" checked> 설계안전보건대장 작성비 (견적가)</label>
+        <label class="check-row"><input type="checkbox" id="in_안전성검토_적용" checked> 설계안전성검토 작성비 (견적가)</label>
         <div class="sub-block">
           <label class="check-row"><input type="checkbox" id="in_현황측량_적용" checked> 현황측량비 (산식 자동계산)</label>
           <div class="row2" style="margin-top:6px;">
@@ -476,19 +488,7 @@
 
       <div class="card">
         <h3>6. 손해배상보험료</h3>
-        <div class="card-desc">건축사 공제조합 요율표 · 계획·중간 / 실시설계 자동 구분(실시설계 선택 시 실시요율)</div>
-        <div class="field"><label>건물용도(공사종류)</label>
-          <select id="in_건물용도"></select>
-        </div>
-        <div class="field"><label>공제가입금액 구간</label>
-          <select id="in_보험구간">
-            <option value="0">5억원 이하</option>
-            <option value="1">5억원 초과 ~ 10억원 이하</option>
-            <option value="2">10억원 초과 ~ 20억원 이하</option>
-            <option value="3">20억원 초과 ~ 30억원 이하</option>
-            <option value="4">30억원 초과 ~ 50억원 이하</option>
-          </select>
-        </div>
+        <div class="card-desc">건축사 공제조합 요율표 · 계획·중간 / 실시설계 자동 구분 — <b>산출근거는 우측 구성비 표의 ‘손해배상보험료’ 항목을 클릭</b></div>
         <div class="foot-note">기본요율만 적용(계약기간 초과 등 가산요율은 별도 협의)</div>
       </div>
 
@@ -586,6 +586,58 @@
           <thead><tr><th>순위 구분</th><th>산출 요율(%)</th><th class="num">추가대가(원)</th></tr></thead>
           <tbody id="tbl_인증복합"></tbody>
         </table>
+      </div>
+
+      <div class="panel full" id="bfPanel" style="display:none;">
+        <h2>BF인증(장애물 없는 생활환경) 심의대응 업무 · 실비정액가산방식 산출근거</h2>
+        <div class="desc"><b>노임단가 기준: 2026년 적용 엔지니어링기술자 노임단가(건설부문)</b> · 한국엔지니어링협회 2025.12.2 공표 · 1일 8시간 · 평균근무일수 20.3일 — 노임단가·투입 M/D·요율·직접경비를 아래 표에서 직접 수정하세요<br><b>예비인증 심사수수료 기준: [별표8] 장애물 없는 생활환경 인증 수수료(제4조 관련)</b> · 개별시설(공공건물 및 공중이용시설, 공동주택, 통신시설 등) 예비인증 기준 수수료 2,060,000원 × 연면적 구간요율(0.5 / 0.8 / 1.0 / 1.2 / 1.5)</div>
+        <table>
+          <thead><tr><th>등급</th><th>노임단가(원/일)</th><th>투입 M/D(일)</th><th class="num">금액(원)</th></tr></thead>
+          <tbody>
+            <tr><td class="name">기술사</td><td><input type="text" inputmode="numeric" class="num-in" id="in_BF_기술사_단가" value="467,217" style="width:100%;"></td><td><input type="number" id="in_BF_기술사_md" value="1" min="0" step="0.5" style="width:100%;"></td><td class="num" id="out_BF_기술사"></td></tr>
+            <tr><td class="name">특급기술자</td><td><input type="text" inputmode="numeric" class="num-in" id="in_BF_특급_단가" value="373,353" style="width:100%;"></td><td><input type="number" id="in_BF_특급_md" value="2" min="0" step="0.5" style="width:100%;"></td><td class="num" id="out_BF_특급"></td></tr>
+            <tr><td class="name">고급기술자</td><td><input type="text" inputmode="numeric" class="num-in" id="in_BF_고급_단가" value="310,884" style="width:100%;"></td><td><input type="number" id="in_BF_고급_md" value="3" min="0" step="0.5" style="width:100%;"></td><td class="num" id="out_BF_고급"></td></tr>
+            <tr><td class="name">중급기술자</td><td><input type="text" inputmode="numeric" class="num-in" id="in_BF_중급_단가" value="295,138" style="width:100%;"></td><td><input type="number" id="in_BF_중급_md" value="2.5" min="0" step="0.5" style="width:100%;"></td><td class="num" id="out_BF_중급"></td></tr>
+            <tr class="total"><td class="name">① 직접인건비</td><td colspan="2">Σ(등급별 노임단가 × 투입 M/D)</td><td class="num" id="out_BF_인건비"></td></tr>
+          </tbody>
+        </table>
+        <table style="margin-top:10px;">
+          <thead><tr><th>구분</th><th>요율 · 산출식</th><th class="num">금액(원)</th></tr></thead>
+          <tbody>
+            <tr><td class="name">② 제경비</td><td>① × <input type="number" id="in_BF_제경비율" value="110" min="0" max="120" step="1" style="width:80px;"> % <span style="color:var(--text-muted);font-size:11px;">(110~120%)</span></td><td class="num" id="out_BF_제경비"></td></tr>
+            <tr><td class="name">③ 기술료</td><td>(① + ②) × <input type="number" id="in_BF_기술료율" value="20" min="0" max="40" step="1" style="width:80px;"> % <span style="color:var(--text-muted);font-size:11px;">(20~40%)</span></td><td class="num" id="out_BF_기술료"></td></tr>
+            <tr><td class="name" style="padding-left:22px;">· 예비인증 심사수수료 <span style="font-size:10px;color:var(--text-muted);">[별표8] 자동산식</span></td><td><span id="out_BF_구간" style="color:var(--text-muted);"></span></td><td class="num" id="out_BF_수수료"></td></tr>
+            <tr><td class="name" style="padding-left:22px;">· 출장여비(심의·현장확인)</td><td colspan="2"><input type="text" inputmode="numeric" class="num-in" id="in_BF_여비" value="300,000" style="width:100%;"></td></tr>
+            <tr><td class="name" style="padding-left:22px;">· 도면·보고서 인쇄비</td><td colspan="2"><input type="text" inputmode="numeric" class="num-in" id="in_BF_인쇄" value="200,000" style="width:100%;"></td></tr>
+            <tr><td class="name">④ 직접경비</td><td>수수료 + 여비 + 인쇄비 (실비)</td><td class="num" id="out_BF_직접경비"></td></tr>
+            <tr><td class="name">소계</td><td>① + ② + ③ + ④</td><td class="num" id="out_BF_소계"></td></tr>
+            <tr><td class="name">천원 이하 절사</td><td>산정기준 절사</td><td class="num" id="out_BF_절사"></td></tr>
+            <tr class="total"><td class="name">BF인증 심의대응 업무 합계</td><td>천원 이하 절사 적용</td><td class="num" id="out_BF_합계"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel full" id="insPanel" style="display:none;">
+        <h2>손해배상보험료 산출근거</h2>
+        <div class="desc">건축사 공제조합 요율표 · 계획·중간설계 / 실시설계 요율 자동 구분 · 기준액 = 용역비 총계</div>
+        <table>
+          <thead><tr><th>구분</th><th>입력 · 산출식</th><th class="num">값</th></tr></thead>
+          <tbody>
+            <tr><td class="name">건물용도(공사종류)</td><td colspan="2"><select id="in_건물용도" style="width:100%;"></select></td></tr>
+            <tr><td class="name">공제가입금액 구간</td><td colspan="2"><select id="in_보험구간" style="width:100%;">
+              <option value="0">5억원 이하</option>
+              <option value="1">5억원 초과 ~ 10억원 이하</option>
+              <option value="2">10억원 초과 ~ 20억원 이하</option>
+              <option value="3">20억원 초과 ~ 30억원 이하</option>
+              <option value="4">30억원 초과 ~ 50억원 이하</option>
+            </select></td></tr>
+            <tr><td class="name">적용 설계단계</td><td>선택된 설계단계에 따라 자동 구분</td><td class="num" id="out_ins_stage"></td></tr>
+            <tr><td class="name">기본요율</td><td>요율표 상 해당 용도 · 구간 요율</td><td class="num" id="out_ins_rate"></td></tr>
+            <tr><td class="name">산출 기준액</td><td>용역비 총계</td><td class="num" id="out_ins_base"></td></tr>
+            <tr class="total"><td class="name">손해배상보험료</td><td>기준액 × 기본요율</td><td class="num" id="out_ins_amt"></td></tr>
+          </tbody>
+        </table>
+        <div class="foot-note">기본요율만 적용(계약기간 초과 등 가산요율은 별도 협의)</div>
       </div>
 
       <div class="panels">
@@ -694,7 +746,7 @@
   /* ===================== 기본값 저장 (초기화 버튼용) ===================== */
   function captureDefaults(){
     const map = {};
-    document.querySelectorAll('.input-col input, .input-col select').forEach(el => {
+    document.querySelectorAll('.input-col input, .input-col select, #bfPanel input, #insPanel select').forEach(el => {
       if (!el.id) return;
       if (el.type === 'checkbox') map[el.id] = { checkbox: true, checked: el.checked };
       else map[el.id] = { checkbox: false, value: el.value };
@@ -703,7 +755,7 @@
   }
   const DEFAULTS = captureDefaults();
   function resetAll(){
-    document.querySelectorAll('.input-col input, .input-col select').forEach(el => {
+    document.querySelectorAll('.input-col input, .input-col select, #bfPanel input, #insPanel select').forEach(el => {
       if (!el.id) return;
       if (el.type === 'checkbox') el.checked = false;
       else if (el.tagName === 'SELECT') el.selectedIndex = 0;
@@ -721,6 +773,9 @@
   }
   // 원본 산출서(설계용역비산출서_v2 발주청테스트용) 종합집계표 상 최종 합계 — 신안교육지원청사 이설공사 기준 고정값
   const ORIGINAL_TOTAL = 84402000;
+
+  let bfOpen = false;
+  let insOpen = false;
 
   /* ===================== 계산 엔진 ===================== */
   function val(id){ return document.getElementById(id).value; }
@@ -785,7 +840,37 @@
     const 지질조사비 = BX + NX + 탄성파;
 
     // 기타분야
-    const BF = chk('in_BF_적용') ? 9105000 : 0;
+    const BF노임 = [
+      { name:'기술사',     단가: num('in_BF_기술사_단가'), md: num('in_BF_기술사_md') },
+      { name:'특급기술자', 단가: num('in_BF_특급_단가'),   md: num('in_BF_특급_md') },
+      { name:'고급기술자', 단가: num('in_BF_고급_단가'),   md: num('in_BF_고급_md') },
+      { name:'중급기술자', 단가: num('in_BF_중급_단가'),   md: num('in_BF_중급_md') },
+    ].map(function(x){ x.금액 = eRound(x.단가*x.md, 0); return x; });
+    const BF방식 = '실비';
+    const BF직접인건비 = BF노임.reduce(function(s,x){ return s+x.금액; }, 0);
+    const BF제경비율 = num('in_BF_제경비율'), BF기술료율 = num('in_BF_기술료율');
+    const BF제경비 = eRound(BF직접인건비*BF제경비율/100, 0);
+    const BF기술료 = eRound((BF직접인건비+BF제경비)*BF기술료율/100, 0);
+    const BF연면적 = num('in_연면적');
+    const BF예비기준수수료 = 2060000;
+    let BF구간, BF구간요율;
+    if (BF연면적 <= 0)          { BF구간 = '연면적 미입력(기본정보 입력 필요)'; BF구간요율 = 0; }
+    else if (BF연면적 < 300)   { BF구간 = '제1구간(300㎡ 미만)';        BF구간요율 = 0.5; }
+    else if (BF연면적 < 1000)  { BF구간 = '제2구간(300~1,000㎡)';     BF구간요율 = 0.8; }
+    else if (BF연면적 < 3000)  { BF구간 = '제3구간(1,000~3,000㎡)';  BF구간요율 = 1.0; }
+    else if (BF연면적 < 10000) { BF구간 = '제4구간(3,000~10,000㎡)'; BF구간요율 = 1.2; }
+    else                       { BF구간 = '제5구간(10,000㎡ 이상)';    BF구간요율 = 1.5; }
+    const BF수수료 = eRound(BF예비기준수수료*BF구간요율, 0);
+    const BF직접경비항목 = [
+      { name:'예비인증 심사수수료([별표8])', 금액: BF수수료 },
+      { name:'출장여비(심의·현장확인)',      금액: num('in_BF_여비') },
+      { name:'도면·보고서 인쇄비',           금액: num('in_BF_인쇄') },
+    ];
+    const BF직접경비 = BF직접경비항목.reduce(function(s,x){ return s+x.금액; }, 0);
+    const BF실비합계_raw = BF직접인건비 + BF제경비 + BF기술료 + BF직접경비;
+    const BF실비합계 = Math.floor(BF실비합계_raw/1000)*1000;
+    const BF절사액 = BF실비합계_raw - BF실비합계;
+    const BF = chk('in_BF_적용') ? BF실비합계 : 0;
     const 안전보건대장 = chk('in_안전보건대장_적용') ? 1800000 : 0;
     const 안전성검토 = chk('in_안전성검토_적용') ? 2000000 : 0;
 
@@ -828,7 +913,9 @@
       용역비총계, F26건축설계대가,
       activeCerts, A, Bh, Ct, 복합요율, 인증추가대가, A금액, B금액, C금액,
       BX, NX, 탄성파, 지질조사비,
-      BF, 안전보건대장, 안전성검토, 현황측량비, 현황측량상세,
+      BF, BF방식, BF노임, BF직접인건비, BF제경비율, BF기술료율, BF제경비, BF기술료,
+      BF직접경비항목, BF직접경비, BF연면적, BF구간, BF구간요율, BF수수료, BF실비합계, BF실비합계_raw, BF절사액,
+      안전보건대장, 안전성검토, 현황측량비, 현황측량상세,
       추가조사비총계, VAT, useRow, band, stage, insRate, 보험료,
       총합계_raw, 총합계,
     };
@@ -947,9 +1034,21 @@
       <tr><td class="name">용역비</td><td class="num">${fmt(r.용역비총계)}</td></tr>
       <tr><td class="name">추가조사비</td><td class="num">${fmt(r.추가조사비총계)}</td></tr>
       <tr><td class="name">부가가치세</td><td class="num">${fmt(r.VAT)}</td></tr>
-      <tr><td class="name">손해배상보험료</td><td class="num">${fmt(r.보험료)}</td></tr>
+      <tr id="insRow" style="cursor:pointer;" title="클릭하면 산출근거가 펼쳐집니다"><td class="name">손해배상보험료 <span class="tag">산출근거 ${insOpen?'▴':'▾'}</span></td><td class="num">${fmt(r.보험료)}</td></tr>
       <tr class="total"><td class="name">합계</td><td class="num">${fmt(r.총합계)}</td></tr>
     </tbody>`;
+
+    const insRowEl = document.getElementById('insRow');
+    if (insRowEl) insRowEl.addEventListener('click', function(){ insOpen = !insOpen; render(); });
+    const insPanel = document.getElementById('insPanel');
+    if (insPanel){
+      insPanel.style.display = insOpen ? 'block' : 'none';
+      const setI = function(id,v){ const el = document.getElementById(id); if (el) el.textContent = v; };
+      setI('out_ins_stage', r.stage);
+      setI('out_ins_rate', r.insRate + '%');
+      setI('out_ins_base', fmtN(r.용역비총계));
+      setI('out_ins_amt', fmtN(r.보험료));
+    }
 
     // 건축 단계 테이블
     document.getElementById('out_건축근거desc').textContent = `공공발주사업 건축사 업무대가기준 [별표4] 제${r.종별}종 / ${r.등급}급`;
@@ -971,14 +1070,63 @@
       : `인테리어 설계적용이 미적용으로 설정되어 있어 대가가 산정되지 않습니다.`;
 
     // 추가조사비 테이블
+    const bfNote = r.BF<=0 ? '미적용'
+      : '적용 · 실비정액가산 (직접인건비+제경비 '+r.BF제경비율+'%+기술료 '+r.BF기술료율+'%+직접경비)';
+    const bfLegacyRow = r.BF<=0 ? '' : `
+      <tr id="bfDetailRow" style="display:${bfOpen?'table-row':'none'};">
+        <td colspan="3" style="background:var(--surface-2,#f7f9fc);padding:12px 14px;">
+          <div style="font-size:11.5px;font-weight:800;color:var(--text-secondary);margin-bottom:8px;">BF인증 심의대응 업무 · 실비정액가산방식 산출근거</div>
+          <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+            <thead>
+              <tr style="background:transparent;">
+                <th style="text-align:left;padding:5px 8px;border-bottom:1px solid var(--grid);">구분</th>
+                <th style="text-align:left;padding:5px 8px;border-bottom:1px solid var(--grid);">산출식</th>
+                <th style="text-align:right;padding:5px 8px;border-bottom:1px solid var(--grid);">금액(원)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${r.BF노임.map(function(x){ return '<tr><td style="padding:4px 8px;padding-left:20px;">· '+x.name+'</td><td style="padding:4px 8px;color:var(--text-muted);">'+fmtN(x.단가)+'원/일 × '+x.md+'일</td><td style="padding:4px 8px;text-align:right;font-variant-numeric:tabular-nums;">'+fmtN(x.금액)+'</td></tr>'; }).join('')}
+              <tr><td style="padding:5px 8px;font-weight:700;">① 직접인건비</td><td style="padding:5px 8px;color:var(--text-muted);">Σ(등급별 노임단가 × 투입 M/D)</td><td style="padding:5px 8px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">${fmtN(r.BF직접인건비)}</td></tr>
+              <tr><td style="padding:5px 8px;font-weight:700;">② 제경비</td><td style="padding:5px 8px;color:var(--text-muted);">① × ${r.BF제경비율}%</td><td style="padding:5px 8px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">${fmtN(r.BF제경비)}</td></tr>
+              <tr><td style="padding:5px 8px;font-weight:700;">③ 기술료</td><td style="padding:5px 8px;color:var(--text-muted);">(① + ②) × ${r.BF기술료율}%</td><td style="padding:5px 8px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">${fmtN(r.BF기술료)}</td></tr>
+              ${r.BF직접경비항목.map(function(x){ return '<tr><td style="padding:4px 8px;padding-left:20px;">· '+x.name+'</td><td style="padding:4px 8px;color:var(--text-muted);">실비</td><td style="padding:4px 8px;text-align:right;font-variant-numeric:tabular-nums;">'+fmtN(x.금액)+'</td></tr>'; }).join('')}
+              <tr><td style="padding:5px 8px;font-weight:700;">④ 직접경비</td><td style="padding:5px 8px;color:var(--text-muted);">수수료 + 여비 + 인쇄비</td><td style="padding:5px 8px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;">${fmtN(r.BF직접경비)}</td></tr>
+              <tr style="border-top:1.5px solid var(--grid);"><td style="padding:5px 8px;">소계 (①+②+③+④)</td><td style="padding:5px 8px;color:var(--text-muted);">절사 전 금액</td><td style="padding:5px 8px;text-align:right;font-variant-numeric:tabular-nums;">${fmtN(r.BF실비합계_raw)}</td></tr>
+              <tr><td style="padding:4px 8px;color:var(--text-muted);">천원 이하 절사</td><td style="padding:4px 8px;color:var(--text-muted);">국가계약법령 산정기준</td><td style="padding:4px 8px;text-align:right;color:var(--text-muted);font-variant-numeric:tabular-nums;">−${fmtN(r.BF절사액)}</td></tr>
+              <tr style="border-top:1.5px solid var(--grid);"><td style="padding:6px 8px;font-weight:800;">합계 (천원 이하 절사)</td><td style="padding:6px 8px;color:var(--text-muted);">실비정액가산방식 산출액</td><td style="padding:6px 8px;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;">${fmtN(r.BF실비합계)}</td></tr>
+            </tbody>
+          </table>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:8px;line-height:1.6;">엔지니어링사업대가기준 실비정액가산방식 · 노임단가·투입 M/D·제경비율·기술료율은 좌측 <b>5. 기타분야</b> 카드에서 수정할 수 있습니다. 노임단가는 <b>2026년 적용 엔지니어링기술자 노임단가(건설부문, 한국엔지니어링협회 2025.12.2 공표)</b> 기준 · 기술사 467,217 / 특급 373,353 / 고급 310,884 / 중급 295,138원(1일 8시간, 평균근무일수 20.3일).</div>
+        </td>
+      </tr>`;
     document.getElementById('tbl_추가조사비').innerHTML = `
       <tr><td class="name">인증 추가대가 <span class="tag">복합 인증</span></td><td>제11조제4항 · A+½B+⅓C · 요율 ${r.복합요율.toFixed(3)}%</td><td class="num">${fmtN(r.인증추가대가)}</td></tr>
-      <tr><td class="name">BF인증 심의대응 업무</td><td>${r.BF>0?'적용 · 참고자료 견적가':'미적용'}</td><td class="num">${fmtN(r.BF)}</td></tr>
-      <tr><td class="name">설계안전보건대장 작성비</td><td>${r.안전보건대장>0?'적용 · 참고자료 견적가':'미적용'}</td><td class="num">${fmtN(r.안전보건대장)}</td></tr>
-      <tr><td class="name">설계안전성검토 작성비</td><td>${r.안전성검토>0?'적용 · 참고자료 견적가':'미적용'}</td><td class="num">${fmtN(r.안전성검토)}</td></tr>
+      <tr id="bfRow" style="cursor:pointer;" title="클릭하면 세부 산출근거가 펼쳐집니다"><td class="name">BF인증 심의대응 업무 <span class="tag">산출근거 ${bfOpen?'▴':'▾'}</span></td><td>${bfNote}</td><td class="num">${fmtN(r.BF)}</td></tr>
+      <tr><td class="name">설계안전보건대장 작성비</td><td>${r.안전보건대장>0?'적용 · 정액':'미적용'}</td><td class="num">${fmtN(r.안전보건대장)}</td></tr>
+      <tr><td class="name">설계안전성검토 작성비</td><td>${r.안전성검토>0?'적용 · 정액':'미적용'}</td><td class="num">${fmtN(r.안전성검토)}</td></tr>
       <tr><td class="name">현황측량비</td><td>${r.현황측량비>0?'기본단가×면적계수×지가계수':'미적용'}</td><td class="num">${fmtN(r.현황측량비)}</td></tr>
       <tr><td class="name">지질조사비</td><td>BX ${fmtN(r.BX)} + NX ${fmtN(r.NX)} + 탄성파 ${fmtN(r.탄성파)}</td><td class="num">${fmtN(r.지질조사비)}</td></tr>
       <tr class="total"><td class="name">추가조사비 총계</td><td>전 항목 합산</td><td class="num">${fmtN(r.추가조사비총계)}</td></tr>`;
+
+    const bfRowEl = document.getElementById('bfRow');
+    if (bfRowEl) bfRowEl.addEventListener('click', function(){ bfOpen = !bfOpen; render(); });
+    const bfPanel = document.getElementById('bfPanel');
+    if (bfPanel){
+      bfPanel.style.display = (bfOpen && r.BF>0) ? 'block' : 'none';
+      const setOut = function(id,v){ const el = document.getElementById(id); if (el) el.textContent = v; };
+      ['기술사','특급','고급','중급'].forEach(function(k,i){ setOut('out_BF_'+k, fmtN(r.BF노임[i].금액)); });
+      setOut('out_BF_인건비', fmtN(r.BF직접인건비));
+      setOut('out_BF_제경비', fmtN(r.BF제경비));
+      setOut('out_BF_기술료', fmtN(r.BF기술료));
+      setOut('out_BF_수수료', fmtN(r.BF수수료));
+      setOut('out_BF_구간', r.BF구간요율 > 0
+        ? '연면적 ' + fmtN(r.BF연면적) + '㎡ → ' + r.BF구간 + ' · 기준 수수료 2,060,000원 × 적용 요율 ' + r.BF구간요율
+        : r.BF구간);
+      setOut('out_BF_직접경비', fmtN(r.BF직접경비));
+      setOut('out_BF_소계', fmtN(r.BF실비합계_raw));
+      setOut('out_BF_절사', '−' + fmtN(r.BF절사액));
+      setOut('out_BF_합계', fmtN(r.BF실비합계));
+    }
 
     // 인증 복합
     const rows = [];
@@ -1028,6 +1176,17 @@
     el.addEventListener('input', render);
     el.addEventListener('change', render);
   });
+
+  // BF 산출근거 입력부 토글 (카드 항목명 클릭)
+  (function(){
+    const t = document.getElementById('bfToggle'), d = document.getElementById('bfDetail'), c = document.getElementById('bfCaret');
+    if (!t || !d) return;
+    t.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      const open = d.style.display === 'none';
+      d.style.display = open ? 'block' : 'none';      if (c) c.textContent = open ? '산출근거 ▴' : '산출근거 ▾';
+    });
+  })();
 
   document.getElementById('resetBtn').addEventListener('click', function(){
     resetAll();

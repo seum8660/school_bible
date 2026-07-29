@@ -7,8 +7,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/static/pretendard.min.css">
 <style>
   :root{
-    --mono:'D2Coding','Consolas','SFMono-Regular',monospace; --navy:#191f28; --navy2:#3d4657; --line:#eaedf0; --line2:#f2f4f6;
-    --ink:#0f1420; --sub:#5d6875; --bg:#f2f4f6; --card:#ffffff;
+    --mono:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',system-ui,sans-serif; --navy:#191f28; --navy2:#4e5968; --line:#eaedf0; --line2:#f2f4f6;
+    --ink:#191f28; --sub:#8b95a1; --bg:#f2f4f6; --card:#ffffff;
+    --inpbg:#eef4ff; --inpbd:#b6d4fb;
     --m1:#3182f6; --m2:#3182f6; --m3:#4e5968;
     --prep:#c1c8d0; --work:#3182f6; --nowork:#8b95a1; --fin:#4e5968; --extra:#aeb7c9;
     --gold:#3182f6; --goldbg:#e8f2ff; --yellow:#eef4ff;
@@ -19,6 +20,7 @@
   html[data-theme="dark"]{
     --navy:#f4f6fc; --navy2:#c9d0e2; --line:rgba(255,255,255,0.16); --line2:rgba(255,255,255,0.10);
     --ink:#f4f6fc; --sub:#9aa4c0; --bg:#161b33; --card:#2a3356;
+    --inpbg:rgba(111,168,255,0.16); --inpbd:rgba(143,184,255,0.45);
     --m1:#6fa8ff; --m2:#6fa8ff; --m3:#aeb7c9;
     --prep:#808ba8; --work:#6fa8ff; --nowork:#aeb7c9; --fin:#c9d0e2; --extra:#8892a8;
     --gold:#6fa8ff; --goldbg:rgba(111,168,255,0.16); --yellow:rgba(111,168,255,0.14);
@@ -59,16 +61,18 @@
   /* ===== 입력 그리드 ===== */
   .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 18px}
   .fld{display:flex;flex-direction:column;gap:5px}
-  .fld label{font-size:13.5px;color:var(--ink);font-weight:700}
-  .fld input,.fld select{font:inherit;font-size:14.5px;font-weight:600;padding:10px 12px;border:1.5px solid var(--sub);
-         border-radius:10px;background:var(--card);color:var(--ink);width:100%}
+  .fld label{font-size:12px;color:var(--sub);font-weight:600}
+  .fld input,.fld select{font:inherit;font-size:14px;font-weight:600;padding:9px 11px;border:1px solid var(--inpbd);
+         border-radius:8px;background:var(--inpbg);color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
+  .fld input:hover,.fld select:hover{background:#e2edfd}
+  html[data-theme="dark"] .fld input:hover,html[data-theme="dark"] .fld select:hover{background:rgba(111,168,255,0.26)}
   .fld input:focus,.fld select:focus{outline:none;border-color:var(--m2);box-shadow:0 0 0 3px rgba(49,130,246,.16)}
   .fld input[readonly]{background:var(--line2);color:var(--sub)}
   .fld.wide{grid-column:span 2}
-  .fld .hint{font-size:12px;color:#94a3b8}
+  .fld .hint{font-size:11.5px;color:var(--sub)}
   .chk{display:flex;align-items:center;gap:7px;font-size:13px;padding:7px 0}
   .chk input{width:16px;height:16px;accent-color:var(--m2)}
-  .subhead{grid-column:1/-1;font-size:14.5px;font-weight:700;color:var(--navy2);margin-top:6px;
+  .subhead{grid-column:1/-1;font-size:13.5px;font-weight:700;color:var(--navy2);margin-top:6px;
          border-left:3px solid var(--m2);padding-left:8px}
 
   /* ===== 결과 카드 3안 ===== */
@@ -155,12 +159,30 @@
   @media print{
     @page{size:A4 portrait;margin:10mm}
     html,body{background:#fff!important}
-    #resetBtn,#printBtn,#themeToggle,.tabs{display:none!important}
+    #resetBtn,#printBtn,#pvBtn,#pvOverlay,#themeToggle,.tabs,.tabbar{display:none!important}
     .pane{display:block!important}
+    #p1,#p3{break-before:page;page-break-before:always}
+    .pane::before{display:block;font-size:13pt;font-weight:800;color:#191f28;
+      border-bottom:1.2px solid #3182f6;padding-bottom:5px;margin:0 0 12px}
+    #pSum::before{content:"부록 1. 종합 비교"}
+    #p1::before{content:"부록 2. 검토1안 · 표준품셈 방식 상세"}
+    #p3::before{content:"부록 3. 검토2안 · 시설물별 산정공식 상세"}
     #nwPanel{display:block!important}
     #nwToggle{display:none!important}
     section,.card,.pane{break-inside:avoid;page-break-inside:avoid;box-shadow:none!important}
     input,select{border:1px solid #d0d7e2!important;background:#fff!important}
+    /* 상세표 · 접힌 부분을 모다 펼쳐서 생생하게 인쇄 */
+    .tbl-scroll{max-height:none!important;overflow:visible!important}
+    details{display:block!important}
+    details>*{display:revert!important}
+    details:not([open])>*:not(summary){display:block!important}
+    [style*="overflow:auto"]{overflow:visible!important;max-height:none!important}
+    table{width:100%!important}
+    th,td{white-space:normal!important;word-break:keep-all}
+    #p1 table,#p3 table{font-size:8pt!important;table-layout:auto!important}
+    #p1 th,#p1 td,#p3 th,#p3 td{padding:2px 3px!important;letter-spacing:-.2px}
+    td input{width:auto!important;max-width:44px!important;font-size:8pt!important;
+      padding:1px 2px!important;border:0!important;background:transparent!important;text-align:center}
   }
   input::placeholder,textarea::placeholder{color:#a3adb9;opacity:1}
   input,select{color:#3d4657}
@@ -186,7 +208,7 @@
 
   <!-- ===== 1. 기본정보 입력 ===== -->
   <section>
-    <div class="sec-title"><span class="n">1</span>공사 기본정보 입력 <button type="button" id="resetBtn" style="margin-left:auto;background:var(--card);border:2px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">↺ 초기화</button><button type="button" id="printBtn" style="margin-left:6px;background:var(--card);border:2px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">📄 PDF 저장</button></div>
+    <div class="sec-title"><span class="n">1</span>공사 기본정보 입력 <button type="button" id="resetBtn" style="margin-left:auto;background:var(--card);border:2px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">↺ 초기화</button><button type="button" id="pvBtn" style="margin-left:6px;background:var(--card);border:2px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">📄 PDF 미리보기</button><button type="button" id="printBtn" style="margin-left:6px;background:#3182f6;border:2px solid #3182f6;border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer">🖨 PDF 출력하기</button></div>
     <div class="card">
       <div class="grid">
         <div class="fld wide"><label>공사명</label><input id="i_name" value="" placeholder="00초 신축공사"></div>
@@ -263,7 +285,7 @@
             <option>해남</option><option>장흥</option><option>고흥</option><option>흑산도</option><option>진도</option>
           </select><span class="hint">2015~2024 평년값</span></div>
         <div class="fld"><label>비작업일수 (검토1안, 일)</label><input id="i_nowork" type="number" value="" placeholder="자동 산정"><span class="hint">비우면 자동 · 값 입력 시 우선</span></div>
-        <div class="fld wide"><div id="nwCalc" style="background:var(--yellow);border:1.5px solid var(--line);border-radius:8px;padding:11px 13px;font-size:12.5px;color:var(--sub);line-height:1.7"></div></div>
+        <div class="fld wide"><div id="nwCalc" style="background:var(--yellow);border:1px solid var(--line);border-radius:8px;padding:11px 13px;font-size:12.5px;color:var(--sub);line-height:1.7"></div></div>
         <div class="fld wide">
           <button type="button" id="nwToggle" style="width:100%;background:var(--card);border:2px solid var(--line);border-radius:10px;padding:10px 14px;font:inherit;font-size:13px;font-weight:800;color:var(--navy);cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:center">📊 비작업일수 산정 근거 보기 <span id="nwArrow">▾</span></button>
         </div>
@@ -273,9 +295,9 @@
           <div id="nwKpi" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px"></div>
           <div id="nwChart" style="margin-bottom:12px"></div>
           <div id="nwFactors" style="margin-bottom:12px"></div>
-          <details style="border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card);margin-bottom:12px"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">📊 월별 비작업일수 산정 내역 (A·B·C)</summary><div id="nwTable" style="margin-top:10px"></div></details>
-          <details style="border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card);margin-bottom:12px"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">📅 법정공휴일 상세 (부록①)</summary><div id="nwHoliday" style="margin-top:10px"></div></details>
-          <details style="margin-top:12px;border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card)">
+          <details style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card);margin-bottom:12px"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">📊 월별 비작업일수 산정 내역 (A·B·C)</summary><div id="nwTable" style="margin-top:10px"></div></details>
+          <details style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card);margin-bottom:12px"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">📅 법정공휴일 상세 (부록①)</summary><div id="nwHoliday" style="margin-top:10px"></div></details>
+          <details style="margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card)">
             <summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">🌦 기상 작업제한 기준 (부록②)</summary>
             <div style="overflow:auto;margin-top:10px">
               <table style="width:100%"><thead><tr><th style="text-align:left">구분</th><th>제한 기준</th><th style="text-align:left">주요 제한 공종</th></tr></thead><tbody>
@@ -556,16 +578,16 @@ function autoNowork(startISO, totalDays, region){
 }
 function nwKpiChart(res, totalDays, region){
  const k=$('nwKpi'), c=$('nwChart'); if(!k||!c) return;
- const card=(nm,v,u,cl)=>'<div style="background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px">'
+ const card=(nm,v,u,cl)=>'<div style="background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px">'
   +'<div style="font-size:11.5px;color:var(--sub);font-weight:700">'+nm+'</div>'
   +'<div style="font-size:20px;font-weight:900;margin-top:3px;color:'+(cl||'var(--navy)')+';font-family:var(--mono)">'+v+'<span style="font-size:11.5px;font-weight:700;color:var(--sub);margin-left:3px">'+u+'</span></div></div>';
  k.innerHTML=card('A 기상 비작업일수',res.A,'일')+card('B 법정공휴일',res.B,'일')
   +card('C 중복일수','−'+res.C,'일')+card('적용 비작업일수',res.total,'일','var(--work)');
  const max=Math.max(1,...res.rows.map(r=>r.A+r.B));
  const H=110;
- c.innerHTML='<div style="background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px">'
+ c.innerHTML='<div style="background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px">'
   +'<div style="font-size:12px;font-weight:800;color:var(--navy);margin-bottom:8px">월별 비작업일수 구성 <span style="font-weight:600;color:var(--sub)">(A 기상 + B 공휴일 · 점선 = 월 하한 8일)</span></div>'
-  +'<div style="display:flex;align-items:flex-end;gap:5px;height:'+(H+34)+'px;position:relative;border-bottom:1.5px solid var(--line)">'
+  +'<div style="display:flex;align-items:flex-end;gap:5px;height:'+(H+34)+'px;position:relative;border-bottom:1px solid var(--line)">'
   +'<div style="position:absolute;left:0;right:0;bottom:'+(34+(8/max)*H)+'px;border-top:1px dashed var(--sub);opacity:.6"></div>'
   +res.rows.map(r=>{
      const hA=(r.A/max)*H, hB=(r.B/max)*H;
@@ -592,7 +614,7 @@ function nwFactorPanel(s, totalDays, region, autoRes){
  // 요인 카드
  const cards=FKEY.map(([k,nm,cond,col])=>{
    const v=F.sums[k], pct=F.total?Math.round(v/F.total*100):0;
-   return '<div style="background:var(--card);border:1.5px solid var(--line);border-left:4px solid '+col+';border-radius:10px;padding:10px 12px">'
+   return '<div style="background:var(--card);border:1px solid var(--line);border-left:4px solid '+col+';border-radius:10px;padding:10px 12px">'
     +'<div style="font-size:12px;font-weight:800;color:var(--navy)">'+nm+'</div>'
     +'<div style="font-family:var(--mono);font-size:20px;font-weight:900;color:'+col+';margin-top:3px">'+v+'<span style="font-size:11px;color:var(--sub);margin-left:3px">일</span></div>'
     +'<div style="height:5px;background:var(--line2);border-radius:100px;margin:6px 0 5px;overflow:hidden"><i style="display:block;height:100%;width:'+pct+'%;background:'+col+'"></i></div>'
@@ -607,7 +629,7 @@ function nwFactorPanel(s, totalDays, region, autoRes){
    +FKEY.map(([k])=>'<td>'+F.sums[k]+'</td>').join('')+'<td style="color:var(--navy)">'+F.total+'</td></tr>';
  // 산출 근거 요약
  const A=autoRes?autoRes.A:F.total, B=autoRes?autoRes.B:0, C=autoRes?autoRes.C:0, T=autoRes?autoRes.total:F.total;
- const flow='<div style="background:var(--yellow);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12.5px;line-height:1.9;margin-bottom:12px">'
+ const flow='<div style="background:var(--yellow);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12.5px;line-height:1.9;margin-bottom:12px">'
   +'<b style="color:var(--navy)">산출 근거 ('+region+' · 산정기간 '+totalDays+'일)</b><br>'
   +'① 기상 비작업일수 A = 강우 '+F.sums.rain+' + 강풍 '+F.sums.wind+' + 혹서 '+F.sums.hot+' + 혹한 '+F.sums.cold+' + 강설 '+F.sums.snow+' = <b>'+F.total+'일</b><br>'
   +'② 법정공휴일 B = <b>'+B+'일</b> (부록① 연도별 공휴일)<br>'
@@ -616,7 +638,7 @@ function nwFactorPanel(s, totalDays, region, autoRes){
   +'⑤ <b style="color:var(--navy);font-size:14px">적용 비작업일수 = A + B − C = '+T+'일</b></div>';
  el.innerHTML='<div style="margin-bottom:12px">'+flow+'</div>'
   +'<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:12px">'+cards+'</div>'
-  +'<details style="border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card)"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">📋 월별 요인 상세 내역</summary>'
+  +'<details style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card)"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">📋 월별 요인 상세 내역</summary>'
   +'<div style="overflow:auto;margin-top:10px"><table style="width:100%"><thead>'+head+'</thead><tbody>'+body+foot+'</tbody></table></div></details>'
   +'<div style="font-size:11px;color:var(--sub);margin-top:8px;line-height:1.6">※ 기상 데이터는 전남·광주 10개 관측지점의 2015~2024년 평년값 기준이며, 붉은 숫자는 월 3일 이상 발생 요인입니다. 실제 산정 시 기상청 관측자료(최근 10년)와 현장 여건을 확인하십시오.</div>';
 }
@@ -836,6 +858,71 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
  });
  var pb=document.getElementById('printBtn');
  if(pb) pb.addEventListener('click',function(){window.print();});
+ /* ===== 인쇄 미리보기 (A4) ===== */
+ function printCssAsScreen(){
+   var out='';
+   for(var i=0;i<document.styleSheets.length;i++){
+     var rules; try{ rules=document.styleSheets[i].cssRules; }catch(e){ continue; }
+     if(!rules) continue;
+     for(var j=0;j<rules.length;j++){
+       var r=rules[j];
+       if(r.type===4 && /print/.test(r.conditionText||r.media&&r.media.mediaText||'')){
+         for(var k=0;k<r.cssRules.length;k++){
+           var t=r.cssRules[k].cssText||'';
+           if(t.indexOf('@page')===0) continue;
+           out+=t+'\n';
+         }
+       }
+     }
+   }
+   return out;
+ }
+ function syncFormAttrs(root){
+   root.querySelectorAll('input').forEach(function(i){
+     if(i.type==='checkbox'||i.type==='radio'){ if(i.checked) i.setAttribute('checked',''); else i.removeAttribute('checked'); }
+     else i.setAttribute('value',i.value);
+   });
+   root.querySelectorAll('select').forEach(function(s){
+     [].forEach.call(s.options,function(o){ o.removeAttribute('selected'); });
+     if(s.selectedIndex>=0) s.options[s.selectedIndex].setAttribute('selected','');
+   });
+   root.querySelectorAll('textarea').forEach(function(t){ t.textContent=t.value; });
+ }
+ var pvb=document.getElementById('pvBtn');
+ if(pvb) pvb.addEventListener('click',function(){
+   var clone=document.documentElement.cloneNode(true);
+   syncFormAttrs(clone);
+   clone.querySelectorAll('#pvOverlay,#resetBtn,#printBtn,#pvBtn,#themeToggle').forEach(function(e){ e.remove(); });
+   clone.querySelectorAll('details').forEach(function(e){ e.setAttribute('open',''); });
+   clone.querySelectorAll('script').forEach(function(e){ e.remove(); });
+   var theme=document.documentElement.getAttribute('data-theme')||'';
+   var extra='<style>'+printCssAsScreen()+
+     'html,body{background:#fff!important}body{width:190mm;margin:0 auto;padding:10mm 6mm 14mm}'+
+     '.wrap{max-width:none!important;padding:0!important}</style>';
+   var src='<!doctype html><html lang="ko"'+(theme?' data-theme="'+theme+'"':'')+'>'+clone.innerHTML+extra+'</html>';
+   var ov=document.createElement('div');
+   ov.id='pvOverlay';
+   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(10,14,25,.72);display:flex;flex-direction:column;align-items:center;padding:18px 12px;overflow:auto';
+   ov.innerHTML='<div style="display:flex;gap:8px;margin-bottom:12px;flex:0 0 auto">'+
+     '<button type="button" id="pvPrint" style="background:#3182f6;color:#fff;border:0;border-radius:100px;padding:8px 16px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer">🖨 인쇄 / PDF 저장</button>'+
+     '<button type="button" id="pvClose" style="background:#fff;color:#4e5968;border:0;border-radius:100px;padding:8px 16px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer">✕ 늫기</button></div>'+
+     '<div style="background:#fff;box-shadow:0 12px 40px rgba(0,0,0,.4);border-radius:4px;overflow:hidden;flex:0 0 auto">'+
+     '<iframe id="pvFrame" style="width:794px;height:1123px;border:0;display:block"></iframe></div>'+
+     '<div style="color:#dfe6f0;font-size:12.5px;margin-top:10px;flex:0 0 auto">A4 세로 · 여백 10mm 기준 미리보기입니다. 실제 인쇄는 내용 길이에 따라 여러 장으로 나뉩니다.</div>';
+   document.body.appendChild(ov);
+   var fr=ov.querySelector('#pvFrame');
+   fr.srcdoc=src;
+   fr.addEventListener('load',function(){
+     try{
+       var d=fr.contentDocument;
+       var hh=Math.max(d.documentElement.scrollHeight,d.body?d.body.scrollHeight:0);
+       fr.style.height=Math.max(hh+24,1123)+'px';
+     }catch(e){ fr.style.height='3000px'; }
+   });
+   ov.querySelector('#pvClose').addEventListener('click',function(){ ov.remove(); });
+   ov.querySelector('#pvPrint').addEventListener('click',function(){ ov.remove(); setTimeout(function(){ window.print(); },120); });
+   ov.addEventListener('click',function(e){ if(e.target===ov) ov.remove(); });
+ });
  var ids=['i_name','i_cost','i_start','i_fac','i_area','i_up','i_down','i_roof','i_isl','i_safety','i_bear','i_winter','i_pile','i_earth','i_park','i_civil','i_land','i_dem','i_fdem','i_asb','i_prep','i_fin','i_nowork'];
  var def={}; ids.forEach(function(id){var el=$(id);if(el)def[id]=el.value;});
  var itemsDef=JSON.parse(JSON.stringify(items1));

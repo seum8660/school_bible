@@ -58,11 +58,12 @@
   th{background:var(--accent-soft);color:var(--accent);font-weight:800;padding:9px 10px;text-align:center;border:1px solid var(--line);white-space:nowrap}
   td{padding:8px 10px;text-align:center;border:1px solid var(--line);color:var(--text)}
   tr:nth-child(even) td{background:var(--panel2)}
+  .tw th,.tw td{text-align:center!important}
   .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
   .btn{border:1.5px solid var(--line);background:var(--panel);color:var(--text);font:inherit;font-size:13px;font-weight:700;padding:9px 16px;border-radius:100px;cursor:pointer}
   .btn.p{background:var(--accent);border-color:var(--accent);color:#fff}
   @page{size:A4 portrait;margin:14mm 12mm}
-  @media print{header .iconbtn,.btnrow{display:none!important}body{background:#fff}.panel{break-inside:avoid;box-shadow:none}}
+  @media print{header .iconbtn,.btnrow{display:none!important}body{background:#fff}.panel{break-inside:avoid;box-shadow:none}#wx-pv{display:none!important}}
 
   @media print{
     @page{size:A4 portrait;margin:10mm}
@@ -116,7 +117,16 @@
     </div>
     <div class="btnrow">
       <button class="btn" onclick="resetWx()">↺ 초기화</button>
+      <button class="btn" onclick="wxPreview()">📄 PDF 미리보기</button>
       <button class="btn p" onclick="window.print()">🖨 인쇄 · PDF</button>
+    </div>
+    <div id="wx-pv" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(20,22,30,.72);overflow:auto;padding:0 0 40px">
+      <div style="position:sticky;top:0;display:flex;gap:8px;justify-content:center;align-items:center;padding:12px;background:rgba(20,22,30,.9);backdrop-filter:blur(6px)">
+        <span style="color:#fff;font-weight:800;font-size:14px;margin-right:8px">PDF 미리보기 (A4)</span>
+        <button class="btn p" onclick="window.print()">🖨 PDF 출력하기</button>
+        <button class="btn" onclick="wxPreviewClose()">✕ 닫기</button>
+      </div>
+      <div id="wx-pv-body" style="display:flex;flex-direction:column;align-items:center;gap:18px;padding:18px 12px"></div>
     </div>
   </div>
 
@@ -195,8 +205,10 @@
   const $=id=>document.getElementById(id);
   const sel=$('wx-region'), from=$('wx-from'), to=$('wx-to'), out=$('wx-result');
   const iso=d=>d.toISOString().slice(0,10);
+  const plusMonth=d=>{const x=new Date(d.getFullYear(),d.getMonth()+1,d.getDate());x.setDate(x.getDate()-1);return x;};
+  let autoEnd=true;
   (function initDates(){
-    const t=new Date(), s=new Date(t.getFullYear(),t.getMonth(),1), e=new Date(t.getFullYear(),t.getMonth()+12,0);
+    const t=new Date(), s=new Date(t.getFullYear(),t.getMonth(),1), e=plusMonth(s);
     from.value=iso(s); to.value=iso(e); syncText();
   })();
   function syncText(){ const a=$('wx-from-t'), b=$('wx-to-t'); if(a)a.value=from.value; if(b)b.value=to.value; }
@@ -265,7 +277,7 @@
     const WD=['일','월','화','수','목','금','토'];
     // 양력 고정 공휴일 (MM-DD)
     const HOLD=['01-01','03-01','05-05','06-06','08-15','10-03','10-09','12-25'];
-    let dayRows='';
+    let dayRows='', dRain=0, dWmax=0, dTmax=-99, dTmin=99, dOff=0, dExt=0, dBad=0, dCnt=0;
     rows.slice().sort((a,b)=>(a.tm||'')<(b.tm||'')?-1:1).forEach(o=>{
       if(!o.tm) return;
       const rain=parseFloat(o.sumRn||0)||0, wind=parseFloat(o.maxWs||0)||0;
@@ -281,6 +293,8 @@
       const rowStyle = off ? ' style="background:color-mix(in srgb,var(--sub) 8%,transparent);color:var(--sub)"'
                      : bad ? ' style="background:color-mix(in srgb,#d92c20 6%,transparent)"' : '';
       const verdict = off ? (isSun?'일요일 · 제외':'공휴일 · 제외') : (bad?tag:'작업가능');
+      dCnt++; dRain+=rain; if(wind>dWmax)dWmax=wind; if(o.maxTa&&tmax>dTmax)dTmax=tmax; if(o.minTa&&tmin<dTmin)dTmin=tmin;
+      if(off)dOff++; if(bad){dBad++; dExt++;}
       dayRows+=`<tr${rowStyle}>`
         +`<td style="text-align:left;font-weight:700">${o.tm} <span style="color:var(--sub);font-weight:600">(${wd})</span></td>`
         +`<td${rB?' style="'+hi+'"':''}>${rain?rain.toFixed(1):'-'}</td>`
@@ -288,15 +302,16 @@
         +`<td${hB?' style="'+hi+'"':''}>${o.maxTa?tmax.toFixed(1):'-'}</td>`
         +`<td${cB?' style="'+hi+'"':''}>${o.minTa?tmin.toFixed(1):'-'}</td>`
         +`<td style="font-weight:700;color:var(--sub)">${off?(isSun?'일요일':'공휴일'):'—'}</td>`
+        +`<td style="font-weight:800;color:${bad?'var(--ops-d)':'var(--sub)'}">${bad?'○':'—'}</td>`
         +`<td style="font-weight:700;color:${off?'var(--sub)':(bad?'#d92c20':'var(--sub)')}">${verdict}</td></tr>`;
     });
-    let tot=0,totDays=0,body='';
+    let tot=0,totDays=0,body='',sR=0,sW=0,sH=0,sC=0,sB=0,sHol=0,sExt=0,sRain=0;
     keys.forEach(k=>{
       const m=M[k]; const [y,mm]=k.split('-');
-      const hol=Math.round(HOL[+mm-1]*(m.days/30.4)*10)/10;
-      const dup=Math.round(m.bad*hol/Math.max(1,m.days)*10)/10;
-      const net=Math.max(Math.round(8*(m.days/30.4)*10)/10, rd(m.bad+hol-dup));
+      const hol=m.off||0;                    // 실측: 실제 일요일·공휴일 수
+      const net=(m.bad||0)+hol;              // 기상계(비휴일 초과일) + 휴일 → 중복 없음
       tot+=net; totDays+=m.days;
+      sR+=m.rain; sW+=m.wind; sH+=m.hot; sC+=m.cold; sB+=m.bad; sHol+=hol; sExt+=(m.ext||0); sRain+=m.rainSum;
       body+=`<tr><td style="text-align:left;font-weight:700">${y}.${mm} <span style="color:var(--sub);font-weight:600">(${m.days}일)</span></td>`
         +`<td>${m.rain}</td><td>${m.wind}</td><td>${m.hot}</td><td>${m.cold}</td>`
         +`<td style="font-weight:700">${m.bad}</td><td>${hol}</td>`
@@ -312,9 +327,13 @@
         <div class="c on"><div class="nm">📅 연장가능일수</div><div class="vl" style="color:var(--ops-d)">${cExt}<span>일</span></div></div>
       </div>
       <div class="note" style="margin:0 0 14px;border-color:#e7a23c;color:#8a5a10;background:color-mix(in srgb,#e7a23c 10%,transparent)">⚠ 본 결과는 <b>참고용 자동 집계값</b>입니다. 공사기간 산정 · 공기연장 등 공식 자료로 활용할 때는 반드시 <b>기상청 기상자료개방포털(data.kma.go.kr)</b>에서 원본 관측자료를 직접 확인하십시오.</div>
-      <div class="tw"><table><thead><tr><th style="text-align:left">연·월</th><th>강우</th><th>강풍</th><th>혹서</th><th>혹한</th><th>기상계</th><th>공휴일</th><th>적용</th><th>연장가능</th><th style="text-align:left">비고</th></tr></thead><tbody>${body}</tbody></table></div>
+      <div style="display:flex;justify-content:flex-end;margin:0 0 6px"><button class="btn" type="button" onclick="copyTbl('wx-tbl-month',this)">📋 표 복사</button></div>
+      <div class="tw"><table id="wx-tbl-month"><thead><tr><th style="text-align:left">연·월</th><th>강우</th><th>강풍</th><th>혹서</th><th>혹한</th><th>기상계</th><th>공휴일</th><th>적용</th><th>연장가능</th><th style="text-align:left">비고</th></tr></thead><tbody>${body}</tbody>
+      <tfoot><tr style="background:color-mix(in srgb,var(--ops) 10%,transparent);border-top:2px solid var(--ops)"><td style="text-align:center;font-weight:800">합계 (${totDays}일)</td><td style="text-align:center;font-weight:800">${sR}</td><td style="text-align:center;font-weight:800">${sW}</td><td style="text-align:center;font-weight:800">${sH}</td><td style="text-align:center;font-weight:800">${sC}</td><td style="text-align:center;font-weight:800">${sB}</td><td style="text-align:center;font-weight:800">${rd(sHol)}</td><td style="text-align:center;font-weight:800;color:var(--ops-d)">${rd(tot)}</td><td style="text-align:center;font-weight:800;color:var(--ops-d)">${sExt}</td><td style="text-align:left;font-size:12px;color:var(--sub)">강수 ${rd(sRain)}mm</td></tr></tfoot></table></div>
       <div class="sec-h" style="margin-top:22px"><span class="chip">일별</span><div><h2>일자별 실측 자료</h2><p>기상청 ASOS 일자료 · 기준 초과일은 붉게 표시 · 일요일·공휴일은 제외</p></div></div>
-      <div class="tw" style="max-height:520px;overflow:auto"><table><thead><tr><th style="text-align:left">일자</th><th>강수량<br><span style="font-weight:600;color:var(--sub)">mm</span></th><th>최대풍속<br><span style="font-weight:600;color:var(--sub)">m/s</span></th><th>최고기온<br><span style="font-weight:600;color:var(--sub)">℃</span></th><th>최저기온<br><span style="font-weight:600;color:var(--sub)">℃</span></th><th>공휴일</th><th>판정</th></tr></thead><tbody>${dayRows}</tbody></table></div>`;
+      <div style="display:flex;justify-content:flex-end;margin:0 0 6px"><button class="btn" type="button" onclick="copyTbl('wx-tbl-day',this)">📋 표 복사</button></div>
+      <div class="tw" style="max-height:520px;overflow:auto"><table id="wx-tbl-day"><thead><tr><th style="text-align:left">일자</th><th>강수량<br><span style="font-weight:600;color:var(--sub)">mm</span></th><th>최대풍속<br><span style="font-weight:600;color:var(--sub)">m/s</span></th><th>최고기온<br><span style="font-weight:600;color:var(--sub)">℃</span></th><th>최저기온<br><span style="font-weight:600;color:var(--sub)">℃</span></th><th>공휴일</th><th>연장가능</th><th>판정</th></tr></thead><tbody>${dayRows}</tbody>
+      <tfoot><tr style="background:color-mix(in srgb,var(--ops) 10%,transparent);border-top:2px solid var(--ops)"><td style="text-align:center;font-weight:800">합계 (${dCnt}일)</td><td style="text-align:center;font-weight:800">${rd(dRain)}</td><td style="text-align:center;font-weight:800">${dWmax?dWmax.toFixed(1):'-'}</td><td style="text-align:center;font-weight:800">${dTmax>-99?dTmax.toFixed(1):'-'}</td><td style="text-align:center;font-weight:800">${dTmin<99?dTmin.toFixed(1):'-'}</td><td style="text-align:center;font-weight:800">${dOff}</td><td style="text-align:center;font-weight:800;color:var(--ops-d)">${dExt}</td><td style="text-align:center;font-size:12px;color:var(--sub)">기준초과 ${dBad}일 · 연장가능 ${dExt}일</td></tr></tfoot></table></div>`;
   }
 
   function renderNormals(r,s,e){
@@ -349,12 +368,102 @@
         <div class="c"><div class="nm">법정공휴일</div><div class="vl">${rd(th)}<span>일</span></div></div>
       </div>
       <div class="note" style="margin:0 0 14px;border-color:#e7a23c;color:#8a5a10;background:color-mix(in srgb,#e7a23c 10%,transparent)">⚠ 본 결과는 <b>평년값 기반 추정치</b>입니다. 공사기간 산정 · 공기연장 등 공식 자료로 활용할 때는 반드시 <b>기상청 기상자료개방포털(data.kma.go.kr)</b>에서 원본 관측자료를 직접 확인하십시오.</div>
-      <div class="tw"><table><thead><tr><th style="text-align:left">연·월</th><th>기상</th><th>공휴일</th><th>중복</th><th>적용</th><th style="text-align:left">비고</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+      <div style="display:flex;justify-content:flex-end;margin:0 0 6px"><button class="btn" type="button" onclick="copyTbl('wx-tbl-norm',this)">📋 표 복사</button></div>
+      <div class="tw"><table id="wx-tbl-norm"><thead><tr><th style="text-align:left">연·월</th><th>기상</th><th>공휴일</th><th>중복</th><th>적용</th><th style="text-align:left">비고</th></tr></thead><tbody>${rows}</tbody></table></div>`;
   }
-  window.resetWx=function(){ sel.selectedIndex=1; const t=new Date(); from.value=iso(new Date(t.getFullYear(),t.getMonth(),1)); to.value=iso(new Date(t.getFullYear(),t.getMonth()+12,0)); syncText(); run(); };
-  ['wx-region','wx-from','wx-to','wx-src'].forEach(id=>{const e2=$(id);e2.addEventListener('input',()=>{syncText();run();});e2.addEventListener('change',()=>{syncText();run();});});
+  window.resetWx=function(){ sel.selectedIndex=1; const t=new Date(), s=new Date(t.getFullYear(),t.getMonth(),1); from.value=iso(s); to.value=iso(plusMonth(s)); autoEnd=true; syncText(); run(); };
+  ['wx-region','wx-from','wx-to','wx-src'].forEach(id=>{const e2=$(id);const h=()=>{
+    if(id==='wx-to') autoEnd=false;
+    if(id==='wx-from'&&from.value){ const d=new Date(from.value); if(autoEnd||!to.value||new Date(to.value)<=d) to.value=iso(plusMonth(d)); }
+    syncText();run();};
+    e2.addEventListener('input',h);e2.addEventListener('change',h);});
   run();
 })();
+window.wxPreviewClose=function(){ const p=document.getElementById('wx-pv'); if(p){p.style.display='none';} document.body.style.overflow=''; };
+window.wxPreview=function(){
+  const res=document.getElementById('wx-result'); if(!res) return;
+  const body=document.getElementById('wx-pv-body'), pv=document.getElementById('wx-pv');
+  const PAD=12, SHEET_H=297, SHEET_W=210;                 // mm
+  const mm=n=>n*96/25.4;                                  // mm → px
+  const LIMIT=mm(SHEET_H-PAD*2);
+  body.innerHTML='';
+  pv.style.display='block'; document.body.style.overflow='hidden';
+  body.style.transform='';
+  const newSheet=()=>{
+    const s=document.createElement('div');
+    s.style.cssText=`width:${SHEET_W}mm;height:${SHEET_H}mm;background:#fff;color:#111;padding:${PAD}mm;box-shadow:0 12px 40px rgba(0,0,0,.35);box-sizing:border-box;overflow:hidden;position:relative`;
+    const inner=document.createElement('div'); inner.style.cssText='height:100%';
+    s.appendChild(inner); body.appendChild(s); return inner;
+  };
+  let page=newSheet();
+  const fits=()=>page.scrollHeight<=LIMIT+1;
+  const push=node=>{ page.appendChild(node); if(!fits()&&page.childNodes.length>1){ page.removeChild(node); page=newSheet(); page.appendChild(node); } };
+  const clone=res.cloneNode(true);
+  clone.querySelectorAll('button').forEach(b=>b.remove());
+  clone.querySelectorAll('.tw').forEach(w=>{w.style.maxHeight='none';w.style.overflow='visible';});
+  clone.querySelectorAll('table').forEach(t=>{t.style.fontSize='9pt';});
+  [...clone.children].forEach(block=>{
+    const tbl=block.matches('.tw')?block.querySelector('table'):null;
+    if(!tbl){ push(block); return; }
+    // 표는 행 단위로 페이지 분할 (머리행 반복)
+    const rowsAll=[...tbl.tBodies[0].rows], foot=tbl.tFoot;
+    const mk=()=>{ const w=block.cloneNode(false), t2=tbl.cloneNode(false);
+      t2.appendChild(tbl.tHead.cloneNode(true)); t2.appendChild(document.createElement('tbody'));
+      w.appendChild(t2); return {w,t2}; };
+    let cur=mk(); push(cur.w);
+    rowsAll.forEach(r=>{
+      cur.t2.tBodies[0].appendChild(r.cloneNode(true));
+      if(!fits()){
+        cur.t2.tBodies[0].lastChild.remove();
+        const prev=r; cur=mk(); page=newSheet(); page.appendChild(cur.w);
+        cur.t2.tBodies[0].appendChild(prev.cloneNode(true));
+      }
+    });
+    if(foot){ cur.t2.appendChild(foot.cloneNode(true));
+      if(!fits()){ cur.t2.tFoot.remove(); const f=mk(); page=newSheet(); page.appendChild(f.w); f.t2.appendChild(foot.cloneNode(true)); } }
+  });
+  [...body.children].forEach((s,i,a)=>{
+    const n=document.createElement('div');
+    n.style.cssText='position:absolute;right:12mm;bottom:6mm;font-size:9pt;color:#888';
+    n.textContent=`${i+1} / ${a.length}`; s.appendChild(n);
+  });
+  const first=body.firstElementChild;
+  if(first){ const scale=Math.min(1,(window.innerWidth-48)/first.offsetWidth);
+    if(scale<1){ body.style.transform='scale('+scale+')'; body.style.transformOrigin='top center'; } else body.style.transform=''; }
+};
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') window.wxPreviewClose(); });
+window.copyTbl=function(id,btn){
+  const t=document.getElementById(id); if(!t) return;
+  const rows=[...t.querySelectorAll('tr')].map(tr=>[...tr.children].map(c=>c.innerText.replace(/\s+/g,' ').trim()));
+  const tsv=rows.map(r=>r.join('\t')).join('\n');
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const html='<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000;font-family:맑은 고딕;font-size:10pt">'
+    +rows.map((r,i)=>'<tr>'+r.map(c=>i===0
+        ?`<th style="border:1px solid #000;background:#EEF2FF;padding:4px 8px;text-align:center;font-weight:bold">${esc(c)}</th>`
+        :`<td style="border:1px solid #000;padding:4px 8px;text-align:center">${esc(c)}</td>`).join('')+'</tr>').join('')
+    +'</table>';
+  const done=ok=>{ if(!btn) return; const o=btn.textContent; btn.textContent=ok?'✅ 복사됨':'⚠ 복사 실패'; setTimeout(()=>btn.textContent=o,1500); };
+  // 1순위: 실제 DOM 선택 복사 (엑셀·한글이 테두리·서식을 그대로 인식)
+  const richCopy=()=>{
+    const holder=document.createElement('div');
+    holder.setAttribute('contenteditable','true');
+    holder.style.cssText='position:fixed;left:-9999px;top:0;white-space:normal';
+    holder.innerHTML=html;
+    document.body.appendChild(holder);
+    const sel=window.getSelection(), rg=document.createRange();
+    rg.selectNodeContents(holder); sel.removeAllRanges(); sel.addRange(rg);
+    let ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+    sel.removeAllRanges(); holder.remove();
+    return ok;
+  };
+  const fallback=()=>{ const ta=document.createElement('textarea'); ta.value=tsv; document.body.appendChild(ta); ta.select();
+    let ok=false; try{ ok=document.execCommand('copy'); }catch(e){} ta.remove(); done(ok); };
+  if(richCopy()) { done(true); return; }
+  if(navigator.clipboard&&window.ClipboardItem){
+    navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([tsv],{type:'text/plain'})})])
+      .then(()=>done(true)).catch(fallback);
+  } else fallback();
+};
 </script>
 </body>
 </html>

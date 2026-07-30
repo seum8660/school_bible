@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <title>🏫학교시설업무 치트키 · SCHOOL BIBLE</title>
 <style>
@@ -806,6 +808,108 @@
   .side-nav .extlink[data-sub="site"]{border:none!important;box-shadow:none!important;background:transparent!important}
   .side-nav .extlink[data-sub="site"]:hover{background:#3182f6!important;border:none!important}
 
+  /* ================= SKIN v3 : Notion (레이아웃 유지 · 토큰만 교체) ================= */
+  :root{
+    --bg:#f6f5f4; --surface:#ffffff; --card:#ffffff; --surface-2:#f6f5f4; --surface-3:#efedeb;
+    --ink:#000000; --navy:#000000; --ink-2:#31302e; --muted:#615d59; --faint:#a39e98;
+    --line:#e6e6e6; --border:#e6e6e6;
+    --accent:#0075de; --accent-ink:#ffffff; --accent-soft:#e7f1fc;
+    --blue:#0075de; --green:#0075de; --green-d:#005bab; --amber:#615d59;
+    --p-plan:#2a9d99; --p-design:#62aef0; --p-const:#dd5b00; --p-cm:#391c57; --p-comp:#1aae39; --p-cert:#0075de; --p-calc:#213183;
+    --ops:#31302e; --ops-d:#000000;
+    --rad:12px; --radsm:8px;
+    --cardsh:0 .175px 1.041px rgba(0,0,0,.01),0 .8px 2.925px rgba(0,0,0,.02),0 2.025px 7.847px rgba(0,0,0,.027),0 4px 18px rgba(0,0,0,.04);
+    --cardsh-sm:0 .5px 1.5px rgba(0,0,0,.02),0 1.5px 5px rgba(0,0,0,.03);
+    --inset:inset 0 0 0 1px #e6e6e6;
+    --glassbd:1px solid #e6e6e6; --blur:none;
+    --shadow:var(--cardsh); --shadow-sm:var(--cardsh-sm);
+  }
+  [data-theme="dark"]{
+    --bg:#191919; --surface:#252525; --card:#252525; --surface-2:#202020; --surface-3:#2f2f2f;
+    --ink:#f5f4f2; --navy:#f5f4f2; --ink-2:#d8d5d1; --muted:#a39e98; --faint:#7c7772;
+    --line:#373737; --border:#373737;
+    --accent:#529cff; --accent-ink:#0b1a2b; --accent-soft:rgba(82,156,255,.18);
+    --blue:#529cff; --green:#529cff; --green-d:#8cbcff; --amber:#d8d5d1;
+    --p-plan:#57c7c3; --p-design:#8cc8f7; --p-const:#f08a3c; --p-cm:#c9a6f2; --p-comp:#5ecb72; --p-cert:#529cff; --p-calc:#8f9dd8;
+    --ops:#d8d5d1; --ops-d:#f5f4f2;
+    --cardsh:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.28);
+    --cardsh-sm:0 1px 3px rgba(0,0,0,.26);
+    --inset:inset 0 0 0 1px #373737;
+    --glassbd:1px solid #373737; --blur:none;
+  }
+  [data-theme="dark"] body{background:#191919;background-image:none;}
+  body{font-family:'Inter','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',system-ui,sans-serif;
+    font-feature-settings:'lnum' 1;}
+  .mono,.nav-grp,.block h4,.gres-item .gk,.cover-meta div span,.nav-title b,.hero-brand-tt b,.badge-org,
+  .sec-head .chip,.mcard-top .ph,.thr,.pnode .pn-step{font-family:'Inter','Apple SD Gothic Neo','Malgun Gothic',sans-serif;}
+  a:hover{color:var(--green-d);}
+  /* 타이포 — 굵고 촘촘한 노션 디스플레이 */
+  .hero-h1{letter-spacing:-.033em;line-height:1.02;font-weight:700;}
+  .sec-head h2{letter-spacing:-.025em;font-weight:700;}
+  .mcard-top .nm,.pnode .pn-nm,.man-t b{letter-spacing:-.012em;font-weight:700;}
+  .nav-title{font-weight:700;letter-spacing:-.02em;}
+  .nav-title b{color:var(--faint);font-weight:600;}
+  /* 면·선 — 헤어라인 + 거의 없는 그림자 */
+  .badge-org{box-shadow:var(--cardsh-sm);border:1px solid var(--border);border-radius:100px;}
+  .note{border-left:3px solid var(--accent);}
+  .sec-head .chip{border-radius:100px;font-weight:600;letter-spacing:.1px;box-shadow:none;}
+  .pill,.pb,.pm,.mtag,.who-pill{border-radius:100px;font-weight:600;}
+  .mcard,.pnode,.tl-row,.res-card,.certcard,.man-card{border-radius:var(--rad);}
+  .mcard:hover,.pnode:hover,.tl-row.lk:hover{transform:none;box-shadow:var(--cardsh);}
+  .cfield input,.cfield select,.search-box input,#global-q,.gz-field input,.bl-field input,.bl-field select,#qbox-input{
+    border:1px solid #ddd;border-radius:4px;box-shadow:none;}
+  .cfield input:focus,.cfield select:focus,.search-box input:focus,#global-q:focus,.gz-field input:focus,.bl-field input:focus,.bl-field select:focus{
+    box-shadow:var(--cardsh);border-color:#c9c9c9;}
+  /* 컨트롤 — 유틸 8px / CTA 필 */
+  .tab,.extlink,.fchip,.subbtn,.calc-reset,.expand-btns button,.theme-toggle,.pv-toggle,.pvbtn{border-radius:var(--radsm);}
+  .side-nav .extlink{border:1px solid var(--border);}
+  .tab:hover,.extlink:hover,.fchip:hover,.subbtn:hover{box-shadow:var(--cardsh-sm);}
+  .tab.active{background:var(--surface-3);color:var(--ink);}
+  .tab.active[data-p="overview"]{background:var(--accent);color:#fff;}
+  .nav-grp{background:transparent;color:var(--faint);font-size:12px;font-weight:600;letter-spacing:.4px;
+    padding:14px 12px 6px;border-radius:0;}
+  #qbox-send,#manSumOpen{border-radius:100px!important;}
+  #qbox-send{background:var(--accent)!important;color:#fff!important;border:0!important;}
+
+  /* 사이드바 모노라인 아이콘 (1a) */
+  .tab .tico{flex:0 0 auto;width:20px;height:20px;display:grid;place-items:center;margin-right:2px;}
+  .tab .tico svg{width:17px;height:17px;fill:none;stroke:var(--muted);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+  .tab:hover .tico svg{stroke:var(--ink-2);}
+  .tab.active .tico svg{stroke:currentColor;}
+  .side-nav .tab{display:flex;align-items:center;gap:8px;text-align:left;}
+
+  /* 간단 시리즈 — 딥인디고 런처 (1c 색·질감, 레이아웃 유지) */
+  .mk-block{background:#213183!important;border:1px solid #213183!important;border-radius:12px!important;padding:10px 12px!important;gap:8px!important;box-shadow:none!important;
+    width:250px;box-sizing:border-box;}
+  @media(max-width:860px){.mk-block{width:auto;}}
+  .mk-title{color:#fff!important;font-size:11.5px!important;font-weight:600!important;letter-spacing:.4px!important;}
+  .mk-grid{gap:6px!important;}
+  .mk-item{background:#fff!important;border:0!important;border-radius:8px!important;color:#000!important;
+    font-weight:600!important;font-size:12.5px!important;height:34px!important;padding:0 8px!important;gap:8px!important;
+    box-shadow:0 1.5px 4.5px rgba(0,0,0,.06),0 6px 14px rgba(0,0,0,.10)!important;}
+  .mk-item:hover{color:#000!important;transform:translateY(-1px);}
+  .mk-ic{width:22px!important;height:22px!important;border-radius:5px!important;font-size:12px!important;color:#fff!important;}
+  #boqBtn .mk-ic{background:#213183;} #specBtn .mk-ic{background:#dd5b00;} #siteBtn .mk-ic{background:#1aae39;}
+  #tripBtn .mk-ic{background:#2a9d99;} #estBtn .mk-ic{background:#62aef0;} #setBtn .mk-ic{background:#391c57;}
+  .mk-go{background:transparent!important;color:#a39e98!important;font-size:11px!important;font-weight:600!important;padding:0!important;}
+  .mk-go::after{content:"↗";}
+  .mk-go{font-size:0!important;}
+  .mk-go::after{font-size:12px;}
+
+  /* 업데이트·공지 — 타임라인 (1c) */
+  .hero-notice .hn-list{display:block;position:relative;padding-left:16px;gap:0;}
+  .hero-notice .hn-list::before{content:"";position:absolute;left:3px;top:6px;bottom:6px;width:1px;background:var(--line);}
+  .hero-notice .hn-list li{display:block;position:relative;padding:0 0 14px;}
+  .hero-notice .hn-list li:last-child{padding-bottom:0;}
+  .hero-notice .hn-list li::before{content:"";position:absolute;left:-16px;top:6px;width:7px;height:7px;border-radius:100px;background:var(--faint);}
+  .hero-notice .hn-list li.on::before{background:var(--accent);}
+  .hn-dt{font-size:11px;font-weight:600;letter-spacing:.125px;color:var(--faint);}
+  .hn-tx{font-size:13px;line-height:1.45;color:var(--ink-2);margin-top:3px;}
+  .hn-tx b{font-weight:600;color:var(--ink);}
+  .hn-head{font-size:15px;font-weight:600;letter-spacing:-.125px;}
+  .hn-dot{width:7px;height:7px;background:#1aae39;box-shadow:none;}
+  .hn-foot{font-size:12px;color:var(--faint);padding-top:10px;}
+
   </style>
   <style>
     @media print{
@@ -860,11 +964,11 @@ window.dispatchEvent(new Event('qa-fb-ready'));
         <div class="mk-title">✏️ 간단 시리즈 📝</div>
         <div class="mk-grid">
           <a class="mk-item" id="boqBtn" href="간단내역서_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="mk-ic">🧾</span><span class="mk-nm">내역서</span><span class="mk-go">go</span></a>
-          <a class="mk-item" id="specBtn" href="얼마니_소요예산_대시보드.html" target="_blank" rel="noopener noreferrer" title="얼마니 — 소요예산 산출" style="background:#e5342b;border-color:#c22a22;color:#fff"><span class="mk-ic">💵</span><span class="mk-nm">얼마니</span><span class="mk-go">go</span></a>
-          <a class="mk-item" id="siteBtn" href="공사현장_현장이.html" target="_blank" rel="noopener noreferrer" title="공사현장 현장이" style="background:#22a35a;border-color:#1b8449;color:#fff"><span class="mk-ic">🏗</span><span class="mk-nm">현장이</span><span class="mk-go">go</span></a>
-          <a class="mk-item" id="tripBtn" href="견적이.html" target="_blank" rel="noopener noreferrer" title="수선견적 견적이" style="background:#f5b301;border-color:#dd9f00;color:#3a2c00"><span class="mk-ic" style="font-size:13px">📋</span><span class="mk-nm">견적이</span><span class="mk-go" style="background:#3a2c00;color:#f5b301">go</span></a>
-          <a class="mk-item" id="estBtn" href="추산이_개략공사비_대시보드.html" target="_blank" rel="noopener noreferrer" title="추산이 — 개략공사비 (준비중)" style="background:#3182f6;border-color:#1f6fe0;color:#fff"><span class="mk-ic">📐</span><span class="mk-nm">추산이</span><span class="mk-go">go</span></a>
-          <a class="mk-item" id="setBtn" href="정산이_준공정산_대시보드.html" target="_blank" rel="noopener noreferrer" title="정산이 — 준공정산 (준비중)" style="background:#1a1d21;border-color:#000;color:#fff"><span class="mk-ic">🧮</span><span class="mk-nm">정산이</span><span class="mk-go">go</span></a>
+          <a class="mk-item" id="specBtn" href="얼마니_소요예산_대시보드.html" target="_blank" rel="noopener noreferrer" title="얼마니 — 소요예산 산출" ><span class="mk-ic">💵</span><span class="mk-nm">얼마니</span><span class="mk-go">go</span></a>
+          <a class="mk-item" id="siteBtn" href="공사현장_현장이.html" target="_blank" rel="noopener noreferrer" title="공사현장 현장이" ><span class="mk-ic">🏗</span><span class="mk-nm">현장이</span><span class="mk-go">go</span></a>
+          <a class="mk-item" id="tripBtn" href="견적이.html" target="_blank" rel="noopener noreferrer" title="수선견적 견적이" ><span class="mk-ic" style="font-size:13px">📋</span><span class="mk-nm">견적이</span><span class="mk-go" style="background:#3a2c00;color:#f5b301">go</span></a>
+          <a class="mk-item" id="estBtn" href="추산이_개략공사비_대시보드.html" target="_blank" rel="noopener noreferrer" title="추산이 — 개략공사비 (준비중)" ><span class="mk-ic">📐</span><span class="mk-nm">추산이</span><span class="mk-go">go</span></a>
+          <a class="mk-item" id="setBtn" href="정산이_준공정산_대시보드.html" target="_blank" rel="noopener noreferrer" title="정산이 — 준공정산 (준비중)" ><span class="mk-ic">🧮</span><span class="mk-nm">정산이</span><span class="mk-go">go</span></a>
         </div>
       </div>
     </div>
@@ -886,9 +990,9 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     <aside class="hero-notice">
       <div class="hn-head"><span class="hn-dot"></span>업데이트 · 공지</div>
       <ul class="hn-list">
-        <li><span class="hn-tag">기능</span><div>🔥 초간단 수선견적서 작성기 <b>"견적이"</b> · 초간단 현장사진관리 <b>"현장이"</b> 개발 중</div></li>
-        <li><span class="hn-tag">NEW</span><div>🔥 <b>각종 매뉴얼 요약·보고서 업로드 중</b> — 순차 공개 예정</div></li>
-        <li><span class="hn-tag">NEW</span><div>🔥 <b>간단내역서 만들기</b> 기능 추가 — 일위대가 자동참조 내역서·원가계산서·단가조사</div></li>
+        <li class="on"><div class="hn-dt">7월 30일</div><div class="hn-tx">각종 매뉴얼 <b>13종</b> 요약 공개 — 건축 설계공모 운영 실무가이드 추가</div></li>
+        <li><div class="hn-dt">7월 24일</div><div class="hn-tx">초간단 수선견적서 <b>견적이</b> 공개 · 현장사진관리 <b>현장이</b> 개발 중</div></li>
+        <li><div class="hn-dt">7월 18일</div><div class="hn-tx"><b>간단내역서 만들기</b> 추가 — 일위대가 자동참조 내역서·원가계산서·단가조사</div></li>
       </ul>
       <div class="hn-foot">ver 4.0 · 2026-07-24</div>
     </aside>
@@ -898,30 +1002,24 @@ window.dispatchEvent(new Event('qa-fb-ready'));
   <aside class="sidebar">
     <nav class="side-nav">
       <div class="nav-grp">제도 · 법령</div>
-      <button class="tab active" data-p="overview"><span class="dot"></span>전체 개요</button>
-      <button class="tab" data-p="plan"><span class="dot"></span>제1장 기획</button>
-      <button class="tab" data-p="design"><span class="dot"></span>제2장 설계</button>
-      <button class="tab" data-p="const"><span class="dot"></span>제3장 시공</button>
-      <button class="tab" data-p="cm"><span class="dot"></span>제4장 건설사업관리</button>
-      <button class="tab" data-p="comp"><span class="dot"></span>제5장 준공</button>
-      <button class="tab" data-p="manual"><span class="dot"></span>제6장 각종 매뉴얼</button>
+      <button class="tab active" data-p="overview"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>전체 개요</button>
+      <button class="tab" data-p="plan"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><circle cx="12" cy="14" r="5"/><path d="M10 20h4"/></svg></span>제1장 기획</button>
+      <button class="tab" data-p="design"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20 20 4M14 4h6v6"/><path d="M4 14v6h6"/></svg></span>제2장 설계</button>
+      <button class="tab" data-p="const"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M6 21V9l6-4 6 4v12"/><path d="M10 21v-5h4v5"/></svg></span>제3장 시공</button>
+      <button class="tab" data-p="cm"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></svg></span>제4장 건설사업관리</button>
+      <button class="tab" data-p="comp"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>제5장 준공</button>
+      <button class="tab" data-p="manual"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h6v18H6a2 2 0 0 1-2-2z"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg></span>제6장 각종 매뉴얼</button>
       <div class="nav-grp">실무 운영</div>
-      <button class="tab" data-p="proc"><span class="dot"></span>📋 실무 절차 타임라인</button>
-      <button class="tab" data-p="check"><span class="dot"></span>✅ 단계별 체크리스트</button>
-      <button class="tab" data-p="check-owner" data-sub="check" style="display:none"><span class="dot"></span>발주자 의무</button>
-      <button class="tab" data-p="check-jn" data-sub="check" style="display:none"><span class="dot"></span>전남·광주</button>
-      <button class="tab" data-p="check-etc" data-sub="check" style="display:none"><span class="dot"></span>타시도</button>
-      <button class="tab" data-p="law"><span class="dot"></span>📖 법령 검색</button>
-      <button class="tab" data-p="price"><span class="dot"></span>📐 2026 시설단가</button>
-      <button class="tab" data-p="glossary"><span class="dot"></span>📖 용어정리</button>
-      <button class="tab" data-p="ratio"><span class="dot"></span>📊 2026 제비율표</button>
-      <button class="tab" data-p="ilwidan"><span class="dot"></span>📊 2026(하) 일위대가</button>
-      <div class="nav-grp" id="siteGrp" style="cursor:pointer;display:flex;align-items:center;gap:6px">관련 사이트 <span id="siteArrow" style="font-size:10px;margin-left:auto">▾</span></div>
-      <a class="extlink" data-sub="site" style="display:none;width:88%;margin-left:auto;font-size:12.5px;padding:8px 11px;min-height:36px" href="https://www.moleg.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb" style="color:#191f28;font-weight:800">⚖️ 법제처</span><span class="ext">↗</span></a>
-      <a class="extlink" data-sub="site" style="display:none;width:88%;margin-left:auto;font-size:12.5px;padding:8px 11px;min-height:36px" href="https://www.csi.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb" style="color:#191f28;font-weight:800">🦺 CSI 안전관리망</span><span class="ext">↗</span></a>
-      <a class="extlink" data-sub="site" style="display:none;width:88%;margin-left:auto;font-size:12.5px;padding:8px 11px;min-height:36px" href="https://work.keiis.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb" style="color:#191f28;font-weight:800">🏫 교육시설통합정보망</span><span class="ext">↗</span></a>
-      <a class="extlink" data-sub="site" style="display:none;width:88%;margin-left:auto;font-size:12.5px;padding:8px 11px;min-height:36px" href="https://www.cems.kr/" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb" style="color:#191f28;font-weight:800">🛠 CEMS</span><span class="ext">↗</span></a>
-      <a class="extlink" data-sub="site" style="display:none;width:88%;margin-left:auto;font-size:12.5px;padding:8px 11px;min-height:36px" href="https://shop.g2b.go.kr" target="_blank" rel="noopener noreferrer"><span class="dot"></span><span class="lb" style="color:#191f28;font-weight:800">🛒 종합쇼핑몰</span><span class="ext">↗</span></a>
+      <button class="tab" data-p="proc"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h13"/><circle cx="19" cy="12" r="1.6"/></svg></span>실무 절차 타임라인</button>
+      <button class="tab" data-p="check"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 9l2 2 4-4M8 16h8"/></svg></span>단계별 체크리스트</button>
+      <button class="tab" data-p="check-owner" data-sub="check" style="display:none"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c1.5-3.4 4-5 7-5s5.5 1.6 7 5"/></svg></span>발주자 의무</button>
+      <button class="tab" data-p="check-jn" data-sub="check" style="display:none"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span>전남·광주</button>
+      <button class="tab" data-p="check-etc" data-sub="check" style="display:none"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.4 2.6 14.1 0 17"/></svg></span>타시도</button>
+      <button class="tab" data-p="law"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>법령 검색</button>
+      <button class="tab" data-p="price"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17 10 6l4 6 3-4 4 9z"/><path d="M3 21h18"/></svg></span>2026 시설단가</button>
+      <button class="tab" data-p="glossary"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2z"/><path d="M8 8h7M8 12h7"/></svg></span>용어정리</button>
+      <button class="tab" data-p="ratio"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></span>2026 제비율표</button>
+      <button class="tab" data-p="ilwidan"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 10v10"/></svg></span>2026(하) 일위대가</button>
     </nav>
   </aside>
   <main class="content">
@@ -1173,8 +1271,21 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <a class="man-card" href="manuals/16_학교급식시설개선_요약.html" data-inline="manuals/16_학교급식시설개선_요약.html" data-dl="manuals/16_학교급식시설개선_매뉴얼.pdf" data-title="학교급식시설 개선 매뉴얼 — 핵심 요약"><span class="man-no">10</span><div class="man-t"><b>학교급식시설 개선 매뉴얼</b><span>급식실 시설·설비 개선 실무</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="급식">#급식</span><span class="htag" data-tag="조리실">#조리실</span><span class="htag" data-tag="환기">#환기</span></div></a>
       <a class="man-card" href="manuals/17_건설공사사업관리방식_요약.html" data-inline="manuals/17_건설공사사업관리방식_요약.html" data-dl="manuals/17_건설공사_사업관리방식_검토기준_업무수행지침.pdf" data-title="건설공사 사업관리방식 검토기준 및 업무수행지침 (국토교통부고시 제2025-105호)"><span class="man-no">11</span><div class="man-t"><b>건설공사 사업관리방식 검토기준 및 업무수행지침</b><span>국토교통부고시 제2025-105호(2025.3.5.)</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="건설사업관리">#건설사업관리</span><span class="htag" data-tag="감리">#감리</span><span class="htag" data-tag="감독권한대행">#감독권한대행</span></div></a>
       <a class="man-card" href="manuals/18_내진보강공사_기술감리_요약.html" data-inline="manuals/18_내진보강공사_기술감리_요약.html" data-dl="manuals/18_내진보강공사_기술감리_매뉴얼.pdf" data-title="내진보강공사 기술감리 — 핵심 요약"><span class="man-no">12</span><div class="man-t"><b>내진보강공사 기술감리</b><span>내진보강 설계·시공 감리 실무</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="내진보강">#내진보강</span><span class="htag" data-tag="기술감리">#기술감리</span><span class="htag" data-tag="구조안전">#구조안전</span></div></a>
+      <a class="man-card" href="manuals/19_건축설계공모운영_요약.html" data-inline="manuals/19_건축설계공모운영_요약.html" data-title="건축 설계공모 운영 업무 실무가이드 — 핵심 요약"><span class="man-no">13</span><div class="man-t"><b>건축 설계공모 운영 업무 실무가이드</b><span>한국부동산원 공공건축지원센터 · 2025.07</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-site" data-site="https://www.hub.go.kr/portal/main.do" title="건축HUB 열기" style="cursor:pointer">사이트 ↗</span></span><div class="man-tagrow"><span class="htag" data-tag="설계공모">#설계공모</span><span class="htag" data-tag="심사위원회">#심사위원회</span><span class="htag" data-tag="보상비">#보상비</span></div></a>
     </div>
     <div id="man-inline" style="display:none;margin-top:16px"></div>
+
+    <div style="margin-top:26px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><h3 style="font-size:15px;font-weight:800;color:#191f28;margin:0">관련 사이트</h3><span style="font-size:12.5px;color:#8b95a1">실무에 자주 쓰는 외부 시스템</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px">
+        <a href="https://www.moleg.go.kr" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--line,#e5e8eb);border-radius:12px;background:#fff;text-decoration:none;min-height:52px"><span style="font-size:17px">⚖️</span><span style="flex:1;font-size:13.5px;font-weight:800;color:#191f28">법제처<span style="display:block;font-size:11.5px;font-weight:600;color:#8b95a1;margin-top:2px">법령·행정규칙 검색</span></span><span style="font-size:12px;color:#8b95a1">↗</span></a>
+        <a href="https://www.csi.go.kr" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--line,#e5e8eb);border-radius:12px;background:#fff;text-decoration:none;min-height:52px"><span style="font-size:17px">🦺</span><span style="flex:1;font-size:13.5px;font-weight:800;color:#191f28">CSI 건설안전정보시스템<span style="display:block;font-size:11.5px;font-weight:600;color:#8b95a1;margin-top:2px">안전관리계획·사고신고</span></span><span style="font-size:12px;color:#8b95a1">↗</span></a>
+        <a href="https://work.keiis.kr" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--line,#e5e8eb);border-radius:12px;background:#fff;text-decoration:none;min-height:52px"><span style="font-size:17px">🏫</span><span style="flex:1;font-size:13.5px;font-weight:800;color:#191f28">교육시설통합정보망<span style="display:block;font-size:11.5px;font-weight:600;color:#8b95a1;margin-top:2px">교육시설 업무포털</span></span><span style="font-size:12px;color:#8b95a1">↗</span></a>
+        <a href="https://www.cems.kr/" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--line,#e5e8eb);border-radius:12px;background:#fff;text-decoration:none;min-height:52px"><span style="font-size:17px">🛠</span><span style="flex:1;font-size:13.5px;font-weight:800;color:#191f28">CEMS<span style="display:block;font-size:11.5px;font-weight:600;color:#8b95a1;margin-top:2px">교육시설 유지관리</span></span><span style="font-size:12px;color:#8b95a1">↗</span></a>
+        <a href="https://shop.g2b.go.kr" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--line,#e5e8eb);border-radius:12px;background:#fff;text-decoration:none;min-height:52px"><span style="font-size:17px">🛒</span><span style="flex:1;font-size:13.5px;font-weight:800;color:#191f28">나라장터 종합쇼핑몰<span style="display:block;font-size:11.5px;font-weight:600;color:#8b95a1;margin-top:2px">MAS 물품 조회</span></span><span style="font-size:12px;color:#8b95a1">↗</span></a>
+        <a href="https://www.hub.go.kr/portal/main.do" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--line,#e5e8eb);border-radius:12px;background:#fff;text-decoration:none;min-height:52px"><span style="font-size:17px">🏛</span><span style="flex:1;font-size:13.5px;font-weight:800;color:#191f28">건축HUB<span style="display:block;font-size:11.5px;font-weight:600;color:#8b95a1;margin-top:2px">건축 설계공모 정보서비스</span></span><span style="font-size:12px;color:#8b95a1">↗</span></a>
+      </div>
+    </div>
   </section>
 
   <!-- ============ 제6장 인증 (인증 대상 판정) ============ -->
@@ -1460,10 +1571,10 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <a class="extlink" href="공사기간_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">공사기간 산출</span><span class="ext">↗</span></a>
       <a class="extlink" id="macroGrp" href="https://jne365-my.sharepoint.com/:f:/g/personal/seum8660_o365_jne_go_kr/IgB3esNJMRYBSZsEMOjgGQbMAZKDjWMuY1J0BUQjk0scxks?e=GcNgkV" target="_blank" rel="noopener noreferrer" title="매크로 모음 (OneDrive 공유 폴더)" style="background:#1a1d21;border-color:#000;color:#fff"><span class="lb">⚙️ 매크로 모음</span><span class="ext">↗</span></a>
       <div class="nav-grp" style="background:#6d28d9;color:#fff;">CHECK NOW</div>
-      <button class="tab" data-p="calc"><span class="dot"></span>규모별 절차 체크</button>
-      <button class="tab" data-p="cert"><span class="dot"></span>인증 체크</button>
-      <button class="tab" data-p="bom"><span class="dot"></span>표준품셈 체크</button>
-      <button class="tab" data-p="wx"><span class="dot"></span>☂️ 기상데이터 체크(기상청연동)</button>
+      <button class="tab" data-p="calc"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h2M13 12h2M9 16h2M13 16h2"/></svg></span>규모별 절차 체크</button>
+      <button class="tab" data-p="cert"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M8.5 13.5 7 21l5-2.5L17 21l-1.5-7.5"/></svg></span>인증 체크</button>
+      <button class="tab" data-p="bom"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="18" cy="17" r="1.6"/></svg></span>표준품셈 체크</button>
+      <button class="tab" data-p="wx"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 15a4 4 0 1 1 1.2-7.8A5 5 0 0 1 18 9a3.5 3.5 0 0 1-.5 6H7z"/><path d="M9 19l-1 2M13 19l-1 2M17 19l-1 2"/></svg></span>기상데이터 체크(기상청연동)</button>
     </nav>
 
     <div class="qbox">

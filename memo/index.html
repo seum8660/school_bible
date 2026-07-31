@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#D97757">
+<meta name="description" content="문자메시지 스타일의 간단한 메모 앱">
+
+<!-- iOS Safari 웹앱 설정 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="메모">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<title>메모</title>
+<style>
+  :root{
+    --bg:#F4F1EA;
+    --surface:#FBF9F4;
+    --bubble:#FFFFFF;
+    --bubble-me:#FCEEE7;
+    --accent:#D97757;
+    --accent-ink:#FFFFFF;
+    --accent-dark:#C0623F;
+    --ink:#33312E;
+    --ink-soft:#6B6660;
+    --muted:#9A938A;
+    --line:#E7E1D6;
+    --shadow:0 1px 2px rgba(60,50,40,.06), 0 3px 10px rgba(60,50,40,.05);
+    --shadow-lift:0 4px 16px rgba(60,50,40,.14);
+    --radius:20px;
+    --safe-top:env(safe-area-inset-top, 0px);
+    --safe-bottom:env(safe-area-inset-bottom, 0px);
+    --safe-left:env(safe-area-inset-left, 0px);
+    --safe-right:env(safe-area-inset-right, 0px);
+    font-size:16px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Apple SD Gothic Neo",
+                "Malgun Gothic", "Noto Sans KR", sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -webkit-tap-highlight-color:transparent;
+    overflow:hidden;
+  }
+
+  .app{
+    display:flex;
+    flex-direction:column;
+    height:100dvh;
+    max-width:720px;
+    margin:0 auto;
+    background:var(--bg);
+    position:relative;
+  }
+
+  /* ── 상단 헤더 ── */
+  .header{
+    flex:0 0 auto;
+    padding:calc(var(--safe-top) + 12px) calc(var(--safe-right) + 16px) 12px calc(var(--safe-left) + 16px);
+    background:rgba(244,241,234,.92);
+    backdrop-filter:saturate(1.4) blur(10px);
+    -webkit-backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    z-index:5;
+  }
+  .title{
+    font-family:"Apple SD Gothic Neo", Georgia, "Nanum Myeongjo", serif;
+    font-size:1.35rem;
+    font-weight:700;
+    letter-spacing:-.01em;
+    margin:0;
+    flex:1 1 auto;
+    color:var(--ink);
+  }
+  .icon-btn{
+    flex:0 0 auto;
+    width:44px;height:44px;
+    border:none;background:transparent;
+    border-radius:12px;
+    color:var(--ink-soft);
+    display:inline-flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .icon-btn:hover{background:rgba(217,119,87,.10);color:var(--accent);}
+  .icon-btn:active{background:rgba(217,119,87,.18);}
+  .icon-btn svg{width:22px;height:22px;}
+  .icon-btn.active{background:var(--accent);color:var(--accent-ink);}
+
+  /* ── 검색 바 ── */
+  .searchbar{
+    flex:0 0 auto;
+    display:none;
+    padding:8px calc(var(--safe-right) + 16px) 8px calc(var(--safe-left) + 16px);
+    background:rgba(244,241,234,.92);
+    border-bottom:1px solid var(--line);
+    z-index:4;
+  }
+  .searchbar.open{display:flex;gap:8px;align-items:center;}
+  .searchbar input{
+    flex:1 1 auto;
+    height:44px;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:14px;
+    padding:0 14px;
+    font-size:1rem;
+    color:var(--ink);
+    outline:none;
+  }
+  .searchbar input:focus{border-color:var(--accent);}
+  .search-count{font-size:.8rem;color:var(--muted);min-width:44px;text-align:center;}
+
+  /* ── 메모 목록 ── */
+  .list{
+    flex:1 1 auto;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    padding:16px calc(var(--safe-right) + 14px) 16px calc(var(--safe-left) + 14px);
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    scroll-behavior:smooth;
+  }
+
+  .day-divider{
+    align-self:center;
+    margin:16px 0 10px;
+    padding:4px 14px;
+    background:rgba(154,147,138,.16);
+    color:var(--ink-soft);
+    font-size:.78rem;
+    font-weight:600;
+    letter-spacing:.01em;
+    border-radius:999px;
+    font-family:Georgia, "Nanum Myeongjo", serif;
+  }
+
+  .memo-row{
+    display:flex;
+    justify-content:flex-end;
+    padding:2px 2px;
+    animation:pop .28s cubic-bezier(.22,1,.36,1);
+  }
+  @keyframes pop{
+    from{opacity:0;transform:translateY(8px) scale(.98);}
+    to{opacity:1;transform:none;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .memo-row{animation:none;}
+    .list{scroll-behavior:auto;}
+  }
+
+  .bubble-wrap{
+    max-width:82%;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    position:relative;
+  }
+  .bubble{
+    position:relative;
+    background:var(--bubble-me);
+    color:var(--ink);
+    border-radius:var(--radius) var(--radius) 6px var(--radius);
+    padding:11px 14px;
+    font-size:1rem;
+    line-height:1.5;
+    box-shadow:var(--shadow);
+    white-space:pre-wrap;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+    cursor:default;
+    transition:box-shadow .15s ease, background .15s ease, transform .1s ease;
+    min-height:44px;
+    display:flex;
+    align-items:center;
+  }
+  .bubble:hover{box-shadow:var(--shadow-lift);}
+  .bubble.selected{
+    background:var(--accent);
+    color:var(--accent-ink);
+  }
+  .bubble a{color:inherit;text-decoration:underline;}
+
+  .bubble mark{
+    background:rgba(217,119,87,.30);
+    color:inherit;
+    border-radius:4px;
+    padding:0 1px;
+  }
+  .bubble.selected mark{background:rgba(255,255,255,.35);}
+
+  .timestamp{
+    font-size:.72rem;
+    color:var(--muted);
+    margin:3px 6px 2px;
+    user-select:none;
+  }
+
+  /* 삭제 버튼 */
+  .del-btn{
+    position:absolute;
+    top:50%;
+    left:-10px;
+    transform:translate(-100%, -50%) scale(.85);
+    width:30px;height:30px;
+    border-radius:50%;
+    border:none;
+    background:var(--surface);
+    color:var(--muted);
+    box-shadow:var(--shadow);
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .15s ease, transform .15s ease, color .15s ease, background .15s ease;
+  }
+  .del-btn svg{width:15px;height:15px;}
+  .bubble-wrap:hover .del-btn,
+  .bubble-wrap:focus-within .del-btn{
+    opacity:1;pointer-events:auto;
+    transform:translate(-100%, -50%) scale(1);
+  }
+  .del-btn:hover{background:var(--accent);color:#fff;}
+  /* 터치 기기: 항상 삭제 버튼 노출(호버 없음) */
+  @media (hover:none){
+    .del-btn{opacity:.9;pointer-events:auto;transform:translate(-100%,-50%) scale(1);
+             width:32px;height:32px;}
+  }
+
+  /* 편집 모드 */
+  .bubble.editing{
+    background:var(--bubble);
+    box-shadow:var(--shadow-lift), 0 0 0 2px var(--accent);
+    width:100%;
+  }
+  .edit-area{
+    width:100%;
+    min-width:180px;
+    border:none;
+    background:transparent;
+    resize:none;
+    outline:none;
+    font:inherit;
+    color:var(--ink);
+    line-height:1.5;
+    padding:0;
+  }
+
+  /* 검색 시 매치 안 되는 메모 흐리게 */
+  .list.searching .memo-row:not(.match){opacity:.32;}
+  .list.searching .memo-row.match .bubble{box-shadow:var(--shadow-lift);}
+
+  /* ── 빈 상태 ── */
+  .empty{
+    flex:1 1 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:var(--muted);
+    padding:24px;
+    gap:12px;
+  }
+  .empty svg{width:64px;height:64px;opacity:.5;}
+  .empty h2{font-size:1.05rem;font-weight:600;margin:0;color:var(--ink-soft);}
+  .empty p{font-size:.9rem;margin:0;max-width:260px;line-height:1.5;}
+
+  /* ── 하단 입력창 ── */
+  .composer{
+    flex:0 0 auto;
+    display:flex;
+    align-items:flex-end;
+    gap:8px;
+    padding:10px calc(var(--safe-right) + 14px) calc(var(--safe-bottom) + 12px) calc(var(--safe-left) + 14px);
+    background:rgba(251,249,244,.96);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);
+    z-index:5;
+  }
+  .composer textarea{
+    flex:1 1 auto;
+    max-height:140px;
+    min-height:44px;
+    border:1px solid var(--line);
+    background:var(--bg);
+    border-radius:22px;
+    padding:11px 16px;
+    font:inherit;
+    font-size:1rem;
+    line-height:1.4;
+    color:var(--ink);
+    resize:none;
+    outline:none;
+    transition:border-color .15s ease;
+  }
+  .composer textarea:focus{border-color:var(--accent);background:#fff;}
+  .composer textarea::placeholder{color:var(--muted);}
+  .send-btn{
+    flex:0 0 auto;
+    width:44px;height:44px;
+    border:none;
+    border-radius:50%;
+    background:var(--accent);
+    color:var(--accent-ink);
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--shadow);
+    transition:background .15s ease, transform .1s ease, opacity .15s ease;
+  }
+  .send-btn svg{width:20px;height:20px;}
+  .send-btn:hover{background:var(--accent-dark);}
+  .send-btn:active{transform:scale(.92);}
+  .send-btn:disabled{opacity:.4;cursor:default;}
+
+  /* ── 플로팅 + 버튼 ── */
+  .fab{
+    position:absolute;
+    right:calc(var(--safe-right) + 18px);
+    bottom:calc(var(--safe-bottom) + 84px);
+    width:52px;height:52px;
+    border-radius:50%;
+    border:none;
+    background:var(--accent);
+    color:#fff;
+    box-shadow:var(--shadow-lift);
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    z-index:6;
+    transition:background .15s ease, transform .15s ease, opacity .2s ease;
+  }
+  .fab svg{width:26px;height:26px;}
+  .fab:hover{background:var(--accent-dark);transform:translateY(-2px);}
+  .fab:active{transform:scale(.94);}
+
+  /* ── iOS 설치 안내 ── */
+  .ios-hint{
+    position:absolute;
+    left:12px;right:12px;
+    bottom:calc(var(--safe-bottom) + 82px);
+    background:var(--ink);
+    color:#fff;
+    border-radius:16px;
+    padding:12px 14px;
+    font-size:.85rem;
+    line-height:1.45;
+    box-shadow:var(--shadow-lift);
+    display:none;
+    align-items:center;
+    gap:10px;
+    z-index:20;
+    animation:pop .3s ease;
+  }
+  .ios-hint.show{display:flex;}
+  .ios-hint b{color:#F4B79E;}
+  .ios-hint .share-ico{
+    display:inline-flex;vertical-align:-3px;
+  }
+  .ios-hint .close{
+    margin-left:auto;
+    flex:0 0 auto;
+    width:28px;height:28px;
+    border-radius:50%;
+    border:none;background:rgba(255,255,255,.14);color:#fff;
+    cursor:pointer;font-size:1rem;line-height:1;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* 삭제 확인 등 접근성 포커스 링 */
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .bubble:focus-visible{outline-offset:3px;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="header">
+    <h1 class="title">메모</h1>
+    <button class="icon-btn" id="searchToggle" aria-label="검색" title="검색">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+  </header>
+
+  <div class="searchbar" id="searchbar">
+    <input type="search" id="searchInput" placeholder="메모 검색…" autocomplete="off"
+           aria-label="메모 검색어 입력">
+    <span class="search-count" id="searchCount"></span>
+    <button class="icon-btn" id="searchClose" aria-label="검색 닫기" title="닫기">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <main class="list" id="list" aria-live="polite"></main>
+
+  <button class="fab" id="fab" aria-label="새 메모 작성" title="새 메모">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+         stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+  </button>
+
+  <div class="ios-hint" id="iosHint" role="status">
+    <span>
+      홈 화면에 추가하려면 하단
+      <span class="share-ico">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4B79E"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v13"></path><path d="M8 7l4-4 4 4"></path>
+          <path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"></path>
+        </svg>
+      </span>
+      <b>공유</b> → <b>홈 화면에 추가</b>를 눌러주세요.
+    </span>
+    <button class="close" id="iosHintClose" aria-label="안내 닫기">×</button>
+  </div>
+
+  <footer class="composer">
+    <textarea id="input" rows="1" placeholder="메모를 입력하세요…"
+              aria-label="메모 입력" enterkeyhint="send"></textarea>
+    <button class="send-btn" id="send" aria-label="전송" title="전송" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="20" x2="12" y2="5"></line><path d="M5 12l7-7 7 7"></path>
+      </svg>
+    </button>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  const STORAGE_KEY = 'memo.app.items.v1';
+  const $ = (s) => document.querySelector(s);
+
+  const listEl      = $('#list');
+  const inputEl     = $('#input');
+  const sendBtn     = $('#send');
+  const fab         = $('#fab');
+  const searchToggle= $('#searchToggle');
+  const searchbar   = $('#searchbar');
+  const searchInput = $('#searchInput');
+  const searchClose = $('#searchClose');
+  const searchCount = $('#searchCount');
+  const iosHint     = $('#iosHint');
+  const iosHintClose= $('#iosHintClose');
+
+  let memos = load();
+  let searchTerm = '';
+
+  /* ── 저장/불러오기 ── */
+  function load(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr : [];
+    }catch(e){ return []; }
+  }
+  function save(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(memos)); }
+    catch(e){ /* 저장 공간 초과 등 무시 */ }
+  }
+
+  /* ── 유틸 ── */
+  function uid(){
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  }
+  function escapeHtml(str){
+    return str.replace(/[&<>"']/g, (c) => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+  function fmtTime(ts){
+    const d = new Date(ts);
+    let h = d.getHours();
+    const m = d.getMinutes().toString().padStart(2,'0');
+    const ampm = h < 12 ? '오전' : '오후';
+    h = h % 12; if(h === 0) h = 12;
+    return `${ampm} ${h}:${m}`;
+  }
+  function fmtDay(ts){
+    const d = new Date(ts);
+    return `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+  }
+  function sameDay(a, b){
+    const x = new Date(a), y = new Date(b);
+    return x.getFullYear()===y.getFullYear()
+        && x.getMonth()===y.getMonth()
+        && x.getDate()===y.getDate();
+  }
+
+  /* 검색어 하이라이트 포함 렌더 */
+  function renderText(text){
+    const safe = escapeHtml(text);
+    if(!searchTerm) return safe;
+    const term = searchTerm.trim();
+    if(!term) return safe;
+    const re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+    return safe.replace(re, '<mark>$1</mark>');
+  }
+
+  /* ── 렌더링 ── */
+  function render(){
+    listEl.innerHTML = '';
+    const searching = !!searchTerm.trim();
+    listEl.classList.toggle('searching', searching);
+
+    if(memos.length === 0){
+      renderEmpty();
+      updateSearchCount(0);
+      return;
+    }
+
+    let lastDay = null;
+    let matchCount = 0;
+
+    memos.forEach((memo) => {
+      if(!sameDay(lastDay, memo.ts) || lastDay === null){
+        const div = document.createElement('div');
+        div.className = 'day-divider';
+        div.textContent = fmtDay(memo.ts);
+        listEl.appendChild(div);
+        lastDay = memo.ts;
+      }
+
+      const isMatch = searching &&
+        memo.text.toLowerCase().includes(searchTerm.trim().toLowerCase());
+      if(isMatch) matchCount++;
+
+      const row = document.createElement('div');
+      row.className = 'memo-row' + (isMatch ? ' match' : '');
+      row.dataset.id = memo.id;
+
+      const wrap = document.createElement('div');
+      wrap.className = 'bubble-wrap';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.tabIndex = 0;
+      bubble.setAttribute('role','button');
+      bubble.setAttribute('aria-label','메모. 두 번 눌러 수정');
+      bubble.innerHTML = renderText(memo.text);
+
+      const del = document.createElement('button');
+      del.className = 'del-btn';
+      del.setAttribute('aria-label','메모 삭제');
+      del.title = '삭제';
+      del.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" '+
+        'stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+
+        '<line x1="18" y1="6" x2="6" y2="18"></line>'+
+        '<line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+
+      const time = document.createElement('div');
+      time.className = 'timestamp';
+      time.textContent = fmtTime(memo.ts) + (memo.edited ? ' · 수정됨' : '');
+
+      wrap.appendChild(bubble);
+      wrap.appendChild(del);
+      wrap.appendChild(time);
+      row.appendChild(wrap);
+      listEl.appendChild(row);
+
+      // 이벤트: 삭제
+      del.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if(confirm('이 메모를 삭제할까요?')){
+          removeMemo(memo.id);
+        }
+      });
+      // 이벤트: 수정 (더블클릭)
+      bubble.addEventListener('dblclick', () => startEdit(memo.id, bubble));
+    });
+
+    updateSearchCount(matchCount);
+  }
+
+  function renderEmpty(){
+    const box = document.createElement('div');
+    box.className = 'empty';
+    box.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '+
+      'stroke-linecap="round" stroke-linejoin="round">'+
+      '<path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"></path>'+
+      '</svg>'+
+      '<h2>아직 메모가 없어요</h2>'+
+      '<p>아래 입력창에 첫 메모를 적어보세요. 입력한 내용이 말풍선으로 차곡차곡 쌓여요.</p>';
+    listEl.appendChild(box);
+  }
+
+  function updateSearchCount(n){
+    if(searchTerm.trim()){
+      searchCount.textContent = n > 0 ? `${n}건` : '없음';
+    }else{
+      searchCount.textContent = '';
+    }
+  }
+
+  /* ── 동작 ── */
+  function addMemo(text){
+    const t = text.replace(/\s+$/,'').replace(/^\s+/,'');
+    if(!t) return;
+    memos.push({ id: uid(), text: t, ts: Date.now(), edited:false });
+    save();
+    render();
+    scrollToBottom();
+  }
+
+  function removeMemo(id){
+    memos = memos.filter((m) => m.id !== id);
+    save();
+    render();
+  }
+
+  function startEdit(id, bubble){
+    const memo = memos.find((m) => m.id === id);
+    if(!memo) return;
+
+    bubble.classList.add('editing');
+    bubble.innerHTML = '';
+    const ta = document.createElement('textarea');
+    ta.className = 'edit-area';
+    ta.value = memo.text;
+    ta.rows = 1;
+    bubble.appendChild(ta);
+    autoGrow(ta);
+    ta.focus();
+    ta.setSelectionRange(ta.value.length, ta.value.length);
+
+    function commit(){
+      const newText = ta.value.replace(/\s+$/,'').replace(/^\s+/,'');
+      ta.removeEventListener('blur', commit);
+      if(newText && newText !== memo.text){
+        memo.text = newText;
+        memo.edited = true;
+        save();
+      }else if(!newText){
+        // 내용을 모두 지우면 삭제
+        if(confirm('내용이 비어 있습니다. 메모를 삭제할까요?')){
+          removeMemo(id); return;
+        }
+      }
+      render();
+    }
+    function cancel(){
+      ta.removeEventListener('blur', commit);
+      render();
+    }
+
+    ta.addEventListener('input', () => autoGrow(ta));
+    ta.addEventListener('blur', commit);
+    ta.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' && !e.shiftKey){
+        e.preventDefault(); ta.blur();
+      }else if(e.key === 'Escape'){
+        e.preventDefault(); cancel();
+      }
+    });
+  }
+
+  function scrollToBottom(){
+    requestAnimationFrame(() => { listEl.scrollTop = listEl.scrollHeight; });
+  }
+
+  function autoGrow(el){
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+  }
+
+  /* ── 입력창 이벤트 ── */
+  function submitInput(){
+    const val = inputEl.value;
+    if(!val.trim()) return;
+    addMemo(val);
+    inputEl.value = '';
+    autoGrow(inputEl);
+    sendBtn.disabled = true;
+    inputEl.focus();
+  }
+
+  inputEl.addEventListener('input', () => {
+    autoGrow(inputEl);
+    sendBtn.disabled = !inputEl.value.trim();
+  });
+  inputEl.addEventListener('keydown', (e) => {
+    // Enter 전송, Shift+Enter 줄바꿈
+    if(e.key === 'Enter' && !e.shiftKey && !e.isComposing){
+      e.preventDefault();
+      submitInput();
+    }
+  });
+  sendBtn.addEventListener('click', submitInput);
+
+  /* ── 플로팅 + 버튼 ── */
+  fab.addEventListener('click', () => {
+    if(searchbar.classList.contains('open')) closeSearch();
+    scrollToBottom();
+    inputEl.focus();
+    // iOS에서 키보드가 확실히 뜨도록
+    inputEl.scrollIntoView({block:'nearest'});
+  });
+
+  /* ── 검색 ── */
+  function openSearch(){
+    searchbar.classList.add('open');
+    searchToggle.classList.add('active');
+    searchInput.focus();
+  }
+  function closeSearch(){
+    searchbar.classList.remove('open');
+    searchToggle.classList.remove('active');
+    searchInput.value = '';
+    searchTerm = '';
+    render();
+  }
+  searchToggle.addEventListener('click', () => {
+    if(searchbar.classList.contains('open')) closeSearch();
+    else openSearch();
+  });
+  searchClose.addEventListener('click', closeSearch);
+  searchInput.addEventListener('input', () => {
+    searchTerm = searchInput.value;
+    render();
+    // 첫 매치로 스크롤
+    const first = listEl.querySelector('.memo-row.match');
+    if(first) first.scrollIntoView({block:'center'});
+  });
+  searchInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') closeSearch();
+  });
+
+  /* ── iOS 설치 안내 ── */
+  function maybeShowIosHint(){
+    const ua = window.navigator.userAgent;
+    const isIOS = /iP(hone|ad|od)/.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+    const standalone = window.navigator.standalone === true ||
+      window.matchMedia('(display-mode: standalone)').matches;
+    const dismissed = localStorage.getItem('memo.ioshint.dismissed') === '1';
+
+    if(isIOS && isSafari && !standalone && !dismissed){
+      setTimeout(() => {
+        iosHint.classList.add('show');
+        setTimeout(() => iosHint.classList.remove('show'), 9000);
+      }, 1200);
+    }
+  }
+  iosHintClose.addEventListener('click', () => {
+    iosHint.classList.remove('show');
+    localStorage.setItem('memo.ioshint.dismissed','1');
+  });
+
+  /* ── 초기화 ── */
+  render();
+  scrollToBottom();
+  autoGrow(inputEl);
+  maybeShowIosHint();
+  // 데스크톱에서 입력창 자동 포커스(모바일은 키보드 튐 방지 위해 생략)
+  if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    inputEl.focus();
+  }
+
+  // 다른 탭에서 변경 시 동기화
+  window.addEventListener('storage', (e) => {
+    if(e.key === STORAGE_KEY){
+      memos = load();
+      render();
+    }
+  });
+
+  /* ── 서비스 워커 등록 ── */
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js').catch(() => {});
+    });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  :root {
+    --n-text: #37352f;
+    --n-text-2: #787774;
+    --n-text-3: #9b9a97;
+    --n-border: #e9e9e7;
+    --n-line: rgba(55,53,47,0.09);
+    --n-hover: rgba(55,53,47,0.06);
+    --n-fill: #f7f7f5;
+    --n-blue: #2383e2;
+    --n-blue-dark: #1a73d1;
+    --n-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", Helvetica, sans-serif;
+  }
+  body { margin: 0; background: #fff; color: var(--n-text); font-family: var(--n-font); -webkit-font-smoothing: antialiased; }
+  a { color: var(--n-blue); text-decoration: none; }
+  a:hover { color: var(--n-blue-dark); text-decoration: underline; }
+  .ni { width: 100%; font-family: inherit; font-size: 14px; color: var(--n-text); background: var(--n-fill); border: 1px solid transparent; border-radius: 4px; padding: 6px 9px; box-shadow: inset 0 0 0 1px var(--n-line); resize: vertical; line-height: 1.5; }
+  .ni::placeholder { color: var(--n-text-3); }
+  .ni:hover { background: #f1f1ef; }
+  .ni:focus { outline: none; background: #fff; box-shadow: inset 0 0 0 1px var(--n-blue), 0 0 0 2px rgba(35,131,226,0.28); }
+  .ni:read-only { background: var(--n-fill); color: var(--n-text-2); }
+  .nlbl { display: block; font-size: 12px; font-weight: 500; color: var(--n-text-2); margin-bottom: 5px; }
+  .nhint { font-size: 12px; color: var(--n-text-3); line-height: 1.5; }
+  .nh { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; }
+  .nbadge { font-size: 11px; font-weight: 500; color: var(--n-text-2); background: var(--n-fill); border-radius: 3px; padding: 2px 6px; }
+  .nbtn { font-family: inherit; font-size: 14px; font-weight: 500; color: var(--n-text); background: #fff; border: 1px solid var(--n-border); border-radius: 4px; padding: 5px 11px; cursor: pointer; box-shadow: 0 1px 2px rgba(15,15,15,0.06); }
+  .nbtn:hover { background: var(--n-hover); }
+  .nbtn:active { background: rgba(55,53,47,0.12); }
+  .nbtn:focus-visible { outline: 2px solid var(--n-blue); outline-offset: 1px; }
+  .nbtn[disabled] { opacity: .45; cursor: default; }
+  .nbtn-primary { color: #fff; background: var(--n-blue); border-color: transparent; }
+  .nbtn-primary:hover { background: var(--n-blue-dark); }
+  .nbtn-primary:active { background: #1668bd; }
+  .nbtn-ghost { border-color: transparent; box-shadow: none; color: var(--n-text-2); }
+  .nbtn-ghost:hover { background: var(--n-hover); color: var(--n-text); }
+  .ndel { width: 26px; height: 28px; flex: 0 0 auto; border: none; background: transparent; color: var(--n-text-3); border-radius: 4px; cursor: pointer; font-size: 15px; line-height: 1; }
+  .ndel:hover { background: var(--n-hover); color: var(--n-text); }
+  .nchip { font-family: inherit; font-size: 13px; color: var(--n-text-2); background: var(--n-fill); border: 1px solid transparent; border-radius: 4px; padding: 4px 9px; cursor: pointer; }
+  .nchip:hover { background: #ececea; color: var(--n-text); }
+  .nchip[data-on="1"] { background: #e7f3f8; color: #183347; box-shadow: inset 0 0 0 1px rgba(35,131,226,0.35); }
+  .ncheck { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--n-text-2); cursor: pointer; }
+  .ncheck input { accent-color: var(--n-blue); width: 14px; height: 14px; margin: 0; }
+  .nsec { display: flex; flex-direction: column; gap: 10px; padding-bottom: 22px; border-bottom: 1px solid var(--n-line); }
+  .nsec:last-child { border-bottom: none; padding-bottom: 0; }
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #fff; padding: 40px 0 64px;">
+  <div style="max-width: 1240px; margin: 0 auto; padding: 0 56px; display: flex; flex-direction: column; gap: 28px;">
+    <header style="display: flex; flex-direction: column; gap: 6px;">
+      <span style="font-size: 13px; color: var(--n-text-3);">시설·계약 업무</span>
+      <h1 style="margin: 0; font-size: 34px; font-weight: 700; letter-spacing: -0.02em;">품의 문서 작성기</h1>
+      <p style="margin: 2px 0 0; max-width: 640px; font-size: 14px; line-height: 1.6; color: var(--n-text-2); text-wrap: pretty;">핵심 정보만 입력하면 제목·관련·세부내용·금액·붙임 서식이 규칙에 따라 자동으로 완성됩니다. 오른쪽에서 확인하고 복사해 한글 문서에 붙여넣으세요.</p>
+    </header>
+
+    <div style="display: grid; grid-template-columns: minmax(400px, 1fr) minmax(440px, 1fr); gap: 44px; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 22px;">
+        <section class="nsec">
+          <h2 class="nh">기초정보<span class="nbadge">AI 자동채우기</span></h2>
+          <textarea class="ni" rows="4" placeholder="예: 00초 누수보수 및 관사 보수공사에 쓸 관급자재로 방수재 630㎡를 3,130만6천원(조달수수료 포함)에 구입하려고 함. 납품기한은 요구일로부터 90일. 관련 근거는 행정지원과-590(2025.1.7) 시설공사 관급자재 구매방법 계획." value="{{ rawInfo }}" onChange="{{ onRawInfo }}"></textarea>
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <button class="nbtn" onClick="{{ onAi }}" disabled="{{ aiDisabled }}">AI로 자동 채우기</button>
+            <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--n-text-2); cursor: pointer; user-select: none;">
+              <input type="checkbox" checked="{{ offline }}" onChange="{{ onOffline }}" style="margin: 0; accent-color: #2383e2;">오프라인 모드
+            </label>
+            <span class="nhint">{{ aiStatus }}</span>
+          </div>
+          <p class="nhint" style="margin: 0; max-width: 560px;">오프라인 모드를 켜면 AI 호출이 완전히 차단되어 입력한 내용이 외부로 전송되지 않습니다. 문서 생성·미리보기·복사는 모두 브라우저 안에서만 처리됩니다.</p>
+        </section>
+
+        <section class="nsec">
+          <h2 class="nh">관련 근거</h2>
+          <p class="nhint" style="margin: -2px 0 0;">부서-문서번호 / 날짜 / 제목을 입력하면 「」 서식으로 조합됩니다.</p>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <sc-for list="{{ relatedRows }}" as="r" hint-placeholder-count="2">
+              <div style="display: grid; grid-template-columns: 1.15fr .95fr 1.8fr 26px; gap: 6px; align-items: center;">
+                <input class="ni" placeholder="행정지원과-590" value="{{ r.dept }}" onChange="{{ r.onDept }}">
+                <input class="ni" placeholder="2025. 1. 7." value="{{ r.date }}" onChange="{{ r.onDate }}">
+                <input class="ni" placeholder="[계획] 문서 제목" value="{{ r.label }}" onChange="{{ r.onLabel }}">
+                <button class="ndel" onClick="{{ r.onDel }}">×</button>
+              </div>
+            </sc-for>
+          </div>
+          <div><button class="nbtn nbtn-ghost" onClick="{{ addRelated }}">+ 관련 항목 추가</button></div>
+        </section>
+
+        <section class="nsec">
+          <h2 class="nh">핵심정보<span class="nbadge">확인·수정</span></h2>
+          <div>
+            <label class="nlbl">문서유형</label>
+            <select class="ni" value="{{ docType }}" onChange="{{ onDocType }}">
+              <option value="purchase">구입 (관급자재)</option>
+              <option value="construction">공사</option>
+              <option value="service">용역</option>
+              <option value="payment">납부 (비용·회비 납부)</option>
+            </select>
+          </div>
+          <div>
+            <label class="nlbl">{{ nameFieldLabel }}</label>
+            <input class="ni" value="{{ itemName }}" onChange="{{ onItemName }}">
+          </div>
+          <div>
+            <label class="nlbl">{{ specFieldLabel }}</label>
+            <textarea class="ni" rows="2" value="{{ itemSpec }}" onChange="{{ onItemSpec }}"></textarea>
+            <p class="nhint" style="margin: 5px 0 0;">항목이 여러 개면 줄바꿈으로 구분하세요 — 자동으로 하위 「-」 항목이 됩니다.</p>
+          </div>
+          <div>
+            <label class="nlbl">{{ amountFieldLabel }}</label>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <input class="ni" inputMode="numeric" style="flex: 1;" value="{{ amountDisplay }}" onChange="{{ onAmount }}">
+              <span style="font-size: 13px; color: var(--n-text-2);">원</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px; margin-top: 7px; flex-wrap: wrap;">
+              <label class="ncheck"><input type="checkbox" checked="{{ feeIncluded }}" onChange="{{ onFee }}">조달수수료 포함 문구</label>
+              <span style="font-size: 14px; font-weight: 500; color: var(--n-text);">{{ amountPreview }}</span>
+            </div>
+          </div>
+          <div>
+            <label class="nlbl">{{ periodFieldLabel }}</label>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 13px; color: var(--n-text-2);">{{ periodPrefix }}</span>
+              <input class="ni" type="number" style="max-width: 90px;" value="{{ dueDays }}" onChange="{{ onDueDays }}">
+              <span style="font-size: 13px; color: var(--n-text-2);">{{ periodSuffix }}</span>
+            </div>
+            <label class="ncheck" style="margin-top: 7px;"><input type="checkbox" checked="{{ dueCustomOn }}" onChange="{{ onDueCustomOn }}">직접 입력으로 대체</label>
+            <sc-if value="{{ dueCustomOn }}" hint-placeholder-val="{{ false }}">
+              <input class="ni" style="margin-top: 7px;" placeholder="예: 건축공사 준공일로부터 5일까지 / 2026. 5. 20.까지" value="{{ dueCustom }}" onChange="{{ onDueCustom }}">
+            </sc-if>
+          </div>
+        </section>
+
+        <section class="nsec">
+          <h2 class="nh">제목<span class="nbadge">자동생성</span></h2>
+          <label class="ncheck"><input type="checkbox" checked="{{ titleAuto }}" onChange="{{ onTitleAuto }}">명칭 기준 자동생성 (해제 시 직접 편집)</label>
+          <input class="ni" value="{{ title }}" onChange="{{ onTitle }}" readOnly="{{ titleAuto }}">
+        </section>
+
+        <section class="nsec">
+          <h2 class="nh">붙임서류</h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <sc-for list="{{ presetChips }}" as="p" hint-placeholder-count="7">
+              <button class="nchip" data-on="{{ p.on }}" onClick="{{ p.onToggle }}">{{ p.text }}</button>
+            </sc-for>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <sc-for list="{{ attachRows }}" as="a" hint-placeholder-count="2">
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <span style="width: 14px; text-align: right; font-size: 13px; color: var(--n-text-3);">{{ a.no }}</span>
+                <input class="ni" style="flex: 1;" value="{{ a.text }}" onChange="{{ a.onText }}">
+                <button class="ndel" onClick="{{ a.onDel }}">×</button>
+              </div>
+            </sc-for>
+          </div>
+          <div><button class="nbtn nbtn-ghost" onClick="{{ addAttach }}">+ 붙임 항목 추가</button></div>
+        </section>
+
+        <section class="nsec">
+          <h2 class="nh">본문 서술<span class="nbadge">자동생성</span></h2>
+          <label class="ncheck"><input type="checkbox" checked="{{ sentenceAuto }}" onChange="{{ onSentenceAuto }}">문서유형 기준 자동생성 (해제 시 직접 편집)</label>
+          <textarea class="ni" rows="2" value="{{ bodySentence }}" onChange="{{ onBodySentence }}" readOnly="{{ sentenceAuto }}"></textarea>
+        </section>
+      </div>
+
+      <aside style="position: sticky; top: 40px;">
+        <div style="border: 1px solid var(--n-border); border-radius: 6px; box-shadow: 0 1px 3px rgba(15,15,15,0.06); display: flex; flex-direction: column; max-height: calc(100vh - 96px); overflow: hidden; background: #fff;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--n-line);">
+            <h2 style="margin: 0; font-size: 14px; font-weight: 600;">완성 문서 미리보기</h2>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="nbtn" onClick="{{ onCopyTitle }}">{{ copyTitleLabel }}</button>
+              <button class="nbtn nbtn-primary" onClick="{{ onCopy }}">{{ copyLabel }}</button>
+            </div>
+          </div>
+          <div style="padding: 28px 32px 36px; overflow-y: auto; white-space: pre-wrap; font-family: Gulim, 굴림, '굴림체', GulimChe, sans-serif; font-size: 13px; line-height: 1.9; color: var(--n-text);">{{ docText }}</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const JAMO = ['가','나','다','라','마','바','사','아','자','차','카','타','파','하'];
+
+const TYPE_CONFIG = {
+  purchase: {
+    nameFieldLabel: '구입명 (학교·현장명 + 사업명 + 자재명)', specFieldLabel: '구입내용 (규격·수량)',
+    amountFieldLabel: '품의금액', periodFieldLabel: '납품기한',
+    periodPrefix: '납품요구일로부터', periodSuffix: '일까지',
+    nameLabel: '구  입  명', specLabel: '구 입 내 용', amountLabel: '품 의 금 액', periodLabel: '납 품 기 한',
+    sentence: (i) => '위 관련에 의거하여 「' + i + '」를 붙임 요구서와 같이 구입하고자 합니다.',
+    titleSuffix: ' 구입', allowFee: true,
+    defaultAttachments: ['지출품의서 1부.', '관급자재 구입요구서 1부.']
+  },
+  construction: {
+    nameFieldLabel: '공사명', specFieldLabel: '공사내용', amountFieldLabel: '품의액', periodFieldLabel: '공사기간',
+    periodPrefix: '착공일로부터', periodSuffix: '일',
+    nameLabel: '공 사 명', specLabel: '공사내용', amountLabel: '품 의 액', periodLabel: '공사기간',
+    sentence: (i) => '위 관련에 의거하여 「' + i + '」를 붙임 설계서와 같이 실시하고자 합니다.',
+    titleSuffix: '', allowFee: false,
+    defaultAttachments: ['지출품의서 1부.', '설계내역서 1부.']
+  },
+  service: {
+    nameFieldLabel: '용역명', specFieldLabel: '용역내용', amountFieldLabel: '품의액', periodFieldLabel: '용역기간',
+    periodPrefix: '착수일로부터', periodSuffix: '일까지',
+    nameLabel: '용 역 명', specLabel: '용역내용', amountLabel: '품 의 액', periodLabel: '용역기간',
+    sentence: (i) => '위 관련에 의거하여 「' + i + '」를 붙임 과업지시서와 같이 실시하고자 합니다.',
+    titleSuffix: '', allowFee: false,
+    defaultAttachments: ['지출품의서 1부.', '용역비 산출서 및 과업지시서 각 1부.']
+  },
+  payment: {
+    nameFieldLabel: '품의명', specFieldLabel: '납부사유', amountFieldLabel: '품의금액', periodFieldLabel: '납부기한',
+    periodPrefix: '', periodSuffix: '까지',
+    nameLabel: '품 의 명', specLabel: '납부사유', amountLabel: '품의금액', periodLabel: '납부기한',
+    sentence: (i) => '위 관련에 의거하여 「' + i + '」을 아래와 같이 납부하고자 합니다.',
+    titleSuffix: '', allowFee: false,
+    defaultAttachments: ['지출품의서 1부.']
+  }
+};
+
+const ATTACH_PRESETS = [
+  '지출품의서 1부.', '설계내역서 1부.', '예산대비표 1부.',
+  '용역비 산출서 및 과업지시서 각 1부.', '과업지시서 1부.',
+  '관급자재 구입요구서 1부.', '견적서 1부.'
+];
+
+const AI_PROMPT = '당신은 한국 교육청 품의서(기안문) 작성 보조자입니다.\n' +
+'아래 [기초정보]를 읽고 다음 JSON 스키마에 맞춰 항목을 분류해 채우세요.\n' +
+'반드시 JSON 객체 하나만 출력하고, 설명·코드펜스는 포함하지 마세요.\n\n' +
+'documentType: "purchase"(물품 구입) | "construction"(공사) | "service"(용역) | "payment"(비용 납부)\n\n' +
+'{\n' +
+'  "documentType": "...",\n' +
+'  "itemName": "명칭(학교/현장명+사업명 등 하나의 문구. 구입이면 자재명까지)",\n' +
+'  "itemSpec": "세부내용. 항목이 여러 개면 줄바꿈으로 구분",\n' +
+'  "amountNum": 정수 또는 null,\n' +
+'  "feeIncluded": true 또는 false,\n' +
+'  "dueDays": 정수 또는 null,\n' +
+'  "dueCustom": 문구 또는 null,\n' +
+'  "related": [ {"dept":"부서-문서번호","date":"YYYY. M. D.","label":"제목 문구"} ]\n' +
+'}';
+
+class Component extends DCLogic {
+  state = {
+    rawInfo: '', aiStatus: '', aiBusy: false, copied: false, offline: true,
+    docType: 'purchase',
+    itemName: '00초 누수보수 및 관사 보수공사 관급자재(방수재)',
+    itemSpec: '방수재 630㎡',
+    amountNum: '31306000',
+    feeIncluded: true,
+    dueDays: '90', dueCustomOn: false, dueCustom: '',
+    titleAuto: true, titleManual: '',
+    sentenceAuto: true, sentenceManual: '',
+    related: [
+      { dept: '행정지원과-590', date: '2025. 1. 7.', label: '[계획] 시설공사 관급자재 구매방법 계획' },
+      { dept: '행정지원과-776', date: '2026. 7. 9.', label: '[품의] 00초 누수보수 및 관사 보수공사' }
+    ],
+    attachments: TYPE_CONFIG.purchase.defaultAttachments.slice()
+  };
+
+  cfg() { return TYPE_CONFIG[this.state.docType] || TYPE_CONFIG.purchase; }
+  set(key) { return (e) => this.setState({ [key]: e.target.value }); }
+
+  amountText() {
+    const n = parseInt(String(this.state.amountNum).replace(/[^0-9]/g, '') || '0', 10);
+    if (!n) return '';
+    const fee = this.state.feeIncluded && this.cfg().allowFee;
+    return '금' + n.toLocaleString('ko-KR') + '원' + (fee ? '(조달수수료 포함)' : '');
+  }
+
+  dueText() {
+    const cfg = this.cfg();
+    if (this.state.dueCustomOn) return (this.state.dueCustom || '').trim();
+    const d = String(this.state.dueDays || '').trim();
+    if (!d) return '';
+    return (cfg.periodPrefix ? cfg.periodPrefix + ' ' : '') + d + cfg.periodSuffix;
+  }
+
+  titleText() {
+    if (!this.state.titleAuto) return this.state.titleManual;
+    const n = this.state.itemName.trim();
+    return n ? '[품의] ' + n + this.cfg().titleSuffix : '';
+  }
+
+  sentenceText() {
+    if (!this.state.sentenceAuto) return this.state.sentenceManual;
+    const n = this.state.itemName.trim();
+    return n ? this.cfg().sentence(n) : '';
+  }
+
+  docText() {
+    const cfg = this.cfg();
+    const lines = [];
+    lines.push('제목  ' + this.titleText());
+    lines.push('');
+
+    const rel = this.state.related.filter(r => r.dept.trim() || r.label.trim());
+    if (rel.length === 1) {
+      const r = rel[0];
+      lines.push('1. 관련: ' + r.dept + '(' + r.date + ')「' + r.label + '」');
+    } else if (rel.length > 1) {
+      lines.push('1. 관련');
+      rel.forEach((r, i) => lines.push('  ' + (JAMO[i] || '·') + '. ' + r.dept + '(' + r.date + ')「' + r.label + '」'));
+    } else {
+      lines.push('1. 관련');
+    }
+    lines.push('');
+    lines.push('2. ' + this.sentenceText());
+    lines.push('');
+
+    const rows = [
+      [cfg.nameLabel, this.state.itemName],
+      [cfg.specLabel, this.state.itemSpec],
+      [cfg.amountLabel, this.amountText()],
+      [cfg.periodLabel, this.dueText()]
+    ];
+    rows.forEach((d, i) => {
+      const val = (d[1] || '').trim();
+      if (!val) return;
+      const subs = val.split('\n').map(s => s.trim()).filter(Boolean);
+      if (subs.length > 1) {
+        lines.push('  ' + (JAMO[i] || '·') + '. ' + d[0]);
+        subs.forEach(s => lines.push('    - ' + s));
+      } else {
+        lines.push('  ' + (JAMO[i] || '·') + '. ' + d[0] + ': ' + subs[0]);
+      }
+    });
+
+    const att = this.state.attachments.filter(a => a.trim());
+    if (att.length) {
+      lines.push('');
+      att.forEach((a, i) => {
+        const prefix = i === 0 ? '붙임  ' : '      ';
+        const suffix = i === att.length - 1 ? '  끝.' : '';
+        lines.push(prefix + (i + 1) + '. ' + a + suffix);
+      });
+    }
+    return lines.join('\n');
+  }
+
+  copyText(text, flag, timer) {
+    const done = () => {
+      this.setState({ [flag]: true });
+      clearTimeout(this[timer]);
+      this[timer] = setTimeout(() => this.setState({ [flag]: false }), 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => this.fallbackCopy(text, done));
+    } else {
+      this.fallbackCopy(text, done);
+    }
+  }
+
+  bodyText() {
+    const lines = this.docText().split('\n');
+    lines.shift();
+    while (lines.length && !lines[0].trim()) lines.shift();
+    return lines.join('\n');
+  }
+
+  copy = () => this.copyText(this.bodyText(), 'copied', '_ct');
+  copyTitle = () => this.copyText(this.titleText(), 'titleCopied', '_tct');
+
+  fallbackCopy(text, done) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  changeType = (e) => {
+    const t = e.target.value;
+    const cfg = TYPE_CONFIG[t] || TYPE_CONFIG.purchase;
+    this.setState({
+      docType: t,
+      attachments: cfg.defaultAttachments.slice(),
+      feeIncluded: cfg.allowFee ? this.state.feeIncluded : false
+    });
+  };
+
+  runAi = async () => {
+    const raw = (this.state.rawInfo || '').trim();
+    if (this.state.offline) { this.setState({ aiStatus: '오프라인 모드 — AI 호출이 차단되어 있습니다.' }); return; }
+    if (!raw) { this.setState({ aiStatus: '기초정보를 먼저 입력하세요.' }); return; }
+    this.setState({ aiBusy: true, aiStatus: '분석 중...' });
+    try {
+      let out;
+      if (window.claude && window.claude.complete) {
+        out = await window.claude.complete(AI_PROMPT + '\n\n[기초정보]\n' + raw);
+      } else {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-5',
+            max_tokens: 1200,
+            messages: [{ role: 'user', content: AI_PROMPT + '\n\n[기초정보]\n' + raw }]
+          })
+        });
+        const data = await res.json();
+        out = (data.content || []).filter(c => c.type === 'text').map(c => c.text).join('');
+      }
+      const parsed = JSON.parse(String(out).replace(/```json|```/g, '').trim());
+      const next = {};
+      if (parsed.documentType && TYPE_CONFIG[parsed.documentType]) {
+        next.docType = parsed.documentType;
+        next.attachments = TYPE_CONFIG[parsed.documentType].defaultAttachments.slice();
+      }
+      if (parsed.itemName) next.itemName = parsed.itemName;
+      if (parsed.itemSpec) next.itemSpec = parsed.itemSpec;
+      if (parsed.amountNum != null) next.amountNum = String(parsed.amountNum);
+      next.feeIncluded = !!parsed.feeIncluded;
+      if (parsed.dueCustom) { next.dueCustomOn = true; next.dueCustom = parsed.dueCustom; }
+      else if (parsed.dueDays != null) { next.dueCustomOn = false; next.dueDays = String(parsed.dueDays); }
+      if (Array.isArray(parsed.related) && parsed.related.length) {
+        next.related = parsed.related.map(r => ({ dept: r.dept || '', date: r.date || '', label: r.label || '' }));
+      }
+      next.aiStatus = '자동 채우기 완료. 결과를 확인하고 필요시 수정하세요.';
+      this.setState(next);
+    } catch (err) {
+      this.setState({ aiStatus: '분석에 실패했습니다. 기초정보를 조금 더 구체적으로 써서 다시 시도해 주세요.' });
+    } finally {
+      this.setState({ aiBusy: false });
+    }
+  };
+
+  patchRelated(i, key, v) {
+    const related = this.state.related.map((r, k) => k === i ? Object.assign({}, r, { [key]: v }) : r);
+    this.setState({ related });
+  }
+
+  renderVals() {
+    const cfg = this.cfg();
+    const s = this.state;
+    return {
+      rawInfo: s.rawInfo, onRawInfo: this.set('rawInfo'),
+      aiStatus: s.aiStatus, aiBusy: s.aiBusy, onAi: this.runAi,
+      offline: s.offline, aiDisabled: s.aiBusy || s.offline,
+      onOffline: (e) => this.setState({ offline: e.target.checked, aiStatus: e.target.checked ? '오프라인 모드 — 외부 전송 없음' : '' }),
+
+      docType: s.docType, onDocType: this.changeType,
+      nameFieldLabel: cfg.nameFieldLabel, specFieldLabel: cfg.specFieldLabel,
+      amountFieldLabel: cfg.amountFieldLabel, periodFieldLabel: cfg.periodFieldLabel,
+      periodPrefix: cfg.periodPrefix, periodSuffix: cfg.periodSuffix,
+
+      itemName: s.itemName, onItemName: this.set('itemName'),
+      itemSpec: s.itemSpec, onItemSpec: this.set('itemSpec'),
+      amountDisplay: (() => {
+        const n = parseInt(String(s.amountNum).replace(/[^0-9]/g, '') || '', 10);
+        return isNaN(n) ? '' : n.toLocaleString('ko-KR');
+      })(),
+      onAmount: (e) => this.setState({ amountNum: e.target.value.replace(/[^0-9]/g, '') }),
+      feeIncluded: s.feeIncluded, onFee: (e) => this.setState({ feeIncluded: e.target.checked }),
+      amountPreview: this.amountText() ? '→ ' + this.amountText() : '',
+
+      dueDays: s.dueDays, onDueDays: this.set('dueDays'),
+      dueCustomOn: s.dueCustomOn, onDueCustomOn: (e) => this.setState({ dueCustomOn: e.target.checked }),
+      dueCustom: s.dueCustom, onDueCustom: this.set('dueCustom'),
+
+      titleAuto: s.titleAuto,
+      onTitleAuto: (e) => this.setState({ titleAuto: e.target.checked, titleManual: e.target.checked ? s.titleManual : this.titleText() }),
+      title: this.titleText(), onTitle: this.set('titleManual'),
+
+      sentenceAuto: s.sentenceAuto,
+      onSentenceAuto: (e) => this.setState({ sentenceAuto: e.target.checked, sentenceManual: e.target.checked ? s.sentenceManual : this.sentenceText() }),
+      bodySentence: this.sentenceText(), onBodySentence: this.set('sentenceManual'),
+
+      relatedRows: s.related.map((r, i) => ({
+        dept: r.dept, date: r.date, label: r.label,
+        onDept: (e) => this.patchRelated(i, 'dept', e.target.value),
+        onDate: (e) => this.patchRelated(i, 'date', e.target.value),
+        onLabel: (e) => this.patchRelated(i, 'label', e.target.value),
+        onDel: () => this.setState({ related: s.related.filter((_, k) => k !== i) })
+      })),
+      addRelated: () => this.setState({ related: s.related.concat([{ dept: '', date: '', label: '' }]) }),
+
+      presetChips: ATTACH_PRESETS.map(p => ({
+        text: p, on: s.attachments.indexOf(p) >= 0 ? '1' : '0',
+        onToggle: () => {
+          const idx = s.attachments.indexOf(p);
+          this.setState({ attachments: idx >= 0 ? s.attachments.filter((_, k) => k !== idx) : s.attachments.concat([p]) });
+        }
+      })),
+      attachRows: s.attachments.map((a, i) => ({
+        text: a, no: String(i + 1) + '.',
+        onText: (e) => this.setState({ attachments: s.attachments.map((v, k) => k === i ? e.target.value : v) }),
+        onDel: () => this.setState({ attachments: s.attachments.filter((_, k) => k !== i) })
+      })),
+      addAttach: () => this.setState({ attachments: s.attachments.concat(['']) }),
+
+      docText: this.docText(),
+      copyLabel: s.copied ? '복사됨' : '본문복사',
+      onCopy: this.copy,
+      copyTitleLabel: s.titleCopied ? '복사됨' : '제목복사',
+      onCopyTitle: this.copyTitle
+    };
+  }
+}
+</script>
+</body>
+</html>

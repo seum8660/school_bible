@@ -1264,12 +1264,8 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     </div>
     <aside class="hero-notice">
       <div class="hn-head"><span class="hn-dot"></span>업데이트 · 공지</div>
-      <ul class="hn-list">
-        <li class="on"><div class="hn-dt">7월 30일</div><div class="hn-tx">각종 매뉴얼 <b>13종</b> 요약 공개 — 건축 설계공모 운영 실무가이드 추가</div></li>
-        <li><div class="hn-dt">7월 24일</div><div class="hn-tx">초간단 수선견적서 <b>견적이</b> 공개 · 현장사진관리 <b>현장이</b> 개발 중</div></li>
-        <li><div class="hn-dt">7월 18일</div><div class="hn-tx"><b>간단내역서 만들기</b> 추가 — 일위대가 자동참조 내역서·원가계산서·단가조사</div></li>
-      </ul>
-      <div class="hn-foot">ver 4.0 · 2026-07-24</div>
+      <ul class="hn-list" id="hnList"></ul>
+      <div class="hn-foot" id="hnFoot">ver 4.0</div>
     </aside>
   </div>
 </section>
@@ -1558,18 +1554,52 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <a class="man-card" href="manuals/18_내진보강공사_기술감리_요약.html" data-inline="manuals/18_내진보강공사_기술감리_요약.html" data-dl="manuals/18_내진보강공사_기술감리_매뉴얼.pdf" data-title="내진보강공사 기술감리 — 핵심 요약"><span class="man-no">12</span><div class="man-t"><b>내진보강공사 기술감리</b><span>내진보강 설계·시공 감리 실무</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="내진보강">#내진보강</span><span class="htag" data-tag="기술감리">#기술감리</span><span class="htag" data-tag="구조안전">#구조안전</span></div></a>
       <a class="man-card" href="manuals/19_건축설계공모운영_요약.html" data-inline="manuals/19_건축설계공모운영_요약.html" data-title="건축 설계공모 운영 업무 실무가이드 — 핵심 요약"><span class="man-no">13</span><div class="man-t"><b>건축 설계공모 운영 업무 실무가이드</b><span>한국부동산원 공공건축지원센터 · 2025.07</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-site" data-site="https://www.hub.go.kr/portal/main.do" title="건축HUB 열기" style="cursor:pointer">사이트 ↗</span></span><div class="man-tagrow"><span class="htag" data-tag="설계공모">#설계공모</span><span class="htag" data-tag="심사위원회">#심사위원회</span><span class="htag" data-tag="보상비">#보상비</span></div></a>
       <a class="man-card" href="#" data-soon="1" data-title="교육시설 안전인증 운영 매뉴얼 — 준비중"><span class="man-no">14</span><div class="man-t"><b>교육시설 안전인증 운영 매뉴얼</b><span>교육부 · 교육시설안전원 · 준비중</span></div><span class="man-badges"><span class="man-go g-soon">준비중</span></span><div class="man-tagrow"><span class="htag" data-tag="교육시설인증">#교육시설인증</span><span class="htag" data-tag="안전인증">#안전인증</span><span class="htag" data-tag="예비인증">#예비인증</span></div></a>
+      <a class="man-card" href="#" data-soon="1" data-title="교육시설 안전성평가 매뉴얼 — 준비중"><span class="man-no">15</span><div class="man-t"><b>교육시설 안전성평가 매뉴얼</b><span>교육부 · 교육시설안전원 · 준비중</span></div><span class="man-badges"><span class="man-go g-soon">준비중</span></span><div class="man-tagrow"><span class="htag" data-tag="안전성평가">#안전성평가</span><span class="htag" data-tag="구조안전">#구조안전</span><span class="htag" data-tag="정밀점검">#정밀점검</span></div></a>
     </div>
     <div id="man-inline" style="display:none;margin-top:16px"></div>
 
-    <div style="margin-top:26px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><h3 style="font-size:15px;font-weight:800;color:#191f28;margin:0">관련 사이트</h3><span style="font-size:12.5px;color:#8b95a1">실무에 자주 쓰는 외부 시스템</span></div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px">
-        <a href="https://www.moleg.go.kr" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--line,#e5e8eb);border-radius:12px;background:#fff;text-decoration:none;min-height:52px"><span style="font-size:17px">⚖️</span><span style="flex:1;font-size:13.5px;font-weight:800;color:#191f28">법제처<span style="display:block;font-size:11.5px;font-weight:600;color:#8b95a1;margin-top:2px">법령·행정규칙 검색</span></span><span style="font-size:12px;color:#8b95a1">↗</span></a>
-        <a href="https://www.csi.go.kr" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--line,#e5e8eb);border-radius:12px;background:#fff;text-decoration:none;min-height:52px"><span style="font-size:17px">🦺</span><span style="flex:1;font-size:13.5px;font-weight:800;color:#191f28">CSI 건설안전정보시스템<span style="display:block;font-size:11.5px;font-weight:600;color:#8b95a1;margin-top:2px">안전관리계획·사고신고</span></span><span style="font-size:12px;color:#8b95a1">↗</span></a>
-        <a href="https://work.keiis.kr" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--line,#e5e8eb);border-radius:12px;background:#fff;text-decoration:none;min-height:52px"><span style="font-size:17px">🏫</span><span style="flex:1;font-size:13.5px;font-weight:800;color:#191f28">교육시설통합정보망<span style="display:block;font-size:11.5px;font-weight:600;color:#8b95a1;margin-top:2px">교육시설 업무포털</span></span><span style="font-size:12px;color:#8b95a1">↗</span></a>
-        <a href="https://www.cems.kr/" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--line,#e5e8eb);border-radius:12px;background:#fff;text-decoration:none;min-height:52px"><span style="font-size:17px">🛠</span><span style="flex:1;font-size:13.5px;font-weight:800;color:#191f28">CEMS<span style="display:block;font-size:11.5px;font-weight:600;color:#8b95a1;margin-top:2px">교육시설 유지관리</span></span><span style="font-size:12px;color:#8b95a1">↗</span></a>
-        <a href="https://shop.g2b.go.kr" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--line,#e5e8eb);border-radius:12px;background:#fff;text-decoration:none;min-height:52px"><span style="font-size:17px">🛒</span><span style="flex:1;font-size:13.5px;font-weight:800;color:#191f28">나라장터 종합쇼핑몰<span style="display:block;font-size:11.5px;font-weight:600;color:#8b95a1;margin-top:2px">MAS 물품 조회</span></span><span style="font-size:12px;color:#8b95a1">↗</span></a>
-        <a href="https://www.hub.go.kr/portal/main.do" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid var(--line,#e5e8eb);border-radius:12px;background:#fff;text-decoration:none;min-height:52px"><span style="font-size:17px">🏛</span><span style="flex:1;font-size:13.5px;font-weight:800;color:#191f28">건축HUB<span style="display:block;font-size:11.5px;font-weight:600;color:#8b95a1;margin-top:2px">건축 설계공모 정보서비스</span></span><span style="font-size:12px;color:#8b95a1">↗</span></a>
+    <div style="margin-top:30px">
+      <style>
+        .nsite:hover{border-color:var(--accent,#0075de);background:var(--surface,#fff)}
+        .nsite:hover .nsite-mk{background:var(--accent,#0075de);color:#fff}
+        .nsite:hover .nsite-nm{color:var(--accent,#0075de)}
+        .nsite:hover .nsite-ar{color:var(--accent,#0075de)}
+      </style>
+      <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:12px;border-bottom:1px solid var(--border,#e3e2e0)">
+        <h3 style="font-size:15px;font-weight:700;color:var(--ink,#37352f);margin:0;letter-spacing:-.01em">관련 사이트</h3>
+        <span style="font-size:13px;color:var(--muted,#9b9a97)">실무에 자주 쓰는 외부 시스템</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px">
+        <a href="https://www.moleg.go.kr" target="_blank" rel="noopener noreferrer" class="nsite" style="display:flex;align-items:center;gap:14px;padding:15px 16px;border:1px solid var(--border,#e3e2e0);border-radius:10px;background:var(--surface,#fff);text-decoration:none;color:inherit;transition:border-color .1s,background .1s">
+          <span class="nsite-mk" style="flex:0 0 auto;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:11px;font-weight:700;letter-spacing:0;color:var(--muted,#787774);background:var(--surface-2,#f1f1ef);transition:background .1s,color .1s">법제처</span>
+          <span style="flex:1;min-width:0"><span class="nsite-nm" style="display:block;font-size:15px;font-weight:600;color:var(--ink,#37352f);line-height:1.35;letter-spacing:-.01em">법제처</span><span style="display:block;font-size:13px;color:var(--muted,#787774);margin-top:3px;line-height:1.4">법령·행정규칙 검색</span></span>
+          <span class="nsite-ar" style="flex:0 0 auto;font-size:14px;color:var(--muted,#c0bfbb);transition:color .1s">↗</span>
+        </a>
+        <a href="https://www.csi.go.kr" target="_blank" rel="noopener noreferrer" class="nsite" style="display:flex;align-items:center;gap:14px;padding:15px 16px;border:1px solid var(--border,#e3e2e0);border-radius:10px;background:var(--surface,#fff);text-decoration:none;color:inherit;transition:border-color .1s,background .1s">
+          <span class="nsite-mk" style="flex:0 0 auto;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:11px;font-weight:700;letter-spacing:0;color:var(--muted,#787774);background:var(--surface-2,#f1f1ef);transition:background .1s,color .1s">CSI</span>
+          <span style="flex:1;min-width:0"><span class="nsite-nm" style="display:block;font-size:15px;font-weight:600;color:var(--ink,#37352f);line-height:1.35;letter-spacing:-.01em">CSI 건설안전정보시스템</span><span style="display:block;font-size:13px;color:var(--muted,#787774);margin-top:3px;line-height:1.4">안전관리계획·사고신고</span></span>
+          <span class="nsite-ar" style="flex:0 0 auto;font-size:14px;color:var(--muted,#c0bfbb);transition:color .1s">↗</span>
+        </a>
+        <a href="https://work.keiis.kr" target="_blank" rel="noopener noreferrer" class="nsite" style="display:flex;align-items:center;gap:14px;padding:15px 16px;border:1px solid var(--border,#e3e2e0);border-radius:10px;background:var(--surface,#fff);text-decoration:none;color:inherit;transition:border-color .1s,background .1s">
+          <span class="nsite-mk" style="flex:0 0 auto;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:10px;font-weight:700;letter-spacing:0;color:var(--muted,#787774);background:var(--surface-2,#f1f1ef);transition:background .1s,color .1s">KEIIS</span>
+          <span style="flex:1;min-width:0"><span class="nsite-nm" style="display:block;font-size:15px;font-weight:600;color:var(--ink,#37352f);line-height:1.35;letter-spacing:-.01em">교육시설통합정보망</span><span style="display:block;font-size:13px;color:var(--muted,#787774);margin-top:3px;line-height:1.4">교육시설 업무포털</span></span>
+          <span class="nsite-ar" style="flex:0 0 auto;font-size:14px;color:var(--muted,#c0bfbb);transition:color .1s">↗</span>
+        </a>
+        <a href="https://www.cems.kr/" target="_blank" rel="noopener noreferrer" class="nsite" style="display:flex;align-items:center;gap:14px;padding:15px 16px;border:1px solid var(--border,#e3e2e0);border-radius:10px;background:var(--surface,#fff);text-decoration:none;color:inherit;transition:border-color .1s,background .1s">
+          <span class="nsite-mk" style="flex:0 0 auto;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:11px;font-weight:700;letter-spacing:0;color:var(--muted,#787774);background:var(--surface-2,#f1f1ef);transition:background .1s,color .1s">CEMS</span>
+          <span style="flex:1;min-width:0"><span class="nsite-nm" style="display:block;font-size:15px;font-weight:600;color:var(--ink,#37352f);line-height:1.35;letter-spacing:-.01em">CEMS</span><span style="display:block;font-size:13px;color:var(--muted,#787774);margin-top:3px;line-height:1.4">교육시설 유지관리</span></span>
+          <span class="nsite-ar" style="flex:0 0 auto;font-size:14px;color:var(--muted,#c0bfbb);transition:color .1s">↗</span>
+        </a>
+        <a href="https://shop.g2b.go.kr" target="_blank" rel="noopener noreferrer" class="nsite" style="display:flex;align-items:center;gap:14px;padding:15px 16px;border:1px solid var(--border,#e3e2e0);border-radius:10px;background:var(--surface,#fff);text-decoration:none;color:inherit;transition:border-color .1s,background .1s">
+          <span class="nsite-mk" style="flex:0 0 auto;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:11px;font-weight:700;letter-spacing:0;color:var(--muted,#787774);background:var(--surface-2,#f1f1ef);transition:background .1s,color .1s">G2B</span>
+          <span style="flex:1;min-width:0"><span class="nsite-nm" style="display:block;font-size:15px;font-weight:600;color:var(--ink,#37352f);line-height:1.35;letter-spacing:-.01em">나라장터 종합쇼핑몰</span><span style="display:block;font-size:13px;color:var(--muted,#787774);margin-top:3px;line-height:1.4">MAS 물품 조회 · 단가계약</span></span>
+          <span class="nsite-ar" style="flex:0 0 auto;font-size:14px;color:var(--muted,#c0bfbb);transition:color .1s">↗</span>
+        </a>
+        <a href="https://www.hub.go.kr/portal/main.do" target="_blank" rel="noopener noreferrer" class="nsite" style="display:flex;align-items:center;gap:14px;padding:15px 16px;border:1px solid var(--border,#e3e2e0);border-radius:10px;background:var(--surface,#fff);text-decoration:none;color:inherit;transition:border-color .1s,background .1s">
+          <span class="nsite-mk" style="flex:0 0 auto;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:11px;font-weight:700;letter-spacing:0;color:var(--muted,#787774);background:var(--surface-2,#f1f1ef);transition:background .1s,color .1s">HUB</span>
+          <span style="flex:1;min-width:0"><span class="nsite-nm" style="display:block;font-size:15px;font-weight:600;color:var(--ink,#37352f);line-height:1.35;letter-spacing:-.01em">건축HUB</span><span style="display:block;font-size:13px;color:var(--muted,#787774);margin-top:3px;line-height:1.4">건축 설계공모 정보서비스</span></span>
+          <span class="nsite-ar" style="flex:0 0 auto;font-size:14px;color:var(--muted,#c0bfbb);transition:color .1s">↗</span>
+        </a>
       </div>
     </div>
   </section>
@@ -2431,7 +2461,7 @@ const PCOLOR={plan:'var(--p-plan)',design:'var(--p-design)',const:'var(--p-const
 // ================= 카드 렌더링 =================
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 // 자동 해시태그 사전 (키워드 → 태그)
-const HTAG_KW=['가설건축물','도시계획시설','BF','ZEB','제로에너지','녹색건축','하도급','직접시공','건설기술인','지하안전','내진보강','일상감사','투자심사','사전기획','공유재산','공공건축심의','설계공모','기술자문','VE','경제성검토','안전성검토','DfS','안전보건대장','안전보건조정자','인증','ZEB','제로에너지','녹색건축','BF','BEMS','CPTED','신재생에너지','건설사업관리','감리','감독권한대행','설계변경','계약금액조정','일상감사','착공','준공검사','사용승인','건축물대장','정산','해체','폐기물','품질관리','안전관리','산업안전보건관리비','기술지도','공사기간','비작업일수','작업일수','준비기간','정리기간','역량평가','통합CM','분리발주','관급자재','제비율','환경보전비','임금채권','석면','퇴직공제','국민연금','고용보험','국민건강보험','투자심사','타당성','교육시설인증','안전인증','예비인증','교육시설안전','시설안전','급식실','석면해체','설계의도구현','발주청','표준품셈','일위대가','시설단가','제비율표','기상데이터','공휴일','에너지절약계획서','건축물에너지효율등급','안전관리계획','유해위험방지계획서','건설재해예방','기술감리','설계감리','공사감리','사업관리방식','통합발주','턴키','종합심사','적격심사','수의계약','전자입찰'];
+const HTAG_KW=['가설건축물','도시계획시설','BF','ZEB','제로에너지','녹색건축','하도급','직접시공','건설기술인','지하안전','내진보강','일상감사','투자심사','사전기획','공유재산','공공건축심의','설계공모','기술자문','VE','경제성검토','안전성검토','DfS','안전보건대장','안전보건조정자','인증','BEMS','CPTED','신재생에너지','건설사업관리','감리','감독권한대행','설계변경','계약금액조정','착공','준공검사','사용승인','건축물대장','정산','해체','폐기물','품질관리','안전관리','산업안전보건관리비','기술지도','공사기간','비작업일수','작업일수','준비기간','정리기간','역량평가','통합CM','분리발주','관급자재','제비율','환경보전비','임금채권','석면','퇴직공제','국민연금','고용보험','국민건강보험','타당성','교육시설인증','안전인증','예비인증','교육시설안전','시설안전','급식실','석면해체','설계의도구현','발주청','표준품셈','일위대가','시설단가','제비율표','기상데이터','공휴일','에너지절약계획서','건축물에너지효율등급','안전관리계획','유해위험방지계획서','건설재해예방','기술감리','설계감리','공사감리','사업관리방식','통합발주','턴키','종합심사','적격심사','수의계약','전자입찰','안전성평가','정밀점검','정밀안전진단','내진성능평가','시설물안전법','교육시설법','재난안전','석면조사','실내공기질','환경위생','소방시설','전기안전','승강기','옥상방수','창호교체','화장실개선','냉난방','환기설비','태양광','조달청','계약심사','설계적정성검토','물가변동','간접비','공기연장','하자보수','하자담보책임','준공정산','개략공사비','총사업비','예산편성','감사','정보공개'];
 function autoTags(it){
   const hay=(it.t+' '+(it.d||'')+' '+JSON.stringify(it.detail||{})).replace(/\s/g,'');
   const found=[];
@@ -4201,6 +4231,33 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
   render();
   var mo=new MutationObserver(function(){ render(); });
   mo.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<script>
+/* 인트로(히어로 공지) 자동 업데이트 — 매뉴얼/유틸 카드 수를 DOM에서 직접 집계 */
+(function(){
+  var NOTICES=[
+    {d:'2026-08-01', tx:'교육시설 <b>안전성평가</b> 매뉴얼 항목 추가 · 관련 사이트 개편'},
+    {d:'2026-07-24', tx:'초간단 수선견적서 <b>견적이</b> 공개 · 현장사진관리 <b>현장이</b> 개발 중'},
+    {d:'2026-07-18', tx:'<b>간단내역서 만들기</b> 추가 — 일위대가 자동참조 내역서·원가계산서·단가조사'}
+  ];
+  var VER='4.0';
+  function fmt(iso){var p=iso.split('-');return (+p[1])+'월 '+(+p[2])+'일';}
+  function render(){
+    var cards=document.querySelectorAll('#manGrid .man-card');
+    var total=cards.length, soon=document.querySelectorAll('#manGrid .man-card[data-soon]').length;
+    var open=total-soon;
+    var list=[{d:NOTICES[0].d, tx:'각종 매뉴얼 <b>'+open+'종</b> 요약 공개'+(soon?' · <b>'+soon+'종</b> 준비중':'')+' — '+NOTICES[0].tx}]
+             .concat(NOTICES.slice(1));
+    var ul=document.getElementById('hnList'); if(!ul) return;
+    ul.innerHTML=list.slice(0,3).map(function(n,i){
+      return '<li'+(i===0?' class="on"':'')+'><div class="hn-dt">'+fmt(n.d)+'</div><div class="hn-tx">'+n.tx+'</div></li>';
+    }).join('');
+    var f=document.getElementById('hnFoot');
+    if(f) f.textContent='ver '+VER+' · '+list[0].d+' · 매뉴얼 '+total+'종';
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',render); else render();
+  window.refreshIntroNotice=render;
 })();
 </script>
 </body>

@@ -58,7 +58,7 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="hd">
+  <div class="hd" id="pageHd">
     <div>
       <h1>학교시설업무 관계망 · 3D 그래프 뷰</h1>
       <p>기존 2D 그래프와 같은 데이터를 3차원 힘 기반 배치로 펼쳤습니다. 드래그로 회전, 스크롤로 확대, 노드를 클릭하면 연결된 항목만 남습니다.</p>
@@ -75,6 +75,14 @@
     <button class="chip" data-f="manual">매뉴얼</button>
     <button class="chip" data-f="tag">태그</button>
     <button class="chip" id="grow">가지 펼치기 ↻</button>
+    <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);white-space:nowrap">팔레트
+      <select id="pal" style="height:30px;border:1px solid var(--line);border-radius:100px;background:var(--surface);color:var(--ink);font:inherit;font-size:12.5px;padding:0 10px;outline:none;cursor:pointer">
+        <option value="earth" selected>흑임·토달</option>
+        <option value="phase">단계별 색</option>
+        <option value="cool">청록 그라데이션</option>
+        <option value="mono">모노톤(2D 동일)</option>
+      </select>
+    </label>
     <button class="chip" id="reset">초기화</button>
   </div>
 
@@ -84,12 +92,13 @@
       <div id="tip"></div>
       <div class="hint">드래그 회전 · 스크롤 확대 · 클릭 집중</div>
       <div class="legend">
-        <span><i style="background:#0075de"></i>단계·전체</span>
-        <span><i style="background:#6b6b6b"></i>절차</span>
-        <span><i style="background:#c93a52"></i>법령</span>
-        <span><i style="background:#e8792e"></i>매뉴얼</span>
-        <span><i style="background:#9a9a9a"></i>인증</span>
-        <span><i style="background:#e11d48"></i>태그</span>
+        <span><i data-p="plan" style="background:#3f6f8a"></i>기획</span>
+        <span><i data-p="design" style="background:#5b8c6e"></i>설계</span>
+        <span><i data-p="const" style="background:#c07a3e"></i>시공</span>
+        <span><i data-p="cm" style="background:#8a6a4f"></i>건설관리</span>
+        <span><i data-p="comp" style="background:#96794a"></i>준공</span>
+        <span><i data-p="manual" style="background:#7a7168"></i>매뉴얼</span>
+        <span><i style="background:#fff;box-shadow:inset 0 0 0 1px #a39e98"></i>법령·인증</span>
       </div>
     </div>
     <aside style="display:none">
@@ -107,8 +116,28 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const G = window.BIBLE_GRAPH;
-const COL = { root:'#0075de', phase:'#0075de', law:'#c93a52', cert:'#9a9a9a', tag:'#e11d48', 'item:manual':'#e8792e' };
-const colorOf = n => COL[n.group] || '#6b6b6b';
+// 단계별 색상 팔레트 (선택 가능)
+const PALETTES = {
+  phase: { plan:'#0075de', design:'#00868f', const:'#c9762a', cm:'#7b5bd6', comp:'#2f9e4f', manual:'#6b6b6b' },
+  earth: { plan:'#3f6f8a', design:'#5b8c6e', const:'#c07a3e', cm:'#8a6a4f', comp:'#96794a', manual:'#7a7168' },
+  cool:  { plan:'#0b4f8a', design:'#0075de', const:'#3fa0c9', cm:'#5f7fb8', comp:'#2f9e8f', manual:'#8b96a3' },
+  mono:  { plan:'#31302e', design:'#4a4845', const:'#615d59', cm:'#7b766f', manual:'#a39e98', comp:'#8e8981' }
+};
+let PHASE_COL = PALETTES.earth;
+const INK2 = '#31302e', MUTED = '#615d59', FAINT = '#a39e98', ACCENT = '#0075de', SOFT = '#e7f1fc';
+const isHot = n => n.group === 'phase' || n.group === 'root';
+function phaseOf(n) {
+  const g = n.group || '', id = n.id || '';
+  let m = g.match(/^item:(\w+)/) || id.match(/^(?:phase|item):(\w+)/);
+  return m ? m[1] : null;
+}
+const colorOf = n => {
+  if (n.group === 'law' || n.group === 'cert') return '#ffffff';
+  const p = phaseOf(n);
+  if (p && PHASE_COL[p]) return PHASE_COL[p];
+  if (n.group === 'root') return INK2;
+  return MUTED;
+};
 const KIND = { phase:'단계', root:'전체', law:'근거 법령', cert:'인증', tag:'키워드', 'item:manual':'매뉴얼' };
 const kindOf = n => KIND[n.group] || (n.group.startsWith('item:') ? '절차' : '항목');
 
@@ -179,7 +208,7 @@ links.forEach((l, i) => {
   lpos.set([l.s.x, l.s.y, l.s.z, l.t.x, l.t.y, l.t.z], i * 6);
 });
 lgeo.setAttribute('position', new THREE.BufferAttribute(lpos, 3));
-const lcol = new Float32Array(links.length * 6).fill(0.78);
+const lcol = new Float32Array(links.length * 6).fill(0.79);
 lgeo.setAttribute('color', new THREE.BufferAttribute(lcol, 3));
 const lines = new THREE.LineSegments(lgeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.62 }));
 root.add(lines);
@@ -192,22 +221,26 @@ const meshes = nodes.map(n => {
   m.scale.setScalar(rad(n));
   m.userData.node = n;
   root.add(m);
+  if (n.group === 'law' || n.group === 'cert') {
+    const ring = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: new THREE.Color(FAINT), wireframe: true, transparent: true, opacity: .5 }));
+    ring.scale.setScalar(1.12); m.add(ring);
+  }
   return m;
 });
 
 // labels (only prominent nodes get a sprite)
-function labelSprite(text, hot) {
-  const pad = 8, fs = hot ? 30 : 24, c = document.createElement('canvas'), g = c.getContext('2d');
-  g.font = `${hot ? 700 : 600} ${fs}px -apple-system, "Malgun Gothic", sans-serif`;
+function labelSprite(text, hot, dim, tint) {
+  const pad = 8, fs = hot ? 30 : (dim ? 22 : 26), c = document.createElement('canvas'), g = c.getContext('2d');
+  const wt = hot ? 700 : (dim ? 500 : 600);
+  g.font = `${wt} ${fs}px -apple-system, "Malgun Gothic", sans-serif`;
   const w = g.measureText(text).width;
   c.width = Math.ceil(w + pad * 2); c.height = fs + pad * 2;
-  g.font = `${hot ? 700 : 600} ${fs}px -apple-system, "Malgun Gothic", sans-serif`;
+  g.font = `${wt} ${fs}px -apple-system, "Malgun Gothic", sans-serif`;
   if (hot) {
-    g.fillStyle = '#e8f2fd';
-    const r = c.height / 2;
-    g.beginPath(); g.roundRect(0, 0, c.width, c.height, r); g.fill();
+    g.fillStyle = (tint || ACCENT) + '1f';
+    g.beginPath(); g.roundRect(0, 0, c.width, c.height, c.height / 2); g.fill();
   }
-  g.fillStyle = hot ? '#0075de' : '#3b3b3b';
+  g.fillStyle = hot ? (tint || ACCENT) : (dim ? FAINT : INK2);
   g.textBaseline = 'middle';
   g.fillText(text, pad, c.height / 2);
   const tex = new THREE.CanvasTexture(c); tex.anisotropy = 4;
@@ -217,16 +250,16 @@ function labelSprite(text, hot) {
 }
 const labels = [];
 nodes.forEach((n, i) => {
-  const hot = n.group === 'phase' || n.group === 'root';
+  const hot = isHot(n);
   const txt = n.label.length > 13 ? n.label.slice(0, 13) + '…' : n.label;
-  const sp = labelSprite(txt, hot);
+  const sp = labelSprite(txt, hot, n.group === 'law' || n.group === 'cert', colorOf(n));
   sp.position.set(n.x, n.y + rad(n) + 7, n.z);
   sp.userData = { node: n, mesh: meshes[i] };
   root.add(sp); labels.push(sp);
 });
 
 function resize() {
-  const w = stage.clientWidth, h = cv.clientHeight || 560;
+  const w = stage.clientWidth, h = stage.clientHeight || cv.clientHeight || 560;
   renderer.setSize(w, h, false);
   camera.aspect = w / h; camera.updateProjectionMatrix();
 }
@@ -329,6 +362,14 @@ document.querySelectorAll('.chip[data-f]').forEach(b => b.addEventListener('clic
   document.querySelectorAll('.chip[data-f]').forEach(x => x.classList.remove('on'));
   b.classList.add('on'); filter = b.dataset.f; paint();
 }));
+document.getElementById('pal').addEventListener('change', e => {
+  PHASE_COL = PALETTES[e.target.value] || PALETTES.phase;
+  meshes.forEach((m, i) => m.material.color.set(colorOf(nodes[i])));
+  document.querySelectorAll('.legend i[data-p]').forEach(el => {
+    el.style.background = PHASE_COL[el.dataset.p];
+  });
+});
+
 document.getElementById('reset').addEventListener('click', () => {
   sel = null; query = ''; filter = 'all';
   document.getElementById('q').value = '';
@@ -356,7 +397,8 @@ const parent = new Map(), depth = new Map();
   nodes.forEach(n => { if (!depth.has(n.id)) { depth.set(n.id, 1); parent.set(n.id, start.id); } });
 }
 const maxDepth = Math.max(...depth.values());
-const STEP = 260, DUR = 760;
+const BASE_STEP = 90, BASE_DUR = 480;
+const speed = 0.3, STEP = BASE_STEP / speed, DUR = BASE_DUR / speed;
 let growT0 = performance.now(), growing = true;
 const ease = t => 1 - Math.pow(1 - t, 3);
 function growTick(now) {
@@ -378,12 +420,12 @@ function growTick(now) {
   meshes.forEach((m, i) => {
     const n = nodes[i];
     m.position.set(n.x, n.y, n.z);
-    m.scale.setScalar(rad(n) * Math.max(0.001, n.grow));
+    m.scale.setScalar(rad(n) * (0.35 + 0.65 * n.grow));
   });
   const p = lgeo.getAttribute('position');
   links.forEach((l, i) => p.array.set([l.s.x, l.s.y, l.s.z, l.t.x, l.t.y, l.t.z], i * 6));
   p.needsUpdate = true;
-  labels.forEach(sp => { sp.material.opacity = Math.max(0, Math.min(1, (sp.userData.node.grow - 0.55) / 0.45)); });
+  labels.forEach(sp => { sp.material.opacity = Math.max(0, Math.min(1, (sp.userData.node.grow - 0.35) / 0.65)); });
   if (allDone) { growing = false; labels.forEach(sp => sp.material.opacity = 1); paint(); }
 }
 function growReset() {
@@ -402,6 +444,23 @@ growReset();
   labels.forEach(sp => { const n = sp.userData.node; sp.position.set(n.x, n.y + rad(n) + 7, n.z); });
   renderer.render(scene, camera);
 })();
+</script>
+<script>
+  // 임베드(iframe)로 열릴 땐 페이지 헤더·여백 제거 — 호스트 대시보드와 중복 방지
+  if (window.top !== window.self) {
+    document.documentElement.style.background = 'transparent';
+    document.addEventListener('DOMContentLoaded', function () {
+      var hd = document.getElementById('pageHd'); if (hd) hd.style.display = 'none';
+      var w = document.querySelector('.wrap');
+      if (w) { w.style.cssText += ';padding:10px 12px 12px;height:100vh;display:flex;flex-direction:column;max-width:none'; }
+      var g = document.querySelector('.grid');
+      if (g) { g.style.cssText += ';flex:1;min-height:0'; }
+      var st = document.querySelector('.stage');
+      if (st) { st.style.border = '0'; st.style.height = '100%'; }
+      var cv = document.getElementById('cv'); if (cv) cv.style.height = '100%';
+      setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 60);
+    });
+  }
 </script>
 </body>
 </html>

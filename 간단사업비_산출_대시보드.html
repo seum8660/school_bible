@@ -78,44 +78,6 @@
     .danga-grid>*{grid-column:1/-1!important}
     .island-grid{grid-template-columns:1fr}
   }
-  /* 규격 세부설명 */
-  .specbox{margin-top:14px;border:1px solid var(--line);border-left:3px solid var(--accent);
-    border-radius:var(--radsm);background:var(--card);padding:13px 16px}
-  .specbox .sb-t{font-size:14px;font-weight:700;color:var(--ink);line-height:1.4}
-  .specbox .sb-d{font-size:13px;color:var(--sub);margin-top:4px;line-height:1.6}
-  .specbox dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px 18px;margin:11px 0 0;
-    padding-top:11px;border-top:1px solid var(--line2)}
-  .specbox dl>div{min-width:0}
-  .specbox dt{font-size:11px;font-weight:600;letter-spacing:.05em;color:var(--faint)}
-  .specbox dd{margin:2px 0 0;font-size:13.5px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
-  .specbox dd small{font-weight:500;color:var(--sub);font-size:12px;margin-left:3px}
-  /* PDF 미리보기 */
-  #pvOv{position:fixed;inset:0;z-index:9999;background:rgba(25,25,25,.72);display:none;
-    flex-direction:column;align-items:center;padding:16px 12px 40px;overflow:auto}
-  #pvOv.on{display:flex}
-  #pvOv .bar{position:sticky;top:0;display:flex;gap:8px;justify-content:center;align-items:center;
-    padding:10px 12px;margin-bottom:14px;z-index:2}
-  #pvOv .bar .ttl{color:#fff;font-size:13.5px;font-weight:600;margin-right:8px}
-  .a4{width:210mm;min-height:297mm;background:#fff;color:#1a1a1a;padding:16mm 15mm;
-    box-shadow:0 2px 18px rgba(0,0,0,.35);font-size:10.5pt;line-height:1.5}
-  .a4 h2{margin:0 0 4px;font-size:17pt;font-weight:700;text-align:center;letter-spacing:-.02em}
-  .a4 .meta{text-align:center;font-size:8.5pt;color:#666;margin-bottom:14px}
-  .a4 .sec{font-size:11pt;font-weight:700;margin:16px 0 6px;padding-bottom:4px;border-bottom:1.5px solid #1a1a1a}
-  .a4 table{width:100%;border-collapse:collapse;font-size:9.5pt}
-  .a4 th,.a4 td{border:.5px solid #b9b9b6;padding:5px 7px}
-  .a4 thead th{background:#f1f1ef;font-weight:700;color:#444;text-align:center}
-  .a4 td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-  .a4 td.c{text-align:center}
-  .a4 tr.sum td{background:#f7f7f5;font-weight:700}
-  .a4 tr.grand td{background:#eef5fd;font-weight:700;font-size:11pt;color:#0075de}
-  .a4 .foot{margin-top:14px;padding-top:8px;border-top:.5px solid #ccc;font-size:8pt;color:#888;line-height:1.6}
-  @media print{
-    body>*:not(#pvOv){display:none!important}
-    #pvOv{position:static;display:block;background:#fff;padding:0;overflow:visible}
-    #pvOv .bar{display:none}
-    .a4{width:auto;min-height:0;box-shadow:none;padding:0}
-    @page{size:A4 portrait;margin:14mm 13mm}
-  }
   .termbox{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radsm);
     background:var(--card);padding:12px 15px}
   .term-now{font-size:13px;color:var(--sub);line-height:1.6}
@@ -185,32 +147,6 @@
   details.rates[open]>summary::before{content:"▾ "}
   details.rates>summary:hover{color:var(--accent)}
   details.rates .inner{padding:0 20px 18px}
-
-  /* ===== 고대비 표 (상시 적용) ===== */
-  .card,.tw,.cards{border-color:var(--ink)}
-  .sec-title{border-bottom:2px solid var(--ink);font-weight:700}
-  .total{border-bottom:2px solid var(--ink)}
-  th,td{border:1px solid var(--line)}
-  thead th{background:var(--ink);color:var(--card);font-size:12.5px;font-weight:700;
-    letter-spacing:.02em;border-bottom:0}
-  tbody tr:nth-child(even){background:var(--panel2)}
-  tbody tr:hover{background:var(--accent-soft)}
-  .row-h{border-bottom:1px solid var(--line)}
-  .row-h .nm{color:var(--ink)}
-  .row-h .v{font-size:19px}
-  .row.hero .row-h{background:var(--accent-soft)}
-  .fld label{color:var(--ink);font-weight:700}
-  /* 입력칸은 accent 유지 */
-  .fld input,.fld select{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
-  .fld input:hover,.fld select:hover{border-color:var(--accent)}
-  .fld input:focus,.fld select:focus{background:var(--card);border-color:var(--accent);
-    box-shadow:0 0 0 3px var(--accent-soft)}
-  .fld input[readonly]{background:var(--panel2);border-color:var(--line);color:var(--sub)}
-  .rin{background:var(--accent-soft);border-color:var(--accent)}
-  /* 미리보기 지면은 자체 스타일 유지 */
-  .a4 th,.a4 td{border:.5px solid #b9b9b6}
-  .a4 thead th{background:#f1f1ef;color:#444;font-weight:700;border-bottom:.5px solid #b9b9b6}
-  .a4 tbody tr:nth-child(even){background:transparent}
 </style>
 <script src="sisul_danga_2026.js"></script>
 </head>
@@ -260,21 +196,6 @@
           <input type="text" id="area" class="num" inputmode="numeric" placeholder="선택 입력">
           <div class="hint">참고용 · 계산에는 사용하지 않습니다.</div>
         </div>
-        <div class="fld"><label>건축물 종별<span class="q" title="별표3 난이도 구분. 학교는 통상 제2종(보통)입니다.">?</span></label>
-          <select id="jong"><option value="3">제3종 (복잡)</option><option value="2" selected>제2종 (보통)</option><option value="1">제1종 (단순)</option></select>
-          <div class="hint">별표4 요율 산정 기준</div>
-        </div>
-        <div class="fld"><label>도서작성 구분<span class="q" title="기본=인허가 최소 도서 / 중급=공종별 공사비 산정용 / 상급=세부 공사비 산정용">?</span></label>
-          <select id="deung"><option value="상">상급</option><option value="중" selected>중급</option><option value="기">기본</option></select>
-          <div class="hint">설계도서 상세 수준</div>
-        </div>
-        <div class="fld"><label>설계 단계</label>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;padding:9px 0 0">
-            <label style="font-size:13px;font-weight:500;display:inline-flex;gap:5px;align-items:center"><input type="checkbox" id="stg1" style="width:auto" checked>기본 20%</label>
-            <label style="font-size:13px;font-weight:500;display:inline-flex;gap:5px;align-items:center"><input type="checkbox" id="stg2" style="width:auto" checked>중간 30%</label>
-            <label style="font-size:13px;font-weight:500;display:inline-flex;gap:5px;align-items:center"><input type="checkbox" id="stg3" style="width:auto" checked>실시 50%</label>
-          </div>
-        </div>
         <div class="fld"><label>감리비 산정 방식</label>
           <input type="text" value="공사비 요율 기준" readonly>
           <div class="hint">총공사비 구간 요율 × 공사 종류 계수로 산정합니다.</div>
@@ -296,7 +217,7 @@
         <div class="fld"><label>구분</label><select id="dCat"></select></div>
         <div class="fld"><label>항목</label><select id="dItem"></select></div>
         <div class="fld"><label>규격 · 조건</label><select id="dSpec"></select></div>
-        <div class="fld"><label id="dUnitLb">적용 단가 (천원)</label><input type="text" id="dUnit" class="num" readonly></div>
+        <div class="fld"><label>단가 (천원)</label><input type="text" id="dUnit" class="num" readonly></div>
         <div class="fld"><label>수량</label><input type="text" id="dQty" class="num" value="1" inputmode="decimal"></div>
         <div class="fld"><label>&nbsp;</label><button class="btn primary" id="dAdd" type="button" style="white-space:nowrap">추가</button></div>
       </div>
@@ -310,7 +231,6 @@
             <option value="5">도서 라지역 +5%</option>
           </select></div>
       </div>
-      <div class="specbox" id="specBox"></div>
       <div class="tw" style="margin-top:14px"><table>
         <thead><tr><th style="width:110px">구분</th><th>항목 · 규격</th><th class="n" style="width:110px">단가(천원)</th><th class="n" style="width:70px">단위</th><th class="n" style="width:80px">수량</th><th class="n" style="width:130px">금액(원)</th><th style="width:36px"></th></tr></thead>
         <tbody id="dBody"></tbody>
@@ -334,11 +254,24 @@
             <span>본 요율은 <b>예시값</b>입니다. 실제 적용 시에는 최신 <b>엔지니어링사업대가기준 · 건축사법 시행령 · 전라남도교육청 원가계산 운영기준</b> 등 관련 고시를 반드시 확인하여 반영하십시오.</span>
           </div>
 
-          <div class="sub-h">설계비 요율 <span style="font-weight:500;color:var(--faint);font-size:12px">— [별표4] 고시 요율 적용 (수정 불가)</span></div>
-          <div class="note" style="margin:0 0 6px">「공공발주사업에 대한 건축사의 업무범위와 대가기준」 별표4의 종별·도서작성 구분별 요율표를 그대로 적용하며, 구간 사이는 직선보간합니다. 종별·도서작성 구분은 1단계 입력에서 선택합니다.</div>
+          <div class="sub-h">설계비 요율 <span style="font-weight:500;color:var(--faint);font-size:12px">— 구간 사이 값은 직선보간</span></div>
+          <div class="tw"><table>
+            <thead><tr><th>공사비 구간</th><th class="n" style="width:120px">요율 (%)</th></tr></thead>
+            <tbody id="tD"></tbody>
+          </table></div>
 
-          <div class="sub-h">감리비 요율 <span style="font-weight:500;color:var(--faint);font-size:12px">— [별표5] 고시 요율 적용 (수정 불가)</span></div>
-          <div class="note" style="margin:0 0 6px">「공공발주사업에 대한 건축사의 업무범위와 대가기준」 별표5의 종별 요율표를 그대로 적용하며, 구간 사이는 직선보간합니다. 종별은 1단계 입력의 건축물 종별을 따릅니다.</div>
+          <div class="sub-h">감리비 요율</div>
+          <div class="tw"><table>
+            <thead><tr><th>공사비 구간</th><th class="n" style="width:120px">요율 (%)</th></tr></thead>
+            <tbody id="tS"></tbody>
+          </table></div>
+
+          <div class="sub-h">공사 종류별 감리 계수</div>
+          <div class="tw"><table>
+            <thead><tr><th>공사 종류</th><th class="n" style="width:120px">계수</th></tr></thead>
+            <tbody id="tF"></tbody>
+          </table></div>
+
           <div class="sub-h">기타 기준</div>
           <div class="tw"><table>
             <tbody>
@@ -360,53 +293,6 @@
 </div>
 
 <script>
-/* ===== 별표4 건축설계 대가요율 (국토부고시 제2020-635호) ===== */
-var COST_BP=[50000000,100000000,200000000,300000000,500000000,1000000000,2000000000,3000000000,5000000000,10000000000,20000000000,30000000000,50000000000,100000000000,200000000000,300000000000,500000000000];
-var RATE_COLS={
- '3-상':[12.55,11.48,9.99,8.68,7.9,7.03,6.22,5.91,5.72,5.58,5.42,5.32,5.25,5.14,5.06,5.01,4.93],
- '3-중':[10.46,9.56,8.33,7.23,6.58,5.86,5.19,4.93,4.76,4.65,4.51,4.44,4.38,4.29,4.22,4.17,4.11],
- '3-기':[8.36,7.65,6.66,5.78,5.26,4.68,4.15,3.94,3.81,3.72,3.61,3.55,3.5,3.43,3.38,3.34,3.28],
- '2-상':[11.41,10.43,9.08,7.88,7.18,6.39,5.66,5.38,5.2,5.07,4.92,4.84,4.77,4.68,4.6,4.55,4.48],
- '2-중':[9.51,8.69,7.57,6.57,5.98,5.32,4.72,4.48,4.33,4.22,4.1,4.03,3.98,3.9,3.84,3.79,3.73],
- '2-기':[7.61,6.95,6.05,5.26,4.79,4.26,3.77,3.58,3.46,3.38,3.28,3.23,3.18,3.12,3.07,3.03,2.99],
- '1-상':[10.22,9.38,8.16,7.08,6.46,5.75,5.09,4.84,4.68,4.56,4.43,4.36,4.3,4.21,4.14,4.1,4.03],
- '1-중':[8.51,7.82,6.8,5.9,5.38,4.79,4.24,4.03,3.9,3.8,3.69,3.63,3.58,3.5,3.45,3.42,3.36],
- '1-기':[6.81,6.25,5.44,4.72,4.3,3.83,3.39,3.22,3.12,3.04,2.95,2.9,2.86,2.8,2.76,2.73,2.69]
-};
-/* ===== 별표5 건축공사감리 대가요율 ===== */
-var SUP_BP=[50000000,100000000,200000000,300000000,500000000,1000000000,2000000000,3000000000,5000000000,10000000000,20000000000,30000000000,50000000000,100000000000,200000000000,300000000000,500000000000];
-var SUP_COLS={
- '3':[2.46,2.32,1.85,1.70,1.57,1.35,1.24,1.20,1.18,1.14,1.11,1.10,1.08,1.07,1.05,1.03,1.02],
- '2':[2.24,2.11,1.68,1.54,1.43,1.23,1.13,1.09,1.07,1.04,1.01,1.00,0.98,0.97,0.95,0.94,0.93],
- '1':[2.02,1.90,1.51,1.39,1.29,1.11,1.02,0.98,0.96,0.94,0.91,0.90,0.88,0.87,0.86,0.85,0.84]
-};
-function b5Rate(cost,jong){
-  var RT=SUP_COLS[jong]||SUP_COLS['2'];
-  if(!cost||cost<=0) return {rate:0,band:'-',method:'-'};
-  if(cost<=SUP_BP[0]) return {rate:RT[0],band:eok(SUP_BP[0])+' 이하',method:'최저 구간 요율'};
-  for(var i=1;i<SUP_BP.length;i++){
-    if(cost<=SUP_BP[i]){
-      var a=SUP_BP[i-1],b=SUP_BP[i],ra=RT[i-1],rb=RT[i];
-      return {rate: ra+(rb-ra)*(cost-a)/(b-a), band:eok(a)+' 초과 ~ '+eok(b)+' 이하',
-        method:'직선보간 ('+eok(a)+' '+ra+'% ↔ '+eok(b)+' '+rb+'%)'};
-    }
-  }
-  return {rate:RT[RT.length-1],band:eok(SUP_BP[SUP_BP.length-1])+' 초과',method:'최종 구간 요율'};
-}
-function b4Rate(cost,key){
-  var RT=RATE_COLS[key]||RATE_COLS['2-중'];
-  if(!cost||cost<=0) return {rate:0,band:'-',method:'-'};
-  if(cost<=COST_BP[0]) return {rate:RT[0],band:eok(COST_BP[0])+' 이하',method:'최저 구간 요율'};
-  for(var i=1;i<COST_BP.length;i++){
-    if(cost<=COST_BP[i]){
-      var a=COST_BP[i-1],b=COST_BP[i],ra=RT[i-1],rb=RT[i];
-      return {rate: ra+(rb-ra)*(cost-a)/(b-a), band:eok(a)+' 초과 ~ '+eok(b)+' 이하',
-        method:'직선보간 ('+eok(a)+' '+ra+'% ↔ '+eok(b)+' '+rb+'%)'};
-    }
-  }
-  return {rate:RT[RT.length-1],band:eok(COST_BP[COST_BP.length-1])+' 초과',method:'최종 구간 요율'};
-}
-
 /* ===== 요율표 (상수 · 수정 가능) ===== */
 var DEFAULTS = {
   design:[ {upto:500000000, rate:8.0}, {upto:1000000000, rate:7.0}, {upto:3000000000, rate:6.0}, {upto:5000000000, rate:5.0}, {upto:null, rate:4.5} ],
@@ -418,25 +304,11 @@ var DEFAULTS = {
   supTypes:['신축','증축','개축']
 };
 var R = load();
-var RATES_VER=2;
 function load(){
-  try{
-    var s=localStorage.getItem('simple-cost-rates');
-    if(s){
-      var o=JSON.parse(s);
-      if(o && o.v===RATES_VER){
-        var base=JSON.parse(JSON.stringify(DEFAULTS));
-        if(typeof o.extraRate==='number') base.extraRate=o.extraRate;
-        if(typeof o.supMinCost==='number') base.supMinCost=o.supMinCost;
-        if(Array.isArray(o.supTypes)) base.supTypes=o.supTypes;
-        return base;
-      }
-      try{ localStorage.removeItem('simple-cost-rates'); }catch(e2){}
-    }
-  }catch(e){}
+  try{ var s=localStorage.getItem('simple-cost-rates'); if(s){ var o=JSON.parse(s); return Object.assign(JSON.parse(JSON.stringify(DEFAULTS)), o); } }catch(e){}
   return JSON.parse(JSON.stringify(DEFAULTS));
 }
-function save(){ try{ localStorage.setItem('simple-cost-rates', JSON.stringify({v:RATES_VER, extraRate:R.extraRate, supMinCost:R.supMinCost, supTypes:R.supTypes})); }catch(e){} }
+function save(){ try{ localStorage.setItem('simple-cost-rates', JSON.stringify(R)); }catch(e){} }
 
 /* ===== 유틸 ===== */
 function fmt(n){ return (Math.round(n)||0).toLocaleString('ko-KR'); }
@@ -473,12 +345,9 @@ function calc(){
   var host=document.getElementById('result');
   if(!cost){ host.innerHTML='<div class="empty">총공사비를 입력하면 설계비·감리비·부대비와 총사업비가 계산됩니다.</div>'; return; }
 
-  var key=v('jong')+'-'+v('deung');
-  var d=b4Rate(cost,key);
-  var stgSum=(document.getElementById('stg1').checked?0.2:0)+(document.getElementById('stg2').checked?0.3:0)+(document.getElementById('stg3').checked?0.5:0);
-  var design=floor1000(cost*d.rate/100*stgSum);
+  var d=interpRate(R.design, cost), design=floor1000(cost*d.rate/100);
   var f=(R.typeFactor[type]!==undefined?R.typeFactor[type]:1);
-  var s=b5Rate(cost, v('jong')), sup=0, supCalc='', supNote=[];
+  var s=interpRate(R.sup, cost), sup=0, supCalc='', supNote=[];
   var supTypes = R.supTypes || ['신축','증축','개축'];
   var notTarget = supTypes.indexOf(type)<0;
   var excluded = notTarget || (R.supMinCost>0 && cost < R.supMinCost);
@@ -487,8 +356,8 @@ function calc(){
     else supNote.push('총공사비가 '+fmt(R.supMinCost)+'원 미만이므로 감리 대상에서 제외로 처리했습니다.');
     supCalc='감리 대상 아님 → 0원';
   } else {
-    sup=floor1000(cost*s.rate/100);
-    supCalc=fmt(cost)+'원 × '+s.rate.toFixed(3)+'% = '+fmt(sup)+'원';
+    sup=floor1000(cost*s.rate/100*f);
+    supCalc=fmt(cost)+'원 × '+s.rate.toFixed(3).replace(/0+$/,'').replace(/\.$/,'')+'% × 계수 '+f+' = '+fmt(sup)+'원';
   }
   var extra=floor1000(cost*R.extraRate/100);
   var total=cost+design+sup+extra;
@@ -500,20 +369,13 @@ function calc(){
   '</div>'+
   '<div class="cards">'+
     row('공사비','입력값', cost, '입력하신 총공사비(추정)를 그대로 반영합니다.', ['설계비·감리비·부대비는 이 금액을 기준으로 산정됩니다.'], false)+
-    row('설계비', d.rate.toFixed(2)+'% × '+Math.round(stgSum*100)+'%', design,
-        fmt(cost)+'원 × '+d.rate.toFixed(3)+'% × 단계 '+Math.round(stgSum*100)+'% = '+fmt(design)+'원',
-        ['근거 — 공공발주사업에 대한 건축사의 업무범위와 대가기준 [별표4]',
-         '적용 구분 — 제'+v('jong')+'종 · '+({'상':'상급','중':'중급','기':'기본'}[v('deung')])+' 도서',
-         '적용 구간 — '+d.band, '산정 방식 — '+d.method,
-         '설계 단계 배분 — 기본 20% / 중간 30% / 실시 50% (선택 단계 합계 '+Math.round(stgSum*100)+'%)',
-         '추가업무비용·부가가치세는 별도 계상합니다.', '천원 미만은 절사했습니다.'], false)+
-    row('감리비', excluded?'대상 아님':s.rate.toFixed(2)+'%', sup,
+    row('설계비', d.rate.toFixed(3).replace(/0+$/,'').replace(/\.$/,'')+'%', design,
+        fmt(cost)+'원 × '+d.rate.toFixed(3).replace(/0+$/,'').replace(/\.$/,'')+'% = '+fmt(design)+'원',
+        ['적용 구간 — '+d.band, '산정 방식 — '+d.method, '설계비(設計費): 건축사가 도면과 설계도서를 만드는 대가입니다.', '천원 미만은 절사했습니다.'], false)+
+    row('감리비', excluded?'대상 아님':s.rate.toFixed(3).replace(/0+$/,'').replace(/\.$/,'')+'% × '+f, sup,
         supCalc,
-        [ '근거 — 공공발주사업에 대한 건축사의 업무범위와 대가기준 [별표5] 건축공사감리 대가요율',
-          '적용 구분 — 제'+v('jong')+'종',
-          '적용 대상 — '+supTypes.join(' · ')+' 공사',
-          '적용 구간 — '+s.band, '산정 방식 — '+s.method,
-          '공사비 = 총예정금액(자재대 포함) 중 용지비·보상비·법률수속비·부가가치세를 제외한 금액',
+        [ '산정 방식 — 공사비 요율 기준', '적용 대상 — '+supTypes.join(' · ')+' 공사', '적용 구간 — '+s.band,
+          '공사 종류 계수 — '+type+' '+f+'배',
           '감리비(監理費): 공사가 설계도대로 되는지 확인·감독하는 대가입니다.'
         ].concat(supNote), false)+
     row('부대비', R.extraRate+'%', extra,
@@ -525,10 +387,10 @@ function calc(){
         ['개략 검토용 금액이며 부가가치세·관급자재·예비비는 포함되어 있지 않습니다.'], true)+
   '</div>'+
   '<div class="btns"><button class="btn primary" id="btnCsv" type="button">엑셀로 내보내기 (A4 세로)</button>'+
-  '<button class="btn" id="btnPv" type="button">PDF 미리보기 (A4 세로)</button></div>';
+  '<button class="btn" id="btnPrint" type="button">인쇄 / PDF 저장</button></div>';
 
   document.getElementById('btnCsv').onclick=function(){ exportXls({cost:cost,design:design,sup:sup,extra:extra,total:total,d:d,s:s,f:f,type:type,excluded:excluded}); };
-  document.getElementById('btnPv').onclick=function(){ openPreview({cost:cost,design:design,sup:sup,extra:extra,total:total,d:d,s:s,f:f,type:type,excluded:excluded}); };
+  document.getElementById('btnPrint').onclick=function(){ window.print(); };
   host.querySelectorAll('.row-h').forEach(function(hh){ hh.onclick=function(){ hh.parentElement.classList.toggle('open'); }; });
 }
 function row(nm, rate, val, calcTxt, notes, hero){
@@ -589,9 +451,9 @@ function exportXls(o){
     +cS('Number',o.design,'sMoney','=FLOOR(R'+costRow+'C6*RC[-3]/100,1000)'));
 
   var supRate = o.excluded? 0 : +o.s.rate.toFixed(3);
-  R_(cS('String','감리비','sTxtB')+cS('String','공사비 × [별표5] 요율','sTxt')+cS('Number',supRate,'sNum3')
-    +cS('String','-','sCen')+cS('String',o.excluded?'감리 대상 아님(신축·증축·개축만 적용)':'[별표5] '+o.s.band,'sTxt')
-    +cS('Number',o.sup,'sMoney','=FLOOR(R'+costRow+'C6*RC[-3]/100,1000)'));
+  R_(cS('String','감리비','sTxtB')+cS('String','공사비 × 요율 × 계수','sTxt')+cS('Number',supRate,'sNum3')
+    +cS('Number',o.f,'sNum2')+cS('String',o.excluded?'감리 대상 아님(신축·증축·개축만 적용)':o.s.band,'sTxt')
+    +cS('Number',o.sup,'sMoney','=FLOOR(R'+costRow+'C6*RC[-3]/100*RC[-2],1000)'));
 
   R_(cS('String','부대비','sTxtB')+cS('String','공사비 × 부대비율','sTxt')+cS('Number',R.extraRate,'sNum3')
     +cS('String','','sCen')+cS('String','계약수수료·공고비·공공요금 등','sTxt')
@@ -649,11 +511,17 @@ function v(id){ return document.getElementById(id).value; }
 
 /* ===== 요율표 UI ===== */
 function renderRates(){
-  
-  
-  
-  var _e=document.getElementById('rExtra'); if(_e) _e.value=R.extraRate;
-  var _m=document.getElementById('rSupMin'); if(_m) _m.value=R.supMinCost;
+  document.getElementById('tD').innerHTML = R.design.map(function(b,i){
+    return '<tr><td>'+bandLabel(R.design,i)+'</td><td class="n"><input class="rin" data-t="design" data-i="'+i+'" value="'+b.rate+'"></td></tr>';
+  }).join('');
+  document.getElementById('tS').innerHTML = R.sup.map(function(b,i){
+    return '<tr><td>'+bandLabel(R.sup,i)+'</td><td class="n"><input class="rin" data-t="sup" data-i="'+i+'" value="'+b.rate+'"></td></tr>';
+  }).join('');
+  document.getElementById('tF').innerHTML = Object.keys(R.typeFactor).map(function(k){
+    return '<tr><td>'+k+'</td><td class="n"><input class="rin" data-t="factor" data-k="'+k+'" value="'+R.typeFactor[k]+'"></td></tr>';
+  }).join('');
+  document.getElementById('rExtra').value=R.extraRate;
+  document.getElementById('rSupMin').value=R.supMinCost;
 }
 document.getElementById('saveRates').onclick=function(){
   document.querySelectorAll('input.rin[data-t]').forEach(function(el){
@@ -662,8 +530,8 @@ document.getElementById('saveRates').onclick=function(){
     else if(el.dataset.t==='sup') R.sup[+el.dataset.i].rate=val;
     else R.typeFactor[el.dataset.k]=val;
   });
-  var ex=document.getElementById('rExtra'); if(ex && ex.value.trim()!=='') R.extraRate=parseFloat(ex.value)||0;
-  var sm=document.getElementById('rSupMin'); if(sm && sm.value.trim()!=='') R.supMinCost=parseNum(sm.value);
+  R.extraRate=parseFloat(document.getElementById('rExtra').value)||0;
+  R.supMinCost=parseNum(document.getElementById('rSupMin').value);
   save(); renderRates(); calc();
   this.textContent='저장됨'; var b=this; setTimeout(function(){ b.textContent='요율 저장'; },1200);
 };
@@ -692,7 +560,7 @@ document.getElementById('resetRates').onclick=function(){
     calc();
   });
 });
-['school','pname','ptype','jong','deung','stg1','stg2','stg3'].forEach(function(id){
+['school','pname','ptype'].forEach(function(id){
   document.getElementById(id).addEventListener('change',function(){ typeHint(); calc(); });
 });
 var TERMS={
@@ -707,7 +575,7 @@ var TERM_EXTRA='<b>재축</b>은 재해로 없어진 건물을 종전 규모 이
 function typeHint(){
   var t=v('ptype'), f=R.typeFactor[t];
   var stp=R.supTypes||['신축','증축','개축'];
-  document.getElementById('typeHint').textContent = (stp.indexOf(t)<0 ? '감리비 미적용 (감리 대상: '+stp.join('·')+')' : '감리비 적용 대상');
+  document.getElementById('typeHint').textContent = (stp.indexOf(t)<0 ? '감리비 미적용 (감리 대상: '+stp.join('·')+')' : '감리 계수 '+f+'배 적용');
   var now=document.getElementById('termNow');
   if(now) now.innerHTML='<b>'+t+'</b> — '+TERMS[t];
   var list=document.getElementById('termList');
@@ -751,36 +619,8 @@ var LINES = [];
     fillUnit();
   }
   function fillUnit(){
-    var c=P.cats[+cat.value], it=c.items[+item.value], r=it.rows[+spec.value];
-    var add=parseFloat(document.getElementById('dIsland').value)||0;
-    document.getElementById('dUnit').value = fmt(Math.round(parseNum(r[1])*(1+add/100)));
-    document.getElementById('dUnitLb').textContent = add? '적용 단가 (천원 · 가산 +'+add+'%)' : '적용 단가 (천원)';
-    renderSpec(c.cat, it.name, r);
-  }
-  function renderSpec(catNm, itemNm, r){
-    var add=parseFloat(document.getElementById('dIsland').value)||0;
-    var uk=Math.round(parseNum(r[1])*(1+add/100));
-    var base=r[3], note=r[4]||r[0]||'';
-    var UNIT_DESC={'㎡':'제곱미터당 단가입니다. 시공 면적을 수량으로 넣으세요.',
-      '실':'교실 1실 단위 단가입니다. 실 개수를 수량으로 넣으세요.',
-      '동':'건물 1동 단위 단가입니다. 동 개수를 수량으로 넣으세요.',
-      'm':'미터당 단가입니다. 시공 연장을 수량으로 넣으세요.',
-      '개소':'설치 개소당 단가입니다.','조':'설비 1조당 단가입니다.',
-      '식':'일식 단가입니다. 통상 수량 1로 넣습니다.','세대':'1세대당 단가입니다.','공':'1공(孔)당 단가입니다.'};
-    var el=document.getElementById('specBox');
-    el.innerHTML =
-      '<div class="sb-t">'+itemNm+'</div>'+
-      (note? '<div class="sb-d">'+note+'</div>' : '')+
-      '<dl>'+
-        '<div><dt>구분</dt><dd>'+catNm+'</dd></div>'+
-        '<div><dt>고시 단가</dt><dd>'+fmt(parseNum(r[1]))+'<small>천원 / '+r[2]+'</small></dd></div>'+
-        (add? '<div><dt>적용 단가</dt><dd>'+fmt(uk)+'<small>천원 / '+r[2]+' · 가산 +'+add+'%</small></dd></div>' : '')+
-        (base? '<div><dt>기준 규모</dt><dd>'+base+'<small>'+(r[2]==='㎡'?'㎡ 기준':'㎡')+'</small></dd></div>' : '')+
-        '<div><dt>수량 단위</dt><dd>'+r[2]+'</dd></div>'+
-
-      '</dl>'+
-      '<div class="sb-d" style="margin-top:9px">'+(UNIT_DESC[r[2]]||'선택한 단위 기준으로 수량을 입력하세요.')+
-        (base? ' 표기된 기준 규모('+base+')는 단가 산정의 전제 조건이며, 실제 규모가 다르면 수량으로 조정하세요.':'')+'</div>';
+    var r=P.cats[+cat.value].items[+item.value].rows[+spec.value];
+    document.getElementById('dUnit').value = r[1];
   }
   cat.onchange=fillItems; item.onchange=fillSpecs; spec.onchange=fillUnit;
   fillItems();
@@ -789,7 +629,7 @@ var LINES = [];
     LINES.push({cat:c.cat, nm:it.name+(r[0]?' — '+r[0]:''), unitK:parseNum(r[1]), unit:r[2], qty:parseNum(document.getElementById('dQty').value)||1});
     renderLines();
   };
-  document.getElementById('dIsland').onchange=function(){ fillUnit(); renderLines(); };
+  document.getElementById('dIsland').onchange=renderLines;
   document.getElementById('dFoot').textContent = P.foot || '';
 })();
 function renderLines(){
@@ -823,54 +663,6 @@ function renderLines(){
   }
   calc();
 }
-/* ===== PDF 미리보기 ===== */
-function openPreview(o){
-  var add=parseFloat(document.getElementById('dIsland').value)||0;
-  var ov=document.getElementById('pvOv');
-  var lineRows='', lineSum=0;
-  LINES.forEach(function(l){
-    var uk=Math.round(l.unitK*(1+add/100)), amt=Math.round(uk*l.qty)*1000; lineSum+=amt;
-    lineRows+='<tr><td>'+l.cat+'</td><td>'+l.nm+'</td><td class="n">'+fmt(uk)+'</td><td class="c">'+l.unit+'</td><td class="n">'+l.qty+'</td><td class="n">'+fmt(amt)+'</td></tr>';
-  });
-  var rate=function(x){ return x.toFixed(3).replace(/0+$/,'').replace(/.$/,''); };
-  ov.querySelector('.a4').innerHTML =
-    '<h2>사업비 산출서</h2>'+
-    '<div class="meta">'+(v('school')||'-')+'  ·  '+(v('pname')||'-')+'  ·  산출일 '+new Date().toLocaleDateString('ko-KR')+'</div>'+
-    '<div class="sec">사업 개요</div>'+
-    '<table><tbody>'+
-      '<tr><th style="width:70px">학교명</th><td>'+(v('school')||'-')+'</td><th style="width:70px">공사 종류</th><td>'+o.type+'</td></tr>'+
-      '<tr><th>공사명</th><td>'+(v('pname')||'-')+'</td><th>연면적</th><td>'+(parseNum(v('area'))?fmt(parseNum(v('area')))+' ㎡':'-')+'</td></tr>'+
-    '</tbody></table>'+
-    (LINES.length ?
-      '<div class="sec">시설비 내역'+(add?' (지역 가산 +'+add+'%)':'')+'</div>'+
-      '<table><thead><tr><th style="width:76px">구분</th><th>항목 · 규격</th><th style="width:70px">단가(천원)</th><th style="width:42px">단위</th><th style="width:52px">수량</th><th style="width:96px">금액(원)</th></tr></thead>'+
-      '<tbody>'+lineRows+'<tr class="sum"><td colspan="5" style="text-align:right">시설비 합계</td><td class="n">'+fmt(lineSum)+'</td></tr></tbody></table>' : '')+
-    '<div class="sec">사업비 총괄</div>'+
-    '<table><thead><tr><th style="width:80px">구분</th><th>산출 기준</th><th style="width:60px">요율(%)</th><th style="width:46px">계수</th><th style="width:110px">금액(원)</th></tr></thead><tbody>'+
-      '<tr><td>공사비</td><td>총공사비(추정)</td><td class="c">-</td><td class="c">-</td><td class="n">'+fmt(o.cost)+'</td></tr>'+
-      '<tr><td>설계비</td><td>공사비 × 요율 · '+o.d.band+'</td><td class="c">'+rate(o.d.rate)+'</td><td class="c">-</td><td class="n">'+fmt(o.design)+'</td></tr>'+
-      '<tr><td>감리비</td><td>'+(o.excluded?'감리 대상 아님 (신축·증축·개축만 적용)':'공사비 × [별표5] 요율 · 제'+v('jong')+'종 · '+o.s.band)+'</td><td class="c">'+(o.excluded?'-':o.s.rate.toFixed(2))+'</td><td class="c">-</td><td class="n">'+fmt(o.sup)+'</td></tr>'+
-      '<tr><td>부대비</td><td>공사비 × 부대비율 · 계약수수료·공고비·공공요금 등</td><td class="c">'+R.extraRate+'</td><td class="c">-</td><td class="n">'+fmt(o.extra)+'</td></tr>'+
-      '<tr class="grand"><td colspan="4" style="text-align:right">총 사업비</td><td class="n">'+fmt(o.total)+'</td></tr>'+
-    '</tbody></table>'+
-    '<div class="foot">※ 본 산출 결과는 사업비 개략 검토용 참고자료입니다. 실제 예산 편성·계약 시에는 정식 원가계산 절차를 따라야 하며, 요율은 최신 고시를 확인해 반영하십시오.<br>※ 모든 금액은 천원 미만 절사 기준입니다.</div>';
-  ov.classList.add('on');
-  document.body.style.overflow='hidden';
-}
-(function(){
-  var ov=document.createElement('div');
-  ov.id='pvOv';
-  ov.innerHTML='<div class="bar"><span class="ttl">PDF 미리보기 · A4 세로</span>'+
-    '<button class="btn primary" id="pvPrint" type="button">인쇄 / PDF 저장</button>'+
-    '<button class="btn" id="pvClose" type="button">닫기</button></div><div class="a4"></div>';
-  document.body.appendChild(ov);
-  ov.querySelector('#pvPrint').onclick=function(){ window.print(); };
-  function close(){ ov.classList.remove('on'); document.body.style.overflow=''; }
-  ov.querySelector('#pvClose').onclick=close;
-  ov.addEventListener('click',function(e){ if(e.target===ov) close(); });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
-})();
-
 /* ===== 임시저장 ===== */
 var SKEY='simple-cost-draft';
 function snapshot(){
@@ -913,8 +705,7 @@ document.addEventListener('input', autoSave);
 document.addEventListener('change', autoSave);
 
 renderLines();
-try{ renderRates(); }catch(e){ console.warn('renderRates', e); }
-typeHint();
+renderRates(); typeHint();
 restore(true);
 calc();
 </script>

@@ -420,6 +420,25 @@
   .dlg-col ul{list-style:none;margin:10px 0 0;padding:0;}
   .dlg-col li{font-size:13px;color:var(--ink);padding:6px 0;border-top:1px solid var(--line2);line-height:1.45;}
   .dlg-col li span{display:block;font-size:11.5px;color:var(--muted);margin-top:2px;}
+  /* ===== 발간물 · 월간소식 ===== */
+  .pubs-sec{margin-top:46px;padding-top:30px;padding-bottom:34px;border-top:1px solid var(--line)}
+  .pubs-h{display:flex;align-items:baseline;gap:10px;margin-bottom:20px}
+  .pubs-h h3{margin:0;font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+  .pubs-h span{font-size:12.5px;color:var(--faint)}
+  .pubs{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  @media(max-width:900px){.pubs{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.pubs{grid-template-columns:1fr}}
+  .pub{display:flex;gap:13px;align-items:flex-start;padding:13px;border:1px solid var(--line);
+    border-radius:var(--radsm);background:var(--surface);color:inherit;transition:border-color .1s}
+  .pub:hover{border-color:var(--accent)}
+  .pub-cv{flex:0 0 auto;width:60px;height:80px;display:block;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:5px;overflow:hidden}
+  .pub-cv image-slot{display:block;width:100%;height:100%;font-size:0}
+  .pub-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+  .pub-tx b{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35}
+  .pub:hover .pub-tx b{color:var(--accent)}
+  .pub-d{font-size:12px;color:var(--muted);line-height:1.45}
+  .pub-b{margin-top:5px;font-size:11.5px;font-weight:700;color:var(--accent)}
   /* 위임전결 */
   .dl-block{background:var(--surface);border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-sm);}
   .dl-head{background:var(--surface-2);padding:11px 16px;font-weight:800;font-size:14px;color:var(--ink);border-bottom:1.5px solid var(--border);}
@@ -864,7 +883,26 @@
     body.bulk-printing #bulkPrint{display:block!important;background:#fff;}
     body.bulk-printing #bulkPrint .pp{break-after:page;page-break-after:always;}
   }
-  </style>
+  
+  /* ===== 고대비 A+B안 (상시 적용) ===== */
+  /* A · 표 구조 */
+  .tbl-wrap,.pr-tbl,#price .pr-tbl{border-color:var(--line)!important}
+  .tbl-wrap table th,.tbl-wrap table td{border:1px solid var(--line)}
+  .tbl-wrap thead th,#price .pr-tbl th{background:#5c5954!important;color:#fff!important;
+    font-weight:700!important;font-size:12px!important;border-bottom:0!important;text-align:center!important}
+  #price .pr-tbl th:last-child{text-align:right!important}
+  .tbl-wrap tbody tr:nth-child(even),#price .pr-tbl tbody tr:nth-child(even) td{background:var(--surface-2)}
+  .tbl-wrap tbody tr:hover td,#price .pr-tbl tbody tr:hover td{background:var(--accent-soft)}
+  #price .pr-tbl td{border-bottom:1px solid var(--line)}
+  .sec-head h2,.sec-title{font-weight:700}
+  /* B · 텍스트 대비 */
+  .note,.desc,.hint,.pub-d,.pr-foot,#price .pr-foot,.sec-head p,.acc-title .d{color:var(--muted)!important}
+  .htag{color:var(--muted)!important;font-weight:600!important}
+  .pubs-h span,.sec-title small{color:var(--muted)!important}
+  #price .pr-tbl td.sp,#price .pr-tbl td.un{color:var(--muted)!important}
+  html[data-theme="dark"] .tbl-wrap thead th,html[data-theme="dark"] #price .pr-tbl th{background:#3d3b38!important;color:#ececea!important}
+  html[data-theme="dark"] .tbl-wrap,html[data-theme="dark"] .pr-tbl,html[data-theme="dark"] #price .pr-tbl{border-color:var(--line)!important}
+</style>
   <style>
 
   .side-nav .tab:not(.active):hover{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;transform:translateX(2px);transition:all .12s}
@@ -966,6 +1004,9 @@
   #price .pr-tbl table{width:100%;border-collapse:collapse;}
   #price .pr-tbl th{font-size:11.5px;font-weight:700;color:var(--faint);text-align:center;white-space:nowrap;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--surface-2);}
   #price .pr-tbl th.num{text-align:center;}
+  #price .pr-tbl th:last-child{text-align:right!important;}
+  #price .pr-tbl td.pr{text-align:right!important;}
+  #price .pr-tbl td.pr small{text-align:right;}
   #price .pr-tbl td{padding:11px 16px;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--ink-2);vertical-align:middle;text-align:center;}
   #price .pr-tbl tr:last-child td{border-bottom:0;}
   #price .pr-tbl tbody tr:hover td{background:var(--surface-2);}
@@ -973,7 +1014,7 @@
   #price .pr-tbl td.sp{color:var(--muted);font-size:13px;}
   #price .pr-tbl td.ua{width:62px;color:var(--ink-2);font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;}
   #price .pr-tbl td.un{width:92px;color:var(--muted);font-size:12.5px;font-weight:600;white-space:nowrap;}
-  #price .pr-tbl td.pr{text-align:center;font-weight:700;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;width:120px;}
+  #price .pr-tbl td.pr{text-align:right;font-weight:700;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;width:120px;}
   #price .pr-tbl td.pr small{display:block;font-size:11px;font-weight:400;color:var(--faint);margin-top:1px;}
   #price .pr-sc{display:grid;grid-template-columns:repeat(9,1fr);gap:8px;margin:18px 0 4px;}
   @media(max-width:1100px){#price .pr-sc{grid-template-columns:repeat(5,1fr)}}
@@ -1268,6 +1309,7 @@ window.QA_FB = {
 };
 window.dispatchEvent(new Event('qa-fb-ready'));
 </script>
+<script src="image-slot.js"></script>
 </head>
 <body>
 <template id="__bundler_thumbnail" data-bg-color="#14161d">
@@ -2115,7 +2157,29 @@ window.dispatchEvent(new Event('qa-fb-ready'));
   </aside>
 </div>
 
-<footer class="wrap">
+<section class="wrap pubs-sec">
+  <div class="pubs-h"><h3>알아두면 도움 되는 자료</h3><span>당장 쓸 일은 없어도 알아두면 좋은 참고 자료</span></div>
+  <div class="pubs">
+      <a class="pub" href="assets/2026_폭염안전_5대기본수칙_포스터.pdf" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
+        <span class="pub-cv"><image-slot id="pub1" shape="rounded" radius="5" fit="cover" src="assets/pub_heat2026.png" placeholder="표지"></image-slot></span>
+        <span class="pub-tx"><b>폭염안전 5대 기본수칙</b><span class="pub-d">공사현장 폭염 대응 포스터 (PDF)</span><span class="pub-b">2026</span></span>
+      </a>
+      <a class="pub" href="https://www.hub.go.kr/portal/dps/dpr/idx-dpr-selectDprDesignDtlInfo.do" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
+        <span class="pub-cv"><image-slot id="pub2" shape="rounded" radius="5" fit="cover" src="assets/pub_contest.png" placeholder="표지"></image-slot></span>
+        <span class="pub-tx"><b>건축공모 당선작</b><span class="pub-d">철원초등학교 공간재구조화 개축공사 당선작 소개</span><span class="pub-b">신규</span></span>
+      </a>
+      <a class="pub" href="assets/건축법_시행령_일부개정령안.pdf" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
+        <span class="pub-cv"></span>
+        <span class="pub-tx"><b>법령소식</b><span class="pub-d">건축법 시행령 일부개정령안</span><span class="pub-b">입법예고</span></span>
+      </a>
+      <a class="pub" href="assets/광주대표도서관_붕괴사고_조사결과.pdf" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
+        <span class="pub-cv"></span>
+        <span class="pub-tx"><b>붕괴사고 조사결과</b><span class="pub-d">광주대표도서관 붕괴사고 조사결과 (국토부 보도자료)</span><span class="pub-b">2026.07</span></span>
+      </a>
+  </div>
+</section>
+
+<footer class="wrap" style="margin-top:0;padding-top:24px;border-top:1px solid var(--line)">
   <b>🏫 학교시설업무 치트키 🔑 SCHOOL BIBLE</b> — 가이드라인부터 자가테스트까지<br>
   참조용 문서입니다. 실제 적용 시 최신 법령·지침을 반드시 확인하시기 바랍니다.<br>
   <span style="display:inline-block;margin-top:10px;color:var(--muted);font-size:12px">작성자 <b style="color:var(--navy)">claude_min</b> · 작성일 2026-07-24 · <b style="color:#3182F6">ver 4.0</b></b> · <span>🤖 Claude와 함께 제작했습니다</span></span>

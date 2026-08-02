@@ -420,28 +420,6 @@
   .dlg-col ul{list-style:none;margin:10px 0 0;padding:0;}
   .dlg-col li{font-size:13px;color:var(--ink);padding:6px 0;border-top:1px solid var(--line2);line-height:1.45;}
   .dlg-col li span{display:block;font-size:11.5px;color:var(--muted);margin-top:2px;}
-  /* ===== 트리맵 ===== */
-  .tm-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radsm);background:var(--surface)}
-  .tm{position:relative;width:100%;min-width:760px;height:620px;overflow:hidden;background:var(--surface)}
-  @media(max-width:760px){.tm{height:900px}}
-  .tm-grp{position:absolute;overflow:hidden}
-  .tm-gh{position:absolute;left:0;right:0;top:0;height:26px;display:flex;align-items:center;gap:7px;
-    padding:0 10px;font-size:12px;font-weight:700;color:#fff;letter-spacing:-.01em;z-index:2;
-    text-shadow:0 1px 2px rgba(0,0,0,.25)}
-  .tm-cnt{margin-left:auto;font-weight:600;opacity:.85;font-variant-numeric:tabular-nums}
-  .tm-tile{position:absolute;overflow:hidden;border:1px solid rgba(255,255,255,.55);cursor:pointer;
-    padding:6px 8px;text-align:left;font:inherit;display:block;transition:filter .1s,opacity .12s}
-  .tm-tile:hover{filter:brightness(1.08);z-index:3;box-shadow:inset 0 0 0 2px #fff}
-  .tm-t{display:block;font-size:11.5px;font-weight:700;color:#fff;line-height:1.28;
-    text-shadow:0 1px 2px rgba(0,0,0,.3);word-break:keep-all}
-  .tm-b{display:block;font-size:10px;font-weight:600;color:rgba(255,255,255,.88);margin-top:3px;line-height:1.25;
-    text-shadow:0 1px 2px rgba(0,0,0,.3)}
-
-  .tm-leg{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--muted)}
-  .tm-leg span{display:inline-flex;align-items:center;gap:6px}
-  .tm-lg{width:11px;height:11px;border-radius:2px;display:inline-block;background:var(--accent)}
-  .tm-lg-g{opacity:.72}.tm-lg-c{opacity:.42}
-  .tm-lg-note{margin-left:auto;color:var(--faint)}
   /* ===== 업무추진 절차표 ===== */
   .pv-grp{margin-bottom:26px}
   .pv-grp:last-child{margin-bottom:0}
@@ -588,6 +566,10 @@
   .ov-tab[data-ov="graph"].on::after{display:none;}
   .ov-tab[data-ov="graph"] svg:not(.gvstar){display:none;}
   .ov-tab[data-ov="graph"]::after{display:none;}
+  .ov-tab[data-ov="flow"] .wficon svg{display:block;overflow:visible}
+  .ov-tab[data-ov="flow"] .wficon .ln{stroke:currentColor;stroke-width:1;opacity:.28}
+  .ov-tab[data-ov="flow"] .wficon .nd{fill:currentColor;opacity:.85}
+  .ov-tab[data-ov="flow"] .wficon .ar{fill:none;stroke:currentColor;stroke-width:1.1;opacity:.6;stroke-linecap:round;stroke-linejoin:round}
   .ov-frame{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:26px 26px 24px;box-shadow:var(--shadow);}
   .ov-frame .sec-head:first-child{margin-top:0;}
   .ov-view{display:none;}
@@ -1132,73 +1114,6 @@
   #calc .thr,#cert .thr{color:var(--accent);font-weight:700;}
   #calc .pill,#cert .pill{border:0;border-radius:4px;background:var(--surface-3);color:var(--muted);
     font-size:10.5px;font-weight:700;padding:2px 8px;}
-  /* ===== 메모 포스트잇 (우측 고정) ===== */
-  #memoTabs{position:fixed;right:0;top:auto;bottom:120px;z-index:80;
-    display:flex;flex-direction:column;align-items:flex-end;gap:6px;
-    max-height:calc(100vh - 220px);overflow-y:auto;overflow-x:hidden;padding:2px 0 2px 6px;
-    scrollbar-width:thin;}
-  #memoTabs::-webkit-scrollbar{width:6px;}
-  #memoTabs::-webkit-scrollbar-thumb{background:rgba(120,100,20,.25);border-radius:6px;}
-  #memoTabs.hide{display:none;}
-  .memo-tab{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;
-    border:1px solid rgba(120,100,20,.28);border-right:0;border-radius:9px 0 0 9px;
-    padding:10px 7px;font:inherit;font-size:11.5px;font-weight:700;color:#4a3c0d;cursor:pointer;
-    letter-spacing:.02em;writing-mode:vertical-rl;text-orientation:upright;box-shadow:-3px 3px 12px rgba(0,0,0,.10);
-    transition:padding-left .12s;flex:0 0 auto;box-sizing:border-box;
-    width:36px;height:108px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;line-height:1.15;padding-bottom:24px;}
-  .memo-tab:hover{filter:brightness(1.04);}
-  .memo-tab.cur{box-shadow:-4px 4px 14px rgba(0,0,0,.18);outline:2px solid rgba(0,0,0,.18);outline-offset:-2px;}
-  .memo-tab .ic{writing-mode:horizontal-tb;text-orientation:mixed;font-size:11px;opacity:.5;line-height:1;}
-  .memo-tab{position:relative;}
-  .memo-tab .tx{position:absolute;left:50%;transform:translateX(-50%);bottom:4px;writing-mode:horizontal-tb;
-    text-orientation:mixed;border:0;background:rgba(0,0,0,.06);color:rgba(0,0,0,.45);
-    width:17px;height:17px;border-radius:5px;font:inherit;font-size:12px;line-height:1;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;padding:0;}
-  .memo-tab .tx:hover{background:rgba(179,38,30,.14);color:#b3261e;}
-  [data-theme="dark"] .memo-tab .tx{background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);}
-  [data-theme="dark"] .memo-tab{border-color:rgba(255,255,255,.14);color:var(--mtxd,#e9e9e7);}
-  #memoPad{--mc:#fdf3c4;--mcd:#e8d789;--mch:#f3e7a8;position:fixed;right:78px;top:auto;bottom:120px;z-index:81;
-    width:min(268px,calc(100vw - 110px));
-    opacity:0;pointer-events:none;transform:translateX(14px);
-    transition:transform .18s ease,opacity .18s ease;}
-  #memoPad.on{opacity:1;pointer-events:auto;transform:translateX(0);}
-  #memoPad.moved{right:auto;top:auto;transition:opacity .18s ease;}
-  #memoPad.dragging .mp-h{cursor:grabbing;}
-  #memoPad .mp-h .gp{font-size:11px;color:var(--mtx2);letter-spacing:0;}
-  #memoPad .mp-h{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:grab;
-    background:var(--mch);border:1px solid var(--mcd);border-radius:10px 10px 0 0;}
-  #memoPad .mp-h h4{margin:0;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mtx,#6b5714);}
-  #memoPad .mp-h .cnt{font-size:10.5px;color:var(--mtx2,#8a7328);font-variant-numeric:tabular-nums;margin-left:auto;}
-  #memoPad .mp-h .cv{font-size:12px;color:var(--mtx,#6b5714);}
-
-
-  #memoBody{max-height:52vh;overflow-y:auto;background:var(--mc);border:1px solid var(--mcd);border-top:0;
-    padding:8px;display:flex;flex-direction:column;gap:8px;}
-
-  .memo-note{border:1px solid rgba(120,100,20,.22);border-radius:8px;overflow:hidden;
-    box-shadow:0 1px 3px rgba(0,0,0,.07);}
-  .memo-note .mn-h{display:flex;align-items:center;gap:6px;padding:5px 8px;background:rgba(255,255,255,.35);}
-  .memo-note .mn-h .sw{width:11px;height:11px;border-radius:3px;border:1px solid rgba(0,0,0,.12);cursor:pointer;}
-  .memo-note .mn-h .st{font-size:10px;color:var(--mtx2,rgba(0,0,0,.45));margin-left:auto;}
-  .memo-note .mn-h .del{border:0;background:none;color:var(--mtx2,rgba(0,0,0,.4));font:inherit;font-size:14px;
-    line-height:1;cursor:pointer;padding:0 2px;}
-  .memo-note .mn-h .del:hover{color:#b3261e;}
-  .memo-note textarea{width:100%;min-height:86px;border:0;outline:0;resize:vertical;padding:9px 10px;
-    font:inherit;font-size:12.5px;line-height:1.7;color:var(--mtx,#3a2f0a);background:transparent;}
-  .memo-note textarea::placeholder{color:var(--mtx2,rgba(0,0,0,.32));}
-
-
-
-  #memoPad .mp-f{display:flex;gap:6px;padding:8px 10px;background:var(--mch);border:1px solid var(--mcd);
-    border-top:0;border-radius:0 0 10px 10px;box-shadow:-4px 6px 22px rgba(0,0,0,.12);}
-
-  #memoPad .mp-f button{flex:1;border:1px solid var(--mcd);background:color-mix(in srgb,var(--mc) 60%,#fff 40%);
-    color:var(--mtx,#5c4a12);font:inherit;font-size:11.5px;font-weight:700;padding:6px 8px;border-radius:100px;cursor:pointer;}
-  #memoPad .mp-f button:hover{background:#fff;}
-
-  @media(max-width:640px){#memoPad{right:0;top:auto;bottom:0;width:100%;transform:none;}
-    #memoPad.on{transform:none;}#memoTabs{top:auto;bottom:14px;max-height:44vh;}}
-  @media print{#memoFab,#memoPad{display:none!important;}}
   /* 용어정리 — 노션 데이터베이스 뷰 */
   #glossary .gl-meta{display:flex;flex-wrap:wrap;gap:18px;margin:6px 0 0;padding-bottom:16px;border-bottom:1px solid var(--line);}
   #glossary .gl-meta div{display:flex;gap:10px;align-items:baseline;font-size:13px;}
@@ -1484,7 +1399,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <button class="ov-tab" data-ov="proc">업무 프로세스</button>
       <button class="ov-tab" data-ov="deleg">위임전결</button>
       <button class="ov-tab" data-ov="graph"><span id="gv3dBtn" role="button" tabindex="0" title="3차원 그래프 뷰 열기 (하부 대시보드)" style="display:inline-flex;align-items:center;cursor:pointer"><svg class="gvstar" width="20" height="16" viewBox="0 0 20 16" aria-hidden="true"><line x1="3.5" y1="3.5" x2="12" y2="7"/><line x1="12" y1="7" x2="7.5" y2="13"/><circle cx="3.5" cy="3.5" r="2"/><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="13" r="1.8"/></svg></span>그래프</button>
-      <button class="ov-tab" data-ov="tree">트리맵</button>
+      <button class="ov-tab" data-ov="flow"><span class="wficon" aria-hidden="true" style="display:inline-flex;align-items:center;margin-right:6px"><svg width="20" height="14" viewBox="0 0 20 14"><line class="ln" x1="4.5" y1="1" x2="4.5" y2="13"/><line class="ln" x1="10" y1="1" x2="10" y2="13"/><line class="ln" x1="15.5" y1="1" x2="15.5" y2="13"/><rect class="nd" x="1.5" y="4" width="6" height="3.4" rx="1"/><rect class="nd" x="12.5" y="7.4" width="6" height="3.4" rx="1"/><path class="ar" d="M8 5.7h3.6M11.6 5.7v3.4h.6"/></svg></span>워크플로우</button>
     </div>
 
     <div class="ov-frame">
@@ -1789,14 +1704,36 @@ window.dispatchEvent(new Event('qa-fb-ready'));
 
     </div>
 
-    <div class="ov-view" data-ovv="tree">
-    <div class="note">기획부터 준공까지 절차 45건을 한 판에 펼쳤습니다. 타일 크기는 <b>그 절차에 얽힌 법령·인증·키워드 수</b>에 비례합니다 — 클 수록 챙길 게 많은 절차입니다. 타일을 누르면 해당 장으로 이동합니다.</div>
-    <div class="tm-scroll"><div class="tm" id="tm"></div></div>
-    <div class="tm-leg">
-      <span><i class="tm-lg tm-lg-a"></i>상시 필수</span>
-      <span><i class="tm-lg tm-lg-g"></i>금액 기준 적용</span>
-      <span><i class="tm-lg tm-lg-c"></i>조건부 · 별도 기준</span>
-      <span class="tm-lg-note">타일 크기 = 연관 법령·키워드 수 · 마우스를 올리면 적용 기준이 보입니다</span>
+    <div class="ov-view" data-ovv="flow">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px;padding:12px 15px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radsm);background:var(--surface)">
+      <span style="font-size:13.5px;color:var(--muted)">설계변경 사유 발생부터 검토 · 전결 승인 · 계약금액 조정 · 사후관리까지의 업무 경로입니다.</span>
+      <a href="워크플로우_설계변경_대시보드.html" target="_blank" rel="noopener noreferrer" id="wfOpenLink" style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap">새 창에서 크게 보기 <span>↗</span></a>
+    </div>
+<div class="wf-picker" style="display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px">
+      <button type="button" class="wf-pick on" data-src="워크플로우_설계변경_대시보드.html" style="display:flex;align-items:center;gap:10px;font:inherit;text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:var(--radsm);padding:11px 15px">
+        <span class="wf-ic" style="display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--surface-2);flex:0 0 auto"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M4 12h6M4 17h11"/><path d="M15 6l4 3-4 3"/></svg></span>
+        <span><span class="wf-nm" style="display:block;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.01em">설계변경 · 계약금액 조정</span><span style="display:block;font-size:11.5px;color:var(--faint);margin-top:2px">지방계약법 시행령 제73조 · 제74조</span></span>
+      </button>
+      <button type="button" class="wf-pick" data-src="워크플로우_공기연장_대시보드.html" style="display:flex;align-items:center;gap:10px;font:inherit;text-align:left;cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:var(--radsm);padding:11px 15px">
+        <span class="wf-ic" style="display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--surface-2);flex:0 0 auto"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>
+        <span><span class="wf-nm" style="display:block;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.01em">공기연장 · 간접비 정산</span><span style="display:block;font-size:11.5px;color:var(--faint);margin-top:2px">지방계약법 시행령 제75조</span></span>
+      </button>
+      <button type="button" class="wf-pick" data-src="워크플로우_감리방식_대시보드.html" style="display:flex;align-items:center;gap:10px;font:inherit;text-align:left;cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:var(--radsm);padding:11px 15px">
+        <span class="wf-ic" style="display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--surface-2);flex:0 0 auto"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v6"/><path d="M12 10 6.5 20M12 10l5.5 10"/><circle cx="12" cy="4" r="1.6"/></svg></span>
+        <span><span class="wf-nm" style="display:block;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.01em">감리 · 건설사업관리 방식 결정</span><span style="display:block;font-size:11.5px;color:var(--faint);margin-top:2px">건설기술진흥법 제39조의2</span></span>
+      </button>
+
+      <button type="button" class="wf-pick" data-src="워크플로우_안전사고_대시보드.html" style="display:flex;align-items:center;gap:10px;font:inherit;text-align:left;cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:var(--radsm);padding:11px 15px">
+        <span class="wf-ic" style="display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--surface-2);flex:0 0 auto"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2 20 18.5H4z"/><path d="M12 10v3.4M12 16.2h.01"/></svg></span>
+        <span><span class="wf-nm" style="display:block;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.01em">공사 중 안전사고 대응</span><span style="display:block;font-size:11.5px;color:var(--faint);margin-top:2px">산업안전보건법 제54조 · 제55조</span></span>
+      </button>
+
+      <button type="button" class="wf-pick" data-src="워크플로우_인허가_대시보드.html" style="display:flex;align-items:center;gap:10px;font:inherit;text-align:left;cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:var(--radsm);padding:11px 15px">
+        <span class="wf-ic" style="display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--surface-2);flex:0 0 auto"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h8L18.5 8v12.5H6z"/><path d="M13.5 3.5V8h5"/><path d="M9 13.5l2 2 4-4"/></svg></span>
+        <span><span class="wf-nm" style="display:block;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.01em">학교시설 인허가</span><span style="display:block;font-size:11.5px;color:var(--faint);margin-top:2px">학교시설사업 촉진법 제4조</span></span>
+      </button>
+    </div>   <div style="border:1px solid var(--line);border-radius:var(--radsm);overflow:hidden;background:var(--surface)">
+      <iframe src="워크플로우_설계변경_대시보드.html" title="설계변경 워크플로우" id="wfFrame" style="display:block;width:100%;height:2350px;border:0"></iframe>
     </div>
     </div>
 
@@ -1996,205 +1933,205 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     <div class="note">계절별 점검(교육시설법)은 <b>모든 학교</b>가 대상입니다. 여기에 더해 건축·토목 시설물이 <b>규모 · 경과연수 요건</b>에 해당하면 시설물안전법의 정기·정밀안전점검 주기가 추가로 적용됩니다.</div>
 
 
-      <section style="margin-top:28px">
-        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-          <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">전체</h3>
+      <section style="margin-top:40px">
+        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+          <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">전체</h3>
           <span style="font-size:12.5px;color:var(--muted)">모든 교육시설 공통</span>
         </div>
-        <div style="display:grid;gap:12px">
-        <article style="border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);padding:20px 22px">
+        <div style="display:grid;gap:16px">
+        <article style="border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);padding:24px 28px">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-bottom:12px">
             <div style="min-width:0">
-              <div style="font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em">계절별 안전점검</div>
+              <div style="font-size:17.5px;font-weight:800;color:var(--ink);letter-spacing:-.015em">계절별 안전점검</div>
             </div>
             <span style="flex:0 0 auto;font-size:12px;font-weight:700;color:var(--muted);background:var(--surface-2);border-radius:100px;padding:5px 12px;white-space:nowrap">교육시설법</span>
           </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검 대상</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">교육시설 전체 — 별도의 규모·연수 요건 없이 모든 학교가 대상입니다.</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg><span>점검 대상</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">교육시설 전체 — 별도의 규모·연수 요건 없이 모든 학교가 대상입니다.</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검 주기</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">연 3회 — <b>해빙기</b>(2~3월) · <b>여름철</b>(우기 전) · <b>겨울철</b>(동절기 전) 각 1회</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg><span>점검 주기</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">연 3회 — <b>해빙기</b>(2~3월) · <b>여름철</b>(우기 전) · <b>겨울철</b>(동절기 전) 각 1회</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검자</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">자체점검은 학교 안전관리자가, 합동점검은 민간전문가와 교육(지원)청 담당자가 함께 수행합니다.</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19.5c1.4-3.3 3.8-4.8 6.5-4.8s5.1 1.5 6.5 4.8"/></svg><span>점검자</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">자체점검은 학교 안전관리자가, 합동점검은 민간전문가와 교육(지원)청 담당자가 함께 수행합니다.</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">실무 메모</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">점검 결과 보수·보강이 필요한 사항은 유지보수 예산 요구와 연계해 정리해 두면 다음 회차 점검에서 이력 관리가 쉬워집니다.</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 4.5h10.5L19 8v11.5H5z"/><path d="M9 12h6M9 15.5h4"/></svg><span>실무 메모</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">점검 결과 보수·보강이 필요한 사항은 유지보수 예산 요구와 연계해 정리해 두면 다음 회차 점검에서 이력 관리가 쉬워집니다.</div>
             </div>
-          <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="계절점검">#계절점검</span><span class="htag" data-tag="해빙기">#해빙기</span><span class="htag" data-tag="교육시설법">#교육시설법</span><span class="htag" data-tag="자체점검">#자체점검</span></div>
+          <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="계절점검">#계절점검</span><span class="htag" data-tag="해빙기">#해빙기</span><span class="htag" data-tag="교육시설법">#교육시설법</span><span class="htag" data-tag="자체점검">#자체점검</span></div>
         </article></div>
       </section>
 
 
-      <section style="margin-top:28px">
-        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-          <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">건축</h3>
+      <section style="margin-top:40px">
+        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+          <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">건축</h3>
           <span style="font-size:12.5px;color:var(--muted)">교사 · 강당 · 체육관 · 기숙사 · 급식실 등</span>
         </div>
-        <div style="display:grid;gap:12px">
-        <article style="border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);padding:20px 22px">
+        <div style="display:grid;gap:16px">
+        <article style="border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);padding:24px 28px">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-bottom:12px">
             <div style="min-width:0">
-              <div style="font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em">제3종 시설물 안전점검</div>
+              <div style="font-size:17.5px;font-weight:800;color:var(--ink);letter-spacing:-.015em">제3종 시설물 안전점검</div>
             </div>
             <span style="flex:0 0 auto;font-size:12px;font-weight:700;color:var(--muted);background:var(--surface-2);border-radius:100px;padding:5px 12px;white-space:nowrap">시설물안전법</span>
           </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검 대상</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">준공 후 <b>15년 경과</b>하고 <b>연면적 1,000㎡ 이상</b>인 건축물</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg><span>점검 대상</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">준공 후 <b>15년 경과</b>하고 <b>연면적 1,000㎡ 이상</b>인 건축물</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검 주기</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty"><b>정기안전점검</b> — A~C등급 연 2회, D·E등급 연 3회<br><b>정밀안전점검</b> — 정기점검 결과 필요하다고 판단될 때 실시</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg><span>점검 주기</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty"><b>정기안전점검</b> — A~C등급 연 2회, D·E등급 연 3회<br><b>정밀안전점검</b> — 정기점검 결과 필요하다고 판단될 때 실시</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검자</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">정기안전점검은 초급기술자 이상(정기안전점검 교육 이수자), 정밀안전점검은 고급기술자 이상(정밀·긴급안전점검 교육 이수자)</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19.5c1.4-3.3 3.8-4.8 6.5-4.8s5.1 1.5 6.5 4.8"/></svg><span>점검자</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">정기안전점검은 초급기술자 이상(정기안전점검 교육 이수자), 정밀안전점검은 고급기술자 이상(정밀·긴급안전점검 교육 이수자)</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">실무 메모</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">제3종 시설물 지정·해제는 관리주체가 관할 지자체에 통보해야 하며, 지정 즉시 첫 정기점검 일정을 잡습니다.</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 4.5h10.5L19 8v11.5H5z"/><path d="M9 12h6M9 15.5h4"/></svg><span>실무 메모</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">제3종 시설물 지정·해제는 관리주체가 관할 지자체에 통보해야 하며, 지정 즉시 첫 정기점검 일정을 잡습니다.</div>
             </div>
-          <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="제3종시설물">#제3종시설물</span><span class="htag" data-tag="정기안전점검">#정기안전점검</span><span class="htag" data-tag="시설물안전법">#시설물안전법</span><span class="htag" data-tag="연면적1000㎡">#연면적1000㎡</span></div>
+          <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="제3종시설물">#제3종시설물</span><span class="htag" data-tag="정기안전점검">#정기안전점검</span><span class="htag" data-tag="시설물안전법">#시설물안전법</span><span class="htag" data-tag="연면적1000㎡">#연면적1000㎡</span></div>
         </article>
-        <article style="border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);padding:20px 22px">
+        <article style="border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);padding:24px 28px">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-bottom:12px">
             <div style="min-width:0">
-              <div style="font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em">40년 경과 노후 건축물 안전점검</div>
+              <div style="font-size:17.5px;font-weight:800;color:var(--ink);letter-spacing:-.015em">40년 경과 노후 건축물 안전점검</div>
             </div>
             <span style="flex:0 0 auto;font-size:12px;font-weight:700;color:var(--muted);background:var(--surface-2);border-radius:100px;padding:5px 12px;white-space:nowrap">교육부 추진계획</span>
           </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검 대상</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty"><b>연면적 100㎡ 이상</b> 건축물 중 교사 · 강당 · 체육관 · 기숙사 · 급식실 용도로 사용되는 <b>준공 40년 경과</b> 건축물</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg><span>점검 대상</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty"><b>연면적 100㎡ 이상</b> 건축물 중 교사 · 강당 · 체육관 · 기숙사 · 급식실 용도로 사용되는 <b>준공 40년 경과</b> 건축물</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검 주기</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty"><b>정밀안전점검 4년 / 1회</b> — 시설물안전법 대상이 아니어도 노후도 기준으로 별도 시행</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg><span>점검 주기</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty"><b>정밀안전점검 4년 / 1회</b> — 시설물안전법 대상이 아니어도 노후도 기준으로 별도 시행</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검자</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">고급기술자 이상 또는 안전진단전문기관 용역 시행</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19.5c1.4-3.3 3.8-4.8 6.5-4.8s5.1 1.5 6.5 4.8"/></svg><span>점검자</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">고급기술자 이상 또는 안전진단전문기관 용역 시행</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">실무 메모</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">시설물안전법 제3종 지정 대상과 중복될 수 있으므로, 같은 해에 두 점검이 겹치지 않도록 연간 계획에서 조정합니다.</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 4.5h10.5L19 8v11.5H5z"/><path d="M9 12h6M9 15.5h4"/></svg><span>실무 메모</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">시설물안전법 제3종 지정 대상과 중복될 수 있으므로, 같은 해에 두 점검이 겹치지 않도록 연간 계획에서 조정합니다.</div>
             </div>
-          <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="노후건축물">#노후건축물</span><span class="htag" data-tag="정밀안전점검">#정밀안전점검</span><span class="htag" data-tag="40년경과">#40년경과</span><span class="htag" data-tag="교육부">#교육부</span></div>
+          <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="노후건축물">#노후건축물</span><span class="htag" data-tag="정밀안전점검">#정밀안전점검</span><span class="htag" data-tag="40년경과">#40년경과</span><span class="htag" data-tag="교육부">#교육부</span></div>
         </article></div>
       </section>
 
 
-      <section style="margin-top:28px">
-        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-          <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">토목</h3>
+      <section style="margin-top:40px">
+        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+          <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">토목</h3>
           <span style="font-size:12.5px;color:var(--muted)">옹벽 · 절토사면 등 부속 구조물</span>
         </div>
-        <div style="display:grid;gap:12px">
-        <article style="border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);padding:20px 22px">
+        <div style="display:grid;gap:16px">
+        <article style="border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);padding:24px 28px">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-bottom:12px">
             <div style="min-width:0">
-              <div style="font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em">제2종 시설물 — 옹벽 · 절토사면</div>
+              <div style="font-size:17.5px;font-weight:800;color:var(--ink);letter-spacing:-.015em">제2종 시설물 — 옹벽 · 절토사면</div>
             </div>
             <span style="flex:0 0 auto;font-size:12px;font-weight:700;color:var(--muted);background:var(--surface-2);border-radius:100px;padding:5px 12px;white-space:nowrap">시설물안전법</span>
           </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검 대상</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">① <b>옹벽</b> — 지면으로부터 노출된 높이 5m 이상인 부분의 합이 100m 이상<br>② <b>절토사면</b> — 높이 30m 이상을 포함한 절토부로 수평연장 100m 이상</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg><span>점검 대상</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">① <b>옹벽</b> — 지면으로부터 노출된 높이 5m 이상인 부분의 합이 100m 이상<br>② <b>절토사면</b> — 높이 30m 이상을 포함한 절토부로 수평연장 100m 이상</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검 주기</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty"><b>정기안전점검</b> — A~C등급 연 2회, D·E등급 연 3회<br><b>정밀안전점검</b> — A등급 3년/1회, B·C등급 2년/1회, D·E등급 1년/1회</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg><span>점검 주기</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty"><b>정기안전점검</b> — A~C등급 연 2회, D·E등급 연 3회<br><b>정밀안전점검</b> — A등급 3년/1회, B·C등급 2년/1회, D·E등급 1년/1회</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검자</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">정기는 초급기술자 이상, 정밀은 고급기술자 이상 — 통상 국토안전관리원·안전진단전문기관 용역으로 시행</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19.5c1.4-3.3 3.8-4.8 6.5-4.8s5.1 1.5 6.5 4.8"/></svg><span>점검자</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">정기는 초급기술자 이상, 정밀은 고급기술자 이상 — 통상 국토안전관리원·안전진단전문기관 용역으로 시행</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">실무 메모</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">집중호우 직후에는 등급과 무관하게 긴급점검을 검토합니다.</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 4.5h10.5L19 8v11.5H5z"/><path d="M9 12h6M9 15.5h4"/></svg><span>실무 메모</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">집중호우 직후에는 등급과 무관하게 긴급점검을 검토합니다.</div>
             </div>
-          <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="제2종시설물">#제2종시설물</span><span class="htag" data-tag="옹벽">#옹벽</span><span class="htag" data-tag="절토사면">#절토사면</span><span class="htag" data-tag="시설물안전법">#시설물안전법</span></div>
+          <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="제2종시설물">#제2종시설물</span><span class="htag" data-tag="옹벽">#옹벽</span><span class="htag" data-tag="절토사면">#절토사면</span><span class="htag" data-tag="시설물안전법">#시설물안전법</span></div>
         </article>
-        <article style="border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);padding:20px 22px">
+        <article style="border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);padding:24px 28px">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-bottom:12px">
             <div style="min-width:0">
-              <div style="font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em">제3종 시설물 — 옹벽</div>
+              <div style="font-size:17.5px;font-weight:800;color:var(--ink);letter-spacing:-.015em">제3종 시설물 — 옹벽</div>
             </div>
             <span style="flex:0 0 auto;font-size:12px;font-weight:700;color:var(--muted);background:var(--surface-2);border-radius:100px;padding:5px 12px;white-space:nowrap">시설물안전법</span>
           </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검 대상</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">준공 후 <b>10년 경과</b>하고 높이 5m 이상인 옹벽을 포함하는 <b>연장 100m 이상</b>인 옹벽</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg><span>점검 대상</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">준공 후 <b>10년 경과</b>하고 높이 5m 이상인 옹벽을 포함하는 <b>연장 100m 이상</b>인 옹벽</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검 주기</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty"><b>정기안전점검</b> — A~C등급 연 2회, D·E등급 연 3회</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg><span>점검 주기</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty"><b>정기안전점검</b> — A~C등급 연 2회, D·E등급 연 3회</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검자</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">초급기술자 이상(정기안전점검 교육 이수자)</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19.5c1.4-3.3 3.8-4.8 6.5-4.8s5.1 1.5 6.5 4.8"/></svg><span>점검자</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">초급기술자 이상(정기안전점검 교육 이수자)</div>
             </div>
 
-          <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="제3종시설물">#제3종시설물</span><span class="htag" data-tag="옹벽">#옹벽</span><span class="htag" data-tag="정기안전점검">#정기안전점검</span></div>
+          <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="제3종시설물">#제3종시설물</span><span class="htag" data-tag="옹벽">#옹벽</span><span class="htag" data-tag="정기안전점검">#정기안전점검</span></div>
         </article>
-        <article style="border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);padding:20px 22px">
+        <article style="border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);padding:24px 28px">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-bottom:12px">
             <div style="min-width:0">
-              <div style="font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em">옹벽 · 사면 취약시설</div>
+              <div style="font-size:17.5px;font-weight:800;color:var(--ink);letter-spacing:-.015em">옹벽 · 사면 취약시설</div>
             </div>
             <span style="flex:0 0 auto;font-size:12px;font-weight:700;color:var(--muted);background:var(--surface-2);border-radius:100px;padding:5px 12px;white-space:nowrap">취약시설 점검계획</span>
           </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검 대상</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty"><b>옹벽</b> — 준공 5년 경과 · 높이 2m 이상<br><b>사면</b> — 높이 5m 이상 · 수평연장 40m 이상</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg><span>점검 대상</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty"><b>옹벽</b> — 준공 5년 경과 · 높이 2m 이상<br><b>사면</b> — 높이 5m 이상 · 수평연장 40m 이상</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검 주기</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty"><b>연 1회(상반기)</b> — 우기 전 완료를 원칙으로 합니다.</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg><span>점검 주기</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty"><b>연 1회(상반기)</b> — 우기 전 완료를 원칙으로 합니다.</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">점검자</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">교육(지원)청 담당자 또는 외부 전문가 합동점검</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19.5c1.4-3.3 3.8-4.8 6.5-4.8s5.1 1.5 6.5 4.8"/></svg><span>점검자</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">교육(지원)청 담당자 또는 외부 전문가 합동점검</div>
             </div>
 
-            <div style="display:grid;grid-template-columns:88px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)">
-              <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">실무 메모</div>
-              <div style="font-size:13.5px;color:var(--ink-2);line-height:1.7;text-wrap:pretty">법정 점검 대상은 아니지만 사고 시 책임 판단의 근거가 되므로 점검표·사진을 반드시 남깁니다.</div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)">
+              <div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 4.5h10.5L19 8v11.5H5z"/><path d="M9 12h6M9 15.5h4"/></svg><span>실무 메모</span></div>
+              <div style="font-size:14.5px;color:var(--ink-2);line-height:1.8;text-wrap:pretty">법정 점검 대상은 아니지만 사고 시 책임 판단의 근거가 되므로 점검표·사진을 반드시 남깁니다.</div>
             </div>
-          <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="취약시설">#취약시설</span><span class="htag" data-tag="옹벽">#옹벽</span><span class="htag" data-tag="사면">#사면</span><span class="htag" data-tag="우기대비">#우기대비</span></div>
+          <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="취약시설">#취약시설</span><span class="htag" data-tag="옹벽">#옹벽</span><span class="htag" data-tag="사면">#사면</span><span class="htag" data-tag="우기대비">#우기대비</span></div>
         </article></div>
       </section>
 
     <section style="margin-top:32px">
-      <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-        <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">점검자 자격 정리</h3>
+      <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+        <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">점검자 자격 정리</h3>
         <span style="font-size:12.5px;color:var(--muted)">누가 점검할 수 있나</span>
       </div>
       <div class="tbl-wrap" id="safeQual" style="overflow-x:auto">
@@ -2214,78 +2151,78 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     <div class="sv-view" data-svv="cert2" style="display:none">
       <div class="note">교육시설 관리주체는 관리시설에 대해 <b>교육시설안전 인증</b>을 취득하고 유지관리하여야 합니다. <span style="color:var(--muted)">근거 — 교육시설법 제11조(교육시설안전인증 등) · 같은 법 시행령 제13조(교육시설안전인증의 대상)</span></div>
 
-      <section style="margin-top:28px">
-        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-          <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">인증 대상 및 등급</h3>
+      <section style="margin-top:40px">
+        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+          <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">인증 대상 및 등급</h3>
           <span style="font-size:12.5px;color:var(--muted)">누가 · 언제 · 몇 년</span>
         </div>
-        <div style="display:grid;gap:12px">
-          <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:20px 22px;box-shadow:var(--shadow-sm)">
+        <div style="display:grid;gap:16px">
+          <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:24px 28px;box-shadow:var(--shadow-sm)">
             <div style="font-size:16px;font-weight:800;color:var(--ink);padding-bottom:12px">인증 대상</div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">학교</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">연면적 <b>100㎡ 이상</b> — 유·초·중·고·특수학교 (기관 단위로 인증)<br><span style="color:var(--muted)">「유아교육법」 제2조제2호 유치원, 「초·중등교육법」 제2조에 따른 학교(고등공민학교·각종학교 포함)</span></div></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>학교</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">연면적 <b>100㎡ 이상</b> — 유·초·중·고·특수학교 (기관 단위로 인증)<br><span style="color:var(--muted)">「유아교육법」 제2조제2호 유치원, 「초·중등교육법」 제2조에 따른 학교(고등공민학교·각종학교 포함)</span></div></div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">학생수련원 · 도서관</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">연면적 <b>1,000㎡ 이상</b> (수련원 등 단위로 인증)</div></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>학생수련원 · 도서관</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">연면적 <b>1,000㎡ 이상</b> (수련원 등 단위로 인증)</div></div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">교육기관 등</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">연면적 <b>3,000㎡ 이상</b> (건물 단위로 인증)<br><span style="color:var(--muted)">「평생교육법」에 따라 학력·학위가 인정되는 평생교육시설, 「지방교육자치에 관한 법률」 제32조에 따른 교육기관(직속기관) 등 — 국방·치안 등의 사유로 정보공시가 어려운 학교는 제외</span></div></div>
-            <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="교육시설인증">#교육시설인증</span><span class="htag" data-tag="인증대상">#인증대상</span><span class="htag" data-tag="연면적">#연면적</span></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>교육기관 등</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">연면적 <b>3,000㎡ 이상</b> (건물 단위로 인증)<br><span style="color:var(--muted)">「평생교육법」에 따라 학력·학위가 인정되는 평생교육시설, 「지방교육자치에 관한 법률」 제32조에 따른 교육기관(직속기관) 등 — 국방·치안 등의 사유로 정보공시가 어려운 학교는 제외</span></div></div>
+            <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="교육시설인증">#교육시설인증</span><span class="htag" data-tag="인증대상">#인증대상</span><span class="htag" data-tag="연면적">#연면적</span></div>
           </article>
-          <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:20px 22px;box-shadow:var(--shadow-sm)">
+          <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:24px 28px;box-shadow:var(--shadow-sm)">
             <div style="font-size:16px;font-weight:800;color:var(--ink);padding-bottom:12px">시기 · 등급 · 유효기간</div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">최초 인증</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty"><b>기존시설</b> — 2025년 12월 3일까지 (법 부칙 제4조)<br><b>신규시설</b> — 사용승인 후 2년 이내</div></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>최초 인증</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty"><b>기존시설</b> — 2025년 12월 3일까지 (법 부칙 제4조)<br><b>신규시설</b> — 사용승인 후 2년 이내</div></div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">등급</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty"><b>최우수</b> 89점 이상 &nbsp;·&nbsp; <b>우수</b> 78점 이상</div></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>등급</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty"><b>최우수</b> 89점 이상 &nbsp;·&nbsp; <b>우수</b> 78점 이상</div></div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">유효기간</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">최우수 <b>10년</b> &nbsp;·&nbsp; 우수 <b>5년</b> — 만료일부터 <b>6개월 전</b>에 다시 신청</div></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg><span>유효기간</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">최우수 <b>10년</b> &nbsp;·&nbsp; 우수 <b>5년</b> — 만료일부터 <b>6개월 전</b>에 다시 신청</div></div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">재인증</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">인증을 받은 학교 등이 <b>연면적 500㎡ 이상</b>의 증축·개축 또는 재축을 하는 경우 → 사용승인 통보가 완료된 날부터 <b>2년 이내</b> 재인증 신청</div></div>
-            <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="최우수등급">#최우수등급</span><span class="htag" data-tag="우수등급">#우수등급</span><span class="htag" data-tag="재인증">#재인증</span><span class="htag" data-tag="인증유효기간">#인증유효기간</span></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>재인증</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">인증을 받은 학교 등이 <b>연면적 500㎡ 이상</b>의 증축·개축 또는 재축을 하는 경우 → 사용승인 통보가 완료된 날부터 <b>2년 이내</b> 재인증 신청</div></div>
+            <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="최우수등급">#최우수등급</span><span class="htag" data-tag="우수등급">#우수등급</span><span class="htag" data-tag="재인증">#재인증</span><span class="htag" data-tag="인증유효기간">#인증유효기간</span></div>
           </article>
         </div>
       </section>
 
       <section style="margin-top:30px">
-        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-          <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">인증 심사 내용</h3>
+        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+          <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">인증 심사 내용</h3>
           <span style="font-size:12.5px;color:var(--muted)">3개 점검 분야</span>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px">
-          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:16px 18px;box-shadow:var(--shadow-sm)"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">시설안전</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;margin-top:7px">구조 · 전기 · 기계 · 가스 · 소방 등 시설의 내재적 안전 및 관리상태 점검</div></div>
-          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:16px 18px;box-shadow:var(--shadow-sm)"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">실내환경 안전</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;margin-top:7px">교내에서 발생할 수 있는 사용자의 안전사고를 예방하기 위한 공간별 안전관리 대책 및 자재 등 안전·관리상태 확인</div></div>
-          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:16px 18px;box-shadow:var(--shadow-sm)"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">외부환경 안전</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;margin-top:7px">보행자안전 · 외부공간(운동장, 놀이시설 등) 감시·보안체계 등 건물 외부환경의 안전환경 구축 및 관리상태 확인</div></div>
+          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:16px 18px;box-shadow:var(--shadow-sm)"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">시설안전</div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;margin-top:7px">구조 · 전기 · 기계 · 가스 · 소방 등 시설의 내재적 안전 및 관리상태 점검</div></div>
+          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:16px 18px;box-shadow:var(--shadow-sm)"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">실내환경 안전</div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;margin-top:7px">교내에서 발생할 수 있는 사용자의 안전사고를 예방하기 위한 공간별 안전관리 대책 및 자재 등 안전·관리상태 확인</div></div>
+          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:16px 18px;box-shadow:var(--shadow-sm)"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">외부환경 안전</div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;margin-top:7px">보행자안전 · 외부공간(운동장, 놀이시설 등) 감시·보안체계 등 건물 외부환경의 안전환경 구축 및 관리상태 확인</div></div>
         </div>
-        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="시설안전">#시설안전</span><span class="htag" data-tag="실내환경안전">#실내환경안전</span><span class="htag" data-tag="외부환경안전">#외부환경안전</span><span class="htag" data-tag="인증심사">#인증심사</span></div>
+        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="시설안전">#시설안전</span><span class="htag" data-tag="실내환경안전">#실내환경안전</span><span class="htag" data-tag="외부환경안전">#외부환경안전</span><span class="htag" data-tag="인증심사">#인증심사</span></div>
       </section>
 
       <section style="margin-top:30px">
-        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-          <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">기관별 업무 · 인증 절차</h3>
+        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+          <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">기관별 업무 · 인증 절차</h3>
           <span style="font-size:12.5px;color:var(--muted)">신청 → 인증 → 관리</span>
         </div>
         <div style="display:grid;gap:10px">
 
         <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:start">
-          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 1</div><div style="font-size:15.5px;font-weight:800;color:var(--ink);margin-top:4px">학교 (신청)</div></div>
-          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.85"><li>교육시설안전 인증 신청서 제출 <span style="color:var(--muted)">[시행규칙 별지 제1호 서식]</span></li><li>인증 기준에 따라 작성한 <b>자체평가서</b></li><li>인증에 필요한 사실을 증명할 수 있는 서류</li><li>예비인증서 사본 (예비인증을 받은 경우)</li></ul>
+          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 1</div><div style="font-size:16.5px;font-weight:800;color:var(--ink);margin-top:4px">학교 (신청)</div></div>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.9"><li>교육시설안전 인증 신청서 제출 <span style="color:var(--muted)">[시행규칙 별지 제1호 서식]</span></li><li>인증 기준에 따라 작성한 <b>자체평가서</b></li><li>인증에 필요한 사실을 증명할 수 있는 서류</li><li>예비인증서 사본 (예비인증을 받은 경우)</li></ul>
         </article>
 
         <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:start">
-          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 2</div><div style="font-size:15.5px;font-weight:800;color:var(--ink);margin-top:4px">인증 전문기관 (인증)</div></div>
-          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.85"><li>신청서 접수 — 처리기간 <b>40일</b> (불가피한 사유 시 20일 연장)</li><li>제출서류 심사</li><li>학교방문 현장심사</li><li>인증심의위원회 심의</li><li>인증서 발급</li></ul>
+          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 2</div><div style="font-size:16.5px;font-weight:800;color:var(--ink);margin-top:4px">인증 전문기관 (인증)</div></div>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.9"><li>신청서 접수 — 처리기간 <b>40일</b> (불가피한 사유 시 20일 연장)</li><li>제출서류 심사</li><li>학교방문 현장심사</li><li>인증심의위원회 심의</li><li>인증서 발급</li></ul>
         </article>
 
         <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:start">
-          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 3</div><div style="font-size:15.5px;font-weight:800;color:var(--ink);margin-top:4px">학교 (관리)</div></div>
-          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.85"><li>인증서 홈페이지 게시</li><li>건물에 인증패 게시</li><li>인증보고서의 안전 취약시설 개선 권고사항 등 추진</li></ul>
+          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 3</div><div style="font-size:16.5px;font-weight:800;color:var(--ink);margin-top:4px">학교 (관리)</div></div>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.9"><li>인증서 홈페이지 게시</li><li>건물에 인증패 게시</li><li>인증보고서의 안전 취약시설 개선 권고사항 등 추진</li></ul>
         </article>
         </div>
-        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="인증절차">#인증절차</span><span class="htag" data-tag="자체평가서">#자체평가서</span><span class="htag" data-tag="현장심사">#현장심사</span><span class="htag" data-tag="인증심의위원회">#인증심의위원회</span></div>
+        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="인증절차">#인증절차</span><span class="htag" data-tag="자체평가서">#자체평가서</span><span class="htag" data-tag="현장심사">#현장심사</span><span class="htag" data-tag="인증심의위원회">#인증심의위원회</span></div>
       </section>
 
       <section style="margin-top:30px">
-        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-          <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">안전인증 전문기관</h3>
+        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+          <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">안전인증 전문기관</h3>
           <span style="font-size:12.5px;color:var(--muted)">교육부장관 지정 (2025.12.3.) · 10개 기관</span>
         </div>
         <div class="tbl-wrap" id="certOrg" style="overflow-x:auto">
@@ -2306,7 +2243,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
           </table>
         </div>
         <div class="note" style="margin-top:12px">※ 교육부장관 지정 <b>2025년 12월 3일</b> 기준 10개 기관 — 유효기간 '25.12.4.~'28.12.3.</div>
-        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="인증전문기관">#인증전문기관</span><span class="htag" data-tag="교육부지정">#교육부지정</span><span class="htag" data-tag="한국부동산원">#한국부동산원</span></div>
+        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="인증전문기관">#인증전문기관</span><span class="htag" data-tag="교육부지정">#교육부지정</span><span class="htag" data-tag="한국부동산원">#한국부동산원</span></div>
       </section>
 
       <div class="note" style="margin-top:20px">📄 제7장 — <b>교육시설안전 인증 자체평가서 매뉴얼</b> 요약문서에서 평가항목·배점을 확인할 수 있습니다.</div>
@@ -2315,149 +2252,149 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     <div class="sv-view" data-svv="eval" style="display:none">
       <div class="note">교육시설 내·외에서 <b>건설공사를 하려는 자</b>는 그 공사가 교육시설과 이용자의 안전에 미치는 영향에 관한 평가를 실시해야 하며, 교육시설의 장과 감독기관은 평가 실시·제출 여부를 관리해야 합니다. <span style="color:var(--muted)">근거 — 교육시설법 제19조(안전성평가) · 교육시설안전성평가 운영기준(교육부고시 제2021-15호)</span></div>
 
-      <section style="margin-top:24px">
+      <section style="margin-top:36px">
 
-        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-          <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">평가 대상</h3>
+        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+          <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">평가 대상</h3>
           <span style="font-size:12.5px;color:var(--muted)">교육시설 내 · 학교 밖</span>
         </div>
-        <div style="display:grid;gap:12px">
-          <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:20px 22px;box-shadow:var(--shadow-sm)">
+        <div style="display:grid;gap:16px">
+          <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:24px 28px;box-shadow:var(--shadow-sm)">
             <div style="font-size:16px;font-weight:800;color:var(--ink);padding-bottom:12px">교육시설 내</div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">대상</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">교육시설 <b>건축승인 대상</b> 공사<br><span style="color:var(--muted)">시설이용자가 없는 신축 · 개축공사는 제외</span></div></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg><span>대상</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">교육시설 <b>건축승인 대상</b> 공사<br><span style="color:var(--muted)">시설이용자가 없는 신축 · 개축공사는 제외</span></div></div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">실시 주체</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">건설공사를 하려는 자 (건설사업자)</div></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>실시 주체</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">건설공사를 하려는 자 (건설사업자)</div></div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">평가 시기</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">건축 또는 건설공사 <b>착공 전까지</b> 실시</div></div>
-        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="안전성평가">#안전성평가</span><span class="htag" data-tag="건축승인">#건축승인</span><span class="htag" data-tag="교육시설법">#교육시설법</span></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>평가 시기</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">건축 또는 건설공사 <b>착공 전까지</b> 실시</div></div>
+        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="안전성평가">#안전성평가</span><span class="htag" data-tag="건축승인">#건축승인</span><span class="htag" data-tag="교육시설법">#교육시설법</span></div>
           </article>
-          <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:20px 22px;box-shadow:var(--shadow-sm)">
+          <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:24px 28px;box-shadow:var(--shadow-sm)">
             <div style="font-size:16px;font-weight:800;color:var(--ink);padding-bottom:12px">학교 밖</div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">기본 범위</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">학교경계로부터 <b>직선거리 4m 범위 내</b> 건설공사</div></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>기본 범위</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">학교경계로부터 <b>직선거리 4m 범위 내</b> 건설공사</div></div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">확대 범위</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">직선거리 <b>4m~50m 이하</b> 범위 내에서 안전에 중대한 영향을 미칠 수 있는 건설공사 <span style="color:var(--muted)">(2021.5.13. 고시 시행 이후)</span></div></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>확대 범위</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">직선거리 <b>4m~50m 이하</b> 범위 내에서 안전에 중대한 영향을 미칠 수 있는 건설공사 <span style="color:var(--muted)">(2021.5.13. 고시 시행 이후)</span></div></div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">세부 유형</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">① <b>굴착깊이(H) 2m 이상</b>이면서 학교경계선으로부터 직선거리가 <b>굴착영향거리(L) 미만</b>인 공사<br>② <b>3층 이상 건축물 또는 높이 10m 이상 구조물</b>로서, 학교경계선으로부터 직선거리가 건축물·구조물의 최고 높이 미만인 공사<br>③ 터널공사 &nbsp;④ 발파공사<br>⑤ 「건축물관리법」 제30조제1항에 따른 건축물 해체공사</div></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>세부 유형</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">① <b>굴착깊이(H) 2m 이상</b>이면서 학교경계선으로부터 직선거리가 <b>굴착영향거리(L) 미만</b>인 공사<br>② <b>3층 이상 건축물 또는 높이 10m 이상 구조물</b>로서, 학교경계선으로부터 직선거리가 건축물·구조물의 최고 높이 미만인 공사<br>③ 터널공사 &nbsp;④ 발파공사<br>⑤ 「건축물관리법」 제30조제1항에 따른 건축물 해체공사</div></div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">제외 대상</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">긴급재해복구 및 유지보수공사</div></div>
-        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="학교경계">#학교경계</span><span class="htag" data-tag="굴착영향거리">#굴착영향거리</span><span class="htag" data-tag="발파공사">#발파공사</span><span class="htag" data-tag="해체공사">#해체공사</span></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>제외 대상</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">긴급재해복구 및 유지보수공사</div></div>
+        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="학교경계">#학교경계</span><span class="htag" data-tag="굴착영향거리">#굴착영향거리</span><span class="htag" data-tag="발파공사">#발파공사</span><span class="htag" data-tag="해체공사">#해체공사</span></div>
           </article>
           <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface-2);padding:20px 22px;box-shadow:var(--shadow-sm)">
             <div style="font-size:16px;font-weight:800;color:var(--ink);padding-bottom:10px">굴착영향거리 산정식</div>
             <div style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;font-weight:700;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;line-height:1.9">L = 1.5H + 4.0 (m)</div>
-            <div style="font-size:13.5px;color:var(--ink-2);line-height:1.85;margin-top:10px">
+            <div style="font-size:14.5px;color:var(--ink-2);line-height:1.9;margin-top:10px">
               H = H1 + H2 &nbsp;<span style="color:var(--muted)">(부지 단차가 학교부지보다 낮은 경우)</span><br>
               H = H1 − H2 &nbsp;<span style="color:var(--muted)">(부지 단차가 학교부지보다 높은 경우)</span><br>
               <span style="color:var(--muted)">L = 굴착영향거리 · H = 적용 굴착깊이 · H1 = 굴착깊이 · H2 = 부지 단차</span>
             </div>
-        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="굴착깊이">#굴착깊이</span><span class="htag" data-tag="부지단차">#부지단차</span><span class="htag" data-tag="산정식">#산정식</span></div>
+        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="굴착깊이">#굴착깊이</span><span class="htag" data-tag="부지단차">#부지단차</span><span class="htag" data-tag="산정식">#산정식</span></div>
           </article>
         </div>
       </section>
 
-      <section style="margin-top:28px">
+      <section style="margin-top:40px">
 
-        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-          <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">평가 내용</h3>
+        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+          <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">평가 내용</h3>
           <span style="font-size:12.5px;color:var(--muted)">무엇을 보나</span>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px">
-          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:16px 18px;box-shadow:var(--shadow-sm)"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">구조 · 지반 안전성</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;margin-top:7px">해당 교육시설의 구조 및 인접 대지 지반의 안전성</div></div>
-          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:16px 18px;box-shadow:var(--shadow-sm)"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">사고예방시설 적정성</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;margin-top:7px">공사장과 그 주변 지역에 설치하는 사고예방시설의 적정성</div></div>
-          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:16px 18px;box-shadow:var(--shadow-sm)"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">통학로 안전성</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;margin-top:7px">해당 교육시설 통학로의 안전성</div></div>
-          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface-2);padding:16px 18px"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">고려사항</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;margin-top:7px">학교·학생 안전 확보 및 불편 최소화 방안, 그 밖의 보완 조치 필요 사항</div></div>
+          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:16px 18px;box-shadow:var(--shadow-sm)"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">구조 · 지반 안전성</div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;margin-top:7px">해당 교육시설의 구조 및 인접 대지 지반의 안전성</div></div>
+          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:16px 18px;box-shadow:var(--shadow-sm)"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">사고예방시설 적정성</div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;margin-top:7px">공사장과 그 주변 지역에 설치하는 사고예방시설의 적정성</div></div>
+          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:16px 18px;box-shadow:var(--shadow-sm)"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">통학로 안전성</div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;margin-top:7px">해당 교육시설 통학로의 안전성</div></div>
+          <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface-2);padding:16px 18px"><div style="font-size:13.5px;font-weight:800;color:var(--ink)">고려사항</div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;margin-top:7px">학교·학생 안전 확보 및 불편 최소화 방안, 그 밖의 보완 조치 필요 사항</div></div>
         </div>
-        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="통학로">#통학로</span><span class="htag" data-tag="사고예방시설">#사고예방시설</span><span class="htag" data-tag="지반안전">#지반안전</span></div>
+        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="통학로">#통학로</span><span class="htag" data-tag="사고예방시설">#사고예방시설</span><span class="htag" data-tag="지반안전">#지반안전</span></div>
       </section>
 
-      <section style="margin-top:28px">
+      <section style="margin-top:40px">
 
-        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-          <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">업무 절차</h3>
+        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+          <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">업무 절차</h3>
           <span style="font-size:12.5px;color:var(--muted)">착공 전까지</span>
         </div>
         <div style="display:grid;gap:10px">
 
         <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start">
-          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 1</div><div style="font-size:15.5px;font-weight:800;color:var(--ink);margin-top:4px">건설사업자 (평가 실시자)</div></div>
-          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.85"><li>안전성평가 실시 및 <b>평가서 제출</b></li></ul>
+          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 1</div><div style="font-size:16.5px;font-weight:800;color:var(--ink);margin-top:4px">건설사업자 (평가 실시자)</div></div>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.9"><li>안전성평가 실시 및 <b>평가서 제출</b></li></ul>
         </article>
 
         <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start">
-          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 2</div><div style="font-size:15.5px;font-weight:800;color:var(--ink);margin-top:4px">학교 (접수 · 확인)</div></div>
-          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.85"><li>안전성평가서 접수 · 검토 <span style="color:var(--muted)">(필요시 검토 결과 교육지원청 공유)</span></li></ul>
+          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 2</div><div style="font-size:16.5px;font-weight:800;color:var(--ink);margin-top:4px">학교 (접수 · 확인)</div></div>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.9"><li>안전성평가서 접수 · 검토 <span style="color:var(--muted)">(필요시 검토 결과 교육지원청 공유)</span></li></ul>
         </article>
 
         <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start">
-          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 3</div><div style="font-size:15.5px;font-weight:800;color:var(--ink);margin-top:4px">감독기관(지원청) (검토결과 통보)</div></div>
-          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.85"><li>안전성평가서 검토 및 <b>적정 통보</b></li></ul>
+          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 3</div><div style="font-size:16.5px;font-weight:800;color:var(--ink);margin-top:4px">감독기관(지원청) (검토결과 통보)</div></div>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.9"><li>안전성평가서 검토 및 <b>적정 통보</b></li></ul>
         </article>
 
         <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start">
-          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 4</div><div style="font-size:15.5px;font-weight:800;color:var(--ink);margin-top:4px">건설사업자 (안전 확보 실행)</div></div>
-          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.85"><li>안전성평가서에 따라 건설공사 수행</li></ul>
+          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 4</div><div style="font-size:16.5px;font-weight:800;color:var(--ink);margin-top:4px">건설사업자 (안전 확보 실행)</div></div>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.9"><li>안전성평가서에 따라 건설공사 수행</li></ul>
         </article>
 
         <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start">
-          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 5</div><div style="font-size:15.5px;font-weight:800;color:var(--ink);margin-top:4px">감독기관 · 학교 (이행확인)</div></div>
-          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.85"><li>안전시설 설치 등 이행여부 확인</li><li>미이행 시 안전확보 요청 (건설사업자 · 교육지원청 · 인·허가기관)</li><li>안전조치 완료 후 안전확보 요청과 조치결과를 교육청에 제출</li></ul>
+          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 5</div><div style="font-size:16.5px;font-weight:800;color:var(--ink);margin-top:4px">감독기관 · 학교 (이행확인)</div></div>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.9"><li>안전시설 설치 등 이행여부 확인</li><li>미이행 시 안전확보 요청 (건설사업자 · 교육지원청 · 인·허가기관)</li><li>안전조치 완료 후 안전확보 요청과 조치결과를 교육청에 제출</li></ul>
         </article>
         </div>
-        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="업무절차">#업무절차</span><span class="htag" data-tag="평가서">#평가서</span><span class="htag" data-tag="이행여부">#이행여부</span></div>
+        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="업무절차">#업무절차</span><span class="htag" data-tag="평가서">#평가서</span><span class="htag" data-tag="이행여부">#이행여부</span></div>
       </section>
 
-      <section style="margin-top:28px">
+      <section style="margin-top:40px">
 
-        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-          <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">미실시 조치</h3>
+        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+          <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">미실시 조치</h3>
           <span style="font-size:12.5px;color:var(--muted)">평가를 하지 않으면</span>
         </div>
         <div style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);font-size:13.5px;color:var(--ink-2);line-height:1.8">
           건설사업자가 안전성평가를 실시하지 않거나 제출하지 않을 시에는 <b>감독기관 및 해당 사업 인·허가권자</b>에게 알리고, 안전성평가 실시 및 안전확보 등 필요한 조치를 요청합니다.
         </div>
-        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="미실시조치">#미실시조치</span><span class="htag" data-tag="인허가권자">#인허가권자</span></div>
+        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="미실시조치">#미실시조치</span><span class="htag" data-tag="인허가권자">#인허가권자</span></div>
       </section>
 
-      <section style="margin-top:28px">
+      <section style="margin-top:40px">
 
-        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:9px;margin-bottom:12px;border-bottom:1px solid var(--line)">
-          <h3 style="margin:0;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--ink)">안전성평가 이행확인</h3>
+        <div style="display:flex;align-items:baseline;gap:10px;padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--line)">
+          <h3 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">안전성평가 이행확인</h3>
           <span style="font-size:12.5px;color:var(--muted)">운영기준 제15조</span>
         </div>
-        <div style="display:grid;gap:12px">
-          <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:20px 22px;box-shadow:var(--shadow-sm)">
+        <div style="display:grid;gap:16px">
+          <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:24px 28px;box-shadow:var(--shadow-sm)">
             <div style="font-size:16px;font-weight:800;color:var(--ink);padding-bottom:12px">사전 준비 3단계</div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">사전 계획</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">대상 공사현장에 대해 사전에 이행확인 계획 수립 — <b>점검 시기 · 대상 · 방법 · 점검자</b> 등을 작성</div></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>사전 계획</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">대상 공사현장에 대해 사전에 이행확인 계획 수립 — <b>점검 시기 · 대상 · 방법 · 점검자</b> 등을 작성</div></div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">사전 안내</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">건설사업자에게 이행확인 실시를 사전 안내하고, <b>사전점검표</b>를 작성 요청해 자체 점검 후 현장방문 시 제출하도록 안내 (공사개요·점검 시 동행 요청 포함)</div></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>사전 안내</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">건설사업자에게 이행확인 실시를 사전 안내하고, <b>사전점검표</b>를 작성 요청해 자체 점검 후 현장방문 시 제출하도록 안내 (공사개요·점검 시 동행 요청 포함)</div></div>
 
-            <div style="display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;padding-top:1px">사전 면담</div><div style="font-size:13.5px;color:var(--ink-2);line-height:1.75;text-wrap:pretty">교육청 등 감독기관의 장이 주관하여 이행 확인을 하는 경우 학교장 등 관계자와 사전 면담 — 통학로 안전, 소음 문제 등 애로사항 확인 및 개선방안 협의</div></div>
-        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="htag" data-tag="이행확인">#이행확인</span><span class="htag" data-tag="사전점검표">#사전점검표</span><span class="htag" data-tag="사전면담">#사전면담</span></div>
+            <div style="display:grid;grid-template-columns:118px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line)"><div style="display:flex;align-items:flex-start;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted);padding-top:4px;letter-spacing:0"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span>사전 면담</span></div><div style="font-size:14.5px;color:var(--ink-2);line-height:1.85;text-wrap:pretty">교육청 등 감독기관의 장이 주관하여 이행 확인을 하는 경우 학교장 등 관계자와 사전 면담 — 통학로 안전, 소음 문제 등 애로사항 확인 및 개선방안 협의</div></div>
+        <div class="man-tagrow" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)"><span class="htag" data-tag="이행확인">#이행확인</span><span class="htag" data-tag="사전점검표">#사전점검표</span><span class="htag" data-tag="사전면담">#사전면담</span></div>
           </article>
         </div>
         <div style="display:grid;gap:10px;margin-top:12px">
 
         <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start">
-          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 1</div><div style="font-size:15.5px;font-weight:800;color:var(--ink);margin-top:4px">감독기관 · 교육시설의 장</div></div>
-          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.85"><li>사전계획 수립</li><li>이행확인 실시 사전안내 (공문)</li></ul>
+          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 1</div><div style="font-size:16.5px;font-weight:800;color:var(--ink);margin-top:4px">감독기관 · 교육시설의 장</div></div>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.9"><li>사전계획 수립</li><li>이행확인 실시 사전안내 (공문)</li></ul>
         </article>
 
         <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start">
-          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 2</div><div style="font-size:15.5px;font-weight:800;color:var(--ink);margin-top:4px">건설사업자</div></div>
-          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.85"><li>사전점검표에 따라 자체점검</li><li>현장 방문시 점검표 제출</li></ul>
+          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 2</div><div style="font-size:16.5px;font-weight:800;color:var(--ink);margin-top:4px">건설사업자</div></div>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.9"><li>사전점검표에 따라 자체점검</li><li>현장 방문시 점검표 제출</li></ul>
         </article>
 
         <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start">
-          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 3</div><div style="font-size:15.5px;font-weight:800;color:var(--ink);margin-top:4px">감독기관 · 교육시설의 장</div></div>
-          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.85"><li>현장방문 이행 확인 점검 — 사전점검표 확인 수령 및 점검 비교 검토</li><li>조치사항 등 <b>점검결과 통보</b> (공문, 조치기한 명시)</li></ul>
+          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 3</div><div style="font-size:16.5px;font-weight:800;color:var(--ink);margin-top:4px">감독기관 · 교육시설의 장</div></div>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.9"><li>현장방문 이행 확인 점검 — 사전점검표 확인 수령 및 점검 비교 검토</li><li>조치사항 등 <b>점검결과 통보</b> (공문, 조치기한 명시)</li></ul>
         </article>
 
         <article style="border:1.5px solid var(--border);border-radius:var(--rad);background:var(--surface);padding:18px 20px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start">
-          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 4</div><div style="font-size:15.5px;font-weight:800;color:var(--ink);margin-top:4px">건설사업자</div></div>
-          <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.85"><li>지적사항 등 점검결과 조치</li></ul>
+          <div><div style="font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em">STEP 4</div><div style="font-size:16.5px;font-weight:800;color:var(--ink);margin-top:4px">건설사업자</div></div>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.9"><li>지적사항 등 점검결과 조치</li></ul>
         </article>
         </div>
       </section>
@@ -5031,6 +4968,7 @@ window.__gvInit = (function(){
     std:{chip:'기준',color:'var(--amber)',h2:'간단 기준 프로세스 안내',p:'사업 규모에 따라 필수 절차를 한눈에 확인'},
     law:{chip:'체크',color:'var(--p-design)',h2:'법령 Checking',p:'연면적·층수·용도를 입력하면 건축법령상 적용 규정과 근거 조문을 즉시 확인'},
     proc:{chip:'업무',color:'var(--accent)',h2:'학교시설사업 4단계 안내',p:'전 생애주기 4단계 흐름과 단계별 주요 업무 · 대상기준'},
+    flow:{chip:'흐름',color:'var(--p-const)',h2:'설계변경 워크플로우',p:'설계변경 사유 발생부터 검토 · 전결 승인 · 계약금액 조정 · 사후관리까지의 업무 경로'},
     graph:{chip:'흐름',color:'var(--p-cm)',h2:'업무 프로세스 그래프 뷰',p:'문서 전체를 단계·업무·법령·인증 노드로 연결한 관계 그래프'}
   };
   const chip=document.getElementById('ovChip'),h2=document.getElementById('ovH2'),p=document.getElementById('ovP');
@@ -5260,140 +5198,7 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
   });
 })();
 </script>
-<script>
-// ===== 트리맵 (squarified) =====
-(function(){
-  var TM = [{"name":"제1장 기획","key":"plan","color":"#3182f6","items":[{"t":"사전기획","k":"gate","ax":"design","amt":1,"lb":"설계비 1억↑","w":2},{"t":"기본안전보건대장","k":"gate","ax":"const","amt":50,"lb":"공사비 50억↑","w":3},{"t":"공공건축심의","k":"gate","ax":"design","amt":0.5,"lb":"설계비 5천↑","w":1}]},{"name":"제2장 설계","key":"design","color":"#12b886","items":[{"t":"일상감사","k":"gate","ax":"total","amt":10,"lb":"정책 10억↑ · 계약 규모별","w":2},{"t":"설계공모","k":"gate","ax":"design","amt":1,"lb":"설계비 1억↑ 우선적용","w":2},{"t":"대규모 사업의 시설 일상감사","k":"gate","ax":"total","amt":25,"lb":"사립 예산 25억↑","w":2},{"t":"기술자문위원회","k":"gate","ax":"const","amt":50,"lb":"공사비 100억↑ (학교 50억↑)","w":4},{"t":"설계의 경제성 검토 (VE)","k":"gate","ax":"const","amt":100,"lb":"공사비 100억↑","w":2},{"t":"설계의 안전성 검토 (DfS)","k":"cond","ax":null,"amt":null,"lb":"안전관리계획 대상","w":3},{"t":"설계안전보건대장","k":"gate","ax":"const","amt":50,"lb":"공사비 50억↑","w":4},{"t":"각종 인증사항","k":"cond","ax":null,"amt":null,"lb":"연면적 기준","w":11},{"t":"시설사업 시행계획 및 건축 승인","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"지하안전평가","k":"cond","ax":null,"amt":null,"lb":"굴착깊이 10m↑","w":2},{"t":"산업안전보건관리비 계상","k":"gate","ax":"const","amt":0.2,"lb":"총공사금액 2천만원↑","w":3},{"t":"안전관리비 계상","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"가설건축물","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"도시계획시설(학교) 결정","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"장애물 없는 생활환경 인증(BF)","k":"always","ax":null,"amt":null,"lb":"","w":4},{"t":"제로에너지건축물(ZEB) 인증","k":"cond","ax":null,"amt":null,"lb":"연면적 3,000㎡↑ (학교는 별도 기준)","w":6}]},{"name":"제3장 시공","key":"const","color":"#f59f00","items":[{"t":"시설공사 일상감사","k":"cond","ax":null,"amt":null,"lb":"도교육청 10억↑ / 학교 1억↑","w":2},{"t":"기술자문위원회","k":"gate","ax":"const","amt":50,"lb":"공사비 100억↑ (학교 50억↑)","w":4},{"t":"건설사업관리계획 수립","k":"cond","ax":null,"amt":null,"lb":"토목 5억↑ / 전문 2억↑","w":2},{"t":"시설사업 집행계획 / 공사발주","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"감리발주 (공사감리·감독 방식)","k":"cond","ax":null,"amt":null,"lb":"역량평가 50/80점 · 200억↑ 감독권한대행","w":2},{"t":"폐기물처리용역 발주","k":"cond","ax":null,"amt":null,"lb":"폐기물 100톤↑ 분리발주","w":2},{"t":"기타용역 발주","k":"cond","ax":null,"amt":null,"lb":"기술지도 1억↑(토목 150억↑)","w":1},{"t":"본인증 용역 발주","k":"cond","ax":null,"amt":null,"lb":"연면적 기준","w":8},{"t":"학교건축물 해체공사 안전관리","k":"always","ax":null,"amt":null,"lb":"","w":3},{"t":"공사추진 (안전성평가)","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"안전관리계획서","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"유해위험방지계획서","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"화재감시자 배치","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"임시소방시설 설치","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"가설구조물 안전성 확인","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"공사 중 안전점검","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"건설산업기본법 준수사항","k":"cond","ax":null,"amt":null,"lb":"직접시공 100억↓·70억 미만 / 하도급계획 100억↑","w":2}]},{"name":"제4장 건설사업관리","key":"cm","color":"#7c3aed","items":[{"t":"사업관리 업무 추진 (조항별 역할)","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"설계변경 — 발주청 요청(지시)","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"설계변경 — 시공자 요청","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"설계변경 — 설계상 하자","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"계약금액 조정","k":"always","ax":null,"amt":null,"lb":"","w":1}]},{"name":"제5장 준공","key":"comp","color":"#4263eb","items":[{"t":"준공검사","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"사용승인","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"건축물대장","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"복합자재 품질관리서","k":"always","ax":null,"amt":null,"lb":"","w":3}]}];
-  var host = document.getElementById('tm'); if(!host) return;
 
-  function squarify(items, x, y, w, h){
-    // items: [{v, ref}] — 면적 비례 배치
-    var out=[], total=items.reduce(function(a,i){return a+i.v;},0);
-    if(total<=0) return out;
-    var list=items.slice();
-    function worst(row, len, scale){
-      var s=row.reduce(function(a,r){return a+r.v;},0)*scale;
-      var mx=Math.max.apply(null,row.map(function(r){return r.v*scale;}));
-      var mn=Math.min.apply(null,row.map(function(r){return r.v*scale;}));
-      return Math.max((len*len*mx)/(s*s),(s*s)/(len*len*mn));
-    }
-    function layoutRow(row, len, horiz, cx, cy, scale){
-      var s=row.reduce(function(a,r){return a+r.v;},0)*scale, thick=s/len, off=0;
-      row.forEach(function(r){
-        var sz=(r.v*scale)/thick;
-        out.push(horiz? {ref:r.ref,x:cx+off,y:cy,w:sz,h:thick} : {ref:r.ref,x:cx,y:cy+off,w:thick,h:sz});
-        off+=sz;
-      });
-      return thick;
-    }
-    var cx=x, cy=y, cw=w, ch=h;
-    var scale=(w*h)/total;
-    while(list.length){
-      var horiz = cw>=ch, len = horiz? cw : ch, row=[];
-      while(list.length){
-        var next=row.concat([list[0]]);
-        if(row.length && worst(next,len,scale)>worst(row,len,scale)) break;
-        row.push(list.shift());
-      }
-      var thick=layoutRow(row,len,horiz,cx,cy,scale);
-      if(horiz){ cy+=thick; ch-=thick; } else { cx+=thick; cw-=thick; }
-    }
-    return out;
-  }
-
-  function render(){
-    var W=host.clientWidth, H=host.clientHeight;
-    if(!W||!H) return;
-    host.innerHTML='';
-    var src = TM.filter(function(g){ return PHF==='all' || PHF===g.key; });
-    var groups = squarify(src.map(function(g){
-      var sum=g.items.reduce(function(a,it){return a+(it.w||1);},0);
-      return {v:sum, ref:g};
-    }), 0,0,W,H);
-    groups.forEach(function(gr){
-      var g=gr.ref;
-      var el=document.createElement('div');
-      el.className='tm-grp';
-      el.style.cssText='left:'+gr.x+'px;top:'+gr.y+'px;width:'+gr.w+'px;height:'+gr.h+'px;background:'+g.color;
-      el.innerHTML='<div class="tm-gh">'+g.name+'<span class="tm-cnt">'+g.items.length+'</span></div>';
-      var pad=1, top=26;
-      var sorted = g.items.slice().sort(function(a,b){return (b.w||1)-(a.w||1);});
-      var cells = squarify(sorted.map(function(it){return {v:(it.w||1), ref:it};}), pad, top, Math.max(0,gr.w-pad*2), Math.max(0,gr.h-top-pad));
-      cells.forEach(function(c){
-        var it=c.ref;
-        var b=document.createElement('button');
-        b.type='button';
-        b.className='tm-tile'+(it.k==='cond'?' is-cond':'')+(it.k==='always'?' is-always':'');
-        var alpha = it.k==='always'? .38 : (it.k==='gate'? .20 : .06);
-        b.style.cssText='left:'+c.x+'px;top:'+c.y+'px;width:'+c.w+'px;height:'+c.h+'px;background:rgba(0,0,0,'+(0.30-alpha)+')';
-        b.dataset.goto=g.key;
-        if(it.ax){ b.dataset.ax=it.ax; b.dataset.amt=it.amt; }
-        b.dataset.kind=it.k;
-        b.title=it.t+(it.lb?' — '+it.lb:'')+'  · 연관 키워드 '+(it.w||1)+'건';
-        var show = c.w>66 && c.h>26;
-        var showB = c.w>92 && c.h>44 && it.lb;
-        b.innerHTML = show? ('<span class="tm-t">'+it.t+'</span>'+(showB?'<span class="tm-b">'+it.lb+'</span>':'')) : '';
-        b.addEventListener('click',function(){ if(typeof activate==='function') activate(g.key); });
-        el.appendChild(b);
-      });
-      host.appendChild(el);
-    });
-    runFilter();
-  }
-
-  var PHF='all';
-  function runFilter(){
-    var n=0;
-    TM.forEach(function(g){ if(PHF==='all'||PHF===g.key) n+=g.items.length; });
-    var s=document.getElementById('tm-sum');
-    var tags=0;
-    TM.forEach(function(g){ if(PHF==='all'||PHF===g.key) g.items.forEach(function(it){ tags+=(it.w||1); }); });
-    if(s) s.textContent = (PHF==='all'? '전체 절차 '+n+'건 · 연관 키워드 '+tags+'건' : n+'건 · 키워드 '+tags+'건');
-  }
-  
-
-  var raf;
-  window.addEventListener('resize',function(){ clearTimeout(raf); raf=setTimeout(render,180); });
-  document.querySelectorAll('.ov-tab').forEach(function(t){
-    t.addEventListener('click',function(){ if(t.dataset.ov==='tree') setTimeout(render,30); });
-  });
-  if(document.readyState!=='loading') setTimeout(render,60); else document.addEventListener('DOMContentLoaded',function(){setTimeout(render,60);});
-})();
-
-// ===== 임시 블라인드 (기관·부서명) — 다음 오픈 시 이 블록만 삭제 =====
-(function(){
-  var WORDS=['전라남도교육청','전남교육청','교육시설과','감사관','감사실','시설과','행정과'];
-  var re=new RegExp('('+WORDS.join('|')+')','g');
-  function blindNode(tn){
-    var t=tn.nodeValue; if(!t||!re.test(t)) return; re.lastIndex=0;
-    var p=tn.parentNode; if(!p||p.closest&&p.closest('.blind-skip')) return;
-    if(p.classList&&p.classList.contains('blinded')) return;
-    var frag=document.createDocumentFragment(), last=0, m;
-    re.lastIndex=0;
-    while((m=re.exec(t))){
-      if(m.index>last) frag.appendChild(document.createTextNode(t.slice(last,m.index)));
-      var s=document.createElement('span'); s.className='blinded'; s.textContent=m[0];
-      s.style.cssText='background:currentColor;color:transparent;border-radius:3px;filter:blur(.5px);user-select:none;';
-      s.title='비공개 (준비 중)';
-      frag.appendChild(s); last=m.index+m[0].length;
-    }
-    if(last<t.length) frag.appendChild(document.createTextNode(t.slice(last)));
-    p.replaceChild(frag,tn);
-  }
-  function walk(root){
-    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);
-    var list=[],n; while((n=w.nextNode())) list.push(n);
-    list.forEach(blindNode);
-  }
-  function run(){ walk(document.body); }
-  if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded',run);
-  new MutationObserver(function(muts){
-    muts.forEach(function(mu){ mu.addedNodes.forEach(function(nd){
-      if(nd.nodeType===3) blindNode(nd); else if(nd.nodeType===1) walk(nd);
-    }); });
-  }).observe(document.body,{childList:true,subtree:true});
-})();
-</script>
 <script>
 (function(){
   var g=document.getElementById('siteGrp'), ar=document.getElementById('siteArrow');
@@ -5410,143 +5215,7 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 </script>
 
 
-<div id="memoTabs" aria-label="메모 탭"></div>
-<aside id="memoPad" aria-label="메모">
-  <div class="mp-h" id="memoHead" title="접기">
-    <h4>메모</h4><span class="gp">⠿ 이동</span><span class="cnt" id="memoCnt"></span><span class="cv">×</span>
-  </div>
-  <div id="memoBody"></div>
-  <div class="mp-f"><button type="button" id="memoAdd">＋ 메모 추가</button></div>
-</aside>
-<script>
-(function(){
-  var K='school-bible-memos';
-  var COLORS=['#fdf3c4','#d8f0d0','#d6e9fb','#fbd9e3','#eadcfb','#ffe3c9'];
-  var tabs=document.getElementById('memoTabs'), pad=document.getElementById('memoPad'),
-      body=document.getElementById('memoBody'), cnt=document.getElementById('memoCnt');
-  var notes=[];
-  try{ notes=JSON.parse(localStorage.getItem(K)||'[]'); }catch(e){ notes=[]; }
-  if(!notes.length) notes=[{t:'',c:0}];
-  var active=0;
-  var DARK={ '#fdf3c4':['#e8d789','#f3e7a8'], '#d8f0d0':['#a8d69c','#c7e8bd'], '#d6e9fb':['#a3cbea','#c2ddf5'],
-             '#fbd9e3':['#e9adc1','#f5c9d6'], '#eadcfb':['#c3a7e6','#dccbf3'], '#ffe3c9':['#eebe93','#f8d4b4'] };
-  function shade(ci,k){ var c=COLORS[ci%COLORS.length]; return k===0?c:(DARK[c]?DARK[c][k-1]:c); }
-  function isDark(){ return document.documentElement.getAttribute('data-theme')==='dark'; }
-  function paint(){
-    var c=COLORS[notes[active].c%COLORS.length], d=DARK[c]||[c,c];
-    if(isDark()){
-      pad.style.setProperty('--mc','color-mix(in srgb,'+c+' 22%,#191919)');
-      pad.style.setProperty('--mcd','color-mix(in srgb,'+c+' 34%,#191919)');
-      pad.style.setProperty('--mch','color-mix(in srgb,'+c+' 30%,#191919)');
-      pad.style.setProperty('--mtx','color-mix(in srgb,'+c+' 88%,#fff)');
-      pad.style.setProperty('--mtx2','color-mix(in srgb,'+c+' 62%,#8f8d88)');
-    } else {
-      pad.style.setProperty('--mc', c);
-      pad.style.setProperty('--mcd', d[0]);
-      pad.style.setProperty('--mch', d[1]);
-      pad.style.setProperty('--mtx','#3a2f0a');
-      pad.style.setProperty('--mtx2','rgba(0,0,0,.5)');
-    }
-  }
-  function save(){ try{ localStorage.setItem(K, JSON.stringify(notes)); }catch(e){} }
-  function count(){ return notes.filter(function(n){return (n.t||'').trim();}).length; }
-  function syncCnt(){ cnt.textContent='메모 '+(active+1)+' / '+notes.length; }
-  function renderTabs(){
-    tabs.innerHTML=notes.map(function(n,i){
-      var lb='메모 '+(i+1);
-      var tb=isDark()?('color-mix(in srgb,'+COLORS[n.c%COLORS.length]+' 30%,#191919)'):COLORS[n.c%COLORS.length];
-      var tc=isDark()?('color-mix(in srgb,'+COLORS[n.c%COLORS.length]+' 85%,#fff)'):'#4a3c0d';
-      return '<div class="memo-tab'+(i===active?' cur':'')+'" data-open="'+i+'" title="'+lb.replace(/"/g,'')+'" style="background:'+tb+';color:'+tc+'">'
-        +lb.replace(/</g,'&lt;')
-        +'<button type="button" class="tx" data-tdel="'+i+'" title="메모 삭제">×</button></div>';
-    }).join('');
-  }
-  tabs.addEventListener('click',function(e){
-    var d=e.target.closest('[data-tdel]');
-    if(d){ e.stopPropagation(); var k=+d.dataset.tdel;
-      if(!(notes[k].t||'').trim() || confirm('이 메모를 삭제할까요?')){
-        notes.splice(k,1); if(!notes.length) notes=[{t:'',c:0}];
-        if(active>=notes.length) active=notes.length-1;
-        save(); render(); }
-      return; }
-    var t=e.target.closest('[data-open]'); if(!t) return;
-    var i=+t.dataset.open;
-    if(toggle(i)) { renderTabs(); return; }
-    active=i; render(); open();
-    var ta=body.querySelector('textarea'); if(ta) ta.focus();
-  });
-  function render(){
-    body.innerHTML=notes.map(function(n,i){
-      if(i!==active) return '';
-      var bg=isDark()?('color-mix(in srgb,'+COLORS[n.c%COLORS.length]+' 22%,#191919)'):shade(n.c,0);
-      return '<div class="memo-note" style="background:'+bg+'">'
-        +'<div class="mn-h"><span class="sw" data-sw="'+i+'" title="색상 변경" style="background:'+COLORS[(n.c+1)%COLORS.length]+'"></span>'
-        +'<span class="st">'+(i+1)+'</span>'
-        +'<button type="button" class="del" data-del="'+i+'" title="삭제">×</button></div>'
-        +'<textarea data-i="'+i+'" placeholder="메모를 적어두세요">'+(n.t||'').replace(/</g,'&lt;')+'</textarea></div>';
-    }).join('');
-    syncCnt(); renderTabs(); paint();
-  }
-  body.addEventListener('input',function(e){
-    var ta=e.target.closest('textarea'); if(!ta) return;
-    notes[+ta.dataset.i].t=ta.value; save(); syncCnt(); renderTabs();
-  });
-  body.addEventListener('click',function(e){
-    var sw=e.target.closest('[data-sw]'), del=e.target.closest('[data-del]');
-    if(sw){ var i=+sw.dataset.sw; notes[i].c=(notes[i].c+1)%COLORS.length; save(); render(); return; }
-    if(del){ var j=+del.dataset.del;
-      if(!(notes[j].t||'').trim() || confirm('이 메모를 삭제할까요?')){
-        notes.splice(j,1); if(!notes.length) notes=[{t:'',c:0}];
-        if(active>=notes.length) active=notes.length-1;
-        save(); render(); } }
-  });
-  document.getElementById('memoAdd').addEventListener('click',function(){
-    notes.push({t:'', c:notes.length%COLORS.length}); active=notes.length-1; save(); render();
-    var ta=body.querySelector('textarea'); if(ta) ta.focus();
-  });
-  (function dragInit(){
-    var head=document.getElementById('memoHead'), st=null, moved=false;
-    head.addEventListener('mousedown',function(e){
-      if(e.target.closest('.cv')) return;
-      var r=pad.getBoundingClientRect();
-      st={x:e.clientX,y:e.clientY,l:r.left,t:r.top,w:r.width,h:r.height}; moved=false;
-      pad.classList.add('dragging'); e.preventDefault();
-    });
-    window.addEventListener('mousemove',function(e){
-      if(!st) return;
-      var dx=e.clientX-st.x, dy=e.clientY-st.y;
-      if(Math.abs(dx)>3||Math.abs(dy)>3) moved=true;
-      if(!moved) return;
-      var l=Math.max(4,Math.min(window.innerWidth-st.w-4, st.l+dx));
-      var t=Math.max(4,Math.min(window.innerHeight-46, st.t+dy));
-      pad.classList.add('moved'); pad.style.left=l+'px'; pad.style.top=t+'px';
-    });
-    window.addEventListener('mouseup',function(){
-      if(!st) return;
-      pad.classList.remove('dragging');
-      // 드래그 위치는 저장하지 않음(다시 열면 탭 옆 기본 위치)
-      st=null; setTimeout(function(){ pad.dataset.justDragged = moved?'1':''; },0);
-    });
-  })();
-  function open(){
-    pad.classList.remove('moved'); pad.style.left=''; pad.style.top='';
-    pad.classList.add('on');
-  }
-  function close(){ pad.classList.remove('on'); }
-  function toggle(i){ if(pad.classList.contains('on') && active===i){ close(); return true; } return false; }
-  document.getElementById('memoHead').addEventListener('click',function(e){
-    if(pad.dataset.justDragged==='1'){ pad.dataset.justDragged=''; return; }
-    close();
-  });
-  document.addEventListener('keydown',function(e){
-    if(e.altKey && (e.key==='m'||e.key==='M')){ e.preventDefault(); pad.classList.contains('on')?close():open(); }
-    if(e.key==='Escape' && pad.classList.contains('on')) close();
-  });
-  render();
-  var mo=new MutationObserver(function(){ render(); });
-  mo.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
-})();
-</script>
+
 <script>
 /* 인트로(히어로 공지) 자동 업데이트 — 매뉴얼/유틸 카드 수를 DOM에서 직접 집계 */
 (function(){
@@ -5599,6 +5268,76 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
     btn.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' ') toggle(e); }); }
   if(chip) chip.addEventListener('click',toggle);
   if(close) close.addEventListener('click',function(){ panel.style.display='none'; });
+})();
+</script>
+
+<script>
+// __wfHideRight — 워크플로우 탭에서 우측 사이드바 자동 숨김
+(function(){
+  var right=document.querySelector('.side-right');
+  if(!right) return;
+  function sync(){
+    var on=document.querySelector('.ov-tab.on[data-ov="flow"]');
+    var ovVisible=document.querySelector('.ov-view[data-ovv="flow"].on');
+    right.style.display=(on&&ovVisible)?'none':'';
+  }
+  document.querySelectorAll('.ov-tab').forEach(function(t){t.addEventListener('click',function(){setTimeout(sync,0);});});
+  document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){setTimeout(sync,0);});});
+  sync();
+})();
+</script>
+
+<script>
+// __wfDetailBar — 워크플로우 대시보드 노드 상세를 하단 고정바로 표시
+(function(){
+  var bar=null;
+  function close(){ if(bar){ bar.style.transform='translateY(110%)'; } }
+  window.addEventListener('message',function(ev){
+    var m=ev.data;
+    if(!m||typeof m!=='object') return;
+    if(m.type==='wf-detail-close'){ close(); return; }
+    if(m.type!=='wf-detail') return;
+    if(!bar){
+      bar=document.createElement('div'); bar.id='__wfDetailBar';
+      bar.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:900;background:var(--surface,#fff);color:var(--ink,#000);border-top:1px solid var(--line,#e6e6e6);box-shadow:0 -10px 30px rgba(0,0,0,.14);padding:16px 24px;max-height:44vh;overflow:auto;transform:translateY(110%);transition:transform .28s cubic-bezier(.2,.8,.3,1)';
+      document.body.appendChild(bar);
+    }
+    bar.innerHTML=m.html;
+    var x=bar.querySelector('#__wfPanelX');
+    if(x) x.addEventListener('click',function(){ close(); var f=document.getElementById('wfFrame'); try{f.contentWindow.postMessage({type:'wf-clear'},'*');}catch(e){} });
+    requestAnimationFrame(function(){ bar.style.transform='translateY(0)'; });
+  });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+  document.querySelectorAll('.ov-tab,.tab').forEach(function(t){t.addEventListener('click',function(){setTimeout(close,0);});});
+})();
+</script>
+<script>
+// __wfPicker — 워크플로우 종류 선택
+(function(){
+  var picks=document.querySelectorAll('.wf-pick'), f=document.getElementById('wfFrame');
+  var link=document.getElementById('wfOpenLink');
+  function paint(b){
+    picks.forEach(function(x){
+      var on=(x===b);
+      x.classList.toggle('on',on);
+      x.style.background=on?'var(--surface)':'transparent';
+      x.style.borderStyle=x.dataset.soon?'dashed':'solid';
+      x.style.borderColor=on?'var(--accent)':'var(--line)';
+      x.style.boxShadow=on?'0 0 0 1px var(--accent)':'none';
+      var ic=x.querySelector('.wf-ic');
+      if(ic){ ic.style.background=on?'var(--accent)':'var(--surface-2)'; ic.style.color=on?'#fff':'var(--muted)'; }
+    });
+  }
+  picks.forEach(function(b){
+    b.addEventListener('click',function(){
+      if(b.dataset.soon) return;
+      paint(b);
+      if(f && b.dataset.src) f.src=b.dataset.src;
+      if(link && b.dataset.src) link.href=b.dataset.src;
+      var bar=document.getElementById('__wfDetailBar'); if(bar) bar.style.transform='translateY(110%)';
+    });
+  });
+  paint(document.querySelector('.wf-pick.on'));
 })();
 </script>
 </body>

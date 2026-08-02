@@ -420,28 +420,6 @@
   .dlg-col ul{list-style:none;margin:10px 0 0;padding:0;}
   .dlg-col li{font-size:13px;color:var(--ink);padding:6px 0;border-top:1px solid var(--line2);line-height:1.45;}
   .dlg-col li span{display:block;font-size:11.5px;color:var(--muted);margin-top:2px;}
-  /* ===== 트리맵 ===== */
-  .tm-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radsm);background:var(--surface)}
-  .tm{position:relative;width:100%;min-width:760px;height:620px;overflow:hidden;background:var(--surface)}
-  @media(max-width:760px){.tm{height:900px}}
-  .tm-grp{position:absolute;overflow:hidden}
-  .tm-gh{position:absolute;left:0;right:0;top:0;height:26px;display:flex;align-items:center;gap:7px;
-    padding:0 10px;font-size:12px;font-weight:700;color:#fff;letter-spacing:-.01em;z-index:2;
-    text-shadow:0 1px 2px rgba(0,0,0,.25)}
-  .tm-cnt{margin-left:auto;font-weight:600;opacity:.85;font-variant-numeric:tabular-nums}
-  .tm-tile{position:absolute;overflow:hidden;border:1px solid rgba(255,255,255,.55);cursor:pointer;
-    padding:6px 8px;text-align:left;font:inherit;display:block;transition:filter .1s,opacity .12s}
-  .tm-tile:hover{filter:brightness(1.08);z-index:3;box-shadow:inset 0 0 0 2px #fff}
-  .tm-t{display:block;font-size:11.5px;font-weight:700;color:#fff;line-height:1.28;
-    text-shadow:0 1px 2px rgba(0,0,0,.3);word-break:keep-all}
-  .tm-b{display:block;font-size:10px;font-weight:600;color:rgba(255,255,255,.88);margin-top:3px;line-height:1.25;
-    text-shadow:0 1px 2px rgba(0,0,0,.3)}
-
-  .tm-leg{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--muted)}
-  .tm-leg span{display:inline-flex;align-items:center;gap:6px}
-  .tm-lg{width:11px;height:11px;border-radius:2px;display:inline-block;background:var(--accent)}
-  .tm-lg-g{opacity:.72}.tm-lg-c{opacity:.42}
-  .tm-lg-note{margin-left:auto;color:var(--faint)}
   /* ===== 업무추진 절차표 ===== */
   .pv-grp{margin-bottom:26px}
   .pv-grp:last-child{margin-bottom:0}
@@ -588,6 +566,10 @@
   .ov-tab[data-ov="graph"].on::after{display:none;}
   .ov-tab[data-ov="graph"] svg:not(.gvstar){display:none;}
   .ov-tab[data-ov="graph"]::after{display:none;}
+  .ov-tab[data-ov="flow"] .wficon svg{display:block;overflow:visible}
+  .ov-tab[data-ov="flow"] .wficon .ln{stroke:currentColor;stroke-width:1;opacity:.28}
+  .ov-tab[data-ov="flow"] .wficon .nd{fill:currentColor;opacity:.85}
+  .ov-tab[data-ov="flow"] .wficon .ar{fill:none;stroke:currentColor;stroke-width:1.1;opacity:.6;stroke-linecap:round;stroke-linejoin:round}
   .ov-frame{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:26px 26px 24px;box-shadow:var(--shadow);}
   .ov-frame .sec-head:first-child{margin-top:0;}
   .ov-view{display:none;}
@@ -1132,73 +1114,6 @@
   #calc .thr,#cert .thr{color:var(--accent);font-weight:700;}
   #calc .pill,#cert .pill{border:0;border-radius:4px;background:var(--surface-3);color:var(--muted);
     font-size:10.5px;font-weight:700;padding:2px 8px;}
-  /* ===== 메모 포스트잇 (우측 고정) ===== */
-  #memoTabs{position:fixed;right:0;top:auto;bottom:120px;z-index:80;
-    display:flex;flex-direction:column;align-items:flex-end;gap:6px;
-    max-height:calc(100vh - 220px);overflow-y:auto;overflow-x:hidden;padding:2px 0 2px 6px;
-    scrollbar-width:thin;}
-  #memoTabs::-webkit-scrollbar{width:6px;}
-  #memoTabs::-webkit-scrollbar-thumb{background:rgba(120,100,20,.25);border-radius:6px;}
-  #memoTabs.hide{display:none;}
-  .memo-tab{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;
-    border:1px solid rgba(120,100,20,.28);border-right:0;border-radius:9px 0 0 9px;
-    padding:10px 7px;font:inherit;font-size:11.5px;font-weight:700;color:#4a3c0d;cursor:pointer;
-    letter-spacing:.02em;writing-mode:vertical-rl;text-orientation:upright;box-shadow:-3px 3px 12px rgba(0,0,0,.10);
-    transition:padding-left .12s;flex:0 0 auto;box-sizing:border-box;
-    width:36px;height:108px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;line-height:1.15;padding-bottom:24px;}
-  .memo-tab:hover{filter:brightness(1.04);}
-  .memo-tab.cur{box-shadow:-4px 4px 14px rgba(0,0,0,.18);outline:2px solid rgba(0,0,0,.18);outline-offset:-2px;}
-  .memo-tab .ic{writing-mode:horizontal-tb;text-orientation:mixed;font-size:11px;opacity:.5;line-height:1;}
-  .memo-tab{position:relative;}
-  .memo-tab .tx{position:absolute;left:50%;transform:translateX(-50%);bottom:4px;writing-mode:horizontal-tb;
-    text-orientation:mixed;border:0;background:rgba(0,0,0,.06);color:rgba(0,0,0,.45);
-    width:17px;height:17px;border-radius:5px;font:inherit;font-size:12px;line-height:1;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;padding:0;}
-  .memo-tab .tx:hover{background:rgba(179,38,30,.14);color:#b3261e;}
-  [data-theme="dark"] .memo-tab .tx{background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);}
-  [data-theme="dark"] .memo-tab{border-color:rgba(255,255,255,.14);color:var(--mtxd,#e9e9e7);}
-  #memoPad{--mc:#fdf3c4;--mcd:#e8d789;--mch:#f3e7a8;position:fixed;right:78px;top:auto;bottom:120px;z-index:81;
-    width:min(268px,calc(100vw - 110px));
-    opacity:0;pointer-events:none;transform:translateX(14px);
-    transition:transform .18s ease,opacity .18s ease;}
-  #memoPad.on{opacity:1;pointer-events:auto;transform:translateX(0);}
-  #memoPad.moved{right:auto;top:auto;transition:opacity .18s ease;}
-  #memoPad.dragging .mp-h{cursor:grabbing;}
-  #memoPad .mp-h .gp{font-size:11px;color:var(--mtx2);letter-spacing:0;}
-  #memoPad .mp-h{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:grab;
-    background:var(--mch);border:1px solid var(--mcd);border-radius:10px 10px 0 0;}
-  #memoPad .mp-h h4{margin:0;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mtx,#6b5714);}
-  #memoPad .mp-h .cnt{font-size:10.5px;color:var(--mtx2,#8a7328);font-variant-numeric:tabular-nums;margin-left:auto;}
-  #memoPad .mp-h .cv{font-size:12px;color:var(--mtx,#6b5714);}
-
-
-  #memoBody{max-height:52vh;overflow-y:auto;background:var(--mc);border:1px solid var(--mcd);border-top:0;
-    padding:8px;display:flex;flex-direction:column;gap:8px;}
-
-  .memo-note{border:1px solid rgba(120,100,20,.22);border-radius:8px;overflow:hidden;
-    box-shadow:0 1px 3px rgba(0,0,0,.07);}
-  .memo-note .mn-h{display:flex;align-items:center;gap:6px;padding:5px 8px;background:rgba(255,255,255,.35);}
-  .memo-note .mn-h .sw{width:11px;height:11px;border-radius:3px;border:1px solid rgba(0,0,0,.12);cursor:pointer;}
-  .memo-note .mn-h .st{font-size:10px;color:var(--mtx2,rgba(0,0,0,.45));margin-left:auto;}
-  .memo-note .mn-h .del{border:0;background:none;color:var(--mtx2,rgba(0,0,0,.4));font:inherit;font-size:14px;
-    line-height:1;cursor:pointer;padding:0 2px;}
-  .memo-note .mn-h .del:hover{color:#b3261e;}
-  .memo-note textarea{width:100%;min-height:86px;border:0;outline:0;resize:vertical;padding:9px 10px;
-    font:inherit;font-size:12.5px;line-height:1.7;color:var(--mtx,#3a2f0a);background:transparent;}
-  .memo-note textarea::placeholder{color:var(--mtx2,rgba(0,0,0,.32));}
-
-
-
-  #memoPad .mp-f{display:flex;gap:6px;padding:8px 10px;background:var(--mch);border:1px solid var(--mcd);
-    border-top:0;border-radius:0 0 10px 10px;box-shadow:-4px 6px 22px rgba(0,0,0,.12);}
-
-  #memoPad .mp-f button{flex:1;border:1px solid var(--mcd);background:color-mix(in srgb,var(--mc) 60%,#fff 40%);
-    color:var(--mtx,#5c4a12);font:inherit;font-size:11.5px;font-weight:700;padding:6px 8px;border-radius:100px;cursor:pointer;}
-  #memoPad .mp-f button:hover{background:#fff;}
-
-  @media(max-width:640px){#memoPad{right:0;top:auto;bottom:0;width:100%;transform:none;}
-    #memoPad.on{transform:none;}#memoTabs{top:auto;bottom:14px;max-height:44vh;}}
-  @media print{#memoFab,#memoPad{display:none!important;}}
   /* 용어정리 — 노션 데이터베이스 뷰 */
   #glossary .gl-meta{display:flex;flex-wrap:wrap;gap:18px;margin:6px 0 0;padding-bottom:16px;border-bottom:1px solid var(--line);}
   #glossary .gl-meta div{display:flex;gap:10px;align-items:baseline;font-size:13px;}
@@ -1414,7 +1329,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
         <div class="mk-title">✏️ 간단 시리즈 📝</div>
         <div class="mk-grid">
           <a class="mk-item" id="boqBtn" href="간단내역서_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="mk-ic">🧾</span><span class="mk-nm">내역서</span><span class="mk-go">go</span></a>
-          <a class="mk-item" id="specBtn" href="얼마니_소요예산_대시보드.html" target="_blank" rel="noopener noreferrer" title="소요예산 산출 — 얼마니" ><span class="mk-ic">💵</span><span class="mk-nm">얼마니</span><span class="mk-go">go</span></a>
+          <a class="mk-item" id="specBtn" href="얼마니_소요예산_대시보드.html" target="_blank" rel="noopener noreferrer" title="소요예산 산출 — 얼마니" ><span class="mk-ic">💵</span><span class="mk-nm">얼마니</span></a>
           <a class="mk-item" id="siteBtn" href="공사현장_현장이.html" target="_blank" rel="noopener noreferrer" title="공사현장 현장이" ><span class="mk-ic">🏗</span><span class="mk-nm">현장이</span><span class="mk-go">go</span></a>
           <a class="mk-item" id="tripBtn" href="견적이.html" target="_blank" rel="noopener noreferrer" title="수선견적 견적이" ><span class="mk-ic" style="font-size:13px">📋</span><span class="mk-nm">견적이</span><span class="mk-go" style="background:#3a2c00;color:#f5b301">go</span></a>
           <a class="mk-item" id="estBtn" href="추산이_개략공사비_대시보드.html" target="_blank" rel="noopener noreferrer" title="추산이 — 개략공사비 (준비중)" ><span class="mk-ic">📐</span><span class="mk-nm">추산이</span><span class="mk-go">go</span></a>
@@ -1484,7 +1399,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <button class="ov-tab" data-ov="proc">업무 프로세스</button>
       <button class="ov-tab" data-ov="deleg">위임전결</button>
       <button class="ov-tab" data-ov="graph"><span id="gv3dBtn" role="button" tabindex="0" title="3차원 그래프 뷰 열기 (하부 대시보드)" style="display:inline-flex;align-items:center;cursor:pointer"><svg class="gvstar" width="20" height="16" viewBox="0 0 20 16" aria-hidden="true"><line x1="3.5" y1="3.5" x2="12" y2="7"/><line x1="12" y1="7" x2="7.5" y2="13"/><circle cx="3.5" cy="3.5" r="2"/><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="13" r="1.8"/></svg></span>그래프</button>
-      <button class="ov-tab" data-ov="tree">트리맵</button>
+      <button class="ov-tab" data-ov="flow"><span class="wficon" aria-hidden="true" style="display:inline-flex;align-items:center;margin-right:6px"><svg width="20" height="14" viewBox="0 0 20 14"><line class="ln" x1="4.5" y1="1" x2="4.5" y2="13"/><line class="ln" x1="10" y1="1" x2="10" y2="13"/><line class="ln" x1="15.5" y1="1" x2="15.5" y2="13"/><rect class="nd" x="1.5" y="4" width="6" height="3.4" rx="1"/><rect class="nd" x="12.5" y="7.4" width="6" height="3.4" rx="1"/><path class="ar" d="M8 5.7h3.6M11.6 5.7v3.4h.6"/></svg></span>워크플로우</button>
     </div>
 
     <div class="ov-frame">
@@ -1789,14 +1704,27 @@ window.dispatchEvent(new Event('qa-fb-ready'));
 
     </div>
 
-    <div class="ov-view" data-ovv="tree">
-    <div class="note">기획부터 준공까지 절차 45건을 한 판에 펼쳤습니다. 타일 크기는 <b>그 절차에 얽힌 법령·인증·키워드 수</b>에 비례합니다 — 클 수록 챙길 게 많은 절차입니다. 타일을 누르면 해당 장으로 이동합니다.</div>
-    <div class="tm-scroll"><div class="tm" id="tm"></div></div>
-    <div class="tm-leg">
-      <span><i class="tm-lg tm-lg-a"></i>상시 필수</span>
-      <span><i class="tm-lg tm-lg-g"></i>금액 기준 적용</span>
-      <span><i class="tm-lg tm-lg-c"></i>조건부 · 별도 기준</span>
-      <span class="tm-lg-note">타일 크기 = 연관 법령·키워드 수 · 마우스를 올리면 적용 기준이 보입니다</span>
+    <div class="ov-view" data-ovv="flow">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px;padding:12px 15px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radsm);background:var(--surface)">
+      <span style="font-size:13.5px;color:var(--muted)">설계변경 사유 발생부터 검토 · 전결 승인 · 계약금액 조정 · 사후관리까지의 업무 경로입니다.</span>
+      <a href="워크플로우_설계변경_대시보드.html" target="_blank" rel="noopener noreferrer" id="wfOpenLink" style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap">새 창에서 크게 보기 <span>↗</span></a>
+    </div>
+<div class="wf-picker" style="display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px">
+      <button type="button" class="wf-pick on" data-src="워크플로우_설계변경_대시보드.html" style="display:flex;align-items:center;gap:10px;font:inherit;text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:var(--radsm);padding:11px 15px">
+        <span class="wf-ic" style="display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--surface-2);flex:0 0 auto"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M4 12h6M4 17h11"/><path d="M15 6l4 3-4 3"/></svg></span>
+        <span><span class="wf-nm" style="display:block;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.01em">설계변경 · 계약금액 조정</span><span style="display:block;font-size:11.5px;color:var(--faint);margin-top:2px">지방계약법 시행령 제73조 · 제74조</span></span>
+      </button>
+      <button type="button" class="wf-pick" data-src="워크플로우_공기연장_대시보드.html" style="display:flex;align-items:center;gap:10px;font:inherit;text-align:left;cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:var(--radsm);padding:11px 15px">
+        <span class="wf-ic" style="display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--surface-2);flex:0 0 auto"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>
+        <span><span class="wf-nm" style="display:block;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.01em">공기연장 · 간접비 정산</span><span style="display:block;font-size:11.5px;color:var(--faint);margin-top:2px">지방계약법 시행령 제75조</span></span>
+      </button>
+      <button type="button" class="wf-pick" data-src="워크플로우_감리방식_대시보드.html" style="display:flex;align-items:center;gap:10px;font:inherit;text-align:left;cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:var(--radsm);padding:11px 15px">
+        <span class="wf-ic" style="display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--surface-2);flex:0 0 auto"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v6"/><path d="M12 10 6.5 20M12 10l5.5 10"/><circle cx="12" cy="4" r="1.6"/></svg></span>
+        <span><span class="wf-nm" style="display:block;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.01em">감리 · 건설사업관리 방식 결정</span><span style="display:block;font-size:11.5px;color:var(--faint);margin-top:2px">건설기술진흥법 제39조의2</span></span>
+      </button>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:var(--radsm);overflow:hidden;background:var(--surface)">
+      <iframe src="워크플로우_설계변경_대시보드.html" title="설계변경 워크플로우" id="wfFrame" style="display:block;width:100%;height:2350px;border:0"></iframe>
     </div>
     </div>
 
@@ -2847,6 +2775,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <div class="nav-grp">📚 통합자료실</div>
       <a class="extlink" href="https://jne365-my.sharepoint.com/:f:/g/personal/seum8660_o365_jne_go_kr/IgB3esNJMRYBSZsEMOjgGQbMAZKDjWMuY1J0BUQjk0scxks?e=GcNgkV" target="_blank" rel="noopener noreferrer" title="각종 양식모음 (OneDrive 공유 폴더)"><span class="lb">각종 양식모음</span><span class="ext">↗</span></a>
       <a class="extlink" href="사업비_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">사업비 산출</span><span class="ext">↗</span></a>
+      <a class="extlink" href="얼마니_소요예산_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">소요예산 산출 (얼마니)</span><span class="ext">↗</span></a>
       <a class="extlink" href="설계용역비_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">설계용역비 산출</span><span class="ext">↗</span></a>
       <a class="extlink" href="감리발주_방식_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">감리 발주방식 판정</span><span class="ext">↗</span></a>
       <span class="extlink" aria-disabled="true" title="감리용역비 산출 (준비중)" style="opacity:.4;filter:grayscale(1);cursor:not-allowed;pointer-events:none"><span class="lb">감리용역비 산출</span><span class="ext">준비중</span></span>
@@ -5030,6 +4959,7 @@ window.__gvInit = (function(){
     std:{chip:'기준',color:'var(--amber)',h2:'간단 기준 프로세스 안내',p:'사업 규모에 따라 필수 절차를 한눈에 확인'},
     law:{chip:'체크',color:'var(--p-design)',h2:'법령 Checking',p:'연면적·층수·용도를 입력하면 건축법령상 적용 규정과 근거 조문을 즉시 확인'},
     proc:{chip:'업무',color:'var(--accent)',h2:'학교시설사업 4단계 안내',p:'전 생애주기 4단계 흐름과 단계별 주요 업무 · 대상기준'},
+    flow:{chip:'흐름',color:'var(--p-const)',h2:'설계변경 워크플로우',p:'설계변경 사유 발생부터 검토 · 전결 승인 · 계약금액 조정 · 사후관리까지의 업무 경로'},
     graph:{chip:'흐름',color:'var(--p-cm)',h2:'업무 프로세스 그래프 뷰',p:'문서 전체를 단계·업무·법령·인증 노드로 연결한 관계 그래프'}
   };
   const chip=document.getElementById('ovChip'),h2=document.getElementById('ovH2'),p=document.getElementById('ovP');
@@ -5259,140 +5189,7 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
   });
 })();
 </script>
-<script>
-// ===== 트리맵 (squarified) =====
-(function(){
-  var TM = [{"name":"제1장 기획","key":"plan","color":"#3182f6","items":[{"t":"사전기획","k":"gate","ax":"design","amt":1,"lb":"설계비 1억↑","w":2},{"t":"기본안전보건대장","k":"gate","ax":"const","amt":50,"lb":"공사비 50억↑","w":3},{"t":"공공건축심의","k":"gate","ax":"design","amt":0.5,"lb":"설계비 5천↑","w":1}]},{"name":"제2장 설계","key":"design","color":"#12b886","items":[{"t":"일상감사","k":"gate","ax":"total","amt":10,"lb":"정책 10억↑ · 계약 규모별","w":2},{"t":"설계공모","k":"gate","ax":"design","amt":1,"lb":"설계비 1억↑ 우선적용","w":2},{"t":"대규모 사업의 시설 일상감사","k":"gate","ax":"total","amt":25,"lb":"사립 예산 25억↑","w":2},{"t":"기술자문위원회","k":"gate","ax":"const","amt":50,"lb":"공사비 100억↑ (학교 50억↑)","w":4},{"t":"설계의 경제성 검토 (VE)","k":"gate","ax":"const","amt":100,"lb":"공사비 100억↑","w":2},{"t":"설계의 안전성 검토 (DfS)","k":"cond","ax":null,"amt":null,"lb":"안전관리계획 대상","w":3},{"t":"설계안전보건대장","k":"gate","ax":"const","amt":50,"lb":"공사비 50억↑","w":4},{"t":"각종 인증사항","k":"cond","ax":null,"amt":null,"lb":"연면적 기준","w":11},{"t":"시설사업 시행계획 및 건축 승인","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"지하안전평가","k":"cond","ax":null,"amt":null,"lb":"굴착깊이 10m↑","w":2},{"t":"산업안전보건관리비 계상","k":"gate","ax":"const","amt":0.2,"lb":"총공사금액 2천만원↑","w":3},{"t":"안전관리비 계상","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"가설건축물","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"도시계획시설(학교) 결정","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"장애물 없는 생활환경 인증(BF)","k":"always","ax":null,"amt":null,"lb":"","w":4},{"t":"제로에너지건축물(ZEB) 인증","k":"cond","ax":null,"amt":null,"lb":"연면적 3,000㎡↑ (학교는 별도 기준)","w":6}]},{"name":"제3장 시공","key":"const","color":"#f59f00","items":[{"t":"시설공사 일상감사","k":"cond","ax":null,"amt":null,"lb":"도교육청 10억↑ / 학교 1억↑","w":2},{"t":"기술자문위원회","k":"gate","ax":"const","amt":50,"lb":"공사비 100억↑ (학교 50억↑)","w":4},{"t":"건설사업관리계획 수립","k":"cond","ax":null,"amt":null,"lb":"토목 5억↑ / 전문 2억↑","w":2},{"t":"시설사업 집행계획 / 공사발주","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"감리발주 (공사감리·감독 방식)","k":"cond","ax":null,"amt":null,"lb":"역량평가 50/80점 · 200억↑ 감독권한대행","w":2},{"t":"폐기물처리용역 발주","k":"cond","ax":null,"amt":null,"lb":"폐기물 100톤↑ 분리발주","w":2},{"t":"기타용역 발주","k":"cond","ax":null,"amt":null,"lb":"기술지도 1억↑(토목 150억↑)","w":1},{"t":"본인증 용역 발주","k":"cond","ax":null,"amt":null,"lb":"연면적 기준","w":8},{"t":"학교건축물 해체공사 안전관리","k":"always","ax":null,"amt":null,"lb":"","w":3},{"t":"공사추진 (안전성평가)","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"안전관리계획서","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"유해위험방지계획서","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"화재감시자 배치","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"임시소방시설 설치","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"가설구조물 안전성 확인","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"공사 중 안전점검","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"건설산업기본법 준수사항","k":"cond","ax":null,"amt":null,"lb":"직접시공 100억↓·70억 미만 / 하도급계획 100억↑","w":2}]},{"name":"제4장 건설사업관리","key":"cm","color":"#7c3aed","items":[{"t":"사업관리 업무 추진 (조항별 역할)","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"설계변경 — 발주청 요청(지시)","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"설계변경 — 시공자 요청","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"설계변경 — 설계상 하자","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"계약금액 조정","k":"always","ax":null,"amt":null,"lb":"","w":1}]},{"name":"제5장 준공","key":"comp","color":"#4263eb","items":[{"t":"준공검사","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"사용승인","k":"always","ax":null,"amt":null,"lb":"","w":2},{"t":"건축물대장","k":"always","ax":null,"amt":null,"lb":"","w":1},{"t":"복합자재 품질관리서","k":"always","ax":null,"amt":null,"lb":"","w":3}]}];
-  var host = document.getElementById('tm'); if(!host) return;
 
-  function squarify(items, x, y, w, h){
-    // items: [{v, ref}] — 면적 비례 배치
-    var out=[], total=items.reduce(function(a,i){return a+i.v;},0);
-    if(total<=0) return out;
-    var list=items.slice();
-    function worst(row, len, scale){
-      var s=row.reduce(function(a,r){return a+r.v;},0)*scale;
-      var mx=Math.max.apply(null,row.map(function(r){return r.v*scale;}));
-      var mn=Math.min.apply(null,row.map(function(r){return r.v*scale;}));
-      return Math.max((len*len*mx)/(s*s),(s*s)/(len*len*mn));
-    }
-    function layoutRow(row, len, horiz, cx, cy, scale){
-      var s=row.reduce(function(a,r){return a+r.v;},0)*scale, thick=s/len, off=0;
-      row.forEach(function(r){
-        var sz=(r.v*scale)/thick;
-        out.push(horiz? {ref:r.ref,x:cx+off,y:cy,w:sz,h:thick} : {ref:r.ref,x:cx,y:cy+off,w:thick,h:sz});
-        off+=sz;
-      });
-      return thick;
-    }
-    var cx=x, cy=y, cw=w, ch=h;
-    var scale=(w*h)/total;
-    while(list.length){
-      var horiz = cw>=ch, len = horiz? cw : ch, row=[];
-      while(list.length){
-        var next=row.concat([list[0]]);
-        if(row.length && worst(next,len,scale)>worst(row,len,scale)) break;
-        row.push(list.shift());
-      }
-      var thick=layoutRow(row,len,horiz,cx,cy,scale);
-      if(horiz){ cy+=thick; ch-=thick; } else { cx+=thick; cw-=thick; }
-    }
-    return out;
-  }
-
-  function render(){
-    var W=host.clientWidth, H=host.clientHeight;
-    if(!W||!H) return;
-    host.innerHTML='';
-    var src = TM.filter(function(g){ return PHF==='all' || PHF===g.key; });
-    var groups = squarify(src.map(function(g){
-      var sum=g.items.reduce(function(a,it){return a+(it.w||1);},0);
-      return {v:sum, ref:g};
-    }), 0,0,W,H);
-    groups.forEach(function(gr){
-      var g=gr.ref;
-      var el=document.createElement('div');
-      el.className='tm-grp';
-      el.style.cssText='left:'+gr.x+'px;top:'+gr.y+'px;width:'+gr.w+'px;height:'+gr.h+'px;background:'+g.color;
-      el.innerHTML='<div class="tm-gh">'+g.name+'<span class="tm-cnt">'+g.items.length+'</span></div>';
-      var pad=1, top=26;
-      var sorted = g.items.slice().sort(function(a,b){return (b.w||1)-(a.w||1);});
-      var cells = squarify(sorted.map(function(it){return {v:(it.w||1), ref:it};}), pad, top, Math.max(0,gr.w-pad*2), Math.max(0,gr.h-top-pad));
-      cells.forEach(function(c){
-        var it=c.ref;
-        var b=document.createElement('button');
-        b.type='button';
-        b.className='tm-tile'+(it.k==='cond'?' is-cond':'')+(it.k==='always'?' is-always':'');
-        var alpha = it.k==='always'? .38 : (it.k==='gate'? .20 : .06);
-        b.style.cssText='left:'+c.x+'px;top:'+c.y+'px;width:'+c.w+'px;height:'+c.h+'px;background:rgba(0,0,0,'+(0.30-alpha)+')';
-        b.dataset.goto=g.key;
-        if(it.ax){ b.dataset.ax=it.ax; b.dataset.amt=it.amt; }
-        b.dataset.kind=it.k;
-        b.title=it.t+(it.lb?' — '+it.lb:'')+'  · 연관 키워드 '+(it.w||1)+'건';
-        var show = c.w>66 && c.h>26;
-        var showB = c.w>92 && c.h>44 && it.lb;
-        b.innerHTML = show? ('<span class="tm-t">'+it.t+'</span>'+(showB?'<span class="tm-b">'+it.lb+'</span>':'')) : '';
-        b.addEventListener('click',function(){ if(typeof activate==='function') activate(g.key); });
-        el.appendChild(b);
-      });
-      host.appendChild(el);
-    });
-    runFilter();
-  }
-
-  var PHF='all';
-  function runFilter(){
-    var n=0;
-    TM.forEach(function(g){ if(PHF==='all'||PHF===g.key) n+=g.items.length; });
-    var s=document.getElementById('tm-sum');
-    var tags=0;
-    TM.forEach(function(g){ if(PHF==='all'||PHF===g.key) g.items.forEach(function(it){ tags+=(it.w||1); }); });
-    if(s) s.textContent = (PHF==='all'? '전체 절차 '+n+'건 · 연관 키워드 '+tags+'건' : n+'건 · 키워드 '+tags+'건');
-  }
-  
-
-  var raf;
-  window.addEventListener('resize',function(){ clearTimeout(raf); raf=setTimeout(render,180); });
-  document.querySelectorAll('.ov-tab').forEach(function(t){
-    t.addEventListener('click',function(){ if(t.dataset.ov==='tree') setTimeout(render,30); });
-  });
-  if(document.readyState!=='loading') setTimeout(render,60); else document.addEventListener('DOMContentLoaded',function(){setTimeout(render,60);});
-})();
-
-// ===== 임시 블라인드 (기관·부서명) — 다음 오픈 시 이 블록만 삭제 =====
-(function(){
-  var WORDS=['전라남도교육청','전남교육청','교육시설과','감사관','감사실','시설과','행정과'];
-  var re=new RegExp('('+WORDS.join('|')+')','g');
-  function blindNode(tn){
-    var t=tn.nodeValue; if(!t||!re.test(t)) return; re.lastIndex=0;
-    var p=tn.parentNode; if(!p||p.closest&&p.closest('.blind-skip')) return;
-    if(p.classList&&p.classList.contains('blinded')) return;
-    var frag=document.createDocumentFragment(), last=0, m;
-    re.lastIndex=0;
-    while((m=re.exec(t))){
-      if(m.index>last) frag.appendChild(document.createTextNode(t.slice(last,m.index)));
-      var s=document.createElement('span'); s.className='blinded'; s.textContent=m[0];
-      s.style.cssText='background:currentColor;color:transparent;border-radius:3px;filter:blur(.5px);user-select:none;';
-      s.title='비공개 (준비 중)';
-      frag.appendChild(s); last=m.index+m[0].length;
-    }
-    if(last<t.length) frag.appendChild(document.createTextNode(t.slice(last)));
-    p.replaceChild(frag,tn);
-  }
-  function walk(root){
-    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);
-    var list=[],n; while((n=w.nextNode())) list.push(n);
-    list.forEach(blindNode);
-  }
-  function run(){ walk(document.body); }
-  if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded',run);
-  new MutationObserver(function(muts){
-    muts.forEach(function(mu){ mu.addedNodes.forEach(function(nd){
-      if(nd.nodeType===3) blindNode(nd); else if(nd.nodeType===1) walk(nd);
-    }); });
-  }).observe(document.body,{childList:true,subtree:true});
-})();
-</script>
 <script>
 (function(){
   var g=document.getElementById('siteGrp'), ar=document.getElementById('siteArrow');
@@ -5409,143 +5206,7 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 </script>
 
 
-<div id="memoTabs" aria-label="메모 탭"></div>
-<aside id="memoPad" aria-label="메모">
-  <div class="mp-h" id="memoHead" title="접기">
-    <h4>메모</h4><span class="gp">⠿ 이동</span><span class="cnt" id="memoCnt"></span><span class="cv">×</span>
-  </div>
-  <div id="memoBody"></div>
-  <div class="mp-f"><button type="button" id="memoAdd">＋ 메모 추가</button></div>
-</aside>
-<script>
-(function(){
-  var K='school-bible-memos';
-  var COLORS=['#fdf3c4','#d8f0d0','#d6e9fb','#fbd9e3','#eadcfb','#ffe3c9'];
-  var tabs=document.getElementById('memoTabs'), pad=document.getElementById('memoPad'),
-      body=document.getElementById('memoBody'), cnt=document.getElementById('memoCnt');
-  var notes=[];
-  try{ notes=JSON.parse(localStorage.getItem(K)||'[]'); }catch(e){ notes=[]; }
-  if(!notes.length) notes=[{t:'',c:0}];
-  var active=0;
-  var DARK={ '#fdf3c4':['#e8d789','#f3e7a8'], '#d8f0d0':['#a8d69c','#c7e8bd'], '#d6e9fb':['#a3cbea','#c2ddf5'],
-             '#fbd9e3':['#e9adc1','#f5c9d6'], '#eadcfb':['#c3a7e6','#dccbf3'], '#ffe3c9':['#eebe93','#f8d4b4'] };
-  function shade(ci,k){ var c=COLORS[ci%COLORS.length]; return k===0?c:(DARK[c]?DARK[c][k-1]:c); }
-  function isDark(){ return document.documentElement.getAttribute('data-theme')==='dark'; }
-  function paint(){
-    var c=COLORS[notes[active].c%COLORS.length], d=DARK[c]||[c,c];
-    if(isDark()){
-      pad.style.setProperty('--mc','color-mix(in srgb,'+c+' 22%,#191919)');
-      pad.style.setProperty('--mcd','color-mix(in srgb,'+c+' 34%,#191919)');
-      pad.style.setProperty('--mch','color-mix(in srgb,'+c+' 30%,#191919)');
-      pad.style.setProperty('--mtx','color-mix(in srgb,'+c+' 88%,#fff)');
-      pad.style.setProperty('--mtx2','color-mix(in srgb,'+c+' 62%,#8f8d88)');
-    } else {
-      pad.style.setProperty('--mc', c);
-      pad.style.setProperty('--mcd', d[0]);
-      pad.style.setProperty('--mch', d[1]);
-      pad.style.setProperty('--mtx','#3a2f0a');
-      pad.style.setProperty('--mtx2','rgba(0,0,0,.5)');
-    }
-  }
-  function save(){ try{ localStorage.setItem(K, JSON.stringify(notes)); }catch(e){} }
-  function count(){ return notes.filter(function(n){return (n.t||'').trim();}).length; }
-  function syncCnt(){ cnt.textContent='메모 '+(active+1)+' / '+notes.length; }
-  function renderTabs(){
-    tabs.innerHTML=notes.map(function(n,i){
-      var lb='메모 '+(i+1);
-      var tb=isDark()?('color-mix(in srgb,'+COLORS[n.c%COLORS.length]+' 30%,#191919)'):COLORS[n.c%COLORS.length];
-      var tc=isDark()?('color-mix(in srgb,'+COLORS[n.c%COLORS.length]+' 85%,#fff)'):'#4a3c0d';
-      return '<div class="memo-tab'+(i===active?' cur':'')+'" data-open="'+i+'" title="'+lb.replace(/"/g,'')+'" style="background:'+tb+';color:'+tc+'">'
-        +lb.replace(/</g,'&lt;')
-        +'<button type="button" class="tx" data-tdel="'+i+'" title="메모 삭제">×</button></div>';
-    }).join('');
-  }
-  tabs.addEventListener('click',function(e){
-    var d=e.target.closest('[data-tdel]');
-    if(d){ e.stopPropagation(); var k=+d.dataset.tdel;
-      if(!(notes[k].t||'').trim() || confirm('이 메모를 삭제할까요?')){
-        notes.splice(k,1); if(!notes.length) notes=[{t:'',c:0}];
-        if(active>=notes.length) active=notes.length-1;
-        save(); render(); }
-      return; }
-    var t=e.target.closest('[data-open]'); if(!t) return;
-    var i=+t.dataset.open;
-    if(toggle(i)) { renderTabs(); return; }
-    active=i; render(); open();
-    var ta=body.querySelector('textarea'); if(ta) ta.focus();
-  });
-  function render(){
-    body.innerHTML=notes.map(function(n,i){
-      if(i!==active) return '';
-      var bg=isDark()?('color-mix(in srgb,'+COLORS[n.c%COLORS.length]+' 22%,#191919)'):shade(n.c,0);
-      return '<div class="memo-note" style="background:'+bg+'">'
-        +'<div class="mn-h"><span class="sw" data-sw="'+i+'" title="색상 변경" style="background:'+COLORS[(n.c+1)%COLORS.length]+'"></span>'
-        +'<span class="st">'+(i+1)+'</span>'
-        +'<button type="button" class="del" data-del="'+i+'" title="삭제">×</button></div>'
-        +'<textarea data-i="'+i+'" placeholder="메모를 적어두세요">'+(n.t||'').replace(/</g,'&lt;')+'</textarea></div>';
-    }).join('');
-    syncCnt(); renderTabs(); paint();
-  }
-  body.addEventListener('input',function(e){
-    var ta=e.target.closest('textarea'); if(!ta) return;
-    notes[+ta.dataset.i].t=ta.value; save(); syncCnt(); renderTabs();
-  });
-  body.addEventListener('click',function(e){
-    var sw=e.target.closest('[data-sw]'), del=e.target.closest('[data-del]');
-    if(sw){ var i=+sw.dataset.sw; notes[i].c=(notes[i].c+1)%COLORS.length; save(); render(); return; }
-    if(del){ var j=+del.dataset.del;
-      if(!(notes[j].t||'').trim() || confirm('이 메모를 삭제할까요?')){
-        notes.splice(j,1); if(!notes.length) notes=[{t:'',c:0}];
-        if(active>=notes.length) active=notes.length-1;
-        save(); render(); } }
-  });
-  document.getElementById('memoAdd').addEventListener('click',function(){
-    notes.push({t:'', c:notes.length%COLORS.length}); active=notes.length-1; save(); render();
-    var ta=body.querySelector('textarea'); if(ta) ta.focus();
-  });
-  (function dragInit(){
-    var head=document.getElementById('memoHead'), st=null, moved=false;
-    head.addEventListener('mousedown',function(e){
-      if(e.target.closest('.cv')) return;
-      var r=pad.getBoundingClientRect();
-      st={x:e.clientX,y:e.clientY,l:r.left,t:r.top,w:r.width,h:r.height}; moved=false;
-      pad.classList.add('dragging'); e.preventDefault();
-    });
-    window.addEventListener('mousemove',function(e){
-      if(!st) return;
-      var dx=e.clientX-st.x, dy=e.clientY-st.y;
-      if(Math.abs(dx)>3||Math.abs(dy)>3) moved=true;
-      if(!moved) return;
-      var l=Math.max(4,Math.min(window.innerWidth-st.w-4, st.l+dx));
-      var t=Math.max(4,Math.min(window.innerHeight-46, st.t+dy));
-      pad.classList.add('moved'); pad.style.left=l+'px'; pad.style.top=t+'px';
-    });
-    window.addEventListener('mouseup',function(){
-      if(!st) return;
-      pad.classList.remove('dragging');
-      // 드래그 위치는 저장하지 않음(다시 열면 탭 옆 기본 위치)
-      st=null; setTimeout(function(){ pad.dataset.justDragged = moved?'1':''; },0);
-    });
-  })();
-  function open(){
-    pad.classList.remove('moved'); pad.style.left=''; pad.style.top='';
-    pad.classList.add('on');
-  }
-  function close(){ pad.classList.remove('on'); }
-  function toggle(i){ if(pad.classList.contains('on') && active===i){ close(); return true; } return false; }
-  document.getElementById('memoHead').addEventListener('click',function(e){
-    if(pad.dataset.justDragged==='1'){ pad.dataset.justDragged=''; return; }
-    close();
-  });
-  document.addEventListener('keydown',function(e){
-    if(e.altKey && (e.key==='m'||e.key==='M')){ e.preventDefault(); pad.classList.contains('on')?close():open(); }
-    if(e.key==='Escape' && pad.classList.contains('on')) close();
-  });
-  render();
-  var mo=new MutationObserver(function(){ render(); });
-  mo.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
-})();
-</script>
+
 <script>
 /* 인트로(히어로 공지) 자동 업데이트 — 매뉴얼/유틸 카드 수를 DOM에서 직접 집계 */
 (function(){
@@ -5598,6 +5259,76 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
     btn.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' ') toggle(e); }); }
   if(chip) chip.addEventListener('click',toggle);
   if(close) close.addEventListener('click',function(){ panel.style.display='none'; });
+})();
+</script>
+
+<script>
+// __wfHideRight — 워크플로우 탭에서 우측 사이드바 자동 숨김
+(function(){
+  var right=document.querySelector('.side-right');
+  if(!right) return;
+  function sync(){
+    var on=document.querySelector('.ov-tab.on[data-ov="flow"]');
+    var ovVisible=document.querySelector('.ov-view[data-ovv="flow"].on');
+    right.style.display=(on&&ovVisible)?'none':'';
+  }
+  document.querySelectorAll('.ov-tab').forEach(function(t){t.addEventListener('click',function(){setTimeout(sync,0);});});
+  document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){setTimeout(sync,0);});});
+  sync();
+})();
+</script>
+
+<script>
+// __wfDetailBar — 워크플로우 대시보드 노드 상세를 하단 고정바로 표시
+(function(){
+  var bar=null;
+  function close(){ if(bar){ bar.style.transform='translateY(110%)'; } }
+  window.addEventListener('message',function(ev){
+    var m=ev.data;
+    if(!m||typeof m!=='object') return;
+    if(m.type==='wf-detail-close'){ close(); return; }
+    if(m.type!=='wf-detail') return;
+    if(!bar){
+      bar=document.createElement('div'); bar.id='__wfDetailBar';
+      bar.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:900;background:var(--surface,#fff);color:var(--ink,#000);border-top:1px solid var(--line,#e6e6e6);box-shadow:0 -10px 30px rgba(0,0,0,.14);padding:16px 24px;max-height:44vh;overflow:auto;transform:translateY(110%);transition:transform .28s cubic-bezier(.2,.8,.3,1)';
+      document.body.appendChild(bar);
+    }
+    bar.innerHTML=m.html;
+    var x=bar.querySelector('#__wfPanelX');
+    if(x) x.addEventListener('click',function(){ close(); var f=document.getElementById('wfFrame'); try{f.contentWindow.postMessage({type:'wf-clear'},'*');}catch(e){} });
+    requestAnimationFrame(function(){ bar.style.transform='translateY(0)'; });
+  });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+  document.querySelectorAll('.ov-tab,.tab').forEach(function(t){t.addEventListener('click',function(){setTimeout(close,0);});});
+})();
+</script>
+<script>
+// __wfPicker — 워크플로우 종류 선택
+(function(){
+  var picks=document.querySelectorAll('.wf-pick'), f=document.getElementById('wfFrame');
+  var link=document.getElementById('wfOpenLink');
+  function paint(b){
+    picks.forEach(function(x){
+      var on=(x===b);
+      x.classList.toggle('on',on);
+      x.style.background=on?'var(--surface)':'transparent';
+      x.style.borderStyle=x.dataset.soon?'dashed':'solid';
+      x.style.borderColor=on?'var(--accent)':'var(--line)';
+      x.style.boxShadow=on?'0 0 0 1px var(--accent)':'none';
+      var ic=x.querySelector('.wf-ic');
+      if(ic){ ic.style.background=on?'var(--accent)':'var(--surface-2)'; ic.style.color=on?'#fff':'var(--muted)'; }
+    });
+  }
+  picks.forEach(function(b){
+    b.addEventListener('click',function(){
+      if(b.dataset.soon) return;
+      paint(b);
+      if(f && b.dataset.src) f.src=b.dataset.src;
+      if(link && b.dataset.src) link.href=b.dataset.src;
+      var bar=document.getElementById('__wfDetailBar'); if(bar) bar.style.transform='translateY(110%)';
+    });
+  });
+  paint(document.querySelector('.wf-pick.on'));
 })();
 </script>
 </body>

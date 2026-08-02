@@ -97,6 +97,7 @@
         <span><i data-p="const" style="background:#c07a3e"></i>시공</span>
         <span><i data-p="cm" style="background:#8a6a4f"></i>건설관리</span>
         <span><i data-p="comp" style="background:#96794a"></i>준공</span>
+        <span><i data-p="safety" style="background:#9c5b4e"></i>교육시설안전</span>
         <span><i data-p="manual" style="background:#7a7168"></i>매뉴얼</span>
         <span><i style="background:#fff;box-shadow:inset 0 0 0 1px #a39e98"></i>법령·인증</span>
       </div>
@@ -118,10 +119,10 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const G = window.BIBLE_GRAPH;
 // 단계별 색상 팔레트 (선택 가능)
 const PALETTES = {
-  phase: { plan:'#0075de', design:'#00868f', const:'#c9762a', cm:'#7b5bd6', comp:'#2f9e4f', manual:'#6b6b6b' },
-  earth: { plan:'#3f6f8a', design:'#5b8c6e', const:'#c07a3e', cm:'#8a6a4f', comp:'#96794a', manual:'#7a7168' },
-  cool:  { plan:'#0b4f8a', design:'#0075de', const:'#3fa0c9', cm:'#5f7fb8', comp:'#2f9e8f', manual:'#8b96a3' },
-  mono:  { plan:'#31302e', design:'#4a4845', const:'#615d59', cm:'#7b766f', manual:'#a39e98', comp:'#8e8981' }
+  phase: { plan:'#0075de', design:'#00868f', const:'#c9762a', cm:'#7b5bd6', comp:'#2f9e4f', safety:'#c2413a', manual:'#6b6b6b' },
+  earth: { plan:'#3f6f8a', design:'#5b8c6e', const:'#c07a3e', cm:'#8a6a4f', comp:'#96794a', safety:'#9c5b4e', manual:'#7a7168' },
+  cool:  { plan:'#0b4f8a', design:'#0075de', const:'#3fa0c9', cm:'#5f7fb8', comp:'#2f9e8f', safety:'#4c6b8f', manual:'#8b96a3' },
+  mono:  { plan:'#31302e', design:'#4a4845', const:'#615d59', cm:'#7b766f', manual:'#a39e98', comp:'#8e8981', safety:'#94908a' }
 };
 let PHASE_COL = PALETTES.earth;
 const INK2 = '#31302e', MUTED = '#615d59', FAINT = '#a39e98', ACCENT = '#0075de', SOFT = '#e7f1fc';
@@ -138,7 +139,7 @@ const colorOf = n => {
   if (n.group === 'root') return INK2;
   return MUTED;
 };
-const KIND = { phase:'단계', root:'전체', law:'근거 법령', cert:'인증', tag:'키워드', 'item:manual':'매뉴얼' };
+const KIND = { phase:'단계', root:'전체', law:'근거 법령', cert:'인증', tag:'키워드', 'item:manual':'매뉴얼', 'item:safety':'안전점검·인증' };
 const kindOf = n => KIND[n.group] || (n.group.startsWith('item:') ? '절차' : '항목');
 
 const nodes = G.nodes.map(n => ({ ...n }));
@@ -290,6 +291,7 @@ function groupKey(n) {
   if (n.group === 'cert') return 'cert';
   if (n.group === 'tag') return 'tag';
   if (n.group === 'item:manual') return 'manual';
+  if (n.group === 'item:safety') return 'safety';
   if (n.group === 'phase' || n.group === 'root') return 'phase';
   return 'item';
 }

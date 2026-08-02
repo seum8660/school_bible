@@ -62,15 +62,21 @@
   .fld input[readonly]{background:var(--panel2);border-color:var(--line);color:var(--sub);font-weight:500}
   .fld input[readonly]:hover{border-color:var(--line)}
   .fld .hint{font-size:12px;color:var(--faint);line-height:1.5}
-  .num{text-align:right}
+  .num{text-align:center}
 
-  .danga-grid{display:grid;grid-template-columns:1.1fr 1.5fr 1.8fr .7fr .8fr auto;gap:14px 16px;align-items:end}
+  .danga-grid{display:grid;grid-template-columns:1fr 1.4fr 1.7fr .9fr .9fr .9fr auto;gap:14px 14px;align-items:end}
+  .danga-grid label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+  .danga-grid select,.danga-grid input{text-align:center;text-align-last:center}
   .danga-grid .btn{white-space:nowrap}
   .island-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 16px;margin-top:14px}
   @media(max-width:900px){
     .danga-grid{grid-template-columns:1fr 1fr}
     .danga-grid>*:nth-child(3){grid-column:1/-1}
     .danga-grid>*:last-child{grid-column:1/-1}
+  }
+  @media(max-width:1180px) and (min-width:901px){
+    .danga-grid{grid-template-columns:1fr 1.4fr .9fr .9fr .9fr auto}
+    .danga-grid>*:nth-child(3){grid-column:1/-1}
     .island-grid{grid-template-columns:1fr 1fr}
   }
   @media(max-width:600px){
@@ -166,11 +172,12 @@
 
   table{width:100%;border-collapse:collapse;font-size:13.5px}
   th,td{border-bottom:1px solid var(--line2);padding:10px 13px;text-align:left}
-  thead th{color:var(--faint);font-weight:600;font-size:11.5px;letter-spacing:.03em;border-bottom:1px solid var(--line)}
+  thead th{color:var(--faint);font-weight:600;font-size:11.5px;letter-spacing:.03em;border-bottom:1px solid var(--line);text-align:center}
+  thead th.n{text-align:center}
   tbody tr:last-child td{border-bottom:0}
   td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
   .tw{border:1px solid var(--line);border-radius:var(--radsm);overflow:hidden;background:var(--card)}
-  .rin{width:82px;font:inherit;font-size:13.5px;font-weight:600;text-align:right;padding:5px 9px;
+  .rin{width:82px;font:inherit;font-size:13.5px;font-weight:600;text-align:center;padding:5px 9px;
     border:1px solid var(--accent-line);border-radius:6px;background:var(--accent-soft);color:var(--ink);
     font-variant-numeric:tabular-nums}
   .rin:hover{border-color:var(--accent)}
@@ -187,11 +194,11 @@
   details.rates .inner{padding:0 20px 18px}
 
   /* ===== 고대비 표 (상시 적용) ===== */
-  .card,.tw,.cards{border-color:var(--ink)}
-  .sec-title{border-bottom:2px solid var(--ink);font-weight:700}
-  .total{border-bottom:2px solid var(--ink)}
+  .card,.tw,.cards{border-color:var(--line)}
+  .sec-title{border-bottom:2px solid #9a9a95;font-weight:700}
+  .total{border-bottom:2px solid #9a9a95}
   th,td{border:1px solid var(--line)}
-  thead th{background:var(--ink);color:var(--card);font-size:12.5px;font-weight:700;
+  thead th{background:#6f6f6b;color:#fff;font-size:12.5px;font-weight:700;
     letter-spacing:.02em;border-bottom:0}
   tbody tr:nth-child(even){background:var(--panel2)}
   tbody tr:hover{background:var(--accent-soft)}
@@ -262,18 +269,19 @@
         </div>
         <div class="fld"><label>건축물 종별<span class="q" title="별표3 난이도 구분. 학교는 통상 제2종(보통)입니다.">?</span></label>
           <select id="jong"><option value="3">제3종 (복잡)</option><option value="2" selected>제2종 (보통)</option><option value="1">제1종 (단순)</option></select>
-          <div class="hint">별표4 요율 산정 기준</div>
+          <div class="hint">별표4 요율 산정 기준 — 학교는 기본값 제2종(보통)</div>
         </div>
         <div class="fld"><label>도서작성 구분<span class="q" title="기본=인허가 최소 도서 / 중급=공종별 공사비 산정용 / 상급=세부 공사비 산정용">?</span></label>
           <select id="deung"><option value="상">상급</option><option value="중" selected>중급</option><option value="기">기본</option></select>
-          <div class="hint">설계도서 상세 수준</div>
+          <div class="hint">설계도서 상세 수준 — 기본값 중급</div>
         </div>
         <div class="fld"><label>설계 단계</label>
           <div style="display:flex;gap:12px;flex-wrap:wrap;padding:9px 0 0">
-            <label style="font-size:13px;font-weight:500;display:inline-flex;gap:5px;align-items:center"><input type="checkbox" id="stg1" style="width:auto" checked>기본 20%</label>
+            <label style="font-size:13px;font-weight:500;display:inline-flex;gap:5px;align-items:center"><input type="checkbox" id="stg1" style="width:auto">기본 20%</label>
             <label style="font-size:13px;font-weight:500;display:inline-flex;gap:5px;align-items:center"><input type="checkbox" id="stg2" style="width:auto" checked>중간 30%</label>
             <label style="font-size:13px;font-weight:500;display:inline-flex;gap:5px;align-items:center"><input type="checkbox" id="stg3" style="width:auto" checked>실시 50%</label>
           </div>
+          <div class="hint" id="stgHint">기본값 — 중간 30% + 실시 50% (합 80%). 기본설계까지 발주할 때만 ‘기본 20%’를 추가 체크하세요.</div>
         </div>
         <div class="fld"><label>감리비 산정 방식</label>
           <input type="text" value="공사비 요율 기준" readonly>
@@ -297,7 +305,8 @@
         <div class="fld"><label>항목</label><select id="dItem"></select></div>
         <div class="fld"><label>규격 · 조건</label><select id="dSpec"></select></div>
         <div class="fld"><label id="dUnitLb">적용 단가 (천원)</label><input type="text" id="dUnit" class="num" readonly></div>
-        <div class="fld"><label>수량</label><input type="text" id="dQty" class="num" value="1" inputmode="decimal"></div>
+        <div class="fld" id="dAreaFld" style="display:none"><label id="dAreaLb">실제 면적 (㎡)</label><input type="text" id="dArea" class="num" inputmode="decimal"></div>
+        <div class="fld"><label id="dQtyLb">수량</label><input type="text" id="dQty" class="num" value="1" inputmode="decimal"></div>
         <div class="fld"><label>&nbsp;</label><button class="btn primary" id="dAdd" type="button" style="white-space:nowrap">추가</button></div>
       </div>
       <div class="island-grid">
@@ -695,6 +704,7 @@ document.getElementById('resetRates').onclick=function(){
 ['school','pname','ptype','jong','deung','stg1','stg2','stg3'].forEach(function(id){
   document.getElementById(id).addEventListener('change',function(){ typeHint(); calc(); });
 });
+document.getElementById('ptype').addEventListener('change', function(){ applyStageDefault(); calc(); });
 var TERMS={
   '신축':'빈 땅(또는 기존 건물을 모두 없앤 자리)에 건물을 <b>새로 짓는 것</b>입니다. 부속건축물만 있는 대지에 주된 건축물을 짓는 경우도 신축입니다.',
   '증축':'기존 건물이 있는 대지에서 <b>바닥면적·층수·높이를 늘리는 것</b>입니다. 옆에 붙여 짓거나 위로 올리는 경우 모두 증축입니다.',
@@ -704,6 +714,20 @@ var TERMS={
   '기타':'위 분류에 들어가지 않는 공사입니다(옥외 토목, 담장·포장, 설비 단독 교체 등).'
 };
 var TERM_EXTRA='<b>재축</b>은 재해로 없어진 건물을 종전 규모 이내로 다시 짓는 것, <b>이전</b>은 건물을 헐지 않고 같은 대지의 다른 위치로 옮기는 것을 말합니다.';
+var FULL_STAGE=['신축','증축','개축'];
+function applyStageDefault(){
+  var t=v('ptype'), full=FULL_STAGE.indexOf(t)>=0;
+  document.getElementById('stg1').checked=full;
+  document.getElementById('stg2').checked=true;
+  document.getElementById('stg3').checked=true;
+  stageHint();
+}
+function stageHint(){
+  var t=v('ptype'), full=FULL_STAGE.indexOf(t)>=0, el=document.getElementById('stgHint');
+  if(el) el.textContent = full
+    ? '기본값 — '+t+'은(는) 기본 20% + 중간 30% + 실시 50% (합 100%)'
+    : '기본값 — '+t+'은(는) 중간 30% + 실시 50% (합 80%). 기본설계까지 발주할 때만 ‘기본 20%’를 추가 체크하세요.';
+}
 function typeHint(){
   var t=v('ptype'), f=R.typeFactor[t];
   var stp=R.supTypes||['신축','증축','개축'];
@@ -750,18 +774,42 @@ var LINES = [];
     spec.innerHTML = it.rows.map(function(r,i){ return '<option value="'+i+'">'+(r[0]||'기본')+'</option>'; }).join('');
     fillUnit();
   }
-  function fillUnit(){
+  function fillUnit(keepQty){
     var c=P.cats[+cat.value], it=c.items[+item.value], r=it.rows[+spec.value];
     var add=parseFloat(document.getElementById('dIsland').value)||0;
+    var base=parseNum(r[3]);
+    var mu = MU(r[2]);
     document.getElementById('dUnit').value = fmt(Math.round(parseNum(r[1])*(1+add/100)));
-    document.getElementById('dUnitLb').textContent = add? '적용 단가 (천원 · 가산 +'+add+'%)' : '적용 단가 (천원)';
+    document.getElementById('dUnitLb').textContent =
+      (add? '적용 단가 (천원 · +'+add+'%)' : '적용 단가 (천원)') + (base>0? ' · '+base+mu : '');
+    var fld=document.getElementById('dAreaFld'), ar=document.getElementById('dArea');
+    document.getElementById('dQtyLb').textContent = base>0? '수량 (×'+base+mu+')' : '수량';
+    if(base>0){ fld.style.display=''; document.getElementById('dAreaLb').textContent='실제 규모 ('+mu+')'; }
+    else fld.style.display='none';
+    if(!keepQty){
+      document.getElementById('dQty').value = 1;
+      if(base>0) ar.value = base;
+    }
     renderSpec(c.cat, it.name, r);
   }
+  var qtyEl=document.getElementById('dQty'), areaEl=document.getElementById('dArea');
+  function curBase(){ var r=P.cats[+cat.value].items[+item.value].rows[+spec.value]; return parseNum(r[3]); }
+  areaEl.oninput=function(){
+    var b=curBase(); if(!(b>0)) return;
+    var a=parseNum(areaEl.value);
+    if(a>0) qtyEl.value = Math.round(a/b*1000)/1000;
+  };
+  qtyEl.oninput=function(){
+    var b=curBase(); if(!(b>0)) return;
+    var q=parseNum(qtyEl.value);
+    if(q>0) areaEl.value = Math.round(q*b*100)/100;
+  };
+  function MU(u){ return ['㎡','m','㎥'].indexOf(u)>=0 ? u : '㎡'; }
   function renderSpec(catNm, itemNm, r){
     var add=parseFloat(document.getElementById('dIsland').value)||0;
     var uk=Math.round(parseNum(r[1])*(1+add/100));
-    var base=r[3], note=r[4]||r[0]||'';
-    var UNIT_DESC={'㎡':'제곱미터당 단가입니다. 시공 면적을 수량으로 넣으세요.',
+    var base=r[3], note=r[4]||r[0]||'', mu=MU(r[2]);
+    var UNIT_DESC={'㎡':'면적 기준 단가입니다.',
       '실':'교실 1실 단위 단가입니다. 실 개수를 수량으로 넣으세요.',
       '동':'건물 1동 단위 단가입니다. 동 개수를 수량으로 넣으세요.',
       'm':'미터당 단가입니다. 시공 연장을 수량으로 넣으세요.',
@@ -773,23 +821,26 @@ var LINES = [];
       (note? '<div class="sb-d">'+note+'</div>' : '')+
       '<dl>'+
         '<div><dt>구분</dt><dd>'+catNm+'</dd></div>'+
-        '<div><dt>고시 단가</dt><dd>'+fmt(parseNum(r[1]))+'<small>천원 / '+r[2]+'</small></dd></div>'+
-        (add? '<div><dt>적용 단가</dt><dd>'+fmt(uk)+'<small>천원 / '+r[2]+' · 가산 +'+add+'%</small></dd></div>' : '')+
-        (base? '<div><dt>기준 규모</dt><dd>'+base+'<small>'+(r[2]==='㎡'?'㎡ 기준':'㎡')+'</small></dd></div>' : '')+
-        '<div><dt>수량 단위</dt><dd>'+r[2]+'</dd></div>'+
+        '<div><dt>고시 단가</dt><dd>'+fmt(parseNum(r[1]))+'<small>천원 / '+(base? base+mu+' 기준' : r[2])+'</small></dd></div>'+
+        (add? '<div><dt>적용 단가</dt><dd>'+fmt(uk)+'<small>천원 / '+(base? base+mu+' 기준' : r[2])+' · 가산 +'+add+'%</small></dd></div>' : '')+
+        (base? '<div><dt>기준 규모</dt><dd>'+base+'<small>'+mu+' 기준</small></dd></div>' : '')+
+        (base? '<div><dt>'+mu+'당 환산</dt><dd>'+fmt(Math.round(uk/parseNum(base)*100)/100)+'<small>천원 / '+mu+'</small></dd></div>' : '')+
+        '<div><dt>수량 단위</dt><dd>'+(base? base+mu+' 기준 배수' : r[2])+'</dd></div>'+
 
       '</dl>'+
-      '<div class="sb-d" style="margin-top:9px">'+(UNIT_DESC[r[2]]||'선택한 단위 기준으로 수량을 입력하세요.')+
-        (base? ' 표기된 기준 규모('+base+')는 단가 산정의 전제 조건이며, 실제 규모가 다르면 수량으로 조정하세요.':'')+'</div>';
+      '<div class="sb-d" style="margin-top:9px">'+
+        (base? '표시된 단가는 <b>기준 규모 '+base+mu+' 전체 금액</b>('+mu+'당 약 '+fmt(Math.round(uk/parseNum(base)*100)/100)+'천원)입니다. 수량 1 = '+base+mu+'이며, 실제 규모를 넣으면 수량(배수)이 자동 환산됩니다.'
+              : (UNIT_DESC[r[2]]||'선택한 단위 기준으로 수량을 입력하세요.'))+'</div>';
   }
   cat.onchange=fillItems; item.onchange=fillSpecs; spec.onchange=fillUnit;
   fillItems();
   document.getElementById('dAdd').onclick=function(){
     var c=P.cats[+cat.value], it=c.items[+item.value], r=it.rows[+spec.value];
-    LINES.push({cat:c.cat, nm:it.name+(r[0]?' — '+r[0]:''), unitK:parseNum(r[1]), unit:r[2], qty:parseNum(document.getElementById('dQty').value)||1});
+    var bq=parseNum(r[3]);
+    LINES.push({cat:c.cat, nm:it.name+(r[0]?' — '+r[0]:''), unitK:parseNum(r[1]), unit:r[2], base:bq>0?bq:0, qty:parseNum(document.getElementById('dQty').value)||1});
     renderLines();
   };
-  document.getElementById('dIsland').onchange=function(){ fillUnit(); renderLines(); };
+  document.getElementById('dIsland').onchange=function(){ fillUnit(true); renderLines(); };
   document.getElementById('dFoot').textContent = P.foot || '';
 })();
 function renderLines(){
@@ -802,7 +853,7 @@ function renderLines(){
       var amt = Math.round(uk*l.qty)*1000;
       sum += amt;
       return '<tr><td style="color:var(--sub);font-size:12.5px">'+l.cat+'</td><td>'+l.nm+'</td>'+
-        '<td class="n">'+fmt(uk)+'</td><td class="n" style="color:var(--sub)">'+l.unit+'</td>'+
+        '<td class="n">'+fmt(uk)+'</td><td class="n" style="color:var(--sub)">'+(l.base? l.base+MU2(l.unit)+' 기준' : l.unit)+'</td>'+
         '<td class="n"><input class="rin" style="width:64px" data-li="'+i+'" value="'+l.qty+'"></td>'+
         '<td class="n" style="font-weight:600">'+fmt(amt)+'</td>'+
         '<td style="text-align:center"><button class="btn" style="padding:2px 7px;font-size:12px" data-del="'+i+'" type="button">✕</button></td></tr>';
@@ -830,7 +881,7 @@ function openPreview(o){
   var lineRows='', lineSum=0;
   LINES.forEach(function(l){
     var uk=Math.round(l.unitK*(1+add/100)), amt=Math.round(uk*l.qty)*1000; lineSum+=amt;
-    lineRows+='<tr><td>'+l.cat+'</td><td>'+l.nm+'</td><td class="n">'+fmt(uk)+'</td><td class="c">'+l.unit+'</td><td class="n">'+l.qty+'</td><td class="n">'+fmt(amt)+'</td></tr>';
+    lineRows+='<tr><td>'+l.cat+'</td><td>'+l.nm+'</td><td class="n">'+fmt(uk)+'</td><td class="c">'+(l.base? l.base+MU2(l.unit):l.unit)+'</td><td class="n">'+l.qty+'</td><td class="n">'+fmt(amt)+'</td></tr>';
   });
   var rate=function(x){ return x.toFixed(3).replace(/0+$/,'').replace(/.$/,''); };
   ov.querySelector('.a4').innerHTML =
@@ -871,13 +922,22 @@ function openPreview(o){
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
 })();
 
+function MU2(u){ return ['㎡','m','㎥'].indexOf(u)>=0 ? u : '㎡'; }
+function lookupBase(cat, nm){
+  var P=window.PRICE2026; if(!P) return 0;
+  for(var i=0;i<P.cats.length;i++){ var c=P.cats[i]; if(c.cat!==cat) continue;
+    for(var j=0;j<c.items.length;j++){ var it=c.items[j];
+      for(var k=0;k<it.rows.length;k++){ var r=it.rows[k];
+        if(it.name+(r[0]?' — '+r[0]:'')===nm){ var b=parseNum(r[3]); return b>0?b:0; } } } }
+  return 0;
+}
 /* ===== 임시저장 ===== */
 var SKEY='simple-cost-draft';
 function snapshot(){
   var ci=document.getElementById('cost');
   return { school:v('school'), pname:v('pname'), ptype:v('ptype'), area:v('area'),
     island:document.getElementById('dIsland').value,
-    manual:!ci.readOnly, cost:ci.value, lines:LINES, at:Date.now() };
+    manual:!ci.readOnly, cost:ci.value, lines:LINES, ver:2, at:Date.now() };
 }
 function autoSave(){ try{ localStorage.setItem(SKEY, JSON.stringify(snapshot())); }catch(e){} }
 function msg(t){ var el=document.getElementById('saveMsg'); el.textContent=t; clearTimeout(msg._t); msg._t=setTimeout(function(){ el.textContent=''; },2600); }
@@ -888,10 +948,15 @@ function restore(silent){
   ['school','pname','ptype','area'].forEach(function(k){ if(d[k]!==undefined) document.getElementById(k).value=d[k]; });
   if(d.island!==undefined) document.getElementById('dIsland').value=d.island;
   LINES = Array.isArray(d.lines)? d.lines : [];
+  LINES.forEach(function(l){
+    if(l.base===undefined) l.base = lookupBase(l.cat, l.nm);
+    if(d.ver!==2 && l.base>0 && parseNum(l.qty)===l.base) l.qty = 1;
+  });
   var ci=document.getElementById('cost'), link=document.getElementById('costManual');
   ci.readOnly = !d.manual;
   link.textContent = d.manual? '자동 입력으로 되돌리기' : '직접 입력';
   renderLines();
+  applyStageDefault();
   if(d.manual && d.cost){ ci.value=d.cost; document.getElementById('costHintTxt').textContent='직접 입력 · 약 '+eok(parseNum(d.cost)); calc(); }
   typeHint();
   if(!silent) msg('불러왔습니다 · '+new Date(d.at||Date.now()).toLocaleString('ko-KR'));
@@ -915,6 +980,7 @@ document.addEventListener('change', autoSave);
 renderLines();
 try{ renderRates(); }catch(e){ console.warn('renderRates', e); }
 typeHint();
+applyStageDefault();
 restore(true);
 calc();
 </script>

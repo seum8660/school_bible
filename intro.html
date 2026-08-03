@@ -96,14 +96,12 @@
   <div class="inwrap">
     <nav class="nav">
       <span class="logo"><i>치</i>학교시설 치트키</span>
-      <a href="bible.html?tab=manual">매뉴얼</a><a href="bible.html?tab=proc">가이드라인</a><a href="bible.html?tab=overview">그래프뷰</a>
-      <a class="cta" href="bible.html">치트키 열기</a>
     </nav>
     <section class="hero">
             <h1 class="rv" style="font-size:22px;font-weight:800;color:#6f6b64;margin:0">학교시설 업무 치트키</h1>
       <div class="ci rv">
-        <div class="ln" style="align-items:center">삽질 <canvas id="ciZero" width="400" height="104" style="display:block"></canvas></div>
-        <div class="ln" style="align-items:center">업무 <canvas id="ciHero" width="340" height="104" style="display:block"></canvas></div>
+        <div class="ln" style="align-items:center"><span style="color:#55524d">삽질</span> <canvas id="ciZero" width="400" height="104" style="display:block;height:74px;width:auto"></canvas></div>
+        <div class="ln" style="align-items:center"><span style="color:#005bad;font-size:104px">업무</span> <canvas id="ciHero" width="340" height="104" style="display:block"></canvas></div>
       </div>
       <p class="sub rv">공문 뒤지기 전에, 선배한테 묻기 전에 — 매뉴얼 · 프로세스 · 판단 기준 · 산출 도구를 한 곳에서.</p>
       <div class="btns rv"><a class="b1" href="bible.html">치트키 열기 →</a><a class="b2" href="#" id="gvOpen">그래프뷰 보기</a></div>
@@ -118,9 +116,9 @@
       <h2 class="sec-h">답을 아는 사람은 옆자리에 없고,<br>규정은 열 군데에 흩어져 있습니다.</h2>
       <p class="sec-p">자주 막히는 질문만 모아 바로 답이 있는 곳으로 연결했습니다.</p></div>
       <div class="asks rv" style="transition-delay:.08s">
-        <a class="ask" href="bible.html?tab=overview"><span class="q">“설계변경 증액되면 최종 결재라인이 어디까지지?”</span><span class="a">설계변경 워크플로우 <i>→</i></span></a>
-        <a class="ask" href="bible.html?tab=overview"><span class="q">“공기연장 간접비는 어디까지 인정되지?”</span><span class="a">공기연장 워크플로우 <i>→</i></span></a>
-        <a class="ask" href="bible.html?tab=overview"><span class="q">“사용승인 전에 받아야 할 검사가 뭔가 있지?”</span><span class="a">인허가 워크플로우 <i>→</i></span></a>
+        <a class="ask" href="bible.html?tab=overview&amp;ov=flow&amp;wf=1"><span class="q">“설계변경 증액되면 최종 결재라인이 어디까지지?”</span><span class="a">설계변경 워크플로우 <i>→</i></span></a>
+        <a class="ask" href="bible.html?tab=overview&amp;ov=flow&amp;wf=2"><span class="q">“공기연장 간접비는 어디까지 인정되지?”</span><span class="a">공기연장 워크플로우 <i>→</i></span></a>
+        <a class="ask" href="bible.html?tab=overview&amp;ov=flow&amp;wf=5"><span class="q">“사용승인 전에 받아야 할 검사가 뭔가 있지?”</span><span class="a">인허가 워크플로우 <i>→</i></span></a>
         <a class="ask" href="bible.html?tab=safety"><span class="q">“이 건물 안전점검 주기가 연 몇 번이지?”</span><span class="a">교육시설안전 <i>→</i></span></a>
         <a class="ask" href="bible.html?tab=manual"><span class="q">“이 금액이면 일상감사 대상인가?”</span><span class="a">매뉴얼 · 지침 <i>→</i></span></a>
       </div>
@@ -128,38 +126,62 @@
 
     <section class="sec">
       <div class="rv"><div class="sec-k">02 / WORKFLOW</div>
-      <h2 class="sec-h">까다로운 절차 5가지를<br>한 판으로 펼쳤습니다.</h2>
+      <h2 class="sec-h">까다로운 절차 9가지를<br>한 판으로 펼쳤습니다.</h2>
       <p class="sec-p">누가 · 언제 · 무엇을 하는지를 주체별 레인으로 그렸습니다. 카드를 누르면 기한 · 산출물 · 법적 근거가 아래에 펌쳐집니다.</p></div>
       <div class="wfs rv" style="transition-delay:.08s">
-        <a class="wf" href="bible.html?tab=overview">
+        <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=0">
+          <span class="mini"><i class="on"></i><i class="key"></i><i class="bot"></i><i></i><i class="bot"></i><i class="key"></i><i></i><i class="bot"></i><i></i><i class="key"></i><i class="bot"></i><i></i></span>
+          <h4>기획부터 준공까지 (전주기)</h4>
+          <div class="law">학교시설사업 촉진법 · 건설기술진흥법 · 지방계약법</div>
+          <div class="st"><span>노드 19</span><span>병목 4</span><span>회귀 3</span></div>
+        </a>
+        <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=1">
           <span class="mini"><i class="on"></i><i></i><i class="key"></i><i></i><i></i><i class="bot"></i><i></i><i class="key"></i><i></i><i></i><i></i><i class="bot"></i></span>
           <h4>설계변경 · 계약금액 조정</h4>
           <div class="law">지방계약법 시행령 제73조 · 제74조</div>
           <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 3</span></div>
         </a>
-        <a class="wf" href="bible.html?tab=overview">
+        <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=2">
           <span class="mini"><i class="on"></i><i></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i><i></i><i></i><i class="key"></i><i class="bot"></i><i></i></span>
           <h4>공기연장 · 간접비 정산</h4>
           <div class="law">지방계약법 시행령 제75조</div>
           <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 3</span></div>
         </a>
-        <a class="wf" href="bible.html?tab=overview">
+        <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=3">
           <span class="mini"><i class="on"></i><i></i><i class="bot"></i><i></i><i class="key"></i><i></i><i></i><i class="bot"></i><i></i><i class="key"></i><i></i><i></i></span>
           <h4>감리 · 건설사업관리 방식 결정</h4>
           <div class="law">건설기술진흥법 제39조의2</div>
           <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 2</span></div>
         </a>
-        <a class="wf" href="bible.html?tab=overview">
+        <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=4">
           <span class="mini"><i class="on"></i><i class="key"></i><i></i><i></i><i class="bot"></i><i></i><i class="bot"></i><i></i><i></i><i></i><i class="key"></i><i></i></span>
           <h4>공사 중 안전사고 대응</h4>
           <div class="law">산업안전보건법 제54조 · 제55조</div>
           <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 2</span></div>
         </a>
-        <a class="wf" href="bible.html?tab=overview">
+        <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=5">
           <span class="mini"><i class="bot"></i><i></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i></span>
           <h4>학교시설 인허가</h4>
           <div class="law">학교시설사업 촉진법 제4조 · 제5조</div>
           <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 2</span></div>
+        </a>
+        <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=6">
+          <span class="mini"><i class="on"></i><i></i><i class="bot"></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i><i></i><i class="key"></i><i></i><i class="bot"></i></span>
+          <h4>건설엔지니어링 및 시공 평가</h4>
+          <div class="law">건설기술진흥법 제50조 · 시행령 제82조</div>
+          <div class="st"><span>노드 16</span><span>병목 4</span><span>회귀 2</span></div>
+        </a>
+        <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=7">
+          <span class="mini"><i class="key"></i><i></i><i class="on"></i><i></i><i class="bot"></i><i></i><i class="bot"></i><i class="bot"></i><i></i><i class="key"></i><i></i><i></i></span>
+          <h4>도시·군관리계획 결정</h4>
+          <div class="law">국토의 계획 및 이용에 관한 법률 제24조 · 제30조</div>
+          <div class="st"><span>노드 16</span><span>병목 4</span><span>회귀 2</span></div>
+        </a>
+        <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=8">
+          <span class="mini"><i class="on"></i><i></i><i class="bot"></i><i class="bot"></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i><i></i><i class="key"></i><i></i></span>
+          <h4>환경영향평가 협의</h4>
+          <div class="law">환경영향평가법 제24조 · 제28조 · 제30조</div>
+          <div class="st"><span>노드 16</span><span>병목 4</span><span>회귀 2</span></div>
         </a>
       </div>
     </section>
@@ -205,19 +227,19 @@
   var c=document.getElementById('pxc'); if(!c) return;
   var ctx=c.getContext('2d'), cells=[], CS=13, GAP=4, W, H, cols, rows;
   function resize(){
-    var r=c.parentElement.getBoundingClientRect();
+    var r=c.getBoundingClientRect();
     W=c.width=r.width; H=c.height=r.height;
     cols=Math.ceil(W/(CS+GAP)); rows=Math.ceil(H/(CS+GAP));
     cells=[];
-    var N=Math.round(cols*rows*.28);
+    var N=Math.round(cols*rows*.34);
     for(var i=0;i<N;i++) cells.push(spawn(true));
   }
   function spawn(init){
     return {x:Math.floor(Math.random()*cols)*(CS+GAP), y:Math.floor(Math.random()*rows)*(CS+GAP),
       p:Math.random()*Math.PI*2, s:.3+Math.random()*.9,
-      a:Math.random()<.03?'amber':'gray',
+      a:Math.random()<.07?'amber':'gray',
       born:performance.now()-(init?Math.random()*9000:0),
-      life:6000+Math.random()*9000};
+      life:2800+Math.random()*5200};
   }
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function draw(t){
@@ -227,11 +249,13 @@
       var age=t-d.born;
       if(age>d.life){ cells[i]=spawn(false); cells[i].born=t; continue; }
       var k=age/d.life;
-      var env=Math.min(1, Math.min(k,1-k)*5);           /* 서서히 나타났다 사라짐 */
-      var tw=reduce? .5 : (Math.sin(t/1000*d.s+d.p)+1)/2;
-      var al=(.03+tw*.16)*env;
-      ctx.fillStyle = d.a==='amber' ? 'rgba(0,117,222,'+(al*1.5)+')' : 'rgba(38,38,31,'+(al*.8)+')';
-      ctx.fillRect(d.x, d.y, CS, CS);
+      var env=Math.min(1, Math.min(k,1-k)*4);           /* 서서히 나타났다 사라짐 */
+      env=env*env*(3-2*env);                            /* smoothstep — 또렷한 등장·퇴장 */
+      var tw=reduce? .5 : (Math.sin(t/900*d.s+d.p)+1)/2;
+      var al=(.10+tw*.34)*env;
+      var sz=CS*(.5+.5*env), off=(CS-sz)/2;             /* 정사각형이 커졌다 작아지며 나타남 */
+      ctx.fillStyle = d.a==='amber' ? 'rgba(0,117,222,'+(al*1.4)+')' : 'rgba(38,38,31,'+(al*.85)+')';
+      ctx.fillRect(d.x+off, d.y+off, sz, sz);
     }
     if(!reduce) requestAnimationFrame(draw);
   }

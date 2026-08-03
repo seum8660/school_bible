@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>간단 사업비 산출 대시보드</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --bg:#f7f7f5; --card:#fff; --panel2:#f7f7f5; --line:#e3e2e0; --line2:#ebeae8;
+    --ink:#37352f; --sub:#787774; --faint:#a39e98;
+    --accent:#0075de; --accent-soft:#eef5fd; --accent-line:#c5dcf5;
+    --warn:#b45309; --radc:12px; --radsm:8px;
+  }
+  html[data-theme="dark"]{
+    --bg:#191919; --card:#202020; --panel2:#252525; --line:#343434; --line2:#2c2c2c;
+    --ink:#e9e9e7; --sub:#b4b2ad; --faint:#8f8d88;
+    --accent:#4a9eff; --accent-soft:rgba(74,158,255,.10); --accent-line:rgba(74,158,255,.34); --warn:#e0a355;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px 70px}
+
+  header{background:var(--card);border-bottom:1px solid var(--line)}
+  .hd{max-width:1080px;margin:0 auto;padding:30px 20px 22px;position:relative}
+  .kicker{font-size:11.5px;font-weight:600;letter-spacing:.06em;color:var(--sub);margin-bottom:9px}
+  h1{margin:0;font-size:32px;font-weight:700;letter-spacing:-.035em;line-height:1.2}
+  h1 .em{color:var(--sub);font-weight:500}
+  .sub{font-size:14px;color:var(--sub);margin-top:8px;line-height:1.6}
+  .themebtn{position:absolute;right:20px;top:30px;font:inherit;font-size:12.5px;font-weight:500;
+    color:var(--sub);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+  .themebtn:hover{border-color:var(--accent);color:var(--accent)}
+
+  .disclaim{display:flex;gap:9px;align-items:flex-start;margin-top:18px;padding:11px 14px;
+    background:var(--card);border:1px solid var(--line);border-left:3px solid var(--warn);
+    border-radius:var(--radsm);font-size:12.5px;color:var(--sub);line-height:1.6}
+  .disclaim b{color:var(--ink);font-weight:600}
+
+  section{margin-top:26px}
+  .sec-title{display:flex;align-items:baseline;gap:9px;font-size:15px;font-weight:600;
+    margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);letter-spacing:-.01em}
+  .sec-title .n{font-size:13px;font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums}
+  .sec-title small{margin-left:auto;font-size:12.5px;font-weight:500;color:var(--faint)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radc);padding:18px 20px}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 16px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .fld{display:flex;flex-direction:column;gap:5px}
+  .fld label{font-size:12px;color:var(--sub);font-weight:600;letter-spacing:.01em}
+  .fld .q{display:inline-flex;width:14px;height:14px;border-radius:100px;border:1px solid var(--line);
+    color:var(--faint);font-size:9px;align-items:center;justify-content:center;margin-left:5px;cursor:help;vertical-align:1px}
+  .fld input,.fld select{font:inherit;font-size:15px;font-weight:600;padding:10px 12px;
+    border:1px solid var(--accent-line);border-radius:var(--radsm);background:var(--accent-soft);
+    color:var(--ink);width:100%;font-variant-numeric:tabular-nums;transition:border-color .1s,background .1s}
+  .fld input::placeholder{color:var(--faint);font-weight:500}
+  .fld input:hover,.fld select:hover{border-color:var(--accent)}
+  .fld input:focus,.fld select:focus{outline:none;border-color:var(--accent);background:var(--card);
+    box-shadow:0 0 0 3px var(--accent-soft)}
+  .fld input[readonly]{background:var(--panel2);border-color:var(--line);color:var(--sub);font-weight:500}
+  .fld input[readonly]:hover{border-color:var(--line)}
+  .fld .hint{font-size:12px;color:var(--faint);line-height:1.5}
+  .num{text-align:center}
+
+  .danga-grid{display:grid;grid-template-columns:1fr 1.4fr 1.7fr .9fr .9fr .9fr auto;gap:14px 14px;align-items:end}
+  .danga-grid label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+  .danga-grid select,.danga-grid input{text-align:center;text-align-last:center}
+  .danga-grid .btn{white-space:nowrap}
+  .island-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 16px;margin-top:14px}
+  @media(max-width:900px){
+    .danga-grid{grid-template-columns:1fr 1fr}
+    .danga-grid>*:nth-child(3){grid-column:1/-1}
+    .danga-grid>*:last-child{grid-column:1/-1}
+  }
+  @media(max-width:1180px) and (min-width:901px){
+    .danga-grid{grid-template-columns:1fr 1.4fr .9fr .9fr .9fr auto}
+    .danga-grid>*:nth-child(3){grid-column:1/-1}
+    .island-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:600px){
+    .danga-grid{grid-template-columns:1fr}
+    .danga-grid>*{grid-column:1/-1!important}
+    .island-grid{grid-template-columns:1fr}
+  }
+  /* 규격 세부설명 */
+  .specbox{margin-top:14px;border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:var(--radsm);background:var(--card);padding:13px 16px}
+  .specbox .sb-t{font-size:14px;font-weight:700;color:var(--ink);line-height:1.4}
+  .specbox .sb-d{font-size:13px;color:var(--sub);margin-top:4px;line-height:1.6}
+  .specbox dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px 18px;margin:11px 0 0;
+    padding-top:11px;border-top:1px solid var(--line2)}
+  .specbox dl>div{min-width:0}
+  .specbox dt{font-size:11px;font-weight:600;letter-spacing:.05em;color:var(--faint)}
+  .specbox dd{margin:2px 0 0;font-size:13.5px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+  .specbox dd small{font-weight:500;color:var(--sub);font-size:12px;margin-left:3px}
+  /* PDF 미리보기 */
+  #pvOv{position:fixed;inset:0;z-index:9999;background:rgba(25,25,25,.72);display:none;
+    flex-direction:column;align-items:center;padding:16px 12px 40px;overflow:auto}
+  #pvOv.on{display:flex}
+  #pvOv .bar{position:sticky;top:0;display:flex;gap:8px;justify-content:center;align-items:center;
+    padding:10px 12px;margin-bottom:14px;z-index:2}
+  #pvOv .bar .ttl{color:#fff;font-size:13.5px;font-weight:600;margin-right:8px}
+  .a4{width:210mm;min-height:297mm;background:#fff;color:#1a1a1a;padding:16mm 15mm;
+    box-shadow:0 2px 18px rgba(0,0,0,.35);font-size:10.5pt;line-height:1.5}
+  .a4 h2{margin:0 0 4px;font-size:17pt;font-weight:700;text-align:center;letter-spacing:-.02em}
+  .a4 .meta{text-align:center;font-size:8.5pt;color:#666;margin-bottom:14px}
+  .a4 .sec{font-size:11pt;font-weight:700;margin:16px 0 6px;padding-bottom:4px;border-bottom:1.5px solid #1a1a1a}
+  .a4 table{width:100%;border-collapse:collapse;font-size:9.5pt}
+  .a4 th,.a4 td{border:.5px solid #b9b9b6;padding:5px 7px}
+  .a4 thead th{background:#f1f1ef;font-weight:700;color:#444;text-align:center}
+  .a4 td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .a4 td.c{text-align:center}
+  .a4 tr.sum td{background:#f7f7f5;font-weight:700}
+  .a4 tr.grand td{background:#eef5fd;font-weight:700;font-size:11pt;color:#0075de}
+  .a4 .foot{margin-top:14px;padding-top:8px;border-top:.5px solid #ccc;font-size:8pt;color:#888;line-height:1.6}
+  @media print{
+    body>*:not(#pvOv){display:none!important}
+    #pvOv{position:static;display:block;background:#fff;padding:0;overflow:visible}
+    #pvOv .bar{display:none}
+    .a4{width:auto;min-height:0;box-shadow:none;padding:0}
+    @page{size:A4 portrait;margin:14mm 13mm}
+  }
+  .termbox{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radsm);
+    background:var(--card);padding:12px 15px}
+  .term-now{font-size:13px;color:var(--sub);line-height:1.6}
+  .term-now b{color:var(--ink);font-weight:600}
+  .term-all>summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--faint);margin-top:9px;list-style:none}
+  .term-all>summary::-webkit-details-marker{display:none}
+  .term-all>summary::before{content:"▸ "}
+  .term-all[open]>summary::before{content:"▾ "}
+  .term-all>summary:hover{color:var(--accent)}
+  .term-all dl{margin:10px 0 0;display:grid;grid-template-columns:82px 1fr;gap:7px 12px}
+  .term-all dt{font-size:12.5px;font-weight:600;color:var(--ink)}
+  .term-all dd{margin:0;font-size:12.5px;color:var(--sub);line-height:1.55}
+  @media(max-width:600px){.term-all dl{grid-template-columns:1fr;gap:2px 0}.term-all dd{margin-bottom:7px}}
+  .empty{padding:40px 20px;text-align:center;color:var(--faint);font-size:13.5px;
+    border:1px dashed var(--line);border-radius:var(--radc);background:var(--card)}
+
+  .total{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    padding:4px 2px 20px;border-bottom:1px solid var(--line);margin-bottom:18px}
+  .total .lbl{font-size:12px;font-weight:500;color:var(--sub);letter-spacing:.02em}
+  .total .big{font-size:44px;font-weight:700;letter-spacing:-.035em;line-height:1.05;font-variant-numeric:tabular-nums}
+  .total .unit{font-size:16px;font-weight:600;color:var(--sub);margin-left:6px;letter-spacing:0}
+  .total .meta{font-size:12.5px;color:var(--sub);text-align:right;line-height:1.6;font-variant-numeric:tabular-nums}
+
+  .cards{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radsm);overflow:hidden}
+  .row{background:var(--card)}
+  .row-h{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none}
+  .row-h:hover{background:var(--panel2)}
+  .row-h .nm{font-size:14.5px;font-weight:600;flex:0 0 auto;min-width:100px}
+  .row-h .rate{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums}
+  .row-h .sp{flex:1}
+  .row-h .v{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-.01em}
+  .row-h .chev{font-size:11px;color:var(--faint);transition:transform .12s}
+  .row.open .chev{transform:rotate(180deg)}
+  .row-b{display:none;padding:0 16px 16px;font-size:13.5px;color:var(--sub);line-height:1.75}
+  .row.open .row-b{display:block}
+  .row-b .calc{background:var(--panel2);border-radius:6px;padding:10px 13px;margin:2px 0 10px;
+    font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
+  .row-b ul{margin:0;padding-left:17px}
+  .row-b li{margin-bottom:3px}
+  .row.hero .row-h .v{color:var(--accent)}
+
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .btn{font:inherit;font-size:13px;font-weight:600;padding:9px 15px;border-radius:6px;cursor:pointer;
+    background:var(--card);border:1px solid var(--line);color:var(--ink)}
+  .btn:hover{background:var(--panel2)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary:hover{filter:brightness(.95)}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{border-bottom:1px solid var(--line2);padding:10px 13px;text-align:left}
+  thead th{color:var(--faint);font-weight:600;font-size:11.5px;letter-spacing:.03em;border-bottom:1px solid var(--line);text-align:center}
+  thead th.n{text-align:center}
+  tbody tr:last-child td{border-bottom:0}
+  td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+  .tw{border:1px solid var(--line);border-radius:var(--radsm);overflow:hidden;background:var(--card)}
+  .rin{width:82px;font:inherit;font-size:13.5px;font-weight:600;text-align:center;padding:5px 9px;
+    border:1px solid var(--accent-line);border-radius:6px;background:var(--accent-soft);color:var(--ink);
+    font-variant-numeric:tabular-nums}
+  .rin:hover{border-color:var(--accent)}
+  .rin:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .note{font-size:12.5px;color:var(--faint);margin-top:10px;line-height:1.6}
+  .sub-h{font-size:13px;font-weight:600;margin:18px 0 8px;color:var(--ink)}
+  .sub-h:first-child{margin-top:0}
+  details.rates>summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--sub);
+    padding:12px 16px;list-style:none;border-radius:var(--radc)}
+  details.rates>summary::-webkit-details-marker{display:none}
+  details.rates>summary::before{content:"▸ ";color:var(--faint)}
+  details.rates[open]>summary::before{content:"▾ "}
+  details.rates>summary:hover{color:var(--accent)}
+  details.rates .inner{padding:0 20px 18px}
+
+  /* ===== 고대비 표 (상시 적용) ===== */
+  .card,.tw,.cards{border-color:var(--line)}
+  .sec-title{border-bottom:2px solid #9a9a95;font-weight:700}
+  .total{border-bottom:2px solid #9a9a95}
+  th,td{border:1px solid var(--line)}
+  thead th{background:#6f6f6b;color:#fff;font-size:12.5px;font-weight:700;
+    letter-spacing:.02em;border-bottom:0}
+  tbody tr:nth-child(even){background:var(--panel2)}
+  tbody tr:hover{background:var(--accent-soft)}
+  .row-h{border-bottom:1px solid var(--line)}
+  .row-h .nm{color:var(--ink)}
+  .row-h .v{font-size:19px}
+  .row.hero .row-h{background:var(--accent-soft)}
+  .fld label{color:var(--ink);font-weight:700}
+  /* 입력칸은 accent 유지 */
+  .fld input,.fld select{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+  .fld input:hover,.fld select:hover{border-color:var(--accent)}
+  .fld input:focus,.fld select:focus{background:var(--card);border-color:var(--accent);
+    box-shadow:0 0 0 3px var(--accent-soft)}
+  .fld input[readonly]{background:var(--panel2);border-color:var(--line);color:var(--sub)}
+  .rin{background:var(--accent-soft);border-color:var(--accent)}
+  /* 미리보기 지면은 자체 스타일 유지 */
+  .a4 th,.a4 td{border:.5px solid #b9b9b6}
+  .a4 thead th{background:#f1f1ef;color:#444;font-weight:700;border-bottom:.5px solid #b9b9b6}
+  .a4 tbody tr:nth-child(even){background:transparent}
+</style>
+<script src="sisul_danga_2026.js"></script>
+</head>
+<body>
+<header><div class="hd">
+  <div class="kicker">사업비 산출</div>
+  <h1>간단 사업비 산출 <span class="em">— 개략 검토용</span></h1>
+  <div class="sub">공사 개요만 입력하면 설계비·감리비·부대비가 자동 계산되어 총사업비가 산출됩니다.</div>
+  <button class="themebtn" id="themebtn" type="button">다크 모드</button>
+</div></header>
+
+<div class="wrap">
+  <div class="disclaim">
+    <span>본 산출 결과는 <b>사업비 개략 검토용 참고자료</b>입니다. 실제 예산 편성·계약 시에는 정식 원가계산 절차를 따라야 하며, 요율은 최신 고시를 확인해 반영하십시오.</span>
+  </div>
+
+  <section>
+    <h2 class="sec-title"><span class="n">1</span>기본 정보 입력<small>총공사비만 넣어도 계산됩니다</small></h2>
+    <div class="card">
+      <div class="grid">
+        <div class="fld"><label>학교명</label><input type="text" id="school" placeholder="예: ○○초등학교"></div>
+        <div class="fld"><label>공사명</label><input type="text" id="pname" placeholder="예: 급식실 환경개선공사"></div>
+        <div class="fld"><label>공사 종류<span class="q" title="공사 종류에 따라 감리 대상 여부와 요율이 달라집니다.">?</span></label>
+          <select id="ptype">
+            <option value="신축">신축</option>
+            <option value="증축">증축</option>
+            <option value="개축">개축</option>
+            <option value="개보수" selected>개보수(리모델링)</option>
+            <option value="대수선">대수선</option>
+            <option value="기타">기타</option>
+          </select>
+          <div class="hint" id="typeHint"></div>
+        </div>
+        <div class="fld" style="grid-column:1/-1">
+          <div class="termbox">
+            <div class="term-now" id="termNow"></div>
+            <details class="term-all"><summary>공사 종류 용어 전체 보기</summary>
+              <dl id="termList"></dl>
+            </details>
+          </div>
+        </div>
+        <div class="fld"><label>총공사비(추정)<span class="q" title="아래 시설비 산출 합계가 자동으로 들어옵니다. 직접 넣으려면 잠금을 해제하세요.">?</span></label>
+          <input type="text" id="cost" class="num" inputmode="numeric" placeholder="시설비 산출 시 자동 입력" readonly>
+          <div class="hint" id="costHint"><span id="costHintTxt">시설비 산출 합계가 자동 입력됩니다.</span> <a href="#" id="costManual">직접 입력</a></div>
+        </div>
+        <div class="fld"><label>연면적 (㎡)<span class="q" title="산출 내역서에 함께 기록됩니다.">?</span></label>
+          <input type="text" id="area" class="num" inputmode="numeric" placeholder="선택 입력">
+          <div class="hint">참고용 · 계산에는 사용하지 않습니다.</div>
+        </div>
+        <div class="fld"><label>건축물 종별<span class="q" title="별표3 난이도 구분. 학교는 통상 제2종(보통)입니다.">?</span></label>
+          <select id="jong"><option value="3">제3종 (복잡)</option><option value="2" selected>제2종 (보통)</option><option value="1">제1종 (단순)</option></select>
+          <div class="hint">별표4 요율 산정 기준 — 학교는 기본값 제2종(보통)</div>
+        </div>
+        <div class="fld"><label>도서작성 구분<span class="q" title="기본=인허가 최소 도서 / 중급=공종별 공사비 산정용 / 상급=세부 공사비 산정용">?</span></label>
+          <select id="deung"><option value="상">상급</option><option value="중" selected>중급</option><option value="기">기본</option></select>
+          <div class="hint">설계도서 상세 수준 — 기본값 중급</div>
+        </div>
+        <div class="fld"><label>설계 단계</label>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;padding:9px 0 0">
+            <label style="font-size:13px;font-weight:500;display:inline-flex;gap:5px;align-items:center"><input type="checkbox" id="stg1" style="width:auto">기본 20%</label>
+            <label style="font-size:13px;font-weight:500;display:inline-flex;gap:5px;align-items:center"><input type="checkbox" id="stg2" style="width:auto" checked>중간 30%</label>
+            <label style="font-size:13px;font-weight:500;display:inline-flex;gap:5px;align-items:center"><input type="checkbox" id="stg3" style="width:auto" checked>실시 50%</label>
+          </div>
+          <div class="hint" id="stgHint">기본값 — 중간 30% + 실시 50% (합 80%). 기본설계까지 발주할 때만 ‘기본 20%’를 추가 체크하세요.</div>
+        </div>
+        <div class="fld"><label>감리비 산정 방식</label>
+          <input type="text" value="공사비 요율 기준" readonly>
+          <div class="hint">총공사비 구간 요율 × 공사 종류 계수로 산정합니다.</div>
+        </div>
+      </div>
+      <div class="btns">
+        <button class="btn primary" id="btnSave" type="button">임시저장</button>
+        <button class="btn" id="btnLoad" type="button">불러오기</button>
+        <button class="btn" id="btnClear" type="button">초기화</button>
+        <span id="saveMsg" style="font-size:12.5px;color:var(--faint);align-self:center"></span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title"><span class="n">2</span>시설비 산출<small>2026 시설단가 · 금액단위 천원</small></h2>
+    <div class="card">
+      <div class="danga-grid">
+        <div class="fld"><label>구분</label><select id="dCat"></select></div>
+        <div class="fld"><label>항목</label><select id="dItem"></select></div>
+        <div class="fld"><label>규격 · 조건</label><select id="dSpec"></select></div>
+        <div class="fld"><label id="dUnitLb">적용 단가 (천원)</label><input type="text" id="dUnit" class="num" readonly></div>
+        <div class="fld" id="dAreaFld" style="display:none"><label id="dAreaLb">실제 면적 (㎡)</label><input type="text" id="dArea" class="num" inputmode="decimal"></div>
+        <div class="fld"><label id="dQtyLb">수량</label><input type="text" id="dQty" class="num" value="1" inputmode="decimal"></div>
+        <div class="fld"><label>&nbsp;</label><button class="btn primary" id="dAdd" type="button" style="white-space:nowrap">추가</button></div>
+      </div>
+      <div class="island-grid">
+        <div class="fld"><label>지역 가산<span class="q" title="도서지역은 단가에 가산율이 붙습니다. 설계용역비·감리비는 제외됩니다.">?</span></label>
+          <select id="dIsland">
+            <option value="0" selected>육지 (가산 없음)</option>
+            <option value="35">도서 가지역 +35%</option>
+            <option value="25">도서 나지역 +25%</option>
+            <option value="15">도서 다지역 +15%</option>
+            <option value="5">도서 라지역 +5%</option>
+          </select></div>
+      </div>
+      <div class="specbox" id="specBox"></div>
+      <div class="tw" style="margin-top:14px"><table>
+        <thead><tr><th style="width:110px">구분</th><th>항목 · 규격</th><th class="n" style="width:110px">단가(천원)</th><th class="n" style="width:70px">단위</th><th class="n" style="width:80px">수량</th><th class="n" style="width:130px">금액(원)</th><th style="width:36px"></th></tr></thead>
+        <tbody id="dBody"></tbody>
+      </table></div>
+      <div class="note" id="dFoot"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title"><span class="n">3</span>자동 계산 결과<small>항목을 누르면 산출 근거가 열립니다</small></h2>
+    <div id="result"></div>
+  </section>
+
+  <section>
+    <h2 class="sec-title"><span class="n">4</span>요율표 설정<small>관리자용 · 브라우저에 저장됩니다</small></h2>
+    <div class="card" style="padding:0">
+      <details class="rates">
+        <summary>요율표 열기 / 수정</summary>
+        <div class="inner">
+          <div class="disclaim" style="margin-top:0">
+            <span>본 요율은 <b>예시값</b>입니다. 실제 적용 시에는 최신 <b>엔지니어링사업대가기준 · 건축사법 시행령 · 전라남도교육청 원가계산 운영기준</b> 등 관련 고시를 반드시 확인하여 반영하십시오.</span>
+          </div>
+
+          <div class="sub-h">설계비 요율 <span style="font-weight:500;color:var(--faint);font-size:12px">— [별표4] 고시 요율 적용 (수정 불가)</span></div>
+          <div class="note" style="margin:0 0 6px">「공공발주사업에 대한 건축사의 업무범위와 대가기준」 별표4의 종별·도서작성 구분별 요율표를 그대로 적용하며, 구간 사이는 직선보간합니다. 종별·도서작성 구분은 1단계 입력에서 선택합니다.</div>
+
+          <div class="sub-h">감리비 요율 <span style="font-weight:500;color:var(--faint);font-size:12px">— [별표5] 고시 요율 적용 (수정 불가)</span></div>
+          <div class="note" style="margin:0 0 6px">「공공발주사업에 대한 건축사의 업무범위와 대가기준」 별표5의 종별 요율표를 그대로 적용하며, 구간 사이는 직선보간합니다. 종별은 1단계 입력의 건축물 종별을 따릅니다.</div>
+          <div class="sub-h">기타 기준</div>
+          <div class="tw"><table>
+            <tbody>
+              <tr><td>부대비율 (%)</td><td class="n" style="width:140px"><input class="rin" id="rExtra"></td></tr>
+              <tr><td>감리 적용 대상 공사 종류</td><td class="n" style="font-weight:600">신축 · 증축 · 개축</td></tr>
+              <tr><td>감리 제외 기준 — 공사비 미만 (원)<br><span style="font-size:11.5px;color:var(--faint)">0이면 제외 규칙을 적용하지 않습니다</span></td><td class="n"><input class="rin" id="rSupMin" style="width:130px"></td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="btns">
+            <button class="btn primary" id="saveRates" type="button">요율 저장</button>
+            <button class="btn" id="resetRates" type="button">기본값 복원</button>
+          </div>
+          <div class="note">구간 경계는 <b>이하 / 초과</b> 기준입니다. 예) “5억원 이하”는 500,000,000원을 포함합니다. 저장한 값은 이 브라우저에만 보관됩니다.</div>
+        </div>
+      </details>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ===== 별표4 건축설계 대가요율 (국토부고시 제2020-635호) ===== */
+var COST_BP=[50000000,100000000,200000000,300000000,500000000,1000000000,2000000000,3000000000,5000000000,10000000000,20000000000,30000000000,50000000000,100000000000,200000000000,300000000000,500000000000];
+var RATE_COLS={
+ '3-상':[12.55,11.48,9.99,8.68,7.9,7.03,6.22,5.91,5.72,5.58,5.42,5.32,5.25,5.14,5.06,5.01,4.93],
+ '3-중':[10.46,9.56,8.33,7.23,6.58,5.86,5.19,4.93,4.76,4.65,4.51,4.44,4.38,4.29,4.22,4.17,4.11],
+ '3-기':[8.36,7.65,6.66,5.78,5.26,4.68,4.15,3.94,3.81,3.72,3.61,3.55,3.5,3.43,3.38,3.34,3.28],
+ '2-상':[11.41,10.43,9.08,7.88,7.18,6.39,5.66,5.38,5.2,5.07,4.92,4.84,4.77,4.68,4.6,4.55,4.48],
+ '2-중':[9.51,8.69,7.57,6.57,5.98,5.32,4.72,4.48,4.33,4.22,4.1,4.03,3.98,3.9,3.84,3.79,3.73],
+ '2-기':[7.61,6.95,6.05,5.26,4.79,4.26,3.77,3.58,3.46,3.38,3.28,3.23,3.18,3.12,3.07,3.03,2.99],
+ '1-상':[10.22,9.38,8.16,7.08,6.46,5.75,5.09,4.84,4.68,4.56,4.43,4.36,4.3,4.21,4.14,4.1,4.03],
+ '1-중':[8.51,7.82,6.8,5.9,5.38,4.79,4.24,4.03,3.9,3.8,3.69,3.63,3.58,3.5,3.45,3.42,3.36],
+ '1-기':[6.81,6.25,5.44,4.72,4.3,3.83,3.39,3.22,3.12,3.04,2.95,2.9,2.86,2.8,2.76,2.73,2.69]
+};
+/* ===== 별표5 건축공사감리 대가요율 ===== */
+var SUP_BP=[50000000,100000000,200000000,300000000,500000000,1000000000,2000000000,3000000000,5000000000,10000000000,20000000000,30000000000,50000000000,100000000000,200000000000,300000000000,500000000000];
+var SUP_COLS={
+ '3':[2.46,2.32,1.85,1.70,1.57,1.35,1.24,1.20,1.18,1.14,1.11,1.10,1.08,1.07,1.05,1.03,1.02],
+ '2':[2.24,2.11,1.68,1.54,1.43,1.23,1.13,1.09,1.07,1.04,1.01,1.00,0.98,0.97,0.95,0.94,0.93],
+ '1':[2.02,1.90,1.51,1.39,1.29,1.11,1.02,0.98,0.96,0.94,0.91,0.90,0.88,0.87,0.86,0.85,0.84]
+};
+function b5Rate(cost,jong){
+  var RT=SUP_COLS[jong]||SUP_COLS['2'];
+  if(!cost||cost<=0) return {rate:0,band:'-',method:'-'};
+  if(cost<=SUP_BP[0]) return {rate:RT[0],band:eok(SUP_BP[0])+' 이하',method:'최저 구간 요율'};
+  for(var i=1;i<SUP_BP.length;i++){
+    if(cost<=SUP_BP[i]){
+      var a=SUP_BP[i-1],b=SUP_BP[i],ra=RT[i-1],rb=RT[i];
+      return {rate: ra+(rb-ra)*(cost-a)/(b-a), band:eok(a)+' 초과 ~ '+eok(b)+' 이하',
+        method:'직선보간 ('+eok(a)+' '+ra+'% ↔ '+eok(b)+' '+rb+'%)'};
+    }
+  }
+  return {rate:RT[RT.length-1],band:eok(SUP_BP[SUP_BP.length-1])+' 초과',method:'최종 구간 요율'};
+}
+function b4Rate(cost,key){
+  var RT=RATE_COLS[key]||RATE_COLS['2-중'];
+  if(!cost||cost<=0) return {rate:0,band:'-',method:'-'};
+  if(cost<=COST_BP[0]) return {rate:RT[0],band:eok(COST_BP[0])+' 이하',method:'최저 구간 요율'};
+  for(var i=1;i<COST_BP.length;i++){
+    if(cost<=COST_BP[i]){
+      var a=COST_BP[i-1],b=COST_BP[i],ra=RT[i-1],rb=RT[i];
+      return {rate: ra+(rb-ra)*(cost-a)/(b-a), band:eok(a)+' 초과 ~ '+eok(b)+' 이하',
+        method:'직선보간 ('+eok(a)+' '+ra+'% ↔ '+eok(b)+' '+rb+'%)'};
+    }
+  }
+  return {rate:RT[RT.length-1],band:eok(COST_BP[COST_BP.length-1])+' 초과',method:'최종 구간 요율'};
+}
+
+/* ===== 요율표 (상수 · 수정 가능) ===== */
+var DEFAULTS = {
+  design:[ {upto:500000000, rate:8.0}, {upto:1000000000, rate:7.0}, {upto:3000000000, rate:6.0}, {upto:5000000000, rate:5.0}, {upto:null, rate:4.5} ],
+  sup:[ {upto:500000000, rate:3.5}, {upto:1000000000, rate:3.0}, {upto:3000000000, rate:2.5}, {upto:null, rate:2.0} ],
+  typeFactor:{ '신축':1.0, '증축':1.0, '개축':0.95, '개보수':0.8, '대수선':0.9, '기타':1.0 },
+  extraRate:1.5,
+  areaUnit:12000,
+  supMinCost:0,
+  supTypes:['신축','증축','개축']
+};
+var R = load();
+var RATES_VER=2;
+function load(){
+  try{
+    var s=localStorage.getItem('simple-cost-rates');
+    if(s){
+      var o=JSON.parse(s);
+      if(o && o.v===RATES_VER){
+        var base=JSON.parse(JSON.stringify(DEFAULTS));
+        if(typeof o.extraRate==='number') base.extraRate=o.extraRate;
+        if(typeof o.supMinCost==='number') base.supMinCost=o.supMinCost;
+        if(Array.isArray(o.supTypes)) base.supTypes=o.supTypes;
+        return base;
+      }
+      try{ localStorage.removeItem('simple-cost-rates'); }catch(e2){}
+    }
+  }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULTS));
+}
+function save(){ try{ localStorage.setItem('simple-cost-rates', JSON.stringify({v:RATES_VER, extraRate:R.extraRate, supMinCost:R.supMinCost, supTypes:R.supTypes})); }catch(e){} }
+
+/* ===== 유틸 ===== */
+function fmt(n){ return (Math.round(n)||0).toLocaleString('ko-KR'); }
+function eok(n){ return (n/100000000).toFixed(n>=1000000000?1:2).replace(/\.?0+$/,'') + '억원'; }
+function floor1000(n){ return Math.floor(n/1000)*1000; }
+function parseNum(s){ var v=String(s||'').replace(/[^0-9.]/g,''); return v?parseFloat(v):0; }
+function bandLabel(list,i){
+  var lo = i===0 ? null : list[i-1].upto, hi = list[i].upto;
+  if(lo===null) return eok(hi)+' 이하';
+  if(hi===null) return eok(lo)+' 초과';
+  return eok(lo)+' 초과 ~ '+eok(hi)+' 이하';
+}
+/* 직선보간: 구간 대표점(상한값)을 기준으로 선형 보간 */
+function interpRate(list, cost){
+  if(cost<=0) return {rate:0, band:'-', method:'-'};
+  var pts=[], i;
+  for(i=0;i<list.length;i++){ if(list[i].upto!==null) pts.push({x:list[i].upto, y:list[i].rate}); }
+  var last=list[list.length-1];
+  if(cost<=pts[0].x) return {rate:pts[0].y, band:bandLabel(list,0), method:'구간 요율 직접 적용'};
+  if(last.upto===null && cost>pts[pts.length-1].x) return {rate:last.rate, band:bandLabel(list,list.length-1), method:'최종 구간 요율 적용'};
+  for(i=1;i<pts.length;i++){
+    if(cost<=pts[i].x){
+      var a=pts[i-1], b=pts[i];
+      var r = a.y + (b.y-a.y)*(cost-a.x)/(b.x-a.x);
+      return {rate:r, band:bandLabel(list,i), method:'직선보간 ('+eok(a.x)+' '+a.y+'% ↔ '+eok(b.x)+' '+b.y+'%)'};
+    }
+  }
+  return {rate:last.rate, band:bandLabel(list,list.length-1), method:'최종 구간 요율 적용'};
+}
+
+/* ===== 계산 ===== */
+function calc(){
+  var cost=parseNum(v('cost')), area=parseNum(v('area')), type=v('ptype'), method='rate';
+  var host=document.getElementById('result');
+  if(!cost){ host.innerHTML='<div class="empty">총공사비를 입력하면 설계비·감리비·부대비와 총사업비가 계산됩니다.</div>'; return; }
+
+  var key=v('jong')+'-'+v('deung');
+  var d=b4Rate(cost,key);
+  var stgSum=(document.getElementById('stg1').checked?0.2:0)+(document.getElementById('stg2').checked?0.3:0)+(document.getElementById('stg3').checked?0.5:0);
+  var design=floor1000(cost*d.rate/100*stgSum);
+  var f=(R.typeFactor[type]!==undefined?R.typeFactor[type]:1);
+  var s=b5Rate(cost, v('jong')), sup=0, supCalc='', supNote=[];
+  var supTypes = R.supTypes || ['신축','증축','개축'];
+  var notTarget = supTypes.indexOf(type)<0;
+  var excluded = notTarget || (R.supMinCost>0 && cost < R.supMinCost);
+  if(excluded){
+    if(notTarget) supNote.push('감리비는 '+supTypes.join('·')+' 공사에만 적용합니다. 현재 공사 종류는 '+type+'이므로 0원으로 산정했습니다.');
+    else supNote.push('총공사비가 '+fmt(R.supMinCost)+'원 미만이므로 감리 대상에서 제외로 처리했습니다.');
+    supCalc='감리 대상 아님 → 0원';
+  } else {
+    sup=floor1000(cost*s.rate/100);
+    supCalc=fmt(cost)+'원 × '+s.rate.toFixed(3)+'% = '+fmt(sup)+'원';
+  }
+  var extra=floor1000(cost*R.extraRate/100);
+  var total=cost+design+sup+extra;
+
+  host.innerHTML =
+  '<div class="total">'+
+    '<div><div class="lbl">총 사업비</div><div class="big">'+fmt(total)+'<span class="unit">원</span></div></div>'+
+    '<div class="meta">공사비 '+fmt(cost)+' · 설계비 '+fmt(design)+'<br>감리비 '+fmt(sup)+' · 부대비 '+fmt(extra)+'</div>'+
+  '</div>'+
+  '<div class="cards">'+
+    row('공사비','입력값', cost, '입력하신 총공사비(추정)를 그대로 반영합니다.', ['설계비·감리비·부대비는 이 금액을 기준으로 산정됩니다.'], false)+
+    row('설계비', d.rate.toFixed(2)+'% × '+Math.round(stgSum*100)+'%', design,
+        fmt(cost)+'원 × '+d.rate.toFixed(3)+'% × 단계 '+Math.round(stgSum*100)+'% = '+fmt(design)+'원',
+        ['근거 — 공공발주사업에 대한 건축사의 업무범위와 대가기준 [별표4]',
+         '적용 구분 — 제'+v('jong')+'종 · '+({'상':'상급','중':'중급','기':'기본'}[v('deung')])+' 도서',
+         '적용 구간 — '+d.band, '산정 방식 — '+d.method,
+         '설계 단계 배분 — 기본 20% / 중간 30% / 실시 50% (선택 단계 합계 '+Math.round(stgSum*100)+'%)',
+         '추가업무비용·부가가치세는 별도 계상합니다.', '천원 미만은 절사했습니다.'], false)+
+    row('감리비', excluded?'대상 아님':s.rate.toFixed(2)+'%', sup,
+        supCalc,
+        [ '근거 — 공공발주사업에 대한 건축사의 업무범위와 대가기준 [별표5] 건축공사감리 대가요율',
+          '적용 구분 — 제'+v('jong')+'종',
+          '적용 대상 — '+supTypes.join(' · ')+' 공사',
+          '적용 구간 — '+s.band, '산정 방식 — '+s.method,
+          '공사비 = 총예정금액(자재대 포함) 중 용지비·보상비·법률수속비·부가가치세를 제외한 금액',
+          '감리비(監理費): 공사가 설계도대로 되는지 확인·감독하는 대가입니다.'
+        ].concat(supNote), false)+
+    row('부대비', R.extraRate+'%', extra,
+        fmt(cost)+'원 × '+R.extraRate+'% = '+fmt(extra)+'원',
+        ['부대비(附帶費): 공사 본체 외에 꼭 드는 행정 비용입니다.',
+         '구성 항목 — 계약체결수수료, 입찰공고비, 공공요금, 감정평가비, 기공식·준공식 최소 의식비, 행정감독 및 검수비 등'], false)+
+    row('총 사업비','공사비 + 설계비 + 감리비 + 부대비', total,
+        fmt(cost)+' + '+fmt(design)+' + '+fmt(sup)+' + '+fmt(extra)+' = '+fmt(total)+'원',
+        ['개략 검토용 금액이며 부가가치세·관급자재·예비비는 포함되어 있지 않습니다.'], true)+
+  '</div>'+
+  '<div class="btns"><button class="btn primary" id="btnCsv" type="button">엑셀로 내보내기 (A4 세로)</button>'+
+  '<button class="btn" id="btnPv" type="button">PDF 미리보기 (A4 세로)</button></div>';
+
+  document.getElementById('btnCsv').onclick=function(){ exportXls({cost:cost,design:design,sup:sup,extra:extra,total:total,d:d,s:s,f:f,type:type,excluded:excluded}); };
+  document.getElementById('btnPv').onclick=function(){ openPreview({cost:cost,design:design,sup:sup,extra:extra,total:total,d:d,s:s,f:f,type:type,excluded:excluded}); };
+  host.querySelectorAll('.row-h').forEach(function(hh){ hh.onclick=function(){ hh.parentElement.classList.toggle('open'); }; });
+}
+function row(nm, rate, val, calcTxt, notes, hero){
+  return '<div class="row'+(hero?' hero':'')+'"><div class="row-h">'+
+    '<span class="nm">'+nm+'</span><span class="rate">'+rate+'</span><span class="sp"></span>'+
+    '<span class="v">'+fmt(val)+'원</span><span class="chev">⌄</span></div>'+
+    '<div class="row-b"><div class="calc">'+calcTxt+'</div><ul>'+
+    notes.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul></div></div>';
+}
+function xe(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function cS(t,v,st,f,span){
+  var a=' ss:StyleID="'+st+'"';
+  if(span>1) a+=' ss:MergeAcross="'+(span-1)+'"';
+  if(f) a+=' ss:Formula="'+xe(f)+'"';
+  return '<Cell'+a+'>'+(v===''||v==null?'':'<Data ss:Type="'+t+'">'+xe(v)+'</Data>')+'</Cell>';
+}
+function exportXls(o){
+  var add=parseFloat(document.getElementById('dIsland').value)||0;
+  var rows=[], r=0, R_=function(cells,ht){ r++; rows.push('<Row'+(ht?' ss:Height="'+ht+'"':'')+'>'+cells+'</Row>'); return r; };
+
+  R_(cS('String','간단 사업비 산출서','sTitle',null,6), 30);
+  R_(cS('String','산출일 '+new Date().toLocaleDateString('ko-KR')+' · 개략 검토용','sMeta',null,6), 18);
+  R_('');
+
+  R_(cS('String','학교명','sLbl')+cS('String',v('school')||'-','sVal',null,5));
+  R_(cS('String','공사명','sLbl')+cS('String',v('pname')||'-','sVal',null,5));
+  R_(cS('String','공사 종류','sLbl')+cS('String',o.type,'sVal',null,5));
+  R_(cS('String','연면적(㎡)','sLbl')+cS('Number',parseNum(v('area'))||0,'sNum0')+cS('String','','sVal',null,4));
+  R_('');
+
+  var sumRow=0;
+  if(LINES.length){
+    R_(cS('String','시설비 내역  (2026 시설단가'+(add?' · 지역 가산 +'+add+'%':'')+')','sSec',null,6), 22);
+    R_(cS('String','구분','sHead')+cS('String','항목 · 규격','sHead')+cS('String','단가(천원)','sHead')
+      +cS('String','단위','sHead')+cS('String','수량','sHead')+cS('String','금액(원)','sHead'), 20);
+    var first=r+1;
+    LINES.forEach(function(l){
+      var uk=Math.round(l.unitK*(1+add/100));
+      R_(cS('String',l.cat,'sTxt')+cS('String',l.nm,'sTxt')+cS('Number',uk,'sNum0')
+        +cS('String',l.unit,'sCen')+cS('Number',l.qty,'sQty')
+        +cS('Number',Math.round(uk*l.qty)*1000,'sMoney','=RC[-3]*RC[-1]*1000'));
+    });
+    var lineSum=LINES.reduce(function(a,l){ return a+Math.round(l.unitK*(1+add/100))*l.qty*1000; },0);
+    sumRow=R_(cS('String','시설비 합계','sTotL',null,5)+cS('Number',Math.round(lineSum),'sTotM','=SUM(R['+(first-r-1)+']C:R[-1]C)'));
+    R_('');
+  }
+
+  R_(cS('String','사업비 총괄','sSec',null,6), 22);
+  R_(cS('String','구분','sHead')+cS('String','산출 기준','sHead')+cS('String','요율(%)','sHead')
+    +cS('String','계수','sHead')+cS('String','비고','sHead')+cS('String','금액(원)','sHead'), 20);
+
+  var costRow=R_(cS('String','공사비','sTxtB')+cS('String','총공사비(추정)','sTxt')+cS('String','','sCen')
+    +cS('String','','sCen')+cS('String','','sTxt')
+    + (sumRow? cS('Number',o.cost,'sMoney','=R'+sumRow+'C6') : cS('Number',o.cost,'sMoney')));
+
+  R_(cS('String','설계비','sTxtB')+cS('String','공사비 × 요율','sTxt')+cS('Number',+o.d.rate.toFixed(3),'sNum3')
+    +cS('String','','sCen')+cS('String',o.d.band,'sTxt')
+    +cS('Number',o.design,'sMoney','=FLOOR(R'+costRow+'C6*RC[-3]/100,1000)'));
+
+  var supRate = o.excluded? 0 : +o.s.rate.toFixed(3);
+  R_(cS('String','감리비','sTxtB')+cS('String','공사비 × [별표5] 요율','sTxt')+cS('Number',supRate,'sNum3')
+    +cS('String','-','sCen')+cS('String',o.excluded?'감리 대상 아님(신축·증축·개축만 적용)':'[별표5] '+o.s.band,'sTxt')
+    +cS('Number',o.sup,'sMoney','=FLOOR(R'+costRow+'C6*RC[-3]/100,1000)'));
+
+  R_(cS('String','부대비','sTxtB')+cS('String','공사비 × 부대비율','sTxt')+cS('Number',R.extraRate,'sNum3')
+    +cS('String','','sCen')+cS('String','계약수수료·공고비·공공요금 등','sTxt')
+    +cS('Number',o.extra,'sMoney','=FLOOR(R'+costRow+'C6*RC[-3]/100,1000)'));
+
+  R_(cS('String','총 사업비','sGrandL',null,5)+cS('Number',o.total,'sGrandM','=SUM(R[-4]C:R[-1]C)'), 24);
+  R_('');
+  R_(cS('String','※ 본 산출 결과는 사업비 개략 검토용 참고자료입니다. 실제 예산 편성·계약 시에는 정식 원가계산 절차를 따라야 하며, 요율은 최신 고시를 확인해 반영하십시오.','sFoot',null,6), 30);
+
+  var xml = '<?xml version="1.0"?>\n<?mso-application progid="Excel.Sheet"?>\n'
+  + '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office"'
+  + ' xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:html="http://www.w3.org/TR/REC-html40">'
+  + '<Styles>'
+  + '<Style ss:ID="Default" ss:Name="Normal"><Alignment ss:Vertical="Center"/><Font ss:FontName="맑은 고딕" ss:Size="10" ss:Color="#37352F"/></Style>'
+  + st('sTitle','<Font ss:FontName="맑은 고딕" ss:Size="16" ss:Bold="1" ss:Color="#37352F"/><Alignment ss:Horizontal="Center" ss:Vertical="Center"/>')
+  + st('sMeta','<Font ss:FontName="맑은 고딕" ss:Size="9" ss:Color="#787774"/><Alignment ss:Horizontal="Center" ss:Vertical="Center"/>')
+  + st('sSec','<Font ss:FontName="맑은 고딕" ss:Size="11" ss:Bold="1" ss:Color="#37352F"/><Alignment ss:Vertical="Center"/>'+bd('Bottom','#37352F',2))
+  + st('sHead','<Font ss:FontName="맑은 고딕" ss:Size="9" ss:Bold="1" ss:Color="#787774"/><Alignment ss:Horizontal="Center" ss:Vertical="Center"/><Interior ss:Color="#F7F7F5" ss:Pattern="Solid"/>'+box())
+  + st('sLbl','<Font ss:FontName="맑은 고딕" ss:Size="10" ss:Bold="1" ss:Color="#787774"/><Alignment ss:Vertical="Center"/>'+box())
+  + st('sVal','<Alignment ss:Vertical="Center"/>'+box())
+  + st('sTxt','<Alignment ss:Vertical="Center" ss:WrapText="1"/>'+box())
+  + st('sTxtB','<Font ss:FontName="맑은 고딕" ss:Size="10" ss:Bold="1" ss:Color="#37352F"/><Alignment ss:Vertical="Center"/>'+box())
+  + st('sCen','<Alignment ss:Horizontal="Center" ss:Vertical="Center"/>'+box())
+  + st('sNum0','<Alignment ss:Horizontal="Right" ss:Vertical="Center"/><NumberFormat ss:Format="#,##0"/>'+box())
+  + st('sNum2','<Alignment ss:Horizontal="Right" ss:Vertical="Center"/><NumberFormat ss:Format="General"/>'+box())
+  + st('sQty','<Alignment ss:Horizontal="Right" ss:Vertical="Center"/><NumberFormat ss:Format="General"/>'+box())
+  + st('sNum3','<Alignment ss:Horizontal="Right" ss:Vertical="Center"/><NumberFormat ss:Format="General"/>'+box())
+  + st('sMoney','<Alignment ss:Horizontal="Right" ss:Vertical="Center"/><NumberFormat ss:Format="#,##0"/>'+box())
+  + st('sTotL','<Font ss:FontName="맑은 고딕" ss:Size="10" ss:Bold="1"/><Alignment ss:Horizontal="Right" ss:Vertical="Center"/><Interior ss:Color="#F7F7F5" ss:Pattern="Solid"/>'+box())
+  + st('sTotM','<Font ss:FontName="맑은 고딕" ss:Size="10" ss:Bold="1"/><Alignment ss:Horizontal="Right" ss:Vertical="Center"/><NumberFormat ss:Format="#,##0"/><Interior ss:Color="#F7F7F5" ss:Pattern="Solid"/>'+box())
+  + st('sGrandL','<Font ss:FontName="맑은 고딕" ss:Size="11" ss:Bold="1" ss:Color="#0075DE"/><Alignment ss:Horizontal="Right" ss:Vertical="Center"/><Interior ss:Color="#EEF5FD" ss:Pattern="Solid"/>'+box())
+  + st('sGrandM','<Font ss:FontName="맑은 고딕" ss:Size="12" ss:Bold="1" ss:Color="#0075DE"/><Alignment ss:Horizontal="Right" ss:Vertical="Center"/><NumberFormat ss:Format="#,##0"/><Interior ss:Color="#EEF5FD" ss:Pattern="Solid"/>'+box())
+  + st('sFoot','<Font ss:FontName="맑은 고딕" ss:Size="8" ss:Color="#A39E98"/><Alignment ss:Vertical="Top" ss:WrapText="1"/>')
+  + '</Styles>'
+  + '<Worksheet ss:Name="사업비 산출"><Table ss:DefaultRowHeight="17">'
+  + '<Column ss:Width="74"/><Column ss:Width="228"/><Column ss:Width="68"/><Column ss:Width="46"/><Column ss:Width="58"/><Column ss:Width="96"/>'
+  + rows.join('') + '</Table>'
+  + '<WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">'
+  + '<PageSetup><Layout x:Orientation="Portrait" x:CenterHorizontal="1"/>'
+  + '<PageMargins x:Bottom="0.6" x:Left="0.5" x:Right="0.5" x:Top="0.6"/></PageSetup>'
+  + '<Print><ValidPrinterInfo/><PaperSizeIndex>9</PaperSizeIndex><HorizontalResolution>600</HorizontalResolution><FitWidth>1</FitWidth><FitHeight>0</FitHeight><Scale>100</Scale></Print>'
+  + '<FreezePanes/><FrozenNoSplit/><SplitHorizontal>3</SplitHorizontal><TopRowBottomPane>3</TopRowBottomPane><ActivePane>2</ActivePane>'
+  + '</WorksheetOptions></Worksheet></Workbook>';
+
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\uFEFF'+xml],{type:'application/vnd.ms-excel;charset=utf-8;'}));
+  a.download=(v('school')||'사업비')+'_사업비산출.xls';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+function st(id,inner){ return '<Style ss:ID="'+id+'">'+inner+'</Style>'; }
+function bd(pos,color,w){ return '<Borders><Border ss:Position="'+pos+'" ss:LineStyle="Continuous" ss:Weight="'+(w||1)+'" ss:Color="'+color+'"/></Borders>'; }
+function box(){ return '<Borders>'+['Top','Bottom','Left','Right'].map(function(p){
+  return '<Border ss:Position="'+p+'" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D8D5"/>'; }).join('')+'</Borders>'; }
+function v(id){ return document.getElementById(id).value; }
+
+/* ===== 요율표 UI ===== */
+function renderRates(){
+  
+  
+  
+  var _e=document.getElementById('rExtra'); if(_e) _e.value=R.extraRate;
+  var _m=document.getElementById('rSupMin'); if(_m) _m.value=R.supMinCost;
+}
+document.getElementById('saveRates').onclick=function(){
+  document.querySelectorAll('input.rin[data-t]').forEach(function(el){
+    var val=parseFloat(el.value)||0;
+    if(el.dataset.t==='design') R.design[+el.dataset.i].rate=val;
+    else if(el.dataset.t==='sup') R.sup[+el.dataset.i].rate=val;
+    else R.typeFactor[el.dataset.k]=val;
+  });
+  var ex=document.getElementById('rExtra'); if(ex && ex.value.trim()!=='') R.extraRate=parseFloat(ex.value)||0;
+  var sm=document.getElementById('rSupMin'); if(sm && sm.value.trim()!=='') R.supMinCost=parseNum(sm.value);
+  save(); renderRates(); calc();
+  this.textContent='저장됨'; var b=this; setTimeout(function(){ b.textContent='요율 저장'; },1200);
+};
+document.getElementById('resetRates').onclick=function(){
+  R=JSON.parse(JSON.stringify(DEFAULTS)); save(); renderRates(); calc();
+};
+
+/* ===== 입력 처리 ===== */
+(function(){
+  var ci=document.getElementById('cost'), link=document.getElementById('costManual');
+  link.onclick=function(ev){
+    ev.preventDefault();
+    if(ci.readOnly){ ci.readOnly=false; link.textContent='자동 입력으로 되돌리기'; ci.focus();
+      document.getElementById('costHintTxt').textContent='직접 입력 모드입니다.'; }
+    else { ci.readOnly=true; link.textContent='직접 입력';
+      document.getElementById('costHintTxt').textContent='시설비 산출 합계가 자동 입력됩니다.';
+      renderLines(); }
+  };
+})();
+['cost','area'].forEach(function(id){
+  var el=document.getElementById(id);
+  el.addEventListener('input',function(){
+    var n=parseNum(el.value);
+    el.value = n? n.toLocaleString('ko-KR') : '';
+    if(id==='cost') document.getElementById('costHintTxt').textContent = n? ('직접 입력 · 약 '+eok(n)) : '직접 입력 모드입니다.';
+    calc();
+  });
+});
+['school','pname','ptype','jong','deung','stg1','stg2','stg3'].forEach(function(id){
+  document.getElementById(id).addEventListener('change',function(){ typeHint(); calc(); });
+});
+document.getElementById('ptype').addEventListener('change', function(){ applyStageDefault(); calc(); });
+var TERMS={
+  '신축':'빈 땅(또는 기존 건물을 모두 없앤 자리)에 건물을 <b>새로 짓는 것</b>입니다. 부속건축물만 있는 대지에 주된 건축물을 짓는 경우도 신축입니다.',
+  '증축':'기존 건물이 있는 대지에서 <b>바닥면적·층수·높이를 늘리는 것</b>입니다. 옆에 붙여 짓거나 위로 올리는 경우 모두 증축입니다.',
+  '개축':'기존 건물의 전부 또는 일부(내력벽·기둥·보·지붕틀 중 셋 이상)를 <b>헐고 같은 규모로 다시 짓는 것</b>입니다. 규모를 늘리면 증축이 됩니다.',
+  '개보수':'구조를 그대로 두고 <b>노후된 마감·설비를 고쳐 쓰는 공사</b>입니다(리모델링). 창호 교체, 화장실 개선, 바닥·천장 보수 등이 해당합니다.',
+  '대수선':'건물의 <b>주요 구조부를 수선·변경</b>하는 공사입니다(내력벽 30㎡ 이상 수선, 기둥·보·지붕틀 3개 이상 수선, 방화벽·계단 변경 등). 규모는 늘리지 않습니다.',
+  '기타':'위 분류에 들어가지 않는 공사입니다(옥외 토목, 담장·포장, 설비 단독 교체 등).'
+};
+var TERM_EXTRA='<b>재축</b>은 재해로 없어진 건물을 종전 규모 이내로 다시 짓는 것, <b>이전</b>은 건물을 헐지 않고 같은 대지의 다른 위치로 옮기는 것을 말합니다.';
+var FULL_STAGE=['신축','증축','개축'];
+function applyStageDefault(){
+  var t=v('ptype'), full=FULL_STAGE.indexOf(t)>=0;
+  document.getElementById('stg1').checked=full;
+  document.getElementById('stg2').checked=true;
+  document.getElementById('stg3').checked=true;
+  stageHint();
+}
+function stageHint(){
+  var t=v('ptype'), full=FULL_STAGE.indexOf(t)>=0, el=document.getElementById('stgHint');
+  if(el) el.textContent = full
+    ? '기본값 — '+t+'은(는) 기본 20% + 중간 30% + 실시 50% (합 100%)'
+    : '기본값 — '+t+'은(는) 중간 30% + 실시 50% (합 80%). 기본설계까지 발주할 때만 ‘기본 20%’를 추가 체크하세요.';
+}
+function typeHint(){
+  var t=v('ptype'), f=R.typeFactor[t];
+  var stp=R.supTypes||['신축','증축','개축'];
+  document.getElementById('typeHint').textContent = (stp.indexOf(t)<0 ? '감리비 미적용 (감리 대상: '+stp.join('·')+')' : '감리비 적용 대상');
+  var now=document.getElementById('termNow');
+  if(now) now.innerHTML='<b>'+t+'</b> — '+TERMS[t];
+  var list=document.getElementById('termList');
+  if(list && !list.dataset.done){
+    list.innerHTML=Object.keys(TERMS).map(function(k){
+      return '<dt>'+k+'</dt><dd>'+TERMS[k]+'</dd>';
+    }).join('')+'<dt>참고</dt><dd>'+TERM_EXTRA+'</dd>';
+    list.dataset.done='1';
+  }
+}
+
+/* ===== 테마 ===== */
+(function(){
+  if(localStorage.getItem('sb-theme')==='dark') document.documentElement.setAttribute('data-theme','dark');
+  var btn=document.getElementById('themebtn');
+  function lb(){ btn.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'라이트 모드':'다크 모드'; }
+  lb();
+  btn.onclick=function(){
+    var d=document.documentElement.getAttribute('data-theme')==='dark';
+    if(d){ document.documentElement.removeAttribute('data-theme'); localStorage.setItem('sb-theme','light'); }
+    else { document.documentElement.setAttribute('data-theme','dark'); localStorage.setItem('sb-theme','dark'); }
+    lb();
+  };
+})();
+
+/* ===== 2026 시설단가 — 시설비 산출 ===== */
+var LINES = [];
+(function(){
+  var P = window.PRICE2026;
+  if(!P){ document.getElementById('dFoot').textContent='시설단가 데이터를 불러오지 못했습니다.'; return; }
+  var cat=document.getElementById('dCat'), item=document.getElementById('dItem'), spec=document.getElementById('dSpec');
+  cat.innerHTML = P.cats.map(function(c,i){ return '<option value="'+i+'">'+c.cat+'</option>'; }).join('');
+  function fillItems(){
+    var c=P.cats[+cat.value];
+    item.innerHTML = c.items.map(function(it,i){ return '<option value="'+i+'">'+it.name+'</option>'; }).join('');
+    fillSpecs();
+  }
+  function fillSpecs(){
+    var it=P.cats[+cat.value].items[+item.value];
+    spec.innerHTML = it.rows.map(function(r,i){ return '<option value="'+i+'">'+(r[0]||'기본')+'</option>'; }).join('');
+    fillUnit();
+  }
+  function fillUnit(keepQty){
+    var c=P.cats[+cat.value], it=c.items[+item.value], r=it.rows[+spec.value];
+    var add=parseFloat(document.getElementById('dIsland').value)||0;
+    var base=parseNum(r[3]);
+    var mu = MU(r[2]);
+    document.getElementById('dUnit').value = fmt(Math.round(parseNum(r[1])*(1+add/100)));
+    document.getElementById('dUnitLb').textContent =
+      (add? '적용 단가 (천원 · +'+add+'%)' : '적용 단가 (천원)') + (base>0? ' · '+base+mu : '');
+    var fld=document.getElementById('dAreaFld'), ar=document.getElementById('dArea');
+    document.getElementById('dQtyLb').textContent = base>0? '수량 (×'+base+mu+')' : '수량';
+    if(base>0){ fld.style.display=''; document.getElementById('dAreaLb').textContent='실제 규모 ('+mu+')'; }
+    else fld.style.display='none';
+    if(!keepQty){
+      document.getElementById('dQty').value = 1;
+      if(base>0) ar.value = base;
+    }
+    renderSpec(c.cat, it.name, r);
+  }
+  var qtyEl=document.getElementById('dQty'), areaEl=document.getElementById('dArea');
+  function curBase(){ var r=P.cats[+cat.value].items[+item.value].rows[+spec.value]; return parseNum(r[3]); }
+  areaEl.oninput=function(){
+    var b=curBase(); if(!(b>0)) return;
+    var a=parseNum(areaEl.value);
+    if(a>0) qtyEl.value = Math.round(a/b*1000)/1000;
+  };
+  qtyEl.oninput=function(){
+    var b=curBase(); if(!(b>0)) return;
+    var q=parseNum(qtyEl.value);
+    if(q>0) areaEl.value = Math.round(q*b*100)/100;
+  };
+  function MU(u){ return ['㎡','m','㎥'].indexOf(u)>=0 ? u : '㎡'; }
+  function renderSpec(catNm, itemNm, r){
+    var add=parseFloat(document.getElementById('dIsland').value)||0;
+    var uk=Math.round(parseNum(r[1])*(1+add/100));
+    var base=r[3], note=r[4]||r[0]||'', mu=MU(r[2]);
+    var UNIT_DESC={'㎡':'면적 기준 단가입니다.',
+      '실':'교실 1실 단위 단가입니다. 실 개수를 수량으로 넣으세요.',
+      '동':'건물 1동 단위 단가입니다. 동 개수를 수량으로 넣으세요.',
+      'm':'미터당 단가입니다. 시공 연장을 수량으로 넣으세요.',
+      '개소':'설치 개소당 단가입니다.','조':'설비 1조당 단가입니다.',
+      '식':'일식 단가입니다. 통상 수량 1로 넣습니다.','세대':'1세대당 단가입니다.','공':'1공(孔)당 단가입니다.'};
+    var el=document.getElementById('specBox');
+    el.innerHTML =
+      '<div class="sb-t">'+itemNm+'</div>'+
+      (note? '<div class="sb-d">'+note+'</div>' : '')+
+      '<dl>'+
+        '<div><dt>구분</dt><dd>'+catNm+'</dd></div>'+
+        '<div><dt>고시 단가</dt><dd>'+fmt(parseNum(r[1]))+'<small>천원 / '+(base? base+mu+' 기준' : r[2])+'</small></dd></div>'+
+        (add? '<div><dt>적용 단가</dt><dd>'+fmt(uk)+'<small>천원 / '+(base? base+mu+' 기준' : r[2])+' · 가산 +'+add+'%</small></dd></div>' : '')+
+        (base? '<div><dt>기준 규모</dt><dd>'+base+'<small>'+mu+' 기준</small></dd></div>' : '')+
+        (base? '<div><dt>'+mu+'당 환산</dt><dd>'+fmt(Math.round(uk/parseNum(base)*100)/100)+'<small>천원 / '+mu+'</small></dd></div>' : '')+
+        '<div><dt>수량 단위</dt><dd>'+(base? base+mu+' 기준 배수' : r[2])+'</dd></div>'+
+
+      '</dl>'+
+      '<div class="sb-d" style="margin-top:9px">'+
+        (base? '표시된 단가는 <b>기준 규모 '+base+mu+' 전체 금액</b>('+mu+'당 약 '+fmt(Math.round(uk/parseNum(base)*100)/100)+'천원)입니다. 수량 1 = '+base+mu+'이며, 실제 규모를 넣으면 수량(배수)이 자동 환산됩니다.'
+              : (UNIT_DESC[r[2]]||'선택한 단위 기준으로 수량을 입력하세요.'))+'</div>';
+  }
+  cat.onchange=fillItems; item.onchange=fillSpecs; spec.onchange=fillUnit;
+  fillItems();
+  document.getElementById('dAdd').onclick=function(){
+    var c=P.cats[+cat.value], it=c.items[+item.value], r=it.rows[+spec.value];
+    var bq=parseNum(r[3]);
+    LINES.push({cat:c.cat, nm:it.name+(r[0]?' — '+r[0]:''), unitK:parseNum(r[1]), unit:r[2], base:bq>0?bq:0, qty:parseNum(document.getElementById('dQty').value)||1});
+    renderLines();
+  };
+  document.getElementById('dIsland').onchange=function(){ fillUnit(true); renderLines(); };
+  document.getElementById('dFoot').textContent = P.foot || '';
+})();
+function renderLines(){
+  var add = parseFloat(document.getElementById('dIsland').value)||0;
+  var body=document.getElementById('dBody'), sum=0;
+  if(!LINES.length){ body.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--faint);padding:22px">항목을 골라 추가하면 시설비가 합산되고 총공사비에 자동 반영됩니다.</td></tr>'; }
+  else{
+    body.innerHTML = LINES.map(function(l,i){
+      var uk = l.unitK*(1+add/100);
+      var amt = Math.round(uk*l.qty)*1000;
+      sum += amt;
+      return '<tr><td style="color:var(--sub);font-size:12.5px">'+l.cat+'</td><td>'+l.nm+'</td>'+
+        '<td class="n">'+fmt(uk)+'</td><td class="n" style="color:var(--sub)">'+(l.base? l.base+MU2(l.unit)+' 기준' : l.unit)+'</td>'+
+        '<td class="n"><input class="rin" style="width:64px" data-li="'+i+'" value="'+l.qty+'"></td>'+
+        '<td class="n" style="font-weight:600">'+fmt(amt)+'</td>'+
+        '<td style="text-align:center"><button class="btn" style="padding:2px 7px;font-size:12px" data-del="'+i+'" type="button">✕</button></td></tr>';
+    }).join('') +
+    '<tr><td colspan="5" style="font-weight:700">시설비 합계'+(add?' (가산 +'+add+'%)':'')+'</td>'+
+    '<td class="n" style="font-weight:700;color:var(--accent)">'+fmt(sum)+'</td><td></td></tr>';
+  }
+  body.querySelectorAll('input[data-li]').forEach(function(el){
+    el.onchange=function(){ LINES[+el.dataset.li].qty=parseNum(el.value)||0; renderLines(); };
+  });
+  body.querySelectorAll('button[data-del]').forEach(function(el){
+    el.onclick=function(){ LINES.splice(+el.dataset.del,1); renderLines(); };
+  });
+  var ci=document.getElementById('cost');
+  if(ci.readOnly){
+    ci.value = sum? sum.toLocaleString('ko-KR') : '';
+    document.getElementById('costHintTxt').textContent = sum? ('시설비 합계 자동 반영 · 약 '+eok(sum)) : '시설비 산출 합계가 자동 입력됩니다.';
+  }
+  calc();
+}
+/* ===== PDF 미리보기 ===== */
+function openPreview(o){
+  var add=parseFloat(document.getElementById('dIsland').value)||0;
+  var ov=document.getElementById('pvOv');
+  var lineRows='', lineSum=0;
+  LINES.forEach(function(l){
+    var uk=Math.round(l.unitK*(1+add/100)), amt=Math.round(uk*l.qty)*1000; lineSum+=amt;
+    lineRows+='<tr><td>'+l.cat+'</td><td>'+l.nm+'</td><td class="n">'+fmt(uk)+'</td><td class="c">'+(l.base? l.base+MU2(l.unit):l.unit)+'</td><td class="n">'+l.qty+'</td><td class="n">'+fmt(amt)+'</td></tr>';
+  });
+  var rate=function(x){ return x.toFixed(3).replace(/0+$/,'').replace(/.$/,''); };
+  ov.querySelector('.a4').innerHTML =
+    '<h2>사업비 산출서</h2>'+
+    '<div class="meta">'+(v('school')||'-')+'  ·  '+(v('pname')||'-')+'  ·  산출일 '+new Date().toLocaleDateString('ko-KR')+'</div>'+
+    '<div class="sec">사업 개요</div>'+
+    '<table><tbody>'+
+      '<tr><th style="width:70px">학교명</th><td>'+(v('school')||'-')+'</td><th style="width:70px">공사 종류</th><td>'+o.type+'</td></tr>'+
+      '<tr><th>공사명</th><td>'+(v('pname')||'-')+'</td><th>연면적</th><td>'+(parseNum(v('area'))?fmt(parseNum(v('area')))+' ㎡':'-')+'</td></tr>'+
+    '</tbody></table>'+
+    (LINES.length ?
+      '<div class="sec">시설비 내역'+(add?' (지역 가산 +'+add+'%)':'')+'</div>'+
+      '<table><thead><tr><th style="width:76px">구분</th><th>항목 · 규격</th><th style="width:70px">단가(천원)</th><th style="width:42px">단위</th><th style="width:52px">수량</th><th style="width:96px">금액(원)</th></tr></thead>'+
+      '<tbody>'+lineRows+'<tr class="sum"><td colspan="5" style="text-align:right">시설비 합계</td><td class="n">'+fmt(lineSum)+'</td></tr></tbody></table>' : '')+
+    '<div class="sec">사업비 총괄</div>'+
+    '<table><thead><tr><th style="width:80px">구분</th><th>산출 기준</th><th style="width:60px">요율(%)</th><th style="width:46px">계수</th><th style="width:110px">금액(원)</th></tr></thead><tbody>'+
+      '<tr><td>공사비</td><td>총공사비(추정)</td><td class="c">-</td><td class="c">-</td><td class="n">'+fmt(o.cost)+'</td></tr>'+
+      '<tr><td>설계비</td><td>공사비 × 요율 · '+o.d.band+'</td><td class="c">'+rate(o.d.rate)+'</td><td class="c">-</td><td class="n">'+fmt(o.design)+'</td></tr>'+
+      '<tr><td>감리비</td><td>'+(o.excluded?'감리 대상 아님 (신축·증축·개축만 적용)':'공사비 × [별표5] 요율 · 제'+v('jong')+'종 · '+o.s.band)+'</td><td class="c">'+(o.excluded?'-':o.s.rate.toFixed(2))+'</td><td class="c">-</td><td class="n">'+fmt(o.sup)+'</td></tr>'+
+      '<tr><td>부대비</td><td>공사비 × 부대비율 · 계약수수료·공고비·공공요금 등</td><td class="c">'+R.extraRate+'</td><td class="c">-</td><td class="n">'+fmt(o.extra)+'</td></tr>'+
+      '<tr class="grand"><td colspan="4" style="text-align:right">총 사업비</td><td class="n">'+fmt(o.total)+'</td></tr>'+
+    '</tbody></table>'+
+    '<div class="foot">※ 본 산출 결과는 사업비 개략 검토용 참고자료입니다. 실제 예산 편성·계약 시에는 정식 원가계산 절차를 따라야 하며, 요율은 최신 고시를 확인해 반영하십시오.<br>※ 모든 금액은 천원 미만 절사 기준입니다.</div>';
+  ov.classList.add('on');
+  document.body.style.overflow='hidden';
+}
+(function(){
+  var ov=document.createElement('div');
+  ov.id='pvOv';
+  ov.innerHTML='<div class="bar"><span class="ttl">PDF 미리보기 · A4 세로</span>'+
+    '<button class="btn primary" id="pvPrint" type="button">인쇄 / PDF 저장</button>'+
+    '<button class="btn" id="pvClose" type="button">닫기</button></div><div class="a4"></div>';
+  document.body.appendChild(ov);
+  ov.querySelector('#pvPrint').onclick=function(){ window.print(); };
+  function close(){ ov.classList.remove('on'); document.body.style.overflow=''; }
+  ov.querySelector('#pvClose').onclick=close;
+  ov.addEventListener('click',function(e){ if(e.target===ov) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+})();
+
+function MU2(u){ return ['㎡','m','㎥'].indexOf(u)>=0 ? u : '㎡'; }
+function lookupBase(cat, nm){
+  var P=window.PRICE2026; if(!P) return 0;
+  for(var i=0;i<P.cats.length;i++){ var c=P.cats[i]; if(c.cat!==cat) continue;
+    for(var j=0;j<c.items.length;j++){ var it=c.items[j];
+      for(var k=0;k<it.rows.length;k++){ var r=it.rows[k];
+        if(it.name+(r[0]?' — '+r[0]:'')===nm){ var b=parseNum(r[3]); return b>0?b:0; } } } }
+  return 0;
+}
+/* ===== 임시저장 ===== */
+var SKEY='simple-cost-draft';
+function snapshot(){
+  var ci=document.getElementById('cost');
+  return { school:v('school'), pname:v('pname'), ptype:v('ptype'), area:v('area'),
+    island:document.getElementById('dIsland').value,
+    manual:!ci.readOnly, cost:ci.value, lines:LINES, ver:2, at:Date.now() };
+}
+function autoSave(){ try{ localStorage.setItem(SKEY, JSON.stringify(snapshot())); }catch(e){} }
+function msg(t){ var el=document.getElementById('saveMsg'); el.textContent=t; clearTimeout(msg._t); msg._t=setTimeout(function(){ el.textContent=''; },2600); }
+function restore(silent){
+  var raw; try{ raw=localStorage.getItem(SKEY); }catch(e){}
+  if(!raw){ if(!silent) msg('저장된 임시 데이터가 없습니다.'); return false; }
+  var d; try{ d=JSON.parse(raw); }catch(e){ return false; }
+  ['school','pname','ptype','area'].forEach(function(k){ if(d[k]!==undefined) document.getElementById(k).value=d[k]; });
+  if(d.island!==undefined) document.getElementById('dIsland').value=d.island;
+  LINES = Array.isArray(d.lines)? d.lines : [];
+  LINES.forEach(function(l){
+    if(l.base===undefined) l.base = lookupBase(l.cat, l.nm);
+    if(d.ver!==2 && l.base>0 && parseNum(l.qty)===l.base) l.qty = 1;
+  });
+  var ci=document.getElementById('cost'), link=document.getElementById('costManual');
+  ci.readOnly = !d.manual;
+  link.textContent = d.manual? '자동 입력으로 되돌리기' : '직접 입력';
+  renderLines();
+  applyStageDefault();
+  if(d.manual && d.cost){ ci.value=d.cost; document.getElementById('costHintTxt').textContent='직접 입력 · 약 '+eok(parseNum(d.cost)); calc(); }
+  typeHint();
+  if(!silent) msg('불러왔습니다 · '+new Date(d.at||Date.now()).toLocaleString('ko-KR'));
+  return true;
+}
+document.getElementById('btnSave').onclick=function(){ autoSave(); msg('임시저장했습니다 · '+new Date().toLocaleTimeString('ko-KR')); };
+document.getElementById('btnLoad').onclick=function(){ restore(false); };
+document.getElementById('btnClear').onclick=function(){
+  if(!confirm('입력 내용과 임시저장 데이터를 모두 지웁니다. 계속할까요?')) return;
+  try{ localStorage.removeItem(SKEY); }catch(e){}
+  ['school','pname','area'].forEach(function(k){ document.getElementById(k).value=''; });
+  document.getElementById('ptype').value='개보수';
+  document.getElementById('dIsland').value='0';
+  LINES=[]; var ci=document.getElementById('cost'); ci.readOnly=true; ci.value='';
+  document.getElementById('costManual').textContent='직접 입력';
+  renderLines(); typeHint(); msg('초기화했습니다.');
+};
+document.addEventListener('input', autoSave);
+document.addEventListener('change', autoSave);
+
+renderLines();
+try{ renderRates(); }catch(e){ console.warn('renderRates', e); }
+typeHint();
+applyStageDefault();
+restore(true);
+calc();
+</script>
+<script src="close-button.js" defer></script></body>
+</html>

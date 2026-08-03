@@ -1,6 +1,9 @@
 (function(){try{
 if(window.self!==window.top)return;
 if(document.getElementById('omCloseBtn'))return;
+var ex=document.querySelectorAll('button,a');
+for(var i=0;i<ex.length;i++){var t=(ex[i].textContent||'').trim();
+  if(t.indexOf('닫기')>-1 && getComputedStyle(ex[i]).position==='fixed')return;}
 var b=document.createElement('button');
 b.id='omCloseBtn';b.type='button';b.setAttribute('aria-label','창 닫기');
 b.innerHTML='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span style="font-size:12.5px;font-weight:600;letter-spacing:-.01em">닫기</span>';

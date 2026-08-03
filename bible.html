@@ -228,8 +228,7 @@
   .acc.open{box-shadow:var(--shadow);}
   .acc-head{display:flex;align-items:center;gap:14px;padding:15px 18px;cursor:pointer;user-select:none;}
   .acc-head:hover{background:var(--surface-2);}
-  .acc-num{flex:0 0 auto;width:32px;height:32px;border:1.5px solid var(--border);display:flex;align-items:center;
-    justify-content:center;font-weight:900;font-size:13px;color:#fff;}
+  .acc-num{flex:0 0 auto;width:24px;text-align:center;font-weight:800;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;}
   .acc-title{flex:1;min-width:0;}
   .acc-title .t{font-weight:800;font-size:15.5px;}
   .acc-title .d{font-size:12.5px;color:var(--muted);margin-top:1px;}
@@ -760,14 +759,21 @@
   .cb-hit span{font-size:10px;font-weight:800;color:var(--accent-ink);background:var(--accent);padding:2px 7px;border-radius:100px;flex:0 0 auto;}
   .badge-org,.badge-org.foot{border:var(--glassbd);border-radius:100px;box-shadow:var(--cardsh-sm);background:var(--surface);}
   .ck-badge,.cc-badge,.res-card .rc-r .thr,.res-head .cnt,.res-head.muted .cnt{border:0;border-radius:100px;}
-  .acc-num,.tl-no{border:0;border-radius:10px;}
+  .tl-no{border:0;border-radius:10px;}
+  /* 아코디언 — 셀 간격 없이 하나의 리스트로 */
+  .acc{margin-bottom:0;border-radius:0;box-shadow:none;}
+  .acc.open{box-shadow:none;}
+  .acc+.acc{border-top:0;}
+  [data-list] .acc:first-child{border-radius:var(--rad) var(--rad) 0 0;}
+  [data-list] .acc:last-child{border-radius:0 0 var(--rad) var(--rad);}
+  .acc-head{padding:12px 18px;}
   .sl-node{border:2px solid var(--surface);}
   /* 표 헤더 — 노션 톤 (채운 accent 바 제거) */
   thead th{background:var(--surface)!important;color:var(--muted)!important;font-weight:600!important;
     font-size:11.5px!important;text-transform:none!important;letter-spacing:.03em!important;
     border-bottom:1px solid var(--line)!important;padding:11px 14px 8px!important;}
   tbody td{border-top:1px solid var(--line2)!important;}
-  .tbl-wrap{border:1px solid var(--line)!important;border-radius:var(--radsm)!important;box-shadow:none!important;}
+  .tbl-wrap{border:1px solid var(--line)!important;border-radius:0!important;box-shadow:none!important;}
 
   /* 표지 */
   .cover{background:var(--accent);border-bottom:0;position:relative;overflow:hidden;}
@@ -1106,7 +1112,7 @@
   #cert .certcard-b .cc-no{color:var(--faint);background:var(--surface-2);}
   #calc .note,#cert .note{background:var(--surface-3);border:0;border-left:3px solid var(--accent);
     border-radius:var(--radsm);box-shadow:none;padding:14px 16px;font-size:13.5px;color:var(--ink-2);}
-  #calc .tbl-wrap,#cert .tbl-wrap{border:1px solid var(--line);border-radius:var(--rad);box-shadow:none;overflow-x:auto;}
+  #calc .tbl-wrap,#cert .tbl-wrap{border:1px solid var(--line);border-radius:0;box-shadow:none;overflow-x:auto;}
   #calc .tbl-wrap th,#cert .tbl-wrap th{background:var(--surface-2);color:var(--faint);font-size:11.5px;
     font-weight:700;border:0;border-bottom:1px solid var(--line);padding:10px 13px;}
   #calc .tbl-wrap td,#cert .tbl-wrap td{border:0;border-top:1px solid var(--line);padding:11px 13px;
@@ -1155,7 +1161,7 @@
   #ratio .sec-head{border:0;padding:0;}
   #ratio .sec-head .chip{background:none!important;color:var(--muted)!important;padding:0;border:0;box-shadow:none;
     font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
-  #ratio .tbl-wrap{background:var(--surface);border:1px solid var(--line);border-radius:var(--rad);
+  #ratio .tbl-wrap{background:var(--surface);border:1px solid var(--line);border-radius:0;
     box-shadow:none;overflow-x:auto;}
   #ratio .tbl-wrap table{border-collapse:collapse;}
   #ratio .tbl-wrap th{font-size:11.5px;font-weight:700;color:var(--faint);background:var(--surface-2);
@@ -1323,7 +1329,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <span class="nav-title">학교시설업무 치트키<b>SCHOOL BIBLE</b></span>
     </div>
     <div class="nav-util">
-      <a class="theme-toggle" id="introBtn" href="intro.html" title="인트로 페이지로" aria-label="인트로" style="padding:0;display:inline-flex;align-items:center;justify-content:center;text-decoration:none"><span style="width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center"><span style="width:20px;height:20px;border-radius:5px;background:#0075de;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:900;line-height:1">치</span></span></a>
+      <a class="theme-toggle" id="introBtn" href="intro.html" title="인트로 페이지로" aria-label="인트로" style="padding:0;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:#0075de;border-color:#0075de"><span style="height:34px;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;color:#fff;font-size:12px;font-weight:900;line-height:1;letter-spacing:.03em">intro</span></a>
       <button class="theme-toggle" id="homeBtn" title="홈으로 (전체 개요)" aria-label="홈" style="padding:0;"><span style="width:34px;height:34px;color:var(--ink-2);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/></svg></span></button>
       <button class="theme-toggle" id="themeToggle" title="라이트 / 다크 전환" aria-label="테마 전환"><span class="tg-sun">☀︎</span><span class="tg-moon">☾</span></button>
       <div class="mk-block">
@@ -3552,19 +3558,16 @@ function renderItem(it,pk){
     if(dt.toolsNote) body+=`<div class="note" style="margin:10px 0 0">${esc(dt.toolsNote)}</div>`;
     body+='</div>';
   }
-  // 워크플로우 보드 링크
-  if(dt.wf){
-    body+=`<div class="block full" style="margin-top:14px"><a href="${dt.wf}" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:var(--radsm);text-decoration:none"><span style="display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:var(--accent);color:#fff;flex:0 0 auto;font-size:15px">⚙</span><span style="flex:1;min-width:0"><span style="display:block;font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-.01em">워크플로우 보드 열기</span><span style="display:block;font-size:12px;color:var(--muted);margin-top:1px">담당·단계별 스윔레인 절차도 — 새 창</span></span><span style="font-size:15px;font-weight:700;color:var(--accent);flex:0 0 auto">↗</span></a></div>`;
-  }
   // note
   if(dt.note){
     body+=`<div class="block full" style="margin-top:14px"><div class="note" style="margin:0">${esc(dt.note)}</div></div>`;
   }
   return `<div class="acc" data-t="${pk}">
     <div class="acc-head">
-      <span class="acc-num" style="background:${c}">${it.n}</span>
+      <span class="acc-num">${it.n}</span>
       <div class="acc-title"><div class="t">${esc(it.t)}</div><div class="d">${esc(it.d)}</div></div>
       <div class="acc-tags">${tags.join('')}</div>
+      ${dt.wf?`<a href="${dt.wf}" target="_blank" rel="noopener noreferrer" title="워크플로우 보드 열기" onclick="event.stopPropagation()" style="flex:0 0 auto;display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--accent-soft);text-decoration:none;line-height:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="#111"><path d="M15.5 3l.4 1.6c.4.1.8.3 1.2.5l1.4-.9 1.8 1.8-.9 1.4c.2.4.4.8.5 1.2l1.6.4v2.5l-1.6.4c-.1.4-.3.8-.5 1.2l.9 1.4-1.8 1.8-1.4-.9c-.4.2-.8.4-1.2.5l-.4 1.6H13l-.4-1.6c-.4-.1-.8-.3-1.2-.5l-1.4.9-1.8-1.8.9-1.4c-.2-.4-.4-.8-.5-1.2L7 12.7v-2.5l1.6-.4c.1-.4.3-.8.5-1.2l-.9-1.4 1.8-1.8 1.4.9c.4-.2.8-.4 1.2-.5L13 3h2.5zm-1.25 6.1a2.4 2.4 0 100 4.8 2.4 2.4 0 000-4.8z"/><path d="M6.8 14.8l.25 1c.25.06.5.17.72.3l.88-.55 1.1 1.1-.55.88c.13.22.24.47.3.72l1 .25v1.55l-1 .25c-.06.25-.17.5-.3.72l.55.88-1.1 1.1-.88-.55c-.22.13-.47.24-.72.3l-.25 1H5.25l-.25-1a3 3 0 01-.72-.3l-.88.55-1.1-1.1.55-.88a3 3 0 01-.3-.72l-1-.25V18.5l1-.25c.06-.25.17-.5.3-.72l-.55-.88 1.1-1.1.88.55c.22-.13.47-.24.72-.3l.25-1H6.8zm-.77 3.7a1.35 1.35 0 100 2.7 1.35 1.35 0 000-2.7z"/></svg></a>`:''}
       <span class="chev">⌄</span>
     </div>
     <div class="acc-body"><div class="acc-body-in">${body}</div></div>

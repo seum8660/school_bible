@@ -67,7 +67,8 @@ if %errorlevel%==0 (
 )
 
 echo [3/4] pull
-git pull --no-rebase -X ours --no-edit
+git branch --set-upstream-to=origin/main main >nul 2>&1
+git pull --no-rebase -X ours --no-edit origin main
 if errorlevel 1 (
   echo.
   echo [ERROR] pull failed - check for conflicts.

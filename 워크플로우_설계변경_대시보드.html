@@ -458,6 +458,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.body.classList.remove('wf-focus');
     lightEdges(null); showPanel(null);
   }
+  window.addEventListener('load',function(){
+    var svg=document.getElementById('ps-edges'); if(!svg) return;
+    [].slice.call(svg.querySelectorAll('path[id^="ps-path-"]')).forEach(function(p,i){
+      var d=p.getAttribute('d'); if(!d) return;
+      var dt=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      dt.setAttribute('class','mdot'); dt.setAttribute('r','3'); dt.setAttribute('fill','#0075de'); dt.setAttribute('pointer-events','none');
+      var am=document.createElementNS('http://www.w3.org/2000/svg','animateMotion');
+      am.setAttribute('dur','2.6s'); am.setAttribute('repeatCount','indefinite'); am.setAttribute('path',d); am.setAttribute('begin',((i%8)*0.4)+'s');
+      dt.appendChild(am); svg.appendChild(dt);
+    });
+  });
   var EMBED=false; try{ EMBED = window.self!==window.top; }catch(e){ EMBED=true; }
   function showPanel(key, node){
     var p=document.getElementById('__wfPanel');

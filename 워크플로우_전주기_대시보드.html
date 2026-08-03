@@ -222,7 +222,7 @@ var TAGNM={lead:'선행',key:'핵심',bot:'병목',post:'후속'};
 
 function draw(){
   var svg=document.getElementById('edges'), board=document.getElementById('board');
-  [].slice.call(svg.querySelectorAll('path.e')).forEach(function(p){p.remove();});
+  [].slice.call(svg.querySelectorAll('path.e')).forEach(function(p){p.remove();});[].slice.call(svg.querySelectorAll('circle.mdot')).forEach(function(c){c.remove();});svg.__mdotN=0;
   var br=board.getBoundingClientRect();
   svg.setAttribute('viewBox','0 0 '+br.width+' '+br.height);
   EDGES.forEach(function(e,i){
@@ -248,7 +248,7 @@ function draw(){
     p.setAttribute('opacity',back?'.45':'.6'); p.setAttribute('marker-end',back?'url(#arr)':'url(#ar)');
     if(back) p.setAttribute('stroke-dasharray','6 5');
     p.dataset.a=e[0]; p.dataset.b=e[1];
-    svg.appendChild(p);
+    svg.appendChild(p);if(typeof back==='undefined'||!back){var __dt=document.createElementNS('http://www.w3.org/2000/svg','circle');__dt.setAttribute('class','mdot');__dt.setAttribute('r','3');__dt.setAttribute('fill','#0075de');__dt.setAttribute('pointer-events','none');var __am=document.createElementNS('http://www.w3.org/2000/svg','animateMotion');__am.setAttribute('dur','2.6s');__am.setAttribute('repeatCount','indefinite');__am.setAttribute('path',d);__am.setAttribute('begin',(((svg.__mdotN=(svg.__mdotN||0)+1)%8)*0.4)+'s');__dt.appendChild(__am);svg.appendChild(__dt);}
   });
 }
 window.addEventListener('resize',function(){clearTimeout(window.__rz);window.__rz=setTimeout(draw,200);});

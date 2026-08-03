@@ -229,19 +229,19 @@
   var c=document.getElementById('pxc'); if(!c) return;
   var ctx=c.getContext('2d'), cells=[], CS=13, GAP=4, W, H, cols, rows;
   function resize(){
-    var r=c.parentElement.getBoundingClientRect();
+    var r=c.getBoundingClientRect();
     W=c.width=r.width; H=c.height=r.height;
     cols=Math.ceil(W/(CS+GAP)); rows=Math.ceil(H/(CS+GAP));
     cells=[];
-    var N=Math.round(cols*rows*.28);
+    var N=Math.round(cols*rows*.34);
     for(var i=0;i<N;i++) cells.push(spawn(true));
   }
   function spawn(init){
     return {x:Math.floor(Math.random()*cols)*(CS+GAP), y:Math.floor(Math.random()*rows)*(CS+GAP),
       p:Math.random()*Math.PI*2, s:.3+Math.random()*.9,
-      a:Math.random()<.03?'amber':'gray',
+      a:Math.random()<.07?'amber':'gray',
       born:performance.now()-(init?Math.random()*9000:0),
-      life:6000+Math.random()*9000};
+      life:2800+Math.random()*5200};
   }
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function draw(t){
@@ -251,11 +251,13 @@
       var age=t-d.born;
       if(age>d.life){ cells[i]=spawn(false); cells[i].born=t; continue; }
       var k=age/d.life;
-      var env=Math.min(1, Math.min(k,1-k)*5);           /* 서서히 나타났다 사라짐 */
-      var tw=reduce? .5 : (Math.sin(t/1000*d.s+d.p)+1)/2;
-      var al=(.03+tw*.16)*env;
-      ctx.fillStyle = d.a==='amber' ? 'rgba(0,117,222,'+(al*1.5)+')' : 'rgba(38,38,31,'+(al*.8)+')';
-      ctx.fillRect(d.x, d.y, CS, CS);
+      var env=Math.min(1, Math.min(k,1-k)*4);           /* 서서히 나타났다 사라짐 */
+      env=env*env*(3-2*env);                            /* smoothstep — 또렷한 등장·퇴장 */
+      var tw=reduce? .5 : (Math.sin(t/900*d.s+d.p)+1)/2;
+      var al=(.10+tw*.34)*env;
+      var sz=CS*(.5+.5*env), off=(CS-sz)/2;             /* 정사각형이 커졌다 작아지며 나타남 */
+      ctx.fillStyle = d.a==='amber' ? 'rgba(0,117,222,'+(al*1.4)+')' : 'rgba(38,38,31,'+(al*.85)+')';
+      ctx.fillRect(d.x+off, d.y+off, sz, sz);
     }
     if(!reduce) requestAnimationFrame(draw);
   }

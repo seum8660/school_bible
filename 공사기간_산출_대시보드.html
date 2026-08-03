@@ -7,35 +7,35 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/static/pretendard.min.css">
 <style>
   :root{
-    --mono:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',system-ui,sans-serif; --navy:#191f28; --navy2:#4e5968; --line:#eaedf0; --line2:#f2f4f6;
-    --ink:#191f28; --sub:#8b95a1; --bg:#f2f4f6; --card:#ffffff;
-    --inpbg:#eef4ff; --inpbd:#b6d4fb;
-    --m1:#3182f6; --m2:#3182f6; --m3:#4e5968;
-    --prep:#c1c8d0; --work:#3182f6; --nowork:#8b95a1; --fin:#4e5968; --extra:#aeb7c9;
-    --gold:#3182f6; --goldbg:#e8f2ff; --yellow:#eef4ff;
-    --ok:#3182f6; --radc:20px; --radsm:14px;
-    --cardsh:0 1px 3px rgba(0,27,55,.04),0 6px 20px rgba(0,27,55,.06);
-    --cover1:#3182f6; --cover2:#1b64da; --coverink:#ffffff; --coversub:#dbe8ff; --coverlegal:#c3d9fb;
+    --mono:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',system-ui,sans-serif; --navy:#000000; --navy2:#31302e; --line:#e6e6e6; --line2:#efedeb;
+    --ink:#000000; --sub:#615d59; --faint:#a39e98; --bg:#f6f5f4; --card:#ffffff;
+    --inpbg:#ffffff; --inpbd:#b7d8f7;
+    --m1:#0075de; --m2:#0075de; --m3:#4d4b47;
+    --prep:#dedcd8; --work:#0075de; --nowork:#b8b6b1; --fin:#4d4b47; --extra:#cfcdc9;
+    --gold:#0075de; --goldbg:#e7f1fc; --yellow:#e7f1fc;
+    --ok:#0075de; --radc:12px; --radsm:8px;
+    --cardsh:none;
+    --cover1:#ffffff; --cover2:#ffffff; --coverink:#000000; --coversub:#615d59; --coverlegal:#615d59;
   }
   html[data-theme="dark"]{
-    --navy:#f4f6fc; --navy2:#c9d0e2; --line:rgba(255,255,255,0.16); --line2:rgba(255,255,255,0.10);
-    --ink:#f4f6fc; --sub:#9aa4c0; --bg:#161b33; --card:#2a3356;
-    --inpbg:rgba(111,168,255,0.16); --inpbd:rgba(143,184,255,0.45);
-    --m1:#6fa8ff; --m2:#6fa8ff; --m3:#aeb7c9;
-    --prep:#808ba8; --work:#6fa8ff; --nowork:#aeb7c9; --fin:#c9d0e2; --extra:#8892a8;
-    --gold:#6fa8ff; --goldbg:rgba(111,168,255,0.16); --yellow:rgba(111,168,255,0.14);
-    --ok:#6fe0b4;
-    --cover1:#2a3356; --cover2:#3a2c63; --coverink:#f4f6fc; --coversub:#c9d0e2; --coverlegal:#9aa4c0;
-    --cardsh:0 8px 30px rgba(0,0,0,.35);
+    --navy:#e9e9e7; --navy2:#cfcdc9; --line:#343434; --line2:#2c2c2c;
+    --ink:#e9e9e7; --sub:#b4b2ad; --faint:#8f8d88; --bg:#191919; --card:#202020;
+    --inpbg:#202020; --inpbd:rgba(74,158,255,0.40);
+    --m1:#4a9eff; --m2:#4a9eff; --m3:#cfcdc9;
+    --prep:#3d3d3d; --work:#4a9eff; --nowork:#8f8d88; --fin:#cfcdc9; --extra:#5a5854;
+    --gold:#4a9eff; --goldbg:rgba(74,158,255,0.16); --yellow:rgba(74,158,255,0.14);
+    --ok:#4a9eff;
+    --cover1:#191919; --cover2:#191919; --coverink:#e9e9e7; --coversub:#b4b2ad; --coverlegal:#8f8d88;
+    --cardsh:none;
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
        background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
-  html[data-theme="dark"] body{background:linear-gradient(140deg,#1b2140 0%,#2c2456 52%,#153046 100%);background-attachment:fixed}
+  html[data-theme="dark"] body{background:var(--bg)}
   .wrap{max-width:1240px;margin:0 auto;padding:0 20px 60px}
 
   /* ===== 표지 / 히어로 ===== */
-  .cover{background:linear-gradient(120deg,var(--cover1),var(--cover2));color:var(--coverink);
+  .cover{,var(--cover2));color:var(--coverink);
          padding:44px 20px 40px;position:relative;overflow:hidden}
   .cover:after{content:"";position:absolute;right:-80px;top:-80px;width:340px;height:340px;
          background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%)}
@@ -94,7 +94,7 @@
          font-weight:800;padding:4px 13px;border-radius:20px;box-shadow:0 2px 6px rgba(49,130,246,.35)}
 
   /* ===== 채택 요약 배너 ===== */
-  .adopt-banner{margin-top:16px;background:linear-gradient(100deg,var(--cover1),var(--cover2));color:var(--coverink);border-radius:var(--radsm);
+  .adopt-banner{margin-top:16px;,var(--cover2));color:var(--coverink);border-radius:var(--radsm);
          padding:20px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 30px}
   .adopt-banner .lbl{font-size:13px;color:var(--coversub);letter-spacing:1px}
   .adopt-banner .val{font-size:26px;font-weight:800}
@@ -187,6 +187,101 @@
   input::placeholder,textarea::placeholder{color:#a3adb9;opacity:1}
   input,select{color:#3d4657}
   input:focus,select:focus{color:var(--ink)}
+
+  /* ===== 노션 디자인 가이드라인 적용 ===== */
+  .cover{background:var(--card)!important;border-bottom:1px solid var(--line);padding:44px 20px 22px!important;}
+  .cover:after{display:none;}
+  .badge-top{background:var(--goldbg)!important;color:var(--gold);font-size:11px;font-weight:700;
+    letter-spacing:.08em;border-radius:4px;padding:2px 9px;margin-bottom:14px;}
+  .cover h1{font-size:30px;font-weight:700;letter-spacing:-.03em;color:var(--ink);}
+  .cover .sub,.cover-meta{color:var(--sub)!important;font-size:14px;}
+  .cover-meta b{color:var(--ink)!important;}
+  .cover-legal{border-top:1px solid var(--line)!important;color:var(--sub)!important;font-size:11.5px;}
+  .sec-title{font-size:12px!important;font-weight:700!important;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--sub)!important;border-bottom:0!important;padding-bottom:0!important;margin-bottom:10px!important;}
+  .sec-title .n{width:18px!important;height:18px!important;border-radius:4px!important;background:var(--goldbg)!important;
+    color:var(--gold)!important;font-size:11px!important;}
+  .sec-title small{color:var(--faint)!important;letter-spacing:0;text-transform:none;font-size:12px;}
+  #resetBtn{border:1px solid var(--line)!important;border-radius:100px!important;background:var(--card)!important;
+    color:var(--sub)!important;font-weight:500!important;font-size:12.5px!important;box-shadow:none!important;}
+  .card{border:1px solid var(--line)!important;border-radius:12px!important;box-shadow:none!important;padding:18px!important;}
+  .fld label{font-size:11.5px!important;font-weight:700!important;color:var(--sub)!important;letter-spacing:.02em;}
+  .fld input,.fld select{background:var(--card)!important;border:1px solid var(--inpbd)!important;
+    border-radius:8px!important;color:#0063bd!important;font-weight:600!important;}
+  html[data-theme="dark"] .fld input,html[data-theme="dark"] .fld select{color:#7ab8ff!important;}
+  .fld input:hover,.fld select:hover{background:var(--goldbg)!important;}
+  .fld input:focus,.fld select:focus{border-color:var(--gold)!important;outline:none;
+    box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 12%,transparent)!important;}
+  /* 탭 → 밑줄 */
+  .tabbar{display:flex;gap:22px!important;border-bottom:1px solid var(--line);background:none!important;
+    padding:0!important;border-radius:0!important;box-shadow:none!important;margin-bottom:16px;}
+  .tabbar .tab{border:0!important;background:none!important;box-shadow:none!important;border-radius:0!important;
+    color:var(--sub)!important;font-size:14px!important;font-weight:500!important;padding:0 0 11px!important;position:relative;}
+  .tabbar .tab:hover{color:var(--ink)!important;}
+  .tabbar .tab.active{color:var(--ink)!important;font-weight:700!important;}
+  .tabbar .tab.active:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink);}
+  /* 표 */
+  table{border-collapse:collapse;}
+  th{background:var(--line2)!important;color:var(--sub)!important;font-size:11.5px!important;font-weight:700!important;
+    border:0!important;border-bottom:1px solid var(--line)!important;padding:9px 11px!important;}
+  td{border:0!important;border-bottom:1px solid var(--line)!important;padding:10px 11px!important;
+    font-size:13px;color:var(--navy2);font-variant-numeric:tabular-nums;}
+  tbody tr:hover td{background:var(--line2);}
+  tfoot td,tr.sum td,tr.total td{background:var(--line2)!important;border-top:1px solid var(--line)!important;
+    font-weight:700!important;color:var(--ink)!important;}
+  .note{background:var(--line2)!important;border:0!important;border-left:3px solid var(--gold)!important;
+    border-radius:8px!important;color:var(--navy2)!important;font-size:12.5px!important;box-shadow:none!important;}
+  .adopt-banner{border-radius:8px!important;box-shadow:none!important;}
+  details summary{color:var(--sub)!important;font-weight:700;}
+  .gt-head,.gt-row{display:grid;grid-template-columns:190px minmax(420px,1fr) 62px;gap:10px;align-items:center;}
+  .gt-head{font-size:11px;font-weight:700;color:var(--faint);padding-bottom:6px;border-bottom:1px solid var(--line);}
+  .gt-scale{display:flex;}
+  .gt-scale span{flex:1;font-size:10.5px;color:var(--faint);border-left:1px solid var(--line);padding-left:4px;}
+  .gt-row{padding:5px 0;}
+  .gt-row:hover{background:var(--line2);}
+  .gt-nm{font-size:12px;color:var(--navy2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .gt-nm b{font-weight:700;color:var(--ink);}
+  .gt-track{position:relative;height:16px;background:var(--line2);border-radius:4px;}
+  .gt-bar{position:absolute;top:0;height:16px;border-radius:4px;background:var(--work);}
+  .gt-bar.n{background:var(--nowork);opacity:.55;}
+  .gt-bar.prep{background:var(--prep);}
+  .gt-bar.fin{background:var(--fin);}
+  .gt-bar.drag{cursor:grab;}
+  .gt-bar.drag:hover{filter:brightness(1.08);box-shadow:0 0 0 2px color-mix(in srgb,var(--work) 30%,transparent);}
+  .gt-bar.moved{outline:1px solid var(--gold);outline-offset:1px;}
+  .gt-track{cursor:default;}
+  .gt-d{font-size:11.5px;font-weight:700;text-align:right;color:var(--navy2);font-variant-numeric:tabular-nums;}
+  .gt-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:11.5px;color:var(--sub);}
+  .gt-legend span{display:inline-flex;align-items:center;gap:6px;font-weight:600;}
+  .gt-legend i{width:9px;height:9px;border-radius:2px;display:inline-block;}
+  .cover-meta{gap:18px!important;padding-bottom:0;font-size:13px!important;}
+  .cover-meta div{display:flex;gap:10px;align-items:baseline;}
+  .cover-meta .lb{color:var(--faint);font-weight:500;}
+  .cover-meta b{color:var(--navy2)!important;font-weight:500!important;}
+  .methods{display:grid!important;grid-template-columns:repeat(3,1fr);gap:10px;}
+  @media(max-width:860px){.methods{grid-template-columns:1fr;}}
+  .methods>*{background:var(--card)!important;border:1px solid var(--line)!important;border-radius:12px!important;
+    box-shadow:none!important;padding:14px 16px!important;}
+  .methods .m-h,.methods .m-t{font-size:11.5px!important;font-weight:500!important;color:var(--sub)!important;}
+  .methods .m-v,.methods .big,.methods .val{font-size:24px!important;font-weight:700!important;
+    letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--ink)!important;}
+  .methods .adopted,.methods .on,.methods [data-adopt="1"]{border-color:var(--gold)!important;background:var(--goldbg)!important;}
+  .methods .adopted .m-v,.methods .on .m-v{color:var(--gold)!important;}
+  .adopt-banner{background:var(--line2)!important;border:0!important;border-left:3px solid var(--gold)!important;
+    border-radius:8px!important;box-shadow:none!important;color:var(--navy2)!important;font-size:13px!important;
+    padding:12px 14px!important;margin-top:12px!important;}
+  .adopt-banner b{color:var(--ink)!important;}
+  .chart-wrap,#nwChart,#nwPanel{border-radius:8px;box-shadow:none;}
+  .chart-wrap{border:1px solid var(--line);padding:12px;}
+  #nwKpi>*{background:var(--card)!important;border:1px solid var(--line)!important;border-radius:12px!important;
+    box-shadow:none!important;padding:12px 14px!important;text-align:left!important;}
+  .subhead{font-size:12px!important;font-weight:700!important;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--sub)!important;}
+  #pdfBtn,.hd-actions button,button.pbtn{border:1px solid var(--line)!important;border-radius:100px!important;
+    background:var(--card)!important;color:var(--sub)!important;font-weight:500!important;
+    font-size:12.5px!important;box-shadow:none!important;}
+  #pdfBtn,button.pbtn.primary,.hd-actions .primary{background:var(--ink)!important;border-color:var(--ink)!important;
+    color:var(--card)!important;font-weight:700!important;}
 </style>
 </head>
 <body>
@@ -197,7 +292,11 @@
   <div class="inner">
     <span class="badge-top">공공 건설공사 · 적정 공사기간 산정</span>
     <h1>공사기간 산정 계산기</h1>
-    <div class="cover-meta"></div>
+    <div class="cover-meta">
+      <div><span class="lb">근거</span><b>적정 공사기간 확보 가이드라인(2026)</b></div>
+      <div><span class="lb">비작업일</span><b>기상청 평년값 + 법정공휴일</b></div>
+      <div><span class="lb">단위</span><b>일 (캘린더일)</b></div>
+    </div>
     <div class="cover-legal">
       근거 : 「건설기술 진흥법」 제45조의2 · 「공공 건설공사의 공사기간 산정기준」(국토교통부고시 제2024-1021호, 시행 2025.1.6.) · 「2026년 적정 공사기간 확보를 위한 가이드라인」(국토교통부·한국건설기술연구원)
     </div>
@@ -208,7 +307,7 @@
 
   <!-- ===== 1. 기본정보 입력 ===== -->
   <section>
-    <div class="sec-title"><span class="n">1</span>공사 기본정보 입력 <button type="button" id="resetBtn" style="margin-left:auto;background:var(--card);border:2px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">↺ 초기화</button><button type="button" id="pvBtn" style="margin-left:6px;background:var(--card);border:2px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">📄 PDF 미리보기</button><button type="button" id="printBtn" style="margin-left:6px;background:#3182f6;border:2px solid #3182f6;border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer">🖨 PDF 출력하기</button></div>
+    <div class="sec-title"><span class="n">1</span>공사 기본정보 입력 <button type="button" id="resetBtn" style="margin-left:auto;background:var(--card);border:1px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">↺ 초기화</button><button type="button" id="pvBtn" style="margin-left:6px;background:var(--card);border:1px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">PDF 미리보기</button><button type="button" id="printBtn" style="margin-left:6px;background:var(--ink);border:1px solid var(--ink);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer">PDF 출력하기</button></div>
     <div class="card">
       <div class="grid">
         <div class="fld wide"><label>공사명</label><input id="i_name" value="" placeholder="00초 신축공사"></div>
@@ -298,13 +397,13 @@
           <details style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card);margin-bottom:12px"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">📊 월별 비작업일수 산정 내역 (A·B·C)</summary><div id="nwTable" style="margin-top:10px"></div></details>
           <details style="border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card);margin-bottom:12px"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">📅 법정공휴일 상세 (부록①)</summary><div id="nwHoliday" style="margin-top:10px"></div></details>
           <details style="margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--card)">
-            <summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">🌦 기상 작업제한 기준 (부록②)</summary>
+            <summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--navy)">기상 작업제한 기준 (부록②)</summary>
             <div style="overflow:auto;margin-top:10px">
               <table style="width:100%"><thead><tr><th style="text-align:left">구분</th><th>제한 기준</th><th style="text-align:left">주요 제한 공종</th></tr></thead><tbody>
-                <tr><td style="text-align:left">🌧 강우</td><td>일 강수량 5mm 이상</td><td style="text-align:left">토공·기초·철근콘크리트·도장·방수·조경</td></tr>
-                <tr><td style="text-align:left">🌪 강풍</td><td>최대풍속 10m/s 이상</td><td style="text-align:left">철골 세우기·타워크레인·비계·외부 마감</td></tr>
-                <tr><td style="text-align:left">🔥 혹서</td><td>최고기온 33℃ 이상</td><td style="text-align:left">콘크리트 타설·옥외작업(폭염 휴게 의무)</td></tr>
-                <tr><td style="text-align:left">❄ 혹한</td><td>최저기온 −5℃ 이하</td><td style="text-align:left">콘크리트 타설·양생·미장·도장·방수</td></tr>
+                <tr><td style="text-align:left">강우</td><td>일 강수량 5mm 이상</td><td style="text-align:left">토공·기초·철근콘크리트·도장·방수·조경</td></tr>
+                <tr><td style="text-align:left">강풍</td><td>최대풍속 10m/s 이상</td><td style="text-align:left">철골 세우기·타워크레인·비계·외부 마감</td></tr>
+                <tr><td style="text-align:left">혹서</td><td>최고기온 33℃ 이상</td><td style="text-align:left">콘크리트 타설·옥외작업(폭염 휴게 의무)</td></tr>
+                <tr><td style="text-align:left">혹한</td><td>최저기온 −5℃ 이하</td><td style="text-align:left">콘크리트 타설·양생·미장·도장·방수</td></tr>
                 <tr><td style="text-align:left">🌨 강설</td><td>일 신적설 10mm 이상</td><td style="text-align:left">전 옥외공종</td></tr>
               </tbody></table>
             </div>
@@ -328,7 +427,13 @@
             <tfoot><tr><td colspan="8" style="text-align:right">순작업일수 (주공정 CP 합계)</td><td id="t1sum">—</td><td></td><td></td></tr></tfoot>
           </table>
         </div>
-        <div style="margin-top:10px"><button type="button" id="t1add" style="background:var(--card);border:2px solid var(--line);border-radius:10px;padding:8px 16px;font:inherit;font-size:12.5px;font-weight:800;color:var(--navy);cursor:pointer">＋ 공종 행 추가</button></div>
+        <div style="margin-top:10px;text-align:right"><button type="button" id="t1add" style="background:var(--card);border:1px solid var(--line);border-radius:100px;padding:7px 14px;font:inherit;font-size:12.5px;font-weight:500;color:var(--sub);cursor:pointer">＋ 공종 행 추가</button></div>
+      </div>
+
+      <div class="card" style="margin-top:14px;padding:16px" id="gt1card">
+        <div class="subhead" style="display:flex;align-items:center;gap:9px">공정표 (검토1안 · 주공정 기준)
+          <small style="margin-left:auto;font-weight:500;color:var(--faint);letter-spacing:0;text-transform:none">CP=Y 공종은 순차 배치 · CP=N 공종은 병행(회색)</small></div>
+        <div id="gt1" style="margin-top:12px;overflow-x:auto"></div>
         <div class="mini">
           <div class="m"><div class="k">① 준비기간</div><div class="v" id="p1prep">—</div></div>
           <div class="m"><div class="k">② 비작업일수</div><div class="v" id="p1now">—</div></div>
@@ -422,6 +527,7 @@ const FORMULA = {
 
 const $=id=>document.getElementById(id);
 const fmt=n=>Math.round(n).toLocaleString('ko-KR');
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 const num=v=>{const x=parseFloat(v);return isNaN(x)?0:x;};
 
 let items1 = ITEMS1.map(r=>({gong:r[0],se:r[1],qty:r[2],unit:r[3],std:r[4],crew:r[5],cp:r[6]}));
@@ -440,6 +546,67 @@ function readState(){
  };
 }
 
+/* ---- 검토1안 공정표 ---- */
+function renderGantt1(s, r1){
+ const el=$('gt1'); if(!el) return;
+ const total=Math.max(1, r1.tot);
+ const pct=d=>(d/total*100);
+ let cur=r1.prep, rows=[];
+ rows.push({nm:'준비기간',cls:'prep',start:0,len:r1.prep,cp:''});
+ items1.forEach((it,i)=>{
+   let st;
+   if(it.cp==='Y'){ st=cur; cur+=it.days; } else { st=Math.max(0,cur-(it.days||0)); }
+   if(typeof it.gstart==='number') st=it.gstart;
+   rows.push({nm:it.gong,se:it.se,cls:it.cp==='Y'?'':'n',start:st,len:it.days,cp:it.cp,i:i,moved:typeof it.gstart==='number'});
+ });
+ rows.push({nm:'정리기간',cls:'fin',start:Math.max(0,total-r1.fin),len:r1.fin,cp:''});
+ const months=Math.max(1,Math.ceil(total/30));
+ const scale=Array.from({length:months},(_,i)=>'<span>'+(i+1)+'M</span>').join('');
+ el.dataset.total=total;
+ el.innerHTML='<div class="gt-head"><div>공종</div><div class="gt-scale">'+scale+'</div><div style="text-align:right">일수</div></div>'
+  + rows.map(r=>'<div class="gt-row"><div class="gt-nm"><b>'+esc(r.nm)+'</b>'+(r.se?' · '+esc(r.se):'')+'</div>'
+    + '<div class="gt-track"'+(r.i!=null?' data-i="'+r.i+'"':'')+'><div class="gt-bar '+r.cls+(r.i!=null?' drag':'')+(r.moved?' moved':'')+'"'+(r.i!=null?' data-i="'+r.i+'" title="드래그로 위치 이동 · 더블클릭 시 자동배치"':'')+' style="left:'+pct(r.start).toFixed(2)+'%;width:'+Math.max(0.6,pct(r.len)).toFixed(2)+'%"></div></div>'
+    + '<div class="gt-d">'+fmt(r.len)+'</div></div>').join('')
+  + '<div class="gt-legend"><span><i style="background:var(--prep)"></i>준비기간</span>'
+  + '<span><i style="background:var(--work)"></i>주공정(CP=Y)</span>'
+  + '<span><i style="background:var(--nowork);opacity:.55"></i>병행공종(CP=N)</span>'
+  + '<span><i style="background:var(--fin)"></i>정리기간</span>'
+  + '<span style="color:var(--faint);font-weight:500">막대를 드래그해 공종 위치를 옮길 수 있습니다 (더블클릭 = 자동배치 복귀)</span>'
+  + '<span style="margin-left:auto"><button type="button" id="gtReset" style="border:1px solid var(--line);background:var(--card);color:var(--sub);font:inherit;font-size:11.5px;font-weight:500;padding:5px 12px;border-radius:100px;cursor:pointer">↺ 위치 초기화</button></span></div>';
+ bindGantt(total);
+}
+function bindGantt(total){
+ const el=$('gt1'); if(!el||el.dataset.b) return; el.dataset.b='1';
+ let drag=null;
+ el.addEventListener('mousedown',function(e){
+   const bar=e.target.closest('.gt-bar.drag'); if(!bar) return;
+   const track=bar.parentNode;
+   drag={bar:bar,i:+bar.dataset.i,x0:e.clientX,w:track.getBoundingClientRect().width,
+         left0:parseFloat(bar.style.left)||0,total:+el.dataset.total||total};
+   bar.style.cursor='grabbing'; e.preventDefault();
+ });
+ window.addEventListener('mousemove',function(e){
+   if(!drag) return;
+   const dxPct=(e.clientX-drag.x0)/drag.w*100;
+   const widthPct=parseFloat(drag.bar.style.width)||0;
+   let np=Math.max(0,Math.min(100-widthPct, drag.left0+dxPct));
+   drag.bar.style.left=np.toFixed(2)+'%';
+ });
+ window.addEventListener('mouseup',function(){
+   if(!drag) return;
+   const np=parseFloat(drag.bar.style.left)||0;
+   const days=Math.round(np/100*(+el.dataset.total||drag.total));
+   items1[drag.i].gstart=days;
+   drag.bar.style.cursor=''; drag=null; render();
+ });
+ el.addEventListener('dblclick',function(e){
+   const bar=e.target.closest('.gt-bar.drag'); if(!bar) return;
+   delete items1[+bar.dataset.i].gstart; render();
+ });
+ el.addEventListener('click',function(e){
+   if(e.target.id==='gtReset'){ items1.forEach(it=>{ delete it.gstart; }); render(); }
+ });
+}
 /* ---- 검토1안 ---- */
 function calc1(s){
  let work=0;
@@ -472,8 +639,8 @@ const WXF={
  '흑산도':{rain:[3,3,4,4,5,7,9,8,5,4,4,4],wind:[5,5,4,3,3,2,3,3,3,3,4,5],hot:[0,0,0,0,0,0,2,2,0,0,0,0],cold:[2,1,1,0,0,0,0,0,0,0,1,2],snow:[2,2,1,0,0,0,0,0,0,0,1,2]},
  '진도':{rain:[3,3,4,4,5,7,9,8,5,3,4,3],wind:[4,4,3,3,2,2,2,2,2,2,3,4],hot:[0,0,0,0,0,1,2,2,0,0,0,0],cold:[2,1,1,0,0,0,0,0,0,0,1,2],snow:[2,1,1,0,0,0,0,0,0,0,1,2]}
 };
-const FKEY=[['rain','🌧 강우','일강수 5mm↑ / 시간당 3mm↑','#3182f6'],['wind','🌪 강풍','순간최대풍속 10m/s↑','#12b886'],
- ['hot','🔥 혹서','일최고기온 33℃↑','#e8590c'],['cold','❄ 혹한','일최저기온 −5℃↓','#4263eb'],['snow','🌨 강설','일신적설 1cm↑','#7c3aed']];
+const FKEY=[['rain','강우','일강수 5mm↑ / 시간당 3mm↑','#3182f6'],['wind','강풍','순간최대풍속 10m/s↑','#12b886'],
+ ['hot','혹서','일최고기온 33℃↑','#e8590c'],['cold','혹한','일최저기온 −5℃↓','#4263eb'],['snow','🌨 강설','일신적설 1cm↑','#7c3aed']];
 function wxFactors(startISO,totalDays,region){
  if(!startISO||!totalDays) return null;
  const d=new Date(startISO); if(isNaN(d)) return null;
@@ -772,6 +939,7 @@ function render(){
    <td><select data-i="${i}" data-f="cp"><option value="Y"${it.cp==='Y'?' selected':''}>Y</option><option value="N"${it.cp==='N'?' selected':''}>N</option></select></td>
   <td>${it.add?`<button type="button" class="t1del" data-i="${i}" style="border:0;background:none;color:#c0392b;font-weight:800;cursor:pointer;font-size:14px">×</button>`:''}</td>
   </tr>`).join('');
+ renderGantt1(s, r1);
  renderNowork(s, r1.span, r1.autoRes);
  $('t1sum').textContent=fmt(r1.work)+' 일';
  $('p1prep').textContent=fmt(r1.prep)+' 일'; $('p1now').textContent=fmt(r1.nowork)+' 일';

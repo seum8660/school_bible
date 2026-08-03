@@ -2,357 +2,137 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026 시설단가</title>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<title>2026 상반기 건축 단가 검색</title>
 <style>
-  :root{
-    --bg:#f2f4f6; --panel:#ffffff; --panel2:#f2f4f6; --line:#c4ccd6;
-    --text:#191f28; --sub:#8b95a1; --accent:#3182f6; --accent-dim:#e8f2ff;
-    --accent-line:#b9d3ff; --code:#1b64da; --code-bg:#e8f2ff;
-    --mark:#1b64da; --mark-bg:#d6e6ff;
-    --mono:'D2Coding','Consolas','SFMono-Regular',monospace;
-    --sans:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',-apple-system,sans-serif;
-    --rad:20px; --radsm:14px;
-    --shadow:0 1px 3px rgba(0,27,55,.04),0 6px 20px rgba(0,27,55,.06);
-    --shadow-sm:0 1px 2px rgba(0,27,55,.06);
-    --glassbd:1px solid #c4ccd6;
-  }
-  [data-theme="dark"]{
-    --bg:#1b2140; --panel:rgba(255,255,255,.08); --panel2:rgba(255,255,255,.06);
-    --line:rgba(255,255,255,.18); --text:#f1f4fb; --sub:#9aa3bd; --accent:#8fb8ff;
-    --accent-dim:rgba(143,184,255,.20); --accent-line:rgba(143,184,255,.4);
-    --mark:#ffcf8a; --mark-bg:rgba(255,207,138,.22); --code:#8fb8ff; --code-bg:rgba(143,184,255,.16);
-    --shadow:0 8px 30px rgba(0,0,0,.35); --shadow-sm:0 4px 16px rgba(0,0,0,.28);
-    --glassbd:1px solid rgba(255,255,255,.18);
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;height:100%;}
-  body{background:var(--bg);color:var(--text);font-family:var(--sans);display:flex;flex-direction:column;min-height:100vh;transition:background .2s,color .2s;}
-  header{padding:16px 28px 16px;border-bottom:1.5px solid var(--line);background:var(--panel);}
-  .hd-top{position:relative;text-align:center;margin-bottom:14px;}
-  header h1{margin:0 0 3px;font-size:20px;letter-spacing:-.6px;font-weight:900;}
-  header .sub{color:var(--sub);font-size:12.5px;}
-  .theme-toggle{position:absolute;right:0;top:2px;display:flex;align-items:center;gap:4px;background:var(--panel);border:1.5px solid var(--line);border-radius:100px;padding:4px;cursor:pointer;}
-  .theme-toggle span{width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:14px;border-radius:100px;color:var(--sub);}
-  .theme-toggle .tg-sun{background:var(--accent);color:#fff;}
-  [data-theme="dark"] .theme-toggle .tg-sun{background:transparent;color:var(--sub);}
-  [data-theme="dark"] .theme-toggle .tg-moon{background:var(--accent);color:#fff;}
-  .searchbar{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;position:relative;}
-  .sb-field{position:relative;flex:0 1 54%;min-width:300px;}
-  .sb-ic{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none;}
-  .searchbar input{width:100%;background:var(--panel);border:2.5px solid var(--accent);color:var(--text);padding:12px 16px 12px 46px;border-radius:var(--radsm);font-size:14px;font-family:var(--sans);box-shadow:var(--shadow-sm);}
-  .searchbar input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
-  .searchbar .count{color:var(--sub);font-size:12.5px;white-space:nowrap;}
-  .kpi{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
-  .kpi button{background:var(--panel);border:1.5px solid var(--line);border-radius:100px;padding:7px 16px;font:inherit;font-size:13px;font-weight:700;color:var(--sub);cursor:pointer;display:flex;align-items:center;gap:7px;}
-  .kpi button .n{font-family:var(--mono);font-size:12px;color:var(--sub);background:var(--panel2);border-radius:100px;padding:1px 8px;}
-  .kpi button.on{background:var(--accent);border-color:var(--accent);color:#fff;}
-  .kpi button.on .n{background:rgba(255,255,255,.22);color:#fff;}
-  .layout{display:flex;flex:1;min-height:0;}
-  nav.sidebar-gj{width:196px;flex-shrink:0;border-right:1px solid var(--line);background:var(--panel);overflow-y:auto;padding:12px 10px;}
-  nav.sidebar-gj .cat-h{padding:6px 10px;font-size:11px;font-weight:800;letter-spacing:.4px;color:var(--sub);text-transform:uppercase;}
-  nav.sidebar-gj .gj{padding:8px 12px;font-size:12.5px;color:var(--sub);cursor:pointer;border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;}
-  nav.sidebar-gj .gj:hover{background:var(--panel2);color:var(--text);}
-  nav.sidebar-gj .gj.on{background:var(--accent);color:#fff;font-weight:700;}
-  nav.sidebar-gj .gj .cn{font-family:var(--mono);font-size:10.5px;color:var(--sub);flex-shrink:0;}
-  nav.sidebar-gj .gj.on .cn{color:#fff;}
-  nav.sidebar{width:250px;flex-shrink:0;border-right:1px solid var(--line);background:var(--panel);overflow-y:auto;padding:12px 10px;}
-  nav.sidebar .cat-h{padding:6px 10px;font-size:11px;font-weight:800;letter-spacing:.4px;color:var(--sub);text-transform:uppercase;}
-  nav.sidebar .cat{padding:8px 12px;font-size:13px;color:var(--sub);cursor:pointer;border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;}
-  nav.sidebar .cat:hover{background:var(--panel2);color:var(--text);}
-  nav.sidebar .cat.on{background:var(--accent-dim);color:var(--accent);font-weight:700;}
-  nav.sidebar .cat .cn{font-family:var(--mono);font-size:11px;color:var(--sub);flex-shrink:0;}
-  nav.sidebar .cat.on .cn{color:var(--accent);}
-  main{flex:1;display:flex;flex-direction:column;min-width:0;}
-  .content{flex:1;overflow-y:auto;overflow-x:hidden;padding:0;}
-  .empty{padding:60px 24px;text-align:center;color:var(--sub);font-size:13.5px;}
-  table.rt{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse;font-size:13px;}
-  table.rt td.nm .nm-spec{font-weight:500;color:var(--sub);font-size:11.5px;display:block;margin-top:2px;white-space:normal;}
-  table.rt td.nm .ho-badge{font-family:var(--mono);font-size:10.5px;color:var(--code);background:var(--code-bg);border:1px solid var(--accent-line);padding:1px 6px;border-radius:100px;margin-left:6px;font-weight:600;}
-  table.rt th,table.rt td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;white-space:nowrap;}
-  table.rt td.nm{white-space:normal;}
-  table.rt thead th{position:sticky;top:0;z-index:2;background:var(--panel2);color:var(--sub);font-weight:700;font-size:11.5px;letter-spacing:.3px;border-bottom:1.5px solid var(--line);}
-  table.rt th.l,table.rt td.l{text-align:left;white-space:normal;}
-  table.rt td.nm{font-weight:700;color:var(--text);}
-  table.rt td.spec{color:var(--sub);font-size:12.5px;white-space:nowrap;}
-  table.rt td.unit,table.rt th.unit{width:52px;text-align:center;font-family:var(--mono);font-size:11.5px;color:var(--sub);}
-  table.rt td.num{font-family:var(--mono);font-size:12.5px;color:var(--text);}
-  table.rt td.sum{font-family:var(--mono);font-size:13px;font-weight:800;color:var(--accent);}
-  table.rt td.bigo,table.rt th.bigo{text-align:center;color:var(--sub);font-size:12px;}
-  table.rt td.code{text-align:left;white-space:nowrap;}
-  table.rt tbody tr:hover td{background:var(--panel2);}
-  table.rt td.nm.clk{color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-color:var(--accent-line);text-underline-offset:2px;}
-  table.rt td.nm.clk:hover{text-decoration-color:var(--accent);}
-  table.rt td.nm.clk.open{font-weight:800;}
-  /* 호표 팝업(모달) */
-  .drawer{position:fixed;inset:0;z-index:40;background:rgba(10,20,40,.5);display:none;align-items:center;justify-content:center;padding:28px;transform:none;transition:none;max-height:none;}
-  .drawer.on{display:flex;}
-  .drawer>.modal-box{background:var(--panel);border:var(--glassbd);border-radius:var(--rad);box-shadow:0 20px 60px rgba(0,27,55,.35);width:min(1100px,100%);max-height:86vh;display:flex;flex-direction:column;overflow:hidden;}
-  .drawer-h{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1.5px solid var(--line);background:var(--panel2);}
-  .dh-t{flex:1;min-width:0;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
-  .dh-t .ho{font-family:var(--mono);font-size:12px;color:var(--code);background:var(--code-bg);border:1px solid var(--accent-line);padding:2px 9px;border-radius:100px;font-weight:600;}
-  .dh-nm{font-size:15px;font-weight:800;letter-spacing:-.3px;}
-  .dh-sub{font-size:12.5px;color:var(--sub);}
-  .drawer-x{border:0;background:var(--panel);border:1.5px solid var(--line);color:var(--sub);width:34px;height:34px;border-radius:10px;font-size:20px;cursor:pointer;flex-shrink:0;}
-  .drawer-x:hover{color:var(--text);border-color:var(--accent);}
-  .drawer-b{overflow:auto;padding:0;}
-  table.bd{width:100%;border-collapse:collapse;font-size:13px;background:var(--panel);}
-  table.bd th,table.bd td{border-bottom:1px solid var(--line);padding:9px 14px;text-align:right;white-space:nowrap;}
-  table.bd thead th{position:sticky;top:0;background:var(--panel2);color:var(--sub);font-weight:700;font-size:11.5px;z-index:1;border-bottom:1.5px solid var(--line);}
-  table.bd th.l,table.bd td.l{text-align:left;}
-  table.bd td.nm{font-weight:700;}
-  table.bd tbody tr:hover td{background:var(--panel2);}
-  table.bd td.num{font-family:var(--mono);}
-  table.bd td.sumcell{font-family:var(--mono);font-weight:700;color:var(--accent);}
-  table.bd tfoot td{position:sticky;bottom:0;background:var(--panel2);font-weight:800;border-top:2px solid var(--line);font-size:13.5px;}
-  table.bd tfoot td.sum{font-family:var(--mono);color:var(--accent);}
-  .content.with-drawer{padding-bottom:0;}
-  table.rt col.c-nm{width:auto;} table.rt col.c-spec{width:15%;}
-  table.rt col.c-nm{width:38%;min-width:0;} table.rt col.c-spec{width:0;}
-  table.rt col.c-num{width:11%;} table.rt col.c-sum{width:12%;} table.rt col.c-code{width:11%;} table.rt col.c-bigo{width:8%;}
-  table.rt td.unit,table.rt th.unit{width:6%;text-align:center;font-family:var(--mono);font-size:10.5px;color:var(--sub);padding-left:2px;padding-right:2px;}
-  table.rt td.nm{white-space:normal;word-break:break-word;}
-  table.rt th,table.rt td{padding:8px 7px;}
-  table.rt td.code{white-space:normal;word-break:break-all;}
-  table.rt td.nm,table.rt td.spec{overflow:visible;text-overflow:clip;}
-  .r-code{font-family:var(--mono);font-size:11px;color:var(--code);background:var(--code-bg);border:1px solid var(--accent-line);padding:1px 7px;border-radius:100px;}
-  mark{background:var(--mark-bg);color:var(--mark);padding:0 1px;border-radius:2px;}
-  footer{padding:10px 24px;border-top:1px solid var(--line);background:var(--panel);color:var(--sub);font-size:11px;line-height:1.6;}
-  .loading{padding:60px;text-align:center;color:var(--sub);}
-  @media(max-width:760px){
-    .layout{flex-direction:column;}
-    nav.sidebar-gj,nav.sidebar{width:100%;max-height:150px;border-right:none;border-bottom:1px solid var(--line);}
-    .sb-field{flex:1 1 100%;}
-    table.rt td.spec,table.rt th.spec,table.rt td.code,table.rt th.code{display:none;}
-  }
-  @media(max-width:1080px){
-    table.rt td.code,table.rt th.code,table.rt td.spec,table.rt th.spec{display:none;}
-  }
+:root{
+  --bg:#f6f5f4; --surface:#fff; --surface-2:#f6f5f4; --surface-3:#efedeb;
+  --ink:#000; --ink-2:#31302e; --muted:#615d59; --faint:#a39e98;
+  --line:#e6e6e6; --accent:#0075de; --accent-soft:#e7f1fc;
+  --rad:12px; --radsm:8px; --r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+  font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:44px 36px 72px}
+.crumb{display:flex;gap:6px;font-size:12.5px;color:var(--faint);margin-bottom:18px}
+.crumb a{color:var(--faint);text-decoration:none}
+.crumb a:hover{color:var(--accent)}
+h1{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.lead{color:var(--muted);font-size:14.5px;margin-top:8px}
+.search-box{display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radsm);padding:10px 13px;margin:18px 0 0}
+.search-box .ic{font-size:13px;opacity:.5}
+.search-box input{border:0;outline:0;background:none;font:inherit;font-size:13.5px;width:100%;color:var(--ink)}
+.search-box input::placeholder{color:var(--faint)}
+.res-empty{padding:50px;text-align:center;color:var(--faint);font-size:13.5px}
+  /* 2026 시설단가 — 노션 데이터베이스 뷰 */
+  .pr-meta{display:flex;flex-wrap:wrap;gap:18px;margin:6px 0 0;padding-bottom:16px;border-bottom:1px solid var(--line);}
+  .pr-meta div{display:flex;gap:10px;align-items:baseline;font-size:13px;}
+  .pr-meta .lb{color:var(--faint);}
+  .pr-meta .vl{color:var(--ink-2);font-weight:600;}
+  .pr-ghead{display:flex;align-items:center;gap:9px;margin:30px 0 9px;}
+  .pr-ghead h3{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .pr-ghead .cnt{font-size:11.5px;color:var(--faint);background:var(--surface-3);border-radius:100px;padding:1px 8px;font-weight:700;}
+  .pr-tbl{background:var(--surface);border:1px solid var(--line);border-radius:var(--rad);overflow-x:auto;}
+  .pr-tbl table{min-width:660px;}
+  .pr-tbl table{width:100%;border-collapse:collapse;}
+  .pr-tbl th{font-size:11.5px;font-weight:700;color:var(--faint);text-align:center;white-space:nowrap;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--surface-2);}
+  .pr-tbl th.num{text-align:center;}
+  .pr-tbl td{padding:11px 16px;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--ink-2);vertical-align:middle;text-align:center;}
+  .pr-tbl tr:last-child td{border-bottom:0;}
+  .pr-tbl tbody tr:hover td{background:var(--surface-2);}
+  .pr-tbl td.nm{font-weight:700;color:var(--ink);width:24%;min-width:150px;}
+  .pr-tbl td.sp{color:var(--muted);font-size:13px;}
+  .pr-tbl td.ua{width:62px;color:var(--ink-2);font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .pr-tbl td.un{width:92px;color:var(--muted);font-size:12.5px;font-weight:600;white-space:nowrap;}
+  .pr-tbl td.pr{text-align:center;font-weight:700;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;width:120px;}
+  .pr-tbl td.pr small{display:block;font-size:11px;font-weight:400;color:var(--faint);margin-top:1px;}
+  .pr-sc{display:grid;grid-template-columns:repeat(9,1fr);gap:8px;margin:18px 0 4px;}
+  @media(max-width:1100px){.pr-sc{grid-template-columns:repeat(5,1fr)}}
+  @media(max-width:620px){.pr-sc{grid-template-columns:repeat(3,1fr)}}
+  .pr-sc button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+    padding:15px 8px 13px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);
+    box-shadow:var(--shadow-sm);cursor:pointer;font:inherit;color:var(--ink);
+    transition:transform .12s,box-shadow .12s,background .12s;}
+  .pr-sc button:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--shadowc);background:var(--accent-soft);}
+  .pr-sc button:active{transform:translate(0,0);box-shadow:var(--shadow-sm);}
+  .pr-sc button svg{width:26px;height:26px;fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;display:block;}
+  .pr-sc button span{font-size:13px;font-weight:800;line-height:1.2;text-align:center;letter-spacing:-.3px;}
+  .pr-sc button em{font-style:normal;font-size:11px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.2;}
+  .pr-sc button.on{background:var(--accent-soft);box-shadow:var(--shadow-sm);}
+  .pr-foot{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--faint);line-height:1.8;}
+  @media(max-width:700px){.pr-tbl td.nm{width:auto;}.pr-tbl th,.pr-tbl td{padding-left:11px;padding-right:11px;}}
+
+@media(max-width:700px){.wrap{padding:28px 16px 56px}h1{font-size:25px}}
 </style>
 </head>
 <body>
-<header>
-  <div class="hd-top">
-    <h1>2026 상반기 건축 단가 검색</h1>
-    <div class="sub">전라남도교육청_건축(26년 상반기) · 공종별 단가 · 자재단가</div>
-    <button class="theme-toggle" id="themeToggle" title="라이트 / 다크 전환" aria-label="테마 전환"><span class="tg-sun">☀︎</span><span class="tg-moon">☾</span></button>
+<div class="wrap">
+  <div class="crumb"><a href="bible_notion.html" target="_top">학교시설업무 치트키 · SCHOOL BIBLE</a><span>/</span><a href="bible_notion.html?tab=price" target="_top">실무</a><span>/</span><span style="color:var(--ink-2)">2026 시설단가</span></div>
+  <h1>2026 시설단가</h1>
+  <p class="lead">전라남도교육비특별회계 2026년도 예산편성 기준 시설단가표</p>
+
+  <div class="pr-meta">
+    <div><span class="lb">금액단위</span><span class="vl">천원</span></div>
+    <div><span class="lb">기준</span><span class="vl">2026년도 예산편성</span></div>
+    <div><span class="lb">출처</span><span class="vl">전라남도교육청</span></div>
   </div>
-  <div class="searchbar">
-    <div class="sb-field">
-      <span class="sb-ic">🔍</span>
-      <input id="q" type="text" placeholder="품명·규격으로 검색 (예: 터파기, 철근, 굴착기, 페인트)" autocomplete="off">
-    </div>
-    <span class="count" id="count"></span>
-  </div>
-  <div class="kpi" id="kpi">
-    <button data-t="ilwi" class="on">단가 항목 <span class="n" id="n-ilwi">0</span></button>
-    <button data-t="mat">자재단가 <span class="n" id="n-mat">0</span></button>
-  </div>
-</header>
-<div class="layout">
-  <nav class="sidebar-gj" id="sidebar-gj"></nav>
-  <nav class="sidebar" id="sidebar"></nav>
-  <main>
-    <div class="content" id="content"><div class="loading">데이터 불러오는 중…</div></div>
-  </main>
+  <div class="pr-sc" id="price-sc"></div>
+  <div class="search-box"><span class="ic">🔍</span><input type="text" id="price-q" placeholder="품명·규격 검색 (예: 교실, 화장실, 냉난방, 운동장)"></div>
+  <div id="price-body"></div>
+  <div id="price-footnote" class="pr-foot"></div>
 </div>
-<div class="drawer" id="drawer">
-  <div class="modal-box">
-  <div class="drawer-h">
-    <div class="dh-t"><span class="ho" id="d-ho"></span><span class="dh-nm" id="d-nm"></span><span class="dh-sub" id="d-sub"></span></div>
-    <button class="drawer-x" id="d-x" title="닫기 (Esc)">×</button>
-  </div>
-  <div class="drawer-b" id="d-body"></div>
-  </div>
-</div>
-<footer>
-  본 검색기는 「전라남도교육청_건축(26년 상반기)」 내역 파일에서 추출한 일위대가·단가산출·자재단가 자료로, 참고용입니다. 실제 설계·적산 시에는 원본 내역서와 최신 품셈·물가정보를 반드시 확인하시기 바랍니다.
-</footer>
-<script src="danga_data.js"></script>
 <script>
-(function(){
-  var D = window.DANGA_DATA || {ilwi:[],dan:[],mat:[]};
-  var root=document.documentElement;
-  // theme
-  var tgl=document.getElementById('themeToggle');
-  try{ if(localStorage.getItem('danga-theme')==='dark') root.setAttribute('data-theme','dark'); }catch(e){}
-  tgl.addEventListener('click',function(){
-    var d=root.getAttribute('data-theme')==='dark';
-    if(d){root.removeAttribute('data-theme');} else {root.setAttribute('data-theme','dark');}
-    try{localStorage.setItem('danga-theme',d?'light':'dark');}catch(e){}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+const PRICE = {"foot":"※ 본 단가는 육지단가이며, 도서의 경우 가지역 35%, 나지역 25%, 다지역 15%, 라지역 5% 가산 (설계용역비 및 감리비 제외) ※ 적용기준: 신축, 증축 또는 개축 건축물은 [에너지절약설계기준] 및 [오수정화조(신축제외)] 포함 단가","cats":[{"cat":"개축 및 보수","items":[{"name":"교실 개축","rows":[["90㎡기준(철거포함), 석면철거 제외","183,189","㎡","90","(철거포함), 석면철거 제외"]]},{"name":"건물 철거","rows":[["90㎡기준(일반)","15,846","㎡","90","일반"],["90㎡기준(석면텍스)","9,176","㎡","90","석면텍스"]]},{"name":"노후교실 중수","rows":[["90㎡기준[바닥, 창호(내·외부), 천장, 도장(내·외부) 포함]","57,665","㎡","90","바닥, 창호(내·외부), 천장, 도장(내·외부) 포함"]]},{"name":"화장실 중수","rows":[["45㎡(10칸) 기준","96,282","㎡","45","(10칸) 기준"]]},{"name":"화장실 보수","rows":[["45㎡(10칸) 기준(배관, 위생 기구 제외)","62,327","㎡","45","(10칸) 기준(배관, 위생 기구 제외)"]]},{"name":"사택 중수","rows":[["45㎡기준","44,444","㎡","45",""],["33㎡기준","28,617","㎡","33",""]]},{"name":"교실 누수 보수","rows":[["지붕(실당90㎡기준)","13,928","실","90","지붕(실당90㎡기준)"],["벽체(실당90㎡기준)","1,990","실","90","벽체(실당90㎡기준)"]]},{"name":"창고 중수","rows":[["33㎡기준","9,552","㎡","33",""]]},{"name":"숙직실 중수","rows":[["33㎡기준","19,923","㎡","33",""]]},{"name":"창호 보수(90㎡기준) [에너지 소비 효율 제품 적용]","rows":[["교실 출입문 2개소","4,919","㎡","90","교실 출입문 2개소"],["교실 출입문 2개소, 복도창 2개소","8,591","㎡","90","교실 출입문 2개소, 복도창 2개소"],["외부창(이중창)","25,838","㎡","90","외부창(이중창)"],["교실 전체창(출입문, 복도, 외부 이중창)","32,928","㎡","90","교실 전체창(출입문, 복도, 외부 이중창)"]]},{"name":"교실 도장(90㎡기준)","rows":[["내부(2회칠 기준)","1,839","㎡","90","내부(2회칠 기준)"],["외부(방수제외, 2회칠 기준)","1,687","㎡","90","외부(방수제외, 2회칠 기준)"]]},{"name":"급식실 개축(㎡당)","rows":[["식당(철거 제외)","2,490","㎡","","식당(철거 제외)"],["조리실(철거 제외)","4,314","㎡","","조리실(철거 제외)"]]},{"name":"급식실 중수(㎡당)","rows":[["식당","677","㎡","","식당"],["조리실","1,529","㎡","","조리실"]]},{"name":"교실 벽체 보수(90㎡기준)","rows":[["페인트 외 타 재료 마감(적벽돌, 복합패널 등)","24,616","㎡","90","페인트 외 타 재료 마감(적벽돌, 복합패널 등)"]]},{"name":"교실 바닥 보수(90㎡기준)","rows":[["동바리 기초, 교실 및 복도 후로링","22,895","㎡","90","동바리 기초, 교실 및 복도 후로링"],["동바리 기초, 교실 및 복도 PVC 타일","17,085","㎡","90","동바리 기초, 교실 및 복도 PVC 타일"],["콘크리트 바닥, 교실 후로링, 복도 PVC 타일","15,590","㎡","90","콘크리트 바닥, 교실 후로링, 복도 PVC 타일"],["콘크리트 바닥, 교실 및 복도 PVC 타일","13,412","㎡","90","콘크리트 바닥, 교실 및 복도 PVC 타일"],["콘크리트 바닥, 교실 이중 바닥재, 복도 PVC 타일","23,232","㎡","90","콘크리트 바닥, 교실 이중 바닥재, 복도 PVC 타일"],["1층 1개소 계단실, 고무타일 40㎡기준","5,255","㎡","40","1층 1개소 계단실, 고무타일 40㎡기준"]]},{"name":"천장 보수(90㎡기준)","rows":[["마감층, 단열재 교체 포함","12,821","㎡","90","마감층, 단열재 교체 포함"],["일반층","8,658","㎡","90","일반층"],["일반층, 석면철거 포함","16,613","㎡","90","일반층, 석면철거 포함"],["일반층, 석면철거 및 전기시설 포함","21,574","㎡","90","일반층, 석면철거 및 전기시설 포함"]]}]},{"cat":"토목·설비","items":[{"name":"배수로시설, 콘크리트(m당)","rows":[["0.3 × 0.3m","315","m","","0.3 × 0.3m"],["0.4 × 0.4m","367","m","","0.4 × 0.4m"],["0.4 × 0.4m, 스틸그레이팅","504","m","","0.4 × 0.4m, 스틸그레이팅"]]},{"name":"스탠드시설(m당)","rows":[["2단(배수로 포함)","695","m","","2단(배수로 포함)"],["3단(배수로 포함)","827","m","","3단(배수로 포함)"],["4단(배수로 포함)","936","m","","4단(배수로 포함)"]]},{"name":"오수정화조","rows":[["5톤용","33,348","조","","5톤용"],["10톤용","46,003","조","","10톤용"],["20톤용","89,030","조","","20톤용"],["30톤용","113,283","조","","30톤용"],["40톤용","156,381","조","","40톤용"]]},{"name":"우천로 포장(콘크리트)","rows":[["T 15cm(㎡당)","71","㎡","","T 15cm(㎡당)"],["T 12cm(아스콘)","98","㎡","","T 12cm(아스콘)"],["고압블록(보도)","85","㎡","","고압블록(보도)"],["고압블록(차도)","126","㎡","","고압블록(차도)"]]},{"name":"옹벽 시설(㎡당)","rows":[["옹벽 기초높이 1m 추가산출 포함","438","㎡","","옹벽 기초높이 1m 추가산출 포함"]]},{"name":"지하수 개발 운동장 성토(㎡당)","rows":[["H : 80m기준","55,308","공","","H : 80m기준"],["T : 20cm기준","32","㎡","","T : 20cm기준"]]},{"name":"담장 시설(m당)","rows":[["적벽돌 담(H=1.7m기준)","596","m","","적벽돌 담(H=1.7m기준)"],["휀스(H=1.7m기준)","222","m","","휀스(H=1.7m기준)"],["조경석(㎡기준)","882","㎡","","조경석(㎡기준)"]]},{"name":"음용수, 저수조","rows":[["옥상수조, 스텐인리스(개소당)","25,448","개소","","옥상수조, 스텐인리스(개소당)"]]},{"name":"냉·난방 시설","rows":[["1실[EHP(전기),전기시설 미포함]","6,685","실","","1실[EHP(전기),전기시설 미포함]"],["1실[EHP(전기),전기시설 포함]","7,093","실","","1실[EHP(전기),전기시설 포함]"],["1실[EHP(전기),GHP(가스)전기시설 미포함]","7,093","실","","1실[EHP(전기),GHP(가스)전기시설 미포함]"],["1실[EHP(전기),GHP(가스)전기시설 포함]","7,502","실","","1실[EHP(전기),GHP(가스)전기시설 포함]"]]},{"name":"냉·난방 교체","rows":[["1실[EHP(전기),철거포함, 전기시설 미포함]","6,966","실","","1실[EHP(전기),철거포함, 전기시설 미포함]"],["1실[EHP(전기),철거포함, 전기시설 포함]","7,373","실","","1실[EHP(전기),철거포함, 전기시설 포함]"],["1실[EHP(전기),GHP(가스) 혼용, 철거 포함, 전기시설 미포함]","7,373","실","","1실[EHP(전기),GHP(가스) 혼용, 철거 포함, 전기시설 미포함]"],["1실[EHP(전기),GHP(가스) 혼용, 철거 포함, 전기시설 포함]","7,781","실","","1실[EHP(전기),GHP(가스) 혼용, 철거 포함, 전기시설 포함]"]]},{"name":"수전 설비","rows":[["200kVA 이하(7~20실)","130,544","식","","200kVA 이하(7~20실)"],["300kVA 이하(21~35실)","132,460","식","","300kVA 이하(21~35실)"],["300kVA 이상(36실 이상)","135,363","식","","300kVA 이상(36실 이상)"]]},{"name":"승압 시설","rows":[["보통교실 기준(실당)","2,381","실","","보통교실 기준(실당)"],["변압기 용량 증설","60,088","식","","변압기 용량 증설"]]},{"name":"전등 교체","rows":[["LED, 교실 9등, 복도 1등(배관, 배선 포함)","3,930","식","","LED, 교실 9등, 복도 1등(배관, 배선 포함)"]]},{"name":"도복도(포장 포함)","rows":[["폭 2.4m, 1m당","1,178","m","","폭 2.4m, 1m당"],["폭 2.0m, 1m당","1,058","m","","폭 2.0m, 1m당"],["폭 1.5m, 1m당","882","m","","폭 1.5m, 1m당"],["차량통행, 개소당","8,917","개소","","차량통행, 개소당"]]},{"name":"조회대 시설","rows":[["지붕 설치","65,814","개소","","지붕 설치"],["지붕 미설치","43,325","개소","","지붕 미설치"]]},{"name":"교문 시설","rows":[["스탠드 자바라 기준","27,852","개소","","스탠드 자바라 기준"]]}]},{"cat":"증축","items":[{"name":"현관 증축(개소)","rows":[["철콘, 55㎡기준","100,658","개소","55","철콘, 55㎡기준"]]},{"name":"독립관사(1동)","rows":[["조적슬래브, 온돌난방, 38㎡","120,129","동","38","조적슬래브, 온돌난방, 38㎡"],["조적슬래브, 온돌난방, 42㎡","130,032","동","42","조적슬래브, 온돌난방, 42㎡"],["조적슬래브, 온돌난방, 48㎡","145,048","동","48","조적슬래브, 온돌난방, 48㎡"],["조적슬래브, 온돌난방, 58㎡","169,774","동","58","조적슬래브, 온돌난방, 58㎡"]]},{"name":"연립관사(1세대)","rows":[["철콘, 온돌난방, 9세대용, 500㎡ 세대당 55㎡기준","157,125","세대","55","철콘, 온돌난방, 9세대용, 500㎡ 세대당 55㎡기준"]]},{"name":"창고 증축","rows":[["66㎡(조적슬래브)","72,956","동","66","조적슬래브"],["59㎡(조립)","50,324","동","59","조립"]]},{"name":"화장실(1동) 숙직실(1동)","rows":[["45㎡기준(비난방, 설비, 기구 포함, 정화조 별도)","176,260","동","45","비난방, 설비, 기구 포함, 정화조 별도"],["조적슬래브, 온돌난방, 33㎡기준","75,917","동","33","조적슬래브, 온돌난방, 33㎡기준"]]},{"name":"급식실 증축(㎡당)","rows":[["식당","2,419","㎡","","식당"],["조리실","4,204","㎡","","조리실"]]},{"name":"계단실 증축","rows":[["1층용 40㎡(개소당)","70,852","개소","40","1층용 40㎡(개소당)"],["2층용 80㎡(개소당)","134,892","개소","80","2층용 80㎡(개소당)"],["3층용 120㎡(개소당)","205,565","개소","120","3층용 120㎡(개소당)"],["4층용 160㎡(개소당)","269,577","개소","160","4층용 160㎡(개소당)"]]}]},{"cat":"교실 증축","items":[{"name":"일반교실(90㎡)","rows":[["비난방, 복도 포함 (흑판, 게시판, 신발장 제외)","162,037","실","90","비난방, 복도 포함 (흑판, 게시판, 신발장 제외)"]]},{"name":"특별교실(과학실, 음악실, 컴퓨터실 등의 부대시설 제외)","rows":[["비난방 90㎡(복도 포함)","173,975","실","90","비난방 90㎡(복도 포함)"],["비난방 180㎡(복도 포함)","347,612","실","180","비난방 180㎡(복도 포함)"]]},{"name":"내진보강(㎡당)","rows":[["연면적 기준","159","㎡","","연면적 기준"]]}]},{"cat":"교실 신축","items":[{"name":"일반학교(㎡당)","rows":[["중앙 집중식 냉·난방, 토목 및 옥외시설 제외, 칠판·게시판·신발장 제외","2,247","㎡","","중앙 집중식 냉·난방, 토목 및 옥외시설 제외, 칠판·게시판·신발장 제외"]]},{"name":"특수학교(㎡당)","rows":[["중앙 집중식 냉·난방, 토목 및 옥외시설 제외, 칠판·게시판·신발장 제외","2,558","㎡","","중앙 집중식 냉·난방, 토목 및 옥외시설 제외, 칠판·게시판·신발장 제외"]]},{"name":"신설파일","rows":[["1층 20실 Φ400 20㎜, 실당 18개소","529,038","실","","1층 20실 Φ400 20㎜, 실당 18개소"]]}]},{"cat":"강당 및 생활관","items":[{"name":"강당 증축","rows":[["850㎡기준, 파일 포함(학생수 500명 이하)","2,330,079","동","850","파일 포함(학생수 500명 이하)"],["950㎡기준, 파일 포함(학생수 1,000명 이하)","2,604,205","동","950","파일 포함(학생수 1,000명 이하)"],["1,000㎡기준, 파일 포함(학생수 1,000명 이상)","2,741,267","동","1,000","파일 포함(학생수 1,000명 이상)"]]},{"name":"기숙사 증축(㎡당)","rows":[["1인당 12㎡기준, 비품비 제외","3,002","㎡","12","1인당 12㎡기준, 비품비 제외"]]}]},{"cat":"운동장","items":[{"name":"운동장","rows":[["천연잔디(㎡당), 배수로 제외","185","㎡","","천연잔디(㎡당), 배수로 제외"],["인조잔디(㎡당), 배수로 제외","173","㎡","","인조잔디(㎡당), 배수로 제외"],["마사토(㎡당), 배수로 제외","173","㎡","","마사토(㎡당), 배수로 제외"]]},{"name":"운동장 트랙","rows":[["천연잔디(㎡당), 배수로 제외","173","㎡","","천연잔디(㎡당), 배수로 제외"]]},{"name":"신재생에너지(신·증축 및 개축 부분, 연면적 1천㎡ 이상)","rows":[["태양광(고정식 연면적당)","143","㎡","","태양광(고정식 연면적당)"],["태양열(이중진공관 1㎡당)","1,623","㎡","1","태양열(이중진공관 1㎡당)"],["지열(밀폐형 1kW당)","2,664","kW","","지열(밀폐형 1kW당)"]]}]},{"cat":"통신장비단가(교실 신・증축 시)","items":[{"name":"무선AP","rows":[["증축교실 1실당","1,350","실","","증축교실 1실당"]]},{"name":"통신장비(유・무선)","rows":[["6학급 이하, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)","26,760","식","","6학급 이하, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)"],["12학급 이하, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)","41,350","식","","12학급 이하, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)"],["18학급 이하, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)","50,450","식","","18학급 이하, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)"],["24학급 이하, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)","63,250","식","","24학급 이하, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)"],["30학급 이하, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)","73,700","식","","30학급 이하, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)"],["36학급 이하, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)","90,990","식","","36학급 이하, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)"],["36학급 초과, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)","97,390","식","","36학급 초과, 유선망용(L2스위치), 무선망용(L2보안스위치, L2PoE스위치, 무선AP)"]]}]}]};
+let PR_CAT='';
+const PR_ICON={
+  '':'<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>',
+  '개축 및 보수':'<path d="M14.7 6.3a3.5 3.5 0 0 0 4.6 4.6l-8.4 8.4a2.2 2.2 0 0 1-3.1-3.1z"/><path d="M6 4l2 2M4 6l2 2"/>',
+  '토목·설비':'<path d="M2 19h20"/><path d="M2 19l6-9 4 5 3-4 7 8"/>',
+  '증축':'<path d="M3 21V7h8v14"/><path d="M13 21v-9h8v9" stroke-dasharray="3 2.5"/>',
+  '교실 증축':'<rect x="3" y="5" width="11" height="14" rx="1.2"/><path d="M17 19v-8h4v8" stroke-dasharray="3 2.5"/><path d="M6 9h5M6 13h4"/>',
+  '교실 신축':'<rect x="3" y="5" width="14" height="14" rx="1.2"/><path d="M6 9h8M6 13h5"/><path d="M19 5v6M16 8h6"/>',
+  '강당 및 생활관':'<path d="M3 10 12 4l9 6"/><path d="M5 10v10h14V10"/><path d="M9 20v-5h6v5"/>',
+  '운동장':'<rect x="2.5" y="7" width="19" height="10" rx="5"/><rect x="7" y="10" width="10" height="4" rx="2"/>',
+  '통신장비단가(교실 신・증축 시)':'<path d="M12 13v8"/><circle cx="12" cy="10" r="2"/><path d="M7.5 5.5a7 7 0 0 0 0 9M16.5 5.5a7 7 0 0 1 0 9"/>'
+};
+function renderPriceNav(){
+  const el=document.getElementById('price-sc'); if(!el) return;
+  const total=PRICE.cats.reduce((s,c)=>s+c.items.length,0);
+  const mk=(key,label,n)=>`<button type="button" data-prc="${esc(key)}"${PR_CAT===key?' class="on"':''}><svg viewBox="0 0 24 24" aria-hidden="true">${PR_ICON[key]||PR_ICON['']}</svg><span>${esc(label)}</span><em>${n}개 항목</em></button>`;
+  el.innerHTML = mk('','전체',total) + PRICE.cats.map(c=>mk(c.cat, c.cat==='통신장비단가(교실 신・증축 시)'?'통신장비':c.cat, c.items.length)).join('');
+  el.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    PR_CAT = (PR_CAT===b.dataset.prc) ? '' : b.dataset.prc;
+    renderPriceNav(); renderPrice(document.getElementById('price-q').value);
+  }));
+}
+function prBase(rw){ const u=rw[2]||'식', a=rw[3]; return (a && u==='㎡') ? a+'㎡' : u; }
+function renderPrice(q){
+  q=(q||'').trim().toLowerCase();
+  let html='';
+  PRICE.cats.filter(c=>!PR_CAT||c.cat===PR_CAT).forEach(c=>{
+    const items=c.items.filter(it=>!q||((it.name+' '+it.rows.map(r=>r[0]).join(' ')).toLowerCase().includes(q)));
+    if(!items.length) return;
+    html+=`<div class="pr-ghead"><h3>${esc(c.cat)}</h3><span class="cnt">${items.length}</span></div>`;
+    html+='<div class="pr-tbl"><table><thead><tr><th>품명</th><th>규격 · 조건</th><th class="num">기준단위</th><th class="num">단가(천원)</th></tr></thead><tbody>';
+    html+=items.map(it=>{
+      const n=it.rows.length||1;
+      return (it.rows.length?it.rows:[['','']]).map((rw,ri)=>{
+        const nameTd = ri===0 ? `<td class="nm" rowspan="${n}">${esc(it.name)}</td>` : '';
+        return `<tr>${nameTd}<td class="sp">${esc(rw[4]!==undefined?rw[4]:rw[0])||'–'}</td><td class="un">${esc(prBase(rw))}</td><td class="pr">${esc(rw[1])}</td></tr>`;
+      }).join('');
+    }).join('');
+    html+='</tbody></table></div>';
   });
-
-  document.getElementById('n-ilwi').textContent=(D.ilwi||[]).length.toLocaleString();
-  document.getElementById('n-mat').textContent=(D.mat||[]).length.toLocaleString();
-
-  var TYPE='ilwi', CAT='', GJ=0, Q='', CAP=300;
-  var q=document.getElementById('q'), content=document.getElementById('content'),
-      sidebar=document.getElementById('sidebar'), sidebarGj=document.getElementById('sidebar-gj'), count=document.getElementById('count');
-
-  // ===== 20개 대공종 분류 =====
-  var GJLIST=[
-    {n:'가설공사',kw:['가설','비계','동바리','규준','건축물 설치 및 해체','안전시설']},
-    {n:'기초 및 토공사',kw:['터파기','되메우기','잔토','토사','굴착','다짐','성토','절토','흙막이','파일','항타','지정','기초','운반/단지']},
-    {n:'철근콘크리트공사',kw:['철근','콘크리트','거푸집','타설','레미콘','버림','철물']},
-    {n:'철골공사',kw:['철골','세우기','데크','볼트','용접','앵커']},
-    {n:'조적공사',kw:['조적','벽돌','블록','쌓기']},
-    {n:'방수공사',kw:['방수','실링','방습필름','아스팔트','코킹']},
-    {n:'타일공사',kw:['타일','압착','떠붙이기','압착 붙이기']},
-    {n:'석공사',kw:['석공사','화강석','대리석','석재','판석','현무암']},
-    {n:'목공사',kw:['목공','합판','각재','방부','목재','졸대']},
-    {n:'금속공사',kw:['금속','스테인리스','스테인레스','알루미늄','난간','트렌치','논슬립','금속판','셔터박스']},
-    {n:'미장공사',kw:['미장','몰탈','모르타르','방바닥','시멘트바름','견출','셀프레벨링','뿜칠 미장']},
-    {n:'창호공사',kw:['창호','도어','방화문','자동문','셔터','창짝','문틀']},
-    {n:'유리공사',kw:['유리','복층','페어글라스','거울','강화유리']},
-    {n:'도장공사',kw:['페인트','도장','붓칠','롤러칠','뿜칠','녹막이','바니시','락카','에나멜','스테인 칠']},
-    {n:'수장공사',kw:['도배','바닥재','시트','카펫','걸레받이','몰딩','인조광물섬유판','흡음','천장','석고보드','단열','발포폴리스티렌','압출발포','케이싱','마루','데코타일','우물천장']},
-    {n:'지붕 및 홈통공사',kw:['지붕','홈통','기와','징크','물받이','선홈통','처마']},
-    {n:'유지보수공사',kw:['유지보수','재도장','보수','보강']},
-    {n:'철거공사',kw:['철거','해체','파쇄','절단','제거']},
-    {n:'운반비',kw:['운반비','상차','하차','소운반','기계운반']},
-    {n:'소규모건설공사',kw:['소규모']}
-  ];
-  function classify(x){
-    var s=((x.c||'')+' '+(x.n||'')).toLowerCase();
-    // 우선 분류: 소규모건설·운반비(골재류)
-    if(/소규모건설|\(소규모/.test(s)) return 20;
-    if(/(모래|자갈|잡석|골재|시멘트|조약돌|호박돌)\s*운반/.test(s)) return 19;
-    for(var i=0;i<GJLIST.length;i++){ var kw=GJLIST[i].kw; for(var j=0;j<kw.length;j++){ if(s.indexOf(kw[j].toLowerCase())>=0) return i+1; } }
-    return 0;
-  }
-  ['mat'].forEach(function(tp){ (D[tp]||[]).forEach(function(x){ x.k=classify(x); }); });
-
-  function rows(){ return (D[TYPE]||[]).filter(function(x){ if(GJ===0) return true; if(GJ===-1) return x.k===0; return x.k===GJ; }); }
-  function esc(s){return String(s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
-  function hl(s){ if(!Q) return esc(s); var i=s.toLowerCase().indexOf(Q); if(i<0) return esc(s);
-    return esc(s.slice(0,i))+'<mark>'+esc(s.slice(i,i+Q.length))+'</mark>'+esc(s.slice(i+Q.length)); }
-  function won(n){ return (n||0).toLocaleString(); }
-
-  function buildGj(){
-    var all=D[TYPE]||[], m={};
-    all.forEach(function(x){ m[x.k]=(m[x.k]||0)+1; });
-    var html='<div class="cat-h">공종 구분</div>';
-    html+='<div class="gj'+(GJ===0?' on':'')+'" data-g="0">전체 <span class="cn">'+all.length.toLocaleString()+'</span></div>';
-    GJLIST.forEach(function(g,i){ var cnt=m[i+1]||0; html+='<div class="gj'+(GJ===i+1?' on':'')+'" data-g="'+(i+1)+'">'+esc(g.n)+' <span class="cn">'+cnt+'</span></div>'; });
-    var etc=m[0]||0; if(etc) html+='<div class="gj'+(GJ===-1?' on':'')+'" data-g="-1">기타 <span class="cn">'+etc+'</span></div>';
-    sidebarGj.innerHTML=html;
-    Array.prototype.forEach.call(sidebarGj.querySelectorAll('.gj'),function(el){
-      el.addEventListener('click',function(){ GJ=+el.getAttribute('data-g'); CAT=''; buildGj(); buildCats(); render(); });
-    });
-  }
-
-  function buildCats(){
-    var list=rows(), m={};
-    list.forEach(function(x){ var c=x.c||'기타'; m[c]=(m[c]||0)+1; });
-    var cats=Object.keys(m).sort(function(a,b){return m[b]-m[a];});
-    var html='<div class="cat-h">'+({ilwi:'세부 분류',mat:'자재 분류'}[TYPE]||'분류')+'</div>';
-    html+='<div class="cat'+(CAT===''?' on':'')+'" data-c="">전체 <span class="cn">'+list.length.toLocaleString()+'</span></div>';
-    if(TYPE!=='mat'){
-      cats.forEach(function(c){ html+='<div class="cat'+(CAT===c?' on':'')+'" data-c="'+esc(c)+'">'+esc(c)+' <span class="cn">'+m[c]+'</span></div>'; });
-    }
-    sidebar.innerHTML=html;
-    Array.prototype.forEach.call(sidebar.querySelectorAll('.cat'),function(el){
-      el.addEventListener('click',function(){ CAT=el.getAttribute('data-c'); buildCats(); render(); });
-    });
-  }
-
-  function filtered(){
-    var list=rows();
-    return list.filter(function(x){
-      if(CAT && (x.c||'기타')!==CAT) return false;
-      if(!Q) return true;
-      return (x.n+' '+x.s+' '+(x.g||'')).toLowerCase().indexOf(Q)>=0;
-    });
-  }
-
-  function render(){
-    var res=filtered();
-    count.textContent=res.length.toLocaleString()+'건'+(res.length>CAP?' (상위 '+CAP+'건 표시)':'');
-    if(!res.length){ content.innerHTML='<div class="empty">검색 결과가 없습니다.</div>'; return; }
-    var shown=res.slice(0,CAP), html;
-    if(TYPE==='mat'){
-      html='<table class="rt"><colgroup><col class="c-nm"><col class="c-spec"><col class="c-num"><col class="c-sum"></colgroup>'
-        +'<thead><tr><th class="l">품명</th><th class="l spec">규격</th><th class="unit">단위</th><th>적용단가</th></tr></thead><tbody>';
-      for(var i=0;i<shown.length;i++){ var x=shown[i];
-        html+='<tr><td class="l nm">'+hl(x.n)+'</td><td class="l spec">'+hl(x.s||'')+'</td>'
-          +'<td class="unit">'+esc(x.u||'-')+'</td><td class="sum">'+won(x.p)+'</td></tr>';
-      }
-      html+='</tbody></table>';
-    } else {
-      var hasG=shown.some(function(r){return r.g;});
-      html='<table class="rt"><colgroup><col class="c-nm">'+(hasG?'<col class="c-code">':'')+'<col class="c-num"><col class="c-num"><col class="c-num"><col class="c-sum"><col class="c-bigo"></colgroup>'
-        +'<thead><tr><th class="l">품명</th>'+(hasG?'<th class="l code">품셈근거</th>':'')+'<th class="unit">단위</th><th>재료비</th><th>노무비</th><th>경비</th><th>합계</th><th class="bigo">비고</th></tr></thead><tbody>';
-      var clk=(TYPE==='ilwi')?' clk':'';
-      for(var j=0;j<shown.length;j++){ var y=shown[j];
-        html+='<tr><td class="l nm'+clk+'" data-id="'+esc(y.id||'')+'" data-i="'+j+'">'+hl(y.n)+(y.ho?'<span class="ho-badge">'+esc(y.ho)+'</span>':'')+(y.s?'<span class="nm-spec">'+hl(y.s)+' · 단위 '+esc(y.u||'-')+'</span>':'')+'</td>'
-          +(hasG?'<td class="l code">'+(y.g?'<span class="r-code">'+esc(y.g)+'</span>':'')+'</td>':'')
-          +'<td class="unit">'+esc(y.u||'-')+'</td>'
-          +'<td class="num">'+won(y.m)+'</td><td class="num">'+won(y.l)+'</td><td class="num">'+won(y.e)+'</td>'
-          +'<td class="sum">'+won(y.t)+'</td><td class="bigo"></td></tr>';
-      }
-      html+='</tbody></table>';
-    }
-    content.innerHTML=html;
-    content.scrollTop=0;
-    if(TYPE==='ilwi') lastShown=shown;
-  }
-
-  // ===== 호표 상세 모달 =====
-  var lastShown=[], bdLoading=false;
-  function closeM(){}
-  function loadBd(cb){
-    if(window.DANGA_BD){ cb(); return; }
-    var wait=setInterval(function(){ if(window.DANGA_BD){clearInterval(wait);cb();} },80);
-    if(bdLoading) return;
-    bdLoading=true;
-    var s=document.createElement('script'); s.src='danga_bd.js';
-    s.onerror=function(){ clearInterval(wait); bdLoading=false; };
-    document.body.appendChild(s);
-  }
-  function bdTableHtml(item){
-    var rows=(window.DANGA_BD||{})[item.id]||[];
-    if(!rows.length) return '<div style="padding:30px;text-align:center;color:var(--sub)">등록된 호표 내역이 없습니다.</div>';
-    var tm=0,tl=0,te=0;
-    var h='<table class="bd"><thead><tr><th class="l">품명</th><th class="l">규격</th><th>단위</th><th>수량</th><th>재료비</th><th>노무비</th><th>경비</th><th>합계</th><th class="l">비고</th></tr></thead><tbody>';
-    rows.forEach(function(r){ tm+=r.m;tl+=r.l;te+=r.e;
-      h+='<tr><td class="l nm">'+esc(r.n)+(r.s?' <span style="font-weight:500;color:var(--sub)">· '+esc(r.s)+'</span>':'')+'</td><td class="l">'+esc(r.s||'')+'</td><td>'+esc(r.u||'')+'</td>'
-        +'<td class="num">'+(r.q||'')+'</td><td class="num">'+won(r.m)+'</td><td class="num">'+won(r.l)+'</td><td class="num">'+won(r.e)+'</td>'
-        +'<td class="sumcell">'+won(r.t)+'</td><td class="l" style="color:var(--sub);font-size:11.5px">'+esc(r.x||'')+'</td></tr>';
-    });
-    h+='</tbody><tfoot><tr><td class="l" colspan="4">[ 합계 ]</td><td class="sum">'+won(tm)+'</td><td class="sum">'+won(tl)+'</td><td class="sum">'+won(te)+'</td><td class="sum">'+won(item.t)+'</td><td></td></tr></tfoot></table>';
-    return h;
-  }
-  var drawer=document.getElementById('drawer'), dHo=document.getElementById('d-ho'),
-      dNm=document.getElementById('d-nm'), dSub=document.getElementById('d-sub'), dBody=document.getElementById('d-body');
-  function closeDrawer(){ drawer.classList.remove('on'); content.classList.remove('with-drawer'); var o=content.querySelector('td.nm.clk.open'); if(o)o.classList.remove('open'); }
-  document.getElementById('d-x').addEventListener('click',closeDrawer);
-  drawer.addEventListener('click',function(e){ if(e.target===drawer) closeDrawer(); });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeDrawer(); });
-  content.addEventListener('click',function(e){
-    var td=e.target.closest('td.nm.clk'); if(!td || TYPE!=='ilwi') return;
-    var wasOpen=td.classList.contains('open');
-    var prev=content.querySelector('td.nm.clk.open'); if(prev)prev.classList.remove('open');
-    if(wasOpen){ closeDrawer(); return; }
-    td.classList.add('open');
-    var idx=+td.getAttribute('data-i'); var item=lastShown[idx]; if(!item) return;
-    dHo.textContent=item.ho||'호표'; dNm.textContent=item.n; dSub.textContent=(item.s?item.s+'  ':'')+(item.u?'· 단위 '+item.u:'');
-    dBody.innerHTML='<div style="padding:30px;text-align:center;color:var(--sub)">불러오는 중…</div>';
-    drawer.classList.add('on'); content.classList.add('with-drawer');
-    loadBd(function(){ dBody.innerHTML=bdTableHtml(item); });
-  });
-
-  Array.prototype.forEach.call(document.querySelectorAll('.kpi button'),function(b){
-    b.addEventListener('click',function(){
-      document.querySelectorAll('.kpi button').forEach(function(x){x.classList.remove('on');});
-      b.classList.add('on'); TYPE=b.getAttribute('data-t'); CAT=''; GJ=0; buildGj(); buildCats(); render();
-    });
-  });
-  var t;
-  q.addEventListener('input',function(){ clearTimeout(t); t=setTimeout(function(){ Q=q.value.trim().toLowerCase(); render(); },160); });
-
-  buildGj(); buildCats(); render();
-})();
+  document.getElementById('price-body').innerHTML = html || '<div class="res-empty">검색 결과가 없습니다.</div>';
+  document.getElementById('price-footnote').innerHTML = ''+esc(PRICE.foot||'');
+}
+document.getElementById('price-q').addEventListener('input',e=>renderPrice(e.target.value));
+renderPriceNav();
+renderPrice('');
 </script>
 </body>
 </html>

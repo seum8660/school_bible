@@ -41,68 +41,68 @@
     color-scheme: light;
     color: var(--text-primary);
     --surface-1:      #ffffff;
-    --surface-page:   #f2f4f6;
-    --text-primary:   #191f28;
-    --text-secondary: #4e5968;
-    --text-muted:     #8b95a1;
-    --grid:           #e5e8eb;
-    --baseline:       #d1d6db;
-    --border:         #eaedf0;
-    --series-1:       #3182f6; /* 건축 / 용역비 */
-    --series-2:       #8b95a1; /* 인테리어 / 추가조사비 */
-    --series-3:       #4e5968; /* 부가가치세 */
-    --series-4:       #c1c8d0; /* 손해배상보험료 */
-    --good:           #3182f6;
-    --warn-bg:        #eef4ff;
-    --warn-text:      #1b64da;
-    --yellow-bg:      #eef4ff;
-    --yellow-bg-hover:#e2edfd;
-    --yellow-border:  #b6d4fb;
-    --radc: 20px; --radsm: 14px;
+    --surface-page:   #f6f5f4;
+    --text-primary:   #000000;
+    --text-secondary: #31302e;
+    --text-muted:     #a39e98;
+    --grid:           #e6e6e6;
+    --baseline:       #e6e6e6;
+    --border:         #e6e6e6;
+    --series-1:       #0075de; /* 용역비 */
+    --series-2:       #b8b6b1; /* 추가조사비 */
+    --series-3:       #4d4b47; /* 부가가치세 */
+    --series-4:       #dedcd8; /* 손해배상보험료 */
+    --good:           #0075de;
+    --warn-bg:        #e7f1fc;
+    --warn-text:      #0075de;
+    --yellow-bg:      #e7f1fc;
+    --yellow-bg-hover:#d9e9fa;
+    --yellow-border:  #b7d8f7;
+    --radc: 12px; --radsm: 8px;
   }
   @media (prefers-color-scheme: dark) {
     :root:where(:not([data-theme="light"])) .viz-root {
       color-scheme: dark;
-      --surface-1:      #2a3356;
-      --surface-page:   #161b33;
-      --text-primary:   #f4f6fc;
-      --text-secondary: #c9d0e2;
-      --text-muted:     #9aa4c0;
-      --grid:           rgba(255,255,255,0.14);
-      --baseline:       rgba(255,255,255,0.22);
-      --border:         rgba(255,255,255,0.16);
-      --series-1:       #6fa8ff;
-      --series-2:       #aeb7c9;
-      --series-3:       #d7dcec;
-      --series-4:       #808ba8;
-      --good:           #6fe0b4;
-      --warn-bg:        rgba(111,168,255,0.14);
-      --warn-text:      #9cc2ff;
-      --yellow-bg:      rgba(111,168,255,0.16);
-      --yellow-bg-hover:rgba(111,168,255,0.26);
+      --surface-1:      #202020;
+      --surface-page:   #191919;
+      --text-primary:   #e9e9e7;
+      --text-secondary: #cfcdc9;
+      --text-muted:     #8f8d88;
+      --grid:           #343434;
+      --baseline:       #3d3d3d;
+      --border:         #343434;
+      --series-1:       #4a9eff;
+      --series-2:       #8f8d88;
+      --series-3:       #cfcdc9;
+      --series-4:       #4d4b47;
+      --good:           #4a9eff;
+      --warn-bg:        rgba(74,158,255,0.14);
+      --warn-text:      #7ab8ff;
+      --yellow-bg:      rgba(74,158,255,0.14);
+      --yellow-bg-hover:rgba(74,158,255,0.22);
       --yellow-border:  rgba(143,184,255,0.55);
     }
   }
   :root[data-theme="dark"] .viz-root {
     color-scheme: dark;
-    --surface-1:      #2a3356;
-    --surface-page:   #161b33;
-    --text-primary:   #f4f6fc;
-    --text-secondary: #c9d0e2;
-    --text-muted:     #9aa4c0;
-    --grid:           rgba(255,255,255,0.14);
-    --baseline:       rgba(255,255,255,0.22);
-    --border:         rgba(255,255,255,0.16);
-    --series-1:       #6fa8ff;
-    --series-2:       #aeb7c9;
-    --series-3:       #d7dcec;
-    --series-4:       #808ba8;
-    --good:           #6fe0b4;
-    --warn-bg:        rgba(111,168,255,0.14);
-    --warn-text:      #9cc2ff;
-    --yellow-bg:      rgba(111,168,255,0.16);
-    --yellow-bg-hover:rgba(111,168,255,0.20);
-    --yellow-border:  rgba(143,184,255,0.45);
+    --surface-1:      #202020;
+    --surface-page:   #191919;
+    --text-primary:   #e9e9e7;
+    --text-secondary: #cfcdc9;
+    --text-muted:     #8f8d88;
+    --grid:           #343434;
+    --baseline:       #3d3d3d;
+    --border:         #343434;
+    --series-1:       #4a9eff;
+    --series-2:       #8f8d88;
+    --series-3:       #cfcdc9;
+    --series-4:       #4d4b47;
+    --good:           #4a9eff;
+    --warn-bg:        rgba(74,158,255,0.14);
+    --warn-text:      #7ab8ff;
+    --yellow-bg:      rgba(74,158,255,0.14);
+    --yellow-bg-hover:rgba(74,158,255,0.20);
+    --yellow-border:  rgba(74,158,255,0.40);
   }
 
   * { box-sizing: border-box; }
@@ -321,6 +321,43 @@
   }
 
   #tooltip { position: fixed; pointer-events: none; z-index: 50; background: var(--text-primary); color: var(--surface-1); font-size: 12px; padding: 6px 10px; border-radius: 6px; opacity: 0; transition: opacity .1s ease; white-space: nowrap; }
+
+  /* ===== 노션 디자인 가이드라인 적용 ===== */
+  body{background:var(--surface-page)!important;}
+  :root[data-theme="dark"] body{background:#191919!important;}
+  .header .kicker{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);}
+  .header h1{font-size:28px;font-weight:700;letter-spacing:-.03em;line-height:1.25;}
+  .header .sub{font-size:13.5px;color:var(--text-secondary);}
+  .card,.panel,.hero,.tiles>*{border:1px solid var(--border)!important;border-radius:12px!important;
+    box-shadow:none!important;background:var(--surface-1);}
+  .card h3,.panel h2{font-size:12px!important;font-weight:700!important;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--text-secondary)!important;}
+  .card-desc,.panel .desc{font-size:11.5px!important;color:var(--text-muted)!important;}
+  .field label,.check-row{font-size:12.5px;}
+  .field label{font-size:11.5px!important;font-weight:700!important;color:var(--text-muted)!important;letter-spacing:.02em;}
+  input[type="text"],input[type="number"],select{background:var(--yellow-bg)!important;
+    border:1px solid var(--yellow-border)!important;border-radius:8px!important;
+    color:var(--warn-text)!important;font-weight:600!important;box-shadow:none!important;}
+  input[type="text"]:focus,input[type="number"]:focus,select:focus{border-color:var(--good)!important;
+    box-shadow:0 0 0 3px rgba(0,117,222,.12)!important;outline:none;}
+  input.num-in{text-align:right;font-variant-numeric:tabular-nums;}
+  .badge-mini,.chip{border-radius:4px!important;font-size:10.5px!important;font-weight:700!important;}
+  table{border-collapse:collapse;}
+  th{background:var(--surface-page)!important;color:var(--text-muted)!important;font-size:11.5px!important;
+    font-weight:700!important;border:0!important;border-bottom:1px solid var(--border)!important;padding:9px 11px!important;}
+  td{border:0!important;border-bottom:1px solid var(--border)!important;padding:10px 11px!important;
+    font-size:13px;color:var(--text-secondary);font-variant-numeric:tabular-nums;}
+  td.name{font-weight:700;color:var(--text-primary);}
+  tbody tr:hover td{background:var(--surface-page);}
+  tr.total td,tr.sum td,tfoot td{background:var(--surface-page)!important;font-weight:700!important;color:var(--text-primary)!important;
+    border-top:1px solid var(--border)!important;}
+  .info-grid>div{border-top:1px solid var(--border);}
+  .reset-btn,.hd-actions button,#pdfBtn,#xlsBtn{border:1px solid var(--border)!important;border-radius:100px!important;
+    background:var(--surface-1)!important;color:var(--text-secondary)!important;font-weight:500!important;font-size:12.5px!important;box-shadow:none!important;}
+  .hd-actions button:hover,.reset-btn:hover{background:var(--surface-page)!important;color:var(--text-primary)!important;}
+  .yellow-legend{font-size:12px;color:var(--text-secondary);}
+  .yellow-legend .chip{background:var(--yellow-bg);border:1px solid var(--yellow-border);}
+  .foot-note,.inline-note{font-size:11.5px;color:var(--text-muted);}
 </style>
 </head>
 <body>
@@ -365,7 +402,7 @@
           </div>
           <div class="field"><label>전기·통신·소방 공제율(%)</label><input type="number" id="in_공제율" value="18" min="0" max="100" step="0.1"></div>
         </div>
-        <div class="inline-note" style="margin-bottom:10px;">참고: 시설과-9416 기준 신축·개축 23%, 증축·기타 18% 권장 — 현장 여건에 따라 직접 수정 가능</div>
+        <div class="inline-note" style="margin-bottom:10px;">참고: 시설과-○○○○ 기준 신축·개축 23%, 증축·기타 18% 권장 — 현장 여건에 따라 직접 수정 가능</div>
         <div class="row2">
           <div class="field"><label>종별</label>
             <select id="in_종별">

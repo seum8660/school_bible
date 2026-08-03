@@ -2,12 +2,90 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
-<title>🏫학교시설업무 치트키 · SCHOOL BIBLE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>학교시설 치트키 — 삽질 Zero, 업무 Hero</title>
+<meta name="description" content="교육(지원)청 업무 담당자를 위한 학교시설 업무 레퍼런스 — 매뉴얼·프로세스·판단 기준·산출 도구를 한 곳에서.">
 <style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#faf9f7;color:#3d3d3a;word-break:keep-all}
+  p{text-wrap:pretty}
+  a{color:#0075de}
+  a:hover{color:#005bab}
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+/* ============ 2a 다크 픽셀 모자이크 ============ */
+  .px{background:#faf9f7;color:#3d3d3a;position:relative;overflow:hidden}
+  .px .bgc{position:absolute;top:0;right:0;width:52%;height:min(70vh,680px);display:block;
+    -webkit-mask-image:linear-gradient(to left,#000 55%,transparent),linear-gradient(to top,transparent,#000 40%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(to left,#000 55%,transparent),linear-gradient(to top,transparent,#000 40%);
+    mask-composite:intersect}
+  .px .inwrap{position:relative;z-index:1}
+  .px .nav{display:flex;align-items:center;gap:26px;padding:18px 40px}
+  .px .logo{font-size:16.5px;font-weight:800;letter-spacing:-.02em;color:#26261f;display:flex;align-items:center;gap:9px}
+  .px .logo i{width:22px;height:22px;border-radius:5px;background:#0075de;display:inline-flex;align-items:center;justify-content:center;font-style:normal;color:#fff;font-size:13px;font-weight:900}
+  .px .nav a{font-size:14px;font-weight:600;color:#6f6b64;text-decoration:none}
+  .px .nav a:hover{color:#26261f}
+  .px .nav .cta{margin-left:auto;border:1px solid #dcd8d0;color:#26261f;border-radius:10px;padding:10px 20px;background:#fff}
+  .px .hero{max-width:1080px;margin:0 auto;padding:80px 40px 110px}
+  .px .pill{display:inline-block;border:1px solid #dcd8d0;border-radius:100px;padding:7px 16px;font-size:12.5px;font-weight:700;letter-spacing:.14em;color:#6f6b64;background:#fff}
+  .px h1{font-size:56px;line-height:1.22;letter-spacing:-.02em;font-weight:800;color:#26261f;margin:26px 0 18px}
+  .px h1 .amber{color:#0075de}
+  .px .ci{margin:24px 0 20px;display:grid;gap:6px}
+  .px .ci .ln{font-size:74px;line-height:1.08;font-weight:900;letter-spacing:-.03em;color:#26261f;display:flex;align-items:baseline;gap:16px}
+  .px .ci .en{font-family:'Avenir Next','Segoe UI',sans-serif;font-weight:900;letter-spacing:.01em}
+  .px .ci .zero{color:#a39e98;position:relative}
+  .px .ci .zero::after{content:"";position:absolute;left:-3%;right:-3%;top:52%;height:7px;background:#dd5b00;border-radius:4px;transform:rotate(-6deg) scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.7,.2,1) .6s}
+  .px .ci.in .zero::after{transform:rotate(-6deg) scaleX(1)}
+  .px .ci .hero-w{color:#fff;background:#0075de;padding:2px 18px 6px;border-radius:12px;box-shadow:0 10px 26px rgba(0,117,222,.30);display:inline-block;transform:rotate(-1.2deg)}
+  @media(max-width:900px){.px .ci .ln{font-size:44px}}
+  .px .sub{font-size:16.5px;color:#6f6b64;line-height:1.8;max-width:560px}
+  .px .btns{display:flex;gap:12px;margin-top:32px}
+  .px .btns a{border-radius:8px;padding:14px 26px;font-size:15px;font-weight:700;text-decoration:none;transition:transform .18s,box-shadow .18s}
+  .px .btns .b1{background:#26261f;color:#fff}
+  .px .btns .b1:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(38,38,31,.25)}
+  .px .btns .b2{border:1px solid #dcd8d0;color:#26261f;background:#fff}
+  .px .btns .b2:hover{transform:translateY(-2px)}
+  .px .feats{max-width:1080px;margin:0 auto;padding:0 40px 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .px .feat{border:1px solid #e5e1d8;border-radius:14px;background:#fff;padding:24px;transition:transform .22s,border-color .22s,box-shadow .22s}
+  .px .feat:hover{transform:translateY(-4px);border-color:#0075de;box-shadow:0 12px 26px rgba(38,38,31,.08)}
+  .px .feat .no{font-size:11.5px;font-weight:800;letter-spacing:.12em;color:#0075de}
+  .px .feat h3{font-size:18px;font-weight:800;color:#26261f;margin:10px 0 8px;letter-spacing:-.01em}
+  .px .feat p{font-size:13.5px;line-height:1.75;color:#6f6b64}
+  .px .sec{max-width:1080px;margin:0 auto;padding:0 40px 92px}
+  .px .sec-k{font-size:11.5px;font-weight:800;letter-spacing:.14em;color:#0075de}
+  .px .sec-h{font-size:32px;font-weight:800;letter-spacing:-.025em;color:#26261f;margin:10px 0 8px;line-height:1.28}
+  .px .sec-p{font-size:14.5px;color:#6f6b64;line-height:1.75;max-width:620px}
+  .px .asks{display:grid;gap:0;margin-top:30px;border-top:1px solid #e5e1d8}
+  .px .ask{display:flex;align-items:center;gap:20px;padding:26px 4px;border-bottom:1px solid #e5e1d8;text-decoration:none;transition:padding .2s,background .2s}
+  .px .ask:hover{padding-left:14px;background:#fff}
+  .px .ask .q{flex:1;font-size:21px;font-weight:700;letter-spacing:-.02em;color:#26261f;line-height:1.45}
+  .px .ask .a{font-size:13px;font-weight:700;color:#0075de;white-space:nowrap;display:flex;align-items:center;gap:7px}
+  .px .ask .a i{font-style:normal;transition:transform .2s}
+  .px .ask:hover .a i{transform:translateX(4px)}
+  .px .wfs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
+  .px .wf{border:1px solid #e5e1d8;border-radius:14px;background:#fff;padding:22px;text-decoration:none;display:block;transition:transform .22s,border-color .22s,box-shadow .22s}
+  .px .wf:hover{transform:translateY(-4px);border-color:#0075de;box-shadow:0 12px 26px rgba(38,38,31,.08)}
+  .px .wf .mini{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;height:34px;margin-bottom:16px}
+  .px .wf .mini i{display:block;border-radius:3px;background:#eef2f6}
+  .px .wf .mini i.on{background:#b5d9fd}
+  .px .wf .mini i.key{background:#0075de}
+  .px .wf .mini i.bot{background:#1d2d3d}
+  .px .wf h4{font-size:16.5px;font-weight:800;color:#26261f;letter-spacing:-.015em;margin-bottom:6px}
+  .px .wf .law{font-size:12px;color:#a39e93;line-height:1.6}
+  .px .wf .st{display:flex;gap:14px;margin-top:14px;padding-top:12px;border-top:1px solid #f0ede7;font-size:11.5px;color:#6f6b64;font-weight:600}
+  .px .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:30px;border:1px solid #e5e1d8;border-radius:14px;background:#fff;overflow:hidden}
+  .px .fl{padding:22px 20px;border-left:1px solid #e5e1d8;text-decoration:none;display:block;transition:background .2s}
+  .px .fl:first-child{border-left:0}
+  .px .fl:hover{background:#f7fbff}
+  .px .fl .n{font-size:11px;font-weight:800;letter-spacing:.1em;color:#0075de}
+  .px .fl .t{font-size:17px;font-weight:800;color:#26261f;margin:8px 0 10px;letter-spacing:-.01em}
+  .px .fl .d{font-size:12.5px;color:#6f6b64;line-height:1.6}
+  .px .fl .d b{color:#26261f;font-weight:700}
+  @media(max-width:900px){.px .wfs{grid-template-columns:1fr}.px .flow{grid-template-columns:1fr}.px .fl{border-left:0;border-top:1px solid #e5e1d8}.px .fl:first-child{border-top:0}.px .sec-h{font-size:25px}.px .ask .q{font-size:17px}}
+  .px .foot{border-top:1px solid #e5e1d8;padding:20px 40px;display:flex;justify-content:space-between;font-size:12px;color:#a39e93;letter-spacing:.06em}
+  @media(max-width:900px){.px .feats{grid-template-columns:1fr}.px h1{font-size:38px}}
 
   :root{
     --bg:oklch(0.955 0.016 95); --surface:#ffffff; --card:#ffffff;
@@ -1336,6 +1414,87 @@ window.dispatchEvent(new Event('qa-fb-ready'));
           <a class="mk-item" id="setBtn" href="정산이_준공정산_대시보드.html" target="_blank" rel="noopener noreferrer" title="정산이 — 준공정산 (준비중)" ><span class="mk-ic">🧮</span><span class="mk-nm">정산이</span><span class="mk-go">go</span></a>
         </div>
       </div>
+      <p class="sub rv">공문 뒤지기 전에, 선배한테 묻기 전에 — 매뉴얼 · 프로세스 · 판단 기준 · 산출 도구를 한 곳에서.</p>
+      <div class="btns rv"><a class="b1" href="bible.html">치트키 열기 →</a><a class="b2" href="#" id="gvOpen">그래프뷰 보기</a></div>
+    </section>
+    <div class="feats">
+      <div class="feat rv"><div class="no">01 / MANUAL</div><h3>업무 매뉴얼</h3><p>계획부터 정산까지, 실제 업무 순서 그대로 정리한 단계별 매뉴얼. 인수인계서보다 친절합니다.</p></div>
+      <div class="feat rv" style="transition-delay:.1s"><div class="no">02 / GUIDELINE</div><h3>가이드라인 · 프로세스</h3><p>규정·지침·판단 기준을 업무 흐름 위에 얹어서, "이럴 땐 뭘 봐야 하지"에 바로 답합니다.</p></div>
+      <div class="feat rv" style="transition-delay:.2s"><div class="no">03 / GRAPH VIEW</div><h3>그래프뷰 자료실</h3><p>문서 사이의 연결을 지도처럼 탐색하는 자료실. 하나를 찾으면 관련 문서가 따라옵니다.</p></div>
+    </div>
+    <section class="sec">
+      <div class="rv"><div class="sec-k">01 / 이런 적 있으시죠</div>
+      <h2 class="sec-h">답을 아는 사람은 옆자리에 없고,<br>규정은 열 군데에 흩어져 있습니다.</h2>
+      <p class="sec-p">자주 막히는 질문만 모아 바로 답이 있는 곳으로 연결했습니다.</p></div>
+      <div class="asks rv" style="transition-delay:.08s">
+        <a class="ask" href="bible.html?tab=overview"><span class="q">“설계변경 증액되면 최종 결재라인이 어디까지지?”</span><span class="a">설계변경 워크플로우 <i>→</i></span></a>
+        <a class="ask" href="bible.html?tab=overview"><span class="q">“공기연장 간접비는 어디까지 인정되지?”</span><span class="a">공기연장 워크플로우 <i>→</i></span></a>
+        <a class="ask" href="bible.html?tab=overview"><span class="q">“사용승인 전에 받아야 할 검사가 뭔가 있지?”</span><span class="a">인허가 워크플로우 <i>→</i></span></a>
+        <a class="ask" href="bible.html?tab=safety"><span class="q">“이 건물 안전점검 주기가 연 몇 번이지?”</span><span class="a">교육시설안전 <i>→</i></span></a>
+        <a class="ask" href="bible.html?tab=manual"><span class="q">“이 금액이면 일상감사 대상인가?”</span><span class="a">매뉴얼 · 지침 <i>→</i></span></a>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="rv"><div class="sec-k">02 / WORKFLOW</div>
+      <h2 class="sec-h">까다로운 절차 5가지를<br>한 판으로 펼쳤습니다.</h2>
+      <p class="sec-p">누가 · 언제 · 무엇을 하는지를 주체별 레인으로 그렸습니다. 카드를 누르면 기한 · 산출물 · 법적 근거가 아래에 펌쳐집니다.</p></div>
+      <div class="wfs rv" style="transition-delay:.08s">
+        <a class="wf" href="bible.html?tab=overview">
+          <span class="mini"><i class="on"></i><i></i><i class="key"></i><i></i><i></i><i class="bot"></i><i></i><i class="key"></i><i></i><i></i><i></i><i class="bot"></i></span>
+          <h4>설계변경 · 계약금액 조정</h4>
+          <div class="law">지방계약법 시행령 제73조 · 제74조</div>
+          <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 3</span></div>
+        </a>
+        <a class="wf" href="bible.html?tab=overview">
+          <span class="mini"><i class="on"></i><i></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i><i></i><i></i><i class="key"></i><i class="bot"></i><i></i></span>
+          <h4>공기연장 · 간접비 정산</h4>
+          <div class="law">지방계약법 시행령 제75조</div>
+          <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 3</span></div>
+        </a>
+        <a class="wf" href="bible.html?tab=overview">
+          <span class="mini"><i class="on"></i><i></i><i class="bot"></i><i></i><i class="key"></i><i></i><i></i><i class="bot"></i><i></i><i class="key"></i><i></i><i></i></span>
+          <h4>감리 · 건설사업관리 방식 결정</h4>
+          <div class="law">건설기술진흥법 제39조의2</div>
+          <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 2</span></div>
+        </a>
+        <a class="wf" href="bible.html?tab=overview">
+          <span class="mini"><i class="on"></i><i class="key"></i><i></i><i></i><i class="bot"></i><i></i><i class="bot"></i><i></i><i></i><i></i><i class="key"></i><i></i></span>
+          <h4>공사 중 안전사고 대응</h4>
+          <div class="law">산업안전보건법 제54조 · 제55조</div>
+          <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 2</span></div>
+        </a>
+        <a class="wf" href="bible.html?tab=overview">
+          <span class="mini"><i class="bot"></i><i></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i></span>
+          <h4>학교시설 인허가</h4>
+          <div class="law">학교시설사업 촉진법 제4조 · 제5조</div>
+          <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 2</span></div>
+        </a>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="rv"><div class="sec-k">03 / PROCESS</div>
+      <h2 class="sec-h">기획에서 준공까지,<br>갱신해야 할 기준은 따로 있습니다.</h2>
+      <p class="sec-p">단계마다 가장 먼저 따져야 할 기준을 하나씩 골랐습니다. 누르면 해당 장으로 바로 열립니다.</p></div>
+      <div class="flow rv" style="transition-delay:.08s">
+        <a class="fl" href="bible.html?tab=plan"><div class="n">STEP 01</div><div class="t">기획</div><div class="d">투자심사 <b>총사업비 40억↑</b><br>사전기획 <b>설계비 1억↑</b></div></a>
+        <a class="fl" href="bible.html?tab=design"><div class="n">STEP 02</div><div class="t">설계</div><div class="d">설계공모 <b>설계비 1억↑</b><br>VE <b>공사비 100억↑</b></div></a>
+        <a class="fl" href="bible.html?tab=const"><div class="n">STEP 03</div><div class="t">시공</div><div class="d">안전관리계획 <b>100억↑</b><br>기술지도 <b>1억~120억</b></div></a>
+        <a class="fl" href="bible.html?tab=cm"><div class="n">STEP 04</div><div class="t">건설사업관리</div><div class="d">감독권한대행 <b>200억↑</b><br>건설사업관리계획 <b>공고</b></div></a>
+        <a class="fl" href="bible.html?tab=comp"><div class="n">STEP 05</div><div class="t">준공</div><div class="d">사용승인 <b>감리완료보고서</b><br>준공정산 <b>안전보건관리비</b></div></a>
+      </div>
+    </section>
+
+    <footer class="foot"><span>학교시설 치트키 — SCHOOL FACILITY CHEAT KEY</span><span style="opacity:.75">claude_min 제작 · 본 자료는 참고용으로만 사용하세요</span><span>DWG NO. CHEAT-01 / REV. 2026</span></footer>
+  </div>
+  <div id="gvModal" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(20,20,18,.55);backdrop-filter:blur(3px)">
+    <div style="position:absolute;inset:24px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;border-bottom:1px solid #e5e1d8">
+        <span style="font-size:14.5px;font-weight:800;color:#26261f">그래프뷰 자료실 — 3D</span>
+        <button type="button" id="gvClose" style="border:1.5px solid #dcd8d0;background:#fff;color:#26261f;font:inherit;font-size:13.5px;font-weight:700;padding:8px 18px;border-radius:100px;cursor:pointer">닫기 ✕</button>
+      </div>
+      <iframe id="gvFrame" title="그래프뷰 3D" style="flex:1;border:0;width:100%"></iframe>
     </div>
   </div>
 </header>
@@ -3575,28 +3734,15 @@ Object.keys(DATA).forEach(pk=>{
 });
 // 제1~6장 금액 문구 강조 (레드·굵게)
 (function(){
-  const MONEY=/(\d[\d,]*\s*(?:조|억|천만|백만|만)?\s*원?\s*(?:이상|이하|미만|초과)?|\d[\d,]*\s*(?:조|억|천만))(?![㎡㎥m·])/g;
-  const RE=/\d[\d,.]*\s*(?:천만원|백만원|만원|억(?:\s*\d[\d,.]*\s*(?:천만원|만원|원))?|원)(?:\s*(?:이상|이하|미만|초과))?/g;
-  function walk(root){
-    const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);
-    const nodes=[];let n;while(n=w.nextNode())nodes.push(n);
-    nodes.forEach(tn=>{
-      const t=tn.nodeValue;if(!t||!/\d/.test(t))return;
-      if(!RE.test(t))return;RE.lastIndex=0;
-      const p=tn.parentNode;if(!p||p.classList&&p.classList.contains('money-hl'))return;
-      const frag=document.createDocumentFragment();let last=0,m;RE.lastIndex=0;
-      while(m=RE.exec(t)){
-        if(m.index>last)frag.appendChild(document.createTextNode(t.slice(last,m.index)));
-        const s=document.createElement('span');s.className='money-hl';s.textContent=m[0];frag.appendChild(s);
-        last=m.index+m[0].length;
-      }
-      if(last<t.length)frag.appendChild(document.createTextNode(t.slice(last)));
-      p.replaceChild(frag,tn);
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.add('in');
+      if(e.target.classList.contains('slogan')) e.target.classList.add('pop');
+      io.unobserve(e.target);
     });
-  }
-  ['plan','design','const','cm','comp','manual'].forEach(pk=>{
-    const host=document.getElementById(pk);if(host)walk(host);
-  });
+  },{threshold:.2});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
 })();
 
 // ================= 인터랙션 =================
@@ -4484,50 +4630,38 @@ runRatioCalc();
 
 // ===== 기상데이터 체크 =====
 (function(){
-  const WX={
-    '광주':[9,8,9,8,9,10,15,13,9,6,8,9],'목포':[10,9,9,8,9,10,14,12,9,6,9,10],
-    '여수':[10,9,10,9,10,11,15,13,9,6,8,10],'순천':[9,8,9,8,9,11,15,13,9,6,8,9],
-    '장흥':[9,8,9,8,9,11,15,13,9,6,8,9],'해남':[10,9,9,8,9,10,14,12,9,6,8,10],
-    '고흥':[10,9,9,8,9,11,15,13,9,6,8,10],'완도':[11,10,10,9,10,11,15,13,9,7,9,11],
-    '진도':[11,10,10,9,10,11,14,12,9,7,9,11],'흑산도':[13,12,12,10,11,12,15,13,10,8,11,13]
-  };
-  const HOL=[3,2,2,2,2,1,0,2,3,3,1,2]; // 월별 법정공휴일(주말 제외 평균)
-  const sel=document.getElementById('wx-region'), st=document.getElementById('wx-start'),
-        mo=document.getElementById('wx-months'), out=document.getElementById('wx-result');
-  if(!sel) return;
-  for(let i=1;i<=12;i++){ const o=document.createElement('option'); o.value=i; o.textContent=i+'월'; st.appendChild(o); }
-  st.value=new Date().getMonth()+1;
-  function run(){
-    const r=sel.value, s=+st.value, n=Math.max(1,Math.min(36,+mo.value||1));
-    const d=WX[r]||WX['목포'];
-    let rows='',tw=0,th=0,tn=0,tdup=0;
-    for(let k=0;k<n;k++){
-      const m=((s-1+k)%12), mm=m+1, days=[31,28,31,30,31,30,31,31,30,31,30,31][m];
-      const w=d[m], h=HOL[m], dup=Math.round(w*h/days*10)/10;
-      const net=Math.max(8, Math.round((w+h-dup)*10)/10);
-      tw+=w; th+=h; tn+=net; tdup+=dup;
-      const hot=(mm>=7&&mm<=8), cold=(mm===12||mm<=2);
-      rows+=`<tr><td style="text-align:center;font-weight:700;color:var(--navy)">${k+1}차월 (${mm}월)</td>`
-        +`<td style="text-align:center">${w}</td><td style="text-align:center">${h}</td><td style="text-align:center">${dup}</td>`
-        +`<td style="text-align:center;font-weight:800;color:var(--ops-d)">${net}</td>`
-        +`<td style="text-align:center;font-size:12px;color:var(--muted)">${hot?'혹서기 · 폭염 대응 필요':cold?'혹한기 · 콘크리트 양생 주의':'—'}</td></tr>`;
+  var c=document.getElementById('pxc'); if(!c) return;
+  var ctx=c.getContext('2d'), cells=[], CS=13, GAP=4, W, H, cols, rows;
+  function resize(){
+    var r=c.parentElement.getBoundingClientRect();
+    W=c.width=r.width; H=c.height=r.height;
+    cols=Math.ceil(W/(CS+GAP)); rows=Math.ceil(H/(CS+GAP));
+    cells=[];
+    var N=Math.round(cols*rows*.28);
+    for(var i=0;i<N;i++) cells.push(spawn(true));
+  }
+  function spawn(init){
+    return {x:Math.floor(Math.random()*cols)*(CS+GAP), y:Math.floor(Math.random()*rows)*(CS+GAP),
+      p:Math.random()*Math.PI*2, s:.3+Math.random()*.9,
+      a:Math.random()<.03?'amber':'gray',
+      born:performance.now()-(init?Math.random()*9000:0),
+      life:6000+Math.random()*9000};
+  }
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<cells.length;i++){
+      var d=cells[i];
+      var age=t-d.born;
+      if(age>d.life){ cells[i]=spawn(false); cells[i].born=t; continue; }
+      var k=age/d.life;
+      var env=Math.min(1, Math.min(k,1-k)*5);           /* 서서히 나타났다 사라짐 */
+      var tw=reduce? .5 : (Math.sin(t/1000*d.s+d.p)+1)/2;
+      var al=(.03+tw*.16)*env;
+      ctx.fillStyle = d.a==='amber' ? 'rgba(0,117,222,'+(al*1.5)+')' : 'rgba(38,38,31,'+(al*.8)+')';
+      ctx.fillRect(d.x, d.y, CS, CS);
     }
-    out.innerHTML=`<div class="res-head">🌦 ${r} · ${s}월 착공 ${n}개월 기준</div>
-      <div class="res-grid" style="margin-bottom:12px">
-        <div class="res-card"><div class="nm">기상 비작업일수</div><div class="vl">${Math.round(tw*10)/10}<span>일</span></div></div>
-        <div class="res-card"><div class="nm">법정공휴일</div><div class="vl">${th}<span>일</span></div></div>
-        <div class="res-card" style="border-left-color:var(--ops)"><div class="nm">적용 비작업일수</div><div class="vl" style="color:var(--ops-d)">${Math.round(tn*10)/10}<span>일</span></div></div>
-        <div class="res-card"><div class="nm">순 작업가능일</div><div class="vl">${Math.max(0,Math.round((n*30.4-tn)*10)/10)}<span>일</span></div></div>
-      </div>
-      <div class="tbl-wrap"><table><thead><tr><th style="text-align:center">구분</th><th style="text-align:center">기상</th><th style="text-align:center">공휴일</th><th style="text-align:center">중복</th><th style="text-align:center">적용</th><th style="text-align:center">비고</th></tr></thead><tbody>${rows}</tbody>
-      <tfoot><tr style="background:var(--ops-l,#eef4ff);border-top:2px solid var(--ops,#3b6fd4)">
-        <td style="text-align:center;font-weight:800;color:var(--navy)">합계 (${n}개월)</td>
-        <td style="text-align:center;font-weight:800">${Math.round(tw*10)/10}</td>
-        <td style="text-align:center;font-weight:800">${th}</td>
-        <td style="text-align:center;font-weight:800">${Math.round(tdup*10)/10}</td>
-        <td style="text-align:center;font-weight:800;color:var(--ops-d)">${Math.round(tn*10)/10}</td>
-        <td style="text-align:center;font-size:12px;color:var(--muted)">순 작업가능일 ${Math.max(0,Math.round((n*30.4-tn)*10)/10)}일</td>
-      </tr></tfoot></table></div>`;
+    if(!reduce) requestAnimationFrame(draw);
   }
   ['wx-region','wx-start','wx-months'].forEach(id=>{const e=document.getElementById(id);e.addEventListener('input',run);e.addEventListener('change',run);});
   run();
@@ -5086,45 +5220,80 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 });
 // ===== 각종 매뉴얼 검색 =====
 (function(){
-  var q=document.getElementById('manQ'); if(!q)return;
-  var openBtn=document.getElementById('manSumOpen');
-  function isSum(c){ var d=c.getAttribute('data-inline')||''; return /\.html$/i.test(d); }
-  function scopeCss(css,scope){
-    css=css.replace(/@charset[^;]*;/gi,'').replace(/@page\s*\{[^}]*\}/gi,'');
-    var out='',i=0,n=css.length;
-    function block(from){ var d=0,j=from;
-      for(;j<n;j++){ if(css[j]==='{')d++; else if(css[j]==='}'){ d--; if(!d) return j; } }
-      return n-1; }
-    while(i<n){
-      var at=css.indexOf('@',i), br=css.indexOf('{',i);
-      if(br<0){ break; }
-      if(at>=0 && at<br){
-        var head=css.slice(at,br).trim();
-        if(/^@(media|supports|layer|container)/i.test(head)){
-          var e=block(br);
-          out+=head+'{'+scopeCss(css.slice(br+1,e),scope)+'}';
-          i=e+1; continue;
-        }
-        if(/^@(font-face|keyframes|-webkit-keyframes|import|namespace)/i.test(head)){
-          var e2=block(br);
-          out+=css.slice(at,e2+1); i=e2+1; continue;
+  var GLYPH={
+    H:['10001','10001','10001','11111','10001','10001','10001'],
+    E:['11111','10000','10000','11110','10000','10000','11111'],
+    R:['11110','10001','10001','11110','10100','10010','10001'],
+    O:['01110','10001','10001','10001','10001','10001','01110'],
+    Z:['11111','00001','00010','00100','01000','10000','11111']
+  };
+  function build(c, word, color, opts){
+    var ctx=c.getContext('2d'), S=11, G=2, pads=8, dots=[], x0=4;
+    word.split('').forEach(function(ch){
+      if(ch===','){
+        dots.push({x:x0, y:6+6*(S+G), d:Math.random()*1200});
+        dots.push({x:x0-3, y:6+7*(S+G)-4, d:Math.random()*1200});
+        x0+=S+pads; return;
+      }
+      var g=GLYPH[ch];
+      for(var r=0;r<7;r++)for(var col=0;col<5;col++){
+        if(g[r][col]==='1') dots.push({x:x0+col*(S+G), y:6+r*(S+G), d:Math.random()*1200});
+      }
+      x0+=5*(S+G)+pads;
+    });
+    var wordW=x0-pads;
+    var start=null, played=false;
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && !played){ played=true; requestAnimationFrame(draw); io.disconnect(); } }); },{threshold:.4});
+    io.observe(c);
+    function draw(t){
+      if(!start){ start=t; assembleSound(); }
+      var el=t-start;
+      ctx.clearRect(0,0,c.width,c.height);
+      dots.forEach(function(p){
+        var k=Math.min(1,Math.max(0,(el-p.d)/500));
+        if(k<=0) return;
+        var tw=(Math.sin(t/900+p.x)+1)/2;
+        ctx.fillStyle=color+(0.55+0.45*k*(0.7+tw*.3))+')';
+        var sz=S*(0.5+0.5*k);
+        ctx.fillRect(p.x+(S-sz)/2, p.y+(S-sz)/2, sz, sz);
+      });
+      if(opts && opts.strike){
+        var sk=Math.min(1,Math.max(0,(el-1900)/500));
+        if(sk>0 && !opts._snd){ opts._snd=true; strikeSound(); }
+        if(sk>0){
+          ctx.strokeStyle='rgba(221,91,0,.95)';
+          ctx.lineWidth=8; ctx.lineCap='round';
+          ctx.beginPath();
+          ctx.moveTo(2, 58);
+          ctx.lineTo(2+(wordW-4)*sk, 58-16*sk);
+          ctx.stroke();
         }
       }
-      var e3=block(br);
-      var sels=css.slice(i,br).replace(/\/\*[\s\S]*?\*\//g,'').trim();
-      var bodyTxt=css.slice(br+1,e3);
-      if(sels){
-        var pre=sels.split(',').map(function(x){
-          x=x.trim(); if(!x) return '';
-          if(/^(html|body|:root)$/i.test(x)) return scope;
-          x=x.replace(/^(html|body|:root)\b\s*/i,'');
-          return scope+' '+x;
-        }).filter(Boolean).join(',');
-        out+=pre+'{'+bodyTxt+'}';
-      }
-      i=e3+1;
+      requestAnimationFrame(draw);
     }
-    return out;
+  }
+  var AC=null, unlocked=false;
+  function ac(){ try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} return AC; }
+  ['pointerdown','keydown','touchstart'].forEach(function(ev){
+    addEventListener(ev, function(){ var a=ac(); if(a&&a.state==='suspended') a.resume(); unlocked=true; }, {once:false, passive:true});
+  });
+  function assembleSound(){
+    var a=ac(); if(!a) return;
+    if(a.state==='suspended'){ a.resume().catch(function(){}); }
+    try{
+      var t0=a.currentTime;
+      for(var i=0;i<14;i++){
+        var tt=t0+ i*0.11 + Math.random()*0.04;
+        var o=a.createOscillator(), g=a.createGain();
+        o.type='square';
+        o.frequency.value=1400+Math.random()*1800;
+        g.gain.setValueAtTime(0.0001,tt);
+        g.gain.exponentialRampToValueAtTime(.045,tt+.008);
+        g.gain.exponentialRampToValueAtTime(.0001,tt+.06);
+        o.connect(g); g.connect(a.destination);
+        o.start(tt); o.stop(tt+.07);
+      }
+    }catch(e){}
   }
   var manKind='all';
   function applyFilter(){
@@ -5227,14 +5396,17 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 
 <script>
 (function(){
-  var g=document.getElementById('siteGrp'), ar=document.getElementById('siteArrow');
-  if(!g) return;
-  g.addEventListener('click',function(){
-    var list=document.querySelectorAll('.extlink[data-sub="site"]');
-    var open=list.length && list[0].style.display!=='none';
-    list.forEach(function(a){ a.style.display=open?'none':''; });
-    if(ar) ar.textContent=open?'▾':'▴';
-  });
+  var open=document.getElementById('gvOpen'), modal=document.getElementById('gvModal'),
+      frame=document.getElementById('gvFrame'), close=document.getElementById('gvClose');
+  if(!open||!modal) return;
+  function show(e){ if(e) e.preventDefault();
+    if(!frame.src) frame.src='그래프뷰_3D.html';
+    modal.style.display=''; document.body.style.overflow='hidden'; }
+  function hide(){ modal.style.display='none'; document.body.style.overflow=''; }
+  open.addEventListener('click', show);
+  close.addEventListener('click', hide);
+  modal.addEventListener('click', function(e){ if(e.target===modal) hide(); });
+  addEventListener('keydown', function(e){ if(e.key==='Escape' && modal.style.display!=='none') hide(); });
 })();
 </script>
 <script>

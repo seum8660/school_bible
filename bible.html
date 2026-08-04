@@ -1714,8 +1714,9 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     <div class="ov-view" data-ovv="flow">
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px;padding:12px 15px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radsm);background:var(--surface)">
       <span style="font-size:13.5px;color:var(--muted)">사전기획부터 설계 · 발주 · 착공 · 시공관리 · 준공검사 · 사용승인까지 학교시설 사업 전체 흐름입니다.</span>
-      <a href="워크플로우_전주기_대시보드.html" target="_blank" rel="noopener noreferrer" id="wfOpenLink" style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap">새 창에서 크게 보기 <span>↗</span></a>
+      <a href="워크플로우_통합보드.html" target="_blank" rel="noopener noreferrer" id="wfOpenLink" style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap">새 창에서 크게 보기 <span>↗</span></a>
     </div>
+<style>.wf-picker .wf-ic{display:none !important}</style>
 <div class="wf-picker" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px">
       <button type="button" class="wf-pick on" data-src="워크플로우_전주기_대시보드.html" style="display:flex;align-items:center;gap:10px;font:inherit;text-align:left;cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:var(--radsm);padding:11px 15px">
         <span class="wf-ic" style="display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--surface-2);flex:0 0 auto"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12h4l2-6 3 12 2.5-8 1.5 2h4"/></svg></span>
@@ -5352,6 +5353,8 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 (function(){
   var picks=document.querySelectorAll('.wf-pick'), f=document.getElementById('wfFrame');
   var link=document.getElementById('wfOpenLink');
+  var UNI='워크플로우_통합보드.html';
+  var UKEY={'워크플로우_전주기_대시보드.html':'cycle','워크플로우_설계변경_대시보드.html':'change','워크플로우_공기연장_대시보드.html':'extend','워크플로우_감리방식_대시보드.html':'cm','워크플로우_안전사고_대시보드.html':'safety','워크플로우_인허가_대시보드.html':'permit','워크플로우_엔지니어링평가_대시보드.html':'evalx'};
   function paint(b){
     picks.forEach(function(x){
       var on=(x===b);
@@ -5367,6 +5370,9 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
   picks.forEach(function(b){
     b.addEventListener('click',function(){
       if(b.dataset.soon) return;
+      var k=UKEY[b.dataset.src||''];
+      if(k){ window.open(UNI+'?board='+k,'_blank','noopener'); return; }
+      if(b.dataset.src){ window.open(b.dataset.src,'_blank','noopener'); return; }
       paint(b);
       if(f && b.dataset.src) f.src=b.dataset.src;
       if(link && b.dataset.src) link.href=b.dataset.src;
@@ -5374,6 +5380,15 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
     });
   });
   paint(document.querySelector('.wf-pick.on'));
+})();
+// __wfTabDirect — 워크플로우 탭 클릭 시 통합보드 새 창 전체화면
+(function(){
+  var t=document.querySelector('.ov-tab[data-ov="flow"]');
+  if(!t) return;
+  t.addEventListener('click',function(e){
+    e.stopPropagation(); e.preventDefault();
+    window.open('워크플로우_통합보드.html','_blank','noopener');
+  },true);
 })();
 // __wfDeepLink — ?ov= / ?wf= 딥링크
 (function(){ try{
@@ -5384,5 +5399,6 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
     setTimeout(function(){ var v=document.querySelector('.ov-view[data-ovv="flow"]'); if(v) window.scrollTo(0, v.getBoundingClientRect().top + window.pageYOffset - 70); },300); }
 }catch(e){} })();
 </script>
+<script src="blind.js" defer></script>
 </body>
 </html>

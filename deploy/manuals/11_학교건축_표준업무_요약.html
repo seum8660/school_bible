@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>2025 학교건축 표준업무 매뉴얼 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:12mm; }
+  .card,.row,.row1,.row2,.doc>div,li,.num,.chips,table,tr{break-inside:avoid;page-break-inside:avoid} /* print-safe */
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:#fff; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body);
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:100%; max-width:1180px; min-height:auto;
+    padding:52.9px 45.4px 52.9px 45.4px;
+    position:relative;
+    page-break-after:always;
+  }
+  .page:last-child{ page-break-after:auto; }
+
+  .title{ margin:0; font-size:25.9px; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:5.3px 0 0 0; font-size:11.9px; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:2.3px; background:var(--navy); margin:7.6px 0 11.3px 0; }
+  .rule-gray{ height:0.9px; background:var(--line); margin:11.3px 0 6.8px 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:12.9px; margin-bottom:9.8px; }
+  .row1{ margin-bottom:9.8px; }
+
+  .card{ border:1.1px solid var(--line); border-radius:4.5px; background:none; padding:7.6px 10.6px 8.3px 10.6px; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:15.6px; font-weight:700; line-height:1.25;
+    padding:3px 8.3px; border-radius:3px; margin-bottom:5.3px;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:13.3px; line-height:1.42; padding-left:9.1px; text-indent:-9.1px; margin-bottom:3.4px; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:13.3px; line-height:1.42; padding-left:15.9px; text-indent:-15.9px; margin-bottom:3.4px; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:3.8px; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:3.8px; padding:7.6px 11.3px; margin:0 0 8.3px 0;
+    text-align:center; font-size:13.9px; font-weight:600; line-height:1.45;
+    color:var(--navy);
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:11.9px; font-weight:500; color:var(--meta); margin-top:3px; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:5.3px; }
+  .chip{
+    font-size:11.9px; line-height:1.25; background:var(--chip-bg);
+    border:0.9px solid var(--chip-line); border-radius:3.8px;
+    padding:3.4px 6.8px; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:11.3px; line-height:1.4; color:var(--note); margin:0; }
+  .pageno{ text-align:center; font-size:11.3px; color:var(--note); margin:4.5px 0 0 0; }
+
+  @media screen{
+    body{ background:#E5E7EB; }
+    .page{ background:#fff; margin:0 auto 22.7px auto; box-shadow:0 1px 4px rgba(0,0,0,.15); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== 1쪽 : 총론 ===================== -->
+<div class="page">
+  <h1 class="title">학교건축 표준업무 매뉴얼 ① — 총론 및 사업 프로세스</h1>
+  <p class="meta">학교시설업무 BIBLE ｜ 시설공사 총괄 ｜ 교육부·한국교육시설안전원 「2025 학교건축 표준업무 매뉴얼」(개정판, 352쪽)</p>
+  <div class="rule-navy"></div>
+
+  <div class="row2">
+    <div class="card"><span class="badge">1 · 매뉴얼 구성</span>
+      <ul class="list">
+        <li><b class="term">제1장 기획</b> 사업계획·투자심사·각종 심의·예산</li>
+        <li><b class="term">제2장 설계</b> 설계발주·실시설계·설계검토·승인</li>
+        <li><b class="term">제3장 시공</b> 착공·공사·공종별 확인·시공검토</li>
+        <li><b class="term">제4장 준공</b> 준공검사·사용승인·개교준비</li>
+        <li><b class="term">제5장 유지관리·해체</b> 안전관리·하자·해체</li>
+        <li><b class="term">부록</b> 모듈러교사(임시교실), 참고자료 링크</li>
+      </ul></div>
+    <div class="card"><span class="badge">2 · 단계별 핵심 산출물</span>
+      <ul class="list">
+        <li><b class="term">기획</b> 사전기획보고서, 기본안전보건대장</li>
+        <li><b class="term">설계</b> 실시설계도서, 설계안전보건대장, VE보고서</li>
+        <li><b class="term">시공</b> 착공서류, 공사안전보건대장, 설계변경조서</li>
+        <li><b class="term">준공</b> 준공도서, 품질기록, 시운전 평가결과서</li>
+        <li><b class="term">유지관리</b> 안전점검 결과서, 하자보수 이력</li>
+        <li><b class="term">해체</b> 해체계획서, 해체공사 감리완료보고서</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge rust">3 · 총사업비 구간별 기획 절차</span>
+      <div class="formula">
+        학생배치계획 → 사전기획 → (타당성조사) → 공유재산심의 → 투자심사 → 공공건축심의 → 예산수립
+        <span class="sub">총사업비 규모에 따라 타당성조사와 투자심사 주체가 달라짐</span>
+      </div>
+      <ol class="nlist">
+        <li><span class="no">①</span><b class="term">500억원 이상</b> 타당성조사를 거친 후 교육부 <b class="term">중앙투자심사</b>를 받으며, 기획 전 과정을 모두 수행함.</li>
+        <li><span class="no">②</span><b class="term">300억원 이상</b> 타당성조사는 생략하되 <b class="term">중앙투자심사</b> 대상에 해당함.</li>
+        <li><span class="no">③</span><b class="term">40억원 이상</b> 시·도교육청 <b class="term">자체투자심사</b>를 받음(전액 자체재원 기준).</li>
+        <li><span class="no">④</span><b class="term">10억원 이상</b> 투자심사를 생략하고 공유재산심의와 공공건축심의만 거침.</li>
+      </ol></div>
+  </div>
+
+  <div class="row2">
+    <div class="card"><span class="badge">4 · 필수 관문 및 시기</span>
+      <ul class="list">
+        <li><b class="term">교육환경평가</b> 학교설립계획 수립 완료 전</li>
+        <li><b class="term">공유재산심의</b> 중앙투자심사 통과 후, 예산의결 전</li>
+        <li><b class="term">공공건축심의</b> 설계용역 입찰공고 전</li>
+        <li><b class="term">기본안전보건대장</b> 건설공사 계획단계</li>
+        <li><b class="term">사업관리방식 검토</b> 기본구상 단계</li>
+        <li><b class="term">안전보건조정자</b> 분리발주 공사 착공일 전날까지</li>
+      </ul></div>
+    <div class="card"><span class="badge">5 · 근거 법령 체계</span>
+      <ul class="list">
+        <li><b class="term">교육</b> 교육시설 등의 안전 및 유지관리 등에 관한 법률, 교육환경 보호에 관한 법률</li>
+        <li><b class="term">건축</b> 건축법, 건축서비스산업 진흥법, 건축물관리법</li>
+        <li><b class="term">건설</b> 건설기술 진흥법, 건설산업기본법</li>
+        <li><b class="term">계약·재산</b> 지방계약법, 공유재산 및 물품 관리법</li>
+        <li><b class="term">안전</b> 산업안전보건법, 시설물안전법</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge">7 · 활용 안내 및 참고 창구</span>
+      <ul class="list">
+        <li><b class="term">온라인 프로세스</b> 학교시설사업 알고 기억해(process.goe.go.kr)에서 단계별 업무 절차와 서식을 확인할 수 있음.</li>
+        <li><b class="term">입지 검토</b> 국토교통부 토지이음(eum.go.kr)에서 학교 건축의 행위제한 여부를 사전에 확인함.</li>
+        <li><b class="term">투자심사 근거</b> 「지방교육행정기관 재정투자사업 심사 지침」(교육부 지방교육재정과, 2024. 10.)</li>
+        <li><b class="term">판본</b> 2016년 초판(교육부·17개 시도교육청·한국교육녹색환경연구원)을 2025년 기준으로 개정한 판임.</li>
+        <li><b class="term">병행 적용</b> 시·도교육청별 자체 업무 매뉴얼 및 계약 예규와 함께 적용하여야 함.</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge">6 · 핵심 기준금액</span>
+      <div class="chips">
+        <span class="chip"><b>타당성조사</b> <span class="num">500억</span> 이상</span>
+        <span class="chip"><b>중앙투자심사</b> 300억 이상</span>
+        <span class="chip"><b>자체투자심사</b> 40억 이상</span>
+        <span class="chip"><b>공공건축심의</b> 설계비 5천만원</span>
+        <span class="chip"><b>공유재산심의</b> 시·도 20억</span>
+        <span class="chip"><b>기본안전보건대장</b> 50억 이상</span>
+        <span class="chip"><b>설계VE</b> 100억 이상</span>
+        <span class="chip"><b>안전보건조정자</b> 합계 50억</span>
+        <span class="chip"><b>초등학교</b> 36~48학급</span>
+        <span class="chip"><b>중·고등학교</b> 24~36학급</span>
+      </div></div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">본 문서는 학교시설업무 BIBLE 대시보드의 요약 자료이며, 실제 업무 처리 시에는 시행 중인 법령 및 최신 지침을 우선 적용합니다.</p>
+  <p class="pageno">1 / 5</p>
+</div>
+
+<!-- ===================== 2쪽 : 기획단계 ===================== -->
+<div class="page">
+  <h1 class="title">학교건축 표준업무 매뉴얼 ② — 기획단계</h1>
+  <p class="meta">학교시설업무 BIBLE ｜ 제1장 학교시설사업 기획단계 ｜ 사업계획 수립·투자심사·공유재산심의·공공건축심의·예산·안전보건대장</p>
+  <div class="rule-navy"></div>
+
+  <div class="row2">
+    <div class="card"><span class="badge">1 · 학생배치계획 수립</span>
+      <ul class="list">
+        <li><b class="term">건축 가능 여부</b> 토지이음(eum.go.kr)에서 행위제한 확인</li>
+        <li><b class="term">초등학교</b> 2개 근린주거구역에 1교, 통학거리 <span class="num">1.5km</span> 이내, <span class="num">36~48학급</span></li>
+        <li><b class="term">중·고등학교</b> 3개 근린주거구역에 1교, <span class="num">24~36학급</span></li>
+        <li><b class="term">근린주거구역</b> 2,000~3,000세대 기준</li>
+        <li><b class="term">사전기획</b> 대상·절차 확인 후 적정성 검토를 실시함.</li>
+      </ul></div>
+    <div class="card"><span class="badge">2 · 교육환경평가</span>
+      <ul class="list">
+        <li><b class="term">목적</b> 학교용지 선정 시부터 주변 유해요인을 평가함.</li>
+        <li><b class="term">평가 대상</b> 위치·크기·지형·토양·대기·주변 유해환경·공공시설</li>
+        <li><b class="term">학교 설립자</b> 학교설립계획 수립 완료 전 제출</li>
+        <li><b class="term">개발사업시행자</b> 사업시행계획인가 신청 예정일 <span class="num">60일 전</span></li>
+        <li><b class="term">절차</b> 신청 → 접수 → 전문기관 검토 → 위원회 심의 → 결과 통보</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge rust">3 · 투자심사</span>
+      <div class="formula">
+        사업비 = 공사비 + 보상비 + 시설부대경비 + 운영설비비 + 제세공과금 + 예비비(<span class="num">10%</span>)
+        <span class="sub">낙찰차액을 적용하지 않은 공사비를 기준으로 하며, 지방채 등 융자사업비와 기 지출액도 포함함</span>
+      </div>
+      <ol class="nlist">
+        <li><span class="no">①</span><b class="term">자체투자심사</b>(시·도교육청) 전액 자체재원은 총사업비 <span class="num">40억원 이상</span>, 이전재원이 포함되면 40억원 이상 300억원 미만인 사업이 대상임.</li>
+        <li><span class="no">②</span><b class="term">중앙투자심사</b>(교육부) 이전재원이 포함된 총사업비 <span class="num">300억원 이상</span>인 사업이 대상임.</li>
+        <li><span class="no">③</span><b class="term">공동투자심사</b>(교육부·행정안전부) 시·도교육청과 지방자치단체의 재원이 공동 투입되는 사업이 대상임.</li>
+        <li><span class="no">④</span><b class="term">심사 시기</b> 자체심사는 1·4·7·10월, 중앙심사는 4·10월에 정기 실시하며, 수시심사는 긴급하고 특별한 사유가 있는 경우로 제한함.</li>
+      </ol></div>
+  </div>
+
+  <div class="row2">
+    <div class="card"><span class="badge">4 · 공유재산심의</span>
+      <ul class="list">
+        <li><b class="term">취득 기준</b> 재산 1건 시·도 <span class="num">20억원</span>, 시·군·구 10억원</li>
+        <li><b class="term">토지 기준</b> 시·도 <span class="num">6,000㎡</span>, 시·군·구 1,000㎡</li>
+        <li><b class="term">시기</b> 중앙투자심사 통과 후 지방의회 예산의결 전</li>
+        <li><b class="term">유의</b> 투자심사 전 관리계획 승인은 의결권 침해 소지가 있어 지양함.</li>
+        <li><b class="term">변경</b> 변동 시 추가경정예산 편성 전까지 의결을 받아야 함.</li>
+      </ul></div>
+    <div class="card"><span class="badge">5 · 공공건축심의 및 안전보건대장</span>
+      <ul class="list">
+        <li><b class="term">심의 대상</b> 설계비 추정가격 <span class="num">5천만원 이상</span>인 공공건축 사업</li>
+        <li><b class="term">심의 시기</b> 설계용역 입찰공고 전</li>
+        <li><b class="term">심의 내용</b> 설계지침서 및 과업지시서의 적정성, 사전검토 의견 반영 여부</li>
+        <li><b class="term">기본안전보건대장</b> 총공사금액 <span class="num">50억원 이상</span> 공사에 대하여 발주자가 계획단계에 작성함.</li>
+        <li><b class="term">고지 의무</b> 설계자 선정·입찰 시 설계조건을 미리 고지하고 계약 시 제공함.</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge">7 · 사전기획 및 예산 수립</span>
+      <ul class="list">
+        <li><b class="term">위치</b> 학생배치계획 수립 이후, 투자심사 이전 단계에서 시행함.</li>
+        <li><b class="term">사전기획 대상·절차</b> 대상 여부를 확인한 후 정해진 절차에 따라 사전기획을 수행함.</li>
+        <li><b class="term">적정성 검토</b> 사전기획 적정성 검토 항목과 절차에 따라 검토하고 그 결과를 설계 과업에 반영함.</li>
+        <li><b class="term">예산 수립</b> 투자심사와 공유재산심의를 거친 후 예산을 편성하며, 의회 의결 일정과 연계하여 관리함.</li>
+        <li><b class="term">유의</b> 사업비에는 낙찰차액을 적용하지 아니한 공사비를 반영하고, 기 지출된 비용도 합산함.</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge">6 · 기획단계 핵심 수치</span>
+      <div class="chips">
+        <span class="chip"><b>통학거리</b> 초등 1.5km</span>
+        <span class="chip"><b>근린주거구역</b> 2,000~3,000세대</span>
+        <span class="chip"><b>교육환경평가</b> 60일 전</span>
+        <span class="chip"><b>예비비</b> <span class="num">10%</span></span>
+        <span class="chip"><b>자체심사</b> 1·4·7·10월</span>
+        <span class="chip"><b>중앙심사</b> 4·10월</span>
+        <span class="chip"><b>공유재산</b> 시·도 20억·6,000㎡</span>
+        <span class="chip"><b>공공건축심의</b> 5천만원</span>
+        <span class="chip"><b>안전보건대장</b> 50억원</span>
+        <span class="chip"><b>사업관리방식</b> 기본구상 단계</span>
+      </div></div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">본 문서는 학교시설업무 BIBLE 대시보드의 요약 자료이며, 실제 업무 처리 시에는 시행 중인 법령 및 최신 지침을 우선 적용합니다.</p>
+  <p class="pageno">2 / 5</p>
+</div>
+
+<!-- ===================== 3쪽 : 설계단계 ===================== -->
+<div class="page">
+  <h1 class="title">학교건축 표준업무 매뉴얼 ③ — 설계단계</h1>
+  <p class="meta">학교시설업무 BIBLE ｜ 제2장 학교시설사업 설계단계 ｜ 설계발주·공모, 주요 법적 검토, 분야별 도면 확인, 설계검토, 시행계획 및 건축승인</p>
+  <div class="rule-navy"></div>
+
+  <div class="row2">
+    <div class="card"><span class="badge">1 · 설계 발주 및 공모</span>
+      <ul class="list">
+        <li><b class="term">방식 비교</b> 일반 설계발주와 설계공모의 절차를 비교하여 선정함.</li>
+        <li><b class="term">선행 조건</b> 공공건축심의를 설계용역 입찰공고 전에 완료하여야 함.</li>
+        <li><b class="term">설계지침서</b> 심의를 거친 설계지침서를 기준으로 공모를 시행함.</li>
+        <li><b class="term">과업지시서</b> 기본안전보건대장의 설계조건을 반영하여 작성함.</li>
+        <li><b class="term">설계용역평가</b> 용역 완료 후 평가를 실시하여 결과를 관리함.</li>
+      </ul></div>
+    <div class="card"><span class="badge">2 · 주요 법적 검토사항</span>
+      <ul class="list">
+        <li><b class="term">건축</b> 대지 안의 공지, 높이 제한, 피난·방화 규정</li>
+        <li><b class="term">교육</b> 교육환경보호구역 및 교육시설 안전 관련 기준</li>
+        <li><b class="term">에너지</b> 에너지절약계획서, 제로에너지건축물 기준</li>
+        <li><b class="term">접근성</b> 장애물 없는 생활환경(BF) 및 편의시설 설치기준</li>
+        <li><b class="term">소방·전기</b> 소방시설법 및 전기설비 기준 적합 여부</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge rust">3 · 설계 검토 절차</span>
+      <div class="formula">
+        기술자문위원회 → 설계VE → 설계안전성 검토 → 설계안전보건대장 → 건설사업관리계획 → 공사기간 검토 → 계약심의·일상감사
+      </div>
+      <ol class="nlist">
+        <li><span class="no">①</span><b class="term">설계VE</b> 총공사비 <span class="num">100억원 이상</span>인 공사의 기본설계와 실시설계에 대하여 각각 1회 이상 실시함. 시공 중 공사비를 <span class="num">10% 이상</span> 조정하거나 실시설계 완료 후 <span class="num">3년</span> 이상 경과하여 발주하는 경우에도 실시함.</li>
+        <li><span class="no">②</span><b class="term">설계안전성 검토</b> 안전관리계획 수립 대상 공사가 해당하며, 1·2종시설물, 지하 <span class="num">10m 이상</span> 굴착, 10층 이상 16층 미만 건축물, 10층 이상 건축물의 리모델링·해체공사 등이 포함됨.</li>
+        <li><span class="no">③</span><b class="term">설계안전보건대장</b> 설계자가 설계단계에 작성하며, 위험성평가 내용, 유해위험방지계획서 작성계획, 안전보건조정자 배치계획, 산업안전보건관리비 산출내역서를 포함함.</li>
+        <li><span class="no">④</span><b class="term">건설사업관리계획·공사기간</b> 사업관리방식에 따른 계획을 수립하고 적정 공사기간을 산정하여 무리한 공기 단축을 방지함.</li>
+      </ol></div>
+  </div>
+
+  <div class="row2">
+    <div class="card"><span class="badge">4 · 도면 확인 — 건축·구조</span>
+      <ul class="list">
+        <li><b class="term">배치도</b> 대지 경계, 접근 동선, 옥외 시설 배치</li>
+        <li><b class="term">마감계획표</b> 실별 바닥·벽·천장 마감 사양</li>
+        <li><b class="term">평면도</b> 실 구성, 지붕 및 지하 평면</li>
+        <li><b class="term">입면·단면도</b> 층고, 외관 구성, 단면 상세</li>
+        <li><b class="term">상세도</b> 창호도, 화장실, 계단실, 설비공간</li>
+        <li><b class="term">구조</b> 구조설계도면의 정합성 확인</li>
+      </ul></div>
+    <div class="card"><span class="badge">5 · 도면 확인 — 설비·토목</span>
+      <ul class="list">
+        <li><b class="term">기계</b> 기계실 평면, 위생, 자동제어, 냉난방, 공조, 가스</li>
+        <li><b class="term">승강기·신재생</b> 엘리베이터 계획 및 신재생에너지 설비</li>
+        <li><b class="term">전기</b> 수변전실, EPS실, 전기인입 및 전력간선</li>
+        <li><b class="term">전등·전열</b> 조도 계획 및 전열설비 용량</li>
+        <li><b class="term">정보통신·소방</b> 통신설비 및 소방설비 도면</li>
+        <li><b class="term">토목·조경</b> 부지 정지, 배수, 포장, 조경 계획</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge">6 · 인증 및 승인 절차</span>
+      <ul class="list">
+        <li><b class="term">예비인증</b> 제로에너지건축물 인증, 녹색건축 인증, 장애물 없는 생활환경(BF) 인증을 설계단계에 취득함.</li>
+        <li><b class="term">계약심의·일상감사</b> 설계 완료 후 공사 발주 전에 계약심의와 일상감사를 이행함.</li>
+        <li><b class="term">시행계획 승인</b> 학교시설사업 시행계획의 승인을 받음.</li>
+        <li><b class="term">건축 승인·신고</b> 규모와 성격에 따라 건축 승인 또는 건축(축조) 신고를 이행함.</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge">7 · 설계단계 핵심 수치</span>
+      <div class="chips">
+        <span class="chip"><b>설계VE</b> <span class="num">100억</span> 이상</span>
+        <span class="chip"><b>VE 횟수</b> 단계별 1회 이상</span>
+        <span class="chip"><b>변경 VE</b> 공사비 10% 조정</span>
+        <span class="chip"><b>경과 발주</b> 3년 이상</span>
+        <span class="chip"><b>안전성검토</b> 지하 10m 굴착</span>
+        <span class="chip"><b>안전성검토</b> 10~16층 미만</span>
+        <span class="chip"><b>공공건축심의</b> 설계비 5천만원</span>
+        <span class="chip"><b>예비인증</b> ZEB·녹색건축·BF</span>
+        <span class="chip"><b>대장</b> 설계안전보건대장</span>
+        <span class="chip"><b>승인</b> 시행계획·건축승인</span>
+      </div></div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">본 문서는 학교시설업무 BIBLE 대시보드의 요약 자료이며, 실제 업무 처리 시에는 시행 중인 법령 및 최신 지침을 우선 적용합니다.</p>
+  <p class="pageno">3 / 5</p>
+</div>
+
+<!-- ===================== 4쪽 : 시공단계 ===================== -->
+<div class="page">
+  <h1 class="title">학교건축 표준업무 매뉴얼 ④ — 시공단계</h1>
+  <p class="meta">학교시설업무 BIBLE ｜ 제3장 학교시설사업 시공단계 ｜ 공사발주·계약, 착공준비, 안전관리, 공사관리 및 설계변경, 공종별 확인사항</p>
+  <div class="rule-navy"></div>
+
+  <div class="row2">
+    <div class="card"><span class="badge">1 · 공사 발주 및 계약</span>
+      <ul class="list">
+        <li><b class="term">공사 구분</b> 공사일반 → 공사발주 → 공사계약 순으로 진행함.</li>
+        <li><b class="term">발주 검토</b> 분리발주 여부와 입·낙찰 방식을 결정함.</li>
+        <li><b class="term">계약 확인</b> 계약보증금, 계약금액 조정, 하자보수보증금을 확인함.</li>
+        <li><b class="term">착공서류</b> 설계도서 수령 후 공사내용을 청취하고 서류를 검토함.</li>
+      </ul></div>
+    <div class="card"><span class="badge">2 · 현장 기술인 배치기준</span>
+      <ul class="list">
+        <li><b class="term">500억원 이상</b> 기술사·기능장 또는 특급기술인(동종 <span class="num">5년</span>)</li>
+        <li><b class="term">300억원 이상</b> 기술사·기능장 또는 특급기술인(동종 3년)</li>
+        <li><b class="term">100억원 이상</b> 특급기술인 또는 고급기술인(동종 3년)</li>
+        <li><b class="term">30억원 이상</b> 고급기술인 또는 중급기술인(동종 3년)</li>
+        <li><b class="term">30억원 미만</b> 중급기술인 또는 초급기술인(동종 3년)</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge rust">3 · 착공단계 안전관리 3종</span>
+      <div class="formula">
+        굴착영향거리 L = <span class="num">1.5H + 4.0</span> (m)
+        <span class="sub">H는 굴착깊이이며, 학교부지보다 낮은 단차가 있는 경우 H = H1 + H2로 산정함</span>
+      </div>
+      <ol class="nlist">
+        <li><span class="no">①</span><b class="term">안전보건조정자</b> 2개 이상의 건설공사가 같은 장소에서 시행되고 공사금액 합계가 <span class="num">50억원 이상</span>이면 배치하며, 분리발주 공사의 <b class="term">착공일 전날까지</b> 선임·지정하여 각 도급인에게 통보함.</li>
+        <li><span class="no">②</span><b class="term">안전성 평가</b> 건축허가·승인 대상 교육시설의 건축과 학교경계로부터 직선거리 <span class="num">4m</span> 이내의 건설공사가 대상임. 다만 교육시설이용자가 없는 상태의 신축·개축·이전은 제외함.</li>
+        <li><span class="no">③</span><b class="term">평가 확대 범위</b> 학교경계 4m 초과 <span class="num">50m</span> 이하 구간은 굴착깊이가 2m 이상이고 학교경계선까지의 직선거리가 굴착영향거리 미만인 경우 대상이 됨.</li>
+        <li><span class="no">④</span><b class="term">공사안전보건대장</b> 시공자가 시공단계에 작성하며, 산업안전보건관리비 사용내역과 수급인 조치계획, 유해·위험방지계획서 심사 결과의 이행 여부를 기재함.</li>
+      </ol></div>
+  </div>
+
+  <div class="row2">
+    <div class="card"><span class="badge">4 · 공사관리 및 설계변경</span>
+      <ul class="list">
+        <li><b class="term">공사추진</b> 공사절차와 공사관리를 구분하여 관리함.</li>
+        <li><b class="term">설계변경</b> 사유 발생 시 실정보고를 거쳐 변경계약을 체결함.</li>
+        <li><b class="term">설계의도 구현</b> 설계자가 시공단계에 설계의도를 확인함.</li>
+        <li><b class="term">시공평가</b> 건설엔지니어링평가 및 시공평가를 실시함.</li>
+        <li><b class="term">본인증</b> 제로에너지·녹색건축·BF 인증, 에너지절약계획서, BEMS</li>
+      </ul></div>
+    <div class="card"><span class="badge">5 · 공종별 확인사항</span>
+      <ul class="list">
+        <li><b class="term">건축</b> 가설·기초·골조·벽체·천장·바닥·방수·마감·창호·유리·도장·지붕</li>
+        <li><b class="term">기계</b> 기계실 장비, 위생, 환기, 냉난방, 가스, 자동제어, 신재생</li>
+        <li><b class="term">전기·정보통신</b> 수변전, 배관·배선, 조명, 동력, 예비전원, 피뢰·접지</li>
+        <li><b class="term">소방</b> 전기소방설비 및 기계소방설비</li>
+        <li><b class="term">토목·조경</b> 토공, 배수, 포장, 옹벽, 구조물, 조경</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge">7 · 설계변경 및 공사 확인 요령</span>
+      <ul class="list">
+        <li><b class="term">실정보고</b> 현장 여건과 설계도서가 상이한 경우 실정보고를 거쳐 변경 여부를 결정함.</li>
+        <li><b class="term">변경 시 VE</b> 총공사비 100억원 이상 공사에서 공사비를 10% 이상 조정하면 설계VE를 다시 실시함.</li>
+        <li><b class="term">단순 증감 제외</b> 단순 물량 증가나 물가변동으로 인한 변경은 VE 대상에서 제외됨.</li>
+        <li><b class="term">공종 순서</b> 가설 → 기초 → 골조 → 벽체·천장·바닥 → 방수 → 마감 → 창호·유리·도장 → 지붕·외부특화 순으로 확인함.</li>
+        <li><b class="term">기록 관리</b> 매몰부와 공사 중 기록사진을 확보하여 준공 시 제출 자료로 활용함.</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge">6 · 시공단계 핵심 수치</span>
+      <div class="chips">
+        <span class="chip"><b>안전보건조정자</b> 합계 <span class="num">50억</span></span>
+        <span class="chip"><b>지정 시기</b> 착공일 전날까지</span>
+        <span class="chip"><b>안전성 평가</b> 학교경계 4m</span>
+        <span class="chip"><b>확대 범위</b> 4m 초과 50m 이하</span>
+        <span class="chip"><b>굴착깊이</b> 2m 이상</span>
+        <span class="chip"><b>영향거리</b> L=1.5H+4.0</span>
+        <span class="chip"><b>기술인</b> 500억 특급 5년</span>
+        <span class="chip"><b>기술인</b> 5억 미만 3년 경력</span>
+        <span class="chip"><b>전문공사</b> 1억 미만 완화</span>
+        <span class="chip"><b>공사안전보건대장</b> 시공자</span>
+      </div></div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">본 문서는 학교시설업무 BIBLE 대시보드의 요약 자료이며, 실제 업무 처리 시에는 시행 중인 법령 및 최신 지침을 우선 적용합니다.</p>
+  <p class="pageno">4 / 5</p>
+</div>
+
+<!-- ===================== 5쪽 : 준공·유지관리·해체 ===================== -->
+<div class="page">
+  <h1 class="title">학교건축 표준업무 매뉴얼 ⑤ — 준공·유지관리·해체</h1>
+  <p class="meta">학교시설업무 BIBLE ｜ 제4·5장 및 부록 ｜ 준공검사·사용승인·개교준비, 유지관리 및 안전관리, 하자관리, 해체</p>
+  <div class="rule-navy"></div>
+
+  <div class="row2">
+    <div class="card"><span class="badge">1 · 준공검사 및 사용승인</span>
+      <ul class="list">
+        <li><b class="term">준공검사원</b> 준공 <span class="num">1개월 이전</span>에 먼저 제출함.</li>
+        <li><b class="term">준공도서</b> 준공도면(PDF 포함), 내역서, 구조계산서</li>
+        <li><b class="term">품질기록</b> 품질시험대장·총괄표, 시험성적서, KS자재 목록</li>
+        <li><b class="term">사후정산</b> 안전관리비·환경보전비·4대보험·하도급대금 지급보증</li>
+        <li><b class="term">사용승인</b> 신청 시 관련 서류를 첨부하고 건축물대장을 생성함.</li>
+        <li><b class="term">개교준비</b> 유지관리 서류와 기자재를 관리기관에 인계함.</li>
+      </ul></div>
+    <div class="card"><span class="badge">2 · 교육시설 안전 및 인증</span>
+      <ul class="list">
+        <li><b class="term">교육시설안전 인증</b> 교육시설법에 따른 인증을 취득·관리함.</li>
+        <li><b class="term">친환경운동장</b> 조성 기준에 따라 시행함.</li>
+        <li><b class="term">유해요인 관리</b> 시설물 종류에 따른 관리주체 의무를 이행함.</li>
+        <li><b class="term">부록</b> 모듈러교사(임시교실) 운영 기준을 수록함.</li>
+        <li><b class="term">참고</b> 학교시설사업 알고 기억해(process.goe.go.kr)</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge rust">3 · 유지관리 점검체계</span>
+      <div class="formula">
+        일상점검 → 계절별 안전점검(연 <span class="num">3회</span>) → 정기안전점검(연 <span class="num">2회</span>) → 정밀안전점검 → 긴급점검
+      </div>
+      <ol class="nlist">
+        <li><span class="no">①</span><b class="term">일상점검</b> 매월 <span class="num">4일</span>을 안전점검의 날로 운영함.</li>
+        <li><span class="no">②</span><b class="term">계절별 안전점검</b> 해빙기(3~4월), 여름철(5~7월), 동절기(11~12월)에 연 3회 실시함.</li>
+        <li><span class="no">③</span><b class="term">정기안전점검</b> 제2·3종 시설물을 대상으로 상·하반기 연 2회 실시함.</li>
+        <li><span class="no">④</span><b class="term">정밀안전점검</b> 제2종 시설물과 <span class="num">40년</span>이 경과한 노후 건축물(연면적 100㎡ 이상 교사·강당·체육관·기숙사·급식실)이 대상이며, 위험사항 발견 시 긴급점검을 실시함.</li>
+      </ol></div>
+  </div>
+
+  <div class="row2">
+    <div class="card"><span class="badge">4 · 하자관리</span>
+      <ul class="list">
+        <li><b class="term">3년</b> 지붕, 철근콘크리트 및 콘크리트 포장, 승강기·인양기기</li>
+        <li><b class="term">2년</b> 철물, 급배수·냉난방·환기·공기조화·자동제어·가스·배연설비, 아스팔트 포장, 온실</li>
+        <li><b class="term">1년</b> 창호설치, 판금, 보일러 설치, 그 밖의 건물 내 설비, 보링, 건축물 조립</li>
+        <li><b class="term">전기·정보통신</b> 그 밖의 설비공사는 각 1년</li>
+        <li><b class="term">복합공종</b> 책임 구분이 가능하면 세부 공종별 기간을 각각 적용함.</li>
+        <li><b class="term">감사 지적</b> 하자담보책임기간의 <b class="term">최초 시작일</b> 설정에 유의함.</li>
+      </ul></div>
+    <div class="card"><span class="badge">5 · 해체</span>
+      <ul class="list">
+        <li><b class="term">설계단계</b> 해체작업자가 이행 가능한 수준으로 해체계획서를 작성함.</li>
+        <li><b class="term">계약단계</b> 공사계약과 별도로 해체공사감리자를 명부에서 지정·계약함.</li>
+        <li><b class="term">기간 확보</b> 해체계획서 작성 및 확인에 <span class="num">3~4주</span>가 소요되므로 착공일을 역산하여 설정함.</li>
+        <li><b class="term">전문가 검토</b> 건축물관리법 제30조에 따라 전문가 날인을 받아야 함.</li>
+        <li><b class="term">별도 신고</b> 석면, 도로점용 등은 소관 행정기관에 별도로 신고함.</li>
+        <li><b class="term">통보</b> 허가·신고 사항 발급 후 시·군·구청에 협의 통보함.</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge">7 · 준공 제출서류 점검표</span>
+      <ul class="list">
+        <li><b class="term">기본</b> 준공검사원, 준공신고서, 요금납부 확인서(기존 시설 원상복구 및 전기·수도요금 정산)</li>
+        <li><b class="term">도서·사진</b> 준공도면(PDF 포함), 내역서, 구조계산서, 준공사진(사진첩 및 파일)</li>
+        <li><b class="term">품질</b> 품질시험대장 및 총괄표, 각종 시험성적서, 품질인증서 사본, KS자재 목록</li>
+        <li><b class="term">안전·환경</b> 안전교육일지, 안전관리비 사용내역서, 개인보호구 지급대장, 환경보전비 사용내역서</li>
+        <li><b class="term">보험·하도급</b> 4대보험 증빙, 퇴직공제부금 납부 확인서, 하도급대금 지급보증서</li>
+        <li><b class="term">폐기물·인계</b> 건설폐기물 처리계획신고증명서, 폐기물인계서, 유지관리 인수인계 서류</li>
+      </ul></div>
+  </div>
+
+  <div class="row1">
+    <div class="card"><span class="badge">6 · 준공 이후 핵심 수치</span>
+      <div class="chips">
+        <span class="chip"><b>준공검사원</b> 준공 <span class="num">1개월 전</span></span>
+        <span class="chip"><b>일상점검</b> 매월 4일</span>
+        <span class="chip"><b>계절별</b> 연 3회</span>
+        <span class="chip"><b>정기안전점검</b> 연 2회</span>
+        <span class="chip"><b>정밀안전점검</b> 40년 경과</span>
+        <span class="chip"><b>노후 기준면적</b> 100㎡ 이상</span>
+        <span class="chip"><b>하자 3년</b> 지붕·RC·승강기</span>
+        <span class="chip"><b>하자 2년</b> 설비·철물</span>
+        <span class="chip"><b>하자 1년</b> 창호·판금·보일러</span>
+        <span class="chip"><b>해체계획서</b> 3~4주 소요</span>
+      </div></div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">본 문서는 학교시설업무 BIBLE 대시보드의 요약 자료이며, 실제 업무 처리 시에는 시행 중인 법령 및 최신 지침을 우선 적용합니다.</p>
+  <p class="pageno">5 / 5</p>
+</div>
+
+</body>
+</html>
+
+<style>
+html,body{font-family:'Noto Sans CJK KR','Noto Sans KR','Pretendard',sans-serif;color:#1f2937;background:#fff}
+.doc,.page{width:100%!important;max-width:1180px!important;min-height:auto!important;margin:16px auto!important;padding:26px 30px 22px!important;box-shadow:0 1px 14px rgba(0,0,0,.16)!important;overflow:visible!important;background:#fff}
+table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12.5px}
+table th,table td{border:1px solid #c7cdd6;padding:7px 6px;text-align:center;vertical-align:middle;line-height:1.4;word-break:keep-all}
+table thead th{background:#eef1f6;color:#1f2937;font-weight:700}
+table td:first-child,table th:first-child{background:#f6f8fb;font-weight:700;color:#1f2937}
+@media print{.doc,.page{margin:0 auto!important;box-shadow:none!important;page-break-after:always}.doc:last-child,.page:last-child{page-break-after:auto}}
+</style>

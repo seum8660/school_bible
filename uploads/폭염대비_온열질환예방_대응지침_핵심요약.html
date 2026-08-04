@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: 'Noto Sans CJK KR', 'Noto Sans KR', sans-serif; color: #1f2937; }
+  .page { width: 210mm; height: 297mm; padding: 10mm 12mm 8mm 12mm; display: flex; flex-direction: column; }
+  .hd { border-bottom: 2.5px solid #c2410c; padding-bottom: 5px; margin-bottom: 7px; }
+  .hd h1 { font-size: 16.5px; color: #c2410c; letter-spacing: -0.4px; }
+  .hd .sub { font-size: 9px; color: #6b7280; margin-top: 3px; line-height:1.4; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 10px; align-content: start; }
+  .page > .grid { flex: 1; align-content: start; }
+  .box { border: 1px solid #d1d5db; border-radius: 5px; padding: 6px 9px; }
+  .box.full { grid-column: 1 / -1; }
+  .box h2 { font-size: 10.3px; color: #fff; background: #c2410c; display: inline-block;
+            padding: 2px 8px; border-radius: 3px; margin-bottom: 5px; letter-spacing: -0.3px; }
+  .box h2.accent { background: #b45309; }
+  p, li { font-size: 8.7px; line-height: 1.42; color: #374151; }
+  ul { list-style: none; }
+  li { padding-left: 9px; position: relative; margin-bottom: 1.5px; }
+  li::before { content: '·'; position: absolute; left: 2px; color: #c2410c; font-weight: 700; }
+  .k { color: #c2410c; font-weight: 700; }
+  .r { color: #b91c1c; font-weight: 700; }
+  table { width: 100%; border-collapse: collapse; margin-top: 3px; }
+  th, td { border: 1px solid #cbd5e1; padding: 2.5px 4px; font-size: 8.2px; vertical-align: top; }
+  th { background: #fff7ed; color: #c2410c; font-weight: 700; text-align:center; }
+  td.t { background:#fff7ed; color:#c2410c; font-weight:700; text-align:center; white-space:nowrap; }
+  .rule { display:flex; gap:4px; margin-top:2px; }
+  .rule div { flex:1; background:#fff7ed; border:1px solid #fed7aa; border-radius:4px;
+              padding:3px 2px; text-align:center; font-size:7.9px; color:#9a3412; line-height:1.3; }
+  .rule div b { display:block; font-size:9.5px; color:#c2410c; }
+  .ft { border-top: 1px solid #d1d5db; margin-top: 6px; padding-top: 4px; font-size: 7.5px; color: #9ca3af; text-align: center; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hd">
+    <h1>폭염 대비 온열질환 예방을 위한 사업장 대응지침 — 핵심 요약</h1>
+    <div class="sub">고용노동부 · 2026.5. &nbsp;|&nbsp; 근거: 「산업안전보건법」 제39조, 「산업안전보건기준에 관한 규칙」 제558~562조(’25.7.17. 시행) &nbsp;|&nbsp; 폭염대책기간 ’26.5.15.~9.30.</div>
+  </div>
+
+  <div class="grid">
+    <!-- 1. 개요·법적근거 -->
+    <div class="box">
+      <h2>1. 개요 및 법적 근거</h2>
+      <ul>
+        <li><span class="k">배경</span> ’25년 여름 역대 최고 기온, 폭염을 건강위험 요인으로 명확화한 산안법 개정(’24.10.22.) 및 안전보건규칙 시행(’25.7.17.)</li>
+        <li><span class="k">적용</span> 근로자를 사용하는 <span class="k">모든 사업장</span> (실내·외 폭염작업 모두)</li>
+        <li><span class="r">벌칙</span> 보건조치 위반 5년 이하 징역·5천만원 이하 벌금 / 위반으로 사망 시 7년 이하·1억원 이하</li>
+      </ul>
+    </div>
+
+    <!-- 2. 정의 -->
+    <div class="box">
+      <h2>2. 폭염·폭염작업 정의</h2>
+      <ul>
+        <li><span class="k">폭염</span> 열경련·열탈진·열사병 등 건강장해를 유발할 수 있는 더운 기상현상</li>
+        <li><span class="k">폭염작업</span> 체감온도 <span class="r">31℃ 이상</span> 작업장소에서 장시간(연속 2시간 이상) 작업</li>
+        <li><span class="k">체감온도</span> 바닥 1.2~1.5m 높이에서 측정, 실제 작업동선 중 가장 높은 값 기준(곤란 시 기상청 발표값)</li>
+      </ul>
+    </div>
+
+    <!-- 3. 체감온도별 보건조치 -->
+    <div class="box full">
+      <h2 class="accent">3. 체감온도 단계별 보건조치</h2>
+      <table>
+        <tr><th style="width:15%">구분</th><th>조치 사항</th></tr>
+        <tr><td class="t">31℃ 이상<br>(의무·§560②)</td><td>①냉방·통풍 온습도 조절장치 설치·가동(에어컨·산업용 선풍기·그늘막) &nbsp;②작업시간대 조정 등 폭염 노출 저감(예: 조기출근) &nbsp;③적절한 휴식 부여 &nbsp;→ <b>셋 중 하나 이상</b> 선택, ①②에도 계속 31℃↑이면 <b>③휴식 반드시 부여</b></td></tr>
+        <tr><td class="t">33℃ 이상<br>(의무·§560③)</td><td><b>매 2시간 이내 20분 이상 휴식</b>(현장 여건상 1시간 10분도 가능). 작업 성질상 휴식이 매우 곤란하면 개인용 냉방·통풍장치 또는 보냉장구 지급·착용으로 체온상승 저감</td></tr>
+        <tr><td class="t">35℃ 이상<br>(권고)</td><td><b>매시간 15분</b> 그늘 휴식(민감군·고강도 작업자 추가 배정), <b>무더위 시간대(14~17시) 옥외작업 중지</b>, 담당자 지정 건강상태 확인</td></tr>
+        <tr><td class="t">38℃ 이상<br>(권고)</td><td>긴급조치 작업 외 <b>옥외작업 중지</b>, 온열질환 민감군 옥외작업 제한, 담당자 지정 건강상태 확인</td></tr>
+      </table>
+      <p style="margin-top:3px;font-size:8.3px;"><span class="k">휴식 원칙</span> 폭염 휴식은 근로기준법 휴게시간과 별도 부여가 원칙(중복 시 근로기준법 휴게시간으로 갈음), 냉방 휴게시설에서 시원한 물 섭취 등 자유로운 이용 보장</p>
+    </div>
+
+    <!-- 4. 5대 수칙 -->
+    <div class="box full">
+      <h2>4. 폭염안전 5대 기본수칙</h2>
+      <div class="rule">
+        <div><b>❶ 물</b>시원한 물 자주 마시기</div>
+        <div><b>❷ 냉방장치</b>작업장 온도 낮추기</div>
+        <div><b>❸ 휴식</b>2시간마다 20분</div>
+        <div><b>❹ 보냉장구</b>냉각의류 등 지급</div>
+        <div><b>❺ 119신고</b>응급조치 및 신고</div>
+      </div>
+    </div>
+
+    <!-- 5. 예방체계 -->
+    <div class="box">
+      <h2>5. 사업장 예방체계 (권고)</h2>
+      <ul>
+        <li>① <span class="k">담당자 지정·사전점검</span> (5대 수칙 점검표)</li>
+        <li>② <span class="k">자각증상 자가진단</span> 증상 2개 이상 시 알림·조치</li>
+        <li>③ <span class="k">민감군 관리</span> 만성질환·기왕력·고령·약물복용·고강도·신규배치자 등</li>
+        <li>④ <span class="k">열순응 조치</span> 신규자 단계적 적응</li>
+        <li><span class="k">§562</span> 온·습도계 상시 비치, 체감온도·조치 기록(당해 12.31.까지 보관), 작업 전 증상·응급조치 교육, 휴게시설 설치</li>
+      </ul>
+    </div>
+
+    <!-- 6. 온열질환 응급조치 -->
+    <div class="box">
+      <h2>6. 온열질환 종류 및 응급조치</h2>
+      <ul>
+        <li><span class="r">열사병</span> 의식장애·40℃↑ 뜨거운 피부 → <b>즉시 119</b>, 시원한 곳 이동·냉각 (의식 없으면 음료 금지)</li>
+        <li><span class="k">열탈진</span> 과도한 발한·창백·무력감 → 시원한 곳 휴식, 수분 보충</li>
+        <li><span class="k">열경련</span> 근육경련 → 휴식·수분 보충·경련 부위 마사지</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ft">본 요약은 「폭염 대비 온열질환 예방을 위한 사업장 대응지침」(고용노동부, 2026.5.)의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 관계 법령의 최신 내용을 확인하시기 바랍니다.</div>
+</div>
+</body>
+</html>

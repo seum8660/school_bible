@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>시안 — 업데이트·공지 (Notion 스타일)</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0075de; --primary-active:#005bab; --indigo:#213183;
+  --canvas:#fff; --canvas-soft:#f6f5f4; --surface:#fff;
+  --ink:#000; --ink-2:#31302e; --muted:#615d59; --faint:#a39e98; --hairline:#e6e6e6;
+  --teal:#2a9d99; --sky:#62aef0; --orange:#dd5b00; --green:#1aae39; --pink:#ff64c8;
+  --sh1:0 .175px 1.041px rgba(0,0,0,.01),0 .8px 2.925px rgba(0,0,0,.02),0 2.025px 7.847px rgba(0,0,0,.027),0 4px 18px rgba(0,0,0,.04);
+  --f:"Inter",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--canvas-soft);font-family:var(--f);color:var(--ink);padding:40px 28px 80px;-webkit-font-smoothing:antialiased}
+a{color:var(--primary);text-decoration:none}a:hover{color:var(--primary-active)}
+.page{max-width:1180px;margin:0 auto}
+h1{font-size:40px;font-weight:700;letter-spacing:-1px;line-height:1.1}
+.sub{font-size:16px;line-height:1.5;color:var(--muted);margin-top:12px;max-width:66ch;text-wrap:pretty}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(276px,1fr));gap:24px;margin-top:36px;align-items:start}
+.opt>.badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.125px;color:var(--primary);background:var(--surface);border-radius:9999px;padding:5px 11px;box-shadow:var(--sh1)}
+.opt h2{font-size:22px;font-weight:700;letter-spacing:-.25px;margin-top:12px}
+.opt p.note{font-size:15px;line-height:1.45;color:var(--muted);margin:8px 0 18px}
+.hold{width:250px}
+
+/* 공통 카드 */
+.hn{background:var(--surface);border:1px solid var(--hairline);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.hn-h{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;letter-spacing:-.125px;color:var(--ink)}
+.hn-h .dot{width:7px;height:7px;border-radius:9999px;background:var(--green)}
+.hn-h .more{margin-left:auto;font-size:12px;font-weight:600;color:var(--faint)}
+.hn-foot{margin-top:4px;padding-top:10px;border-top:1px solid var(--hairline);font-size:12px;color:var(--faint)}
+
+/* A — 태그 없는 문서형 */
+.a-list{list-style:none;display:flex;flex-direction:column;gap:0}
+.a-list li{padding:10px 0;border-top:1px solid var(--hairline);font-size:14px;line-height:1.45;color:var(--ink-2)}
+.a-list li:first-child{border-top:0;padding-top:0}
+.a-list b{font-weight:600;color:var(--ink)}
+.a-list .d{display:block;font-size:12px;color:var(--faint);margin-top:4px}
+
+/* B — 스티커 점 + 태그 */
+.b-list{list-style:none;display:flex;flex-direction:column;gap:11px}
+.b-list li{display:flex;gap:9px;align-items:flex-start;font-size:14px;line-height:1.45;color:var(--ink-2)}
+.b-list .tag{flex:0 0 auto;align-self:flex-start;font-size:11px;font-weight:600;letter-spacing:.125px;border-radius:9999px;padding:3px 8px;background:var(--canvas-soft);color:var(--muted)}
+.b-list .tag.new{background:#e7f1fc;color:var(--primary)}
+.b-list .tag.fix{background:#eafaee;color:#127a29}
+.b-list b{font-weight:600;color:var(--ink)}
+
+/* C — 타임라인 */
+.c-list{list-style:none;position:relative;padding-left:16px}
+.c-list::before{content:"";position:absolute;left:3px;top:6px;bottom:6px;width:1px;background:var(--hairline)}
+.c-list li{position:relative;padding:0 0 14px}
+.c-list li:last-child{padding-bottom:0}
+.c-list li::before{content:"";position:absolute;left:-16px;top:6px;width:7px;height:7px;border-radius:9999px;background:var(--faint)}
+.c-list li.on::before{background:var(--primary)}
+.c-list .dt{font-size:11px;font-weight:600;letter-spacing:.125px;color:var(--faint)}
+.c-list .tx{font-size:14px;line-height:1.45;color:var(--ink-2);margin-top:3px}
+.c-list b{font-weight:600;color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>업데이트 · 공지 — 노션 스타일 제안</h1>
+  <p class="sub">폭 250px, 현재 위치(히어로 우측) 그대로 놓는 세 안입니다. 공통으로 불꽃 이모지·굵은 800 웨이트를 덜고, 상태 점 하나만 남겼습니다.</p>
+
+  <div class="row">
+    <div class="opt" id="1a">
+      <span class="badge">1a · 문서형 목록</span>
+      <h2>구분선으로만 나누기</h2>
+      <p class="note">태그를 없애고 날짜를 아래 줄로 내린 안. 가장 조용하고 글이 잘 읽힙니다.</p>
+      <div class="hold">
+        <div class="hn">
+          <div class="hn-h"><span class="dot"></span>업데이트 · 공지<span class="more">전체 →</span></div>
+          <ul class="a-list">
+            <li><b>견적이 · 현장이</b> 개발 중 — 수선견적서, 현장사진 관리<span class="d">7월 24일</span></li>
+            <li>각종 매뉴얼 요약·보고서 <b>순차 공개</b> 중<span class="d">7월 30일 · 13종</span></li>
+            <li><b>간단내역서</b> 추가 — 일위대가 자동참조<span class="d">7월 18일</span></li>
+          </ul>
+          <div class="hn-foot">ver 4.0 · 2026-07-24</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="opt" id="1b">
+      <span class="badge">1b · 태그 유지</span>
+      <h2>지금 구조에 색만 정리</h2>
+      <p class="note">현재 태그(기능·NEW) 구조를 유지하되 pill 크기를 줄이고 색을 파랑/그린/그레이 3종으로 제한. 변경이 가장 적습니다.</p>
+      <div class="hold">
+        <div class="hn">
+          <div class="hn-h"><span class="dot"></span>업데이트 · 공지</div>
+          <ul class="b-list">
+            <li><span class="tag">기능</span><div>초간단 수선견적서 <b>견적이</b> · 현장사진관리 <b>현장이</b> 개발 중</div></li>
+            <li><span class="tag new">NEW</span><div>각종 매뉴얼 요약·보고서 업로드 중 — 순차 공개</div></li>
+            <li><span class="tag fix">개선</span><div><b>간단내역서</b> 추가 — 원가계산서·단가조사 포함</div></li>
+          </ul>
+          <div class="hn-foot">ver 4.0 · 2026-07-24</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="opt" id="1c">
+      <span class="badge">1c · 타임라인</span>
+      <h2>변경 이력처럼 보이기</h2>
+      <p class="note">세로 선 + 점으로 시간 흐름을 주는 안. 최신 항목만 파란 점. 업데이트 로그 성격이 강해집니다.</p>
+      <div class="hold">
+        <div class="hn">
+          <div class="hn-h"><span class="dot"></span>업데이트 · 공지</div>
+          <ul class="c-list">
+            <li class="on"><div class="dt">7월 30일</div><div class="tx">매뉴얼 <b>13종</b> 요약 공개 — 건축 설계공모 운영 실무가이드 추가</div></li>
+            <li><div class="dt">7월 24일</div><div class="tx"><b>견적이</b> 공개 · <b>현장이</b> 개발 중</div></li>
+            <li><div class="dt">7월 18일</div><div class="tx"><b>간단내역서</b> 추가 — 일위대가 자동참조</div></li>
+          </ul>
+          <div class="hn-foot">ver 4.0 · 2026-07-24</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

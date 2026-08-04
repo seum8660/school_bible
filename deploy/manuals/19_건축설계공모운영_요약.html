@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>건축 설계공모 운영 업무 실무가이드 — 핵심 요약</title>
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: 'Noto Sans CJK KR', 'Noto Sans KR', sans-serif; color: #1f2937; }
+  .page {
+    width: 100%; max-width: 1180px; min-height:auto; margin: 0 auto; padding:26px 30px 22px;
+    display: flex; flex-direction: column;
+  }
+  .hd { border-bottom: 2.5px solid #1e3a5f; padding-bottom: 5px; margin-bottom: 8px; }
+  .hd h1 { font-size:26px; color: #1e3a5f; letter-spacing: -0.4px; }
+  .hd .sub { font-size:13px; color: #6b7280; margin-top: 3px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap:16px 18px; align-content: start; }
+  .page > .grid { flex: 1; align-content: start; }
+  .box { border: 1px solid #d1d5db; border-radius:10px; padding:16px 18px; }
+  .box.full { grid-column: 1 / -1; }
+  .box h2 { font-size:14.5px; color: #fff; background: #1e3a5f; display: inline-block;
+            padding:4px 12px; border-radius: 3px; margin-bottom: 5px; letter-spacing: -0.3px; }
+  .box h2.accent { background: #b45309; }
+  p, li { font-size:14px; line-height:1.7; color: #374151; }
+  ul { list-style: none; }
+  li { padding-left:14px; position: relative; margin-bottom:5px; }
+  li::before { content: '·'; position: absolute; left: 2px; color: #1e3a5f; font-weight: 700; }
+  .k { color: #1e3a5f; font-weight: 700; }
+  .r { color: #b45309; font-weight: 700; }
+  .formula { background: #eef2f7; border-left: 3px solid #1e3a5f; border-radius: 3px;
+             padding:12px 14px; margin: 4px 0; font-size:14.5px; text-align: center;
+             font-weight: 700; color: #1e3a5f; letter-spacing: -0.2px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 3px; }
+  th, td { border: 1px solid #cbd5e1; padding:7px 9px; font-size:12.5px; text-align: center; }
+  th { background: #f1f5f9; color: #1e3a5f; font-weight: 700; }
+  td.h { text-align: left; color: #1e3a5f; font-weight: 700; background: #fafbfc; }
+  td.s { font-weight: 700; color: #1e3a5f; background: #eef2f7; }
+  .cap { font-size:12.5px; color: #6b7280; line-height:1.6; margin-top: 5px; }
+  .cap b { color: #1e3a5f; }
+  .tag { display: inline-block; background: #f1f5f9; border: 1px solid #cbd5e1;
+         border-radius: 3px; padding:3px 9px; font-size:12px; margin: 1px 2px 1px 0; color: #334155; }
+  .tag b { color: #1e3a5f; }
+  .ft { border-top: 1px solid #d1d5db; margin-top: 7px; padding-top: 5px;
+        font-size:11.5px; color: #9ca3af; text-align: center; }
+  .num { display:inline-block; width:19px;height:19px; background:#1e3a5f; color:#fff;
+         border-radius:50%; font-size:12px; text-align:center; line-height:19px; font-weight:700; margin-right:2px;}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hd">
+    <h1>건축 설계공모 운영 업무 실무가이드 — 핵심 요약</h1>
+    <div class="sub">한국부동산원 공공건축지원센터 · 2025.07 발간 · 원문 208면 · 비매품 &nbsp;|&nbsp; 근거: 「건축서비스산업 진흥법」 및 시행령·시행규칙, 「건축 설계공모 운영지침」(국토교통부 고시 제2023-180호, 2023.4.1. 시행)</div>
+  </div>
+
+  <div class="grid">
+    <!-- 1. 공모 방식 -->
+    <div class="box full">
+      <h2 class="accent">1. 설계공모 방식별 적용대상과 일정</h2>
+      <div class="formula">설계공모 = 설계자 <span class="r">2인 이상</span>으로부터 공모안을 제출받아 우열을 심사·결정하는 방법 및 절차</div>
+      <table>
+        <tr><th style="width:14%">방식</th><th style="width:28%">적용 대상</th><th style="width:22%">공고일 ~ 제출 마감</th><th style="width:15%">공고일 ~ 등록 마감</th><th>근거</th></tr>
+        <tr><td class="h">일반 설계공모</td><td>기본 방식. 공모작 전체를 심사</td><td class="s">90일 이상</td><td>7일 이상</td><td>지침 제18조</td></tr>
+        <tr><td class="h">2단계 설계공모</td><td>구체적 설계안을 단계적으로 받아 심사할 필요가 있는 사업</td><td class="s">총 90일 이상 (1차 30일 + 2차 60일 이상)</td><td>7일 이상</td><td>지침 제22·23조</td></tr>
+        <tr><td class="h">제안공모</td><td>발주기관이 정하는 적용 요건에 해당하는 사업</td><td class="s">총 20일 이상</td><td>5일 이상</td><td>지침 제29·30조</td></tr>
+        <tr><td class="h">간이공모</td><td>설계비 추정가격 <b>2억원 미만</b> 소규모 사업</td><td class="s">총 30일 이상</td><td>5일 이상</td><td>지침 제36·37조</td></tr>
+      </table>
+      <p class="cap">· <b>단축 규정</b> 일반 설계공모는 시급한 사업인 경우 45일 이상으로, 2단계는 1차 20일·2차 30일 이상으로 단축 가능. 특히 신속한 추진이 요구되는 사업은 발주기관이 따로 정할 수 있음<br>· <b>제한공모·지명공모</b>는 별도 방식이 아니라 위 방식에 부가되는 참가자격 제한 형태로, 적용 타당성과 제한 범위·절차의 적정성을 심의받아야 함. 특별한 사유가 없으면 <b>지역 제한 금지</b><br>· 공모기간이 짧으면 참여 저조·품질 저하로 이어지므로 충분한 기간 확보 권장</p>
+    </div>
+
+    <!-- 2. 공모비용 보상 -->
+    <div class="box">
+      <h2>2. 공모비용 보상</h2>
+      <ul>
+        <li><span class="k">보상 의무</span> 발주기관은 기타 입상자에 대해 <span class="r">공모안 작성비용을 보상하여야</span> 함 (지침 제21조)</li>
+        <li><span class="k">기타 입상자</span> 심사위원회가 정하며 <span class="r">4인 이내</span></li>
+        <li><span class="k">예산 규모</span> 최대 <span class="r">1억원 범위 내에서 예정설계비의 10%</span>에 해당하는 예산 확보. 사업 특성상 1억원 초과 지급도 가능</li>
+        <li><span class="k">금지 사항</span> 보상비용 지급을 이유로 <span class="r">해당 사업의 설계비를 감액할 수 없음</span></li>
+        <li><span class="k">추가자료</span> 발주기관이 추가자료를 요구하면 공모보상 비용과 <span class="r">별도로</span> 비용 지급</li>
+        <li><span class="k">2단계 공모</span> 2차 공모비용 보상은 제21조를 준용</li>
+      </ul>
+    </div>
+
+    <!-- 3. 위원회 구성 -->
+    <div class="box">
+      <h2>3. 위원회 구성</h2>
+      <table>
+        <tr><th style="width:38%">위원회</th><th style="width:22%">필수 여부</th><th>근거</th></tr>
+        <tr><td class="h">심사위원회</td><td class="s">필수</td><td>지침 제11조</td></tr>
+        <tr><td class="h">공공건축심의위원회</td><td class="s">필수</td><td>진흥법 제22조의3</td></tr>
+        <tr><td class="h">운영위원회</td><td>선택 (권장)</td><td>지침 제11조</td></tr>
+        <tr><td class="h">기술검토위원회</td><td>선택 (권장)</td><td>명시된 근거 없음</td></tr>
+        <tr><td class="h">전문위원회</td><td>선택</td><td>지침 제11조</td></tr>
+      </table>
+      <p class="cap">· <b>전문위원 자격</b> 해당 분야 기술사 취득 후 5년 이상 실무경험, 또는 조교수급 이상으로 5년 이상 경험<br>· 전문위원회는 심사위원회 개최 전 <b>서면으로 전문 의견 제출</b>하고, 요청 시 심사에 참석해 설명<br>· 담당자 교체가 잦은 공공발주에서 운영위원회·기술검토위원회는 일관성 확보에 유리</p>
+    </div>
+
+    <!-- 4. 설계공모지침서 -->
+    <div class="box">
+      <h2>4. 설계공모지침서</h2>
+      <ul>
+        <li><span class="k">구속력</span> 발주기관·공모참가자·심사위원 <span class="r">모두에게 구속력</span>을 가지므로, 운영지침 내용을 빠짐없이 기재하고 건축기획·사전검토·공공건축심의를 거쳐 작성</li>
+        <li><span class="k">기재 사항</span> 설계 시 고려·준수할 사항(건축·구조·설비·조경·토목계획 주요 사항, 에너지 절감, 장애인 고려 등)과 공고 방식·일정·참가등록·공모안 제출 방법을 구체적으로 기재 (지침 제7조)</li>
+        <li><span class="k">작성 요령</span> 일반적이거나 구체적이지 않은 내용은 배제하고 <span class="r">해당 사업의 특수성</span>을 담을 것. 타 지침서를 그대로 참고하다 불필요한 내용이 포함되는 사례가 많음</li>
+        <li><span class="k">표준 양식</span> 공공건축지원센터 홈페이지의 <span class="r">표준 설계공모지침서</span>를 사업 특성에 맞게 수정해 사용 권장</li>
+        <li><span class="k">미준수 시</span> 공모안이 지침서의 작성요건을 지키지 않은 경우 공고한 내용에 따라 처리</li>
+      </ul>
+    </div>
+
+    <!-- 5. 제공자료 -->
+    <div class="box">
+      <h2>5. 제공자료</h2>
+      <ul>
+        <li><span class="k">교부 의무</span> 발주기관은 설계지침서와 <span class="r">설계에 필요한 자료를 교부</span>하여야 하며, 교부에 과도한 비용이 소요되면 상당한 금액을 등록비로 징수 가능</li>
+        <li><span class="k">포함 자료</span> 대상지에 시행된 <span class="r">교통·환경·재해·지하철 영향평가</span> 결과 등 설계 조건을 정확히 이해하는 데 필요한 자료</li>
+        <li><span class="k">제공 경로</span> 공모 운영에 필요한 자료·공지사항은 건축HUB의 <span class="r">공고 상세정보 화면</span>에서 제공. 발주기관은 참가등록 연락처로 알림 발송 가능</li>
+        <li><span class="k">주의</span> 공지사항 미확인으로 발생한 불이익은 참가자 책임이므로, 지침서에 이 조건을 명시할 것</li>
+      </ul>
+    </div>
+
+    <!-- 6. 운영 업무 흐름 -->
+    <div class="box full">
+      <h2 class="accent">6. 설계공모 운영 업무 흐름</h2>
+      <div class="formula">공고 → 참가등록 → 현장설명회 → 질의접수·회신 → 사전간담회 → 공모안 제출 → 사전·기술검토 → 기피·회피·제척 → 심사위원회 → 결과 발표·공개</div>
+      <div class="grid" style="gap:4px 10px; margin-top:4px; align-items:start;">
+        <ul>
+          <li><span class="num">1</span><span class="k">기간 구분</span> 사전 준비기간(법적 절차·조직 구성) → 설계공모 기간(공고~심사) → 사후관리 기간(당선작 계약·결과 발표). <span class="r">사전 준비·사후관리 기간은 규정이 없어 사업 규모에 따라 편차가 큼</span></li>
+          <li><span class="num">3</span><span class="k">공모안 사전 제공</span> 심사대상 공모안은 <span class="r">심사위원회 개최일 최소 5일 전까지</span> 심사위원에게 미리 제공 (지침 제13조)</li>
+        </ul>
+        <ul>
+          <li><span class="num">2</span><span class="k">건축HUB 활용</span> 발주기관·공모참가자·심사위원의 공모 운영·참여를 지원하는 정보서비스. 공고, 참가등록, 질의회신, 공모안 접수, 기피신청, <span class="r">디지털심사장</span>을 통한 실시간 심사까지 지원</li>
+          <li><span class="num">4</span><span class="k">결과 공개</span> <span class="r">심사일로부터 7일 이내</span>에 심사결과를 공개 (지침 제14조). 입상작은 당선작과 기타 입상작으로 구분</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 7. 심사위원회 -->
+    <div class="box">
+      <h2>7. 심사위원회 구성</h2>
+      <ul>
+        <li><span class="k">인원</span> 위원장 1인을 포함한 <span class="r">5~9인</span>. 특별한 사유가 있으면 10인 이상 구성 가능</li>
+        <li><span class="k">소속 직원 배제</span> <span class="r">발주기관 소속 임·직원은 위촉 금지</span>. 다만 지침 제10조제1호 자격을 갖춘 소속 임·직원은 예외적으로 위촉 가능</li>
+        <li><span class="k">비율 제한</span> 제10조제3호 및 제11조제3항에 해당하는 심사위원은 <span class="r">전체 위원수의 30%를 초과할 수 없음</span></li>
+        <li><span class="k">위원장</span> 심사위원 중에서 호선</li>
+        <li><span class="k">예비 심사위원</span> 제척·기피·회피 등 결원에 대비해 <span class="r">30% 내외</span> 확보</li>
+        <li><span class="k">외부위원 추천</span> 지역건축위원회, 민간전문가 등을 통해 추천받아 선정 (지침 제12조)</li>
+      </ul>
+    </div>
+
+    <!-- 8. 기피·회피·제척 -->
+    <div class="box">
+      <h2>8. 기피 · 회피 · 제척</h2>
+      <ul>
+        <li><span class="k">기피신청</span> 공모참가자가 제척사유나 공정성 우려를 확인한 경우 신청. 심사위원 명단을 공모안 제출마감일에 공개하는 경우에는 <span class="r">공개일로부터 3일 이내</span></li>
+        <li><span class="k">미신청 시 불이익</span> 사유가 있음에도 기피신청을 하지 않으면 <span class="r">심사대상에서 제외되거나 입상이 취소</span>될 수 있음</li>
+        <li><span class="k">회피</span> 심사위원은 제척사유에 해당하면 <span class="r">스스로 회피</span>해야 함. 건축HUB에 별도 기능이 없어 발주기관이 절차를 마련해야 함</li>
+        <li><span class="k">제척처리</span> 발주기관이 기피·회피·불참·기타 유형으로 구분해 처리하고 예비 심사위원으로 대체</li>
+      </ul>
+      <p class="cap">· 원문 유의사항 — 공모참가자 정보 노출을 우려해 <b>회피 절차를 생략하면 결과 발표 후 제척사유가 드러나 더 큰 문제</b>가 되므로 반드시 진행할 것. 제척 여부는 회피 대상이 공모안을 제출한 이후 결정하면 됨</p>
+    </div>
+
+    <!-- 9. 사후관리 -->
+    <div class="box">
+      <h2>9. 사후관리</h2>
+      <ul>
+        <li><span class="k">계약</span> 당선작 제출자를 관계 법령에 따라 <span class="r">수의계약</span>의 상대자로 결정하여 계약 체결 (지침 제41조)</li>
+        <li><span class="k">저작권</span> 입상작의 저작권은 <span class="r">원칙적으로 설계자에게</span> 있으며, 귀속 등 제반사항은 별도로 정함 (지침 제16조)</li>
+        <li><span class="k">세부기준</span> 발주기관은 지침에 저촉하지 않는 범위에서 해당 용역 특성을 고려해 필요한 사항을 따로 정할 수 있음 (지침 제17조)</li>
+      </ul>
+    </div>
+
+    <!-- 10. 체크포인트 -->
+    <div class="box">
+      <h2>10. 담당자 체크포인트</h2>
+      <span class="tag"><b>①</b> 설계비 2억 미만은 간이공모 검토</span><span class="tag"><b>②</b> 공모기간 단축은 시급성 소명 필요</span><span class="tag"><b>③</b> 보상비 예산 = 예정설계비 10%(최대 1억)</span><span class="tag"><b>④</b> 보상비 때문에 설계비 감액 금지</span><span class="tag"><b>⑤</b> 심사위원에 소속 임·직원 위촉 금지</span><span class="tag"><b>⑥</b> 예비 심사위원 30% 내외 확보</span><span class="tag"><b>⑦</b> 회피 절차는 생략하지 말 것</span><span class="tag"><b>⑧</b> 심사 7일 이내 결과 공개</span>
+    </div>
+  </div>
+
+  <div class="ft">본 요약은 「건축 설계공모 운영 업무 실무가이드」(한국부동산원 공공건축지원센터, 2025.07)의 핵심을 정리한 참고자료입니다. 원문 가이드는 국토교통부의 공식 입장과 다를 수 있고, 관계 법령·고시에서 규정한 사항 이외에는 의무사항이 아닙니다. 실제 적용 시 최신 현행 규정을 확인하시기 바랍니다.</div>
+</div>
+</body>
+</html>

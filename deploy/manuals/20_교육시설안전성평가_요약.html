@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>교육시설 안전성평가 — 핵심 요약</title>
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: 'Noto Sans CJK KR', 'Noto Sans KR', 'Malgun Gothic', sans-serif; color: #1f2937; }
+  .page {
+    width: 100%; max-width: 1180px; min-height:auto; margin: 0 auto; padding:26px 30px 22px;
+    display: flex; flex-direction: column;
+  }
+  .page + .page { padding-top:10px; }
+  .hd { border-bottom: 2.5px solid #1e3a5f; padding-bottom: 5px; margin-bottom: 8px; }
+  .hd h1 { font-size:26px; color: #1e3a5f; letter-spacing: -0.4px; }
+  .hd .sub { font-size:13px; color: #6b7280; margin-top: 3px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap:16px 18px; align-content: start; }
+  .page > .grid { flex: 1; align-content: start; }
+  .box { border: 1px solid #d1d5db; border-radius:10px; padding:16px 18px; }
+  .box.full { grid-column: 1 / -1; }
+  .box h2 { font-size:14.5px; color: #fff; background: #1e3a5f; display: inline-block;
+            padding:4px 12px; border-radius: 3px; margin-bottom: 5px; letter-spacing: -0.3px; }
+  .box h2.accent { background: #b45309; }
+  p, li { font-size:14px; line-height:1.7; color: #374151; }
+  ul { list-style: none; }
+  li { padding-left:14px; position: relative; margin-bottom:5px; }
+  li::before { content: '·'; position: absolute; left: 2px; color: #1e3a5f; font-weight: 700; }
+  .k { color: #1e3a5f; font-weight: 700; }
+  .r { color: #b45309; font-weight: 700; }
+  .formula { background: #eef2f7; border-left: 3px solid #1e3a5f; border-radius: 3px;
+             padding:12px 14px; margin: 4px 0; font-size:14.5px; text-align: center;
+             font-weight: 700; color: #1e3a5f; letter-spacing: -0.2px; }
+  .formula .sub2 { display:block; font-size:12px; font-weight:500; color:#6b7280; margin-top:5px; letter-spacing:0; }
+  .tag { display: inline-block; background: #f1f5f9; border: 1px solid #cbd5e1;
+         border-radius: 3px; padding:3px 9px; font-size:12px; margin: 1px 2px 1px 0; color: #334155; }
+  .tag b { color:#1e3a5f; }
+  .ft { border-top: 1px solid #d1d5db; margin-top: 7px; padding-top: 5px;
+        font-size:11.5px; color: #9ca3af; text-align: center; }
+  .num { display:inline-block; width:19px;height:19px; background:#1e3a5f; color:#fff;
+         border-radius:50%; font-size:12px; text-align:center; line-height:19px; font-weight:700; margin-right:2px;}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hd">
+    <h1>교육시설 안전성평가 — 핵심 요약 ① 개요·대상·절차</h1>
+    <div class="sub">한국교육시설안전원 · 2024.11. &nbsp;|&nbsp; 근거: 「교육시설법」 제19조·제20조, 같은 법 시행령 제20조 및 「교육시설 안전성평가 운영 기준」(교육부고시 제2021-15호, ’21.5.13.)</div>
+  </div>
+
+  <div class="grid">
+    <div class="box">
+      <h2>1. 개요 및 법적 근거</h2>
+      <ul>
+        <li><span class="k">목적</span> 교육시설과 인접한 교내·외 건설공사가 교육시설 및 이용자 안전에 미치는 영향을 평가하여 안전 확보</li>
+        <li><span class="k">법령</span> 교육시설법 제19조·제20조, 같은 법 시행령 제20조</li>
+        <li><span class="k">운영 기준</span> 교육부고시 제2021-15호(’21.5.13.)</li>
+        <li><span class="k">평가 주체</span> 대상 공사를 하려는 <span class="k">건설사업자</span></li>
+        <li><span class="k">안내서 성격</span> 법적 구속력이 없는 참고자료이며 소명자료로서 효력 없음</li>
+      </ul>
+    </div>
+
+    <div class="box">
+      <h2>2. 주요 용어</h2>
+      <ul>
+        <li><span class="k">안전성평가서</span> 건설사업자가 영향을 평가한 일련의 도서</li>
+        <li><span class="k">안전성평가 검토</span> 감독기관의 장 또는 교육시설의 장이 적정·보완 여부를 결정하는 과정</li>
+        <li><span class="k">타당성 검토</span> 전문기관에 위탁하는 검토이며 <span class="r">평가자는 위탁 불가</span></li>
+        <li><span class="k">안전대책·이행확인</span> 평가자의 조치계획과 그 이행에 대한 확인 절차</li>
+        <li><span class="k">학교경계선</span> 실제 설치된 울타리·담장·화단, 모호하면 지적공부상 학교용지 경계</li>
+      </ul>
+    </div>
+
+    <div class="box full">
+      <h2 class="accent">3. 평가 대상 — 굴착영향거리 판정</h2>
+      <div class="formula">굴착영향거리 L = 1.5H + 4.0 m
+        <span class="sub2">H는 적용 굴착깊이 · 단차가 학교부지보다 낮으면 H = H1 + H2, 높으면 H = H1 − H2</span></div>
+      <div class="grid" style="gap:4px 18px; margin-top:6px; align-items:start;">
+        <ul>
+          <li><span class="num">1</span><span class="k">교내</span> 「건축법」 제11조제1항 건축허가 및 「학교시설사업 촉진법」 제5조의2제1항 건축승인 대상 교육시설 공사</li>
+          <li><span class="num">2</span><span class="k">교외 4m 이내</span> 학교경계로부터 직선거리 <span class="r">4m 이내</span>의 건설공사는 모두 대상</li>
+        </ul>
+        <ul>
+          <li><span class="num">3</span><span class="k">교외 4m 초과 50m 이내</span> 굴착깊이 <span class="r">2m 이상</span>이면서 직선거리가 굴착영향거리 미만인 공사, 또는 <span class="r">3층 이상</span> 건축물·높이 <span class="r">10m 이상</span> 구조물로서 직선거리가 최고 높이 미만인 공사</li>
+          <li><span class="num">4</span><span class="k">공종 특례</span> 터널·발파·「건축물관리법」 제30조제1항 해체공사 — <span class="k">허가 대상은 전부 대상</span>, 신고 대상은 거리·높이 검토 후 판단</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>4. 평가 제외 대상</h2>
+      <ul>
+        <li><span class="k">이용자 부재</span> 교육시설 이용자가 없는 상태의 신축·개축·이전</li>
+        <li><span class="k">유의</span> 개축·이전이라도 학생·교직원 등 <span class="r">이용자가 있으면 대상</span></li>
+        <li><span class="k">긴급 공사</span> 긴급 착공이 필요한 재해복구공사, 유지보수 목적 공사는 제외 가능</li>
+        <li><span class="k">단서</span> 제외되더라도 안전성 보완 조치사항은 교육시설의 장과 협의</li>
+        <li><span class="k">공사 범위 제외</span> 전기·정보통신·소방시설·문화재 수리공사</li>
+      </ul>
+    </div>
+
+    <div class="box">
+      <h2>5. 실시 및 보고</h2>
+      <ul>
+        <li><span class="k">실시 시기</span> 건축 또는 건설공사 <span class="r">착공 전</span>까지 실시·완료</li>
+        <li><span class="k">완료일</span> 안전성평가 실시일을 완료일로 봄</li>
+        <li><span class="k">보고 기한</span> 완료 후 <span class="r">14일 이내</span>, 감독기관의 장과 교육시설의 장 <span class="k">모두</span>에게 제출</li>
+        <li><span class="k">검토 주체</span> 유치원·초·중·고는 감독기관의 장, 대학·평생교육시설 등은 교육시설의 장</li>
+        <li><span class="k">업무 위임</span> 국·사립대 및 국립특수학교는 한국교육시설안전원이 접수·통보</li>
+      </ul>
+    </div>
+
+    <div class="box full" style="padding:10px 14px;">
+      <h2>6. 평가 대상 판단 수치</h2>
+      <span class="tag"><b>교외 전부 대상</b> 4m 이내</span><span class="tag"><b>검토 구간</b> 4m 초과 50m 이내</span><span class="tag"><b>굴착깊이</b> 2m 이상</span><span class="tag"><b>영향거리</b> L = 1.5H + 4.0m</span><span class="tag"><b>구조물</b> 3층 이상</span><span class="tag"><b>구조물 높이</b> 10m 이상</span><span class="tag"><b>실시</b> 착공 전</span><span class="tag"><b>보고</b> 완료 후 14일</span><span class="tag"><b>운영 기준</b> 고시 제2021-15호</span><span class="tag"><b>근거</b> 교육시설법 제19조</span>
+    </div>
+  </div>
+
+  <div class="ft">본 요약은 「교육시설 안전성평가 업무 안내서」(한국교육시설안전원)의 핵심을 정리한 참고자료입니다. 실제 적용 시 원문 및 관계 법령·고시의 최신 개정 내용을 확인하시기 바랍니다. &nbsp;1 / 2</div>
+</div>
+
+<div class="page">
+  <div class="hd">
+    <h1>교육시설 안전성평가 — 핵심 요약 ② 작성·검토·조치</h1>
+    <div class="sub">평가항목 4종 · 검토·통보 절차 · 안전성평가운영위원회 · 보완 조치 및 기록관리</div>
+  </div>
+
+  <div class="grid">
+    <div class="box">
+      <h2>1. 평가항목 ①② 일반사항·구조</h2>
+      <ul>
+        <li><span class="k">실시 계획</span> 평가 일정, 실시자의 자격, 교육시설 균열 등 상태 조사 계획</li>
+        <li><span class="k">현황 분석</span> 배치·평면계획 분석, 내·외부 균열 및 지반침하 현황(위치·사진)</li>
+        <li><span class="k">이용자 특성</span> 이용자 특성에 따른 안전관리 계획</li>
+        <li><span class="k">첨부 도서</span> 공사개요, 현장위치도, 전체 공정표, 설계도면(배치·평면·입면·단면), 안전관리조직표</li>
+        <li><span class="k">현장 여건</span> 지하 매설물, 인접 시설물 제원, 지반 조건 분석</li>
+        <li><span class="k">굴착·발파 영향</span> 굴착·비탈면·흙막이·발파·항타 개요와 시공상세도면, 지하수위 변동 및 되메우기 대책</li>
+      </ul>
+    </div>
+
+    <div class="box">
+      <h2>2. 평가항목 ③④ 예방시설·통학로</h2>
+      <ul>
+        <li><span class="k">가설공사 안전</span> 가설공사 현황, 비계·가설울타리·거푸집 및 동바리 안전대책(별지 제7호서식)</li>
+        <li><span class="k">구조 검토</span> 비계·가설울타리·거푸집 및 동바리는 관계전문가 날인 구조적 안전성 검토서 첨부</li>
+        <li><span class="k">방호선반</span> 학교 주통학로에 별도 안전통로가 필요하면 상세도 작성·첨부</li>
+        <li><span class="k">공사장 화재</span> 화재감시자 배치계획, 가연성마감재 사용 여부·대책, 위험물보관소 배치계획(별지 제8호서식)</li>
+        <li><span class="k">비상 긴급조치</span> 내·외부 비상연락망, 비상동원 조직, 경보체계, 응급조치 및 복구</li>
+        <li><span class="k">통학로</span> 이용자 동선 고려 통학로 현황도, 통학 시간대 안전요원 배치, 안전펜스·안내표지판 설치</li>
+      </ul>
+    </div>
+
+    <div class="box full">
+      <h2 class="accent">3. 검토·통보 및 보완 절차</h2>
+      <div class="formula">평가서 접수 → 검토 결과 통보(14일 이내) → 재검토 요청(7일 이내) → 보완 조치 계획서(3일 이내) → 보완 조치 결과서</div>
+      <div class="grid" style="gap:4px 18px; margin-top:6px; align-items:start;">
+        <ul>
+          <li><span class="num">1</span><span class="k">검토 결과 통보</span> 검토 완료 시 지체 없이 평가자에게 통보하되 <span class="r">접수일부터 14일 이내</span>, 별지 제10호서식 사용</li>
+          <li><span class="num">2</span><span class="k">보완 요청</span> 보완 필요 시 별지 제11호서식(안전성 보완 요청서) 함께 통보 — 안전사고 예방시설·건축계획서 수정·보완 사항에 한정</li>
+        </ul>
+        <ul>
+          <li><span class="num">3</span><span class="k">재검토 요청</span> 이의가 있으면 <span class="r">통보일부터 7일 이내</span> 별지 제12호서식으로 감독기관의 장 및 교육시설의 장에게 요청</li>
+          <li><span class="num">4</span><span class="k">보완 조치</span> 요청받은 날부터 <span class="r">3일 이내</span> 보완 조치 계획서 제출(3일 내 완료 사항은 생략 가능). 조치 완료 후 공사 진행, 협의 시 병행 가능</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>4. 안전성평가운영위원회</h2>
+      <ul>
+        <li><span class="k">구성 주체</span> 유치원·초·중·고는 감독기관의 장, 그 밖의 교육시설은 교육시설의 장이 구성·운영</li>
+        <li><span class="k">규모</span> 위원장 1명 포함 <span class="r">10인 이내</span></li>
+        <li><span class="k">위원 구성</span> 건설·안전관리 분야 전문가, 학부모, 교직원, 학생 대표 추천자 등</li>
+        <li><span class="k">위원장</span> 대상 감독기관·교육시설 소속이 아닌 위원 중 호선</li>
+        <li><span class="k">임기</span> <span class="r">2년</span>, 연임 가능</li>
+        <li><span class="k">심의 사항</span> 보완 요청사항의 적정 여부, 재검토 요청에 따른 이견 조정</li>
+      </ul>
+    </div>
+
+    <div class="box">
+      <h2>5. 안전 확보 요청 및 기록관리</h2>
+      <ul>
+        <li><span class="k">요청</span> 평가 결과·보완 조치 미이행 시 별지 제15호서식을 인·허가 기관에 제출</li>
+        <li><span class="k">예외</span> 인·허가 대상이 아닌 공사는 공사장 소재지 지방자치단체의 장에게 제출</li>
+        <li><span class="k">조치</span> 인·허가권자는 현장 조사·점검을 거쳐 공사 중지 또는 제한 조치</li>
+        <li><span class="k">결과 보고</span> 조치 결과는 별지 제16호서식으로 통보하고 교육부장관에게 제출</li>
+        <li><span class="k">등록</span> 평가 결과를 교육시설통합정보망(work.keiis.kr)에 등록</li>
+        <li><span class="k">보존</span> 공사 종료연도 다음 연도 1월 1일부터 <span class="r">1년</span>, 공사 중지 사업장은 <span class="r">3년</span> 보존 후 폐기</li>
+      </ul>
+    </div>
+
+    <div class="box full" style="padding:10px 14px;">
+      <h2>6. 기한 및 서식</h2>
+      <span class="tag"><b>검토 통보</b> 14일 이내</span><span class="tag"><b>재검토 요청</b> 7일 이내</span><span class="tag"><b>보완 계획서</b> 3일 이내</span><span class="tag"><b>위원회</b> 10인 이내</span><span class="tag"><b>위원 임기</b> 2년</span><span class="tag"><b>서류 보존</b> 1년 / 중지 3년</span><span class="tag"><b>제7·8호</b> 가설공사·화재계획</span><span class="tag"><b>제10호</b> 검토 결과 통보서</span><span class="tag"><b>제11호</b> 안전성 보완 요청서</span><span class="tag"><b>제12호</b> 재검토 요청 사유서</span><span class="tag"><b>제13·14호</b> 보완 계획서·결과서</span><span class="tag"><b>제15·16호</b> 안전 확보 요청·결과서</span><span class="tag"><b>등록</b> work.keiis.kr</span>
+    </div>
+  </div>
+
+  <div class="ft">본 요약은 학교시설업무 BIBLE 대시보드의 참고자료입니다. 실제 업무 처리 시 시행 중인 법령 및 최신 고시를 우선 적용합니다. &nbsp;2 / 2</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>공사기간 산정 검토 대시보드</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --navy:#191f28; --navy2:#3d4657; --line:#eaedf0; --line2:#f2f4f6;
+    --ink:#191f28; --sub:#8b95a1; --bg:#f2f4f6; --card:#ffffff;
+    --m1:#3182f6; --m2:#3182f6; --m3:#4e5968;
+    --prep:#c1c8d0; --work:#3182f6; --nowork:#8b95a1; --fin:#4e5968; --extra:#aeb7c9;
+    --gold:#3182f6; --goldbg:#e8f2ff; --yellow:#eef4ff;
+    --ok:#3182f6; --radc:20px; --radsm:14px;
+    --cardsh:0 1px 3px rgba(0,27,55,.04),0 6px 20px rgba(0,27,55,.06);
+    --cover1:#3182f6; --cover2:#1b64da; --coverink:#ffffff; --coversub:#dbe8ff; --coverlegal:#c3d9fb;
+  }
+  html[data-theme="dark"]{
+    --navy:#f4f6fc; --navy2:#c9d0e2; --line:rgba(255,255,255,0.16); --line2:rgba(255,255,255,0.10);
+    --ink:#f4f6fc; --sub:#9aa4c0; --bg:#161b33; --card:#2a3356;
+    --m1:#6fa8ff; --m2:#6fa8ff; --m3:#aeb7c9;
+    --prep:#808ba8; --work:#6fa8ff; --nowork:#aeb7c9; --fin:#c9d0e2; --extra:#8892a8;
+    --gold:#6fa8ff; --goldbg:rgba(111,168,255,0.16); --yellow:rgba(111,168,255,0.14);
+    --ok:#6fe0b4;
+    --cover1:#2a3356; --cover2:#3a2c63; --coverink:#f4f6fc; --coversub:#c9d0e2; --coverlegal:#9aa4c0;
+    --cardsh:0 8px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+  html[data-theme="dark"] body{background:linear-gradient(140deg,#1b2140 0%,#2c2456 52%,#153046 100%);background-attachment:fixed}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 20px 60px}
+
+  /* ===== 표지 / 히어로 ===== */
+  .cover{background:linear-gradient(120deg,var(--cover1),var(--cover2));color:var(--coverink);
+         padding:44px 20px 40px;position:relative;overflow:hidden}
+  .cover:after{content:"";position:absolute;right:-80px;top:-80px;width:340px;height:340px;
+         background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%)}
+  .cover .inner{max-width:1240px;margin:0 auto;padding:0 20px;position:relative}
+  .badge-top{display:inline-block;font-size:12px;letter-spacing:2px;background:rgba(255,255,255,.14);
+         padding:5px 12px;border-radius:20px;margin-bottom:16px}
+  .cover h1{margin:0 0 6px;font-size:32px;font-weight:800;letter-spacing:-.5px}
+  .cover .sub{font-size:15px;color:var(--coversub);margin-bottom:22px}
+  .cover-meta{display:flex;flex-wrap:wrap;gap:10px 28px;font-size:13.5px;color:var(--coversub)}
+  .cover-meta b{color:#fff;font-weight:700}
+  .cover-legal{margin-top:20px;font-size:12px;color:var(--coverlegal);border-top:1px solid rgba(255,255,255,.18);padding-top:14px}
+
+  /* ===== 섹션 ===== */
+  section{margin-top:26px}
+  .sec-title{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800;color:var(--navy);
+         margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+  .sec-title .n{display:inline-flex;width:26px;height:26px;border-radius:7px;background:var(--navy);color:#fff;
+         font-size:14px;align-items:center;justify-content:center;font-weight:800}
+  .sec-title small{font-weight:500;color:var(--sub);font-size:12.5px;margin-left:auto}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radsm);padding:20px 22px;box-shadow:var(--cardsh)}
+
+  /* ===== 입력 그리드 ===== */
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 18px}
+  .fld{display:flex;flex-direction:column;gap:5px}
+  .fld label{font-size:12.5px;color:var(--ink);font-weight:700}
+  .fld input,.fld select{font:inherit;font-size:14px;font-weight:600;padding:10px 12px;border:1.5px solid var(--sub);
+         border-radius:10px;background:var(--card);color:var(--ink);width:100%}
+  .fld input:focus,.fld select:focus{outline:none;border-color:var(--m2);box-shadow:0 0 0 3px rgba(49,130,246,.16)}
+  .fld input[readonly]{background:var(--line2);color:var(--sub)}
+  .fld.wide{grid-column:span 2}
+  .fld .hint{font-size:10.5px;color:#94a3b8}
+  .chk{display:flex;align-items:center;gap:7px;font-size:13px;padding:7px 0}
+  .chk input{width:16px;height:16px;accent-color:var(--m2)}
+  .subhead{grid-column:1/-1;font-size:12.5px;font-weight:700;color:var(--navy2);margin-top:6px;
+         border-left:3px solid var(--m2);padding-left:8px}
+
+  /* ===== 결과 카드 3안 ===== */
+  .methods{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .mcard{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;
+         border-top:4px solid var(--mc);transition:.2s}
+  .mcard.m1{--mc:var(--m1)} .mcard.m2{--mc:var(--m2)} .mcard.m3{--mc:var(--m3)}
+  .mcard.adopted{box-shadow:0 6px 24px rgba(184,134,11,.18);border-color:var(--gold);background:var(--goldbg)}
+  .mcard .tag{font-size:11px;font-weight:700;color:var(--mc);letter-spacing:.5px}
+  .mcard h3{margin:3px 0 2px;font-size:15px;font-weight:800;color:var(--navy)}
+  .mcard .desc{font-size:11.5px;color:var(--sub);min-height:30px}
+  .mcard .big{font-size:40px;font-weight:800;color:var(--navy);margin:8px 0 0;letter-spacing:-1px}
+  .mcard .big small{font-size:15px;font-weight:700;color:var(--sub)}
+  .mcard .mo{font-size:12.5px;color:var(--sub);margin-bottom:10px}
+  .mcard .brk{border-top:1px dashed var(--line);padding-top:9px;font-size:12px}
+  .mcard .brk .row{display:flex;justify-content:space-between;padding:2px 0;color:#475569}
+  .mcard .brk .row b{color:var(--ink);font-weight:700}
+  .adopt-badge{position:absolute;top:-11px;right:14px;background:var(--gold);color:#fff;font-size:12.5px;
+         font-weight:800;padding:4px 13px;border-radius:20px;box-shadow:0 2px 6px rgba(49,130,246,.35)}
+
+  /* ===== 채택 요약 배너 ===== */
+  .adopt-banner{margin-top:16px;background:linear-gradient(100deg,var(--cover1),var(--cover2));color:var(--coverink);border-radius:var(--radsm);
+         padding:20px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 30px}
+  .adopt-banner .lbl{font-size:13px;color:var(--coversub);letter-spacing:1px}
+  .adopt-banner .val{font-size:26px;font-weight:800}
+  .adopt-banner .val.hero{font-size:40px}
+  .adopt-banner .divider{width:1px;height:38px;background:rgba(255,255,255,.2)}
+  .adopt-banner .reason{flex:1 1 260px;font-size:12.5px;color:var(--coversub);min-width:220px}
+
+  /* ===== 차트 ===== */
+  .chart-wrap{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}
+  .bars{display:flex;flex-direction:column;gap:16px;padding:6px 0}
+  .barrow{display:flex;align-items:center;gap:12px}
+  .barrow .name{width:120px;font-size:12.5px;font-weight:700;color:var(--navy);flex:none}
+  .barrow .name small{display:block;font-weight:500;color:var(--sub);font-size:10.5px}
+  .track{flex:1;height:30px;background:#f1f5f9;border-radius:6px;overflow:hidden;display:flex}
+  .seg{height:100%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10.5px;font-weight:700;
+       min-width:0;transition:width .4s}
+  .barrow .tot{width:78px;text-align:right;font-size:14px;font-weight:800;color:var(--navy);flex:none}
+  .legend{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:11.5px;color:var(--sub);margin-top:4px}
+  .legend span{display:flex;align-items:center;gap:5px}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+  .donut-box{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .donut-center{font-size:12px;color:var(--sub)}
+  .donut-center b{display:block;font-size:26px;color:var(--navy);font-weight:800}
+
+  /* ===== 표 ===== */
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  thead th{background:var(--line2);color:var(--sub);font-weight:700;padding:9px 10px;text-align:center;font-size:11.5px;
+         position:sticky;top:0;border-bottom:1px solid var(--line)}
+  tbody td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:center;color:var(--sub)}
+  tbody td.l{text-align:left}
+  tbody tr:nth-child(even){background:#fafcff}
+  tbody tr.grp td{background:var(--line2);font-weight:700;color:var(--navy2);text-align:left}
+  tfoot td{padding:10px 10px;background:var(--line2);font-weight:800;color:var(--navy);border-top:2px solid var(--line)}
+  .tbl-scroll{max-height:520px;overflow:auto;border:1px solid var(--line);border-radius:12px}
+  td input{width:74px;font:inherit;font-size:12.5px;text-align:center;padding:5px 6px;border:1px solid var(--line);
+         border-radius:8px;background:var(--yellow)}
+  td input:focus{outline:none;border-color:var(--m2);background:#fff}
+  td select{font:inherit;font-size:12px;padding:3px 4px;border:1px solid var(--line);border-radius:6px;background:var(--yellow)}
+  .cp-y{color:var(--ok);font-weight:800}
+  .cp-n{color:#cbd5e1}
+
+  .note{font-size:11.5px;color:var(--sub);margin-top:10px;background:#f8fafc;border-left:3px solid var(--m2);
+         padding:9px 12px;border-radius:0 8px 8px 0;line-height:1.7}
+  .tabbar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+  .tab{font:inherit;font-size:13px;font-weight:700;padding:8px 16px;border:1px solid var(--line);background:#fff;
+       border-radius:9px;cursor:pointer;color:var(--sub)}
+  .tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pane{display:none} .pane.active{display:block}
+  .f3grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .formula-box{background:var(--navy2);color:#fff;font-family:"Consolas",monospace;font-size:14px;padding:14px 16px;
+         border-radius:10px;margin:8px 0}
+  .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+  .mini .m{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}
+  .mini .m .k{font-size:11px;color:var(--sub)} .mini .m .v{font-size:20px;font-weight:800;color:var(--navy)}
+  .foot{margin-top:30px;font-size:11px;color:#94a3b8;line-height:1.8;border-top:1px solid var(--line);padding-top:16px}
+  @media(max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}.methods{grid-template-columns:1fr}
+    .chart-wrap{grid-template-columns:1fr}.f3grid{grid-template-columns:1fr}.fld.wide{grid-column:span 2}}
+</style>
+</head>
+<body>
+<button id="themeToggle" type="button" style="position:fixed;top:16px;right:16px;z-index:40;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.4);border-radius:100px;padding:8px 14px;font:inherit;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer">다크 모드</button>
+
+<!-- ===== 표지 ===== -->
+<div class="cover">
+  <div class="inner">
+    <span class="badge-top">공공 건설공사 · 적정 공사기간 산정</span>
+    <h1>공사기간 산정 계산기</h1>
+    <div class="cover-meta"></div>
+    <div class="cover-legal">
+      근거 : 「건설기술 진흥법」 제45조의2 · 「공공 건설공사의 공사기간 산정기준」(국토교통부고시 제2024-1021호, 시행 2025.1.6.) · 「2026년 적정 공사기간 확보를 위한 가이드라인」(국토교통부·한국건설기술연구원)
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ===== 1. 기본정보 입력 ===== -->
+  <section>
+    <div class="sec-title"><span class="n">1</span>공사 기본정보 입력 <button type="button" id="resetBtn" style="margin-left:auto;background:var(--card);border:2px solid var(--line);border-radius:100px;padding:6px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--sub);cursor:pointer">↺ 초기화</button></div>
+    <div class="card">
+      <div class="grid">
+        <div class="fld wide"><label>공사명</label><input id="i_name" value="신안교육지원청사 이설공사"></div>
+        <div class="fld"><label>총공사비 (억원)</label><input id="i_cost" type="number" value="111"><span class="hint">부가세·관급자재 포함</span></div>
+        <div class="fld"><label>착수 예정일</label><input id="i_start" type="date" value="2027-01-01"></div>
+
+        <div class="fld"><label>시설물 유형</label>
+          <select id="i_fac">
+            <option>학교</option><option selected>청사</option><option>의료시설</option><option>경찰서</option>
+            <option>대학·연구시설</option><option>공연·전시시설</option><option>기숙사</option><option>공장·창고</option>
+            <option>체육시설</option><option>소방시설</option><option>공동주택</option><option>기타 건축물</option>
+          </select></div>
+        <div class="fld"><label>연면적 (㎡)</label><input id="i_area" type="number" value="3669.46"></div>
+        <div class="fld"><label>지상 층수</label><input id="i_up" type="number" value="4"></div>
+        <div class="fld"><label>지하 층수</label><input id="i_down" type="number" value="0"></div>
+
+        <div class="fld"><label>지붕 형태</label>
+          <select id="i_roof"><option selected>콘크리트 평지붕</option><option>콘크리트 경사지붕</option><option>철골 경사지붕</option></select></div>
+        <div class="fld"><label>공사 지역</label><input id="i_region" value="전남·광주"></div>
+        <div class="fld"><label>기상 지점</label><input id="i_wx" value="목포"></div>
+        <div class="fld"><label>도서지역 할증</label>
+          <select id="i_isl"><option selected>해당없음</option><option value="가">등급 '가' (60일)</option><option value="나">등급 '나' (45일)</option><option value="다">등급 '다' (30일)</option><option value="라">등급 '라' (15일)</option></select></div>
+
+        <div class="subhead">검토2안(표준공기) 상세 조건</div>
+        <div class="fld"><label>안전관리계획서 대상</label><select id="i_safety"><option value="1" selected>대상 (+45일)</option><option value="0">비대상</option></select></div>
+        <div class="fld"><label>지지력시험</label><select id="i_bear"><option value="1" selected>해당 (+11일)</option><option value="0">미해당</option></select></div>
+        <div class="fld"><label>동절기 보정</label><select id="i_winter"><option value="1" selected>적용 (지상층당 1일)</option><option value="0">미적용</option></select></div>
+        <div class="fld"><label>파일기초</label><select id="i_pile"><option value="0" selected>해당없음</option><option value="40">15m 이하 (+40)</option><option value="80">15m 이상 (+80)</option></select></div>
+        <div class="fld"><label>흙막이</label><select id="i_earth"><option value="0" selected>해당없음</option><option value="10">자립식 (10/층)</option><option value="20">어스앵커 (20/층)</option></select></div>
+        <div class="fld"><label>지하주차장</label><select id="i_park"><option value="0" selected>해당없음</option><option value="10">150대 미만 (+10)</option><option value="20">150대 이상 (+20)</option></select></div>
+        <div class="fld"><label>토목공사</label><select id="i_civil"><option value="1" selected>해당 (+15)</option><option value="0">미해당</option></select></div>
+        <div class="fld"><label>조경공사</label><select id="i_land"><option value="1" selected>해당 (+15)</option><option value="0">미해당</option></select></div>
+        <div class="fld"><label>건물철거 면적(㎡)</label><input id="i_dem" type="number" value="0"><span class="hint">90㎡당 1일</span></div>
+        <div class="fld"><label>마감재철거 면적(㎡)</label><input id="i_fdem" type="number" value="0"><span class="hint">90㎡당 1일</span></div>
+        <div class="fld"><label>석면철거 면적(㎡)</label><input id="i_asb" type="number" value="0"><span class="hint">400㎡당 7일</span></div>
+
+        <div class="subhead">준비·정리·비작업일수 (부록 연동값 · 직접 조정 가능)</div>
+        <div class="fld"><label>준비기간 (검토1·3안, 일)</label><input id="i_prep" type="number" value="60"><span class="hint">부록1 · 고시 제7조</span></div>
+        <div class="fld"><label>정리기간 (검토1·3안, 일)</label><input id="i_fin" type="number" value="30"><span class="hint">부록1 · 고시 제12조</span></div>
+        <div class="fld"><label>비작업일수 (검토1안, 일)</label><input id="i_nowork" type="number" value="118"><span class="hint">부록3 · 공휴일+기상</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. 검토 결과 (탭 구성) ===== -->
+  <section>
+    <div class="sec-title"><span class="n">2</span>공사기간 검토 결과 <small>종합 비교 및 검토안별 상세 산출 · 탭 전환</small></div>
+    <div class="tabbar" id="mainTabs">
+      <button class="tab active" data-p="pSum">종합 비교</button>
+      <button class="tab" data-p="p1">검토1안 · 표준품셈</button>
+      <button class="tab" data-p="p2">검토2안 · 표준공기</button>
+      <button class="tab" data-p="p3">검토3안 · 산정공식</button>
+    </div>
+
+    <!-- ── 종합 비교 탭 ── -->
+    <div class="pane active" id="pSum">
+      <div class="methods" id="methods"></div>
+      <div class="adopt-banner" id="adoptBanner"></div>
+      <div class="card" style="margin-top:16px">
+        <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:12px">검토안별 공사기간 구성 비교</div>
+        <div class="chart-wrap">
+        <div>
+          <div class="bars" id="bars"></div>
+          <div class="legend">
+            <span><i class="dot" style="background:var(--prep)"></i>준비기간</span>
+            <span><i class="dot" style="background:var(--work)"></i>작업일수</span>
+            <span><i class="dot" style="background:var(--nowork)"></i>비작업일수</span>
+            <span><i class="dot" style="background:var(--fin)"></i>정리기간</span>
+            <span><i class="dot" style="background:var(--extra)"></i>도서할증</span>
+          </div>
+        </div>
+        <div class="donut-box">
+          <svg id="donut" width="200" height="200" viewBox="0 0 200 200"></svg>
+          <div style="margin-top:8px"><b style="color:var(--navy);font-size:14px" id="donutTitle"></b></div>
+          <div class="donut-center" style="margin-top:2px" id="donutSub"></div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── 검토1안 · 표준품셈 탭 ── -->
+    <div class="pane" id="p1">
+      <div id="head1"></div>
+      <div class="card" style="padding:16px">
+        <div class="note" style="margin:0 0 12px">
+          소요일수 = ROUNDUP( 물량 ÷ (표준 1일작업량 × 투입조수) ). <b>주공정(CP)=Y</b> 공종만 순작업일수(작업일수)에 합산됩니다.
+          물량·투입조수·CP 여부는 노란색 셀에서 직접 수정할 수 있습니다.
+        </div>
+        <div class="tbl-scroll">
+          <table id="t1">
+            <thead><tr>
+              <th>#</th><th style="text-align:left">공종</th><th style="text-align:left">세부공종</th>
+              <th>물량</th><th>단위</th><th>표준<br>1일작업량</th><th>투입<br>조수</th><th>적용<br>작업량</th><th>소요일수</th><th>CP</th>
+            </tr></thead>
+            <tbody id="t1body"></tbody>
+            <tfoot><tr><td colspan="8" style="text-align:right">순작업일수 (주공정 CP 합계)</td><td id="t1sum">—</td><td></td></tr></tfoot>
+          </table>
+        </div>
+        <div class="mini">
+          <div class="m"><div class="k">① 준비기간</div><div class="v" id="p1prep">—</div></div>
+          <div class="m"><div class="k">② 비작업일수</div><div class="v" id="p1now">—</div></div>
+          <div class="m"><div class="k">③ 작업일수(순)</div><div class="v" id="p1work">—</div></div>
+        </div>
+        <div class="mini" style="grid-template-columns:1fr 1fr">
+          <div class="m"><div class="k">④ 정리기간</div><div class="v" id="p1fin">—</div></div>
+          <div class="m" style="background:var(--goldbg);border-color:var(--gold)"><div class="k">표준품셈 방식 총 공사기간</div><div class="v" id="p1tot">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 검토2안 · 표준공기 탭 ── -->
+    <div class="pane" id="p2">
+      <div id="head2"></div>
+      <div class="card" style="padding:16px">
+        <div class="note" style="margin:0 0 12px">
+          국토부 고시 <b>표준공기(기준일)</b> × 해당여부로 산정합니다. 총공사기간 = 준비기간 + 본공사(작업일수) + 정리기간 + 도서할증.
+          위 <b>기본정보</b>의 층수·시설조건을 바꾸면 자동 반영됩니다.
+        </div>
+        <div class="tbl-scroll">
+          <table id="t2">
+            <thead><tr><th style="text-align:left">구분</th><th style="text-align:left">항목</th><th>산정 기준</th><th>일수(일)</th></tr></thead>
+            <tbody id="t2body"></tbody>
+            <tfoot><tr><td colspan="3" style="text-align:right">표준공기 방식 총 공사기간</td><td id="t2sum">—</td></tr></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 검토3안 · 산정공식 탭 ── -->
+    <div class="pane" id="p3">
+      <div id="head3"></div>
+      <div class="card">
+        <div class="f3grid">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--navy2);margin-bottom:4px">적용 시설물 유형 : <span id="f3fac" style="color:var(--m3)"></span></div>
+            <div style="font-size:12px;color:var(--sub);margin-bottom:2px">시설물별 산정공식 (부록5 회귀식)</div>
+            <div class="formula-box" id="f3formula">—</div>
+            <div style="font-size:12px;color:var(--sub)">X = 총공사비(억원) · A = 연면적÷100 · G = 지상층수 · B = 지하층수</div>
+            <div class="note" style="margin-top:12px">산정공식 결과(Y)에는 <b>비작업일수가 포함</b>되어 있으므로 준비기간·정리기간만 추가합니다.</div>
+          </div>
+          <div>
+            <div class="mini" style="grid-template-columns:1fr;gap:12px">
+              <div class="m" style="text-align:left"><div class="k">① 산정공식 결과 (Y) · 비작업일 포함</div><div class="v" id="f3y">—</div></div>
+              <div class="m" style="text-align:left"><div class="k">② 준비기간</div><div class="v" id="f3prep">—</div></div>
+              <div class="m" style="text-align:left"><div class="k">③ 정리기간</div><div class="v" id="f3fin">—</div></div>
+              <div class="m" style="text-align:left;background:var(--goldbg);border-color:var(--gold)"><div class="k">산정공식 방식 총 공사기간 (Y+준비+정리)</div><div class="v" id="f3tot">—</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    ※ 공사기간 = ① 준비기간 + ② 작업일수 + ③ 비작업일수 + ④ 정리기간 (가이드라인 본문 산정식) · 준비·정리기간에는 비작업일수 미계상<br>
+    ※ (A) 법정공휴일수는 부록1(2026~2035), (B) 기상 비작업일수는 부록3(기상조건별·지역별, 최근 10년)의 해당 지역값으로 대체할 것 · 작업일수는 실제 공정표(Bar-chart/CPM)로 주공정 확정 후 조정<br>
+    ※ 총공사비 100억원 이상(시·군·구 50억원 이상)은 공사기간 적정성 심의 대상, 입찰서류에 산정근거 명시(고시 제5조) · 본 대시보드는 예시값 기반 산정 도구이며 실제 발주 전 설계자·공정전문가 검토 필요<br>
+    출처 : 국토교통부 「2026년 적정 공사기간 확보를 위한 가이드라인」 / 고시 제2024-1021호 / 국가법령정보센터 · 예시: 신안교육지원청사 이설공사
+  </div>
+</div>
+
+<script>
+/* ============ 검토1안 표준품셈 기본 데이터 (부록4 예시) ============ */
+const ITEMS1 = [
+ ["가설공사","콘테이너형 가설건축물 설치",7,"개",8,1,"Y"],
+ ["가설공사","가설울타리(EGI휀스) 설치",430,"m",115,1,"Y"],
+ ["가설공사","시스템비계 설치·해체",3791,"㎡",100,2,"Y"],
+ ["가설공사","강관동바리 설치·해체(건축)",9637,"㎡",100,4,"Y"],
+ ["토공사","터파기(굴삭기1.0㎥·보통)",3284,"㎥",514,1,"Y"],
+ ["철근공사","철근 현장조립(건축 TypeⅡ)",250,"ton",3,4,"Y"],
+ ["거푸집공사","유로폼 설치(보통)",9452,"㎡",50,6,"Y"],
+ ["거푸집공사","합판거푸집 설치(보통)",4457,"㎡",60,4,"Y"],
+ ["콘크리트공사","펌프카 타설(TypeⅡ/Ⅰ)",3277,"㎥",182,1,"Y"],
+ ["콘크리트공사","펌프카 타설(무근구조물)",187,"㎥",189,1,"Y"],
+ ["철골공사","철골 현장세우기",3,"ton",11.3,1,"Y"],
+ ["조적공사","벽돌쌓기(0.5B)",712,"㎡",27,1,"Y"],
+ ["미장공사","시멘트 모르타르 바름",3568,"㎡",42,4,"Y"],
+ ["미장공사","콘크리트면 마무리",1013,"㎡",17,2,"Y"],
+ ["방수공사","시멘트 액체방수",1335,"㎡",40,2,"Y"],
+ ["방수공사","도막방수",1433,"㎡",200,1,"Y"],
+ ["타일공사","압착붙이기(바닥)",299,"㎡",27,1,"Y"],
+ ["타일공사","떠붙이기(벽)",662,"㎡",21,2,"Y"],
+ ["창호유리공사","창호유리 설치",841,"㎡",42,1,"Y"],
+ ["수장공사","칸막이벽틀",1471,"㎡",20,4,"Y"],
+ ["수장공사","목재데크틀 설치",0.9,"ton",0.9,1,"Y"],
+ ["수장공사","목재데크 설치",156,"㎡",17,1,"Y"],
+ ["수장공사","석고판 설치(천장)",511,"㎡",45,1,"Y"],
+ ["도배바닥재","바닥재 깔기(타일형)",3301,"㎡",40,3,"Y"],
+ ["도배바닥재","바닥재 깔기(마루)",70,"㎡",50,1,"Y"],
+ ["기계설비","스테인리스강관(50mm·TIG)",959,"m",25.3,2,"Y"],
+ ["조경공사","식재(흉고8~9)",100,"주",17,1,"Y"],
+];
+
+/* ============ 검토3안 시설물별 산정공식 ============ */
+const FORMULA = {
+ "학교":        {t:"Y = 129.06 × X^0.2557", f:(X,A,G,B)=>129.06*Math.pow(X,0.2557)},
+ "청사":        {t:"Y = 155.94 × ln(X) − 82.355", f:(X)=>155.94*Math.log(X)-82.355},
+ "의료시설":    {t:"Y = -0.0385X² + 8.9084X + 140.87", f:(X)=>-0.0385*X*X+8.9084*X+140.87},
+ "경찰서":      {t:"Y = -0.0154X² + 7.9986X + 145.51", f:(X)=>-0.0154*X*X+7.9986*X+145.51},
+ "대학·연구시설":{t:"Y = 201.62 × ln(X) − 175.51", f:(X)=>201.62*Math.log(X)-175.51},
+ "공연·전시시설":{t:"Y = -205.7 × ln(X) + 1,375.4", f:(X)=>-205.7*Math.log(X)+1375.4},
+ "기숙사":      {t:"Y = -0.0204X² + 6.6742X + 166.51", f:(X)=>-0.0204*X*X+6.6742*X+166.51},
+ "공장·창고":   {t:"Y = -0.0271X² + 6.9664X + 146.97", f:(X)=>-0.0271*X*X+6.9664*X+146.97},
+ "체육시설":    {t:"Y = 112.19 × X^0.3719", f:(X)=>112.19*Math.pow(X,0.3719)},
+ "소방시설":    {t:"Y = -0.0497X² + 10.744X + 114.94", f:(X)=>-0.0497*X*X+10.744*X+114.94},
+ "공동주택":    {t:"Y = -21.674 + 7.953×G + 116.835×ln(C)", f:(X,A,G,B)=>-21.674+7.953*G+116.835*Math.log(X)},
+ "기타 건축물": {t:"Y = -68.550 + 18.192×B + 12.079×G + 5.25×ln(A) + 167.632×ln(C)", f:(X,A,G,B)=>-68.550+18.192*B+12.079*G+5.25*Math.log(A)+167.632*Math.log(X)},
+};
+
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString('ko-KR');
+const num=v=>{const x=parseFloat(v);return isNaN(x)?0:x;};
+
+let items1 = ITEMS1.map(r=>({gong:r[0],se:r[1],qty:r[2],unit:r[3],std:r[4],crew:r[5],cp:r[6]}));
+
+function readState(){
+ return {
+  name:$('i_name').value, cost:num($('i_cost').value), start:$('i_start').value,
+  fac:$('i_fac').value, area:num($('i_area').value), up:Math.max(0,Math.round(num($('i_up').value))),
+  down:Math.max(0,Math.round(num($('i_down').value))), roof:$('i_roof').value, isl:$('i_isl').value,
+  safety:$('i_safety').value==='1', bear:$('i_bear').value==='1', winter:$('i_winter').value==='1',
+  pile:num($('i_pile').value), earth:num($('i_earth').value), park:num($('i_park').value),
+  civil:$('i_civil').value==='1', land:$('i_land').value==='1',
+  dem:num($('i_dem').value), fdem:num($('i_fdem').value), asb:num($('i_asb').value),
+  prep:num($('i_prep').value), fin:num($('i_fin').value), nowork:num($('i_nowork').value),
+ };
+}
+
+/* ---- 검토1안 ---- */
+function calc1(s){
+ let work=0;
+ items1.forEach(it=>{
+  const applied = it.std*it.crew;
+  it.days = applied>0 && it.qty>0 ? Math.ceil(it.qty/applied) : 0;
+  if(it.cp==='Y') work+=it.days;
+ });
+ const tot = s.prep + s.nowork + work + s.fin;
+ return {prep:s.prep, nowork:s.nowork, work, fin:s.fin, tot};
+}
+
+/* ---- 검토2안 ---- */
+function calc2(s){
+ const items=[];
+ const P=(g,l,b,d)=>items.push({g,l,b,d});
+ // 준비
+ P('준비', s.cost>=10?'공사준비 (착공, 10억 이상)':'공사준비 (착공, 10억 미만)', s.cost>=10?'20':'10', s.cost>=10?20:10);
+ if(s.safety) P('준비','안전관리계획서 제출대상','45',45);
+ // 본공사
+ if(s.down>0) P('본공사',`터파기 (지하 ${s.down}층)`,`10 × ${s.down}`,10*s.down);
+ if(s.earth>0) P('본공사',`흙막이 (${s.earth===10?'자립식':'어스앵커'}, ${Math.max(s.down,1)}층)`,`${s.earth} × ${Math.max(s.down,1)}`,s.earth*Math.max(s.down,1));
+ if(s.pile>0) P('본공사',`파일기초 (${s.pile===40?'15m 이하':'15m 이상'})`,`${s.pile}`,s.pile);
+ if(s.bear) P('본공사','지지력시험','11',11);
+ if(s.down>0) P('본공사',`지하층 골조 (${s.down}층)`,`31 × ${s.down}`,31*s.down);
+ if(s.park>0) P('본공사',`지하주차장 (${s.park===10?'150대 미만':'150대 이상'})`,`${s.park}`,s.park);
+ if(s.up>=1) P('본공사','지상 골조 1층','30',30);
+ if(s.up>=2) P('본공사',`지상 골조 2층 이상 (${s.up-1}개층)`,`21 × ${s.up-1}`,21*(s.up-1));
+ if(s.winter && s.up>0) P('본공사',`동절기 보정 (${s.up}개층)`,`1 × ${s.up}`,s.up);
+ const roofD = s.roof==='콘크리트 경사지붕'?15 : (s.roof==='콘크리트 평지붕'?12:10);
+ P('본공사',`지붕 (${s.roof})`,`${roofD}`,roofD);
+ [['조적',5],['미장',7],['창호',6],['방수',3],['타일',2],['내장',7],['도장',3]].forEach(([n,d])=>{
+   if(s.up>0) P('본공사',`${n}공사 (${s.up}개층)`,`${d} × ${s.up}`,d*s.up);
+ });
+ if(s.civil) P('본공사','토목공사 (건축 완료 후)','15',15);
+ if(s.land) P('본공사','조경공사 (토목 완료 후)','15',15);
+ if(s.dem>0) P('본공사','건물철거 (90㎡당 1)',`⌈${fmt(s.dem)}/90⌉`,Math.ceil(s.dem/90));
+ if(s.fdem>0) P('본공사','마감재철거 (90㎡당 1)',`⌈${fmt(s.fdem)}/90⌉`,Math.ceil(s.fdem/90));
+ if(s.asb>0) P('본공사','석면철거 (400㎡당 7)',`⌈${fmt(s.asb)}/400⌉ × 7`,Math.ceil(s.asb/400)*7);
+ // 정리
+ P('정리', s.cost>=10?'준공·정리 (10억 이상)':'준공·정리 (10억 미만)', s.cost>=10?'30':'15', s.cost>=10?30:15);
+ // 할증
+ const ISL={'가':60,'나':45,'다':30,'라':15};
+ if(ISL[s.isl]) P('할증',`도서벽지 할증 (등급 '${s.isl}')`,`${ISL[s.isl]}`,ISL[s.isl]);
+ else P('할증','도서벽지 할증 (해당없음)','0',0);
+ const sum=g=>items.filter(i=>i.g===g).reduce((a,b)=>a+b.d,0);
+ const prep=sum('준비'),work=sum('본공사'),fin=sum('정리'),extra=sum('할증');
+ return {items,prep,work,fin,extra,tot:prep+work+fin+extra};
+}
+
+/* ---- 검토3안 ---- */
+function calc3(s){
+ const F=FORMULA[s.fac]||FORMULA['기타 건축물'];
+ const X=s.cost, A=s.area/100, G=s.up, B=s.down;
+ let Y=F.f(X,A,G,B); if(!isFinite(Y)||Y<0)Y=0; Y=Math.round(Y);
+ return {formula:F.t, Y, prep:s.prep, fin:s.fin, tot:Y+s.prep+s.fin};
+}
+
+/* ============ 렌더 ============ */
+function render(){
+ const s=readState();
+ const r1=calc1(s), r2=calc2(s), r3=calc3(s);
+
+ // 표지
+ const cvn=$('cv-name'); if(cvn){
+ cvn.textContent=s.name||'—';
+ $('cv-cost').textContent=fmt(s.cost)+' 억원';
+ $('cv-fac').textContent=s.fac;
+ $('cv-start').textContent=(s.start||'').replace(/-/g,'.');
+ }
+
+ // 채택안 = 최소
+ const arr=[{k:'검토1안',cls:'m1',v:r1.tot},{k:'검토2안',cls:'m2',v:r2.tot},{k:'검토3안',cls:'m3',v:r3.tot}];
+ const minV=Math.min(r1.tot,r2.tot,r3.tot);
+ const adopted=arr.find(a=>a.v===minV);
+
+ // 3안 카드
+ const meta={
+  '검토1안':{tag:'검토1안 · 표준품셈 방식',desc:'주공정(CP) 순작업일수 + 준비·비작업·정리',
+    rows:[['① 준비기간',r1.prep],['② 비작업일수',r1.nowork],['③ 작업일수(순)',r1.work],['④ 정리기간',r1.fin]]},
+  '검토2안':{tag:'검토2안 · 표준공기 방식',desc:'국토부 고시 표준공기(기준일) × 해당여부',
+    rows:[['① 준비기간',r2.prep],['② 작업일수(본공사)',r2.work],['③ 정리기간',r2.fin],['④ 도서할증',r2.extra]]},
+  '검토3안':{tag:'검토3안 · 시설물별 산정공식',desc:'부록5 회귀식(Y) + 준비 + 정리',
+    rows:[['① 산정공식 Y',r3.Y],['② 준비기간',r3.prep],['③ 정리기간',r3.fin]]},
+ };
+ $('methods').innerHTML=arr.map(a=>{
+  const m=meta[a.k]; const isA=a.v===minV;
+  return `<div class="mcard ${a.cls}${isA?' adopted':''}">
+    ${isA?'<span class="adopt-badge">★ 채택안</span>':''}
+    <div class="tag">${m.tag}</div>
+    <h3>${a.k}</h3><div class="desc">${m.desc}</div>
+    <div class="big">${fmt(a.v)}<small> 일</small></div>
+    <div class="mo">약 ${(a.v/30).toFixed(1)}개월</div>
+    <div class="brk">${m.rows.map(r=>`<div class="row"><span>${r[0]}</span><b>${fmt(r[1])} 일</b></div>`).join('')}</div>
+  </div>`;
+ }).join('');
+
+ // 채택 배너
+ const workAd = adopted.k==='검토1안'?r1.work : adopted.k==='검토2안'?r2.work : r3.Y;
+ const prepfin = minV-workAd;
+ $('adoptBanner').innerHTML=`
+   <div><div class="lbl">채택 검토안</div><div class="val">${adopted.k}</div></div>
+   <div class="divider"></div>
+   <div><div class="lbl">총 공사기간</div><div class="val hero">${fmt(minV)}일 <span style="font-size:16px;color:#a9c3dc">(약 ${(minV/30).toFixed(1)}개월)</span></div></div>
+   <div class="divider"></div>
+   <div><div class="lbl">${adopted.k==='검토3안'?'산정식 Y(비작업 포함)':'작업일수'} / 준비·정리</div><div class="val">${fmt(workAd)}일 <span style="font-size:14px;color:#a9c3dc">(${(workAd/minV*100).toFixed(1)}%)</span> · ${fmt(prepfin)}일</div></div>
+   <div class="reason">3개 검토안 중 총 공사기간이 가장 짧아, 적정 공기 확보와 과다 산정 방지 측면에서 유리하여 <b style="color:#fff">${adopted.k}</b>을(를) 채택함. (비교: 검토1안 ${fmt(r1.tot)}일 · 검토2안 ${fmt(r2.tot)}일 · 검토3안 ${fmt(r3.tot)}일)</div>`;
+
+ // 검토안별 탭 상단 요약 헤더
+ const headHTML=(name,method,tot,color,isA)=>`<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-left:5px solid ${color};border-radius:12px;padding:14px 18px;margin-bottom:16px${isA?';box-shadow:0 4px 16px rgba(184,134,11,.15)':''}">
+   <div><div style="font-size:11px;color:var(--sub);font-weight:700;letter-spacing:.5px">산정 방식</div>
+     <div style="font-size:16px;font-weight:800;color:var(--navy)">${name} · ${method}</div></div>
+   <div style="margin-left:auto;text-align:right"><div style="font-size:11px;color:var(--sub)">총 공사기간</div>
+     <div style="font-size:24px;font-weight:800;color:var(--navy);letter-spacing:-.5px">${fmt(tot)}<span style="font-size:14px;color:var(--sub);font-weight:700"> 일 · 약 ${(tot/30).toFixed(1)}개월</span></div></div>
+   <div style="background:${isA?'var(--gold)':'#eef2f7'};color:${isA?'#fff':'var(--sub)'};font-size:12px;font-weight:800;padding:6px 14px;border-radius:20px">${isA?'★ 채택안':'미채택'}</div>
+ </div>`;
+ $('head1').innerHTML=headHTML('검토1안','표준품셈 작업일수',r1.tot,'var(--m1)',r1.tot===minV);
+ $('head2').innerHTML=headHTML('검토2안','표준공기(기준일)',r2.tot,'var(--m2)',r2.tot===minV);
+ $('head3').innerHTML=headHTML('검토3안','시설물별 산정공식',r3.tot,'var(--m3)',r3.tot===minV);
+
+ // 비교 막대 (스택)
+ const maxV=Math.max(r1.tot,r2.tot,r3.tot);
+ const barData=[
+  {name:'검토1안',sub:'표준품셈',segs:[['prep',r1.prep],['nowork',r1.nowork],['work',r1.work],['fin',r1.fin]],tot:r1.tot,adopt:r1.tot===minV},
+  {name:'검토2안',sub:'표준공기',segs:[['prep',r2.prep],['work',r2.work],['fin',r2.fin],['extra',r2.extra]],tot:r2.tot,adopt:r2.tot===minV},
+  {name:'검토3안',sub:'산정공식',segs:[['prep',r3.prep],['work',r3.Y],['fin',r3.fin]],tot:r3.tot,adopt:r3.tot===minV},
+ ];
+ const col={prep:'var(--prep)',work:'var(--work)',nowork:'var(--nowork)',fin:'var(--fin)',extra:'var(--extra)'};
+ $('bars').innerHTML=barData.map(b=>`
+   <div class="barrow">
+     <div class="name">${b.name}${b.adopt?' <small style="color:var(--gold)">★채택</small>':''}<small>${b.sub}</small></div>
+     <div class="track" style="width:${Math.max(12,b.tot/maxV*100)}%">
+       ${b.segs.filter(x=>x[1]>0).map(x=>`<div class="seg" style="background:${col[x[0]]};width:${x[1]/b.tot*100}%" title="${x[1]}일">${x[1]/b.tot>0.08?fmt(x[1]):''}</div>`).join('')}
+     </div>
+     <div class="tot">${fmt(b.tot)}일</div>
+   </div>`).join('');
+
+ // 도넛 (채택안 구성)
+ drawDonut(adopted.k, barData.find(b=>b.adopt), minV);
+
+ // 검토1안 표
+ $('t1body').innerHTML=items1.map((it,i)=>`
+  <tr>
+   <td>${i+1}</td><td class="l">${it.gong}</td><td class="l">${it.se}</td>
+   <td><input type="number" data-i="${i}" data-f="qty" value="${it.qty}"></td>
+   <td>${it.unit}</td><td><input type="number" data-i="${i}" data-f="std" value="${it.std}"></td>
+   <td><input type="number" data-i="${i}" data-f="crew" value="${it.crew}"></td>
+   <td>${fmt(it.std*it.crew)}</td>
+   <td><b>${it.days}</b></td>
+   <td><select data-i="${i}" data-f="cp"><option value="Y"${it.cp==='Y'?' selected':''}>Y</option><option value="N"${it.cp==='N'?' selected':''}>N</option></select></td>
+  </tr>`).join('');
+ $('t1sum').textContent=fmt(r1.work)+' 일';
+ $('p1prep').textContent=fmt(r1.prep)+' 일'; $('p1now').textContent=fmt(r1.nowork)+' 일';
+ $('p1work').textContent=fmt(r1.work)+' 일'; $('p1fin').textContent=fmt(r1.fin)+' 일';
+ $('p1tot').textContent=fmt(r1.tot)+' 일 (약 '+(r1.tot/30).toFixed(1)+'개월)';
+ bindT1();
+
+ // 검토2안 표
+ let last='';
+ $('t2body').innerHTML=r2.items.map(it=>{
+   let head='';
+   if(it.g!==last){last=it.g;const gl={'준비':'① 준비기간','본공사':'② 작업일수 (본공사)','정리':'③ 정리기간','할증':'④ 도서벽지 할증'}[it.g];
+     head=`<tr class="grp"><td colspan="4">${gl}</td></tr>`;}
+   return head+`<tr><td></td><td class="l">${it.l}</td><td>${it.b}</td><td><b>${fmt(it.d)}</b></td></tr>`;
+ }).join('');
+ $('t2sum').textContent=fmt(r2.tot)+' 일  (약 '+(r2.tot/30).toFixed(1)+'개월)';
+
+ // 검토3안
+ $('f3fac').textContent=s.fac;
+ $('f3formula').textContent=r3.formula;
+ $('f3y').textContent=fmt(r3.Y)+' 일';
+ $('f3prep').textContent=fmt(r3.prep)+' 일';
+ $('f3fin').textContent=fmt(r3.fin)+' 일';
+ $('f3tot').textContent=fmt(r3.tot)+' 일 (약 '+(r3.tot/30).toFixed(1)+'개월)';
+}
+
+function drawDonut(title, b, tot){
+ const col={prep:'#94a3b8',work:'#2563eb',nowork:'#f59e0b',fin:'#64748b',extra:'#ef4444'};
+ const lbl={prep:'준비',work:'작업',nowork:'비작업',fin:'정리',extra:'할증'};
+ const segs=b.segs.filter(x=>x[1]>0);
+ let a=-Math.PI/2, cx=100,cy=100,R=78,r=50;
+ let paths='';
+ segs.forEach(sg=>{
+   const frac=sg[1]/tot, a2=a+frac*2*Math.PI;
+   const x1=cx+R*Math.cos(a),y1=cy+R*Math.sin(a),x2=cx+R*Math.cos(a2),y2=cy+R*Math.sin(a2);
+   const xi2=cx+r*Math.cos(a2),yi2=cy+r*Math.sin(a2),xi1=cx+r*Math.cos(a),yi1=cy+r*Math.sin(a);
+   const large=frac>0.5?1:0;
+   paths+=`<path d="M${x1} ${y1} A${R} ${R} 0 ${large} 1 ${x2} ${y2} L${xi2} ${yi2} A${r} ${r} 0 ${large} 0 ${xi1} ${yi1} Z" fill="${col[sg[0]]}"/>`;
+   a=a2;
+ });
+ $('donut').innerHTML=paths+`<text x="100" y="94" text-anchor="middle" font-size="12" fill="#64748b">총 공사기간</text>
+   <text x="100" y="118" text-anchor="middle" font-size="24" font-weight="800" fill="#0f2942">${fmt(tot)}일</text>`;
+ $('donutTitle').textContent=title+' 구성';
+ $('donutSub').innerHTML=segs.map(sg=>`${lbl[sg[0]]} ${(sg[1]/tot*100).toFixed(0)}%`).join(' · ');
+}
+
+function bindT1(){
+ $('t1body').querySelectorAll('input,select').forEach(el=>{
+  el.addEventListener('input',()=>{
+    const i=+el.dataset.i,f=el.dataset.f;
+    if(f==='cp')items1[i].cp=el.value; else items1[i][f]=num(el.value);
+    render();
+  });
+ });
+}
+
+// 탭
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ document.querySelectorAll('.pane').forEach(x=>x.classList.remove('active'));
+ t.classList.add('active'); $(t.dataset.p).classList.add('active');
+}));
+
+// 입력 바인딩
+['i_name','i_cost','i_start','i_fac','i_area','i_up','i_down','i_roof','i_isl','i_safety','i_bear','i_winter',
+ 'i_pile','i_earth','i_park','i_civil','i_land','i_dem','i_fdem','i_asb','i_prep','i_fin','i_nowork']
+ .forEach(id=>{$(id).addEventListener('input',render);$(id).addEventListener('change',render);});
+
+// 작성일
+(function(){const d=new Date();var e=$('cv-today');if(e)e.textContent=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');})();
+
+// 초기화 버튼 (입력값 기본값 복원)
+(function(){
+ var ids=['i_name','i_cost','i_start','i_fac','i_area','i_up','i_down','i_roof','i_isl','i_safety','i_bear','i_winter','i_pile','i_earth','i_park','i_civil','i_land','i_dem','i_fdem','i_asb','i_prep','i_fin','i_nowork'];
+ var def={}; ids.forEach(function(id){var el=$(id);if(el)def[id]=el.value;});
+ var itemsDef=JSON.parse(JSON.stringify(items1));
+ var rb=document.getElementById('resetBtn');
+ if(rb) rb.addEventListener('click',function(){
+   ids.forEach(function(id){var el=$(id); if(!el) return;
+     if(el.tagName==='SELECT'){ var z=Array.prototype.findIndex.call(el.options,function(o){return o.value==='0'||o.value==='해당없음';}); el.selectedIndex = z>=0 ? z : 0; }
+     else { el.value=''; }});
+   items1.forEach(function(it){it.qty=0;});
+   render();
+   var t=rb.textContent; rb.textContent='✓ 초기화됨'; setTimeout(function(){rb.textContent=t;},1000);
+ });
+})();
+
+render();
+(function(){var root=document.documentElement,b=document.getElementById('themeToggle'),d=false;
+ b.addEventListener('click',function(){d=!d;root.setAttribute('data-theme',d?'dark':'light');b.textContent=d?'라이트 모드':'다크 모드';
+   b.style.background=d?'var(--card)':'rgba(255,255,255,.16)';b.style.color=d?'var(--ink)':'#fff';b.style.borderColor=d?'var(--line)':'rgba(255,255,255,.4)';});})();
+</script>
+</body>
+</html>

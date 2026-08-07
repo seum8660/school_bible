@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<title>발주자 의무 체크리스트 — 학교시설사업</title>
+<style>
+  :root{
+    --bg:#f6f5f4; --card:#fff; --line:#e6e6e6; --line2:#e6e6e6;
+    --ink:#000; --ink-2:#31302e; --sub:#a39e98; --muted:#615d59;
+    --surface-2:#f6f5f4; --surface-3:#efedeb;
+    --accent:#0075de; --accent-soft:#e7f1fc;
+    --plan:#31302e; --design:#31302e; --const:#31302e; --comp:#31302e; --risk:#b3261e;
+    --sans:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 24px 60px}
+  header{background:var(--card);border-bottom:1.5px solid var(--line)}
+  .hd{max-width:1180px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .chip{background:var(--accent);color:#fff;font-size:12px;font-weight:800;padding:5px 13px;border-radius:100px}
+  h1{margin:0;font-size:22px;font-weight:900;letter-spacing:-.6px}
+  .hd p{margin:2px 0 0;font-size:13px;color:var(--sub)}
+  .sp{flex:1}
+  .btn{background:var(--card);border:1.5px solid var(--line);border-radius:100px;padding:9px 16px;
+       font:inherit;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;white-space:nowrap}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  .kpi{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 6px}
+  .kpi .c{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;text-align:center}
+  .kpi .nm{font-size:12.5px;font-weight:700;color:var(--sub)}
+  .kpi .vl{font-size:26px;font-weight:900;letter-spacing:-1px;margin-top:3px}
+  .kpi .c.done .vl{color:var(--accent)}
+  .bar{height:10px;background:var(--line2);border-radius:100px;overflow:hidden;margin:14px 0 22px;border:1.5px solid var(--line)}
+  .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+
+  .filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+
+  .grp{background:var(--card);border:1.5px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+  .grp-h{display:flex;align-items:center;gap:10px;padding:13px 18px;border-bottom:1.5px solid var(--line2);
+         font-size:15.5px;font-weight:800;cursor:pointer}
+  .grp-h .dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+  .grp-h .cnt{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--sub)}
+  .grp-b{padding:6px 0}
+  .grp.closed .grp-b{display:none}
+
+  .it{display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--line2);align-items:flex-start;cursor:pointer}
+  .it:last-child{border-bottom:none}
+  .it:hover{background:#f7f9fb}
+  .it .cb{width:21px;height:21px;flex:0 0 auto;border:2px solid var(--line);border-radius:6px;margin-top:2px;
+          display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;font-weight:900}
+  .it.on .cb{background:var(--accent);border-color:var(--accent);color:#fff}
+  .it.on .t{text-decoration:line-through;color:var(--sub)}
+  .it .bd{flex:1;min-width:0}
+  .it .t{font-size:14.5px;font-weight:700}
+  .it .d{font-size:12.5px;color:var(--sub);margin-top:2px;word-break:keep-all}
+  .tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+  .tg{font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;white-space:nowrap}
+  .tg.law{background:#f1f3f5;color:#495057}
+  .tg.money{background:#fdeceb;color:var(--risk)}
+  .tg.risk{background:var(--risk);color:#fff}
+
+  @media print{
+    @page{size:A4 portrait;margin:10mm}
+    body{background:#fff}
+    .btn,.filters,.bar,.kpi{display:none!important}
+    #pv{display:none!important}
+    .grp{break-inside:auto;page-break-inside:auto}
+    .grp-h{break-after:avoid;page-break-after:avoid}
+    .it{break-inside:avoid;page-break-inside:avoid}
+    .grp.closed .grp-b{display:block!important}
+  }
+  @media print{
+    body.pvon>header,body.pvon>.wrap{display:none!important}
+    body.pvon #pv{display:block!important;position:static;background:#fff;overflow:visible;padding:0}
+    body.pvon #pv>div:first-child{display:none!important}
+    body.pvon #pv-body{transform:none!important;display:block;padding:0;gap:0}
+    body.pvon #pv-body>div{box-shadow:none!important;width:auto!important;height:auto!important;padding:0!important;overflow:visible!important;break-after:page;page-break-after:always}
+    body.pvon #pv-body>div:last-child{break-after:auto;page-break-after:auto}
+  }
+  @media(max-width:760px){ .kpi{grid-template-columns:repeat(2,1fr)} }
+
+  /* ===== 노션 디자인 가이드라인 적용 ===== */
+  header{border-bottom:1px solid var(--line);}
+  .hd{padding:26px 24px 20px;}
+  .chip{background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;}
+  h1{font-size:28px;font-weight:700;letter-spacing:-.03em;}
+  .hd p{font-size:14px;color:var(--muted);margin-top:6px;}
+  .btn{border:1px solid var(--line);font-weight:500;font-size:12.5px;padding:8px 14px;color:var(--muted);}
+  .btn:hover{background:var(--surface-3);color:var(--ink);border-color:var(--line);}
+  .btn.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:700;}
+  .kpi{gap:10px;margin:20px 0 0;}
+  .kpi .c{border:1px solid var(--line);border-radius:12px;padding:13px 15px;text-align:left;}
+  .kpi .nm{font-size:11.5px;font-weight:500;color:var(--sub);}
+  .kpi .vl{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:4px;font-variant-numeric:tabular-nums;}
+  .kpi .c.done{border-color:var(--accent);background:var(--accent-soft);}
+  .kpi .c.done .vl{color:var(--accent);}
+  .bar{height:4px;background:var(--surface-3);border:0;border-radius:100px;margin:12px 0 20px;}
+  .filters{gap:4px;margin-bottom:18px;}
+  .grp{border:1px solid var(--line);border-radius:12px;margin-bottom:16px;}
+  .grp-h{padding:12px 16px;border-bottom:1px solid var(--line);font-size:12px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);}
+  .grp-h .dot{display:none;}
+  .grp-h .cnt{font-size:11.5px;font-weight:700;color:var(--sub);background:var(--surface-3);
+    border-radius:100px;padding:1px 8px;letter-spacing:0;font-variant-numeric:tabular-nums;}
+  .grp-b{padding:0;}
+  .it{padding:14px 16px;border-bottom:1px solid var(--line);}
+  .it:hover{background:var(--surface-2);}
+  .it .cb{width:18px;height:18px;border:1px solid var(--sub);border-radius:4px;font-size:11px;font-weight:700;}
+  .it.on .t{color:var(--sub);text-decoration-color:var(--line);}
+  .it .t{font-size:14px;font-weight:700;letter-spacing:-.01em;line-height:1.45;color:var(--ink);}
+  .it .d{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.6;}
+  .it.on .d{color:var(--sub);}
+  .tags{gap:6px;margin-top:8px;}
+  .tg{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:4px;}
+  .tg.law{background:var(--surface-3);color:var(--muted);}
+  .tg.money{background:var(--accent-soft);color:var(--accent);}
+  .tg.risk{background:#fbeceb;color:var(--risk);}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd">
+    <span class="chip">체크</span>
+    <div><h1>발주자 의무 체크리스트</h1><p>학교시설사업 단계별 발주청 법정 의무사항 · 미이행 시 벌칙·과태료 포함</p></div>
+    <div class="sp"></div>
+    <button class="btn" id="expandAll">모두 접기</button>
+    <button class="btn" id="resetBtn">↺ 초기화</button>
+    <button class="btn" id="pvBtn">📄 PDF 미리보기</button>
+    <button class="btn" id="printBtn">🖨 PDF 저장</button>
+  </div>
+</header>
+<div id="pv" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(20,22,30,.72);overflow:auto">
+  <div style="position:sticky;top:0;display:flex;gap:8px;justify-content:center;align-items:center;padding:12px;background:rgba(20,22,30,.9)">
+    <span style="color:#fff;font-weight:800;font-size:14px;margin-right:8px">PDF 미리보기 (A4)</span>
+    <button class="btn" style="background:var(--accent);border-color:var(--accent);color:#fff" onclick="window.print()">🖨 PDF 출력하기</button>
+    <button class="btn" style="background:#fff" onclick="pvClose()">✕ 닫기</button>
+  </div>
+  <div id="pv-body" style="display:flex;flex-direction:column;align-items:center;gap:18px;padding:18px 12px 40px"></div>
+</div>
+
+<div class="wrap">
+  <div class="kpi" id="kpi"></div>
+  <div class="bar"><i id="barFill"></i></div>
+  <div class="filters" id="filters"></div>
+  <div id="list"></div>
+</div>
+
+<script>
+const DATA=[
+ {g:'① 기획단계', color:'var(--plan)', items:[
+  ['사전기획 용역 시행','설계비 1억원 이상 사업은 사전기획 필수 · 기획 결과를 설계공모 지침에 반영','교육시설법 시행령 제23-2','설계비 1억↑',0],
+  ['투자심사 의결','자체 40억원 이상 / 중앙 300억원 이상 총사업비 사업 · 심사 전 계약체결 불가','지방재정법','40억↑ · 300억↑',1],
+  ['공유재산관리계획 수립','일정 규모 이상 공유재산 취득·처분 시 의회 의결 필요','공유재산법',' ',0],
+  ['공공건축 사업계획 사전검토','설계비 5천만원 이상 · 국가공공건축지원센터 검토 후 설계 착수','건축서비스산업법 제19-2','설계비 5천↑',1],
+  ['기본 안전보건대장 작성','총공사금액 50억원 이상 · 설계 발주 전 작성, 전문가 확인 필수','산업안전보건법 제67','50억↑',1],
+  ['도시계획시설(학교) 결정 여부 확인','유치원·특수학교·대안학교는 결정 없이 설치 가능 · 그 외는 도시·군관리계획 결정 필요','국토계획법 제30·제43',' ',0]
+ ]},
+ {g:'② 설계단계', color:'var(--design)', items:[
+  ['설계용역 일상감사 요청','도교육청 5천만원↑ / 학교 등 기준 이상 · 최종결재 전 감사 요청','교육부 일상감사지침 제4','5천↑',0],
+  ['설계공모 시행','설계비 1억원 이상 우선 적용 · 심사위원 구성·공개 절차 준수','건축서비스산업법 제21','설계비 1억↑',0],
+  ['기술자문위원회 심의','공사비 100억원↑(본청) / 50억원↑(지원청·학교) 설계 심의','건설기술진흥법 제6','100억↑ / 50억↑',0],
+  ['설계의 경제성 검토(VE)','총공사비 100억원 이상 · 기본설계·실시설계 단계별 실시','건설기술진흥법 시행령 제75','100억↑',1],
+  ['설계 안전성 검토(DfS)','공사비 50억원 이상 · 실시설계 완료 전 국토안전관리원 검토','건설기술진흥법 시행령 제75-2','50억↑',1],
+  ['설계 안전보건대장 작성','설계자가 작성 → 발주자 확인 · 시공사 선정 전 완료','산업안전보건법 제67','50억↑',1],
+  ['지하안전평가 실시','굴착깊이 10m 이상 · 착공 전 평가 완료 없이는 착공 불가','지하안전관리 특별법 제14','굴착 10m↑',1],
+  ['산업안전보건관리비 계상','총공사금액 2천만원 이상 · 예정가격 작성 시 계상, 목적 외 사용 금지','산업안전보건법 제72','2천만원↑',1],
+  ['안전관리비 계상','안전관리계획서 작성대상 공사 · 산안보관리비와 별도 계상','건설기술진흥법 제63',' ',0],
+  ['인증 사전검토','ZEB·녹색건축·건축물에너지효율·BF·CPTED 등 대상 여부 확인 및 예비인증','녹색건축물법 등',' ',0],
+  ['시설사업 시행계획·건축 승인','학교시설사업 촉진법에 따른 시행계획 승인 · 인허가 의제 협의','학교시설사업촉진법 제5',' ',0],
+  ['가설건축물 허가·신고','존치기간 3년 · 만료 14일 전까지 연장 신청 · 무단 축조 시 벌칙','건축법 제20',' ',1]
+ ]},
+ {g:'③ 발주·계약단계', color:'var(--const)', items:[
+  ['시설공사 일상감사 요청','추정가격 2억원 이상 시설공사 · 계약 전 감사','교육부 일상감사지침 제4','2억↑',0],
+  ['건설사업관리계획 수립·제출','연면적 660㎡↑ 건축 / 5억↑ 토목 / 2억↑ 전문공사 · CEMS 제출 의무','건설기술진흥법 제39-2','660㎡↑ · 5억↑',1],
+  ['감리·건설사업관리 방식 결정','역량평가 50/80점 기준 3단계 구분 · 200억↑ 감독권한대행','건설기술진흥법 시행령 제55','200억↑',0],
+  ['분리발주 검토','전기·정보통신·소방시설공사는 원칙적 분리발주','전기공사업법 제11 등',' ',1],
+  ['공사기간 적정성 검토','총공사비 100억↑(시군구 50억↑) 심의 의무 · 입찰서류에 산정근거 명시','건설기술진흥법 제45-2','100억↑ / 50억↑',1],
+  ['재해예방 기술지도 계약','공사비 1억원↑~120억원 미만 · 착공일 전날까지 계약','산업안전보건법 제73','1억↑~120억 미만',1],
+  ['관급자재 결정·구매계획','관급 대상 결정 및 조달 일정 확보 · 도급자관급 여부 명시','지방계약법 시행령 제77',' ',0]
+ ]},
+ {g:'④ 시공단계', color:'var(--const)', items:[
+  ['안전관리계획서 승인','착공 전 시공자 제출 → 발주청 승인 → CSI 등록 후 착공','건설기술진흥법 제62',' ',1],
+  ['유해위험방지계획서 확인','연면적 3만㎡↑ 또는 높이 31m↑ 등 · 착공 15일 전 공단 제출','산업안전보건법 제42','3만㎡↑ · 31m↑',1],
+  ['안전보건조정자 선임','같은 장소 2개 이상 공사 혼재 시 선임 · 미선임 과태료 500만원','산업안전보건법 제68',' ',1],
+  ['공사기간 단축·공법변경 금지','정당한 사유 없는 공기 단축·위험공법 강요 금지','산업안전보건법 제69',' ',1],
+  ['공사기간 연장 요청 수용','불가항력·발주자 귀책 시 사유 종료 후 10일 내 요청 → 30일 내 조치','산업안전보건법 제70',' ',0],
+  ['설계변경 요청 수용','전문가 의견에 따른 설계변경 요청 시 수용 · 계약금액 조정','산업안전보건법 제71',' ',0],
+  ['가설구조물 구조안전성 확인','31m↑ 비계, 5m↑ 동바리, 2m↑ 흙막이 등 · 관계전문가(기술사) 확인','건설기술진흥법 제62',' ',1],
+  ['공사 중 안전점검 실시','자체(매일)·정기·정밀·초기점검 · 결과 CSI 등록','건설기술진흥법 제62',' ',1],
+  ['화재감시자 배치·임시소방시설','용접·용단 등 화기작업 시 배치·설치 · 미이행 시 과태료·벌금','산업안전보건기준규칙 제241-2',' ',1],
+  ['해체공사 허가·신고 및 감리자 지정','해체계획서 검토·건축위 심의·감리자 지정 후 착공신고','건축물관리법 제30',' ',1],
+  ['산업안전보건관리비 사용내역 확인','6개월마다 사용내역 확인 · 목적 외 사용액 환수','산업안전보건법 제72',' ',1],
+  ['건설엔지니어링·시공 평가','용역비 2억2천만원↑ / 총공사비 100억↑ · 준공 후 60일 이내 제출','건설기술진흥법 제50','2억2천↑ · 100억↑',0]
+ ]},
+ {g:'⑤ 준공·정산단계', color:'var(--comp)', items:[
+  ['준공검사 시행','예비준공검사 30일 전 통보 · 검사조서 작성','건설기술진흥법 시행령 제78',' ',0],
+  ['사용승인 신청·검사','신청일부터 14일 이내 검사 · 합격 시 사용승인서 교부','건축법 시행령 제17',' ',0],
+  ['복합자재 품질관리서 제출','사용승인 신청 시 제출 · 거짓 작성 시 5년 이하 징역','건축법 제52-4',' ',1],
+  ['건축물대장 생성·등재','사용승인 후 건축물대장 작성 및 재산 등재','건축법 제38',' ',0],
+  ['본인증 취득 확인','ZEB·녹색건축·BF 등 예비인증 항목의 본인증 취득','녹색건축물법',' ',1],
+  ['환경보전비·폐기물처리비 정산','실사용액 기준 정산 · 미사용액 감액','환경관리비 산출기준 지침',' ',0],
+  ['하자담보책임·유지관리 인수','하자보수보증금 예치 확인 · 시운전·유지관리 서류 인수인계','지방계약법',' ',0]
+ ]}
+];
+
+const KEY='발주자체크v1';
+let done={};
+try{ done=JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){}
+let filter='all';
+
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function idOf(gi,ii){return gi+'-'+ii;}
+
+function render(){
+  // 필터
+  document.getElementById('filters').innerHTML =
+    ['all','todo','done','risk'].map(f=>{
+      const lb={all:'전체',todo:'미완료',done:'완료',risk:'⚠ 벌칙·과태료'}[f];
+      return `<button class="btn${filter===f?' on':''}" data-f="${f}">${lb}</button>`;
+    }).join('');
+
+  let html='', total=0, dn=0, risk=0, riskDone=0;
+  DATA.forEach((g,gi)=>{
+    let rows='', gt=0, gd=0;
+    g.items.forEach((it,ii)=>{
+      const id=idOf(gi,ii), on=!!done[id];
+      total++; gt++; if(on){dn++; gd++;}
+      if(it[4]){ risk++; if(on) riskDone++; }
+      if(filter==='todo'&&on) return;
+      if(filter==='done'&&!on) return;
+      if(filter==='risk'&&!it[4]) return;
+      rows+=`<div class="it${on?' on':''}" data-id="${id}">
+        <span class="cb">✓</span>
+        <div class="bd">
+          <div class="t">${esc(it[0])}</div>
+          <div class="d">${esc(it[1])}</div>
+          <div class="tags">
+            ${it[3].trim()?`<span class="tg money">${esc(it[3])}</span>`:''}
+            <span class="tg law">${esc(it[2])}</span>
+            ${it[4]?'<span class="tg risk">벌칙·과태료</span>':''}
+          </div>
+        </div>
+      </div>`;
+    });
+    if(!rows) return;
+    html+=`<div class="grp" data-g="${gi}">
+      <div class="grp-h"><span class="dot" style="background:${g.color}"></span>${esc(g.g)}
+        <span class="cnt">${gd} / ${gt}</span></div>
+      <div class="grp-b">${rows}</div>
+    </div>`;
+  });
+  document.getElementById('list').innerHTML=html||'<div style="padding:40px;text-align:center;color:var(--sub)">해당 항목이 없습니다.</div>';
+
+  document.getElementById('kpi').innerHTML=`
+    <div class="c"><div class="nm">전체 항목</div><div class="vl">${total}</div></div>
+    <div class="c done"><div class="nm">완료</div><div class="vl">${dn}</div></div>
+    <div class="c"><div class="nm">미완료</div><div class="vl">${total-dn}</div></div>
+    <div class="c"><div class="nm">벌칙 대상</div><div class="vl" style="color:var(--risk)">${risk-riskDone}</div></div>
+    <div class="c"><div class="nm">이행률</div><div class="vl">${total?Math.round(dn/total*100):0}<span style="font-size:14px">%</span></div></div>`;
+  document.getElementById('barFill').style.width=(total?dn/total*100:0)+'%';
+}
+
+document.addEventListener('click',e=>{
+  const f=e.target.closest('[data-f]');
+  if(f){ filter=f.dataset.f; render(); return; }
+  const h=e.target.closest('.grp-h');
+  if(h){ h.parentNode.classList.toggle('closed'); return; }
+  const it=e.target.closest('.it');
+  if(it){
+    const id=it.dataset.id;
+    done[id]=!done[id];
+    try{ localStorage.setItem(KEY,JSON.stringify(done)); }catch(e){}
+    render();
+  }
+});
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  if(!confirm('체크한 내용을 모두 초기화할까요?')) return;
+  done={}; try{ localStorage.removeItem(KEY); }catch(e){}
+  render();
+});
+document.getElementById('printBtn').addEventListener('click',()=>window.print());
+window.pvClose=function(){ document.getElementById('pv').style.display='none'; document.body.classList.remove('pvon'); document.body.style.overflow=''; };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') pvClose(); });
+document.getElementById('pvBtn').addEventListener('click',function(){
+  const src=document.getElementById('list'), pv=document.getElementById('pv'), body=document.getElementById('pv-body');
+  const PAD=12, H=297, W=210, mm=n=>n*96/25.4, LIMIT=mm(H-PAD*2);
+  body.innerHTML='';
+  pv.style.display='block'; document.body.classList.add('pvon'); document.body.style.overflow='hidden';
+  const newSheet=()=>{ const s=document.createElement('div');
+    s.style.cssText=`width:${W}mm;height:${H}mm;background:#fff;padding:${PAD}mm;box-sizing:border-box;overflow:hidden;position:relative;box-shadow:0 12px 40px rgba(0,0,0,.35)`;
+    const inner=document.createElement('div'); s.appendChild(inner); body.appendChild(s); return inner; };
+  let page=newSheet();
+  const fits=()=>page.scrollHeight<=LIMIT+1;
+  const push=n=>{ page.appendChild(n); if(!fits()&&page.childNodes.length>1){ page.removeChild(n); page=newSheet(); page.appendChild(n); } };
+  const ttl=document.createElement('div');
+  ttl.style.cssText='font-size:18px;font-weight:900;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #191f28';
+  ttl.textContent='발주자 의무 체크리스트 — 학교시설사업';
+  push(ttl);
+  [...src.children].forEach(grp=>{
+    const head=grp.querySelector('.grp-h'), items=[...grp.querySelectorAll('.it')];
+    const shell=()=>{ const g=grp.cloneNode(false); g.classList.remove('closed');
+      if(head) g.appendChild(head.cloneNode(true));
+      const b=document.createElement('div'); b.className='grp-b'; g.appendChild(b); return {g,b}; };
+    let cur=shell(); push(cur.g);
+    items.forEach(it=>{ cur.b.appendChild(it.cloneNode(true));
+      if(!fits()){ cur.b.lastChild.remove(); const keep=it; cur=shell(); page=newSheet(); page.appendChild(cur.g); cur.b.appendChild(keep.cloneNode(true)); } });
+  });
+  [...body.children].forEach((s,i,a)=>{ const n=document.createElement('div');
+    n.style.cssText='position:absolute;right:12mm;bottom:6mm;font-size:9pt;color:#888';
+    n.textContent=`${i+1} / ${a.length}`; s.appendChild(n); });
+  const first=body.firstElementChild;
+  const scale=first?Math.min(1,(window.innerWidth-48)/first.offsetWidth):1;
+  body.style.transform=scale<1?'scale('+scale+')':'';
+  body.style.transformOrigin='top center';
+});
+document.getElementById('expandAll').addEventListener('click',function(){
+  const any=document.querySelector('.grp.closed');
+  document.querySelectorAll('.grp').forEach(g=>g.classList.toggle('closed',!any));
+  this.textContent=any?'모두 접기':'모두 펼치기';
+});
+render();
+</script>
+<script src="close-button.js" defer></script></body>
+</html>

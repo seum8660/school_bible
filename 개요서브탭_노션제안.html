@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>전체 개요 서브탭 — 노션 스타일 제안</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --bg:#f6f5f4; --surface:#fff; --surface-2:#f6f5f4; --surface-3:#efedeb;
+  --ink:#000; --ink-2:#31302e; --muted:#615d59; --faint:#a39e98;
+  --line:#e6e6e6; --accent:#0075de; --accent-soft:#e7f1fc; --rad:12px; --radsm:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard','Malgun Gothic',sans-serif;font-size:14px;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:44px 36px 72px}
+h1{font-size:26px;font-weight:700;letter-spacing:-.03em}
+.lead{color:var(--muted);font-size:14px;margin-top:8px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.opt{margin-top:30px}
+.opt h2{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.opt p{font-size:12.5px;color:var(--faint);margin-bottom:12px}
+.demo{background:var(--surface);border:1px solid var(--line);border-radius:var(--rad);padding:18px}
+
+/* A: 검정 pill */
+.a{display:flex;gap:4px;flex-wrap:wrap}
+.a button{border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:13px;
+  font-weight:500;padding:9px 15px;border-radius:100px;cursor:pointer}
+.a button:hover{background:var(--surface-3);color:var(--ink)}
+.a button.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:700}
+
+/* B: 밑줄 탭 */
+.b{display:flex;gap:22px;border-bottom:1px solid var(--line)}
+.b button{border:0;background:none;font:inherit;font-size:14px;font-weight:500;color:var(--muted);
+  padding:0 0 11px;cursor:pointer;position:relative}
+.b button:hover{color:var(--ink)}
+.b button.on{color:var(--ink);font-weight:700}
+.b button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink)}
+
+/* C: 세그먼트 */
+.c{display:inline-flex;background:var(--surface-3);border-radius:100px;padding:3px}
+.c button{border:0;background:none;font:inherit;font-size:13px;font-weight:500;color:var(--muted);
+  padding:8px 16px;border-radius:100px;cursor:pointer}
+.c button.on{background:var(--surface);color:var(--ink);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+
+.note{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--faint);line-height:1.9}
+.note b{color:var(--ink-2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>전체 개요 서브탭 — 노션 스타일 제안</h1>
+  <p class="lead">현재: 이모지 + 탭별 색상(호박/초록/보라). 제안 3안 모두 이모지·색상 구분을 없애고 위계로만 구분합니다.</p>
+
+  <div class="opt">
+    <h2>A안 · 검정 pill</h2>
+    <p>다른 대시보드(단가검색·기상데이터)의 토글과 동일 — 활성만 검정, 비활성은 1px 헤어라인</p>
+    <div class="demo"><div class="a">
+      <button class="on" type="button">절차 기준</button>
+      <button type="button">간단 법령 체크</button>
+      <button type="button">업무 프로세스</button>
+      <button type="button">그래프 뷰</button>
+    </div></div>
+  </div>
+
+  <div class="opt">
+    <h2>B안 · 밑줄 탭</h2>
+    <p>노션 데이터베이스 뷰 전환과 가장 가까운 형태 — 배경 없이 2px 밑줄로만 활성 표시</p>
+    <div class="demo"><div class="b">
+      <button class="on" type="button">절차 기준</button>
+      <button type="button">간단 법령 체크</button>
+      <button type="button">업무 프로세스</button>
+      <button type="button">그래프 뷰</button>
+    </div></div>
+  </div>
+
+  <div class="opt">
+    <h2>C안 · 세그먼트 컨트롤</h2>
+    <p>회색 트랙 안에서 흰 캡슐이 이동 — 4개 이하 전환에 적합, 영역이 시각적으로 묶임</p>
+    <div class="demo"><div class="c">
+      <button class="on" type="button">절차 기준</button>
+      <button type="button">간단 법령 체크</button>
+      <button type="button">업무 프로세스</button>
+      <button type="button">그래프 뷰</button>
+    </div></div>
+  </div>
+
+  <div class="note">
+    공통 규칙 · <b>이모지 제거</b>(📊🏛🗺 및 그래프 아이콘) · <b>탭별 색상 제거</b>(--amber/--p-design/보라 → 잉크 단색) ·
+    폰트 13~14px / 활성만 700 · 라운드 100px 또는 밑줄 2px · 그림자 없음<br>
+    추천: <b>B안(밑줄 탭)</b> — 개요 안에서 뷰를 바꾸는 성격이라 버튼보다 탭이 의미에 맞고, 상단 pill(사업유형·필터)과 역할이 겹치지 않습니다.
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>공사기간 산정 — 노션 디자인 적용 예시</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --bg:#f6f5f4; --surface:#fff; --surface-2:#f6f5f4; --surface-3:#efedeb;
+  --ink:#000; --ink-2:#31302e; --muted:#615d59; --faint:#a39e98;
+  --line:#e6e6e6; --accent:#0075de; --accent-soft:#e7f1fc; --warn:#b3261e;
+  --rad:12px; --radsm:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard','Malgun Gothic',sans-serif;
+  font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:44px 36px 72px}
+.crumb{display:flex;gap:6px;font-size:12.5px;color:var(--faint);margin-bottom:18px}
+.crumb a{color:var(--faint);text-decoration:none}
+.crumb a:hover{color:var(--accent)}
+h1{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.lead{color:var(--muted);font-size:14.5px;margin-top:8px}
+.meta{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.meta div{display:flex;gap:10px;align-items:baseline;font-size:13px}
+.meta .lb{color:var(--faint)} .meta .vl{color:var(--ink-2);font-weight:500}
+.legalnote{margin-top:14px;font-size:11.5px;color:var(--muted);line-height:1.8}
+
+section{margin-top:30px}
+.sec-title{display:flex;align-items:center;gap:9px;margin:0 0 12px;padding:0}
+.sec-title .n{display:inline-flex;width:18px;height:18px;border-radius:4px;background:var(--accent-soft);
+  color:var(--accent);font-size:11px;align-items:center;justify-content:center;font-weight:700}
+.sec-title h2{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sec-title small{font-weight:500;color:var(--muted);font-size:12px;margin-left:auto}
+.sec-title .btn{margin-left:auto}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:12.5px;
+  font-weight:500;padding:7px 13px;border-radius:100px;cursor:pointer}
+.btn:hover{background:var(--surface-3);color:var(--ink)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--rad);padding:18px;box-shadow:none}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 14px}
+@media(max-width:860px){.grid{grid-template-columns:repeat(2,1fr)}}
+.fld{display:flex;flex-direction:column;gap:5px}
+.fld.wide{grid-column:span 2}
+.fld label{font-size:11.5px;color:var(--muted);font-weight:700;letter-spacing:.02em}
+.fld input,.fld select{font:inherit;font-size:13.5px;font-weight:600;padding:9px 11px;
+  border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:var(--radsm);
+  background:var(--surface);color:#0063bd;width:100%;font-variant-numeric:tabular-nums;outline:0}
+.fld input:focus,.fld select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent)}
+
+/* 탭 — 밑줄 */
+.tabbar{display:flex;gap:22px;border-bottom:1px solid var(--line);margin:0 0 16px}
+.tabbar button{border:0;background:none;font:inherit;font-size:14px;font-weight:500;color:var(--muted);
+  padding:0 0 11px;cursor:pointer;position:relative}
+.tabbar button:hover{color:var(--ink)}
+.tabbar button.active{color:var(--ink);font-weight:700}
+.tabbar button.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink)}
+
+/* 검토안 카드 */
+.methods{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:860px){.methods{grid-template-columns:1fr}}
+.m{background:var(--surface);border:1px solid var(--line);border-radius:var(--rad);padding:14px 16px}
+.m .t{font-size:11.5px;color:var(--faint);font-weight:500}
+.m .v{margin-top:5px;font-size:24px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.m .v em{font-style:normal;font-size:12.5px;font-weight:500;color:var(--muted);margin-left:3px}
+.m .d{margin-top:5px;font-size:11.5px;color:var(--faint)}
+.m.on{border-color:var(--accent);background:var(--accent-soft)}
+.m.on .v,.m.on .t{color:var(--accent)}
+.adopt{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:13px;color:var(--ink-2);
+  background:var(--surface-3);border-radius:var(--radsm);padding:12px 14px}
+.adopt b{color:var(--ink)}
+.adopt .tag{font-size:10.5px;font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:4px;padding:2px 7px}
+
+/* 구성 비교 바 */
+.bars{margin-top:16px;display:flex;flex-direction:column;gap:12px}
+.brow{display:grid;grid-template-columns:88px minmax(0,1fr) 74px;gap:12px;align-items:center}
+.brow .nm{font-size:12.5px;font-weight:700;color:var(--ink-2)}
+.brow .tot{font-size:13px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.stack{display:flex;height:26px;border-radius:var(--radsm);overflow:hidden;background:var(--surface-3)}
+.stack i{display:block;height:100%;position:relative}
+.stack i span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#fff;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);margin-top:12px}
+.legend span{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+.legend i{width:9px;height:9px;border-radius:2px;display:inline-block}
+
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th{font-size:11.5px;font-weight:700;color:var(--faint);text-align:right;padding:9px 11px;
+  border-bottom:1px solid var(--line);background:var(--surface-2);white-space:nowrap}
+th.l{text-align:left}
+td{padding:10px 11px;border-bottom:1px solid var(--line);font-size:13px;color:var(--ink-2);
+  text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.l{text-align:left;white-space:normal}
+td.nm{text-align:left;font-weight:700;color:var(--ink)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--surface-2)}
+td.hit{color:var(--warn);font-weight:700}
+tfoot td{background:var(--surface-2);border-top:1px solid var(--line);border-bottom:0;font-weight:700;color:var(--ink)}
+.tw{border:1px solid var(--line);border-radius:var(--rad);overflow-x:auto}
+.tw table{margin:0}
+.note{background:var(--surface-3);border-left:3px solid var(--accent);border-radius:var(--radsm);
+  padding:13px 15px;font-size:12.5px;color:var(--ink-2);line-height:1.7;margin-bottom:12px}
+.note b{color:var(--ink)}
+details{margin-top:12px}
+summary{cursor:pointer;font-size:12.5px;font-weight:700;color:var(--muted);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸ ";color:var(--faint)}
+details[open] summary::before{content:"▾ "}
+
+.legend2{margin-top:40px;border-top:1px solid var(--line);padding-top:24px}
+.legend2 h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.rules{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;font-size:12.5px;color:var(--muted)}
+.rules div{border:1px solid var(--line);border-radius:var(--radsm);background:var(--surface);padding:11px 13px}
+.rules b{display:block;color:var(--ink);font-size:12px;margin-bottom:3px}
+@media(max-width:700px){.wrap{padding:28px 16px 56px}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="bible_notion.html">학교시설업무 치트키 · SCHOOL BIBLE</a><span>/</span><a href="bible_notion.html">통합자료실</a><span>/</span><span style="color:var(--ink-2)">공사기간 산출</span></div>
+
+  <h1>공사기간 산정 계산기</h1>
+  <p class="lead">공공 건설공사 적정 공사기간 산정 — 표준품셈 · 유사공사 · 총량기준 3개 검토안 비교</p>
+
+  <div class="meta">
+    <div><span class="lb">근거</span><span class="vl">적정 공사기간 확보 가이드라인(2026)</span></div>
+    <div><span class="lb">비작업일</span><span class="vl">기상청 평년값 + 법정공휴일</span></div>
+    <div><span class="lb">단위</span><span class="vl">일 (캘린더일)</span></div>
+    <div><span class="lb">표시값</span><span class="vl">샘플 데이터</span></div>
+  </div>
+  <div class="legalnote">본 계산 결과는 검토 참고용이며, 실제 계약기간은 발주청 심의·계약심의 결과에 따릅니다.</div>
+
+  <section>
+    <div class="sec-title"><span class="n">1</span><h2>공사 기본정보</h2><button class="btn" type="button">↺ 초기화</button></div>
+    <div class="card">
+      <div class="grid">
+        <div class="fld wide"><label>공사명</label><input type="text" value="○○초 신축공사"></div>
+        <div class="fld"><label>지역</label><select><option selected>광주</option><option>목포</option><option>순천</option></select></div>
+        <div class="fld"><label>착공 예정일</label><input type="text" value="2026-03-02"></div>
+        <div class="fld"><label>연면적 ㎡</label><input type="text" value="5,200"></div>
+        <div class="fld"><label>공사비 (백만원)</label><input type="text" value="12,000"></div>
+        <div class="fld"><label>준비기간 (일)</label><input type="text" value="30"></div>
+        <div class="fld"><label>정리기간 (일)</label><input type="text" value="20"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title"><span class="n">2</span><h2>공사기간 검토 결과</h2><small>종합 비교 · 검토안별 상세</small></div>
+    <div class="tabbar">
+      <button class="active" type="button">종합 비교</button>
+      <button type="button">검토1안 · 표준품셈</button>
+      <button type="button">검토2안 · 유사공사</button>
+      <button type="button">검토3안 · 총량기준</button>
+    </div>
+
+    <div class="methods">
+      <div class="m on"><div class="t">검토1안 · 표준품셈</div><div class="v">548<em>일</em></div><div class="d">순작업 382 + 비작업 116 + 준비·정리 50</div></div>
+      <div class="m"><div class="t">검토2안 · 유사공사</div><div class="v">515<em>일</em></div><div class="d">유사 3건 평균 · 연면적 보정</div></div>
+      <div class="m"><div class="t">검토3안 · 총량기준</div><div class="v">532<em>일</em></div><div class="d">공사비 규모별 총량 환산</div></div>
+    </div>
+    <div class="adopt"><span class="tag">채택안</span><div><b>검토1안 548일</b> — 최댓값 기준 채택(공정 상세 근거 확보). 계약기간은 착공 2026-03-02 → 준공 2027-08-31.</div></div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="sec-title" style="margin-bottom:6px"><h2>검토안별 공사기간 구성</h2></div>
+      <div class="bars">
+        <div class="brow"><span class="nm">검토1안</span>
+          <div class="stack">
+            <i style="width:5.5%;background:#dedcd8"></i>
+            <i style="width:69.7%;background:var(--accent)"><span>순작업 382일</span></i>
+            <i style="width:21.2%;background:#b8b6b1"><span>비작업 116일</span></i>
+            <i style="width:3.6%;background:#4d4b47"></i>
+          </div>
+          <span class="tot">548일</span></div>
+        <div class="brow"><span class="nm">검토2안</span>
+          <div class="stack">
+            <i style="width:5.8%;background:#dedcd8"></i>
+            <i style="width:68.0%;background:var(--accent)"><span>순작업 350일</span></i>
+            <i style="width:22.3%;background:#b8b6b1"><span>비작업 115일</span></i>
+            <i style="width:3.9%;background:#4d4b47"></i>
+          </div>
+          <span class="tot">515일</span></div>
+        <div class="brow"><span class="nm">검토3안</span>
+          <div class="stack">
+            <i style="width:5.6%;background:#dedcd8"></i>
+            <i style="width:68.8%;background:var(--accent)"><span>순작업 366일</span></i>
+            <i style="width:21.8%;background:#b8b6b1"><span>비작업 116일</span></i>
+            <i style="width:3.8%;background:#4d4b47"></i>
+          </div>
+          <span class="tot">532일</span></div>
+      </div>
+      <div class="legend">
+        <span><i style="background:#dedcd8"></i>준비기간</span>
+        <span><i style="background:var(--accent)"></i>순작업일수</span>
+        <span><i style="background:#b8b6b1"></i>비작업일수</span>
+        <span><i style="background:#4d4b47"></i>정리기간</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title"><span class="n">3</span><h2>비작업일수 산정</h2><small>광주 · 산정기간 548일 기준</small></div>
+    <div class="note">비작업일수 = (A 기상 + B 공휴일 − C 중복) · 월별 안분 후 <b>가이드라인 하한(월 4일)</b>을 적용합니다.</div>
+    <div class="tw">
+      <table>
+        <thead><tr><th class="l">연·월</th><th>일수</th><th>A 기상</th><th>B 공휴일</th><th>C 중복</th><th>원값</th><th>적용</th><th>누계</th></tr></thead>
+        <tbody>
+          <tr><td class="nm">2026-03</td><td>30</td><td>4.2</td><td>4.3</td><td>0.6</td><td>7.9</td><td>7.9</td><td>7.9</td></tr>
+          <tr><td class="nm">2026-04</td><td>30</td><td>4.6</td><td>4.3</td><td>0.7</td><td>8.2</td><td>8.2</td><td>16.1</td></tr>
+          <tr><td class="nm">2026-05</td><td>31</td><td>4.4</td><td>5.6</td><td>0.8</td><td>9.2</td><td>9.2</td><td>25.3</td></tr>
+          <tr><td class="nm">2026-06</td><td>30</td><td class="hit">6.1</td><td>4.3</td><td>0.9</td><td>9.5</td><td>9.5</td><td>34.8</td></tr>
+          <tr><td class="nm">2026-07</td><td>31</td><td class="hit">9.4</td><td>4.4</td><td>1.3</td><td>12.5</td><td>12.5</td><td>47.3</td></tr>
+        </tbody>
+        <tfoot><tr><td class="nm">합계 (548일)</td><td>548</td><td>71.2</td><td>56.4</td><td>11.6</td><td>116.0</td><td>116.0</td><td>116.0</td></tr></tfoot>
+      </table>
+    </div>
+    <details>
+      <summary>기상 작업제한 기준 (부록②)</summary>
+      <div class="tw" style="margin-top:10px">
+        <table>
+          <thead><tr><th class="l">구분</th><th>제한 기준</th><th class="l">주요 제한 공종</th></tr></thead>
+          <tbody>
+            <tr><td class="nm">강우</td><td>일 강수량 5mm 이상</td><td class="l">토공·기초·철근콘크리트·도장·방수·조경</td></tr>
+            <tr><td class="nm">강풍</td><td>최대풍속 10m/s 이상</td><td class="l">철골 세우기·타워크레인·비계·외부 마감</td></tr>
+            <tr><td class="nm">혹서</td><td>최고기온 33℃ 이상</td><td class="l">옥외 전 공종(작업시간 조정)</td></tr>
+            <tr><td class="nm">혹한</td><td>최저기온 −5℃ 이하</td><td class="l">콘크리트 타설·양생·미장·도장</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <div class="legend2">
+    <h3>적용한 노션 스타일 규칙</h3>
+    <div class="rules">
+      <div><b>표지 제거</b>파란 그라디언트 커버 → 문서형 제목 + 메타줄 + 회색 각주</div>
+      <div><b>섹션 번호</b>남색 사각 배지 → 18px 연한 accent 배지 + 대문자 트래킹 라벨</div>
+      <div><b>탭</b>버튼형 → 밑줄 탭(활성만 검정 700 + 2px 밑줄)</div>
+      <div><b>검토안 카드</b>채택안만 accent 배경, 값 24px tabular-nums</div>
+      <div><b>구성 비교</b>차트 색 5종 → accent 1색 + 회색 3단 스택 바(구간 값 인라인)</div>
+      <div><b>표·이모지</b>격자선 제거·행 구분선만, 🌧🌪 등 이모지 삭제, 기준 초과만 적색</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

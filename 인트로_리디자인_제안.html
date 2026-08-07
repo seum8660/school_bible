@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인트로 리디자인 제안 — 1a 에어테이블 · 1b 캘닷컴</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#3d3d3a;color:#1f2937;word-break:keep-all}
+  p{text-wrap:pretty}
+  .opt-label{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;background:#26261f;color:#fff;padding:10px 22px;font-size:13px;font-weight:700;letter-spacing:.02em}
+  .opt-label .badge{background:#fff;color:#26261f;border-radius:6px;padding:2px 9px;font-size:12px;font-weight:800}
+  .frame{background:#fff}
+  /* 모션 공통 */
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* ============ 1a 에어테이블 스타일 ============ */
+  .at{--ink:#1d1f25;--muted:#6b7280;--line:#e5e7eb;--blue:#2d7ff9;--yellow:#fcb400;--red:#f82b60;--teal:#20c4b6;--purple:#8b46ff;
+      font-feature-settings:'ss01';color:var(--ink)}
+  .at .nav{display:flex;align-items:center;gap:26px;padding:16px 40px;border-bottom:1px solid var(--line)}
+  .at .logo{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800;letter-spacing:-.02em}
+  .at .logo .mk{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:22px;height:22px}
+  .at .logo .mk i{border-radius:3px}
+  .at .nav a{font-size:14px;font-weight:600;color:#3f4450;text-decoration:none;padding:7px 4px}
+  .at .nav a:hover{color:var(--ink)}
+  .at .nav .cta{margin-left:auto;background:var(--blue);color:#fff;border-radius:10px;padding:10px 20px;font-weight:700;font-size:14px}
+  .at .hero{padding:74px 40px 60px;max-width:1080px;margin:0 auto;text-align:center}
+  .at .hero .pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:100px;padding:6px 15px;font-size:13px;font-weight:700;color:#3f4450;background:#fafafa}
+  .at .hero .pill i{width:8px;height:8px;border-radius:50%;background:var(--teal)}
+  .at .hero h1{font-size:56px;line-height:1.18;letter-spacing:-.035em;font-weight:800;margin:26px 0 18px;isolation:isolate}
+  .at .hero h1 .hl{position:relative;white-space:nowrap}
+  .at .hero h1 .hl::after{content:"";position:absolute;left:-2px;right:-2px;bottom:6px;height:16px;background:#ffe9b0;z-index:-1;border-radius:3px;transform:scaleX(0);transform-origin:left;transition:transform .6s cubic-bezier(.2,.7,.2,1) .5s}
+  .in .hl::after{transform:scaleX(1)!important}
+  .at .hero p{font-size:17.5px;line-height:1.75;color:var(--muted);max-width:560px;margin:0 auto}
+  .at .hero .btns{display:flex;gap:10px;justify-content:center;margin-top:30px}
+  .at .hero .btns .b1{background:var(--blue);color:#fff;border-radius:12px;padding:14px 28px;font-size:15.5px;font-weight:700;text-decoration:none;transition:transform .18s,box-shadow .18s}
+  .at .hero .btns .b1:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(45,127,249,.35)}
+  .at .hero .btns .b2{border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:14px 24px;font-size:15.5px;font-weight:700;text-decoration:none;background:#fff}
+  .at .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1080px;margin:10px auto 0;padding:0 40px 30px}
+  .at .card{border:1px solid var(--line);border-radius:14px;padding:24px 24px 22px;background:#fff;box-shadow:0 1px 2px rgba(29,31,37,.04);transition:transform .22s cubic-bezier(.2,.7,.2,1),box-shadow .22s,border-color .22s}
+  .at .card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(29,31,37,.10);border-color:#d1d5db}
+  .at .card .tag{display:inline-block;border-radius:7px;padding:4px 11px;font-size:12px;font-weight:800;letter-spacing:.03em;margin-bottom:14px}
+  .at .card h3{font-size:19px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+  .at .card p{font-size:14px;line-height:1.7;color:var(--muted)}
+  .at .card .go{display:inline-block;margin-top:14px;font-size:13.5px;font-weight:700;color:var(--blue);text-decoration:none}
+  .at .strip{max-width:1080px;margin:26px auto 0;padding:0 40px 70px}
+  .at .strip .tbl{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .at .strip .tbl .hd{display:grid;grid-template-columns:160px 1fr 130px;background:#f9fafb;border-bottom:1px solid var(--line);font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.04em}
+  .at .strip .tbl .hd>div{padding:10px 16px}
+  .at .strip .row{display:grid;grid-template-columns:160px 1fr 130px;border-bottom:1px solid var(--line);font-size:14px;align-items:center;transition:background .15s}
+  .at .strip .row:hover{background:#f9fafb}
+  .at .strip .row:last-child{border-bottom:0}
+  .at .strip .row>div{padding:13px 16px}
+  .at .strip .row .c1{font-weight:700;display:flex;align-items:center;gap:8px}
+  .at .strip .row .c1 i{width:9px;height:9px;border-radius:3px;flex:0 0 auto}
+  .at .strip .row .c2{color:var(--muted);font-size:13.5px}
+  .at .strip .row .c3 a{color:var(--blue);font-weight:700;font-size:13.5px;text-decoration:none}
+  .at .foot{border-top:1px solid var(--line);padding:22px 40px;display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}
+  @media(max-width:900px){.at .cards{grid-template-columns:1fr}.at .hero h1{font-size:38px}}
+
+  /* ============ 1b 캘닷컴 스타일 ============ */
+  .cal{--ink:#111;--sub:#374151;--muted:#6b7280;--line:#e5e5e5;background:#fff;color:var(--ink)}
+  .cal .nav{display:flex;align-items:center;gap:28px;padding:18px 40px;border-bottom:1px solid var(--line)}
+  .cal .logo{font-size:17px;font-weight:800;letter-spacing:-.03em;display:flex;align-items:baseline;gap:2px}
+  .cal .logo em{font-style:normal;color:var(--muted);font-weight:600}
+  .cal .nav a{font-size:14px;font-weight:500;color:var(--sub);text-decoration:none}
+  .cal .nav a:hover{color:var(--ink)}
+  .cal .nav .cta{margin-left:auto;background:#111;color:#fff;border-radius:10px;padding:10px 20px;font-weight:600;font-size:14px}
+  .cal .hero{max-width:960px;margin:0 auto;padding:88px 40px 64px;text-align:center}
+  .cal .hero .pill{display:inline-block;border:1px solid var(--line);border-radius:100px;padding:6px 16px;font-size:13px;font-weight:600;color:var(--muted);background:#fafafa}
+  .cal .hero h1{font-size:54px;line-height:1.16;letter-spacing:-.045em;font-weight:800;margin:28px 0 20px;color:#111}
+  .cal .hero h1 .dim{color:#9ca3af}
+  .cal .hero .slogan{display:inline-flex;align-items:center;gap:12px;margin:2px 0 18px;font-size:16px;font-weight:700;letter-spacing:-.01em;color:var(--muted)}
+  .cal .hero .slogan b{color:#111;font-weight:800}
+  .cal .hero .slogan i{font-style:normal;color:#d1d5db}
+  .cal .hero p{font-size:17px;line-height:1.8;color:var(--muted);max-width:540px;margin:0 auto}
+  .cal .hero .btns{display:flex;gap:10px;justify-content:center;margin-top:32px}
+  .cal .hero .b1{background:#111;color:#fff;border-radius:10px;padding:14px 30px;font-size:15.5px;font-weight:600;text-decoration:none;transition:transform .18s,box-shadow .18s}
+  .cal .hero .b1:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.22)}
+  .cal .hero .b2{border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:14px 24px;font-size:15.5px;font-weight:600;text-decoration:none;background:#fff}
+  .cal .hero .note{margin-top:14px;font-size:12.5px;color:#9ca3af}
+  .cal .feats{max-width:1060px;margin:0 auto;padding:0 40px 40px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .cal .feat{padding:30px 28px;border-right:1px solid var(--line);background:#fff;transition:background .2s}
+  .cal .feat:hover{background:#fafafa}
+  .cal .feat .go{position:relative}
+  .cal .feat:hover .go{color:#111}
+  .cal .feat:last-child{border-right:0}
+  .cal .feat .no{font-size:12px;font-weight:700;color:#9ca3af;letter-spacing:.08em}
+  .cal .feat h3{font-size:18px;font-weight:700;letter-spacing:-.02em;margin:10px 0 8px}
+  .cal .feat p{font-size:14px;line-height:1.75;color:var(--muted)}
+  .cal .feat .go{display:inline-block;margin-top:16px;font-size:13.5px;font-weight:600;color:#111;text-decoration:none;border-bottom:1px solid #111;padding-bottom:1px}
+  .cal .band{max-width:1060px;margin:40px auto 0;padding:0 40px 80px}
+  .cal .band .in{background:#111;color:#fff;border-radius:18px;padding:46px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .cal .band .t{font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1.35}
+  .cal .band .t small{display:block;font-size:13px;font-weight:600;color:#9ca3af;letter-spacing:.06em;margin-bottom:8px}
+  .cal .band a{background:#fff;color:#111;border-radius:10px;padding:14px 28px;font-size:15px;font-weight:700;text-decoration:none;white-space:nowrap;transition:transform .18s}
+  .cal .band a:hover{transform:translateY(-2px)}
+  .cal .hero .slogan b{display:inline-block}
+  .cal .hero .slogan.pop b{animation:pop .55s cubic-bezier(.2,.9,.3,1.4) both}
+  .cal .hero .slogan.pop b:last-of-type{animation-delay:.18s}
+  @keyframes pop{0%{opacity:0;transform:translateY(10px) scale(.85)}100%{opacity:1;transform:none}}
+  .cal .foot{border-top:1px solid var(--line);padding:22px 40px;display:flex;justify-content:space-between;font-size:12.5px;color:#9ca3af}
+  @media(max-width:900px){.cal .feats{grid-template-columns:1fr}.cal .feat{border-right:0;border-bottom:1px solid var(--line)}.cal .hero h1{font-size:38px}}
+
+  /* ============ 2a 다크 픽셀 모자이크 ============ */
+  .px{background:#faf9f7;color:#3d3d3a;position:relative;overflow:hidden}
+  .px .bgc{position:absolute;top:0;right:0;width:52%;height:70%;display:block;
+    -webkit-mask-image:linear-gradient(to left,#000 55%,transparent),linear-gradient(to top,transparent,#000 40%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(to left,#000 55%,transparent),linear-gradient(to top,transparent,#000 40%);
+    mask-composite:intersect}
+  .px .inwrap{position:relative;z-index:1}
+  .px .nav{display:flex;align-items:center;gap:26px;padding:18px 40px}
+  .px .logo{font-size:16.5px;font-weight:800;letter-spacing:-.02em;color:#26261f;display:flex;align-items:center;gap:9px}
+  .px .logo i{width:22px;height:22px;border-radius:5px;background:#0075de;display:inline-flex;align-items:center;justify-content:center;font-style:normal;color:#fff;font-size:13px;font-weight:900}
+  .px .nav a{font-size:14px;font-weight:600;color:#6f6b64;text-decoration:none}
+  .px .nav a:hover{color:#26261f}
+  .px .nav .cta{margin-left:auto;border:1px solid #dcd8d0;color:#26261f;border-radius:10px;padding:10px 20px;background:#fff}
+  .px .hero{max-width:1080px;margin:0 auto;padding:80px 40px 110px}
+  .px .pill{display:inline-block;border:1px solid #dcd8d0;border-radius:100px;padding:7px 16px;font-size:12.5px;font-weight:700;letter-spacing:.14em;color:#6f6b64;background:#fff}
+  .px h1{font-size:56px;line-height:1.22;letter-spacing:-.02em;font-weight:800;color:#26261f;margin:26px 0 18px}
+  .px h1 .amber{color:#0075de}
+  .px .ci{margin:24px 0 20px;display:grid;gap:6px}
+  .px .ci .ln{font-size:74px;line-height:1.08;font-weight:900;letter-spacing:-.03em;color:#26261f;display:flex;align-items:baseline;gap:16px}
+  .px .ci .en{font-family:'Avenir Next','Segoe UI',sans-serif;font-weight:900;letter-spacing:.01em}
+  .px .ci .zero{color:#a39e98;position:relative}
+  .px .ci .zero::after{content:"";position:absolute;left:-3%;right:-3%;top:52%;height:7px;background:#dd5b00;border-radius:4px;transform:rotate(-6deg) scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.7,.2,1) .6s}
+  .px .ci.in .zero::after{transform:rotate(-6deg) scaleX(1)}
+  .px .ci .hero-w{color:#fff;background:#0075de;padding:2px 18px 6px;border-radius:12px;box-shadow:0 10px 26px rgba(0,117,222,.30);display:inline-block;transform:rotate(-1.2deg)}
+  @media(max-width:900px){.px .ci .ln{font-size:44px}}
+  .px .sub{font-size:16.5px;color:#6f6b64;line-height:1.8;max-width:560px}
+  .px .btns{display:flex;gap:12px;margin-top:32px}
+  .px .btns a{border-radius:8px;padding:14px 26px;font-size:15px;font-weight:700;text-decoration:none;transition:transform .18s,box-shadow .18s}
+  .px .btns .b1{background:#26261f;color:#fff}
+  .px .btns .b1:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(38,38,31,.25)}
+  .px .btns .b2{border:1px solid #dcd8d0;color:#26261f;background:#fff}
+  .px .btns .b2:hover{transform:translateY(-2px)}
+  .px .feats{max-width:1080px;margin:0 auto;padding:0 40px 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .px .feat{border:1px solid #e5e1d8;border-radius:14px;background:#fff;padding:24px;transition:transform .22s,border-color .22s,box-shadow .22s}
+  .px .feat:hover{transform:translateY(-4px);border-color:#0075de;box-shadow:0 12px 26px rgba(38,38,31,.08)}
+  .px .feat .no{font-size:11.5px;font-weight:800;letter-spacing:.12em;color:#0075de}
+  .px .feat h3{font-size:18px;font-weight:800;color:#26261f;margin:10px 0 8px;letter-spacing:-.01em}
+  .px .feat p{font-size:13.5px;line-height:1.75;color:#6f6b64}
+  .px .foot{border-top:1px solid #e5e1d8;padding:20px 40px;display:flex;justify-content:space-between;font-size:12px;color:#a39e93;letter-spacing:.06em}
+  @media(max-width:900px){.px .feats{grid-template-columns:1fr}.px h1{font-size:38px}}
+</style>
+</head>
+<body>
+
+
+<div class="opt-label"><span class="badge">2a</span> 라이트 픽셀 모자이크 — 밝은 바탕 · 노션 블루 포인트 · 모션</div>
+<div class="frame px" id="2a">
+  <canvas class="bgc" id="pxc"></canvas>
+  <div class="inwrap">
+    <nav class="nav">
+      <span class="logo"><i>치</i>학교시설 치트키</span>
+      <a href="#2a">매뉴얼</a><a href="#2a">가이드라인</a><a href="#2a">그래프뷰</a>
+      <a class="cta" href="#2a">치트키 열기</a>
+    </nav>
+    <section class="hero">
+            <h1 class="rv" style="font-size:22px;font-weight:800;color:#6f6b64;margin:0">학교시설 업무 치트키</h1>
+      <div class="ci rv">
+        <div class="ln" style="align-items:center">삽질 <canvas id="ciZero" width="400" height="86" style="display:block"></canvas></div>
+        <div class="ln" style="align-items:center">업무 <canvas id="ciHero" width="340" height="86" style="display:block"></canvas></div>
+      </div>
+      <p class="sub rv">공문 뒤지기 전에, 선배한테 묻기 전에 — 매뉴얼 · 프로세스 · 판단 기준 · 산출 도구를 한 곳에서.</p>
+      <div class="btns rv"><a class="b1" href="#2a">치트키 열기 →</a><a class="b2" href="#2a">그래프뷰 보기</a></div>
+    </section>
+    <div class="feats">
+      <div class="feat rv"><div class="no">01 / MANUAL</div><h3>업무 매뉴얼</h3><p>계획부터 정산까지, 실제 업무 순서 그대로 정리한 단계별 매뉴얼. 인수인계서보다 친절합니다.</p></div>
+      <div class="feat rv" style="transition-delay:.1s"><div class="no">02 / GUIDELINE</div><h3>가이드라인 · 프로세스</h3><p>규정·지침·판단 기준을 업무 흐름 위에 얹어서, "이럴 땐 뭘 봐야 하지"에 바로 답합니다.</p></div>
+      <div class="feat rv" style="transition-delay:.2s"><div class="no">03 / GRAPH VIEW</div><h3>그래프뷰 자료실</h3><p>문서 사이의 연결을 지도처럼 탐색하는 자료실. 하나를 찾으면 관련 문서가 따라옵니다.</p></div>
+    </div>
+    <footer class="foot"><span>학교시설 치트키 — SCHOOL FACILITY CHEAT KEY</span><span>DWG NO. CHEAT-01 / REV. 2026</span></footer>
+  </div>
+</div>
+
+<div class="opt-label"><span class="badge">1a</span> 에어테이블 스타일 — 흰 바탕 · 컬러 칩 · 데이터 그리드 감성</div>
+<div class="frame at">
+  <nav class="nav">
+    <span class="logo"><span class="mk"><i style="background:var(--yellow)"></i><i style="background:var(--red)"></i><i style="background:var(--teal)"></i><i style="background:var(--blue)"></i></span>학교시설 치트키</span>
+    <a href="#1a">매뉴얼</a><a href="#1a">가이드라인</a><a href="#1a">그래프뷰</a>
+    <a class="cta" href="#1a">치트키 열기</a>
+  </nav>
+  <section class="hero">
+        <h1 class="rv">학교시설 업무,<br><span class="hl">정답부터</span> 보세요</h1>
+    <p class="rv">선배한테 물어보기 전에, 공문 뒤지기 전에 — 매뉴얼·프로세스·자료실을 한 곳에 모은 학교시설 업무 치트키.</p>
+    <div class="btns rv"><a class="b1" href="#1a">치트키 열기 →</a></div>
+  </section>
+  <div class="cards">
+    <div class="card rv"><span class="tag" style="background:#fff3d6;color:#b57500">01 · MANUAL</span><h3>업무 매뉴얼</h3><p>계획부터 정산까지, 실제 업무 순서 그대로 정리한 단계별 매뉴얼. 인수인계서보다 친절합니다.</p><a class="go" href="#1a">바로가기 →</a></div>
+    <div class="card rv" style="transition-delay:.1s"><span class="tag" style="background:#e8f1ff;color:#1d6ae5">02 · GUIDELINE</span><h3>가이드라인 · 프로세스</h3><p>규정·지침·판단 기준을 업무 흐름 위에 얹어서, "이럴 땐 뭘 봐야 하지"에 바로 답합니다.</p><a class="go" href="#1a">바로가기 →</a></div>
+    <div class="card rv" style="transition-delay:.2s"><span class="tag" style="background:#e6faf8;color:#0d9488">03 · GRAPH VIEW</span><h3>그래프뷰 자료실</h3><p>문서 사이의 연결을 지도처럼 탐색하는 자료실. 하나를 찾으면 관련 문서가 따라옵니다.</p><a class="go" href="#1a">바로가기 →</a></div>
+  </div>
+  <div class="strip">
+    <div class="tbl rv">
+      <div class="hd"><div>도구</div><div>설명</div><div></div></div>
+      <div class="row"><div class="c1"><i style="background:var(--yellow)"></i>얼마니</div><div class="c2">소요예산 산출 — 2026 시설단가 기반 자동 계산</div><div class="c3"><a href="#1a">열기 →</a></div></div>
+      <div class="row"><div class="c1"><i style="background:var(--blue)"></i>내역서</div><div class="c2">간단내역서 산출 — 일위대가·표준품셈 연동</div><div class="c3"><a href="#1a">열기 →</a></div></div>
+      <div class="row"><div class="c1"><i style="background:var(--red)"></i>현장이</div><div class="c2">공사현장 관리 — 점검·문자·안전 체크</div><div class="c3"><a href="#1a">열기 →</a></div></div>
+      <div class="row"><div class="c1"><i style="background:var(--purple)"></i>견적이</div><div class="c2">수선견적 — 단가 검색과 개략 견적</div><div class="c3"><a href="#1a">열기 →</a></div></div>
+    </div>
+  </div>
+  <footer class="foot"><span>학교시설 치트키 — SCHOOL FACILITY CHEAT KEY</span><span>REV. 2026</span></footer>
+</div>
+
+<div class="opt-label" id="1b-label"><span class="badge">1b</span> 캘닷컴 스타일 — 흑백 중립 · 타이트한 타이포 · 미니멀</div>
+<div class="frame cal" id="1b">
+  <nav class="nav">
+    <span class="logo">치트키<em>.school</em></span>
+    <a href="#1b">매뉴얼</a><a href="#1b">가이드라인</a><a href="#1b">그래프뷰</a>
+    <a class="cta" href="#1b">치트키 열기</a>
+  </nav>
+  <section class="hero">
+        <h1 class="rv">학교시설 업무,<br><span class="dim">삽질은 그만.</span> 정답부터.</h1>
+    <div class="slogan rv">삽질 <b>Zero</b> <i>/</i> 업무 <b>Hero</b></div>
+    <p class="rv">매뉴얼 · 프로세스 · 판단 기준 · 산출 도구까지, 학교시설사업의 처음부터 끝을 한 곳에서.</p>
+    <div class="btns rv"><a class="b1" href="#1b">치트키 열기</a></div>
+    <div class="note">설치 없음 · 로그인 없음 · 브라우저에서 바로</div>
+  </section>
+  <div class="feats">
+    <div class="feat rv"><div class="no">01 / MANUAL</div><h3>업무 매뉴얼</h3><p>계획부터 정산까지, 실제 업무 순서 그대로 정리한 단계별 매뉴얼. 인수인계서보다 친절합니다.</p><a class="go" href="#1b">바로가기</a></div>
+    <div class="feat rv" style="transition-delay:.1s"><div class="no">02 / GUIDELINE</div><h3>가이드라인 · 프로세스</h3><p>규정·지침·판단 기준을 업무 흐름 위에 얹어서, "이럴 땐 뭘 봐야 하지"에 바로 답합니다.</p><a class="go" href="#1b">바로가기</a></div>
+    <div class="feat rv" style="transition-delay:.2s"><div class="no">03 / GRAPH VIEW</div><h3>그래프뷰 자료실</h3><p>문서 사이의 연결을 지도처럼 탐색하는 자료실. 하나를 찾으면 관련 문서가 따라옵니다.</p><a class="go" href="#1b">바로가기</a></div>
+  </div>
+  <div class="band">
+    <div class="in rv">
+      <div class="t"><small>READY TO SKIP THE HARD PART?</small>오늘 업무, 치트키 쓰고<br>일찍 퇴근하세요.</div>
+      <a href="#1b">학교시설 치트키 →</a>
+    </div>
+  </div>
+  <footer class="foot"><span>학교시설 치트키 — SCHOOL FACILITY CHEAT KEY</span><span>REV. 2026</span></footer>
+</div>
+
+<script>
+(function(){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.add('in');
+      if(e.target.classList.contains('slogan')) e.target.classList.add('pop');
+      io.unobserve(e.target);
+    });
+  },{threshold:.2});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+})();
+(function(){
+  var c=document.getElementById('pxc'); if(!c) return;
+  var ctx=c.getContext('2d'), cells=[], CS=13, GAP=4, W, H, cols, rows;
+  function resize(){
+    var r=c.parentElement.getBoundingClientRect();
+    W=c.width=r.width; H=c.height=r.height;
+    cols=Math.ceil(W/(CS+GAP)); rows=Math.ceil(H/(CS+GAP));
+    cells=[];
+    var N=Math.round(cols*rows*.28);
+    for(var i=0;i<N;i++) cells.push(spawn(true));
+  }
+  function spawn(init){
+    return {x:Math.floor(Math.random()*cols)*(CS+GAP), y:Math.floor(Math.random()*rows)*(CS+GAP),
+      p:Math.random()*Math.PI*2, s:.3+Math.random()*.9,
+      a:Math.random()<.03?'amber':'gray',
+      born:performance.now()-(init?Math.random()*9000:0),
+      life:6000+Math.random()*9000};
+  }
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<cells.length;i++){
+      var d=cells[i];
+      var age=t-d.born;
+      if(age>d.life){ cells[i]=spawn(false); cells[i].born=t; continue; }
+      var k=age/d.life;
+      var env=Math.min(1, Math.min(k,1-k)*5);           /* 서서히 나타났다 사라짐 */
+      var tw=reduce? .5 : (Math.sin(t/1000*d.s+d.p)+1)/2;
+      var al=(.03+tw*.16)*env;
+      ctx.fillStyle = d.a==='amber' ? 'rgba(0,117,222,'+(al*1.5)+')' : 'rgba(38,38,31,'+(al*.8)+')';
+      ctx.fillRect(d.x, d.y, CS, CS);
+    }
+    if(!reduce) requestAnimationFrame(draw);
+  }
+  resize(); addEventListener('resize', resize);
+  requestAnimationFrame(draw);
+})();
+</script>
+<script>
+// C안 — 픽셀 레터링 (2a CI: ZERO + HERO)
+(function(){
+  var GLYPH={
+    H:['10001','10001','10001','11111','10001','10001','10001'],
+    E:['11111','10000','10000','11110','10000','10000','11111'],
+    R:['11110','10001','10001','11110','10100','10010','10001'],
+    O:['01110','10001','10001','10001','10001','10001','01110'],
+    Z:['11111','00001','00010','00100','01000','10000','11111']
+  };
+  function build(c, word, color, opts){
+    var ctx=c.getContext('2d'), S=11, G=2, pads=8, dots=[], x0=4;
+    word.split('').forEach(function(ch){
+      if(ch===','){
+        dots.push({x:x0, y:6+6*(S+G), d:Math.random()*1200});
+        dots.push({x:x0-3, y:6+7*(S+G)-4, d:Math.random()*1200});
+        x0+=S+pads; return;
+      }
+      var g=GLYPH[ch];
+      for(var r=0;r<7;r++)for(var col=0;col<5;col++){
+        if(g[r][col]==='1') dots.push({x:x0+col*(S+G), y:6+r*(S+G), d:Math.random()*1200});
+      }
+      x0+=5*(S+G)+pads;
+    });
+    var wordW=x0-pads;
+    var start=null, played=false;
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && !played){ played=true; requestAnimationFrame(draw); io.disconnect(); } }); },{threshold:.4});
+    io.observe(c);
+    function draw(t){
+      if(!start) start=t;
+      var el=t-start;
+      ctx.clearRect(0,0,c.width,c.height);
+      dots.forEach(function(p){
+        var k=Math.min(1,Math.max(0,(el-p.d)/500));
+        if(k<=0) return;
+        var tw=(Math.sin(t/900+p.x)+1)/2;
+        ctx.fillStyle=color+(0.55+0.45*k*(0.7+tw*.3))+')';
+        var sz=S*(0.5+0.5*k);
+        ctx.fillRect(p.x+(S-sz)/2, p.y+(S-sz)/2, sz, sz);
+      });
+      if(opts && opts.strike){
+        var sk=Math.min(1,Math.max(0,(el-1900)/500));
+        if(sk>0){
+          ctx.strokeStyle='rgba(221,91,0,.95)';
+          ctx.lineWidth=8; ctx.lineCap='round';
+          ctx.beginPath();
+          ctx.moveTo(2, 58);
+          ctx.lineTo(2+(wordW-4)*sk, 58-16*sk);
+          ctx.stroke();
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+  }
+  var z=document.getElementById('ciZero'); if(z) build(z,'ZERO,','rgba(163,158,152,',{strike:true});
+  var h=document.getElementById('ciHero'); if(h) build(h,'HERO','rgba(0,117,222,');
+})();
+</script>
+</body>
+</html>

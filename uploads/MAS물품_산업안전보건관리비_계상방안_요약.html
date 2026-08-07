@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: 'Noto Sans CJK KR', 'Noto Sans KR', sans-serif; color: #1f2937; }
+  .page { width: 210mm; height: 297mm; padding: 11mm 12mm 9mm 12mm; display: flex; flex-direction: column; }
+  .hd { border-bottom: 2.5px solid #3730a3; padding-bottom: 5px; margin-bottom: 8px; }
+  .hd h1 { font-size: 16.5px; color: #3730a3; letter-spacing: -0.4px; }
+  .hd .sub { font-size: 9px; color: #6b7280; margin-top: 3px; line-height:1.4; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; align-content: start; }
+  .page > .grid { flex: 1; align-content: start; }
+  .box { border: 1px solid #d1d5db; border-radius: 5px; padding: 7px 9px; }
+  .box.full { grid-column: 1 / -1; }
+  .box h2 { font-size: 10.5px; color: #fff; background: #3730a3; display: inline-block;
+            padding: 2px 8px; border-radius: 3px; margin-bottom: 5px; letter-spacing: -0.3px; }
+  .box h2.accent { background: #b45309; }
+  p, li { font-size: 8.9px; line-height: 1.45; color: #374151; }
+  ul { list-style: none; }
+  li { padding-left: 9px; position: relative; margin-bottom: 1.5px; }
+  li::before { content: '·'; position: absolute; left: 2px; color: #3730a3; font-weight: 700; }
+  .k { color: #3730a3; font-weight: 700; }
+  .r { color: #b45309; font-weight: 700; }
+  .formula { background: #eef2ff; border-left: 3px solid #3730a3; border-radius: 3px;
+             padding: 5px 8px; margin: 4px 0; font-size: 9px; text-align: center;
+             font-weight: 700; color: #3730a3; letter-spacing: -0.2px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 3px; }
+  th, td { border: 1px solid #cbd5e1; padding: 2px 4px; font-size: 7.9px; text-align: center; }
+  th { background: #eef2ff; color: #3730a3; font-weight: 700; }
+  td.l { text-align: left; }
+  .ex { background:#f8fafc; border:1px solid #e2e8f0; border-radius:4px; padding:5px 8px; margin-top:3px; font-size:8.4px; line-height:1.5; }
+  .ex b { color:#3730a3; }
+  .ft { border-top: 1px solid #d1d5db; margin-top: 7px; padding-top: 5px; font-size: 7.6px; color: #9ca3af; text-align: center; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hd">
+    <h1>다수공급자계약(MAS) 물품 산업안전보건관리비 계상방안 안내 — 요약</h1>
+    <div class="sub">MAS 물품 계약금액에는 산업안전보건관리비가 별도 계상되어 있지 않으므로, 수요기관이 대상 물품에 대해 직접 산정·명시 후 납품요구하고 사후 실비정산 (설계내역으로 미리 계상한 경우는 그에 따름) &nbsp;|&nbsp; 문의: 구매총괄과 042-724-7293·7273</div>
+  </div>
+
+  <div class="grid">
+    <!-- 적용범위 -->
+    <div class="box">
+      <h2>1. 적용범위</h2>
+      <ul>
+        <li>MAS 계약서상 인도조건이 <span class="k">현장설치도</span>이거나 설치비를 옵션으로 계약한 건</li>
+        <li>물품설치가 <span class="k">산업안전보건법 제2조제11호 건설공사</span>에 해당</li>
+        <li>입찰공고문상 건설산업기본법·전기공사업법·정보통신공사업법·소방시설공사업법·국가유산수리법에 따른 <span class="k">공사면허 반영</span> (붙임 대상물품 참조)</li>
+      </ul>
+    </div>
+
+    <!-- 적용기준 -->
+    <div class="box">
+      <h2>2. 적용기준</h2>
+      <ul>
+        <li>세부품명별·업체별 수요기관 <span class="k">납품요구금액(제품비＋설치비)</span></li>
+        <li><span class="r">2천만원 이상</span>인 경우 계상 대상</li>
+      </ul>
+    </div>
+
+    <!-- 계상방법 -->
+    <div class="box full">
+      <h2 class="accent">3. 계상방법</h2>
+      <div class="formula">산업안전보건관리비 = 대상액(납품요구금액 × 70%) × [별표1] 공사종류·규모별 적용비율 (＋기초액)</div>
+      <table>
+        <tr><th rowspan="2">공사종류</th><th colspan="4">대상액 기준 적용비율</th><th colspan="2">보건관리자 선임대상</th></tr>
+        <tr><th>5억 미만</th><th>5억~50억<br>(요율)</th><th>5억~50억<br>기초액</th><th>50억 이상</th><th>적용비율</th><th>적용비율</th></tr>
+        <tr><td class="l">건축공사</td><td>3.11%</td><td>2.28%</td><td>4,325천원</td><td>2.37%</td><td colspan="2">2.64%</td></tr>
+        <tr><td class="l">토목공사</td><td>3.15%</td><td>2.53%</td><td>3,300천원</td><td>2.60%</td><td colspan="2">2.73%</td></tr>
+        <tr><td class="l">중건설공사</td><td>3.64%</td><td>3.05%</td><td>2,975천원</td><td>3.11%</td><td colspan="2">3.39%</td></tr>
+        <tr><td class="l">특수건설공사</td><td>2.07%</td><td>1.59%</td><td>2,450천원</td><td>1.64%</td><td colspan="2">1.78%</td></tr>
+      </table>
+      <ul style="margin-top:4px;">
+        <li><span class="k">완제품 형태로 제작·납품되는 경우</span> ① 완제품 가액 포함 산정액과, ② 완제품 가액 제외 산정액 × 1.2 중 <span class="r">작은 값 이상</span>으로 계상 (완제품 가액은 견적서·산출내역서로 확인)</li>
+      </ul>
+    </div>
+
+    <!-- 사후정산 -->
+    <div class="box full">
+      <h2>4. 사후정산 방식</h2>
+      <ul>
+        <li><span class="k">산정 안내</span> 납품요구서(기타사항)에 산업안전보건관리비 금액과 사후정산 가능 여부를 명시 후 업체 송신</li>
+        <li><span class="k">종결 시 지급</span> 명시한 금액 이내로 실제 사용액을 추가 지급 (부가가치세 별도 지급)</li>
+        <li><span class="k">정산 기준</span> 고용부 고시「건설업 산업안전보건관리비 계상 및 사용기준」제7조 사용기준에 따른 사용내역 확인 후, 부가세 제외 금액으로 정산 (해설집 p.40 참조)</li>
+      </ul>
+    </div>
+
+    <!-- 예시 -->
+    <div class="box full">
+      <h2>5. 계상 예시</h2>
+      <div class="ex">
+        <b>① 대상액 5억 미만·비완제품</b> — 미끄럼방지포장재(현장설치도), 납품 5,000만원 → (5,000만×70%)×3.11% = <b>1,088,500원</b><br>
+        <b>② 대상액 5억 미만·완제품</b> — 항온항습기, 총 4억(완제품비 3억) → ⓐ (4억×70%)×3.11%=8,708,000 / ⓑ [(4억−3억)×70%×3.11%]×1.2=2,612,400 → 작은 값 <b>2,612,400원</b><br>
+        <b>③ 대상액 5억 이상·비완제품</b> — 미끄럼방지포장재, 납품 8억 → (8억×70%)×2.28% + 4,325,000 = <b>17,093,000원</b><br>
+        <b>④ 대상액 5억 이상·완제품</b> — 항온항습기, 총 20억(완제품비 12억) → ⓐ 36,245,000 / ⓑ 20,511,600 → 작은 값 <b>20,511,600원</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="ft">본 요약은 「다수공급자계약(MAS) 물품 산업안전보건관리비 계상방안 안내」 문서의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 고용노동부 고시의 최신 내용을 확인하시기 바랍니다.</div>
+</div>
+</body>
+</html>

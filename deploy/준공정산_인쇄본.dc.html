@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="settle-core.js"></script>
+  <script src="./doc-page.js"></script>
+  <style>
+    doc-page:not(:defined) { visibility: hidden; }
+    body { margin: 0; font-family: "Noto Sans KR", "맑은 고딕", sans-serif; color: #1a1a1a; }
+    .pt { width: 100%; border-collapse: collapse; font-size: 9pt; table-layout: fixed; }
+    .pt th { background: #f2f2f2; color: #1a1a1a; font-weight: 700; font-size: 8.5pt;
+      padding: 4px 5px; border: 0.5pt solid #999; text-align: center; }
+    .pt td.l { text-align: left; }
+    .pt td.c { text-align: center; }
+    .pt td { padding: 3px 5px; border: 0.5pt solid #ccc; text-align: right;
+      font-variant-numeric: tabular-nums; }
+    .sec td { background: #f7f7f7; color: #1a1a1a; font-weight: 700; text-align: left; }
+    .sub td { background: #fbfbfb; font-weight: 700; }
+    .tot td { background: #f2f2f2; font-weight: 700; }
+    .kv { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
+    .kv td { padding: 3px 6px; }
+    .kv td.k { font-weight: 700; width: 90pt; }
+    .neg { color: #c00000; }
+    .pos { color: #1f4e9c; }
+    h1.doc { font-size: 16pt; margin: 0 0 2mm; text-align: center; letter-spacing: 2pt; }
+    .rule { border-top: 1.2pt solid #1a1a1a; margin: 2mm 0 3mm; }
+    .cap { font-size: 8pt; color: #6b7280; }
+    @media screen { .noprint { display: block; } }
+    @media print { .noprint { display: none !important; } }
+  </style>
+</helmet>
+
+<div class="noprint" style="position:sticky;top:0;z-index:9;background:#1E3932;color:#fff;padding:10px 20px;display:flex;align-items:center;gap:12px;font-family:'Noto Sans KR',sans-serif">
+  <b style="font-size:14px">준공정산 인쇄 미리보기</b>
+  <span style="font-size:12px;opacity:.7">{{ statusText }}</span>
+  <span style="flex:1"></span>
+  <button onClick="{{ onPrint }}" style="border-radius:50px;border:1px solid #fff;background:#fff;color:#00754A;font-weight:600;font-size:13px;padding:7px 18px;cursor:pointer">인쇄 / PDF 저장</button>
+</div>
+
+<doc-page size="a4">
+  <section class="page" style="padding:10mm 11mm;display:flex;flex-direction:column">
+    <h1 class="doc">공 사 원 가 계 산 서 (준공 정산)</h1>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;font-size:9pt">
+      <span>{{ projectName }}</span>
+      <span>(단위:원)</span>
+    </div>
+    <div class="rule"></div>
+    <table class="kv" style="font-size:9pt;margin-bottom:4mm">
+      <tbody>
+        <tr><td class="k" style="width:76pt">1. 공 사 명 :</td><td colspan="2">{{ projectName }}</td></tr>
+        <tr><td class="k">2. 착 공 금 액 :</td><td style="width:96pt">{{ startWon }}</td><td>{{ startHangul }}</td></tr>
+        <tr><td class="k">3. 준 공 금 액 :</td><td>{{ grandWon }}</td><td>{{ grandHangul }}</td></tr>
+        <tr><td class="k">4. 증  감  액 :</td><td class="{{ chgCls }}">{{ chgWon }}</td><td class="{{ chgCls }}">{{ chgHangul }}</td></tr>
+        <tr><td class="k">5. 정 산 사 유 :</td><td colspan="2">{{ reason }}</td></tr>
+      </tbody>
+    </table>
+    <table class="pt" style="font-size:7.5pt">
+      <thead>
+        <tr>
+          <th class="l" style="width:28%">비　　목</th>
+          <th style="width:17%">착　공</th>
+          <th style="width:17%">준　공</th>
+          <th style="width:15%">증감액</th>
+          <th style="width:9%">요율<br>(%)</th>
+          <th class="l" style="width:14%">비　고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="24">
+          <tr class="{{ r.cls }}">
+            <td class="l" style="padding:1px 4px;white-space:nowrap">{{ r.name }}</td>
+            <td style="padding:1px 4px">{{ r.start }}</td>
+            <td style="padding:1px 4px">{{ r.settle }}</td>
+            <td class="{{ r.chgCls }}" style="padding:1px 4px">{{ r.chg }}</td>
+            <td style="padding:1px 4px">{{ r.rate }}</td>
+            <td class="l" style="padding:1px 4px"></td>
+          </tr>
+        </sc-for>
+      </tbody>
+    </table>
+
+    <p style="font-size:8.5pt;line-height:1.7;margin:3mm 0 0;text-align:justify">{{ clause }}</p>
+    <div style="text-align:center;font-size:10pt;margin:5mm 0 3mm">{{ signDate }}</div>
+    <table class="kv" style="width:64%;margin-left:auto;font-size:9pt">
+      <tbody>
+        <tr><td class="k" style="text-align:right;width:48pt">주  소 :</td><td>{{ vaddr }}</td></tr>
+        <tr><td class="k" style="text-align:right">상  호 :</td><td><b>{{ vendor }}</b></td></tr>
+        <tr><td class="k" style="text-align:right">성  명 :</td><td>{{ vrep }}　　(인)</td></tr>
+      </tbody>
+    </table>
+    <div style="text-align:right;font-size:9pt;margin-top:3mm">작성자: {{ writerLine }}　　(인)</div>
+    <div style="text-align:center;font-weight:700;font-size:10pt;margin-top:4mm">{{ org }} 재무관 귀하</div>
+  </section>
+
+  <section class="page" style="padding:16mm 14mm 14mm">
+    <h1 class="doc">사후정산 총괄표</h1>
+    <div style="text-align:center;font-size:9.5pt">{{ projectName }}</div>
+    <div class="rule"></div>
+    <table class="pt">
+      <thead>
+        <tr>
+          <th style="width:7%">No</th><th class="l" style="width:33%">정산 항목</th>
+          <th style="width:15%">계상액</th><th style="width:15%">제출액</th>
+          <th style="width:15%">검토액</th><th style="width:15%">증감액</th>
+        </tr>
+      </thead>
+      <tbody>
+        <sc-for list="{{ ovRows }}" as="o" hint-placeholder-count="6">
+          <tr>
+            <td class="c">{{ o.n }}</td><td class="l">{{ o.title }}</td>
+            <td>{{ o.calc }}</td><td>{{ o.submit }}</td>
+            <td>{{ o.admit }}</td><td class="{{ o.chgCls }}">{{ o.chg }}</td>
+          </tr>
+        </sc-for>
+        <tr class="tot">
+          <td colspan="2">합  계</td>
+          <td>{{ ovTotal.calc }}</td><td>{{ ovTotal.submit }}</td>
+          <td>{{ ovTotal.admit }}</td><td class="{{ ovTotal.chgCls }}">{{ ovTotal.chg }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:8.5pt;color:#6b7280;line-height:1.8;margin-top:6mm">
+      ① 사후정산 대상 비목은 계상액을 상한으로 하여 실제 사용·납부액 범위에서 정산한다.
+      ② 건강·연금·장기요양보험료는 납부확인서상 사업자(사용자) 부담분을 기준으로 정산한다.
+      ③ 산업안전보건관리비·환경보전비는 항목별 사용내역 검토서에 따른 검토금액으로 정산한다.
+    </p>
+  </section>
+
+  <sc-for list="{{ sheets }}" as="s" hint-placeholder-count="6">
+    <section class="page" style="padding:16mm 14mm 14mm">
+      <h1 class="doc">{{ s.title }}</h1>
+      <div style="text-align:center;font-size:9.5pt">{{ projectName }}</div>
+      <div class="rule"></div>
+      <table class="pt">
+        <thead>
+          <tr>
+            <sc-for list="{{ s.head }}" as="h" hint-placeholder-count="5">
+              <th class="{{ h.cls }}" style="{{ h.style }}">{{ h.label }}</th>
+            </sc-for>
+          </tr>
+        </thead>
+        <tbody>
+          <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="8">
+            <tr class="{{ r.cls }}">
+              <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="5">
+                <td class="{{ c.cls }}">{{ c.v }}</td>
+              </sc-for>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+      <div style="font-size:8.5pt;color:#6b7280;line-height:1.8;margin-top:6mm;white-space:pre-line">{{ s.note }}</div>
+    </section>
+  </sc-for>
+</doc-page>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:900,&quot;height&quot;:1200}}">
+const LS_KEY = 'jggs.dashboard.v1';
+const CLAUSE = '「지방자치단체를 당사자로 하는 계약에 관한 법률」 제22조 및 같은 법 시행령 제74조 4항 3호와 같은 법 시행규칙 제73조 1항 및 「지방자치단체 입찰 및 계약 집행기준」 제9장 6절-1-가-4)【그밖에 발주기관이 설계서를 변경할 필요가 있다고 인정할 경우 등】6절-5【발주기관의 필요에 따른 설계변경 통보】의 규정에 의해 설계변경(실정보고ㆍ지적사항 반영) 하고 상기 변경(정산)금액에 대해 일체 이의 없음을 동의합니다.';
+
+function hangulAmount(n) {
+  n = Math.round(Math.abs(n || 0));
+  if (!n) return '일금 영원정';
+  const D = ['','일','이','삼','사','오','육','칠','팔','구'];
+  const S = ['','십','백','천'];
+  const B = ['','만','억','조','경'];
+  let out = '', gi = 0;
+  while (n > 0) {
+    const g = n % 10000; n = Math.floor(n / 10000);
+    if (g) {
+      let gs = '';
+      String(g).split('').reverse().forEach((d, i) => {
+        const v = +d; if (!v) return;
+        gs = (v === 1 && i > 0 ? '' : D[v]) + S[i] + gs;
+      });
+      out = gs + B[gi] + out;
+    }
+    gi++;
+  }
+  return '일금 ' + out + '원정';
+}
+
+class Component extends DCLogic {
+  state = {S: null};
+
+  componentDidMount() {
+    this.load();
+    this._h = () => this.load();
+    window.addEventListener('focus', this._h);
+    window.addEventListener('storage', this._h);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('focus', this._h);
+    window.removeEventListener('storage', this._h);
+  }
+  load() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return;
+      const S = Object.assign({design:null, start:null, changes:[], basic:{}, rateInput:{},
+        startManual:{}, settleManual:{}, settleInput:{}, extras:[], cost:{}}, JSON.parse(raw));
+      if (window.SettleCore.baseDoc(S)) window.SettleCore.recompute(S);
+      this.setState({S});
+    } catch (e) { console.warn('load failed', e); }
+  }
+
+  renderVals() {
+    const C = window.SettleCore, S = this.state.S;
+    const nf = C ? C.nf : (x => x);
+    const won = n => '\u20A9' + Math.abs(Math.round(n || 0)).toLocaleString('ko-KR');
+    const B = (S && S.basic) || {};
+    const empty = !S || !window.SettleCore.baseDoc(S);
+
+    let rows = [], ovRows = [], sheets = [], ovTotal = {calc:'', submit:'', admit:'', chg:'', chgCls:''};
+    let gStart = 0, gSettle = 0;
+
+    if (!empty) {
+      rows = C.buildCostRows(S).map(r => {
+        if (r.kind === 'section') return {cls:'sec', name:r.name, rate:'', start:'', settle:'', chg:'', note:'', chgCls:''};
+        const chg = (r.settle || 0) - (r.start || 0);
+        return {cls: r.kind === 'total' ? 'tot' : (r.kind === 'sub' ? 'sub' : ''),
+          name: r.name,
+          rate: r.rate != null ? (r.rate * 100).toFixed(3).replace(/\.?0+$/,'') + '%' : '',
+          start: nf(r.start), settle: nf(r.settle),
+          chg: chg === 0 ? '' : (chg > 0 ? '' : '△') + nf(Math.abs(chg)),
+          chgCls: chg < 0 ? 'neg' : (chg > 0 ? 'pos' : ''), note: r.note || ''};
+      });
+      (S.extras || []).filter(x => (x.name || '').trim() || x.start || x.settle).forEach((x, i) => {
+        if (i === 0) rows.push({cls:'sec', name:'추가 비목', rate:'', start:'', settle:'', chg:'', note:'', chgCls:''});
+        const st = x.start || 0, se = x.settle != null ? x.settle : st, chg = se - st;
+        rows.push({cls:'', name: x.name || '(무제)', rate:'', start: nf(st), settle: nf(se),
+          chg: chg === 0 ? '' : (chg > 0 ? '' : '△') + nf(Math.abs(chg)),
+          chgCls: chg < 0 ? 'neg' : (chg > 0 ? 'pos' : ''), note: x.note || ''});
+      });
+
+      const ov = C.settleOverview(S);
+      let tc = 0, ts = 0, ta = 0;
+      ovRows = ov.map((o, i) => {
+        tc += o.calc; ts += o.submit; ta += o.admit;
+        return {n: i + 1, title: o.title, calc: nf(o.calc), submit: nf(o.submit), admit: nf(o.admit),
+          chg: o.chg === 0 ? '' : (o.chg > 0 ? '' : '△') + nf(Math.abs(o.chg)), chgCls: o.chg < 0 ? 'neg' : (o.chg > 0 ? 'pos' : '')};
+      });
+      ovTotal = {calc: nf(tc), submit: nf(ts), admit: nf(ta),
+        chg: (ta - tc) === 0 ? '' : ((ta - tc) > 0 ? '' : '△') + nf(Math.abs(ta - tc)),
+        chgCls: (ta - tc) < 0 ? 'neg' : ((ta - tc) > 0 ? 'pos' : '')};
+
+      sheets = C.buildSettlePayload(S).map(d => {
+        if (d.mode === 'itemized') {
+          const head = [
+            {label:'항목', cls:'l', style:'width:26%'}, {label:'세부품목', cls:'l', style:'width:20%'},
+            {label:'단위', cls:'', style:'width:7%'}, {label:'단가', cls:'', style:'width:11%'},
+            {label:'제출수량', cls:'', style:'width:9%'}, {label:'제출금액', cls:'', style:'width:13%'},
+            {label:'검토수량', cls:'', style:'width:9%'}, {label:'검토금액', cls:'', style:'width:13%'}];
+          const rws = [];
+          d.cats.forEach((cat, ci) => {
+            const mine = (d.items || []).filter(x => x.cat === ci);
+            if (!mine.length) {
+              rws.push({cls:'', cells:[{v:cat, cls:'l'}, {v:'', cls:'l'}, {v:'', cls:''},
+                {v:'0', cls:''}, {v:'0', cls:''}, {v:'0', cls:''}, {v:'0', cls:''}, {v:'0', cls:''}]});
+              return;
+            }
+            mine.forEach((x, mi) => {
+              const sq = x.subQty != null ? x.subQty : (x.qty || 0);
+              rws.push({cls:'', cells:[
+                {v: mi === 0 ? cat : '', cls:'l'}, {v: x.name || '', cls:'l'}, {v: x.unit || '', cls:''},
+                {v: nf(x.price || 0), cls:''}, {v: String(sq), cls:''}, {v: nf((x.price || 0) * sq), cls:''},
+                {v: String(x.qty || 0), cls:''}, {v: nf((x.price || 0) * (x.qty || 0)), cls:''}]});
+            });
+          });
+          rws.push({cls:'tot', cells:[{v:'합  계', cls:'l'}, {v:'', cls:''}, {v:'', cls:''}, {v:'', cls:''},
+            {v:'', cls:''}, {v: nf(d.submit), cls:''}, {v:'', cls:''}, {v: nf(d.admit), cls:''}]});
+          return {title: d.title + ' 사용내역 검토서', head, rows: rws, note: d.note};
+        }
+        const rate = d.mode === 'cmpRate';
+        const head = rate
+          ? [{label:'항목', cls:'l', style:'width:28%'}, {label:'계상액', cls:'', style:'width:16%'},
+             {label:'시공사 제출액', cls:'', style:'width:16%'}, {label:'검토율', cls:'', style:'width:8%'},
+             {label:'감독자 검토액', cls:'', style:'width:16%'}, {label:'증감', cls:'', style:'width:16%'}]
+          : [{label:'항목', cls:'l', style:'width:32%'}, {label:'계상액', cls:'', style:'width:17%'},
+             {label:'시공사 제출액', cls:'', style:'width:17%'}, {label:'감독자 검토액', cls:'', style:'width:17%'},
+             {label:'증감', cls:'', style:'width:17%'}];
+        let sc = 0, ss = 0, sa = 0;
+        const rws = d.rows.map(r => {
+          sc += r.calc; ss += r.submit; sa += r.admit;
+          const chg = r.admit - r.calc;
+          const cells = [{v:r.label, cls:'l'}, {v:nf(r.calc), cls:''}, {v:nf(r.submit), cls:''}];
+          if (rate) cells.push({v: Math.round((r.rate || 0) * 100) + '%', cls:'c'});
+          cells.push({v:nf(r.admit), cls:''});
+          cells.push({v: chg === 0 ? '' : (chg > 0 ? '' : '△') + nf(Math.abs(chg)), cls: chg < 0 ? 'neg' : (chg > 0 ? 'pos' : '')});
+          return {cls:'', cells};
+        });
+        if (d.rows.length > 1) {
+          const t = sa - sc;
+          const cells = [{v:'합  계', cls:'l'}, {v:nf(sc), cls:''}, {v:nf(ss), cls:''}];
+          if (rate) cells.push({v:'', cls:''});
+          cells.push({v:nf(sa), cls:''});
+          cells.push({v: t === 0 ? '' : (t > 0 ? '' : '△') + nf(Math.abs(t)), cls: t < 0 ? 'neg' : (t > 0 ? 'pos' : '')});
+          rws.push({cls:'tot', cells});
+        }
+        return {title: d.title + ' 정산 검토서', head, rows: rws, note: d.note};
+      });
+
+      gStart = (S.cost.grand && S.cost.grand.start) || 0;
+      gSettle = (S.cost.grand && S.cost.grand.settle != null) ? S.cost.grand.settle : gStart;
+    }
+
+    const chg = gSettle - gStart;
+    return {
+      rows, ovRows, ovTotal, sheets,
+      projectName: B.name || '(공사명 미입력)',
+      org: B.org || '',
+      reason: B.reason || '개인보호구 및 안전장구 구입비 등 중 미사용 항목 및 증빙서류 미비 항목을 제외',
+      clause: B.clause || CLAUSE,
+      signDate: B.signDate || new Date().toLocaleDateString('ko-KR', {year:'numeric', month:'long', day:'numeric'}),
+      vaddr: B.vaddr || '', vendor: B.vendor || '', vrep: B.vrep || '',
+      supervisor: B.supervisor || '', inspector: B.inspector || '',
+      writerLine: ((B.writerRank ? B.writerRank + ' ' : '') + (B.writer || '')).trim(),
+      startWon: won(gStart), grandWon: won(gSettle),
+      chgWon: (chg < 0 ? '△' : '') + won(chg),
+      startHangul: hangulAmount(gStart), grandHangul: hangulAmount(gSettle),
+      chgHangul: (chg < 0 ? '△ ' : '') + hangulAmount(chg),
+      chgCls: chg < 0 ? 'neg' : (chg > 0 ? 'pos' : ''),
+      statusText: empty ? '대시보드에서 설계내역서를 먼저 업로드하십시오' : '대시보드 입력값 기준 · 창을 다시 열면 최신 값으로 갱신됩니다',
+      onPrint: () => window.print()
+    };
+  }
+}
+
+</script>
+</body>
+</html>

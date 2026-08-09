@@ -300,7 +300,7 @@ h1 .em{color:var(--sub);font-weight:500}
   <div class="hd">
     <div class="kicker">소요예산</div>
     <h1>사업비 산출 <span class="em">— 소요예산 대시보드</span></h1>
-    <div class="sub">2026년 시설단가 기준 · 영역별 실수 입력으로 총사업비 자동 산출 (지방재정영향평가 양식)</div>
+    <div class="sub">2027년 시설단가 기준 · 영역별 실수 입력으로 총사업비 자동 산출 (지방재정영향평가 양식)</div>
     <button class="theme-toggle" id="themeToggle" title="라이트 / 다크"><span class="tg-sun">☀︎</span><span class="tg-moon">☾</span></button>
   </div>
 </header>
@@ -412,7 +412,7 @@ h1 .em{color:var(--sub);font-weight:500}
 </div>
 
 <footer>
-  ※ 본 산출은 「2026년도 시설단가」 및 지방재정영향평가 소요예상액 양식을 기준으로 한 <b>참고값</b>입니다. 실제 사업비는 설계 결과·현장 여건·물가변동에 따라 달라질 수 있으며, 투자심사·예산편성 시 관련 부서 검토가 필요합니다.<br>
+  ※ 본 산출은 「2027년도 시설단가」 및 지방재정영향평가 소요예상액 양식을 기준으로 한 <b>참고값</b>입니다. 실제 사업비는 설계 결과·현장 여건·물가변동에 따라 달라질 수 있으며, 투자심사·예산편성 시 관련 부서 검토가 필요합니다.<br>
   출처: bible 대시보드 · 2026년도 예산편성 기준 시설단가표 (실·동 단가는 고시 기준면적으로 ㎡ 환산)
 </footer>
 
@@ -422,26 +422,26 @@ const N=v=>{const n=parseFloat(String(v).replace(/,/g,''));return isNaN(n)?0:n;}
 const fmt=n=>Math.round(n).toLocaleString();
 const f1=n=>(Math.round(n*100)/100).toLocaleString();
 
-/* 2026년 시설단가표 수록 항목만 (천원/㎡). 실·동 단가는 기준면적으로 ㎡ 환산 */
+/* 2027년 시설단가표 수록 항목만 (천원/㎡). 실·동 단가는 기준면적으로 ㎡ 환산 */
 const U={
- /* 교실신축 */ base:2247, special:2558,
- /* 증축 */ ext_cls:1800.41, ext_sp:1933.06, ext_sp180:1931.18, hall:2419, kit:4204, dorm:3002, gym:2741.27,
- entrance:1830.15, stair:1771.30, stair2:1686.15, stair3:1713.04, stair4:1684.86,
- warehouse:1105.39, warehouse_pre:852.95,
- toilet_add:3916.89, guard:2300.52, seismic:159,
- /* 개축·철거 */ remo_cls:2035.43, demo:176.07, demo_asb:101.96,
- food_remo_hall:2490, food_remo_kit:4314,
- /* 보수·중수 */ remo_mid:640.72, wc_mid:2139.60, wc_rep:1385.04,
- house_mid:987.64, house_mid33:867.18, store_mid:289.45, night_mid:603.73,
- leak_roof:154.76, leak_wall:22.11,
- win_door:54.66, win_hall:95.46, win_out:287.09, win_all:365.87,
- food_mid_hall:677, food_mid_kit:1529,
- wall_rep:273.51, floor_rep:254.39, floor_pvc:189.83, floor_c_fl:173.22, floor_c_pvc:149.02,
- floor_dbl:258.13, stair_rub:131.38,
- ceil_rep:142.46, ceil_gen:96.20, ceil_asb:184.59, ceil_asb_e:239.71, paint_in:20.43, paint_out:18.74,
- /* 토목 */ retain:438, earth:32, pave_con:71, pave_asp:98, block_walk:85, block_road:126, stone_wall:882,
- /* 운동장 */ turf_nat:185, turf_art:173, masato:173, track:173,
- /* 신재생 */ solar:143, solar_th:1623};
+ /* 교실신축 */ base:2348, special:2673,
+ /* 증축 */ ext_cls:1881.07, ext_sp:2019.66, ext_sp180:2017.69, hall:2527, kit:4392, dorm:3136.50, gym:2864.08,
+ entrance:1912.13, stair:1850.65, stair2:1761.69, stair3:1789.78, stair4:1760.34,
+ warehouse:1154.91, warehouse_pre:891.17,
+ toilet_add:4092.36, guard:2403.58, seismic:166,
+ /* 개축·철거 */ remo_cls:2126.62, demo:183.96, demo_asb:106.52,
+ food_remo_hall:2602, food_remo_kit:4507,
+ /* 보수·중수 */ remo_mid:669.42, wc_mid:2235.44, wc_rep:1446.87,
+ house_mid:1032, store_mid:302.42, night_mid:630.79,
+ leak_roof:161.69, leak_wall:23.10,
+ win_door:57.10, win_hall:99.73, win_out:299.96, win_all:382.26,
+ food_mid_hall:707, food_mid_kit:1598, food_mid_vent:1506,
+ wall_rep:285.77, floor_rep:265.79, floor_pvc:198.33, floor_c_fl:180.98, floor_c_pvc:155.70,
+ floor_dbl:269.70, stair_rub:137.25,
+ ceil_rep:148.83, ceil_gen:100.51, ceil_asb:192.86, ceil_asb_e:250.46, paint_in:21.34, paint_out:20.96,
+ /* 토목 */ retain:458, earth:34, pave_con:74, pave_asp:102, block_walk:88, block_road:132, pave_demo:79, stone_wall:922,
+ /* 운동장 */ turf_nat:193, turf_art:181, masato:181, track:181,
+ /* 신재생 */ solar:627, bipv:940};
 const NAME2UNIT=[
  [/조리실/,'kit'],[/식당|급식실/,'hall'],
  [/강당|체육관|다목적강당/,'gym'],[/생활관|기숙사/,'dorm'],
@@ -455,54 +455,48 @@ const UNIT_GROUPS=[
  ['증축',['hall','kit','entrance','stair','stair2','stair3','stair4','warehouse','warehouse_pre','toilet_add','guard']],
  ['강당 및 생활관',['gym','dorm']],
  ['개축·철거',['remo_cls','food_remo_hall','food_remo_kit','demo','demo_asb']],
- ['보수·중수',['remo_mid','wc_mid','wc_rep','house_mid','house_mid33','store_mid','night_mid','leak_roof','leak_wall','win_door','win_hall','win_out','win_all','food_mid_hall','food_mid_kit','wall_rep','floor_rep','floor_pvc','floor_c_fl','floor_c_pvc','floor_dbl','stair_rub','ceil_rep','ceil_gen','ceil_asb','ceil_asb_e','paint_in','paint_out']],
- ['토목',['retain','earth','pave_con','pave_asp','block_walk','block_road','stone_wall']],
+ ['보수·중수',['remo_mid','wc_mid','wc_rep','house_mid','store_mid','night_mid','leak_roof','leak_wall','win_door','win_hall','win_out','win_all','food_mid_hall','food_mid_kit','food_mid_vent','wall_rep','floor_rep','floor_pvc','floor_c_fl','floor_c_pvc','floor_dbl','stair_rub','ceil_rep','ceil_gen','ceil_asb','ceil_asb_e','paint_in','paint_out']],
+ ['토목',['retain','earth','pave_con','pave_asp','block_walk','block_road','pave_demo','stone_wall']],
  ['운동장',['turf_nat','turf_art','masato','track']],
- ['신재생에너지',['solar','solar_th']]
+ ['신재생에너지',['solar','bipv']]
 ];
 const UNITS=UNIT_GROUPS.reduce((a,g)=>a.concat(g[1].map(k=>[k,f1(U[k])])),[]);
 function unitOpts(sel,mode){
   return UNIT_GROUPS.map(([g,ks])=>'<optgroup label="'+g+'">'+ks.map(k=>
     '<option value="'+k+'"'+(k===sel?' selected':'')+'>'+(mode==='num'?f1(U[k]):(UN[k]||k))+'</option>').join('')+'</optgroup>').join('');
 }
-/* 실·개소·m·동 단위 단가 (bible 2026 시설단가표) — [명칭, 단위, 단가(천원)] */
+/* 실·개소·m·동 단위 단가 (bible 2027 시설단가표) — [명칭, 단위, 단가(천원)] */
 const UE={
- drain30:['배수로시설 콘크리트 0.3×0.3m','m',315], drain40:['배수로시설 콘크리트 0.4×0.4m','m',367],
- drain40g:['배수로시설 0.4×0.4m 스틸그레이팅','m',504],
- stand2:['스탠드시설 2단(배수로 포함)','m',695], stand3:['스탠드시설 3단(배수로 포함)','m',827],
- stand4:['스탠드시설 4단(배수로 포함)','m',936],
- septic5:['오수정화조 5톤용','개소',33348], septic10:['오수정화조 10톤용','개소',46003],
- septic20:['오수정화조 20톤용','개소',89030], septic30:['오수정화조 30톤용','개소',113283],
- septic40:['오수정화조 40톤용','개소',156381],
- well:['지하수 개발 (H=80m기준)','개소',55308], tank:['음용수·저수조 옥상수조 스테인리스','개소',25448],
- wall_brick:['담장시설 적벽돌 담(H=1.7m)','m',596], wall_fence:['담장시설 휀스(H=1.7m)','m',222],
- hvac_new1:['냉·난방 신설 EHP(전기시설 미포함)','실',6685], hvac_new2:['냉·난방 신설 EHP(전기시설 포함)','실',7093],
- hvac_new3:['냉·난방 신설 EHP+GHP(전기시설 미포함)','실',7093], hvac_new4:['냉·난방 신설 EHP+GHP(전기시설 포함)','실',7502],
- hvac_rep1:['냉·난방 교체 EHP 철거포함(전기시설 미포함)','실',6966], hvac_rep2:['냉·난방 교체 EHP 철거포함(전기시설 포함)','실',7373],
- hvac_rep3:['냉·난방 교체 EHP+GHP 철거포함(전기시설 미포함)','실',7373], hvac_rep4:['냉·난방 교체 EHP+GHP 철거포함(전기시설 포함)','실',7781],
- power200:['수전설비 200kVA 이하(7~20실)','개소',130544], power300:['수전설비 300kVA 이하(21~35실)','개소',132460],
- power300u:['수전설비 300kVA 이상(36실 이상)','개소',135363],
- boost_room:['승압시설 보통교실 기준','실',2381], boost_tr:['승압시설 변압기 용량 증설','개소',60088],
- led:['전등 교체 LED(교실 9등, 복도 1등)','실',3930],
- walk24:['도복도 폭 2.4m','m',1178], walk20:['도복도 폭 2.0m','m',1058], walk15:['도복도 폭 1.5m','m',882],
- walk_car:['도복도 차량통행','개소',8917],
- podium_r:['조회대 시설 지붕 설치','개소',65814], podium_n:['조회대 시설 지붕 미설치','개소',43325],
- gate:['교문 시설 스탠드 자바라 기준','개소',27852],
- house38:['독립관사 조적슬래브 온돌난방 38㎡','동',120129], house42:['독립관사 조적슬래브 온돌난방 42㎡','동',130032],
- house48:['독립관사 조적슬래브 온돌난방 48㎡','동',145048], house58:['독립관사 조적슬래브 온돌난방 58㎡','동',169774],
- rowhouse:['연립관사 철콘 온돌난방 9세대용 500㎡','식',157125],
- pile:['신설파일 1층 20실 Φ400 20㎜(실당 18개소)','식',529038],
- geo:['신재생 지열 밀폐형','kW',2664],
- ap:['무선AP 증축교실','실',1350],
- net6:['통신장비(유·무선) 6학급 이하','식',26760], net12:['통신장비(유·무선) 12학급 이하','식',41350],
- net18:['통신장비(유·무선) 18학급 이하','식',50450], net24:['통신장비(유·무선) 24학급 이하','식',63250],
- net30:['통신장비(유·무선) 30학급 이하','식',73700], net36:['통신장비(유·무선) 36학급 이하','식',90990],
- net36u:['통신장비(유·무선) 36학급 초과','식',97390]};
+ drain30:['배수로시설 콘크리트 0.3×0.3m','m',329], drain40:['배수로시설 콘크리트 0.4×0.4m','m',383],
+ drain40g:['배수로시설 0.4×0.4m 스틸그레이팅','m',527],
+ stand2:['스탠드시설 2단','m',397], stand3:['스탠드시설 3단','m',535],
+ stand4:['스탠드시설 4단','m',649],
+ septic5:['오수정화조 5톤용','개소',34842], septic10:['오수정화조 10톤용','개소',48064],
+ septic20:['오수정화조 20톤용','개소',93019], septic30:['오수정화조 30톤용','개소',118358],
+ septic40:['오수정화조 40톤용','개소',163387],
+ well:['지하수 개발 (H=80m기준)','개소',57786],
+ wtank10:['물탱크교체 스테인리스(10톤 이하)','개소',3134], wtank30:['물탱크교체 스테인리스(10~30톤)','개소',2089],
+ wtank30u:['물탱크교체 스테인리스(30톤 초과)','개소',1567],
+ wpipe:['급수배관 교체 (옥외, PE관, 포장 포함)','m',231],
+ wall_brick:['담장시설 적벽돌 담(디자인형울타리)','m',623], wall_fence:['담장시설 휀스(메쉬)','m',232],
+ hvac_rep:['냉·난방 교체 EHP 철거포함(전기시설 포함)','실',8045],
+ power500:['수전설비 500kVA 미만','개소',149406], power750:['수전설비 500kVA 이상 750kVA 미만','개소',227244],
+ power1000:['수전설비 750kVA 이상 1,000kVA 미만','개소',302992],
+ boost_room:['승압시설 보통교실 기준','실',2488], boost_tr:['승압시설 변압기 용량 증설','개소',62780],
+ led:['전등 교체 LED(배관·배선 포함)','실',4284], led_ex:['전등 교체 LED(배관·배선 제외)','실',2612],
+ fire:['소방시설보수 (옥외소화전 등)','식',5746],
+ canopy:['차양(포장 제외)','㎡',533], canopy_car:['차양 차량통행','개소',9315],
+ podium_r:['조회대 시설 지붕 설치','개소',68762], podium_n:['조회대 시설 지붕 미설치','개소',45266],
+ gate:['교문시설 자바라(스텐레스, AL기준)','개소',29100],
+ house38:['독립관사 조적슬래브 온돌난방 38㎡','동',125511], house42:['독립관사 조적슬래브 온돌난방 42㎡','동',135857],
+ house48:['독립관사 조적슬래브 온돌난방 48㎡','동',151546], house58:['독립관사 조적슬래브 온돌난방 58㎡','동',177380],
+ rowhouse:['연립관사 철콘 온돌난방 9세대용 500㎡','식',164164],
+ pile:['신설파일 1층 20실 Φ400 20㎜(실당 18개소)','식',552739],
+ track_ure:['우레탄 트랙 (배수로 제외)','㎡',181]};
 const UE_GROUPS=[
- ['냉난방·전기설비',['hvac_new1','hvac_new2','hvac_new3','hvac_new4','hvac_rep1','hvac_rep2','hvac_rep3','hvac_rep4','power200','power300','power300u','boost_room','boost_tr','led']],
- ['통신장비',['ap','net6','net12','net18','net24','net30','net36','net36u']],
- ['토목·옥외',['drain30','drain40','drain40g','stand2','stand3','stand4','septic5','septic10','septic20','septic30','septic40','well','tank','wall_brick','wall_fence','walk24','walk20','walk15','walk_car','podium_r','podium_n','gate']],
- ['관사·기타',['house38','house42','house48','house58','rowhouse','pile','geo']]
+ ['냉난방·전기·소방',['hvac_rep','power500','power750','power1000','boost_room','boost_tr','led','led_ex','fire']],
+ ['토목·옥외',['drain30','drain40','drain40g','stand2','stand3','stand4','septic5','septic10','septic20','septic30','septic40','well','wtank10','wtank30','wtank30u','wpipe','wall_brick','wall_fence','canopy','canopy_car','podium_r','podium_n','gate','track_ure']],
+ ['관사·기타',['house38','house42','house48','house58','rowhouse','pile']]
 ];
 const UNIT_LIST=['실','개소','대','식','㎡','㎥','m','동','세대','학급','kW'];
 function etcOpts(sel){
@@ -533,44 +527,46 @@ const UN_OLD={base:'[신축] 일반',special:'[신축] 특수',kinder:'[신축] 
 */
 const UN={
  base:'[교실신축] 일반학교(㎡당)', special:'[교실신축] 특수학교(㎡당)',
- ext_cls:'[교실증축] 일반교실 (162,037÷90㎡)', ext_sp:'[교실증축] 특별교실 90㎡ (173,975÷90㎡)',
- ext_sp180:'[교실증축] 특별교실 180㎡ (347,612÷180㎡)',
+ ext_cls:'[교실증축] 일반교실 (169,296÷90㎡)', ext_sp:'[교실증축] 특별교실 90㎡ (181,769÷90㎡)',
+ ext_sp180:'[교실증축] 특별교실 180㎡ (363,185÷180㎡)',
  seismic:'[교실증축] 내진보강(연면적 ㎡당)',
  hall:'[증축] 급식실 식당(㎡당)', kit:'[증축] 급식실 조리실(㎡당)',
- entrance:'[증축] 현관 (100,658÷55㎡)', stair:'[증축] 계단실 1층용 (70,852÷40㎡)',
- stair2:'[증축] 계단실 2층용 (134,892÷80㎡)', stair3:'[증축] 계단실 3층용 (205,565÷120㎡)',
- stair4:'[증축] 계단실 4층용 (269,577÷160㎡)',
- warehouse:'[증축] 창고 조적슬래브 (72,956÷66㎡)', warehouse_pre:'[증축] 창고 조립 (50,324÷59㎡)',
- toilet_add:'[증축] 화장실 1동 (176,260÷45㎡)', guard:'[증축] 숙직실 1동 (75,917÷33㎡)',
- gym:'[강당] 강당증축 (2,741,267÷1,000㎡)', dorm:'[생활관] 기숙사증축 (1인 12㎡)',
- remo_cls:'[개축] 교실 (183,189÷90㎡)', food_remo_hall:'[개축] 급식실 식당(㎡당)', food_remo_kit:'[개축] 급식실 조리실(㎡당)',
- demo:'[철거] 건물철거 일반 (15,846÷90㎡)', demo_asb:'[철거] 건물철거 석면텍스 (9,176÷90㎡)',
- remo_mid:'[중수] 노후교실 (57,665÷90㎡)', wc_mid:'[중수] 화장실 (96,282÷45㎡)',
- wc_rep:'[보수] 화장실 (62,327÷45㎡)',
- house_mid:'[중수] 사택 45㎡ (44,444÷45㎡)', house_mid33:'[중수] 사택 33㎡ (28,617÷33㎡)',
- store_mid:'[중수] 창고 (9,552÷33㎡)',
- night_mid:'[중수] 숙직실 (19,923÷33㎡)',
- leak_roof:'[보수] 누수 지붕 (13,928÷90㎡)', leak_wall:'[보수] 누수 벽체 (1,990÷90㎡)',
- win_door:'[보수] 창호 출입문2개소 (4,919÷90㎡)', win_hall:'[보수] 창호 출입문+복도창 (8,591÷90㎡)',
- win_out:'[보수] 창호 외부창 이중창 (25,838÷90㎡)', win_all:'[보수] 창호 교실전체창 (32,928÷90㎡)',
- food_mid_hall:'[중수] 급식실 식당(㎡당)', food_mid_kit:'[중수] 급식실 조리실(㎡당)',
- wall_rep:'[보수] 교실 벽체 (24,616÷90㎡)', floor_rep:'[보수] 교실 바닥 후로링 (22,895÷90㎡)',
- floor_pvc:'[보수] 교실 바닥 동바리+PVC (17,085÷90㎡)',
- floor_c_fl:'[보수] 교실 바닥 콘크리트+후로링 (15,590÷90㎡)',
- floor_c_pvc:'[보수] 교실 바닥 콘크리트+PVC (13,412÷90㎡)',
- floor_dbl:'[보수] 교실 바닥 이중바닥재 (23,232÷90㎡)',
- stair_rub:'[보수] 계단실 고무타일 (5,255÷40㎡)',
- ceil_rep:'[보수] 천장 마감·단열 (12,821÷90㎡)', ceil_gen:'[보수] 천장 일반층 (8,658÷90㎡)',
- ceil_asb:'[보수] 천장 석면철거포함 (16,613÷90㎡)',
- ceil_asb_e:'[보수] 천장 석면철거+전기시설 (21,574÷90㎡)',
- paint_in:'[보수] 교실 도장 내부 (1,839÷90㎡)', paint_out:'[보수] 교실 도장 외부 (1,687÷90㎡)',
+ entrance:'[증축] 현관 (105,167÷55㎡)', stair:'[증축] 계단실 1층용 (74,026÷40㎡)',
+ stair2:'[증축] 계단실 2층용 (140,935÷80㎡)', stair3:'[증축] 계단실 3층용 (214,774÷120㎡)',
+ stair4:'[증축] 계단실 4층용 (281,654÷160㎡)',
+ warehouse:'[증축] 창고 조적슬래브 (76,224÷66㎡)', warehouse_pre:'[증축] 창고 조립 (52,579÷59㎡)',
+ toilet_add:'[증축] 화장실 1동 (184,156÷45㎡)', guard:'[증축] 숙직실 1동 (79,318÷33㎡)',
+ gym:'[강당] 강당증축 (2,434,467÷850㎡)', dorm:'[생활관] 기숙사증축 (37,638÷12㎡, 1인 기준)',
+ remo_cls:'[개축] 교실 (191,396÷90㎡)', food_remo_hall:'[개축] 급식실 식당(㎡당)', food_remo_kit:'[개축] 급식실 조리실(㎡당)',
+ demo:'[철거] 건물철거 일반 (16,556÷90㎡)', demo_asb:'[철거] 건물철거 석면 (9,587÷90㎡)',
+ remo_mid:'[중수] 노후교실 (60,248÷90㎡)', wc_mid:'[중수] 화장실 (100,595÷45㎡)',
+ wc_rep:'[보수] 화장실 (65,119÷45㎡)',
+ house_mid:'[중수] 사택(㎡당)',
+ store_mid:'[중수] 창고 (9,980÷33㎡)',
+ night_mid:'[중수] 숙직실 (20,816÷33㎡)',
+ leak_roof:'[보수] 누수 지붕 (14,552÷90㎡)', leak_wall:'[보수] 누수 벽체 (2,079÷90㎡)',
+ win_door:'[보수] 창호 출입문2개소 (5,139÷90㎡)', win_hall:'[보수] 창호 출입문+복도창 (8,976÷90㎡)',
+ win_out:'[보수] 창호 외부창 이중창 (26,996÷90㎡)', win_all:'[보수] 창호 교실전체창 (34,403÷90㎡)',
+ food_mid_hall:'[중수] 급식실 식당(㎡당)', food_mid_kit:'[중수] 급식실 조리실(㎡당, 환기설비개선 제외)',
+ food_mid_vent:'[중수] 급식실 조리실 환기설비개선(㎡당)',
+ wall_rep:'[보수] 교실 벽체 (25,719÷90㎡)', floor_rep:'[보수] 교실 바닥 후로링 (23,921÷90㎡)',
+ floor_pvc:'[보수] 교실 바닥 동바리+PVC (17,850÷90㎡)',
+ floor_c_fl:'[보수] 교실 바닥 콘크리트+후로링 (16,288÷90㎡)',
+ floor_c_pvc:'[보수] 교실 바닥 콘크리트+PVC (14,013÷90㎡)',
+ floor_dbl:'[보수] 교실 바닥 이중바닥재 (24,273÷90㎡)',
+ stair_rub:'[보수] 계단실 고무타일 (5,490÷40㎡)',
+ ceil_rep:'[보수] 천장 마감·단열 (13,395÷90㎡)', ceil_gen:'[보수] 천장 일반층 (9,046÷90㎡)',
+ ceil_asb:'[보수] 천장 석면철거포함 (17,357÷90㎡)',
+ ceil_asb_e:'[보수] 천장 석면철거+전기시설 (22,541÷90㎡)',
+ paint_in:'[보수] 교실 도장 내부 (1,921÷90㎡)', paint_out:'[보수] 교실 도장 외부 (1,886÷90㎡)',
  retain:'[토목] 옹벽시설(㎡당)', earth:'[토목] 운동장 성토 T20cm',
- pave_con:'[토목] 우천로포장 콘크리트 T15', pave_asp:'[토목] 우천로포장 아스콘 T12',
+ pave_con:'[토목] 포장시설 콘크리트포장', pave_asp:'[토목] 포장시설 아스콘포장',
  block_walk:'[토목] 고압블록 보도', block_road:'[토목] 고압블록 차도',
+ pave_demo:'[토목] 기존포장철거',
  stone_wall:'[토목] 담장 조경석(㎡기준)',
  turf_nat:'[운동장] 천연잔디', turf_art:'[운동장] 인조잔디', masato:'[운동장] 마사토',
- track:'[운동장] 트랙 천연잔디',
- solar:'[신재생] 태양광 고정식(연면적당)', solar_th:'[신재생] 태양열 이중진공관(1㎡)'};
+ track:'[운동장] 우레탄 트랙',
+ solar:'[신재생] 태양광 고정식(설치면적당)', bipv:'[신재생] BIPV 건물일체형(설치면적당)'};
 let PUB=60, PUB_CUSTOM=false, DRATE=null, CMRATE=null, XRATE=null, PRER=8, VER=0.168, SUPR=30;
 let SVC_EXTRA=[], FEE_EXTRA=[];
 const SVC_OFF={};
@@ -1231,7 +1227,7 @@ h1 .em{color:var(--sub);font-weight:500}
 <h1>${xEsc(s.name||'사업명 미입력')} 소요예상액</h1>
 <ul>
 <li>${xEsc(s.level)} ${s.cls}학급${s.sp?`(특수 ${s.sp}학급 포함)`:''}${s.kin?`, 병설유치원 ${s.kin}학급`:''}${s.stu?` · 학생 ${s.stu}명`:''}</li>
-<li>2026년도 시설단가 적용${s.isl?` (도서할증 ${s.isl}% 반영)`:''}</li>
+<li>2027년도 시설단가 적용${s.isl?` (도서할증 ${s.isl}% 반영)`:''}</li>
 <li>비품비, 이사비 등 제외</li>
 </ul>
 </div>
@@ -1242,7 +1238,7 @@ h1 .em{color:var(--sub);font-weight:500}
 <th colspan="2" rowspan="2">구 분</th><th rowspan="2">단위</th><th colspan="3">소요면적</th><th colspan="2">소요예상액</th><th rowspan="2">비고</th>
 </tr><tr><th>실수</th><th>단위면적</th><th>면적(㎡)</th><th>단가</th><th>금액</th></tr></thead>
 <tbody>${b}</tbody></table>
-<div class="foot">※ 본 산출은 2026년도 시설단가 및 지방재정영향평가 소요예상액 양식을 기준으로 한 참고값입니다.</div>
+<div class="foot">※ 본 산출은 2027년도 시설단가 및 지방재정영향평가 소요예상액 양식을 기준으로 한 참고값입니다.</div>
 <script src="close-button.js" defer></script></body></html>`;
 }
 $('pdfBtn').addEventListener('click',()=>{
@@ -1396,7 +1392,7 @@ $('pvBtn').addEventListener('click',()=>{
     var M=function(k){ return MEMO[k]||''; };
     rows.push({c:[S((s.name||'사업명 미입력')+' 소요예상액',1)],h:28}); merges.push('A1:I1');
     var info=(s.level||'')+' '+(s.cls||0)+'학급'+(s.sp?'(특수 '+s.sp+'학급 포함)':'')+(s.kin?', 병설유치원 '+s.kin+'학급':'')
-      +(s.stu?' · 학생 '+s.stu+'명':'')+' · 2026년도 시설단가 적용'
+      +(s.stu?' · 학생 '+s.stu+'명':'')+' · 2027년도 시설단가 적용'
       +(s.isl?' (도서지역 할증 '+s.isl+'% · 건축공사비만 적용)':'')
       +' · 공용면적 '+Math.round(s.pub*100)+'% · 비품비·이사비 등 제외';
     rows.push({c:[S(info,11)],h:18}); merges.push('A2:I2');
@@ -1474,7 +1470,7 @@ $('pvBtn').addEventListener('click',()=>{
     rows.push({c:[S('부대비',6),S('시설부대비 (F)',7),S('식',7),S('',7),S('',7),S('',7),S((Math.round(R.xRate*100000)/1000)+'%',7),Fx('H'+facilR+'*'+R.xRate,R.extra,8),S('',7)]});
     rows.push({c:[S('합계',10),S('총사업비 합계',10),S('',10),S('',10),S('',10),S('',10),S('',10),Fx('H'+facilR+'+H'+feeR+'+H'+svcR+'+H'+extraR,R.grand,9),S('',10)],h:24});
     rows.push({c:[]});
-    rows.push({c:[S('※ 본 산출은 2026년도 시설단가 및 지방재정영향평가 소요예상액 양식을 기준으로 한 참고값입니다.',11)]});
+    rows.push({c:[S('※ 본 산출은 2027년도 시설단가 및 지방재정영향평가 소요예상액 양식을 기준으로 한 참고값입니다.',11)]});
     merges.push('A'+rows.length+':I'+rows.length);
     return {rows:rows,merges:merges,name:(s.name||'소요예상액')};
   }

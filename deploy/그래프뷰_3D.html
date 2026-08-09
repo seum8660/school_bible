@@ -74,6 +74,7 @@
     <button class="chip" data-f="cert">인증</button>
     <button class="chip" data-f="manual">매뉴얼</button>
     <button class="chip" data-f="tag">태그</button>
+    <button class="chip" data-f="wf">워크플로우</button>
     <button class="chip" id="grow">가지 펼치기 ↻</button>
     <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);white-space:nowrap">팔레트
       <select id="pal" style="height:30px;border:1px solid var(--line);border-radius:100px;background:var(--surface);color:var(--ink);font:inherit;font-size:12.5px;padding:0 10px;outline:none;cursor:pointer">
@@ -111,12 +112,18 @@
 </div>
 
 <script src="graph_data.js"></script>
+<script src="wf_tags.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.166.1/examples/jsm/"}}</script>
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const G = window.BIBLE_GRAPH;
+if (window.WF_GRAPH) {
+  const have = new Set(G.nodes.map(n => n.id));
+  window.WF_GRAPH.nodes.forEach(n => { if (!have.has(n.id)) { have.add(n.id); G.nodes.push({ ...n }); } });
+  window.WF_GRAPH.links.forEach(l => { if (have.has(l.source) && have.has(l.target)) G.links.push({ ...l }); });
+}
 // 단계별 색상 팔레트 (선택 가능)
 const PALETTES = {
   phase: { plan:'#0075de', design:'#00868f', const:'#c9762a', cm:'#7b5bd6', comp:'#2f9e4f', safety:'#c2413a', manual:'#6b6b6b' },
@@ -126,20 +133,21 @@ const PALETTES = {
 };
 let PHASE_COL = PALETTES.earth;
 const INK2 = '#31302e', MUTED = '#615d59', FAINT = '#a39e98', ACCENT = '#0075de', SOFT = '#e7f1fc';
-const isHot = n => n.group === 'phase' || n.group === 'root';
+const isHot = n => n.group === 'phase' || n.group === 'root' || n.id === 'wf:hub';
 function phaseOf(n) {
   const g = n.group || '', id = n.id || '';
   let m = g.match(/^item:(\w+)/) || id.match(/^(?:phase|item):(\w+)/);
   return m ? m[1] : null;
 }
 const colorOf = n => {
+  if (n.group === 'wf') return '#e8590c';
   if (n.group === 'law' || n.group === 'cert') return '#ffffff';
   const p = phaseOf(n);
   if (p && PHASE_COL[p]) return PHASE_COL[p];
   if (n.group === 'root') return INK2;
   return MUTED;
 };
-const KIND = { phase:'단계', root:'전체', law:'근거 법령', cert:'인증', tag:'키워드', 'item:manual':'매뉴얼', 'item:safety':'안전점검·인증' };
+const KIND = { phase:'단계', root:'전체', law:'근거 법령', cert:'인증', tag:'키워드', wf:'워크플로우 보드', 'item:manual':'매뉴얼', 'item:safety':'안전점검·인증' };
 const kindOf = n => KIND[n.group] || (n.group.startsWith('item:') ? '절차' : '항목');
 
 const nodes = G.nodes.map(n => ({ ...n }));
@@ -287,6 +295,7 @@ const tip = document.getElementById('tip');
 let hover = null, sel = null, filter = 'all', query = '';
 
 function groupKey(n) {
+  if (n.group === 'wf') return 'wf';
   if (n.group === 'law') return 'law';
   if (n.group === 'cert') return 'cert';
   if (n.group === 'tag') return 'tag';
@@ -326,7 +335,9 @@ function showPanel(n) {
   const p = document.getElementById('panel');
   if (!n) { p.innerHTML = '<p class="empty">노드를 클릭하면 그 항목과 직접 연결된 법령·절차·매뉴얼만 남습니다.<br><br>빈 공간을 클릭하면 전체 보기로 돌아옵니다.</p>'; return; }
   const rel = [...nbr.get(n.id)].map(id => byId.get(id));
-  p.innerHTML = `<div class="pt">${n.label}</div><span class="pk">${kindOf(n)}</span>
+  const link = n.url ? `<a href="${n.url}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin:8px 0 2px;font-size:12px;font-weight:700;color:${ACCENT};text-decoration:none">워크플로우 보드 열기 ↗</a>`
+    : (n.tag ? `<a href="bible.html#tag=${encodeURIComponent(n.tag)}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin:8px 0 2px;font-size:12px;font-weight:700;color:${ACCENT};text-decoration:none">#${n.tag} 검색 ↗</a>` : '');
+  p.innerHTML = `<div class="pt">${n.label}</div><span class="pk">${kindOf(n)}</span>${link}
     <div class="pl"><b>연결 ${rel.length}건</b>${rel.map(r => `<button data-id="${r.id}">${r.label}</button>`).join('')}</div>`;
   p.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
     sel = byId.get(b.dataset.id); paint(); showPanel(sel); flyTo(sel);

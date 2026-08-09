@@ -8,31 +8,49 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<template id="__bundler_thumbnail" data-bg-color="#ffffff">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#ffffff"/>
+    <rect x="120" y="150" width="220" height="500" fill="none" stroke="#000" stroke-width="6"/>
+    <g fill="#000">
+      <rect x="150" y="200" width="150" height="14"/><rect x="150" y="270" width="120" height="14"/>
+      <rect x="150" y="340" width="140" height="14"/><rect x="150" y="410" width="110" height="14"/>
+    </g>
+    <g stroke="#000" stroke-width="6" fill="none">
+      <rect x="420" y="200" width="200" height="110"/>
+      <rect x="740" y="200" width="200" height="110"/>
+      <rect x="420" y="430" width="200" height="110"/>
+      <rect x="740" y="430" width="200" height="110"/>
+      <path d="M620 255 H740"/><path d="M840 310 V430"/><path d="M620 485 H740"/>
+    </g>
+    <rect x="420" y="620" width="520" height="10" fill="#000" opacity=".3"/>
+  </svg>
+</template>
 <style>
 :root{
-  --bg:#fff; --panel:#fff; --text:#1d1f20; --divider:rgba(29,31,32,.16);
-  --muted:rgba(29,31,32,.62); --faint:rgba(29,31,32,.48);
-  --a300:#7cb0e0; --a500:#5980a6; --a700:#416180; --a900:#1d2d3d;
-  --key-bg:#eef6ff; --bot-bg:#d6ebff; --chip:#fff;
-  --edge:#5980a6; --edge-back:#8c8f91; --dot:#0075de;
-  --hdbg:#1d2d3d; --hdfg:#ffffff; --hdsub:rgba(255,255,255,.72);
+  --bg:#fff; --panel:#fff; --text:#000000; --divider:rgba(0,0,0,.52);
+  --muted:rgba(0,0,0,.92); --faint:rgba(0,0,0,.80);
+  --a300:#3f7db8; --a500:#164a75; --a700:#0d3350; --a900:#000c14;
+  --key-bg:#d3e7fa; --bot-bg:#aacff2; --chip:#fff;
+  --edge:#123f66; --edge-back:#3b4045; --dot:#00417f;
+  --hdbg:#000c14; --hdfg:#ffffff; --hdsub:rgba(255,255,255,1);
   --head:'Barlow Condensed','Pretendard',system-ui,sans-serif;
 }
 html[data-mode="dark"]{
-  --bg:#14171a; --panel:#1b1f24; --text:#eef1f4; --divider:rgba(238,241,244,.18);
-  --muted:rgba(238,241,244,.66); --faint:rgba(238,241,244,.48);
-  --a300:#3d6488; --a500:#7fb2e0; --a700:#a8cdf0; --a900:#cfe6ff;
-  --key-bg:#1c2a38; --bot-bg:#24384c; --chip:#1b1f24;
-  --edge:#7fb2e0; --edge-back:#6d757d; --dot:#7fb2e0;
-  --hdbg:#243a4e; --hdfg:#eef6ff; --hdsub:rgba(238,246,255,.68);
+  --bg:#000000; --panel:#0d1116; --text:#ffffff; --divider:rgba(255,255,255,.52);
+  --muted:rgba(255,255,255,.94); --faint:rgba(255,255,255,.82);
+  --a300:#6a9ac4; --a500:#bfdcfa; --a700:#dcefff; --a900:#f4faff;
+  --key-bg:#12243a; --bot-bg:#1f4066; --chip:#0d1116;
+  --edge:#bfdcfa; --edge-back:#b6bfc7; --dot:#bfdcfa;
+  --hdbg:#123a5c; --hdfg:#ffffff; --hdsub:rgba(255,255,255,1);
 }
 html[data-mode="warm"]{
-  --bg:#f7f3ea; --panel:#fffdf7; --text:#2b2416; --divider:rgba(43,36,22,.20);
-  --muted:rgba(43,36,22,.66); --faint:rgba(43,36,22,.50);
-  --a300:#d9bd8a; --a500:#a97b3c; --a700:#8a5f27; --a900:#4a3113;
-  --key-bg:#f3e7d2; --bot-bg:#ecd9b8; --chip:#fffdf7;
-  --edge:#a97b3c; --edge-back:#9a8f7a; --dot:#8a5f27;
-  --hdbg:#4a3113; --hdfg:#fffdf7; --hdsub:rgba(255,253,247,.72);
+  --bg:#faf4e4; --panel:#fffef8; --text:#0f0b02; --divider:rgba(15,11,2,.54);
+  --muted:rgba(15,11,2,.92); --faint:rgba(15,11,2,.80);
+  --a300:#b98f45; --a500:#6d4810; --a700:#4f3309; --a900:#1b1103;
+  --key-bg:#ead7b2; --bot-bg:#d9c393; --chip:#fffef8;
+  --edge:#6d4810; --edge-back:#5f5646; --dot:#4f3309;
+  --hdbg:#1b1103; --hdfg:#fffef8; --hdsub:rgba(255,254,248,1);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'Pretendard','Malgun Gothic',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
@@ -78,6 +96,9 @@ a{color:var(--a700)}
 .kick{font-family:var(--head);font-size:12px;font-weight:500;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
 h1{font-family:var(--head);font-size:34px;font-weight:600;letter-spacing:-.01em;line-height:1.1;margin-top:6px}
 .sub{font-size:13.5px;color:var(--muted);margin-top:7px}
+.htags{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.htags a{font-size:11.5px;font-weight:600;color:var(--muted);background:var(--key-bg);border:1px solid var(--divider);padding:3px 9px;text-decoration:none;white-space:nowrap}
+.htags a:hover{color:var(--a700);border-color:var(--a700)}
 .hd{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;padding:0 0 20px;border-bottom:1px solid var(--divider)}
 .hd .right{margin-left:auto;text-align:right;font-size:12.5px;color:var(--muted);line-height:1.6}
 .hd .right b{display:block;font-size:11.5px;color:var(--faint);font-weight:500}
@@ -111,9 +132,9 @@ h1{font-family:var(--head);font-size:34px;font-weight:600;letter-spacing:-.01em;
 .cl.pad{min-height:96px}
 .gap{border-bottom:1px dashed var(--divider)}
 .grid > .end{border-bottom:0}
-.node{position:relative;background:var(--bg);border:1px solid var(--divider);padding:0;display:grid;grid-template-columns:38px 1fr;cursor:pointer;
-  transition:transform .22s cubic-bezier(.2,.8,.3,1),box-shadow .22s,opacity .22s,filter .22s}
-.node:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.10)}
+.node{position:relative;background:var(--bg);border:2px solid var(--divider);padding:0;display:grid;grid-template-columns:38px 1fr;cursor:pointer;
+  transition:transform .55s cubic-bezier(.2,.8,.3,1),box-shadow .55s,opacity .55s,filter .55s}
+.node:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.30)}
 .node .lft{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 0;background:var(--key-bg);border-right:1px solid var(--divider)}
 .node .bdy{padding:10px 11px;display:flex;flex-direction:column;gap:5px;min-width:0}
 .node .id{font-family:var(--head);font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--a700)}
@@ -132,12 +153,12 @@ h1{font-family:var(--head);font-size:34px;font-weight:600;letter-spacing:-.01em;
 @keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.045)}100%{transform:scale(1.02)}}
 @keyframes ring{0%{box-shadow:0 0 0 0 rgba(89,128,166,.38)}70%{box-shadow:0 0 0 12px rgba(89,128,166,0)}100%{box-shadow:0 0 0 0 rgba(89,128,166,0)}}
 @keyframes dash{to{stroke-dashoffset:-24}}
-.node.on{transform:scale(1.02);z-index:5;box-shadow:0 10px 26px rgba(0,0,0,.16),0 0 0 2px var(--a500);animation:pop .32s ease both}
-.node.on::after{content:"";position:absolute;inset:-2px;pointer-events:none;animation:ring 1.1s ease-out}
+.node.on{transform:scale(1.02);z-index:5;box-shadow:0 10px 26px rgba(0,0,0,.16),0 0 0 2px var(--a500);animation:pop .8s ease both}
+.node.on::after{content:"";position:absolute;inset:-2px;pointer-events:none;animation:ring 2.4s ease-out}
 body.focus .node:not(.on){opacity:.32;filter:saturate(.5)}
-#edges path.e{transition:opacity .22s,stroke-width .22s}
+#edges path.e{transition:opacity .55s,stroke-width .55s}
 body.focus #edges path.e{opacity:.12}
-body.focus #edges path.e.lit{opacity:.62;stroke-width:2;stroke-dasharray:7 6;animation:dash .9s linear infinite}
+body.focus #edges path.e.lit{opacity:.62;stroke-width:2;stroke-dasharray:7 6;animation:dash 2.2s linear infinite}
 #panel{position:fixed;left:0;right:0;bottom:0;z-index:90;background:var(--panel);color:var(--text);border-top:1px solid var(--divider);box-shadow:0 -10px 30px rgba(0,0,0,.20);padding:16px 24px;max-height:46vh;overflow:auto;transform:translateY(110%);transition:transform .28s cubic-bezier(.2,.8,.3,1)}
 #panel.show{transform:translateY(0)}
 .foot{margin-top:18px;font-size:11.5px;color:var(--faint);line-height:1.8}
@@ -173,6 +194,7 @@ body.focus #edges path.e.lit{opacity:.62;stroke-width:2;stroke-dasharray:7 6;ani
       <div class="kick" id="mKick"></div>
       <h1 id="mTitle"></h1>
       <div class="sub" id="mSub"></div>
+      <div class="htags" id="mTags"></div>
     </div>
     <div class="right" id="mRight"></div>
   </div>
@@ -209,9 +231,10 @@ body.focus #edges path.e.lit{opacity:.62;stroke-width:2;stroke-dasharray:7 6;ani
 <div id="panel"></div>
 
 <script src="wf_boards.js"></script>
+<script src="wf_tags.js"></script>
 <script>
 var TAGNM={lead:'선행',key:'핵심',bot:'병목',post:'후속'};
-var TABNM={cycle:'프로세스(Process)',change:'설계변경',extend:'공기연장',cm:'감리방식',safety:'안전사고',permit:'인허가',evalx:'엔지니어링평가',pre:'사전기획 적정성검토',pubrev:'공공건축심의',contest:'설계공모 운영',bid:'설계 입찰공고',order:'설계용역 발주',audit:'일상감사',advis:'기술자문위원회',ve:'설계경제성검토(VE)',dfs:'설계안전성검토(DfS)',precert:'예비인증 신청',dseval:'설계용역 평가',safecert:'교육시설 안전인증',report:'실정보고',prefin:'예비준공검사',finish:'준공검사'};
+var TABNM={cycle:'프로세스(Process)',change:'설계변경',extend:'공기연장',cm:'감리방식',safety:'안전사고',permit:'인허가',evalx:'엔지니어링평가',pre:'사전기획 적정성검토',pubrev:'공공건축심의',contest:'설계공모 운영',bid:'설계 입찰공고',order:'설계용역 발주',audit:'일상감사',advis:'기술자문위원회',ve:'설계경제성검토(VE)',dfs:'설계안전성검토(DfS)',precert:'예비인증 신청',dseval:'설계용역 평가',safecert:'교육시설 안전인증',report:'실정보고',prefin:'예비준공검사',finish:'준공검사',demol:'해체계획서 작성·검토',indirect:'공기연장 간접공사비',fmsafe:'시설물 안전·유지관리',subcon:'건설공사 하도급 심사'};
 var B=null, KEY='wfUnifiedBoard', MKEY='wfUnifiedMode';
 
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
@@ -233,6 +256,10 @@ function load(k){
   document.getElementById('mTitle').textContent=B.title;
   document.getElementById('mSub').textContent=B.sub;
   document.getElementById('mRight').innerHTML=B.right;
+  var tg=(window.WF_TAGS&&WF_TAGS[k])||[];
+  document.getElementById('mTags').innerHTML=tg.map(function(t){
+    return '<a href="bible.html#tag='+encodeURIComponent(t)+'" target="_blank" rel="noopener noreferrer" title="치트키에서 #'+esc(t)+' 검색">#'+esc(t)+'</a>';
+  }).join('');
   var bots=B.NODES.filter(function(n){return n.k==='bot';}).length;
   var back=B.EDGES.filter(function(e){return !!e[2];}).length;
   document.getElementById('stats').innerHTML=
@@ -304,8 +331,8 @@ function draw(){
       var dt=document.createElementNS('http://www.w3.org/2000/svg','circle');
       dt.setAttribute('class','mdot'); dt.setAttribute('r','3'); dt.setAttribute('fill',cD); dt.setAttribute('pointer-events','none');
       var am=document.createElementNS('http://www.w3.org/2000/svg','animateMotion');
-      am.setAttribute('dur','2.6s'); am.setAttribute('repeatCount','indefinite'); am.setAttribute('path',d);
-      am.setAttribute('begin',(((svg.__mdotN=(svg.__mdotN||0)+1)%8)*0.4)+'s');
+      am.setAttribute('dur','11s'); am.setAttribute('repeatCount','indefinite'); am.setAttribute('path',d);
+      am.setAttribute('begin',(((svg.__mdotN=(svg.__mdotN||0)+1)%8)*0.9)+'s');
       dt.appendChild(am); svg.appendChild(dt);
     }
   });
@@ -325,7 +352,6 @@ function panelHTML(n){
     +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">'+chips+'</div></div>'
    +'<div style="flex:0 0 auto"><div style="display:flex;gap:10px">'
     +'<div style="border:1px solid var(--divider);border-radius:8px;padding:10px 14px;min-width:124px"><div style="font-size:11px;color:var(--faint)">기한</div><div style="font-size:13.5px;font-weight:600;margin-top:4px;color:var(--muted);line-height:1.4">'+esc(n.due)+'</div></div>'
-    +'<div style="border:1px solid var(--divider);border-radius:8px;padding:10px 14px;min-width:88px"><div style="font-size:11px;color:var(--faint)">확신도</div><div style="font-size:15px;font-weight:700;margin-top:4px">'+esc(n.conf)+'</div></div>'
    +'</div>'+bottle+'</div>'
    +'<div style="flex:1 1 300px;min-width:250px"><div style="font-size:11.5px;color:var(--muted);font-weight:600">법적 근거</div>'
     +'<div style="font-size:13.5px;font-weight:700;margin-top:6px">'+esc(n.law||'—')+'</div>'
@@ -445,6 +471,7 @@ function soon(){
     [].forEach.call(document.querySelectorAll('#modes button'),function(x){x.classList.toggle('on',x===mb);}); }
   var k='cycle'; try{k=localStorage.getItem(KEY)||'cycle';}catch(_){}
   try{ var qb=new URLSearchParams(location.search).get('board'); if(qb) k=qb; }catch(_){}
+  try{ var hb=decodeURIComponent((location.hash||'').replace(/^#/,'')); if(hb&&WF_BOARDS[hb]) k=hb; }catch(_){}
   if(!WF_BOARDS[k]) k='cycle';
   load(k);
 })();

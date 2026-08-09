@@ -148,7 +148,7 @@
   details.rates>summary:hover{color:var(--accent)}
   details.rates .inner{padding:0 20px 18px}
 </style>
-<script src="sisul_danga_2026.js"></script>
+<script src="sisul_danga_2027.js"></script>
 </head>
 <body>
 <header><div class="hd">
@@ -211,7 +211,7 @@
   </section>
 
   <section>
-    <h2 class="sec-title"><span class="n">2</span>시설비 산출<small>2026 시설단가 · 금액단위 천원</small></h2>
+    <h2 class="sec-title"><span class="n">2</span>시설비 산출<small>2027 시설단가 · 금액단위 천원</small></h2>
     <div class="card">
       <div class="danga-grid">
         <div class="fld"><label>구분</label><select id="dCat"></select></div>
@@ -423,7 +423,7 @@ function exportXls(o){
 
   var sumRow=0;
   if(LINES.length){
-    R_(cS('String','시설비 내역  (2026 시설단가'+(add?' · 지역 가산 +'+add+'%':'')+')','sSec',null,6), 22);
+    R_(cS('String','시설비 내역  (2027 시설단가'+(add?' · 지역 가산 +'+add+'%':'')+')','sSec',null,6), 22);
     R_(cS('String','구분','sHead')+cS('String','항목 · 규격','sHead')+cS('String','단가(천원)','sHead')
       +cS('String','단위','sHead')+cS('String','수량','sHead')+cS('String','금액(원)','sHead'), 20);
     var first=r+1;
@@ -601,10 +601,10 @@ function typeHint(){
   };
 })();
 
-/* ===== 2026 시설단가 — 시설비 산출 ===== */
+/* ===== 2027 시설단가 — 시설비 산출 ===== */
 var LINES = [];
 (function(){
-  var P = window.PRICE2026;
+  var P = window.PRICE2027;
   if(!P){ document.getElementById('dFoot').textContent='시설단가 데이터를 불러오지 못했습니다.'; return; }
   var cat=document.getElementById('dCat'), item=document.getElementById('dItem'), spec=document.getElementById('dSpec');
   cat.innerHTML = P.cats.map(function(c,i){ return '<option value="'+i+'">'+c.cat+'</option>'; }).join('');

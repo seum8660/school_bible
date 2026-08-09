@@ -32,8 +32,8 @@
   .px .pill{display:inline-block;border:1px solid #dcd8d0;border-radius:100px;padding:7px 16px;font-size:12.5px;font-weight:700;letter-spacing:.14em;color:#6f6b64;background:#fff}
   .px h1{font-size:56px;line-height:1.22;letter-spacing:-.02em;font-weight:800;color:#26261f;margin:26px 0 18px}
   .px h1 .amber{color:#0075de}
-  .px .ci{margin:24px 0 20px;display:grid;gap:6px;justify-items:start;text-align:left}
-  .px .ci .ln{font-size:74px;line-height:1.08;font-weight:900;letter-spacing:-.03em;color:#26261f;display:flex;align-items:baseline;gap:16px;justify-content:flex-start}
+  .px .ci{margin:24px 0 20px;display:grid;gap:6px}
+  .px .ci .ln{font-size:74px;line-height:1.08;font-weight:900;letter-spacing:-.03em;color:#26261f;display:flex;align-items:baseline;gap:16px}
   .px .ci .en{font-family:'Avenir Next','Segoe UI',sans-serif;font-weight:900;letter-spacing:.01em}
   .px .ci .zero{color:#a39e98;position:relative}
   .px .ci .zero::after{content:"";position:absolute;left:-3%;right:-3%;top:52%;height:7px;background:#dd5b00;border-radius:4px;transform:rotate(-6deg) scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.7,.2,1) .6s}
@@ -67,16 +67,11 @@
   .px .wfs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
   .px .wf{border:1px solid #e5e1d8;border-radius:14px;background:#fff;padding:22px;text-decoration:none;display:block;transition:transform .22s,border-color .22s,box-shadow .22s}
   .px .wf:hover{transform:translateY(-4px);border-color:#0075de;box-shadow:0 12px 26px rgba(38,38,31,.08)}
-  .px .wf .mini{display:block;height:40px;margin-bottom:16px;position:relative}
-  .px .wf .mini svg{display:block;width:100%;height:100%;overflow:visible}
-  .px .wf .mini .ln{fill:none;stroke:#dfe6ee;stroke-width:1.6;stroke-linecap:round}
-  .px .wf .mini .lnb{fill:none;stroke:#0075de;stroke-width:1.8;stroke-linecap:round;opacity:.9;stroke-dasharray:260;stroke-dashoffset:260;transition:stroke-dashoffset 1.1s ease .1s}
-  .px .wf.in .mini .lnb,.px .rv.in .wf .mini .lnb{stroke-dashoffset:0}
-  .px .wf:hover .mini .lnb{stroke-dashoffset:0}
-  .px .wf .mini .rt{fill:none;stroke:#a39e93;stroke-width:1.2;stroke-dasharray:3 3}
-  .px .wf .mini circle.n{fill:#b5d9fd}
-  .px .wf .mini circle.k{fill:#0075de}
-  .px .wf .mini circle.b{fill:#1d2d3d}
+  .px .wf .mini{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;height:34px;margin-bottom:16px}
+  .px .wf .mini i{display:block;border-radius:3px;background:#eef2f6}
+  .px .wf .mini i.on{background:#b5d9fd}
+  .px .wf .mini i.key{background:#0075de}
+  .px .wf .mini i.bot{background:#1d2d3d}
   .px .wf h4{font-size:16.5px;font-weight:800;color:#26261f;letter-spacing:-.015em;margin-bottom:6px}
   .px .wf .law{font-size:12px;color:#a39e93;line-height:1.6}
   .px .wf .st{display:flex;gap:14px;margin-top:14px;padding-top:12px;border-top:1px solid #f0ede7;font-size:11.5px;color:#6f6b64;font-weight:600}
@@ -103,13 +98,13 @@
       <span class="logo"><i>치</i>학교시설 치트키</span>
     </nav>
     <section class="hero">
-            <h1 class="rv" style="font-size:22px;font-weight:800;color:#6f6b64;margin:0;text-align:left">학교시설 업무 치트키</h1>
+            <h1 class="rv" style="font-size:22px;font-weight:800;color:#6f6b64;margin:0">학교시설 업무 치트키</h1>
       <div class="ci rv">
         <div class="ln" style="align-items:center"><span style="color:#55524d">삽질</span> <canvas id="ciZero" width="400" height="104" style="display:block;height:74px;width:auto"></canvas></div>
         <div class="ln" style="align-items:center"><span style="color:#005bad;font-size:104px">업무</span> <canvas id="ciHero" width="340" height="104" style="display:block"></canvas></div>
       </div>
       <p class="sub rv">공문 뒤지기 전에, 선배한테 묻기 전에 — 매뉴얼 · 프로세스 · 판단 기준 · 산출 도구를 한 곳에서.</p>
-      <div class="btns rv"><a class="b1" href="bible.html">🔑 치트키 열기</a><a class="b2" href="워크플로우_통합보드.html">⚙ 워크플로우 차트</a><a class="b2" href="#" id="gvOpen">🕸 그래프뷰 보기</a></div>
+      <div class="btns rv"><a class="b1" href="bible.html">치트키 열기 →</a><a class="b2" href="#" id="gvOpen">그래프뷰 보기</a></div>
     </section>
     <div class="feats">
       <div class="feat rv"><div class="no">01 / MANUAL</div><h3>업무 매뉴얼</h3><p>계획부터 정산까지, 실제 업무 순서 그대로 정리한 단계별 매뉴얼. 인수인계서보다 친절합니다.</p></div>
@@ -135,55 +130,55 @@
       <p class="sec-p">누가 · 언제 · 무엇을 하는지를 주체별 레인으로 그렸습니다. 카드를 누르면 기한 · 산출물 · 법적 근거가 아래에 펌쳐집니다.</p></div>
       <div class="wfs rv" style="transition-delay:.08s">
         <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=0">
-          <span class="mini"><svg viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="M6 28 H54 V13 H104 H150 V30 H196 H234"></path><path class="rt" d="M196 37 H104"></path><path class="lnb" d="M6 28 H54 V13 H104"></path><circle class="n" cx="6" cy="28" r="4"></circle><circle class="k" cx="54" cy="28" r="4.6"></circle><circle class="n" cx="104" cy="13" r="4"></circle><circle class="b" cx="150" cy="13" r="5.4"></circle><circle class="k" cx="196" cy="30" r="4.6"></circle><circle class="b" cx="234" cy="30" r="5.4"></circle></svg></span>
+          <span class="mini"><i class="on"></i><i class="key"></i><i class="bot"></i><i></i><i class="bot"></i><i class="key"></i><i></i><i class="bot"></i><i></i><i class="key"></i><i class="bot"></i><i></i></span>
           <h4>기획부터 준공까지 (전주기)</h4>
           <div class="law">학교시설사업 촉진법 · 건설기술진흥법 · 지방계약법</div>
           <div class="st"><span>노드 19</span><span>병목 4</span><span>회귀 3</span></div>
         </a>
         <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=1">
-          <span class="mini"><svg viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="M6 14 H58 V30 H110 H156 V14 H200 H234"></path><path class="rt" d="M200 37 H110"></path><path class="lnb" d="M6 14 H58 V30 H110"></path><circle class="n" cx="6" cy="14" r="4"></circle><circle class="k" cx="58" cy="14" r="4.6"></circle><circle class="b" cx="110" cy="30" r="5.4"></circle><circle class="n" cx="156" cy="30" r="4"></circle><circle class="k" cx="200" cy="14" r="4.6"></circle><circle class="b" cx="234" cy="14" r="5.4"></circle></svg></span>
+          <span class="mini"><i class="on"></i><i></i><i class="key"></i><i></i><i></i><i class="bot"></i><i></i><i class="key"></i><i></i><i></i><i></i><i class="bot"></i></span>
           <h4>설계변경 · 계약금액 조정</h4>
           <div class="law">지방계약법 시행령 제73조 · 제74조</div>
           <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 3</span></div>
         </a>
         <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=2">
-          <span class="mini"><svg viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="M6 30 H50 H98 V14 H146 V30 H194 H234"></path><path class="rt" d="M194 37 H98"></path><path class="lnb" d="M6 30 H50 H98 V14"></path><circle class="n" cx="6" cy="30" r="4"></circle><circle class="k" cx="50" cy="30" r="4.6"></circle><circle class="b" cx="98" cy="30" r="5.4"></circle><circle class="n" cx="146" cy="14" r="4"></circle><circle class="k" cx="194" cy="30" r="4.6"></circle><circle class="b" cx="234" cy="30" r="5.4"></circle></svg></span>
+          <span class="mini"><i class="on"></i><i></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i><i></i><i></i><i class="key"></i><i class="bot"></i><i></i></span>
           <h4>공기연장 · 간접비 정산</h4>
           <div class="law">지방계약법 시행령 제75조</div>
           <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 3</span></div>
         </a>
         <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=3">
-          <span class="mini"><svg viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="M6 14 H62 V30 H112 H160 H206 V14 H234"></path><path class="rt" d="M206 37 H112"></path><path class="lnb" d="M6 14 H62 V30 H112"></path><circle class="n" cx="6" cy="14" r="4"></circle><circle class="b" cx="62" cy="14" r="5.4"></circle><circle class="k" cx="112" cy="30" r="4.6"></circle><circle class="n" cx="160" cy="30" r="4"></circle><circle class="b" cx="206" cy="30" r="5.4"></circle><circle class="k" cx="234" cy="14" r="4.6"></circle></svg></span>
+          <span class="mini"><i class="on"></i><i></i><i class="bot"></i><i></i><i class="key"></i><i></i><i></i><i class="bot"></i><i></i><i class="key"></i><i></i><i></i></span>
           <h4>감리 · 건설사업관리 방식 결정</h4>
           <div class="law">건설기술진흥법 제39조의2</div>
           <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 2</span></div>
         </a>
         <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=4">
-          <span class="mini"><svg viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="M6 30 H48 V14 H96 H144 V30 H190 H234"></path><path class="rt" d="M190 37 H96"></path><path class="lnb" d="M6 30 H48 V14 H96"></path><circle class="b" cx="6" cy="30" r="5.4"></circle><circle class="k" cx="48" cy="30" r="4.6"></circle><circle class="b" cx="96" cy="14" r="5.4"></circle><circle class="n" cx="144" cy="14" r="4"></circle><circle class="k" cx="190" cy="30" r="4.6"></circle><circle class="n" cx="234" cy="30" r="4"></circle></svg></span>
+          <span class="mini"><i class="on"></i><i class="key"></i><i></i><i></i><i class="bot"></i><i></i><i class="bot"></i><i></i><i></i><i></i><i class="key"></i><i></i></span>
           <h4>공사 중 안전사고 대응</h4>
           <div class="law">산업안전보건법 제54조 · 제55조</div>
           <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 2</span></div>
         </a>
         <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=5">
-          <span class="mini"><svg viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="M6 14 H54 H104 V30 H152 H200 V14 H234"></path><path class="rt" d="M200 37 H104"></path><path class="lnb" d="M6 14 H54 H104 V30"></path><circle class="b" cx="6" cy="14" r="5.4"></circle><circle class="n" cx="54" cy="14" r="4"></circle><circle class="k" cx="104" cy="14" r="4.6"></circle><circle class="b" cx="152" cy="30" r="5.4"></circle><circle class="k" cx="200" cy="30" r="4.6"></circle><circle class="n" cx="234" cy="14" r="4"></circle></svg></span>
+          <span class="mini"><i class="bot"></i><i></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i></span>
           <h4>학교시설 인허가</h4>
           <div class="law">학교시설사업 촉진법 제4조 · 제5조</div>
           <div class="st"><span>노드 15</span><span>병목 4</span><span>회귀 2</span></div>
         </a>
         <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=6">
-          <span class="mini"><svg viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="M6 30 H56 V14 H108 V30 H156 H204 H234"></path><path class="rt" d="M204 37 H108"></path><path class="lnb" d="M6 30 H56 V14 H108"></path><circle class="n" cx="6" cy="30" r="4"></circle><circle class="b" cx="56" cy="30" r="5.4"></circle><circle class="k" cx="108" cy="14" r="4.6"></circle><circle class="b" cx="156" cy="30" r="5.4"></circle><circle class="n" cx="204" cy="30" r="4"></circle><circle class="k" cx="234" cy="30" r="4.6"></circle></svg></span>
+          <span class="mini"><i class="on"></i><i></i><i class="bot"></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i><i></i><i class="key"></i><i></i><i class="bot"></i></span>
           <h4>건설엔지니어링 및 시공 평가</h4>
           <div class="law">건설기술진흥법 제50조 · 시행령 제82조</div>
           <div class="st"><span>노드 16</span><span>병목 4</span><span>회귀 2</span></div>
         </a>
         <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=7">
-          <span class="mini"><svg viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="M6 14 H60 V30 H108 H154 V14 H202 H234"></path><path class="rt" d="M202 37 H108"></path><path class="lnb" d="M6 14 H60 V30 H108"></path><circle class="k" cx="6" cy="14" r="4.6"></circle><circle class="n" cx="60" cy="14" r="4"></circle><circle class="b" cx="108" cy="30" r="5.4"></circle><circle class="b" cx="154" cy="30" r="5.4"></circle><circle class="k" cx="202" cy="14" r="4.6"></circle><circle class="n" cx="234" cy="14" r="4"></circle></svg></span>
+          <span class="mini"><i class="key"></i><i></i><i class="on"></i><i></i><i class="bot"></i><i></i><i class="bot"></i><i class="bot"></i><i></i><i class="key"></i><i></i><i></i></span>
           <h4>도시·군관리계획 결정</h4>
           <div class="law">국토의 계획 및 이용에 관한 법률 제24조 · 제30조</div>
           <div class="st"><span>노드 16</span><span>병목 4</span><span>회귀 2</span></div>
         </a>
         <a class="wf" href="bible.html?tab=overview&amp;ov=flow&amp;wf=8">
-          <span class="mini"><svg viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="M6 28 H52 H100 V14 H148 V30 H198 H234"></path><path class="rt" d="M198 37 H100"></path><path class="lnb" d="M6 28 H52 H100 V14"></path><circle class="n" cx="6" cy="28" r="4"></circle><circle class="b" cx="52" cy="28" r="5.4"></circle><circle class="b" cx="100" cy="28" r="5.4"></circle><circle class="k" cx="148" cy="14" r="4.6"></circle><circle class="b" cx="198" cy="30" r="5.4"></circle><circle class="k" cx="234" cy="30" r="4.6"></circle></svg></span>
+          <span class="mini"><i class="on"></i><i></i><i class="bot"></i><i class="bot"></i><i></i><i class="key"></i><i></i><i class="bot"></i><i></i><i></i><i class="key"></i><i></i></span>
           <h4>환경영향평가 협의</h4>
           <div class="law">환경영향평가법 제24조 · 제28조 · 제30조</div>
           <div class="st"><span>노드 16</span><span>병목 4</span><span>회귀 2</span></div>

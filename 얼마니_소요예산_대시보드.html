@@ -219,7 +219,7 @@
   .a4 thead th{background:#f1f1ef;color:#444;font-weight:700;border-bottom:.5px solid #b9b9b6}
   .a4 tbody tr:nth-child(even){background:transparent}
 </style>
-<script src="sisul_danga_2026.js"></script>
+<script src="sisul_danga_2027.js"></script>
 </head>
 <body>
 <header><div class="hd">
@@ -298,7 +298,7 @@
   </section>
 
   <section>
-    <h2 class="sec-title"><span class="n">2</span>시설비 산출<small>2026 시설단가 · 금액단위 천원</small></h2>
+    <h2 class="sec-title"><span class="n">2</span>시설비 산출<small>2027 시설단가 · 금액단위 천원</small></h2>
     <div class="card">
       <div class="danga-grid">
         <div class="fld"><label>구분</label><select id="dCat"></select></div>
@@ -570,7 +570,7 @@ function exportXls(o){
 
   var sumRow=0;
   if(LINES.length){
-    R_(cS('String','시설비 내역  (2026 시설단가'+(add?' · 지역 가산 +'+add+'%':'')+')','sSec',null,6), 22);
+    R_(cS('String','시설비 내역  (2027 시설단가'+(add?' · 지역 가산 +'+add+'%':'')+')','sSec',null,6), 22);
     R_(cS('String','구분','sHead')+cS('String','항목 · 규격','sHead')+cS('String','단가(천원)','sHead')
       +cS('String','단위','sHead')+cS('String','수량','sHead')+cS('String','금액(원)','sHead'), 20);
     var first=r+1;
@@ -757,10 +757,10 @@ function typeHint(){
   };
 })();
 
-/* ===== 2026 시설단가 — 시설비 산출 ===== */
+/* ===== 2027 시설단가 — 시설비 산출 ===== */
 var LINES = [];
 (function(){
-  var P = window.PRICE2026;
+  var P = window.PRICE2027;
   if(!P){ document.getElementById('dFoot').textContent='시설단가 데이터를 불러오지 못했습니다.'; return; }
   var cat=document.getElementById('dCat'), item=document.getElementById('dItem'), spec=document.getElementById('dSpec');
   cat.innerHTML = P.cats.map(function(c,i){ return '<option value="'+i+'">'+c.cat+'</option>'; }).join('');
@@ -924,7 +924,7 @@ function openPreview(o){
 
 function MU2(u){ return ['㎡','m','㎥'].indexOf(u)>=0 ? u : '㎡'; }
 function lookupBase(cat, nm){
-  var P=window.PRICE2026; if(!P) return 0;
+  var P=window.PRICE2027; if(!P) return 0;
   for(var i=0;i<P.cats.length;i++){ var c=P.cats[i]; if(c.cat!==cat) continue;
     for(var j=0;j<c.items.length;j++){ var it=c.items[j];
       for(var k=0;k<it.rows.length;k++){ var r=it.rows[k];

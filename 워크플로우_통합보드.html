@@ -8,6 +8,24 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<template id="__bundler_thumbnail" data-bg-color="#ffffff">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#ffffff"/>
+    <rect x="120" y="150" width="220" height="500" fill="none" stroke="#000" stroke-width="6"/>
+    <g fill="#000">
+      <rect x="150" y="200" width="150" height="14"/><rect x="150" y="270" width="120" height="14"/>
+      <rect x="150" y="340" width="140" height="14"/><rect x="150" y="410" width="110" height="14"/>
+    </g>
+    <g stroke="#000" stroke-width="6" fill="none">
+      <rect x="420" y="200" width="200" height="110"/>
+      <rect x="740" y="200" width="200" height="110"/>
+      <rect x="420" y="430" width="200" height="110"/>
+      <rect x="740" y="430" width="200" height="110"/>
+      <path d="M620 255 H740"/><path d="M840 310 V430"/><path d="M620 485 H740"/>
+    </g>
+    <rect x="420" y="620" width="520" height="10" fill="#000" opacity=".3"/>
+  </svg>
+</template>
 <style>
 :root{
   --bg:#fff; --panel:#fff; --text:#000000; --divider:rgba(0,0,0,.52);
@@ -78,6 +96,9 @@ a{color:var(--a700)}
 .kick{font-family:var(--head);font-size:12px;font-weight:500;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
 h1{font-family:var(--head);font-size:34px;font-weight:600;letter-spacing:-.01em;line-height:1.1;margin-top:6px}
 .sub{font-size:13.5px;color:var(--muted);margin-top:7px}
+.htags{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.htags a{font-size:11.5px;font-weight:600;color:var(--muted);background:var(--key-bg);border:1px solid var(--divider);padding:3px 9px;text-decoration:none;white-space:nowrap}
+.htags a:hover{color:var(--a700);border-color:var(--a700)}
 .hd{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;padding:0 0 20px;border-bottom:1px solid var(--divider)}
 .hd .right{margin-left:auto;text-align:right;font-size:12.5px;color:var(--muted);line-height:1.6}
 .hd .right b{display:block;font-size:11.5px;color:var(--faint);font-weight:500}
@@ -173,6 +194,7 @@ body.focus #edges path.e.lit{opacity:.62;stroke-width:2;stroke-dasharray:7 6;ani
       <div class="kick" id="mKick"></div>
       <h1 id="mTitle"></h1>
       <div class="sub" id="mSub"></div>
+      <div class="htags" id="mTags"></div>
     </div>
     <div class="right" id="mRight"></div>
   </div>
@@ -209,9 +231,10 @@ body.focus #edges path.e.lit{opacity:.62;stroke-width:2;stroke-dasharray:7 6;ani
 <div id="panel"></div>
 
 <script src="wf_boards.js"></script>
+<script src="wf_tags.js"></script>
 <script>
 var TAGNM={lead:'선행',key:'핵심',bot:'병목',post:'후속'};
-var TABNM={cycle:'프로세스(Process)',change:'설계변경',extend:'공기연장',cm:'감리방식',safety:'안전사고',permit:'인허가',evalx:'엔지니어링평가',pre:'사전기획 적정성검토',pubrev:'공공건축심의',contest:'설계공모 운영',bid:'설계 입찰공고',order:'설계용역 발주',audit:'일상감사',advis:'기술자문위원회',ve:'설계경제성검토(VE)',dfs:'설계안전성검토(DfS)',precert:'예비인증 신청',dseval:'설계용역 평가',safecert:'교육시설 안전인증',report:'실정보고',prefin:'예비준공검사',finish:'준공검사'};
+var TABNM={cycle:'프로세스(Process)',change:'설계변경',extend:'공기연장',cm:'감리방식',safety:'안전사고',permit:'인허가',evalx:'엔지니어링평가',pre:'사전기획 적정성검토',pubrev:'공공건축심의',contest:'설계공모 운영',bid:'설계 입찰공고',order:'설계용역 발주',audit:'일상감사',advis:'기술자문위원회',ve:'설계경제성검토(VE)',dfs:'설계안전성검토(DfS)',precert:'예비인증 신청',dseval:'설계용역 평가',safecert:'교육시설 안전인증',report:'실정보고',prefin:'예비준공검사',finish:'준공검사',demol:'해체계획서 작성·검토',indirect:'공기연장 간접공사비',fmsafe:'시설물 안전·유지관리',subcon:'건설공사 하도급 심사'};
 var B=null, KEY='wfUnifiedBoard', MKEY='wfUnifiedMode';
 
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
@@ -233,6 +256,10 @@ function load(k){
   document.getElementById('mTitle').textContent=B.title;
   document.getElementById('mSub').textContent=B.sub;
   document.getElementById('mRight').innerHTML=B.right;
+  var tg=(window.WF_TAGS&&WF_TAGS[k])||[];
+  document.getElementById('mTags').innerHTML=tg.map(function(t){
+    return '<a href="bible.html#tag='+encodeURIComponent(t)+'" target="_blank" rel="noopener noreferrer" title="치트키에서 #'+esc(t)+' 검색">#'+esc(t)+'</a>';
+  }).join('');
   var bots=B.NODES.filter(function(n){return n.k==='bot';}).length;
   var back=B.EDGES.filter(function(e){return !!e[2];}).length;
   document.getElementById('stats').innerHTML=
@@ -304,7 +331,7 @@ function draw(){
       var dt=document.createElementNS('http://www.w3.org/2000/svg','circle');
       dt.setAttribute('class','mdot'); dt.setAttribute('r','3'); dt.setAttribute('fill',cD); dt.setAttribute('pointer-events','none');
       var am=document.createElementNS('http://www.w3.org/2000/svg','animateMotion');
-      am.setAttribute('dur','6s'); am.setAttribute('repeatCount','indefinite'); am.setAttribute('path',d);
+      am.setAttribute('dur','11s'); am.setAttribute('repeatCount','indefinite'); am.setAttribute('path',d);
       am.setAttribute('begin',(((svg.__mdotN=(svg.__mdotN||0)+1)%8)*0.9)+'s');
       dt.appendChild(am); svg.appendChild(dt);
     }
@@ -444,6 +471,7 @@ function soon(){
     [].forEach.call(document.querySelectorAll('#modes button'),function(x){x.classList.toggle('on',x===mb);}); }
   var k='cycle'; try{k=localStorage.getItem(KEY)||'cycle';}catch(_){}
   try{ var qb=new URLSearchParams(location.search).get('board'); if(qb) k=qb; }catch(_){}
+  try{ var hb=decodeURIComponent((location.hash||'').replace(/^#/,'')); if(hb&&WF_BOARDS[hb]) k=hb; }catch(_){}
   if(!WF_BOARDS[k]) k='cycle';
   load(k);
 })();

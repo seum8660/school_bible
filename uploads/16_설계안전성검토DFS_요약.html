@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>설계의 안전성 검토(DFS) — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:14mm 12mm 0 12mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }   /* 잘라내지 않음 — overflow:hidden 금지 */
+
+  .title{ margin:0; font-size:13.1pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:6pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:7.9pt; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.7pt; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.7pt; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:7pt; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6pt; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:6pt; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+.page{ width:210mm; min-height:297mm; padding:14mm 12mm; page-break-after:always; box-sizing:border-box; }
+.page:last-child{ page-break-after:auto; }
+.pageno{ text-align:center; font-size:5.7pt; color:var(--note); margin-top:2mm; }
+@media screen{
+  body{ background:#e5e7eb; }
+  .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 3mm rgba(0,0,0,0.15); }
+}
+</style></head><body>
+<div class="page">
+<h1 class="title">설계의 안전성 검토(DFS) ① — 제도개요·대상</h1>
+<p class="meta">건설안전관리 ｜ 「건설기술진흥법」 제62조⑱·시행령 제75조의2 ｜ 건설공사 안전관리 종합정보망(국토안전관리원)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 제도 개요</span>
+    <ul class="list">
+      <li><b class="term">설계의 안전성 검토(DFS)</b> — 시공 중 위험요소를 설계단계에서 사전 발굴·평가</li>
+      <li>위험성평가 실시 및 저감대책 수립 후 설계에 반영</li>
+      <li>목적 — 기획·설계·시공·유지관리 전 과정 안전관리체계 구축</li>
+      <li>시공 전 설계단계부터 건설안전 선제적 관리 지향</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 법적 근거</span>
+    <ul class="list">
+      <li><b class="term">법 제62조⑱</b> — 발주청은 설계 안전성 검토 후 결과를 국토교통부장관에 제출</li>
+      <li><b class="term">시행령 제75조의2①</b> — 안전관리계획 수립대상 실시설계시 검토 의뢰 의무</li>
+      <li>동조② — 위험요소·저감대책·시공법 등 포함한 보고서 제출 의무</li>
+      <li>검토시기 — 설계도면·시방서·구조계산서 완료시점 원칙</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 검토대상 판단기준</span>
+    <div class="formula">안전관리계획 수립대상(시행령 제98조①) 중 <span class="num">발주청 발주</span> 실시설계 → 아래 요건 해당시 검토대상
+      <span class="sub">건설기계 사용 공사(시행령 제98조①5호)는 제외(2019.7.1. 시행)</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>1·2종 시설물 건설공사(「시설물안전법」 제2조2·3호), 지하 10m 이상 굴착공사</li>
+      <li><span class="no">②</span>폭발물 사용으로 주변(20m 내 시설물, 100m 내 가축사육) 영향 예상 공사</li>
+      <li><span class="no">③</span>10층 이상 16층 미만 건축물 건설공사, 10층 이상 건축물 리모델링·해체공사</li>
+      <li><span class="no">④</span>수직증축형 리모델링(「주택법」 제2조25호다목), 가설구조물 사용 공사, 기타 발주자·조례 지정 공사</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 가설구조물 대상 ①</span>
+    <ul class="list">
+      <li><b class="term">비계</b> — 높이 31m 이상 비계, 브라켓(bracket) 비계</li>
+      <li><b class="term">거푸집·동바리</b> — 작업발판 일체형(갱폼 등), 높이 5m 이상</li>
+      <li><b class="term">지보공</b> — 터널 지보공, 높이 2m 이상 흙막이 지보공</li>
+      <li>동력이용 이동식 가설구조물(FCM F/T, ILM 노즈 등)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 가설구조물 대상 ②</span>
+    <ul class="list">
+      <li>높이 10m 이상 외부작업용 작업발판·안전시설 일체형(SWC, ACS, RCS 등)</li>
+      <li>현장 제작·조립 복합형 가설구조물(가설벤트, 작업대차, 라이닝폼 등)</li>
+      <li>발주자 또는 인·허가기관의 장이 필요 인정 가설구조물</li>
+      <li>상기 가설구조물 대상기준은 2020.5.27.부터 시행</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>검토의뢰 대상 근거</b> 시행령 제98조제1항</span>
+      <span class="chip"><b>지하굴착 기준</b> 10m 이상</span>
+      <span class="chip"><b>폭발물 영향범위</b> 시설물 20m·가축 100m</span>
+      <span class="chip"><b>건축물 신축 규모</b> 10층 이상 16층 미만</span>
+      <span class="chip"><b>가설구조물 기준</b> 2020.5.27. 시행</span>
+      <span class="chip"><b>건설기계 제외</b> 2019.7.1. 시행</span>
+      <span class="chip"><b>근거법령</b> 법 제62조⑱·시행령 제75조의2</span>
+    </div>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">7 · 1종·2종·3종 시설물 정의(「시설물안전법」 제7조)</span>
+    <ol class="nlist">
+      <li><span class="no">①</span><b class="term">1종시설물</b> — 연장 500m 이상 도로·철도 교량, 연장 1,000m 이상 도로·철도 터널, 21층 이상 또는 연면적 5만㎡ 이상 건축물, 다목적댐·발전용댐 등 고도의 기술관리가 필요한 대규모 시설물</li>
+      <li><span class="no">②</span><b class="term">2종시설물</b> — 연장 100m 이상 도로·철도 교량, 고속·일반국도 등 도로터널, 16층 이상 또는 연면적 3만㎡ 이상 건축물, 방파제(연장 500m 이상) 등 계속적 관리가 필요한 시설물</li>
+      <li><span class="no">③</span><b class="term">3종시설물</b> — 1·2종 외 안전관리가 필요한 소규모 시설물로서 지정·고시된 시설물(법 제8조)</li>
+      <li><span class="no">④</span>구분기준 — 공중이용 편의·안전, 재난위험도, 관리 필요성 등을 종합고려하여 대통령령(시행령 별표1)으로 세부 지정</li>
+    </ol>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">본 요약은 건설공사 안전관리 종합정보망(CSI) 게재자료 및 「시설물안전법」 제7조 기준. 세부 대상판단은 발주청·국토안전관리원 문의 요함.</p>
+<p class="pageno">1 / 2</p>
+</div>
+<div class="page">
+<h1 class="title">설계의 안전성 검토(DFS) ② — 처리절차·비용·벌칙</h1>
+<p class="meta">건설안전관리 ｜ 「건설공사 안전관리 업무수행지침」 제6조 등 ｜ 건설공사 안전관리 종합정보망(국토안전관리원)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 참여자별 업무 — 발주자</span>
+    <ul class="list">
+      <li>사업단계 — 대상공사 확인, 위험요소·저감대책 발굴</li>
+      <li>설계발주단계 — 설계조건 작성, 검토 목표 수립</li>
+      <li>설계시행단계 — 검토시기·일정 협의, 워크숍 참여, 설계도서 확인</li>
+      <li>승인 후 국토교통부 제출·보관, 이행결과 확인</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 참여자별 업무 — 설계자 등</span>
+    <ul class="list">
+      <li><b class="term">설계자</b> — 검토팀 구성, 위험요소 인식·평가, 저감대책 설계 반영</li>
+      <li><b class="term">설계자</b> — 결과 기록, 보고서 제출·보완, 최종보고서 제출</li>
+      <li><b class="term">건설사업관리기술자</b> — 최종보고서 안전관리문서 반영·이행 확인</li>
+      <li><b class="term">시공자</b> — 안전관리문서 작성·제출, 잔존위험요소 대책 이행</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 검토처리절차</span>
+    <div class="formula">설계자 작성·제출 → 발주청 → 국토안전관리원 검토 → <span class="num">20일</span> 이내 통보 → 승인/보완 → <span class="num">착공 전</span> 국토교통부 제출
+      <span class="sub">부적정·조건부적정시 설계자 보완 요청, 승인시 보고서 제출·정보망 기록</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>국토안전관리원 — 의뢰받은 날부터 20일 이내 검토, 결과를 발주청에 통보(시행령 제75조의2③)</li>
+      <li><span class="no">②</span>발주청 — 개선 필요시 설계도서 보완·변경 등 조치(동조④)</li>
+      <li><span class="no">③</span>발주청 — 검토 결과를 착공 전 국토교통부장관에게 제출(동조⑤)</li>
+      <li><span class="no">④</span>검토비용 — 발주청이 부담(「건설공사 안전관리 업무수행지침」 제6조)</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 신규·재검토의뢰 절차</span>
+    <ul class="list">
+      <li><b class="term">신규검토의뢰</b> — 정보망에 보고서 업로드·검토비용 납부</li>
+      <li>작성적정성·HRA 선정적정성 검토 후 공문·검토의견서 회신</li>
+      <li><b class="term">재검토의뢰</b> — 보완자료·조치결과서 업로드</li>
+      <li>보완자료 검토 후 공문·검토의견서 회신</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 검토비용·벌칙</span>
+    <ul class="list">
+      <li><b class="term">검토비용</b>(VAT별도) — 300억 미만 200만원/건</li>
+      <li>300억~500억 330만원/건, 500억 초과 470만원/건</li>
+      <li><b class="term">미실시</b> — 1천만원 이하 과태료(법 제91조②3의3)</li>
+      <li><b class="term">미제출·거짓제출</b> — 300만원 이하 과태료(법 제91조③15)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>검토기한</b> 의뢰일로부터 20일 이내</span>
+      <span class="chip"><b>검토비용</b> 300억 미만 200만원</span>
+      <span class="chip"><b>검토비용</b> 300~500억 330만원</span>
+      <span class="chip"><b>검토비용</b> 500억 초과 470만원</span>
+      <span class="chip"><b>결과제출</b> 착공 전 국토교통부</span>
+      <span class="chip"><b>미실시 과태료</b> 1천만원 이하</span>
+      <span class="chip"><b>미제출·거짓제출</b> 300만원 이하</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">제도시행 — '16.5.19. 시행령 신설 → '16.10. 업무수행지침 고시 → '18.12. 법 제62조⑱ 신설. 세부 서식·절차는 국토안전관리원 지침을 따름.</p>
+<p class="pageno">2 / 2</p>
+</div>
+</body></html>

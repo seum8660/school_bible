@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>교육시설안전 인증 자체평가서 매뉴얼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:14mm 12mm 0 12mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }   /* 잘라내지 않음 — overflow:hidden 금지 */
+
+  .title{ margin:0; font-size:13.1pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:6pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:7.9pt; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.7pt; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.7pt; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:7pt; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6pt; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:6pt; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+.page{ width:210mm; min-height:297mm; padding:14mm 12mm; page-break-after:always; }
+.page:last-child{ page-break-after:auto; }
+.pageno{ text-align:center; font-size:5.7pt; color:var(--note); margin-top:2mm; }
+@media screen{
+  body{ background:#e5e7eb; }
+  .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,0.15); }
+}
+</style></head><body>
+<div class="page">
+<h1 class="title">교육시설안전 인증 자체평가서 매뉴얼 ① — 인증제도 개요·절차</h1>
+<p class="meta">시설안전 ｜ 교육시설법 제11조·시행령 제13·14조·시행규칙 제2조 ｜ 교육부·교육시설안전 인증전문기관 협의회(2022.03)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 인증 대상 및 규모기준</span>
+    <ul class="list">
+      <li>유·초·중·고·특수학교: <span class="num">100㎡</span> 이상, 학교(유치원) 단위</li>
+      <li>학생수련원·도서관: <span class="num">1,000㎡</span> 이상, 기관 단위</li>
+      <li>대학시설 등: <span class="num">3,000㎡</span> 이상, 건축물 단위</li>
+      <li>재인증 대상: <span class="num">500㎡</span> 이상 증축·개축·재축 시</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 인증 등급 및 유효기간</span>
+    <ul class="list">
+      <li>등급 구분: 최우수·우수 <span class="num">2개</span> 등급</li>
+      <li>최우수 유효기간: <span class="num">10년</span></li>
+      <li>우수 유효기간: <span class="num">5년</span></li>
+      <li>재인증 신청: 사용승인 후 <span class="num">2년</span> 이내</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 인증 절차 타임라인</span>
+    <div class="formula">
+      자체평가서 작성 → 인증 신청·접수 → 서류심사(<span class="num">40일</span>, +<span class="num">20일</span> 연장) → 현장심사 → 인증심의 → 본인증서·명판 발급
+      <span class="sub">제출서류 보완 기간은 처리기간에 산입하지 아니함</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>자체평가서 작성: 신청기관(교육시설의 장)이 시설·실내환경·외부환경안전 기준을 자체 확인함</li>
+      <li><span class="no">②</span>서류심사: 인증기관은 접수일로부터 <span class="num">40일</span> 이내 처리하며, 불가피 시 <span class="num">20일</span> 범위에서 1회 연장 가능함</li>
+      <li><span class="no">③</span>현장심사·심의: 인증전문기관 심사단이 현장심사 후 인증심의위원회가 인증 여부·등급을 결정함</li>
+      <li><span class="no">④</span>신청 시기: 기 인증결과가 있으면 유효기간 만료 <span class="num">6개월</span> 전, 신·증축은 사용승인 후 <span class="num">2년</span> 이내 신청함</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 인증 신청서류</span>
+    <ul class="list">
+      <li>교육시설안전인증 신청서(별지 제1호서식)</li>
+      <li>인증 기준에 따라 작성한 자체평가서(Excel)</li>
+      <li>인증 사실을 증명할 수 있는 서류</li>
+      <li>예비인증서 사본(예비인증 취득 시만 해당)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 인증전문기관(7개소)</span>
+    <ul class="list">
+      <li>대표기관: (사)한국교육녹색환경연구원</li>
+      <li>(사)대한산업안전협회 · (사)한국건물에너지기술원</li>
+      <li>(사)한국환경건축연구원 · (재)한국건설생활환경시험연구원</li>
+      <li>한국부동산원 · 한국생산성본부인증원</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 요약</span>
+    <div class="chips">
+      <span class="chip"><b>처리기한</b> 40일(+20일)</span>
+      <span class="chip"><b>최우수</b> 10년</span>
+      <span class="chip"><b>우수</b> 5년</span>
+      <span class="chip"><b>학교기준</b> 100㎡↑</span>
+      <span class="chip"><b>수련원·도서관</b> 1,000㎡↑</span>
+      <span class="chip"><b>대학시설</b> 3,000㎡↑</span>
+      <span class="chip"><b>재인증대상</b> 500㎡↑ 증축</span>
+      <span class="chip"><b>재인증신청</b> 사용승인 후 2년내</span>
+      <span class="chip"><b>근거고시</b> 교육부고시 제2021-16호</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">「교육시설 등의 안전 및 유지관리 등에 관한 법률」 제11조·시행령 제13·14조·시행규칙 제2조, 「교육시설안전 인증 운영 규정」(교육부고시 제2021-16호) 기준임. 세부 서식·개정 여부는 원문 확인 요함.</p>
+<p class="pageno">1 / 2</p>
+</div>
+<div class="page">
+<h1 class="title">교육시설안전 인증 자체평가서 매뉴얼 ② — 자체평가서 작성 실무</h1>
+<p class="meta">시설안전 ｜ 자체평가서_2022 Version ｜ 교육부·교육시설안전 인증전문기관 협의회(2022.03)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 자체평가서 시트 구성</span>
+    <ul class="list">
+      <li>갑지: 표지·점수 자동표기, 작성자·확인자 기재</li>
+      <li>시설현황: 건물별 현황 및 제출서류 체크</li>
+      <li>공통사항평가: 건물현황·외부현황(예/아니오/해당없음)</li>
+      <li>개별평가: 건물동별 체크(연면적 비율 자동 산정)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 2022버전 간소화 변경사항</span>
+    <ul class="list">
+      <li>평가문항: <span class="num">200개</span> → <span class="num">49개</span>로 축소</li>
+      <li>첨부서류: 최소 50개 → 최대 <span class="num">20개</span>로 통합</li>
+      <li>제출방식: 한글(HWP) → Excel 자가진단 후 출력 제출</li>
+      <li>유의: 자체평가 점수는 최종 인증결과와 상이할 수 있음</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 필수 제출서류 핵심</span>
+    <div class="formula">
+      내진현황·계절별 점검 → 유지관리 용역 점검결과(최근 1년) → 안전점검의 날(매월 4일) → 안전교육 실적보고
+      <span class="sub">공통서류는 최근 1년, 안전점검의 날·출입대장은 최근 3개월 자료 제출</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>공통서류: 에듀빌 내진시설현황, 정기안전점검표(해빙기·여름철·겨울철), 유지관리 용역 점검결과(소방·전기·가스·승강기 등, 최근 1년)</li>
+      <li><span class="no">②</span>관리기록: 안전점검의 날 체크리스트(최근 3개월), 에어컨·정화조·물탱크 청소기록, 기계실 유지관리 매뉴얼</li>
+      <li><span class="no">③</span>계획·교육: 학교안전사고 예방계획서, 학생·교직원 안전교육 실적보고(교육지원청 보고 공문)</li>
+      <li><span class="no">④</span>전용서류: (학교) 불법촬영장비 점검결과서 / (유치원) 어린이안전관리 담당자 교육·놀이시설 안전교육 이수증</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 추가 제출서류(해당 시)</span>
+    <ul class="list">
+      <li>내부마감재 불연·준불연·난연 시험성적서</li>
+      <li>예비발전설비 운영유지관리계획서·점검일지</li>
+      <li>석면조사 결과보고서(2009.1.1. 이전 착공 건물)</li>
+      <li>운동장 유해성 검사결과서·어린이놀이시설 검사보고서</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 평가문항 체크 방식</span>
+    <ul class="list">
+      <li>공통사항평가: 예/아니오/해당없음 3지선다 체크</li>
+      <li>개별평가: 해당 건물동 체크, 전체동은 자동 연동</li>
+      <li>병설유치원: 학교 건물동 체크 시 유치원에 자동 연동</li>
+      <li>주의: 체크박스 미체크 시 점수 미반영됨</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 확인 포인트</span>
+    <div class="chips">
+      <span class="chip"><b>제출자료</b> 최근 1년/3개월</span>
+      <span class="chip"><b>안전점검의날</b> 매월 4일</span>
+      <span class="chip"><b>내진자료</b> 에듀빌 안전관리</span>
+      <span class="chip"><b>석면기준</b> 2009.1.1 이전 착공</span>
+      <span class="chip"><b>재인증</b> 500㎡↑ 증축</span>
+      <span class="chip"><b>학교전용</b> 불법촬영 점검</span>
+      <span class="chip"><b>유치원전용</b> 어린이안전교육</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">체크박스 미체크 시 점수가 반영되지 않으며, 세부 서식·수치는 원문 「자체평가서_2022 Version」 및 교육시설통합정보시스템(에듀빌) 확인 요함.</p>
+<p class="pageno">2 / 2</p>
+</div>
+</body></html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기상데이터 체크 — 공사기간 산정용</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --bg:#f6f5f4;--panel:#fff;--panel2:#f6f5f4;--surface-3:#efedeb;--line:#e6e6e6;
+    --text:#000;--ink-2:#31302e;--sub:#a39e98;--muted:#615d59;
+    --accent:#0075de;--accent-soft:#e7f1fc;--accent-line:#cfe4f9;--ops:#0075de;--ops-d:#0075de;--warn:#b3261e;
+    --radsm:8px;--mono:'Pretendard','Malgun Gothic',sans-serif;--sans:'Pretendard','Malgun Gothic',sans-serif;
+    --shadow:none;
+  }
+  [data-theme="dark"]{--bg:#191919;--panel:#202020;--panel2:#252525;--surface-3:#2c2c2c;
+    --line:#343434;--text:#e9e9e7;--ink-2:#d6d5d2;--sub:#8f8d88;--muted:#b4b2ad;--accent:#4a9eff;--accent-soft:rgba(74,158,255,.16);
+    --accent-line:rgba(74,158,255,.35);--ops:#4a9eff;--ops-d:#7ab8ff;--warn:#ff6b60;--shadow:none;}
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;transition:background .2s,color .2s}
+  .wrap{max-width:1080px;margin:0 auto;padding:26px 20px 60px}
+  header{background:var(--panel);border-bottom:1.5px solid var(--line);padding:18px 20px}
+  .hd{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px}
+  .hd h1{margin:0;font-size:20px;font-weight:900;letter-spacing:-.6px}
+  .hd p{margin:2px 0 0;font-size:12.5px;color:var(--sub)}
+  .hd .sp{flex:1}
+  .iconbtn{width:38px;height:38px;border-radius:10px;border:1.5px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer;font-size:15px}
+  .chip{display:inline-flex;align-items:center;font-size:12px;font-weight:800;color:#fff;background:var(--accent);border-radius:100px;padding:4px 12px}
+  .note{background:var(--accent-soft);border:1.5px solid var(--accent-line);border-radius:12px;padding:11px 15px;font-size:12.5px;color:var(--text);line-height:1.65;margin:14px 0}
+  .note b{color:var(--accent)}
+  .panel{background:var(--panel);border:1.5px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:20px;margin-bottom:18px}
+  .sec-h{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+  .sec-h h2{margin:0;font-size:17px;font-weight:800;letter-spacing:-.4px}
+  .sec-h p{margin:1px 0 0;font-size:12.5px;color:var(--sub)}
+  .form{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:720px){.form{grid-template-columns:1fr}}
+  .fld label{display:block;font-size:12.5px;font-weight:700;margin-bottom:6px}
+  .fld .u{font-size:11px;color:var(--sub);font-weight:600}
+  .fld select,.fld input{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font:inherit;font-size:13.5px;background:var(--panel);color:var(--text)}
+  .fld select:focus,.fld input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  input[type=date]{color:transparent}
+  input[type=date]::-webkit-datetime-edit{display:none}
+  input[type=date]::-webkit-inner-spin-button,input[type=date]::-webkit-clear-button{display:none}
+  input[type=date]::-webkit-calendar-picker-indicator{margin:0 auto;cursor:pointer;opacity:.85}
+  .hint{font-size:11px;color:var(--sub);margin-top:5px}
+  .kpi{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:14px}
+  @media(max-width:1024px){.kpi{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:720px){.kpi{grid-template-columns:repeat(2,1fr)}}
+  .kpi .c{background:var(--panel2);border:1.5px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:10px 8px;min-width:0;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:2px}
+  .kpi .c.on{border:2.5px solid var(--ops);border-left-width:6px;box-shadow:0 2px 10px rgba(18,184,134,.18)}
+  .kpi .c.on .nm{font-size:13.5px}
+  .kpi .c.on .vl{font-size:34px}
+  .kpi .c.on .vl span{font-size:15px}
+  .kpi .nm{font-size:13px;color:var(--sub);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+  .kpi .vl{font-size:30px;font-weight:900;letter-spacing:-1px;margin-top:0;font-family:var(--mono);line-height:1.15}
+  .kpi .vl span{font-size:14px;font-weight:700;color:var(--sub);margin-left:3px;font-family:var(--sans)}
+  .tw{overflow-x:auto;border:1.5px solid var(--line);border-radius:12px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{background:var(--accent-soft);color:var(--accent);font-weight:800;padding:9px 10px;text-align:center;border:1px solid var(--line);white-space:nowrap}
+  td{padding:8px 10px;text-align:center;border:1px solid var(--line);color:var(--text)}
+  tr:nth-child(even) td{background:var(--panel2)}
+  .tw th,.tw td{text-align:center!important}
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .btn{border:1.5px solid var(--line);background:var(--panel);color:var(--text);font:inherit;font-size:13px;font-weight:700;padding:9px 16px;border-radius:100px;cursor:pointer}
+  .btn.p{background:var(--accent);border-color:var(--accent);color:#fff}
+  @page{size:A4 portrait;margin:14mm 12mm}
+  @media print{header .iconbtn,.btnrow{display:none!important}body{background:#fff}.panel{break-inside:avoid;box-shadow:none}#wx-pv{display:none!important}}
+
+  @media print{
+    @page{size:A4 portrait;margin:10mm}
+    html,body{background:#fff!important}
+    .btn,.theme-toggle,#themeToggle,.form,.hint,select,input{}
+    .tw{max-height:none!important;overflow:visible!important}
+    .tw table{width:100%!important;font-size:8.5pt}
+    .tw th,.tw td{padding:3px 4px!important}
+    .kpi{grid-template-columns:repeat(6,1fr)!important}
+    .kpi .vl{font-size:16pt!important}
+    .kpi .c.on .vl{font-size:18pt!important}
+    .card,.sec-h,.kpi,.note{break-inside:avoid;page-break-inside:avoid}
+    tr{break-inside:avoid;page-break-inside:avoid}
+    thead{display:table-header-group}
+  }
+  /* ===== 노션 디자이너 가이드 적용 ===== */
+  header{border-bottom:1px solid var(--line);padding:24px 20px 20px;}
+  .hd h1{font-size:28px;font-weight:700;letter-spacing:-.03em;}
+  .hd p{font-size:14px;color:var(--muted);margin-top:6px;}
+  .iconbtn{width:32px;height:32px;border:1px solid var(--line);border-radius:6px;font-size:13px;color:var(--muted);}
+  .chip{background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:700;border-radius:4px;padding:2px 9px;}
+  .note{background:var(--surface-3);border:0;border-left:3px solid var(--warn);border-radius:var(--radsm);
+    padding:14px 16px;font-size:13.5px;color:var(--ink-2);}
+  .note b{color:var(--text);}
+  .panel{border:1px solid var(--line);border-radius:12px;box-shadow:none;padding:22px;margin-bottom:16px;}
+  .sec-h{gap:9px;margin-bottom:10px;}
+  .sec-h h2{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .sec-h p{font-size:12.5px;color:var(--sub);margin-top:2px;}
+  .fld label{font-size:11.5px;font-weight:700;letter-spacing:.02em;color:var(--sub);}
+  .fld select,.fld input{border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:13.5px;}
+  .fld select:focus,.fld input:focus{border-color:var(--accent);box-shadow:none;}
+  .hint{font-size:11.5px;color:var(--sub);}
+  .kpi{gap:10px;margin-bottom:16px;}
+  .kpi .c{background:var(--panel);border:1px solid var(--line);border-left:1px solid var(--line);
+    border-radius:12px;padding:13px 15px;text-align:left;gap:0;}
+  .kpi .c.on{border:1px solid var(--accent);background:var(--accent-soft);box-shadow:none;}
+  .kpi .nm{font-size:11.5px;font-weight:500;color:var(--sub);}
+  .kpi .c.on .nm{font-size:11.5px;color:var(--accent);}
+  .kpi .vl{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:4px;
+    font-variant-numeric:tabular-nums;font-family:var(--sans);}
+  .kpi .c.on .vl{font-size:24px;color:var(--accent);}
+  .kpi .vl span{font-size:12.5px;font-weight:500;color:var(--muted);}
+  .kpi .c.on .vl span{font-size:12.5px;color:var(--accent);}
+  .tw{border:1px solid var(--line);border-radius:12px;}
+  table{font-size:13px;}
+  th{background:var(--panel2);color:var(--sub);font-size:11.5px;font-weight:700;border:0;
+    border-bottom:1px solid var(--line);padding:10px 12px;}
+  td{border:0;border-bottom:1px solid var(--line);padding:11px 12px;color:var(--ink-2);
+    font-variant-numeric:tabular-nums;}
+  tr:nth-child(even) td{background:transparent;}
+  tbody tr:hover td{background:var(--panel2);}
+  tfoot td{background:var(--panel2)!important;border-top:1px solid var(--line)!important;font-weight:700;color:var(--text);}
+  .btn{border:1px solid var(--line);font-size:12.5px;font-weight:500;padding:8px 14px;color:var(--muted);}
+  .btn:hover{background:var(--surface-3);color:var(--text);}
+  .btn.p{background:var(--text);border-color:var(--text);color:var(--panel);font-weight:700;}
+  /* 페이지형 문서 레이아웃 (제안 적용) */
+  header{background:none;border-bottom:0;padding:0;}
+  .hd{max-width:1060px;padding:44px 36px 0;align-items:flex-start;}
+  .crumb{display:flex;gap:6px;font-size:12.5px;color:var(--sub);margin-bottom:18px;}
+  .crumb a{color:var(--sub);text-decoration:none;}
+  .crumb a:hover{color:var(--accent);}
+  .hd .chip{display:none;}
+  .lead{color:var(--muted);font-size:14.5px;margin-top:8px;}
+  .pmeta{max-width:1060px;margin:0 auto;padding:16px 36px 0;display:flex;flex-wrap:wrap;gap:18px;font-size:13px;}
+  .pmeta div{display:flex;gap:10px;align-items:baseline;}
+  .pmeta .lb{color:var(--sub);} .pmeta .vl{color:var(--ink-2);font-weight:500;}
+  .wrap{max-width:1060px;padding:0 36px 72px;}
+  .wrap>.panel:first-child{border-top:1px solid var(--line);padding-top:22px;}
+  .panel{border:0;border-radius:0;padding:0;margin-bottom:32px;background:none;}
+  .sec-h .chip{display:none;}
+  .sec-h{align-items:baseline;}
+  .form{grid-template-columns:repeat(4,1fr);}
+  @media(max-width:860px){.form{grid-template-columns:repeat(2,1fr);}}
+  .btnrow{justify-content:flex-end;gap:6px;margin-top:14px;}
+  @media(max-width:700px){.hd{padding:28px 16px 0;}.pmeta{padding:14px 16px 0;}.wrap{padding:0 16px 56px;}.hd h1{font-size:24px;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd">
+    <div style="flex:1;min-width:0">
+      <div class="crumb"><a href="bible_notion.html" target="_top">학교시설업무 치트키 · SCHOOL BIBLE</a><span>/</span><a href="bible_notion.html?tab=wx" target="_top">실무</a><span>/</span><span style="color:var(--ink-2)">기상데이터 체크</span></div>
+      <h1>기상데이터 체크</h1>
+      <p class="lead">기상청 ASOS 일자료 기반 비작업일수 산정 — 공사기간 산출·계약기간 연장 검토용</p>
+    </div>
+    <button class="iconbtn" id="themeBtn" title="라이트 / 다크">☾</button>
+  </div>
+</header>
+<div class="pmeta">
+  <div><span class="lb">자료</span><span class="vl">기상청 ASOS 일자료</span></div>
+  <div><span class="lb">대상</span><span class="vl">전남·광주 관측지점</span></div>
+  <div><span class="lb">기준값</span><span class="vl">강수 10mm · 강풍 10m/s · 혹서 33℃ · 혹한 −5℃</span></div>
+</div>
+
+<div class="wrap">
+  <div class="panel">
+    <div class="form">
+      <div class="fld"><label>지역</label>
+        <select id="wx-region">
+          <option>광주</option><option selected>목포</option><option>여수</option><option>순천</option>
+          <option>장흥</option><option>해남</option><option>고흥</option><option>완도</option><option>진도</option><option>흑산도</option>
+        </select><div class="hint">전남·광주 관측지점</div></div>
+      <div class="fld"><label>조회 시작일</label>
+        <div style="display:flex;gap:6px">
+          <input type="text" id="wx-from-t" placeholder="2026-05-08" inputmode="numeric" style="flex:1;min-width:0">
+          <input type="date" id="wx-from" style="width:44px;flex:0 0 44px;padding:9px 4px" title="달력으로 선택">
+        </div><div class="hint">직접 입력(2026-05-08) 또는 달력 선택</div></div>
+      <div class="fld"><label>조회 종료일</label>
+        <div style="display:flex;gap:6px">
+          <input type="text" id="wx-to-t" placeholder="2026-12-31" inputmode="numeric" style="flex:1;min-width:0">
+          <input type="date" id="wx-to" style="width:44px;flex:0 0 44px;padding:9px 4px" title="달력으로 선택">
+        </div><div class="hint">직접 입력(2026-12-31) 또는 달력 선택</div></div>
+      <div class="fld"><label>데이터 소스</label>
+        <select id="wx-src">
+          <option value="api">기상청 API (실측값)</option>
+          <option value="norm">평년값 (1991~2020)</option>
+        </select><div class="hint">API는 과거 기간만 조회 가능</div></div>
+    </div>
+    <div class="btnrow">
+      <button class="btn" onclick="resetWx()">↺ 초기화</button>
+      <button class="btn" onclick="wxPreview()">PDF 미리보기</button>
+      <button class="btn p" onclick="window.print()">인쇄 · PDF</button>
+    </div>
+    <div id="wx-pv" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(20,22,30,.72);overflow:auto;padding:0 0 40px">
+      <div style="position:sticky;top:0;display:flex;gap:8px;justify-content:center;align-items:center;padding:12px;background:rgba(20,22,30,.9);backdrop-filter:blur(6px)">
+        <span style="color:#fff;font-weight:800;font-size:14px;margin-right:8px">PDF 미리보기 (A4)</span>
+        <button class="btn p" onclick="window.print()">PDF 출력하기</button>
+        <button class="btn" onclick="wxPreviewClose()">닫기</button>
+      </div>
+      <div id="wx-pv-body" style="display:flex;flex-direction:column;align-items:center;gap:18px;padding:18px 12px"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="wx-result"></div>
+
+  <div class="panel">
+    <div class="sec-h"><span class="chip" style="background:var(--ops)">기준</span>
+      <div><h2>작업제한 기상조건</h2><p>공종별 작업 불가 판단 기준</p></div></div>
+    <div class="tw">
+      <table><thead><tr><th style="text-align:left">공종</th><th>강우</th><th>강설</th><th>혹한</th><th>혹서</th><th>강풍</th></tr></thead>
+      <tbody>
+        <tr><td style="text-align:left;font-weight:700">토공사</td><td>10mm↑</td><td>10mm↑</td><td>−5℃ 이하</td><td>33℃ 이상</td><td>10m/s↑</td></tr>
+        <tr><td style="text-align:left;font-weight:700">철근콘크리트</td><td>5mm↑</td><td>5mm↑</td><td>0℃ 이하</td><td>33℃ 이상</td><td>10m/s↑</td></tr>
+        <tr><td style="text-align:left;font-weight:700">철골공사</td><td>10mm↑</td><td>10mm↑</td><td>−5℃ 이하</td><td>33℃ 이상</td><td>10m/s↑</td></tr>
+        <tr><td style="text-align:left;font-weight:700">도장·방수</td><td>1mm↑</td><td>1mm↑</td><td>5℃ 이하</td><td>33℃ 이상</td><td>10m/s↑</td></tr>
+        <tr><td style="text-align:left;font-weight:700">조적·미장</td><td>5mm↑</td><td>5mm↑</td><td>0℃ 이하</td><td>33℃ 이상</td><td>—</td></tr>
+        <tr><td style="text-align:left;font-weight:700">지붕·외장</td><td>5mm↑</td><td>5mm↑</td><td>−5℃ 이하</td><td>33℃ 이상</td><td>10m/s↑</td></tr>
+      </tbody></table>
+    </div>
+    <div class="note" style="margin-bottom:0">⚠ 산출된 비작업일수는 <b>참고값</b>입니다. 실제 산정 시 기상청 관측자료(최근 10년)와 현장 여건을 반영하고, <b>공사기간 산출</b> 대시보드에서 최종 검토하세요.</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const root=document.documentElement;
+  try{ if(localStorage.getItem('wx-theme')==='dark') root.setAttribute('data-theme','dark'); }catch(e){}
+  document.getElementById('themeBtn').addEventListener('click',()=>{
+    const d=root.getAttribute('data-theme')==='dark';
+    if(d)root.removeAttribute('data-theme'); else root.setAttribute('data-theme','dark');
+    try{localStorage.setItem('wx-theme',d?'light':'dark');}catch(e){}
+  });
+
+  const WX={
+    '광주':[9,8,9,8,9,10,15,13,9,6,8,9],'목포':[10,9,9,8,9,10,14,12,9,6,9,10],
+    '여수':[10,9,10,9,10,11,15,13,9,6,8,10],'순천':[9,8,9,8,9,11,15,13,9,6,8,9],
+    '장흥':[9,8,9,8,9,11,15,13,9,6,8,9],'해남':[10,9,9,8,9,10,14,12,9,6,8,10],
+    '고흥':[10,9,9,8,9,11,15,13,9,6,8,10],'완도':[11,10,10,9,10,11,15,13,9,7,9,11],
+    '진도':[11,10,10,9,10,11,14,12,9,7,9,11],'흑산도':[13,12,12,10,11,12,15,13,10,8,11,13]
+  };
+  const HOL=[3,2,2,2,2,1,0,2,3,3,1,2];
+  // 기상청 평년값(1991~2020) — 월별 [강수일수, 강풍일수(10m/s↑), 평균최고기온, 평균최저기온]
+  const CLI={
+    '광주':[[9.6,1.2,5.6,-2.1],[8.4,1.4,8.4,-0.4],[9.4,1.6,13.9,3.7],[8.7,1.3,20.1,9.3],[8.9,1.0,24.9,14.5],[10.4,0.8,28.0,19.5],[15.3,0.7,29.5,23.2],[13.4,0.8,30.6,23.9],[8.9,0.7,26.9,19.0],[6.1,0.6,21.8,11.9],[8.5,1.0,14.4,5.2],[9.2,1.2,8.0,-0.4]],
+    '목포':[[10.2,3.4,4.8,-1.0],[8.8,3.6,7.2,0.6],[9.3,3.8,12.1,4.5],[8.4,3.0,17.8,9.7],[8.7,2.4,22.5,14.8],[10.1,2.0,25.7,19.3],[14.4,1.8,28.0,23.2],[12.3,2.0,29.6,24.0],[8.6,1.9,26.2,19.6],[6.0,2.2,21.4,13.1],[8.9,2.8,14.1,6.3],[9.8,3.2,7.5,0.8]],
+    '여수':[[9.8,3.0,6.4,-0.2],[8.6,3.2,8.5,1.2],[9.9,3.4,12.7,5.0],[9.2,2.8,17.9,9.9],[9.6,2.2,22.0,14.6],[11.2,1.9,24.7,18.8],[14.6,1.7,27.3,22.6],[12.7,1.8,29.3,23.9],[9.1,1.9,26.3,20.0],[5.9,2.0,21.9,14.0],[8.3,2.6,15.1,7.3],[9.5,2.8,9.1,1.8]],
+    '순천':[[9.1,0.9,6.2,-3.0],[8.0,1.1,9.0,-1.2],[9.2,1.3,14.3,3.0],[8.5,1.0,20.5,8.5],[9.0,0.8,25.0,13.7],[10.8,0.6,27.8,18.8],[15.1,0.5,29.2,22.7],[13.2,0.6,30.4,23.3],[8.8,0.5,26.8,18.2],[5.8,0.5,22.1,10.7],[8.2,0.8,14.9,4.0],[8.9,0.9,8.6,-1.4]],
+    '장흥':[[9.4,0.8,7.0,-2.6],[8.3,1.0,9.6,-0.9],[9.5,1.2,14.6,3.3],[8.6,0.9,20.6,8.7],[9.2,0.7,24.9,13.9],[10.9,0.6,27.6,18.9],[15.2,0.5,29.1,22.8],[13.3,0.6,30.3,23.4],[8.9,0.5,26.9,18.4],[5.9,0.5,22.3,11.0],[8.4,0.7,15.3,4.4],[9.0,0.8,9.2,-1.0]],
+    '해남':[[9.9,1.6,6.8,-2.0],[8.6,1.8,9.3,-0.4],[9.4,2.0,14.1,3.9],[8.5,1.6,19.9,9.2],[9.0,1.3,24.2,14.2],[10.5,1.1,27.0,19.0],[14.7,1.0,28.7,22.9],[12.9,1.1,30.0,23.5],[8.7,1.0,26.6,18.8],[5.9,1.1,21.9,11.6],[8.6,1.4,14.9,5.0],[9.4,1.6,8.7,-0.3]],
+    '고흥':[[9.7,1.4,7.6,-2.2],[8.5,1.6,10.0,-0.6],[9.6,1.8,14.7,3.5],[8.8,1.4,20.3,8.9],[9.3,1.1,24.4,13.9],[10.8,0.9,27.0,18.8],[15.0,0.8,28.9,22.8],[13.1,0.9,30.2,23.4],[8.9,0.8,26.8,18.6],[5.9,0.9,22.3,11.3],[8.5,1.2,15.5,4.6],[9.3,1.4,9.6,-0.6]],
+    '완도':[[10.6,3.8,7.7,0.5],[9.2,4.0,9.8,1.8],[9.8,4.2,13.7,5.4],[8.9,3.4,18.5,10.3],[9.4,2.8,22.3,14.9],[11.0,2.4,24.9,19.0],[15.1,2.2,27.4,22.9],[13.2,2.4,29.4,24.1],[9.2,2.3,26.5,20.4],[6.3,2.6,22.3,14.6],[9.0,3.2,15.9,8.1],[10.2,3.6,10.4,2.9]],
+    '진도':[[10.9,4.2,6.7,0.2],[9.4,4.4,8.9,1.4],[9.9,4.6,13.1,4.9],[8.8,3.8,18.4,10.0],[9.2,3.2,22.5,14.7],[10.6,2.8,25.3,18.9],[14.6,2.6,27.7,22.9],[12.8,2.8,29.6,23.9],[9.0,2.7,26.5,20.1],[6.2,3.0,22.1,14.0],[9.1,3.6,15.3,7.4],[10.4,4.0,9.6,2.3]],
+    '흑산도':[[12.8,6.4,5.7,1.2],[11.5,6.6,7.2,1.8],[11.8,6.8,10.9,4.9],[9.9,5.8,15.9,9.7],[10.5,4.8,19.9,14.2],[11.9,4.2,23.0,18.4],[15.2,3.8,26.0,22.3],[13.1,4.0,28.1,23.9],[9.9,4.2,25.1,20.3],[7.6,4.8,20.7,15.0],[10.8,5.6,14.5,8.7],[12.6,6.2,9.0,3.6]]
+  };
+  const HOLI=new Set(['0101','0301','0505','0606','0815','1003','1009','1225']);
+  const CRIT={rain:5,wind:10,hot:33,cold:-5};
+  const KMA_KEY='018f33af076c5608e045f3388a7a6f85e3cacdaeead009c71d7f67595ff053da';
+  const STN={'광주':156,'목포':165,'여수':168,'순천':174,'장흥':260,'해남':261,'고흥':262,'완도':170,'진도':175,'흑산도':169};
+  const ymd=d=>d.toISOString().slice(0,10).replace(/-/g,'');
+  async function fetchKMA(stn,s,e){
+    const base='https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList';
+    const rows=[]; let page=1;
+    while(page<=12){
+      const url=`${base}?serviceKey=${KMA_KEY}&pageNo=${page}&numOfRows=999&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${ymd(s)}&endDt=${ymd(e)}&stnIds=${stn}`;
+      const r=await fetch(url); if(!r.ok) throw new Error('HTTP '+r.status);
+      const j=await r.json();
+      const body=j?.response?.body; const item=body?.items?.item;
+      if(!item) break;
+      const arr=Array.isArray(item)?item:[item];
+      rows.push(...arr);
+      if(rows.length>=(body.totalCount||0)) break;
+      page++;
+    }
+    return rows;
+  }
+  const $=id=>document.getElementById(id);
+  const sel=$('wx-region'), from=$('wx-from'), to=$('wx-to'), out=$('wx-result');
+  const iso=d=>d.toISOString().slice(0,10);
+  const plusMonth=d=>{const x=new Date(d.getFullYear(),d.getMonth()+1,d.getDate());x.setDate(x.getDate()-1);return x;};
+  let autoEnd=true;
+  (function initDates(){
+    const t=new Date(), s=new Date(t.getFullYear(),t.getMonth(),1), e=plusMonth(s);
+    from.value=iso(s); to.value=iso(e); syncText();
+  })();
+  function syncText(){ const a=$('wx-from-t'), b=$('wx-to-t'); if(a)a.value=from.value; if(b)b.value=to.value; }
+  function normDate(v){
+    let x=(v||'').trim().replace(/[.\/]/g,'-').replace(/\s/g,'');
+    if(/^\d{8}$/.test(x)) x=x.slice(0,4)+'-'+x.slice(4,6)+'-'+x.slice(6,8);
+    const m=x.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if(!m) return null;
+    const d=new Date(+m[1],+m[2]-1,+m[3]);
+    if(isNaN(d)||d.getMonth()!==+m[2]-1) return null;
+    return iso(d);
+  }
+  function bindText(tid,did){
+    const t=$(tid);
+    const apply=()=>{ const n=normDate(t.value); if(n){ $(did).value=n; t.value=n; t.style.borderColor=''; run(); } else if(t.value.trim()){ t.style.borderColor='#d92c20'; } };
+    t.addEventListener('change',apply);
+    t.addEventListener('keydown',ev=>{ if(ev.key==='Enter'){ ev.preventDefault(); apply(); } });
+  }
+  bindText('wx-from-t','wx-from'); bindText('wx-to-t','wx-to');
+
+  async function run(){
+    const r=sel.value;
+    const s=new Date(from.value), e=new Date(to.value);
+    if(isNaN(s)||isNaN(e)||e<s){ out.innerHTML='<div class="note" style="margin:0">조회 기간을 올바르게 선택하세요.</div>'; return; }
+    const src=$('wx-src').value;
+    if(src==='api'){
+      const today=new Date(); today.setHours(0,0,0,0);
+      if(s>today){ out.innerHTML='<div class="note" style="margin:0">기상청 API는 <b>과거 실측 자료</b>만 제공합니다. 미래 기간은 [평년값]을 선택하세요.</div>'; return; }
+      out.innerHTML='<div class="note" style="margin:0">기상청 자료를 불러오는 중…</div>';
+      try{
+        const end = e>today ? today : e;
+        const rows=await fetchKMA(STN[r]||165, s, end);
+        renderApi(r,s,end,rows);
+      }catch(err){
+        out.innerHTML='<div class="note" style="margin:0">기상청 API 호출에 실패했습니다 ('+err.message+'). 브라우저 보안(CORS) 또는 키 승인 문제일 수 있어 <b>평년값</b>으로 표시합니다.</div>';
+        setTimeout(()=>renderNormals(r,s,e),50);
+      }
+      return;
+    }
+    renderNormals(r,s,e);
+  }
+
+  function renderApi(r,s,e,rows){
+    const rd=n=>Math.round(n*10)/10;
+    const M={};
+    let cRain=0,cWind=0,cHot=0,cCold=0,cExt=0,cOff=0;
+    rows.forEach(o=>{
+      const d=o.tm; if(!d) return;
+      const key=d.slice(0,7);
+      const rain=parseFloat(o.sumRn||0)||0, wind=parseFloat(o.maxWs||0)||0;
+      const tmax=parseFloat(o.maxTa||0)||0, tmin=parseFloat(o.minTa||0)||0;
+      M[key]=M[key]||{days:0,rain:0,wind:0,hot:0,cold:0,rainSum:0};
+      const m=M[key]; m.days++; m.rainSum+=rain;
+      const bad = rain>=CRIT.rain || wind>=CRIT.wind || tmax>=CRIT.hot || tmin<=CRIT.cold;
+      const dd=new Date(+d.slice(0,4), +d.slice(4,6)-1, +d.slice(6,8));
+      const off = (dd.getDay()===0) || HOLI.has(d.slice(4));
+      if(bad && !off){ m.ext=(m.ext||0)+1; cExt++; }
+      if(off){ m.off=(m.off||0)+1; cOff++; }
+      if(rain>=CRIT.rain){m.rain++;cRain++;}
+      if(wind>=CRIT.wind){m.wind++;cWind++;}
+      if(tmax>=CRIT.hot){m.hot++;cHot++;}
+      if(tmin<=CRIT.cold){m.cold++;cCold++;}
+      m.bad=(m.bad||0)+(bad?1:0);
+    });
+    const keys=Object.keys(M).sort();
+    const WD=['일','월','화','수','목','금','토'];
+    // 양력 고정 공휴일 (MM-DD)
+    const HOLD=['01-01','03-01','05-05','06-06','08-15','10-03','10-09','12-25'];
+    let dayRows='', dRain=0, dWmax=0, dTmax=-99, dTmin=99, dOff=0, dExt=0, dBad=0, dCnt=0;
+    rows.slice().sort((a,b)=>(a.tm||'')<(b.tm||'')?-1:1).forEach(o=>{
+      if(!o.tm) return;
+      const rain=parseFloat(o.sumRn||0)||0, wind=parseFloat(o.maxWs||0)||0;
+      const tmax=parseFloat(o.maxTa)||0, tmin=parseFloat(o.minTa)||0;
+      const rB=rain>=CRIT.rain, wB=wind>=CRIT.wind, hB=tmax>=CRIT.hot, cB=tmin<=CRIT.cold;
+      const dt=new Date(o.tm); const wd=WD[dt.getDay()];
+      const md=o.tm.slice(5);
+      const isSun=dt.getDay()===0, isHol=HOLD.indexOf(md)>=0;
+      const off=isSun||isHol;
+      const bad=!off && (rB||wB||hB||cB);
+      const tag=[rB?'🌧 강우':'',wB?'🌪 강풍':'',hB?'🔥 혹서':'',cB?'❄ 혹한':''].filter(Boolean).join(' · ');
+      const hi='color:#d92c20;font-weight:800';
+      const rowStyle = off ? ' style="background:color-mix(in srgb,var(--sub) 8%,transparent);color:var(--sub)"'
+                     : bad ? ' style="background:color-mix(in srgb,#d92c20 6%,transparent)"' : '';
+      const verdict = off ? (isSun?'일요일 · 제외':'공휴일 · 제외') : (bad?tag:'작업가능');
+      dCnt++; dRain+=rain; if(wind>dWmax)dWmax=wind; if(o.maxTa&&tmax>dTmax)dTmax=tmax; if(o.minTa&&tmin<dTmin)dTmin=tmin;
+      if(off)dOff++; if(bad){dBad++; dExt++;}
+      dayRows+=`<tr${rowStyle}>`
+        +`<td style="text-align:left;font-weight:700">${o.tm} <span style="color:var(--sub);font-weight:600">(${wd})</span></td>`
+        +`<td${rB?' style="'+hi+'"':''}>${rain?rain.toFixed(1):'-'}</td>`
+        +`<td${wB?' style="'+hi+'"':''}>${wind?wind.toFixed(1):'-'}</td>`
+        +`<td${hB?' style="'+hi+'"':''}>${o.maxTa?tmax.toFixed(1):'-'}</td>`
+        +`<td${cB?' style="'+hi+'"':''}>${o.minTa?tmin.toFixed(1):'-'}</td>`
+        +`<td style="font-weight:700;color:var(--sub)">${off?(isSun?'일요일':'공휴일'):'—'}</td>`
+        +`<td style="font-weight:800;color:${bad?'var(--ops-d)':'var(--sub)'}">${bad?'○':'—'}</td>`
+        +`<td style="font-weight:700;color:${off?'var(--sub)':(bad?'#d92c20':'var(--sub)')}">${verdict}</td></tr>`;
+    });
+    let tot=0,totDays=0,body='',sR=0,sW=0,sH=0,sC=0,sB=0,sHol=0,sExt=0,sRain=0;
+    keys.forEach(k=>{
+      const m=M[k]; const [y,mm]=k.split('-');
+      const hol=m.off||0;                    // 실측: 실제 일요일·공휴일 수
+      const net=(m.bad||0)+hol;              // 기상계(비휴일 초과일) + 휴일 → 중복 없음
+      tot+=net; totDays+=m.days;
+      sR+=m.rain; sW+=m.wind; sH+=m.hot; sC+=m.cold; sB+=m.bad; sHol+=hol; sExt+=(m.ext||0); sRain+=m.rainSum;
+      body+=`<tr><td style="text-align:left;font-weight:700">${y}.${mm} <span style="color:var(--sub);font-weight:600">(${m.days}일)</span></td>`
+        +`<td>${m.rain}</td><td>${m.wind}</td><td>${m.hot}</td><td>${m.cold}</td>`
+        +`<td style="font-weight:700">${m.bad}</td><td>${hol}</td>`
+        +`<td style="font-weight:800;color:var(--ops-d)">${net}</td>`
+        +`<td style="font-weight:800;color:var(--ops-d)">${m.ext||0}</td>`+`<td style="text-align:left;font-size:12px;color:var(--sub)">강수 ${rd(m.rainSum)}mm</td></tr>`;    });
+    out.innerHTML=`<div class="sec-h"><span class="chip">실측</span><div><h2>${r} · ${from.value} ~ ${iso(e)}</h2><p>기상청 ASOS 일자료 · 관측 ${totDays}일 · 기준: 강수 ${CRIT.rain}mm↑ / 풍속 ${CRIT.wind}m/s↑ / 최고 ${CRIT.hot}℃↑ / 최저 ${CRIT.cold}℃↓</p></div></div>
+      <div class="kpi">
+        <div class="c"><div class="nm">강우 초과일</div><div class="vl">${cRain}<span>일</span></div></div>
+        <div class="c"><div class="nm">강풍 초과일</div><div class="vl">${cWind}<span>일</span></div></div>
+        <div class="c"><div class="nm">혹서기</div><div class="vl">${cHot}<span>일</span></div></div>
+        <div class="c"><div class="nm">혹한기</div><div class="vl">${cCold}<span>일</span></div></div>
+        <div class="c"><div class="nm">공휴일·일요일</div><div class="vl">${cOff}<span>일</span></div></div>
+        <div class="c on"><div class="nm">연장가능일수</div><div class="vl">${cExt}<span>일</span></div></div>
+      </div>
+      <div class="note" style="margin:0 0 14px">본 결과는 <b>참고용 자동 집계값</b>입니다. 공사기간 산정 · 공기연장 등 공식 자료로 활용할 때는 반드시 <b>기상청 기상자료개방포털(data.kma.go.kr)</b>에서 원본 관측자료를 직접 확인하십시오.</div>
+      <div style="display:flex;justify-content:flex-end;margin:0 0 6px"><button class="btn" type="button" onclick="copyTbl('wx-tbl-month',this)">표 복사</button></div>
+      <div class="tw"><table id="wx-tbl-month"><thead><tr><th style="text-align:left">연·월</th><th>강우</th><th>강풍</th><th>혹서</th><th>혹한</th><th>기상계</th><th>공휴일</th><th>적용</th><th>연장가능</th><th style="text-align:left">비고</th></tr></thead><tbody>${body}</tbody>
+      <tfoot><tr style="background:color-mix(in srgb,var(--ops) 10%,transparent);border-top:2px solid var(--ops)"><td style="text-align:center;font-weight:800">합계 (${totDays}일)</td><td style="text-align:center;font-weight:800">${sR}</td><td style="text-align:center;font-weight:800">${sW}</td><td style="text-align:center;font-weight:800">${sH}</td><td style="text-align:center;font-weight:800">${sC}</td><td style="text-align:center;font-weight:800">${sB}</td><td style="text-align:center;font-weight:800">${rd(sHol)}</td><td style="text-align:center;font-weight:800;color:var(--ops-d)">${rd(tot)}</td><td style="text-align:center;font-weight:800;color:var(--ops-d)">${sExt}</td><td style="text-align:left;font-size:12px;color:var(--sub)">강수 ${rd(sRain)}mm</td></tr></tfoot></table></div>
+      <div class="sec-h" style="margin-top:22px"><span class="chip">일별</span><div><h2>일자별 실측 자료</h2><p>기상청 ASOS 일자료 · 기준 초과일은 붉게 표시 · 일요일·공휴일은 제외</p></div></div>
+      <div style="display:flex;justify-content:flex-end;margin:0 0 6px"><button class="btn" type="button" onclick="copyTbl('wx-tbl-day',this)">표 복사</button></div>
+      <div class="tw" style="max-height:520px;overflow:auto"><table id="wx-tbl-day"><thead><tr><th style="text-align:left">일자</th><th>강수량<br><span style="font-weight:600;color:var(--sub)">mm</span></th><th>최대풍속<br><span style="font-weight:600;color:var(--sub)">m/s</span></th><th>최고기온<br><span style="font-weight:600;color:var(--sub)">℃</span></th><th>최저기온<br><span style="font-weight:600;color:var(--sub)">℃</span></th><th>공휴일</th><th>연장가능</th><th>판정</th></tr></thead><tbody>${dayRows}</tbody>
+      <tfoot><tr style="background:color-mix(in srgb,var(--ops) 10%,transparent);border-top:2px solid var(--ops)"><td style="text-align:center;font-weight:800">합계 (${dCnt}일)</td><td style="text-align:center;font-weight:800">${rd(dRain)}</td><td style="text-align:center;font-weight:800">${dWmax?dWmax.toFixed(1):'-'}</td><td style="text-align:center;font-weight:800">${dTmax>-99?dTmax.toFixed(1):'-'}</td><td style="text-align:center;font-weight:800">${dTmin<99?dTmin.toFixed(1):'-'}</td><td style="text-align:center;font-weight:800">${dOff}</td><td style="text-align:center;font-weight:800;color:var(--ops-d)">${dExt}</td><td style="text-align:center;font-size:12px;color:var(--sub)">기준초과 ${dBad}일 · 연장가능 ${dExt}일</td></tr></tfoot></table></div>`;
+  }
+
+  function renderNormals(r,s,e){
+    const d=WX[r]||WX['목포'];
+    const DAYS=[31,28,31,30,31,30,31,31,30,31,30,31];
+    let rows='',tw=0,th=0,tn=0,totDays=0,k=0;
+    const cur=new Date(s.getFullYear(),s.getMonth(),1);
+    while(cur<=e){
+      const y=cur.getFullYear(), m=cur.getMonth(), mm=m+1;
+      const monthDays=(mm===2&&((y%4===0&&y%100!==0)||y%400===0))?29:DAYS[m];
+      const mStart=new Date(y,m,1), mEnd=new Date(y,m,monthDays);
+      const a=(s>mStart?s:mStart), b=(e<mEnd?e:mEnd);
+      const span=Math.round((b-a)/86400000)+1;
+      const ratio=span/monthDays;
+      const w=Math.round(d[m]*ratio*10)/10, h=Math.round(HOL[m]*ratio*10)/10;
+      const dup=Math.round(w*h/monthDays*10)/10;
+      const raw=Math.round((w+h-dup)*10)/10;
+      const floor=Math.round(8*ratio*10)/10;
+      const net=Math.max(floor, raw);
+      tw+=w; th+=h; tn+=net; totDays+=span; k++;
+      const hot=(mm>=7&&mm<=8), cold=(mm===12||mm<=2);
+      rows+=`<tr><td style="text-align:left;font-weight:700">${y}.${String(mm).padStart(2,'0')} <span style="color:var(--sub);font-weight:600">(${span}일)</span></td>`
+        +`<td>${w}</td><td>${h}</td><td>${dup}</td>`
+        +`<td style="font-weight:800;color:var(--ops-d)">${net}</td>`
+        +`<td style="text-align:left;font-size:12px;color:var(--sub)">${hot?'🔥 혹서기 · 폭염 대응 필요':cold?'❄ 혹한기 · 콘크리트 양생 주의':'—'}</td></tr>`;
+      cur.setMonth(cur.getMonth()+1);
+    }
+    const rd=n=>Math.round(n*10)/10;
+    out.innerHTML=`<div class="sec-h"><span class="chip">결과</span><div><h2>${r} · ${from.value} ~ ${to.value}</h2><p>조회기간 ${totDays}일 (${k}개월) · 월별 비작업일수 산정 결과</p></div></div>
+      <div class="kpi">
+        <div class="c"><div class="nm">기상 비작업일수</div><div class="vl">${rd(tw)}<span>일</span></div></div>
+        <div class="c"><div class="nm">법정공휴일</div><div class="vl">${rd(th)}<span>일</span></div></div>
+      </div>
+      <div class="note" style="margin:0 0 14px">본 결과는 <b>평년값 기반 추정치</b>입니다. 공사기간 산정 · 공기연장 등 공식 자료로 활용할 때는 반드시 <b>기상청 기상자료개방포털(data.kma.go.kr)</b>에서 원본 관측자료를 직접 확인하십시오.</div>
+      <div style="display:flex;justify-content:flex-end;margin:0 0 6px"><button class="btn" type="button" onclick="copyTbl('wx-tbl-norm',this)">표 복사</button></div>
+      <div class="tw"><table id="wx-tbl-norm"><thead><tr><th style="text-align:left">연·월</th><th>기상</th><th>공휴일</th><th>중복</th><th>적용</th><th style="text-align:left">비고</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+  window.resetWx=function(){ sel.selectedIndex=1; const t=new Date(), s=new Date(t.getFullYear(),t.getMonth(),1); from.value=iso(s); to.value=iso(plusMonth(s)); autoEnd=true; syncText(); run(); };
+  ['wx-region','wx-from','wx-to','wx-src'].forEach(id=>{const e2=$(id);const h=()=>{
+    if(id==='wx-to') autoEnd=false;
+    if(id==='wx-from'&&from.value){ const d=new Date(from.value); if(autoEnd||!to.value||new Date(to.value)<=d) to.value=iso(plusMonth(d)); }
+    syncText();run();};
+    e2.addEventListener('input',h);e2.addEventListener('change',h);});
+  run();
+})();
+window.wxPreviewClose=function(){ const p=document.getElementById('wx-pv'); if(p){p.style.display='none';} document.body.style.overflow=''; };
+window.wxPreview=function(){
+  const res=document.getElementById('wx-result'); if(!res) return;
+  const body=document.getElementById('wx-pv-body'), pv=document.getElementById('wx-pv');
+  const PAD=12, SHEET_H=297, SHEET_W=210;                 // mm
+  const mm=n=>n*96/25.4;                                  // mm → px
+  const LIMIT=mm(SHEET_H-PAD*2);
+  body.innerHTML='';
+  pv.style.display='block'; document.body.style.overflow='hidden';
+  body.style.transform='';
+  const newSheet=()=>{
+    const s=document.createElement('div');
+    s.style.cssText=`width:${SHEET_W}mm;height:${SHEET_H}mm;background:#fff;color:#111;padding:${PAD}mm;box-shadow:0 12px 40px rgba(0,0,0,.35);box-sizing:border-box;overflow:hidden;position:relative`;
+    const inner=document.createElement('div'); inner.style.cssText='height:100%';
+    s.appendChild(inner); body.appendChild(s); return inner;
+  };
+  let page=newSheet();
+  const fits=()=>page.scrollHeight<=LIMIT+1;
+  const push=node=>{ page.appendChild(node); if(!fits()&&page.childNodes.length>1){ page.removeChild(node); page=newSheet(); page.appendChild(node); } };
+  const clone=res.cloneNode(true);
+  clone.querySelectorAll('button').forEach(b=>b.remove());
+  clone.querySelectorAll('.tw').forEach(w=>{w.style.maxHeight='none';w.style.overflow='visible';});
+  clone.querySelectorAll('table').forEach(t=>{t.style.fontSize='9pt';});
+  [...clone.children].forEach(block=>{
+    const tbl=block.matches('.tw')?block.querySelector('table'):null;
+    if(!tbl){ push(block); return; }
+    // 표는 행 단위로 페이지 분할 (머리행 반복)
+    const rowsAll=[...tbl.tBodies[0].rows], foot=tbl.tFoot;
+    const mk=()=>{ const w=block.cloneNode(false), t2=tbl.cloneNode(false);
+      t2.appendChild(tbl.tHead.cloneNode(true)); t2.appendChild(document.createElement('tbody'));
+      w.appendChild(t2); return {w,t2}; };
+    let cur=mk(); push(cur.w);
+    rowsAll.forEach(r=>{
+      cur.t2.tBodies[0].appendChild(r.cloneNode(true));
+      if(!fits()){
+        cur.t2.tBodies[0].lastChild.remove();
+        const prev=r; cur=mk(); page=newSheet(); page.appendChild(cur.w);
+        cur.t2.tBodies[0].appendChild(prev.cloneNode(true));
+      }
+    });
+    if(foot){ cur.t2.appendChild(foot.cloneNode(true));
+      if(!fits()){ cur.t2.tFoot.remove(); const f=mk(); page=newSheet(); page.appendChild(f.w); f.t2.appendChild(foot.cloneNode(true)); } }
+  });
+  [...body.children].forEach((s,i,a)=>{
+    const n=document.createElement('div');
+    n.style.cssText='position:absolute;right:12mm;bottom:6mm;font-size:9pt;color:#888';
+    n.textContent=`${i+1} / ${a.length}`; s.appendChild(n);
+  });
+  const first=body.firstElementChild;
+  if(first){ const scale=Math.min(1,(window.innerWidth-48)/first.offsetWidth);
+    if(scale<1){ body.style.transform='scale('+scale+')'; body.style.transformOrigin='top center'; } else body.style.transform=''; }
+};
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') window.wxPreviewClose(); });
+window.copyTbl=function(id,btn){
+  const t=document.getElementById(id); if(!t) return;
+  const rows=[...t.querySelectorAll('tr')].map(tr=>[...tr.children].map(c=>c.innerText.replace(/\s+/g,' ').trim()));
+  const tsv=rows.map(r=>r.join('\t')).join('\n');
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const html='<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000;font-family:맑은 고딕;font-size:10pt">'
+    +rows.map((r,i)=>'<tr>'+r.map(c=>i===0
+        ?`<th style="border:1px solid #000;background:#EEF2FF;padding:4px 8px;text-align:center;font-weight:bold">${esc(c)}</th>`
+        :`<td style="border:1px solid #000;padding:4px 8px;text-align:center">${esc(c)}</td>`).join('')+'</tr>').join('')
+    +'</table>';
+  const done=ok=>{ if(!btn) return; const o=btn.textContent; btn.textContent=ok?'✅ 복사됨':'⚠ 복사 실패'; setTimeout(()=>btn.textContent=o,1500); };
+  // 1순위: 실제 DOM 선택 복사 (엑셀·한글이 테두리·서식을 그대로 인식)
+  const richCopy=()=>{
+    const holder=document.createElement('div');
+    holder.setAttribute('contenteditable','true');
+    holder.style.cssText='position:fixed;left:-9999px;top:0;white-space:normal';
+    holder.innerHTML=html;
+    document.body.appendChild(holder);
+    const sel=window.getSelection(), rg=document.createRange();
+    rg.selectNodeContents(holder); sel.removeAllRanges(); sel.addRange(rg);
+    let ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+    sel.removeAllRanges(); holder.remove();
+    return ok;
+  };
+  const fallback=()=>{ const ta=document.createElement('textarea'); ta.value=tsv; document.body.appendChild(ta); ta.select();
+    let ok=false; try{ ok=document.execCommand('copy'); }catch(e){} ta.remove(); done(ok); };
+  if(richCopy()) { done(true); return; }
+  if(navigator.clipboard&&window.ClipboardItem){
+    navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([tsv],{type:'text/plain'})})])
+      .then(()=>done(true)).catch(fallback);
+  } else fallback();
+};
+</script>
+<script src="close-button.js" defer></script></body>
+</html>

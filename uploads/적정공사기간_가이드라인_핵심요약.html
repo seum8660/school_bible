@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: 'Noto Sans CJK KR', 'Noto Sans KR', sans-serif; color: #1f2937; }
+  .page {
+    width: 210mm; height: 297mm; padding: 11mm 12mm 9mm 12mm;
+    display: flex; flex-direction: column;
+  }
+  .hd { border-bottom: 2.5px solid #1e3a5f; padding-bottom: 5px; margin-bottom: 8px; }
+  .hd h1 { font-size: 17.5px; color: #1e3a5f; letter-spacing: -0.4px; }
+  .hd .sub { font-size: 9px; color: #6b7280; margin-top: 3px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; align-content: start; }
+  .page > .grid { flex: 1; align-content: start; }
+  .box { border: 1px solid #d1d5db; border-radius: 5px; padding: 7px 9px; }
+  .box.full { grid-column: 1 / -1; }
+  .box h2 { font-size: 10.5px; color: #fff; background: #1e3a5f; display: inline-block;
+            padding: 2px 8px; border-radius: 3px; margin-bottom: 5px; letter-spacing: -0.3px; }
+  .box h2.accent { background: #b45309; }
+  p, li { font-size: 8.9px; line-height: 1.45; color: #374151; }
+  ul { list-style: none; }
+  li { padding-left: 9px; position: relative; margin-bottom: 1.5px; }
+  li::before { content: '·'; position: absolute; left: 2px; color: #1e3a5f; font-weight: 700; }
+  .k { color: #1e3a5f; font-weight: 700; }
+  .r { color: #b45309; font-weight: 700; }
+  .formula { background: #eef2f7; border-left: 3px solid #1e3a5f; border-radius: 3px;
+             padding: 6px 8px; margin: 4px 0; font-size: 9.5px; text-align: center;
+             font-weight: 700; color: #1e3a5f; letter-spacing: -0.2px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 3px; }
+  th, td { border: 1px solid #cbd5e1; padding: 2px 4px; font-size: 8.1px; text-align: center; }
+  th { background: #f1f5f9; color: #1e3a5f; font-weight: 700; }
+  .tag { display: inline-block; background: #f1f5f9; border: 1px solid #cbd5e1;
+         border-radius: 3px; padding: 1px 5px; font-size: 8px; margin: 1px 2px 1px 0; color: #334155; }
+  .ft { border-top: 1px solid #d1d5db; margin-top: 7px; padding-top: 5px;
+        font-size: 7.6px; color: #9ca3af; text-align: center; }
+  .num { display:inline-block; width:13px; height:13px; background:#1e3a5f; color:#fff;
+         border-radius:50%; font-size:8px; text-align:center; line-height:13px; font-weight:700; margin-right:2px;}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hd">
+    <h1>2026 적정 공사기간 확보를 위한 가이드라인 — 핵심 요약</h1>
+    <div class="sub">국토교통부 기술혁신과 · 2025.12.31. 개정 (2026.01) · 원문 197면 &nbsp;|&nbsp; 근거: 「건설기술 진흥법」 제45조의2 및 「공공 건설공사의 공사기간 산정기준」(국토부 고시 제2024-1021호)</div>
+  </div>
+
+  <div class="grid">
+    <!-- 1. 개요/법적근거 -->
+    <div class="box">
+      <h2>1. 개요 및 법적 근거</h2>
+      <ul>
+        <li><span class="k">목적</span> 발주청이 공사의 품질·안전·경제성을 확보하도록 적정 공사기간을 산정·조정하는 세부기준 제공</li>
+        <li><span class="k">산정 의무</span> 2021.9.17.부터 공공·민간 건설공사 발주자에게 적정 공사기간 산정 의무 부여</li>
+        <li><span class="k">적정성 심의</span> 총공사비 <span class="r">100억 원(시·군·구 50억 원) 이상</span> 공사는 공사기간 적정성 심의 절차 의무</li>
+        <li><span class="k">산정근거 명시</span> 2021.12.24.부터 입찰 관련 서류에 공사기간 산정근거 명시(일괄·기술제안입찰 등은 제외 가능)</li>
+        <li><span class="k">총사업비 협의</span> 실시설계 완료 후 '적정 공사기간 검토결과'를 포함해 사업기간 협의</li>
+      </ul>
+    </div>
+
+    <!-- 2. 발주자 역할 -->
+    <div class="box">
+      <h2>2. 발주자의 역할</h2>
+      <ul>
+        <li>공사 규모·난이도·특성, 지역여건, 주 52시간 근무 등을 고려한 작업일수 기반으로 적정 공사기간 설정</li>
+        <li>공사 발주 이전에 <span class="k">서면 검토 절차</span> 확보</li>
+        <li>단위작업별 생산성·공사기간·지체요인 등 <span class="k">실적자료 축적·분석</span></li>
+        <li>단계별 확보: 기획 → 조사·설계 → 발주준비 → 입찰·계약 → 시공</li>
+        <li>발주청 책임·불가항력(폭염·악천후 등) 사유 시 <span class="k">공사기간 연장·계약금액 조정</span></li>
+      </ul>
+    </div>
+
+    <!-- 3. 핵심 산정식 -->
+    <div class="box full">
+      <h2 class="accent">3. 공사기간 산정 4대 구성요소</h2>
+      <div class="formula">공사기간 = ① 준비기간 + ② 비작업일수 + ③ 작업일수 + ④ 정리기간</div>
+      <div class="grid" style="gap:4px 10px; margin-top:4px; align-items:start;">
+        <ul>
+          <li><span class="num">1</span><span class="k">준비기간</span> 설계도서 검토, 안전관리계획서 승인, 하도급 선정, 측량, 가설건물 설치, 자재·장비 조달 등 착공 준비 <span class="tag">공동주택 45일</span><span class="tag">고속도로 180일</span><span class="tag">철도 90일</span></li>
+          <li><span class="num">3</span><span class="k">작업일수</span> 공종별 수량 시공에 필요한 총일수. <b>작업일수 = 작업수량 ÷ 1일 작업량</b> (부록4·실적치·표준품셈 활용). 1일 8h·주 40h 준수 원칙</li>
+        </ul>
+        <ul>
+          <li><span class="num">2</span><span class="k">비작업일수</span> <b>= A(기상 비작업) + B(법정공휴일) − C(중복)</b>, &nbsp;C = A×B÷달력일수. 월 비작업일수가 주 40시간 기준(<span class="r">월 8일</span>)보다 작으면 8일 적용</li>
+          <li><span class="num">4</span><span class="k">정리기간</span> 준공검사 준비·현장정리. 주요공종 완료 후 <span class="r">준공 전 1개월 범위</span>에서 계상, 비작업일수는 미계상</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 4. 산정 절차 -->
+    <div class="box">
+      <h2>4. 산정 절차 (주공정 CP 기준)</h2>
+      <div class="formula" style="font-size:8.7px;">공종별 공사기간 = 작업일수 + 비작업일수</div>
+      <div class="formula" style="font-size:8.7px;">공사기간 = 준비기간 + CP 공종별 공사기간 합 + 정리기간</div>
+      <p style="margin-top:2px;"><span class="k">산출 예시</span> 준비 60일 + CP 공종 합 452일(철거75·철골154·철근콘크리트103·마감120) + 정리 30일 = <span class="r">542일(약 17.8개월)</span></p>
+    </div>
+
+    <!-- 5. 적정성 검토 -->
+    <div class="box">
+      <h2>5. 산정근거의 적정성 검토</h2>
+      <ul>
+        <li>산정값(A)과 <span class="k">실적 공사기간(B)</span> 비교 — B는 부록5 산정공식(회귀분석) 또는 최근 5년 동종공사 평균</li>
+        <li>A가 B의 <span class="r">±20% 범위를 벗어나면 재검토</span>(필요 시 전문가 활용)</li>
+        <li>100억 미만 공사는 전문가 자문회의로 적정성 검토 가능</li>
+      </ul>
+    </div>
+
+    <!-- 6. 부록 구성 -->
+    <div class="box full" style="padding:6px 9px;">
+      <h2>6. 부록 구성 (실무 참조 데이터)</h2>
+      <span class="tag">① 법정 공휴일수(2026–2035)</span><span class="tag">② 작업제한 기상조건</span><span class="tag">③ 기상·지역별 비작업일수(2015–2024)</span><span class="tag">④ 1일 작업량</span><span class="tag">⑤ 시설물별 공사기간 산정공식</span><span class="tag">⑥ 시공조건 명시 항목 예시</span><span class="tag">⑦ 공사기간 변경 실비 산정</span>
+    </div>
+  </div>
+
+  <div class="ft">본 요약은 「2026 적정 공사기간 확보를 위한 가이드라인」(국토교통부)의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 관계 법령·고시의 최신 개정 내용을 확인하시기 바랍니다.</div>
+</div>
+</body>
+</html>

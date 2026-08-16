@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>공기연장에 따른 간접공사비 실무 가이드라인 — 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:14mm 12mm 0 12mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }   /* 잘라내지 않음 — overflow:hidden 금지 */
+
+  .title{ margin:0; font-size:13.1pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:6pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:7.9pt; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.7pt; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.7pt; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:7pt; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6pt; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:6pt; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+
+body{ padding:0; background:#e5e7eb; }
+.page{ width:210mm; min-height:297mm; padding:14mm 12mm; page-break-after:always; background:#fff; }
+.page:last-child{ page-break-after:auto; }
+.pageno{ text-align:center; font-size:5.7pt; color:var(--note); margin-top:2mm; }
+@media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+@media screen{ .page{ box-shadow:0 0 6px rgba(0,0,0,.18); margin:6mm auto; } }
+
+</style></head><body>
+<div class="page"><h1 class="title">공기연장에 따른 간접공사비 실무 가이드라인 ① — 총론</h1><p class="meta">건설공사 계약관리 ｜ 지방계약법 제22조·시행령 제75조·제75조의2 ｜ 서울특별시(2025.11.14 제정 Ver.1.0, 2026.1.1 시행)</p><div class="rule-navy"></div><div class="row2"><div class="card"><span class="badge">1 · 적용범위 및 시행일</span><ul class="list"><li>적용기관: 서울시, 산하 본부·사업소, 자치구</li><li>적용대상: 시비 포함 <span class="num">장기계속공사</span>(소방·전기·통신·문화재 포함)</li><li>시행일: <span class="num">2026.1.1.</span> 이후 입찰공고분부터 적용</li><li>장기계속공사는 2026.1.1. 이후 차수계약분부터 적용 가능</li></ul></div><div class="card"><span class="badge">2 · 간접비 정의</span><ul class="list"><li><b class="term">정의</b>: 재료비·직접노무비를 제외한 간접노무비·경비·일반관리비·이윤 등</li><li><b class="term">비중</b>: 전체 공사비의 약 <span class="num">30~40%</span> 차지</li><li><b class="term">발생원인</b>: 보상지연·예산부족·계획변경·민원 등 공기연장</li><li>간접적으로 투입되는 현장 인력의 추가근무 비용에 해당</li></ul></div></div><div class="row1"><div class="card"><span class="badge rust">3 · 간접비 구성 항목</span><div class="formula">간접비 = 간접노무비 + 경비 + 일반관리비 + 이윤 (+ 공사손해보험료)<span class="sub">경비는 시간변동경비에 한정 · 시공변동경비(운반비·기계경비 등)는 산정 제외</span></div><ol class="nlist"><li><span class="no">①</span>간접노무비 — 현장관리 보조인력(현장소장 등)의 기본급·제수당·상여금·퇴직급여충당금</li><li><span class="no">②</span>경비 — 전력비·임차료·보험료·복리후생비 등 시간변동 경비(직접계상+비율계상)</li><li><span class="no">③</span>일반관리비 — 공사원가 소계 × 일반관리비율(공사규모별 <span class="num">5.0~6.0%</span>)</li><li><span class="no">④</span>이윤 — (간접노무비+경비+일반관리비) × 이윤율 <span class="num">15%</span> 이하</li></ol></div></div><div class="row2"><div class="card"><span class="badge">4 · 근거 법령</span><ul class="list"><li>지방계약법 제22조(물가변동 등에 따른 계약금액 조정)</li><li>같은법 시행령 제75조·제75조의2(계약내용 변경·기간연장 조정)</li><li>지방자치단체 입찰및계약 집행기준 제1장 제8절(실비산정)</li><li>동 기준 제9장 제7절(계약금액의 조정)</li></ul></div><div class="card"><span class="badge">5 · 간접비 산정 원칙</span><ul class="list"><li>공사기간 연장과 <b class="term">객관적 관련성</b>이 있어야 함</li><li>필요하고도 <b class="term">상당한 범위</b> 내에서 산정(판례상 원칙)</li><li>실비를 초과하지 않는 범위에서 지급</li><li>하도급업체가 지출한 비용도 포함하여 산정</li></ul></div></div><div class="row1"><div class="card"><span class="badge">6 · 핵심 수치</span><div class="chips"><span class="chip"><b>간접비 비중</b> 전체공사비 약30~40%</span><span class="chip"><b>이윤율</b> 15% 이하</span><span class="chip"><b>일반관리비율</b> 종합공사 5.0~6.0%</span><span class="chip"><b>상여금 한도</b> 기본급 400%/년</span><span class="chip"><b>손해보험 의무가입</b> 추정가격 100억↑</span><span class="chip"><b>최초 제정</b> 2025.11.14 행정2부시장 방침</span><span class="chip"><b>시행일</b> 2026.1.1.</span></div></div></div><div class="row1"><div class="card"><span class="badge">7 · 간접비 원가계산서 구성순서</span><ol class="nlist"><li><span class="no">①</span>간접노무비(실비) + <span class="no">②</span>경비[가.직접계상(임차료·보관비·가설비·유휴장비비·지급수수료·기타실비)+나.비율계상(산재·고용보험료·기타경비)] → 소계</li><li>소계 × 일반관리비율 = <span class="no">③</span>일반관리비 → (소계+일반관리비) × 이윤율 = <span class="no">④</span>이윤</li><li><span class="no">⑤</span>공사손해보험료(실비, 추정가격 100억 이상 의무가입) → 공급가액(①~⑤ 합계) → 부가가치세 → 합계</li></ol></div></div><div class="rule-gray"></div><p class="note">서울특별시 「공기연장에 따른 간접공사비 실무 가이드라인(Ver.1)」(2025.11.14 제정) 요약</p><p class="pageno">1 / 4</p>
+</div>
+<div class="page"><h1 class="title">공기연장에 따른 간접공사비 실무 가이드라인 ② — 구분원칙 및 유의사항</h1><p class="meta">간접비 산정방식 구분 ｜ 지방자치단체 입찰및계약 집행기준 제9장 제7절 ｜ 서울특별시</p><div class="rule-navy"></div><div class="row2"><div class="card"><span class="badge">1 · 공기연장 간접비</span><ul class="list"><li><b class="term">발생원인</b>: 발주기관 귀책·천재지변 등 계약상대자 비책임 사유</li><li><b class="term">산정방식</b>: <span class="num">실비정산</span>(연장기간 실제발생비용, 증빙 필요)</li><li>근거: 지방자치단체 입찰및계약 집행기준 제1장 제8절</li><li>설계변경분과 별도 산정, 중복청구 금지</li></ul></div><div class="card"><span class="badge">2 · 설계변경(물량증감) 간접비</span><ul class="list"><li><b class="term">발생원인</b>: 설계변경으로 직접공사비 변동(주로 증가)</li><li><b class="term">산정방식</b>: <span class="num">승률방식</span>(직접공사비 변동에 비례)</li><li>근거: 지방자치단체 입찰및계약 집행기준 제9장 제7절</li><li>시공방법·투입자재 변경 등 물량증감 발생 시 적용</li></ul></div></div><div class="row1"><div class="card"><span class="badge rust">3 · 동시발생 시 처리원칙</span><div class="formula">설계변경분(승률방식) + 공기연장분(실비방식) → 분리 산정 · 중복분 제외<span class="sub">서울고법 2017나2061097 · 2018나2015763 — 발생원인·산정방식이 상이하여 분리 산정이 원칙</span></div><ol class="nlist"><li><span class="no">①</span>물량증감·공기연장 동시발생 시 발생원인이 다르므로 분리 산정 원칙</li><li><span class="no">②</span>설계변경분은 증액된 공사금액 기준 승률방식으로 산정</li><li><span class="no">③</span>공기연장분은 실비 기준으로 별도 산정, 중복 부분 제외</li><li><span class="no">④</span>장기계속공사 차수별 공백기간의 간접비(현장유지관리비)는 계약금액조정 불가</li></ol></div></div><div class="row2"><div class="card"><span class="badge">4 · 장기계속공사 유의사항</span><ul class="list"><li>계약기간은 <b class="term">각 차수별</b> 계약기간만 인정</li><li>총괄계약은 잠정기준, 구체적 사항은 연차별계약으로 확정(대법 2018.12.27. 2015다255463)</li><li>총계약기간 변경의 조정대상 인정 여부는 제도개선 추진 중(행안부, '25.4)</li><li>차수별 공백기간 간접비는 별도 청구 불가</li></ul></div><div class="card"><span class="badge">5 · 간접비 포기 합의문 유의사항</span><ul class="list"><li>합의문 문구가 <b class="term">간접비청구권 포기</b>로 해석될 수 있어 신중 작성 필요</li><li>단순 부동의문자 인쇄만으로는 포기의사로 보기 어려움(서울고법 2008·2013 판결)</li><li>합의각서상 명시적 포기 의사표시는 유효 인정 사례 있음(서울중앙지법 2024)</li><li>작성경위·불이익 정도를 구체적으로 기재하고 변경계약 체결 권고</li></ul></div></div><div class="row1"><div class="card"><span class="badge">6 · 핵심 수치</span><div class="chips"><span class="chip"><b>공기연장</b> 실비정산방식</span><span class="chip"><b>설계변경</b> 승률방식</span><span class="chip"><b>동시발생</b> 분리산정·중복제외</span><span class="chip"><b>차수공백기</b> 조정불가</span><span class="chip"><b>총괄계약</b> 잠정기준(대법 2015다255463)</span><span class="chip"><b>포기합의</b> 작성경위 구체기재 권고</span></div></div></div><div class="row1"><div class="card"><span class="badge">7 · 공기연장 사유별 귀책판단 예시</span><ul class="list"><li><b class="term">예1</b>) 관급자재(저소음포장) 납품업체 미확정으로 공사지연 → 계약상대자 통제범위 밖 사유, 간접비 반영 필요</li><li><b class="term">예2</b>) 후속공종 착수지연(토공사 후 지반보강 지연) → 시공사 귀책, 간접비 제외</li><li><b class="term">예3</b>) 법령·설계기준 개정에 따른 추가작업(철근 추가설치) → 발주기관 요구사항, 공기연장은 인정하되 간접비는 미발생 판단 가능</li></ul></div></div><div class="rule-gray"></div><p class="note">서울특별시 「공기연장에 따른 간접공사비 실무 가이드라인(Ver.1)」(2025.11.14 제정) 요약</p><p class="pageno">2 / 4</p>
+</div>
+<div class="page"><h1 class="title">공기연장에 따른 간접공사비 실무 가이드라인 ③ — 세부 업무절차</h1><p class="meta">간접비 지급 업무흐름(①~⑫) ｜ 지방자치단체 입찰및계약 집행기준 제9장 제8절 ｜ 서울특별시</p><div class="rule-navy"></div><div class="row2"><div class="card"><span class="badge">1 · 절차(1) 실정보고~검토</span><ol class="nlist"><li><span class="no">①</span>사유발생 — 계획변경·보상지연·민원·예산부족 등 원인 발생</li><li><span class="no">②</span>실정보고(시공사) — 지체없이 서면보고, 수정공정표·인력투입계획서 제출</li><li><span class="no">③</span>실정보고검토(감리단) — 귀책여부·연장필요성·간접비발생여부 검토</li><li><span class="no">④</span>내부검토·승인(발주기관) — 적정성 검토 후 승인, 조정필요여부 판단</li><li><span class="no">⑤</span>승인·자료요구(감리단) — 산출총괄표·인력자료·실비증빙 서면요구</li><li><span class="no">⑥</span>산출·조정신청(시공사) — 증빙 첨부, 준공예정일 90일전 신청 원칙</li></ol></div><div class="card"><span class="badge">2 · 절차(2) 검토~지급</span><ol class="nlist"><li><span class="no">⑦</span>간접비검토(감리단) — 산출 적정성 검토보고서 작성</li><li><span class="no">⑧</span>적정성심의(발주기관) — 간접비 적정성 심의위원회 개최</li><li><span class="no">⑨</span>1차협의(3자) — 타결시 반영·설계변경, 결렬시 심의위 상정</li><li><span class="no">⑩</span>지급심의위(기술심사담당관) — 상정건 심의, 30일내 처리 원칙</li><li><span class="no">⑪</span>2차협의(3자) — 타결시 반영, 결렬시 소송 진행</li><li><span class="no">⑫</span>반영·지급 — 변경계약 체결, 하도급업체 15일 이내 통보</li></ol></div></div><div class="row1"><div class="card"><span class="badge rust">3 · 간접비 청구 필요서류(⑤~⑥단계)</span><div class="formula">간접비 산출총괄표 + 간접노무인력 산출자료(평균급여 증빙) + 경비 실비증빙자료<span class="sub">붙임#2 청구양식 활용 · 하도급업체 지출비용 포함하여 산출</span></div><ol class="nlist"><li><span class="no">①</span>간접비 산출총괄표 — 항목별 산출근거 정리</li><li><span class="no">②</span>간접노무인력 산출자료 — 연장기간 투입인력·평균급여 증빙</li><li><span class="no">③</span>경비 실비증빙자료 — 계약서·요금고지서·영수증 등 객관적 자료</li><li><span class="no">④</span>수정공정표·인력투입계획서 — 착공신고서 공정예정표 기준 작성</li></ol></div></div><div class="row2"><div class="card"><span class="badge">4 · 심의위원회 상정 기준(⑨→⑩)</span><ul class="list"><li>1차협의 <b class="term">결렬·일부결렬</b> 건 중 상정</li><li>총공사비 <span class="num">100억 원</span> 이상 건설공사</li><li>전기·기계·조경 분야 <span class="num">20억 원</span> 이상</li><li>교량·복개구조물 등 주요공사 <span class="num">50억 원</span> 이상</li></ul></div><div class="card"><span class="badge">5 · 협의결렬 이후 절차</span><ul class="list"><li>1차결렬 → 발주기관 <b class="term">적정성 심의위</b> 상정</li><li>2차결렬 → 기술심사담당관 <b class="term">지급심의위</b> 상정</li><li>최종결렬 → 소송(중재) 진행</li><li>타결 시 각 단계마다 실정보고 반영·변경계약 체결</li></ul></div></div><div class="row1"><div class="card"><span class="badge">6 · 핵심 수치</span><div class="chips"><span class="chip"><b>서면제출</b> 사유발생시 지체없이</span><span class="chip"><b>조정신청</b> 준공 90일전</span><span class="chip"><b>노무량확정</b> 최소 30일 주기</span><span class="chip"><b>심의처리</b> 30일 이내</span><span class="chip"><b>안건신청</b> 개최 20일전</span><span class="chip"><b>자료제공</b> 개최 10일전</span><span class="chip"><b>하도급통보</b> 15일 이내</span></div></div></div><div class="row1"><div class="card"><span class="badge">7 · 단계별 협의 수렴 예시(참고)</span><ul class="list"><li><b class="term">시공사 검토</b>: 서울시 부담률 100% 주장, 간접비 발생 약 10억 원</li><li><b class="term">감리단 검토</b>: 서울시 부담률 90%, 약 9억 원으로 조정 검토</li><li><b class="term">서울시(발주기관) 검토</b>: 서울시 부담률 50%, 간접비 미발생 판단</li><li><b class="term">위원회 검증 → 협상결과</b>: 서울시 부담률 90%, 최종 약 8억 원 타결</li></ul></div></div><div class="rule-gray"></div><p class="note">서울특별시 「공기연장에 따른 간접공사비 실무 가이드라인(Ver.1)」(2025.11.14 제정) 요약</p><p class="pageno">3 / 4</p>
+</div>
+<div class="page"><h1 class="title">공기연장에 따른 간접공사비 실무 가이드라인 ④ — 산정요령 및 심의위원회</h1><p class="meta">간접비 항목별 산정요령 ｜ 지방자치단체 입찰및계약 집행기준 제1장 제8절·예정가격 작성요령 ｜ 서울특별시</p><div class="rule-navy"></div><div class="row2"><div class="card"><span class="badge">1 · 간접노무비 산정</span><ul class="list"><li><b class="term">대상</b>: 현장소장·현장사무원·기획설계부문·노무관리원 등 보조인력</li><li><b class="term">노무량</b>: 발주기관-감리단-시공사 협의 결정(실제 투입인력)</li><li><b class="term">단가</b>: 최근 3개월 임금지급자료 기준, 실지급 수준 초과 불가</li><li>산식: 노무량 × 지급확인임금(기본급+제수당+상여금+퇴직급여충당금)</li></ul></div><div class="card"><span class="badge">2 · 경비 산정(직접계상)</span><ul class="list"><li>지급임차료·보관비·가설비·유휴장비비·지급수수료 등 <b class="term">실비(증빙)</b></li><li>유휴장비(보유) = 장비가격×손료계수×(연간표준가동시간÷365)×유휴일수×1/2</li><li>보증기간 연장분 지급수수료는 산출내역서 해당항목 반영정산</li><li>재료비 계상분과 중복되는 비목은 제외</li></ul></div></div><div class="row1"><div class="card"><span class="badge rust">3 · 비율계상 비목 및 일반관리비·이윤</span><div class="formula">일반관리비=(간접노무비+경비)×일반관리비율 / 이윤=(간접노무비+경비+일반관리비)×이윤율(15%이하)<span class="sub">산재·고용보험료=노무비×요율, 기타경비(7개항목)=(재료비+노무비)×요율 — 연장합의 당시 요율 상한 적용</span></div><ol class="nlist"><li><span class="no">①</span>산재보험료 = 노무비 × 산출내역서상 요율</li><li><span class="no">②</span>고용보험료 = 노무비 × 산출내역서상 요율</li><li><span class="no">③</span>기타경비(수도광열비 등 7항목) = (재료비+노무비) × 해당 요율</li><li><span class="no">④</span>산정불가 시 요율방식 대체 적용(예정가격 유무별 별도 규정)</li></ol></div></div><div class="row2"><div class="card"><span class="badge">4 · 간접비 적정성 심의위원회</span><ul class="list"><li><b class="term">주체</b>: 발주기관 · 1차협의 전 사전심사 단계</li><li><b class="term">기능</b>: 공기연장 귀책사유·간접비금액 적정성 심사</li><li><b class="term">구성</b>: 위원장(부서장)+위원 5~10명, 최소 5명 이상</li><li>외부위원: 건설분야·원가계산전문기관·법률전문가</li></ul></div><div class="card"><span class="badge">5 · 간접비 지급 심의위원회</span><ul class="list"><li><b class="term">주체</b>: 기술심사담당관 · 1차협의 결렬건 대상</li><li><b class="term">구성</b>: 위원장(기술심사담당관)+위원 4~8명(외부 3명↑)</li><li><b class="term">처리기한</b>: 수시요청 후 <span class="num">30일</span> 이내 원칙</li><li>청구금액 적정성·귀책이견 조정, 수정·대안 제시</li></ul></div></div><div class="row1"><div class="card"><span class="badge">6 · 핵심 수치</span><div class="chips"><span class="chip"><b>이윤율</b> 15% 이하</span><span class="chip"><b>일반관리비율</b> 종합공사 5.0~6.0%</span><span class="chip"><b>상여금</b> 기본급 400%/년 이하</span><span class="chip"><b>공사손해보험</b> 추정가격 100억↑ 의무가입</span><span class="chip"><b>요율기준</b> 계약상대자간 문서합의 당시</span><span class="chip"><b>제외항목</b> 건강·연금·장기요양보험료</span></div></div></div><div class="row1"><div class="card"><span class="badge">7 · 요율방식 대체 산정(실비확정 곤란 시)</span><div class="formula">간접노무비·기타경비 = (연장기간÷전체계약기간) × 예정가격(또는 산출내역서)상 금액 × 낙찰률 보정<span class="sub">예정가격 작성 시: [기준액+기준액×낙찰률]÷2 · 미작성 시: 산출내역서상 금액에 비례배분</span></div><ul class="list"><li>법정경비·보험료 등은 계약서·고지서·영수증 등 실비 확인(정산방식 증빙)</li><li>일반관리비·이윤은 산출내역서상 승률비율 그대로 적용</li><li>공사일시정지 사유 시에는 발주기관이 소요 노무량을 산정하여 정산</li></ul></div></div><div class="rule-gray"></div><p class="note">서울특별시 「공기연장에 따른 간접공사비 실무 가이드라인(Ver.1)」(2025.11.14 제정) 요약 · 붙임1(관련규정 전문)·붙임2(청구양식)은 요약범위 제외</p><p class="pageno">4 / 4</p>
+</div>
+</body></html>

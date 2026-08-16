@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>시설물의 안전 및 유지관리 실시 등에 관한 지침 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:14mm 12mm 0 12mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }   /* 잘라내지 않음 — overflow:hidden 금지 */
+
+  .title{ margin:0; font-size:13.1pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:6pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:7.9pt; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.7pt; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.7pt; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:7pt; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6pt; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:6pt; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+.page{ width:210mm; min-height:297mm; padding:14mm 12mm; page-break-after:always; box-sizing:border-box; }
+.page:last-child{ page-break-after:auto; }
+.pageno{ text-align:center; font-size:5.7pt; color:var(--note); margin-top:2mm; }
+@media screen{
+  body{ background:#e5e7eb; }
+  .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 3mm rgba(0,0,0,0.15); }
+}
+</style></head><body>
+<div class="page">
+<h1 class="title">시설물의 안전 및 유지관리 실시 등에 관한 지침 ① — 총론·안전점검등 체계</h1>
+<p class="meta">시설물 안전관리 ｜ 시설물의 안전 및 유지관리에 관한 특별법 제11·12·18·21·37·43·44조 등 ｜ 국토교통부고시 제2022-539호(2022.9.28. 일부개정)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 안전점검등의 종류</span>
+    <ul class="list">
+      <li><b class="term">정기안전점검</b> — 경험·기술 갖춘 자의 세심한 외관조사로 기능적 상태 판단</li>
+      <li><b class="term">정밀안전점검</b> — 면밀한 외관조사와 간단한 측정·시험장비로 실시</li>
+      <li><b class="term">긴급안전점검</b> — 붕괴·전도 우려시 신속 실시, 손상점검·특별점검 구분</li>
+      <li><b class="term">정밀안전진단</b> — 정밀 외관조사·각종 시험으로 위험요인 발견 및 보수·보강 방법 제시</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 실시자격 및 안전관리</span>
+    <ul class="list">
+      <li><b class="term">책임기술자</b> — 영 별표5 기술자격자 + 규칙 제10조 교육과정 이수자(제14조)</li>
+      <li><b class="term">참여기술자</b> — 영 제9조제2항에 따른 자격요건 충족자</li>
+      <li>책임기술자는 안전점검등 참여자 및 공공안전을 위한 <b class="term">안전관리계획</b> 수립 의무</li>
+      <li>안전모·작업복·작업화 등 개인보호장구 항시 착용, 진단장비 검·교정 유지</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 안전점검등 실시 및 중대한결함등 조치 절차</span>
+    <div class="formula">안전점검등 실시 → 중대한결함등 발견시 관계행정기관 즉시 통보(법 제22조) → 통보일로부터 <span class="num">2년</span> 이내 조치 착수 → 착수일로부터 <span class="num">3년</span> 이내 완료
+      <span class="sub">중대한결함등 = 법 제22조제1·2항에 따른 중대한 결함 및 공중이용 부위의 결함(제8조⑨)</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>정기안전점검 — 세심한 외관조사로 시설물의 기능적 상태 판단(제9조)</li>
+      <li><span class="no">②</span>정밀안전점검 — 외관조사·측정·시험 결과로 부재별 상태평가 결정 및 외관조사망도 작성(제10조)</li>
+      <li><span class="no">③</span>긴급안전점검 — 관리주체 또는 관계행정기관 판단시 실시, 별표6 절차 준용(제11조)</li>
+      <li><span class="no">④</span>정밀안전진단 — 근접조사·특수장비 활용, 결함원인 분석 및 보수·보강 방법 제시(제12조)</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 계획수립 및 실시범위</span>
+    <ul class="list">
+      <li>안전점검등 계획은 기후·온도·현지여건 등 고려하여 수립(별표8, 제16조)</li>
+      <li>책임기술자는 사전 도면검토·현장조사로 실시방법·진단장비 선정</li>
+      <li>실시범위는 <b class="term">대상시설물 전체</b> 원칙(제17조)</li>
+      <li>복합시설물 준공시기 상이 등 사유 발생시 범위 조정 가능</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 재료시험</span>
+    <ul class="list">
+      <li><b class="term">현장 재료시험</b> — 손상 없이 강도·결함 측정, 검·교정 필한 장비 사용(제21조)</li>
+      <li><b class="term">실내시험</b> — KS규격 기준 실시, 채취부위 원상복구 의무(제22조)</li>
+      <li>시험결과는 해당분야 경험자가 이전 결과와 비교·분석 평가(제23조)</li>
+      <li>모든 시험 결과는 시험보고서로 정밀점검·진단 보고서에 수록(제24조)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>중대결함 조치착수</b> 통보일로부터 2년 이내</span>
+      <span class="chip"><b>조치완료</b> 착수일로부터 3년 이내</span>
+      <span class="chip"><b>정기안전점검 개시</b> 지정·고시일 다음 반기부터</span>
+      <span class="chip"><b>시설물관리계획</b> 매년 수립·2월 15일까지 제출</span>
+      <span class="chip"><b>중기관리계획</b> 5년마다 수립·2월 15일까지 제출</span>
+      <span class="chip"><b>계획 변경시 제출</b> 변경일로부터 15일 이내</span>
+      <span class="chip"><b>제3종시설물 관련서류 제출</b> 지정·고시일로부터 1개월 이내</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">본 지침은 「시설물의 안전 및 유지관리에 관한 특별법」에 근거함. 실시범위·서식 등 세부사항은 국토안전관리원 세부지침을 따름.</p>
+<p class="pageno">1 / 4</p>
+</div>
+<div class="page">
+<h1 class="title">시설물의 안전 및 유지관리 실시 등에 관한 지침 ② — 평가방법·안전등급·보수보강</h1>
+<p class="meta">시설물 안전관리 ｜ 지침 제25~35조(상태·안전성·종합평가, 보수·보강) ｜ 국토교통부고시 제2022-539호(2022.9.28. 일부개정)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 상태평가(제25조)</span>
+    <ul class="list">
+      <li>재료시험·외관조사 기반 결함·손상·열화 등 상태변화 평가</li>
+      <li>정기안전점검 — 세부지침 점검서식별 기본시설물·주요부재 평가</li>
+      <li>정밀안전점검 — 외관조사망도 작성, 상세 상태평가 실시</li>
+      <li>정밀안전진단 — 전체 부재 외관조사망도 작성, 부재별 상세평가</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 안전성평가(제26·27조)</span>
+    <ul class="list">
+      <li>원칙적으로 <b class="term">정밀안전진단시</b> 실시(정밀·긴급점검은 선택과업)</li>
+      <li>재하시험(계측)·구조해석 등으로 부재 내하력 종합평가</li>
+      <li>결과보고서에 해석방법·결과·입력자료·계산기록 포함</li>
+      <li>결함 광범위·중대시 정밀안전진단 실시 의무(법 제12조②)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 종합평가 및 안전등급 지정 절차</span>
+    <div class="formula">상태평가 + 안전성평가 결과 종합(제28조) → 책임기술자가 <span class="num">안전등급</span> 지정(제29조, 별표12)
+      <span class="sub">종합평가는 정밀안전진단을 실시한 경우에 적용</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>보수 — 시설물 <b class="term">내구성능</b> 회복·향상 목적(제30조)</li>
+      <li><span class="no">②</span>보강 — 부재·시설물의 <b class="term">내하력·강성</b> 등 역학적 성능 회복·향상 목적</li>
+      <li><span class="no">③</span>수준 결정 — 현상유지(진행억제) / 실용상 지장없는 성능 회복 / 초기수준 이상 개선 / 개축 중 선택(제32조)</li>
+      <li><span class="no">④</span>우선순위 — 보수보다 보강, 보조부재보다 주부재 우선 실시(제34조)</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 공법 선정 및 유지관리방안</span>
+    <ul class="list">
+      <li>결함 발생원인 정확분석 후 표준시방서 등 각종 기준 참고(제33조)</li>
+      <li>공법의 적용성·구조적 안전성·경제성 종합검토 후 결정</li>
+      <li>유지관리방안 — 결함원인·점검요령·조치대책 실무 중심 제시(제35조)</li>
+      <li>안전점검 경험이 적은 사람도 쉽게 활용 가능하도록 구성</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 안전등급 조정 시 유의사항</span>
+    <ul class="list">
+      <li>이전 안전등급보다 <b class="term">상향</b> 조정시 그 사유가 분명해야 함(제29조②)</li>
+      <li>보수·보강 조치 등 등급 개선의 객관적 근거 제시 필요</li>
+      <li>보수 필요성 — 손상(균열 등) 허용범위 판단(제31조①)</li>
+      <li>보강 필요성 — 부재안전율이 기준수치 이상 되도록 판단(제31조②)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>보수</b> 내구성능 회복·향상</span>
+      <span class="chip"><b>보강</b> 내하력·강성 회복·향상</span>
+      <span class="chip"><b>보수·보강 수준</b> 4단계(현상유지~개축)</span>
+      <span class="chip"><b>우선순위</b> 보강 &gt; 보수, 주부재 &gt; 보조부재</span>
+      <span class="chip"><b>안전등급 상향시</b> 사유 명시 필수</span>
+      <span class="chip"><b>안전성평가 원칙</b> 정밀안전진단시 실시</span>
+      <span class="chip"><b>종합평가 적용</b> 정밀안전진단 실시 시</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">상태평가·안전성평가·종합평가의 세부 기준 및 서식은 국토안전관리원 세부지침을 따름.</p>
+<p class="pageno">2 / 4</p>
+</div>
+<div class="page">
+<h1 class="title">시설물의 안전 및 유지관리 실시 등에 관한 지침 ③ — 성능평가·유지관리</h1>
+<p class="meta">시설물 안전관리 ｜ 지침 제37~54조(성능평가, 성능목표, 유지관리) ｜ 국토교통부고시 제2022-539호(2022.9.28. 일부개정)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 성능평가 개요(제37~40조)</span>
+    <ul class="list">
+      <li>목적 — 시설물 현재상태·장래 성능변화 파악, 최적 유지관리전략 수립</li>
+      <li>구분 — <b class="term">제1종성능평가</b> / <b class="term">제2종성능평가</b></li>
+      <li>정밀안전점검·정밀안전진단 포함 실시 또는 <b class="term">1년 이내</b> 결과 활용 가능</li>
+      <li>실시범위 — 대상시설물 전체 원칙(복합시설물 등은 예외)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 3대 성능평가(제43~45조)</span>
+    <ul class="list">
+      <li><b class="term">안전성능</b> — 상태안전성능 + 구조안전성능 구분평가</li>
+      <li><b class="term">내구성능</b> — 재료적 내구성능 시험 + 외부환경 저하인자 종합검토</li>
+      <li><b class="term">사용성능</b> — 사용상 편의성·수요·용량 등 현장조사·설계도서 검토</li>
+      <li>책임기술자가 영 별표14에 따라 각 등급 지정</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 종합성능등급 산정 및 유지관리전략 절차</span>
+    <div class="formula">안전성능 + 내구성능 + 사용성능 종합(제46조) → <span class="num">종합성능등급</span> 지정(영 별표14) → 유지관리전략 제안(제47조)
+      <span class="sub">등급 변경시 실시결과·유지관리이력 검토 후 사유를 보고서에 기재</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>책임기술자가 안전·내구·사용성능 등급을 종합하여 종합성능등급 결정</li>
+      <li><span class="no">②</span>이전 등급 변경시 성능평가 실시결과 및 유지관리 이력 검토 필요</li>
+      <li><span class="no">③</span>손상·결함을 검토·분석하여 합리적 유지관리 전략 제안</li>
+      <li><span class="no">④</span>보수·보강 시급성·투자대비 효과가 큰 시설물 중심으로 우선순위 제시</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 성능목표 설정·관리(제51조)</span>
+    <ul class="list">
+      <li>관리주체는 적절한 안전수준·장기 효율성 위해 성능목표 설정</li>
+      <li>성능평가 결과 + 사용환경 검토해 성능목표 등급 지정(별표19)</li>
+      <li>용도변경·전면 성능변경 예정시(개축·교체·철거 등) 등급 조정 가능</li>
+      <li>등급 조정시 중기관리계획·유지관리 결과보고서에 사유 반영</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 유지관리 비용반영·이력관리</span>
+    <ul class="list">
+      <li>안전점검등·성능평가·보수보강 비용을 유지관리 예산에 반영(제50조)</li>
+      <li>전산기법 활용한 시설물관리체계로 과학적 시행 노력</li>
+      <li>관련서류 + 유지관리 관련자료 보존·관리 의무(별표20, 제53조)</li>
+      <li>유지관리 결과보고서 — 완료일로부터 <b class="term">30일 이내</b> 제출(제54조)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>성능평가 구분</b> 제1종·제2종</span>
+      <span class="chip"><b>정밀점검·진단 결과 활용</b> 착수일 기준 1년 이내</span>
+      <span class="chip"><b>성능평가등급</b> 안전·내구·사용·종합 4종</span>
+      <span class="chip"><b>유지관리결과보고서 제출</b> 완료 후 30일 이내</span>
+      <span class="chip"><b>성능평가 실시자격</b> 안전점검등 자격 준용(제41조)</span>
+      <span class="chip"><b>제1종성능평가</b> 정밀안전진단 결과 활용 가능</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">성능평가 종합평가·종합성능등급 산정 절차 및 세부방법은 성능평가 세부지침을 따름.</p>
+<p class="pageno">3 / 4</p>
+</div>
+<div class="page">
+<h1 class="title">시설물의 안전 및 유지관리 실시 등에 관한 지침 ④ — 비용산정·실시결과 평가·제3종시설물</h1>
+<p class="meta">시설물 안전관리 ｜ 지침 제55~104조(비용산정, 정밀점검·진단 평가, 제3종시설물 지정) ｜ 국토교통부고시 제2022-539호(2022.9.28. 일부개정)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 비용 산정기준(제55~59조)</span>
+    <ul class="list">
+      <li>대가 = 기본과업비 + 선택과업비(직접인건비·제경비·기술료·직접경비)</li>
+      <li><b class="term">정액적산방식</b> 원칙 — 기준 인원수 기초 산출</li>
+      <li>제경비 — 직접인건비의 <span class="num">110~120%</span> 계상(제57조)</li>
+      <li>기술료 — (직접인건비+제경비)의 <span class="num">20~40%</span> 계상(제58조)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 대가의 보정(제62조)</span>
+    <ul class="list">
+      <li>구조 매우 복잡 — (+)15% 이내 / 단순 구조 — (－)15% 이내 보정</li>
+      <li>경과년수 — 15년이내 1.00 / 25년이내 1.05 / 35년이내 1.10 / 55년이내 1.15 / 55년초과 1.20</li>
+      <li>전차보고서 — 미제공 1.00 / 보고서·CAD 중 1개 제공 0.97 / 동시제공 0.95</li>
+      <li>기준별 조건 상이시 연장(면적) 가중 평균보정비 적용(제56조⑥)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 정밀점검·진단 실시결과 평가 절차</span>
+    <div class="formula">평가대상 확인(제63조) → 평가 실시(제64조) → 심의대상 선정·보고 → 평가위원회 심의(제74~76조) → 결과통보·조치(제78·82조)
+      <span class="sub">이의신청은 통보받은 날로부터 15일 이내 1회에 한정</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>평가대상 — 중대결함 우려, 안전등급 D·E등급 상향, 2단계 이상 변동, 계약금액 산정기준 <span class="num">70%</span> 미만 등(제63조)</li>
+      <li><span class="no">②</span>심의결과 — <b class="term">적정 / 미흡 / 불량 / 매우불량</b> 4단계로 구분 의결(제76조②)</li>
+      <li><span class="no">③</span>"불량"·"매우불량" 통보시 관리주체·점검진단기관은 과태료·영업정지 대상(제82조)</li>
+      <li><span class="no">④</span>시정조치 — 지적내용 보완 후 결과 관계기관에 제출 의무(제82조③)</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 제3종시설물 지정·해제</span>
+    <ul class="list">
+      <li>지정 — 안전상태·위험도·경과년수 종합고려하여 지정(제101조)</li>
+      <li>지정통보 — 지정일로부터 <b class="term">15일 이내</b>, 고시 14일 이상 게시(제102조)</li>
+      <li>해제요건 — 안전등급 B등급 이상 상향 / 용도변경 등으로 대상 제외 / 철거예정(제103조)</li>
+      <li>해제통보 — 해제일로부터 <b class="term">15일 이내</b>, 고시 14일 이상 게시(제104조)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 기술자 교육훈련</span>
+    <ul class="list">
+      <li>책임·참여기술자는 해당 분야 교육과정 이수 필수(제84·89조)</li>
+      <li>정기·정밀안전점검 — 토목반·건축반 구분</li>
+      <li>정밀안전진단·성능평가 — 교량및터널반·수리시설반·항만반·건축반 구분</li>
+      <li>수료요건 — 총수업시간 <span class="num">80%</span> 이상 이수 + 최종평가 <span class="num">70%</span> 이상 득점(제94조)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>제경비</b> 직접인건비 110~120%</span>
+      <span class="chip"><b>기술료</b> (인건비+제경비) 20~40%</span>
+      <span class="chip"><b>심의결과 4단계</b> 적정·미흡·불량·매우불량</span>
+      <span class="chip"><b>이의신청</b> 통보일로부터 15일 이내</span>
+      <span class="chip"><b>제3종시설물 지정·해제 통보</b> 15일 이내</span>
+      <span class="chip"><b>서류 보존</b> 평가완료 보고일로부터 3년</span>
+      <span class="chip"><b>교육 수료요건</b> 이수율 80%·평가 70%</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">평가위원회 심의점수 배점, 제3종시설물 실태조사 절차 등 세부사항은 제64조 및 관계 세부지침·매뉴얼을 따름.</p>
+<p class="pageno">4 / 4</p>
+</div>
+</body></html>

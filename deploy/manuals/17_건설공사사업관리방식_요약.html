@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건설공사 사업관리방식 검토기준 및 업무수행지침 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:12mm; }
+  .card,.row,.row1,.row2,.doc>div,li,.num,.chips,table,tr{break-inside:avoid;page-break-inside:avoid} /* print-safe */
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:100%; max-width:1180px; min-height:auto;
+    padding:26px 30px 22px;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }
+
+  .title{ margin:0; font-size:26px; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:12px; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:14.5px; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:12px; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:12px; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:14.5px; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:12px; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:12px; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:10px; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+</style></head><body><div class="sheet">
+  <h1 class="title">건설공사 사업관리방식 검토기준 및 업무수행지침 — 핵심 요약</h1>
+  <p class="meta">학교시설업무 BIBLE ｜ 발주·계약 ｜ 건설기술 진흥법 제39조·제49조 ｜ 국토교통부고시 제2025-105호(2025. 3. 5. 시행)</p>
+  <div class="rule-navy"></div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge">1 · 개요 및 적용</span>
+      <ul class="list">
+        <li><b class="term">목적</b> 사업관리방식 선정 기준과 건설사업관리·감독업무 절차를 규정함.</li>
+        <li><b class="term">적용</b> 발주청 시행 건설공사(교육청 발주 포함)</li>
+        <li><b class="term">구성</b> 5장 171개 조문, <b class="term">제3장</b>은 계약문서에 포함함.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge">2 · 사업관리방식 유형</span>
+      <ul class="list">
+        <li><b class="term">직접감독</b> 발주청 직원이 직접 수행함.</li>
+        <li><b class="term">건설사업관리</b> 용역사업자 수행, <b class="term">감독 권한대행</b> 적용 여부로 구분함.</li>
+        <li><b class="term">인력</b> 공사감독자·공사관리관 / 책임·분야별·상주·기술지원 기술인</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge rust">3 · 검토·배정 절차</span>
+      <div class="formula">
+        평가점수 = 공사특성 <span class="num">30%</span> + 사업여건 <span class="num">25%</span> + 공사수행방식 <span class="num">15%</span> + 발주청 역량 <span class="num">30%</span>　(배점 10% 이내 조정 가능)
+      </div>
+      <ol class="nlist">
+        <li><span class="no">①</span><b class="term">검토 시기</b> <b class="term">기본구상 단계</b>에서 적용 여부를 검토하되, 곤란 시 이후 검토 가능함.</li>
+        <li><span class="no">②</span><b class="term">인력 산정</b> 소요인력은 공사감독자 배치계획에 따르며, 기술사 보유자는 <span class="num">20%</span> 가산함.</li>
+        <li><span class="no">③</span><b class="term">방식 배정</b> <span class="num">80점 이상</span> 권한대행 적용, <span class="num">50점 이상</span> 적용 가능, <span class="num">50점 미만</span> 직접감독 가능</li>
+        <li><span class="no">④</span><b class="term">조정·확정</b> 가용인력과 비교해 확정하며, 권한대행 미적용 시 소요인력의 <span class="num">20%</span>를 투입함.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge">4 · 단계별 업무</span>
+      <ul class="list">
+        <li><b class="term">설계 전</b> 타당성·기본계획 검토, 발주방식 지원</li>
+        <li><b class="term">설계</b> 경제성(VE) 검토, 예산 검증, 성과검토</li>
+        <li><b class="term">시공</b> 검측·품질시험·공정·안전, 설계변경 조정</li>
+        <li><b class="term">시공 후</b> 시운전 확인, 유지관리지침서 <span class="num">14일</span> 내 제출</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge">5 · 발주청 유의사항</span>
+      <ul class="list">
+        <li><b class="term">배치기준</b> 건설기술용역 대가기준 별표 2 참고</li>
+        <li><b class="term">조정</b> 총 기술인 수의 <span class="num">±20%</span> 내 조정 가능</li>
+        <li><b class="term">절차</b> <span class="num">7일 이상</span> 공개 → 심의위원회 심의 → 공고</li>
+        <li><b class="term">검사자</b> 접수 후 <span class="num">3일 내</span> 2명 이상 임명</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge">6 · 핵심 수치</span>
+      <div class="chips">
+        <span class="chip"><b>시행</b> 2025. 3. 5.</span>
+        <span class="chip"><b>검토</b> 기본구상 단계</span>
+        <span class="chip"><b>배점</b> 30·25·15·30%</span>
+        <span class="chip"><b>80점</b> 권한대행</span>
+        <span class="chip"><b>50점 미만</b> 직접감독</span>
+        <span class="chip"><b>기술사</b> 20% 가산</span>
+        <span class="chip"><b>공사관리관</b> 5개</span>
+        <span class="chip"><b>배치기준</b> ±20%</span>
+        <span class="chip"><b>의견수렴</b> 7일</span>
+        <span class="chip"><b>검사자</b> 3일</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">본 문서는 학교시설업무 BIBLE 대시보드의 요약 자료이며, 실제 업무 처리 시에는 시행 중인 법령 및 최신 고시를 우선 적용합니다.</p>
+</div></body></html>
+
+<style>@media screen{body{width:auto;background:#fff}.doc{margin:0 auto;box-shadow:none;max-width:1180px}}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.row .card{width:auto}
+@media(max-width:820px){.row{grid-template-columns:1fr}}</style>

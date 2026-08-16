@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>발주자 체크리스트 — 노션 디자인 적용 예시</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --bg:#f6f5f4; --surface:#fff; --surface-2:#f6f5f4; --surface-3:#efedeb;
+  --ink:#000; --ink-2:#31302e; --muted:#615d59; --faint:#a39e98;
+  --line:#e6e6e6; --accent:#0075de; --accent-soft:#e7f1fc; --risk:#b3261e;
+  --rad:12px; --radsm:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+  font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:44px 36px 72px}
+.crumb{display:flex;gap:6px;font-size:12.5px;color:var(--faint);margin-bottom:18px}
+.crumb a{color:var(--faint);text-decoration:none}
+.crumb a:hover{color:var(--accent)}
+h1{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.lead{color:var(--muted);font-size:14.5px;margin-top:8px}
+.meta{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.meta div{display:flex;gap:10px;align-items:baseline;font-size:13px}
+.meta .lb{color:var(--faint)} .meta .vl{color:var(--ink-2);font-weight:500}
+
+/* 진행 요약 */
+.kpi{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:22px}
+@media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}}
+.kpi .c{background:var(--surface);border:1px solid var(--line);border-radius:var(--rad);padding:13px 15px}
+.kpi .nm{font-size:11.5px;color:var(--faint);font-weight:500}
+.kpi .vl{margin-top:4px;font-size:22px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.kpi .c.on{border-color:var(--accent);background:var(--accent-soft)}
+.kpi .c.on .vl{color:var(--accent)}
+.bar{height:4px;background:var(--surface-3);border-radius:100px;margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;width:42%;background:var(--accent);border-radius:100px}
+.barlb{display:flex;justify-content:space-between;font-size:11.5px;color:var(--faint);margin-top:7px}
+
+/* 필터 */
+.filters{display:flex;gap:4px;flex-wrap:wrap;margin-top:22px}
+.filters button{border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;
+  font-size:12.5px;font-weight:500;padding:8px 13px;border-radius:100px;cursor:pointer;display:flex;align-items:center;gap:7px}
+.filters button .n{font-size:11.5px;color:var(--faint);font-variant-numeric:tabular-nums}
+.filters button.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:700}
+.filters button.on .n{color:rgba(255,255,255,.7)}
+
+/* 그룹 */
+.grp{margin-top:26px}
+.grp-h{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.grp-h h2{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.grp-h .cnt{font-size:11.5px;color:var(--faint);background:var(--surface-3);border-radius:100px;
+  padding:1px 8px;font-weight:700;font-variant-numeric:tabular-nums}
+.grp-b{background:var(--surface);border:1px solid var(--line);border-radius:var(--rad);overflow:hidden}
+
+/* 항목 */
+.it{display:flex;gap:13px;padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer;align-items:flex-start}
+.it:last-child{border-bottom:0}
+.it:hover{background:var(--surface-2)}
+.cb{flex:0 0 auto;width:18px;height:18px;border:1px solid var(--faint);border-radius:4px;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;background:var(--surface)}
+.it.on .cb{background:var(--accent);border-color:var(--accent);color:#fff}
+.it.on .t{color:var(--faint);text-decoration:line-through;text-decoration-color:var(--line)}
+.it.on .d{color:var(--faint)}
+.t{font-size:14px;font-weight:700;letter-spacing:-.01em;line-height:1.45}
+.d{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.6}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tg{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.01em}
+.tg.law{color:var(--muted);background:var(--surface-3)}
+.tg.money{color:var(--accent);background:var(--accent-soft)}
+.tg.risk{color:var(--risk);background:#fbeceb}
+
+.foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--faint);line-height:1.8}
+.legend{margin-top:40px;border-top:1px solid var(--line);padding-top:24px}
+.legend h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.rules{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;font-size:12.5px;color:var(--muted)}
+.rules div{border:1px solid var(--line);border-radius:var(--radsm);background:var(--surface);padding:11px 13px}
+.rules b{display:block;color:var(--ink);font-size:12px;margin-bottom:3px}
+@media(max-width:700px){.wrap{padding:28px 16px 56px}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="bible_notion.html">학교시설업무 치트키 · SCHOOL BIBLE</a><span>/</span><a href="bible_notion.html">실무</a><span>/</span><span style="color:var(--ink-2)">발주자 체크리스트</span></div>
+
+  <h1>발주자 의무 체크리스트</h1>
+  <p class="lead">학교시설사업 단계별 발주청 법정 의무사항 — 미이행 시 벌칙·과태료 포함</p>
+
+  <div class="meta">
+    <div><span class="lb">항목</span><span class="vl">48건</span></div>
+    <div><span class="lb">저장</span><span class="vl">체크 상태 자동 저장</span></div>
+    <div><span class="lb">표시값</span><span class="vl">샘플 데이터 (실제 적용 시 원본 데이터 연결)</span></div>
+  </div>
+
+  <div class="kpi">
+    <div class="c"><div class="nm">전체 항목</div><div class="vl">48</div></div>
+    <div class="c on"><div class="nm">완료</div><div class="vl">20</div></div>
+    <div class="c"><div class="nm">미완료</div><div class="vl">28</div></div>
+    <div class="c"><div class="nm">벌칙 대상 미이행</div><div class="vl" style="color:var(--risk)">6</div></div>
+    <div class="c"><div class="nm">이행률</div><div class="vl">42<span style="font-size:14px;font-weight:500;color:var(--muted)">%</span></div></div>
+  </div>
+  <div class="bar"><i></i></div>
+  <div class="barlb"><span>기획 · 설계 단계 위주로 진행 중</span><span>20 / 48</span></div>
+
+  <div class="filters">
+    <button class="on" type="button">전체 <span class="n">48</span></button>
+    <button type="button">기획 <span class="n">11</span></button>
+    <button type="button">설계 <span class="n">14</span></button>
+    <button type="button">시공 <span class="n">17</span></button>
+    <button type="button">준공 <span class="n">6</span></button>
+    <button type="button">벌칙 대상만 <span class="n">9</span></button>
+    <button type="button">미완료만 <span class="n">28</span></button>
+  </div>
+
+  <div class="grp">
+    <div class="grp-h"><h2>기획 단계</h2><span class="cnt">3 / 11</span></div>
+    <div class="grp-b">
+      <div class="it on"><span class="cb">✓</span><div>
+        <div class="t">기본안전보건대장 작성</div>
+        <div class="d">계획단계에서 위험요인을 발굴하고 감소대책을 수립해 설계자에게 제공</div>
+        <div class="tags"><span class="tg money">총공사비 50억↑</span><span class="tg law">산업안전보건법 제67</span><span class="tg risk">과태료 1천만원</span></div>
+      </div></div>
+      <div class="it"><span class="cb">✓</span><div>
+        <div class="t">사전기획 용역 발주</div>
+        <div class="d">사업 규모·예산·기간을 확정하기 위한 사전기획 수행 (설계 착수 전)</div>
+        <div class="tags"><span class="tg money">설계비 1억↑</span><span class="tg law">교육시설법 시행령 제23-2</span></div>
+      </div></div>
+      <div class="it"><span class="cb">✓</span><div>
+        <div class="t">투자심사 · 공공건축심의</div>
+        <div class="d">총사업비 기준 자체투자심사 및 공공건축사업 계획 사전검토</div>
+        <div class="tags"><span class="tg money">총사업비 40억↑</span><span class="tg law">지방재정법 · 건축서비스산업법 제19-2</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-h"><h2>설계 단계</h2><span class="cnt">2 / 14</span></div>
+    <div class="grp-b">
+      <div class="it on"><span class="cb">✓</span><div>
+        <div class="t">설계안전보건대장 확인</div>
+        <div class="d">설계자가 작성한 대장의 적정성 확인 후 시공자에게 제공</div>
+        <div class="tags"><span class="tg money">총공사비 50억↑</span><span class="tg law">산업안전보건법 제68</span><span class="tg risk">과태료 1천만원</span></div>
+      </div></div>
+      <div class="it"><span class="cb">✓</span><div>
+        <div class="t">설계 경제성 검토(VE)</div>
+        <div class="d">기본·실시설계 단계별 VE 실시 및 결과 반영</div>
+        <div class="tags"><span class="tg money">총공사비 100억↑</span><span class="tg law">건설기술진흥법 시행령 제75</span></div>
+      </div></div>
+      <div class="it"><span class="cb">✓</span><div>
+        <div class="t">건설사업관리계획 수립 · 공고</div>
+        <div class="d">공사 발주 전 사업관리방식 결정 및 협회 접수</div>
+        <div class="tags"><span class="tg money">토목 5억↑ / 건축 660㎡↑</span><span class="tg law">건설기술진흥법 제39-2</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="foot">※ 체크 상태는 브라우저에 저장되며, 법정 의무 여부는 사업 조건(공사비·연면적·발주 방식)에 따라 달라질 수 있습니다.</div>
+
+  <div class="legend">
+    <h3>적용한 노션 스타일 규칙</h3>
+    <div class="rules">
+      <div><b>KPI 카드</b>키 11.5px 회색 / 값 22px 700 · 완료 카드만 accent</div>
+      <div><b>진행 바</b>4px 하이라인 바 + accent 채움, 수치는 우측 캡션</div>
+      <div><b>체크박스</b>18px 라운드 4 · 완료 시 accent 채움 + 제목 취소선(회색)</div>
+      <div><b>태그 3종</b>근거법령=회색 / 금액기준=accent / 벌칙=적색(단 하나의 경고색)</div>
+      <div><b>그룹 헤더</b>단계별 색 점 제거 → 대문자 트래킹 라벨 + 완료 카운트 배지</div>
+      <div><b>필터</b>검정 pill(활성) + 항목 수, 벌칙·미완료 필터도 같은 형식</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

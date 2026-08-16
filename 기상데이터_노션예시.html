@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>기상데이터 체크 — 노션 디자인 적용 예시</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --bg:#f6f5f4; --surface:#fff; --surface-2:#f6f5f4; --surface-3:#efedeb;
+  --ink:#000; --ink-2:#31302e; --muted:#615d59; --faint:#a39e98;
+  --line:#e6e6e6; --accent:#0075de; --accent-soft:#e7f1fc; --warn:#b3261e;
+  --rad:12px; --radsm:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+  font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:44px 36px 72px}
+.crumb{display:flex;gap:6px;font-size:12.5px;color:var(--faint);margin-bottom:18px}
+.crumb a{color:var(--faint);text-decoration:none}
+.crumb a:hover{color:var(--accent)}
+h1{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.lead{color:var(--muted);font-size:14.5px;margin-top:8px}
+.meta{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.meta div{display:flex;gap:10px;align-items:baseline;font-size:13px}
+.meta .lb{color:var(--faint)} .meta .vl{color:var(--ink-2);font-weight:500}
+
+.callout{display:flex;gap:12px;background:var(--surface-3);border-radius:var(--radsm);padding:14px 16px;
+  margin-top:20px;font-size:13.5px;color:var(--ink-2);line-height:1.65}
+.callout .bar{width:3px;border-radius:3px;background:var(--warn);flex:0 0 auto}
+.callout b{color:var(--ink)}
+
+.form{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+@media(max-width:860px){.form{grid-template-columns:repeat(2,1fr)}}
+.fld label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:var(--faint);margin-bottom:6px}
+.fld input,.fld select{width:100%;font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--radsm);padding:9px 11px;outline:0}
+.fld input:focus,.fld select:focus{border-color:var(--accent)}
+.fld .hint{font-size:11.5px;color:var(--faint);margin-top:5px}
+.btnrow{display:flex;gap:6px;justify-content:flex-end;margin-top:14px}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:12.5px;
+  font-weight:500;padding:8px 14px;border-radius:100px;cursor:pointer}
+.btn:hover{background:var(--surface-3);color:var(--ink)}
+.btn.p{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:700}
+
+.group{margin-top:32px}
+.ghead{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.ghead h2{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ghead .sub{font-size:12.5px;color:var(--faint)}
+.ghead .sp{flex:1}
+.kpi{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(max-width:860px){.kpi{grid-template-columns:repeat(2,1fr)}}
+.kpi .c{background:var(--surface);border:1px solid var(--line);border-radius:var(--rad);padding:13px 15px}
+.kpi .nm{font-size:11.5px;color:var(--faint);font-weight:500}
+.kpi .vl{margin-top:4px;font-size:22px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.kpi .vl span{font-size:12.5px;font-weight:500;color:var(--muted);margin-left:2px}
+.kpi .c.on{border-color:var(--accent);background:var(--accent-soft)}
+.kpi .c.on .vl{color:var(--accent)}
+
+.tbl{background:var(--surface);border:1px solid var(--line);border-radius:var(--rad);overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{font-size:11.5px;font-weight:700;color:var(--faint);text-align:right;padding:10px 13px;
+  border-bottom:1px solid var(--line);background:var(--surface-2);white-space:nowrap}
+th.l{text-align:left}
+td{padding:11px 13px;border-bottom:1px solid var(--line);font-size:13px;color:var(--ink-2);
+  text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.l{text-align:left;font-weight:700;color:var(--ink)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--surface-2)}
+td.hit{color:var(--warn);font-weight:700}
+td.sum{font-weight:700;color:var(--ink)}
+tfoot td{background:var(--surface-2);border-top:1px solid var(--line);border-bottom:0;font-weight:700;color:var(--ink)}
+tr.off td{color:var(--faint)}
+.cap{font-size:11.5px;color:var(--faint);margin-top:7px}
+
+.legend{margin-top:40px;border-top:1px solid var(--line);padding-top:24px}
+.legend h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.rules{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;font-size:12.5px;color:var(--muted)}
+.rules div{border:1px solid var(--line);border-radius:var(--radsm);background:var(--surface);padding:11px 13px}
+.rules b{display:block;color:var(--ink);font-size:12px;margin-bottom:3px}
+@media(max-width:700px){.wrap{padding:28px 16px 56px}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="bible_notion.html">학교시설업무 치트키 · SCHOOL BIBLE</a><span>/</span><a href="bible_notion.html">실무</a><span>/</span><span style="color:var(--ink-2)">기상데이터 체크</span></div>
+
+  <h1>기상데이터 체크</h1>
+  <p class="lead">기상청 ASOS 일자료 기반 비작업일수 산정 — 공사기간 산출·계약기간 연장 검토용</p>
+
+  <div class="meta">
+    <div><span class="lb">자료</span><span class="vl">기상청 ASOS 일자료</span></div>
+    <div><span class="lb">관측지점</span><span class="vl">광주(156)</span></div>
+    <div><span class="lb">기간</span><span class="vl">2026-01-01 ~ 2026-06-30</span></div>
+    <div><span class="lb">표시값</span><span class="vl">샘플 데이터</span></div>
+  </div>
+
+  <div class="callout">
+    <div class="bar"></div>
+    <div><b>참고용 자동 집계값</b>입니다. 실제 계약기간 연장·비작업일 인정은 감독관 확인과 현장 기록(작업일보·사진)을 근거로 판단해야 합니다.</div>
+  </div>
+
+  <div class="form">
+    <div class="fld"><label>관측지점</label>
+      <select><option selected>광주(156)</option><option>목포(165)</option><option>여수(168)</option><option>순천(174)</option></select>
+      <div class="hint">사업장에서 가장 가까운 지점</div></div>
+    <div class="fld"><label>조회 시작일</label>
+      <input type="text" value="2026-01-01" inputmode="numeric">
+      <div class="hint">직접 입력 또는 달력 선택</div></div>
+    <div class="fld"><label>조회 종료일</label>
+      <input type="text" value="2026-06-30" inputmode="numeric">
+      <div class="hint">API는 과거 기간만 조회 가능</div></div>
+    <div class="fld"><label>산정 방식</label>
+      <select><option selected>실측 (ASOS 일자료)</option><option>평년값 추정</option></select>
+      <div class="hint">미래 기간은 평년값 추정</div></div>
+  </div>
+  <div class="btnrow">
+    <button class="btn" type="button">↺ 초기화</button>
+    <button class="btn p" type="button">인쇄 · PDF</button>
+  </div>
+
+  <div class="group">
+    <div class="ghead"><h2>집계 요약</h2><span class="sub">관측 181일 · 기준: 강수 10mm · 강풍 10m/s · 혹서 33℃ · 혹한 −5℃</span></div>
+    <div class="kpi">
+      <div class="c"><div class="nm">강우 초과일</div><div class="vl">18<span>일</span></div></div>
+      <div class="c"><div class="nm">강풍 초과일</div><div class="vl">4<span>일</span></div></div>
+      <div class="c"><div class="nm">혹한 초과일</div><div class="vl">9<span>일</span></div></div>
+      <div class="c"><div class="nm">공휴일 중복</div><div class="vl">6<span>일</span></div></div>
+      <div class="c on"><div class="nm">순 비작업일수</div><div class="vl">25<span>일</span></div></div>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="ghead"><h2>월별 집계</h2><span class="sub">기상 초과일 · 공휴일 중복 차감 후 순일수</span><span class="sp"></span><button class="btn" type="button">표 복사</button></div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th class="l">연·월</th><th>강우</th><th>강풍</th><th>혹서</th><th>혹한</th><th>기상계</th><th>공휴일</th><th>중복</th><th>순일수</th><th class="l">비고</th></tr></thead>
+        <tbody>
+          <tr><td class="l">2026-01</td><td>2</td><td>1</td><td>0</td><td class="hit">6</td><td>9</td><td>3</td><td>2</td><td class="sum">7</td><td class="l" style="font-weight:400;color:var(--faint)">강수 41.5mm</td></tr>
+          <tr><td class="l">2026-02</td><td>3</td><td>1</td><td>0</td><td class="hit">3</td><td>7</td><td>2</td><td>1</td><td class="sum">6</td><td class="l" style="font-weight:400;color:var(--faint)">강수 58.0mm</td></tr>
+          <tr><td class="l">2026-03</td><td>3</td><td>1</td><td>0</td><td>0</td><td>4</td><td>2</td><td>1</td><td class="sum">3</td><td class="l" style="font-weight:400;color:var(--faint)">강수 72.5mm</td></tr>
+          <tr><td class="l">2026-04</td><td>4</td><td>0</td><td>0</td><td>0</td><td>4</td><td>1</td><td>1</td><td class="sum">3</td><td class="l" style="font-weight:400;color:var(--faint)">강수 96.0mm</td></tr>
+          <tr><td class="l">2026-05</td><td class="hit">3</td><td>1</td><td>0</td><td>0</td><td>4</td><td>2</td><td>1</td><td class="sum">3</td><td class="l" style="font-weight:400;color:var(--faint)">강수 88.5mm</td></tr>
+          <tr><td class="l">2026-06</td><td class="hit">3</td><td>0</td><td>0</td><td>0</td><td>3</td><td>1</td><td>0</td><td class="sum">3</td><td class="l" style="font-weight:400;color:var(--faint)">강수 134.0mm</td></tr>
+        </tbody>
+        <tfoot><tr><td class="l">합계 (181일)</td><td>18</td><td>4</td><td>0</td><td>9</td><td>31</td><td>11</td><td>6</td><td>25</td><td class="l"></td></tr></tfoot>
+      </table>
+    </div>
+    <div class="cap">기준 초과 셀만 적색 표기 · 숫자는 우측 정렬 tabular-nums</div>
+  </div>
+
+  <div class="group">
+    <div class="ghead"><h2>일자별 실측</h2><span class="sub">일요일·공휴일은 흐리게 · 기준 초과값만 적색</span><span class="sp"></span><button class="btn" type="button">표 복사</button></div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th class="l">일자</th><th>강수량 mm</th><th>최대풍속 m/s</th><th>최고기온 ℃</th><th>최저기온 ℃</th><th class="l">판정</th></tr></thead>
+        <tbody>
+          <tr><td class="l">2026-06-24 (수)</td><td>0.0</td><td>3.2</td><td>28.4</td><td>19.6</td><td class="l" style="font-weight:400;color:var(--faint)">작업 가능</td></tr>
+          <tr><td class="l">2026-06-25 (목)</td><td class="hit">42.5</td><td>6.1</td><td>25.1</td><td>21.0</td><td class="l" style="font-weight:400;color:var(--warn)">강우 초과</td></tr>
+          <tr><td class="l">2026-06-26 (금)</td><td class="hit">18.0</td><td>4.4</td><td>26.8</td><td>21.4</td><td class="l" style="font-weight:400;color:var(--warn)">강우 초과</td></tr>
+          <tr class="off"><td class="l" style="color:var(--faint)">2026-06-28 (일)</td><td>1.5</td><td>3.0</td><td>29.9</td><td>20.8</td><td class="l" style="font-weight:400">휴무</td></tr>
+          <tr><td class="l">2026-06-29 (월)</td><td>0.0</td><td class="hit">11.4</td><td>30.2</td><td>21.1</td><td class="l" style="font-weight:400;color:var(--warn)">강풍 초과</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="ghead"><h2>작업제한 기상조건</h2><span class="sub">공종별 작업 불가 판단 기준</span></div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th class="l">공종</th><th>강우</th><th>강설</th><th>혹한</th><th>혹서</th><th>강풍</th></tr></thead>
+        <tbody>
+          <tr><td class="l">토공사</td><td>10mm↑</td><td>10mm↑</td><td>−5℃ 이하</td><td>33℃ 이상</td><td>10m/s↑</td></tr>
+          <tr><td class="l">철근콘크리트</td><td>10mm↑</td><td>10mm↑</td><td>0℃ 이하</td><td>33℃ 이상</td><td>10m/s↑</td></tr>
+          <tr><td class="l">도장·방수</td><td>5mm↑</td><td>5mm↑</td><td>5℃ 이하</td><td>33℃ 이상</td><td>8m/s↑</td></tr>
+          <tr><td class="l">철골·양중</td><td>10mm↑</td><td>10mm↑</td><td>−5℃ 이하</td><td>33℃ 이상</td><td>8m/s↑</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="legend">
+    <h3>적용한 노션 스타일 규칙</h3>
+    <div class="rules">
+      <div><b>단일 강조색</b>accent #0075de는 순 비작업일수 카드에만, 초과값은 유일한 경고색 적색</div>
+      <div><b>헤어라인 표</b>1px #e6e6e6 · 그림자 없음 · 합계는 tfoot 회색 배경 + 검정 굵게</div>
+      <div><b>이모지 제거</b>🌧🌪 등 아이콘 대신 라벨 텍스트 + 숫자 위계로 구분</div>
+      <div><b>섹션 라벨</b>대문자 트래킹 소제목 + 우측 조건 설명(회색 12.5px)</div>
+      <div><b>버튼</b>보조는 회색 pill, 주요 액션(인쇄)만 검정 pill</div>
+      <div><b>주의 문구</b>노란 경고 박스 → 회색 콜아웃 + 3px 적색 바</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

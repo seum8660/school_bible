@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건축물 해체계획서 작성·검토 사례집 — 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:14mm 12mm 0 12mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }   /* 잘라내지 않음 — overflow:hidden 금지 */
+
+  .title{ margin:0; font-size:13.1pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:6pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:7.9pt; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.7pt; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.7pt; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:7pt; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6pt; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:6pt; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+
+body{ padding:0; background:#e5e7eb; }
+.page{ width:210mm; min-height:297mm; padding:14mm 12mm; page-break-after:always; background:#fff; }
+.page:last-child{ page-break-after:auto; }
+.pageno{ text-align:center; font-size:5.7pt; color:var(--note); margin-top:2mm; }
+@media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+@media screen{ .page{ box-shadow:0 0 6px rgba(0,0,0,.18); margin:6mm auto; } }
+
+</style></head><body>
+<div class="page"><h1 class="title">건축물 해체계획서 작성·검토 사례집 ① — 제도 개요</h1><p class="meta">건축물 해체공사 안전관리 ｜ 건축물관리법 제30조~제34조 ｜ 국토교통부·국토안전관리원(2025.12. 발간, 2025.6 기준 법령)</p><div class="rule-navy"></div><div class="row2"><div class="card"><span class="badge">1 · 해체 허가·신고 제도</span><ul class="list"><li><b class="term">시행</b>: 2020.5.1. 「건축물관리법」 제30조~제34조에 의거 신설</li><li>관리자가 건축물 해체 시 허가권자(특별자치시장·특별자치도지사·시장·군수·구청장)의 <b class="term">허가</b> 또는 <b class="term">신고</b> 필요</li><li>해체 허가(신고) 신청 시 <b class="term">해체계획서</b> 첨부 필수</li><li>안전사고 우려 건축물은 국토안전관리원(이하 관리원) 검토 의뢰</li></ul></div><div class="card"><span class="badge">2 · 해체 신고 대상</span><ul class="list"><li>주요구조부 해체를 수반하지 않는 <b class="term">건축물 일부</b> 해체</li><li>연면적 <span class="num">500㎡</span> 미만 + 높이 <span class="num">12m</span> 미만 + 3개층 이하 <b class="term">전체</b> 해체</li><li>「건축법」 제14조제1항제1·3호 건축물, 관리·농림·자연환경보전지역 내 높이 12m 미만 건축물</li><li>그 밖에 시·군·구 조례로 정하는 건축물 · 위 대상 외는 <b class="term">허가</b> 대상</li></ul></div></div><div class="row1"><div class="card"><span class="badge rust">3 · 국토안전관리원 검토대상 및 절차</span><div class="formula">신고서·신청서 제출 → 관리원 검토대상 확인 → 검토(7일, 1회 연장가능) → 결과통보(적정/조건부적정/부적정)<span class="sub">건축물관리법 제30조제8항·시행령 제21조제5항 — 특수구조·10톤 이상 장비탑재·폭파 해체</span></div><ol class="nlist"><li><span class="no">①</span>특수구조건축물 — 기둥간 20m 이상, PEB·스페이스프레임·막구조·케이블구조·부유식구조 등 특수 설계·시공·공법</li><li><span class="no">②</span>6개층 이상 하중전이(전이보·전이슬래브), 면진·제진장치, 비표준 설계법 적용 건축물</li><li><span class="no">③</span>건축물에 10톤 이상 장비를 올려 해체하는 건축물</li><li><span class="no">④</span>폭파하여 해체하는 건축물 — 검토위원회 심의대상(특수구조·폭파·설계도서 없음 등)은 외부위원 3명 서면·대면 심의</li></ol></div></div><div class="row2"><div class="card"><span class="badge">4 · 변경 허가·신고 대상(제30조의3)</span><ul class="list"><li><b class="term">해체계획 변경(1항)</b>: 해체공법·작업순서·해체면적·장비종류·석면함유여부·안전관리대책</li><li><b class="term">착공신고 변경(2항)</b>: 착공예정일(30일 이상 변경), 해체작업자·하수급인·현장관리인·배치기술자</li><li>현장에서 임의로 공법·장비를 변경하는 사례 예방 목적</li><li>변경 시 허가권자 사전 적정성 검토 필요</li></ul></div><div class="card"><span class="badge">5 · 검토 절차 단계(신고 기준)</span><ul class="list"><li><b class="term">1~2단계</b>: 신고서 제출·접수 → 관리원 검토 의뢰·접수</li><li><b class="term">3~4단계</b>: 적정성 검토(및 필요시 검토위 심의) → 결과통보 → 신고확인증 발급</li><li><b class="term">5~7단계</b>: 조건부적정·부적정 시 보완 후 재검토 요청 → 재검토 → 재심사 결과통보</li><li>허가 대상은 위 절차에 지역건축위원회 해체계획서 심의 단계 추가</li></ul></div></div><div class="row1"><div class="card"><span class="badge">6 · 핵심 수치</span><div class="chips"><span class="chip"><b>신고 전체해체 기준</b> 500㎡·12m·3개층 미만</span><span class="chip"><b>관리원 검토기간</b> 7일(1회 연장가능)</span><span class="chip"><b>10톤 이상 장비탑재</b> 관리원 검토대상</span><span class="chip"><b>검토위 외부위원</b> 3명 이상</span><span class="chip"><b>착공일 변경</b> 30일 이상 시 변경신고</span><span class="chip"><b>검토결과</b> 적정·조건부적정·부적정</span></div></div></div><div class="row1"><div class="card"><span class="badge">7 · 해체·멸실 정의 및 재검토 절차</span><ul class="list"><li><b class="term">해체</b>: 건축·대수선·리모델링 또는 멸실 목적으로 건축물 전체·일부를 파괴·절단·제거</li><li><b class="term">멸실</b>: 해체·노후화·재해 등으로 효용 및 형체를 완전히 상실한 상태</li><li>최초 검토결과가 조건부적정·부적정인 경우 보완계획서 제출 후 <b class="term">재검토 요청</b> 가능</li><li>재검토 시 검토위원회 재심의(서면 또는 대면, 외부위원 3명)</li></ul></div></div><div class="rule-gray"></div><p class="note">국토교통부·국토안전관리원 「건축물 해체계획서 작성·검토 사례집」(2025.12.) 요약</p><p class="pageno">1 / 4</p>
+</div>
+<div class="page"><h1 class="title">건축물 해체계획서 작성·검토 사례집 ② — 작성·검토 항목 체계</h1><p class="meta">해체계획서 작성·검토 8대 항목 ｜ 건축물 해체계획서의 작성 및 감리업무 등에 관한 기준(국토교통부 고시 제2022-446호) ｜ 국토안전관리원</p><div class="rule-navy"></div><div class="row2"><div class="card"><span class="badge">1 · 일반사항 및 사전조사</span><ul class="list"><li><b class="term">일반사항</b>: 대상건축물 개요(위치·구조·규모·구조변경), 관리조직도, 예정공정표</li><li><b class="term">주변·매설물조사</b>: 인접건축물·옹벽·도로·공지·가공고압선, 지하매설물(전기·상하수도·가스)</li><li><b class="term">대상건축물조사</b>: 설계도서 대조 또는 구조안전성 점검(비파괴강도·용접부 등)</li><li><b class="term">유해물질·환경조사</b>: 석면조사 결과, 소음·진동·비산먼지 검토</li></ul></div><div class="card"><span class="badge">2 · 설비·가시설 및 작업계획</span><ul class="list"><li><b class="term">지하매설물 조치</b>: 이동·철거·보호계획, 관계기관 협의</li><li><b class="term">장비이동계획</b>: 투입장비 제원, 인양능력·안전성 검토, 전도방지대책</li><li><b class="term">가시설물계획</b>: 설계기준(KDS 21 60 00)에 따른 구조안전성, 단계별 전도방지대책</li><li><b class="term">작업순서·공법</b>: 위치·환경·장비탑재 여부를 고려한 해체공법·순서 근거</li></ul></div></div><div class="row1"><div class="card"><span class="badge rust">3 · 구조안전계획 핵심 구성</span><div class="formula">구조안전계획 = 참여기술자 명단 + 현장조사 결과 + 하중기준(고정·장비·잔재·이동하중) + 단계별 구조안전성 검토</div><ol class="nlist"><li><span class="no">①</span>관계전문가가 서명·날인한 해체 순서별 구조설계도서 작성</li><li><span class="no">②</span>해체 단계별 주요부재 및 잔존 구조물의 구조안전성 검토</li><li><span class="no">③</span>지하건축물은 주변 지반·굴착영향선 내 시설물 안전성, 지하층 외벽 우각부 안전성 추가 검토</li><li><span class="no">④</span>구조보강계획(잭서포트 등) 및 마감재·지붕·중간층·지하층 착수 전 안전점검표 운용</li></ol></div></div><div class="row2"><div class="card"><span class="badge">4 · 안전관리계획</span><ul class="list"><li><b class="term">작업자</b>: 직무별 안전교육, 출입통제·추락방지, 안전통로·조명</li><li><b class="term">인접건축물</b>: 단계별 보호대책, 계측관리계획</li><li><b class="term">보행자</b>: 교통안내원 배치, 안전시설물, 버스정류장·역사출입구·횡단보도 이동조치</li><li>비상 대피로·소화기 배치 등 화재방지대책 포함</li></ul></div><div class="card"><span class="badge">5 · 환경관리·부지정리·폭파해체</span><ul class="list"><li><b class="term">환경관리</b>: 소음·진동 규제기준 준수, 비산먼지·살수계획, 해체물 처리(분별해체·반출)</li><li><b class="term">부지정리</b>: 폐기물 확인, 평탄·배수로 정비, 인접 접근로 복구</li><li><b class="term">폭파해체(해당 시)</b>: 발파진동·구조검토, 발파시공계획, 비산·소음·방화대책</li><li>세부 작성방법은 국토교통부 고시 제2022-446호 참고</li></ul></div></div><div class="row1"><div class="card"><span class="badge">6 · 핵심 수치</span><div class="chips"><span class="chip"><b>항목 대분류</b> 총 8개(일반~폭파해체)</span><span class="chip"><b>구조안전계획</b> 관계전문가 서명·날인 필수</span><span class="chip"><b>안전점검표</b> 마감재·지붕·중간층·지하층 4단계</span><span class="chip"><b>가시설 기준</b> KDS 21 60 00</span><span class="chip"><b>고시번호</b> 국토교통부 제2022-446호</span><span class="chip"><b>기준일</b> 2022.8.4.</span></div></div></div><div class="row1"><div class="card"><span class="badge">7 · 설계도서 유무에 따른 대상건축물 조사</span><ul class="list"><li><b class="term">설계도서 있는 경우</b>: 도서-현장조사 비교, 용접부·이종재료접합부·철근이음 등 취약부 상태 확인</li><li><b class="term">설계도서 없는 경우</b>: 변위·변형, 콘크리트 비파괴강도, 강재 강도·용접부 결함, 철근 배근조사 등 구조안전성 점검</li><li>공통: 박락우려 내·외장재·장식물·옥탑구조물, 전기·소방·가스·설비 계통 현황 조사</li><li>조사결과는 구조안전계획 수립의 기초자료로 활용</li></ul></div></div><div class="rule-gray"></div><p class="note">국토교통부·국토안전관리원 「건축물 해체계획서 작성·검토 사례집」(2025.12.) 요약</p><p class="pageno">2 / 4</p>
+</div>
+<div class="page"><h1 class="title">건축물 해체계획서 작성·검토 사례집 ③ — 사례별 핵심 요약</h1><p class="meta">해체계획서 작성·검토 사례 7건 ｜ 관리원 접수 해체계획서 검토 실사례 ｜ 국토안전관리원</p><div class="rule-navy"></div><div class="row2"><div class="card"><span class="badge">1 · 김해시 화재피해 공장</span><ul class="list"><li>#화재현장 #특수구조 #굴착기인양 · 철골조 2층, 3,994㎡, 압쇄공법</li><li><b class="term">적정</b>: 해체순서 3D 도식화, 인양물 하중산정 근거 명기</li><li><b class="term">보완</b>: 화재피해 구조안전성 정량조사·보강계획 필요</li><li><b class="term">보완</b>: 굴착기 인양능력 제원표 근거 및 높이 확인 필요</li></ul></div><div class="card"><span class="badge">2 · 용인시 PEB구조 공장</span><ul class="list"><li>#PEB #대공간구조물 #인양해체 · 철골조 3층, 9,044㎡</li><li><b class="term">적정</b>: 신축 역순 해체, PEB 전도방지대책, 인양물 하중산정</li><li><b class="term">적정</b>: 고소작업 추락방지대책 평·단면 도식화</li><li><b class="term">보완</b>: 이동식 크레인-구조물 붐대 간섭 여부 재검토 필요</li></ul></div></div><div class="row2"><div class="card"><span class="badge">3 · 의정부시 전이보구조 공동주택</span><ul class="list"><li>#전이보구조 #장비탑재 #지상해체 · RC조 10층 중 지상 7개층 해체</li><li><b class="term">적정</b>: 장비 작업반경(크레인·굴착기) 평·단면 도식화 검토</li><li><b class="term">보완</b>: 저층부(1~2층) 기둥 기준 재구획 — 벽체 기준 동시해체 시 붕괴우려</li><li><b class="term">보완</b>: 전이 PIT 잭서포트 설치계획·구조안전성, 가설비계 벽이음철물 상세 필요</li></ul></div><div class="card"><span class="badge">4 · 서울 재건축정비구역</span><ul class="list"><li>#다수건축물 #보행자안전 · 499개동, 총 167,837㎡</li><li><b class="term">적정</b>: 작업구역(1~8구간) 구분, 해체방법별(지상·장비탑재) 계획 구분</li><li><b class="term">적정</b>: 지하층 오픈컷 계획, 가설울타리·낙하물방지망 등 보행자 안전관리</li><li><b class="term">보완</b>: 구조형식별(조적조·경량철골조) 별도계획, 작업자 이동동선 물리적 분리대책</li></ul></div></div><div class="row2"><div class="card"><span class="badge">5 · 서울 도심지 오피스</span><ul class="list"><li>#장비탑재 #SRC #크레인인양 #잔재물관리 · 지상 19층, 29,102㎡</li><li><b class="term">적정</b>: 탑재장비 층별 이동·하역계획, 하중재하도 기반 구조안전성 확인</li><li><b class="term">적정</b>: 잭서포트 구조보강, SRC부재 인양절단계획, 잔재물 투하구·적치기준</li><li><b class="term">보완</b>: 가설비계 풍하중 산정 — 기본풍속(KDS 41 12 00) 임의 제한 없이 적용 필요</li></ul></div><div class="card"><span class="badge">6 · 서울 도심지 지하층</span><ul class="list"><li>#지하층 #흙막이 #복공판 #인접시설물 · 지하 7층, 29,683㎡</li><li><b class="term">적정</b>: 구역(Zoning)·층별·부재별 해체순서, 복공판 설치·구조안전성 검토</li><li><b class="term">적정</b>: 흙막이 설치계획(우각부 상세), 인접시설물 굴착영향범위·계측관리계획</li><li><b class="term">보완</b>: 단계별 지하외벽(캔틸레버 구간) 안전성, SRC부재 별도 해체계획 필요</li></ul></div></div><div class="row1"><div class="card"><span class="badge rust">7 · 광주시 소규모 건축물(신고대상)</span><div class="formula">#해체신고대상 #인력해체 #고소작업 · 조립식 패널 1층, 81.6㎡</div><ol class="nlist"><li><span class="no">①</span>적정: 대상건축물·주변시설물(공공시설·지하매설물) 조사 상세 수행</li><li><span class="no">②</span>적정: 구조형식(조립식 패널)에 맞춘 부재별 해체순서·방향 명확 제시</li><li><span class="no">③</span>보완: 지붕 패널·트러스 인력해체 시 고소작업자 추락방지대책 미수립 — 보강 필요</li><li><span class="no">④</span>참고: 신고대상은 허가대상 대비 간결하되 부재별 순서는 동일하게 구체화 필요</li></ol></div></div><div class="rule-gray"></div><p class="note">국토교통부·국토안전관리원 「건축물 해체계획서 작성·검토 사례집」(2025.12.) 요약</p><p class="pageno">3 / 4</p>
+</div>
+<div class="page"><h1 class="title">건축물 해체계획서 작성·검토 사례집 ④ — 공통 보완사유 체크리스트</h1><p class="meta">7개 사례 보완사항 유형화 ｜ 관리원 검토 과정에서 반복 발생하는 미비점 ｜ 국토안전관리원</p><div class="rule-navy"></div><div class="row2"><div class="card"><span class="badge">1 · 현장조사·구조안전성 미흡</span><ul class="list"><li>화재·손상 현장의 피해정도가 불분명하고 구조안전 보강계획 누락(4.1)</li><li>단계별 지하외벽(캔틸레버 구간) 안전성 검토 누락(4.6)</li><li>→ 대책: 결함부재 위치·정도·강도 등 정량조사 후 단계별 잔존구조물 안전성 검토 반영</li><li>참고자료: 화재보험협회 「건축물의 화재피해 진단 및 보수」(위험관리정보 제183호)</li></ul></div><div class="card"><span class="badge">2 · 인양·장비 검토 근거 부족</span><ul class="list"><li>굴착기 인양능력 제시값의 제원표 근거 확인 불가(4.1)</li><li>이동식 크레인 붐대와 구조물 간 간섭 미검토(4.2), 붐길이·붐높이 혼동(4.6)</li><li>→ 대책: 제조사 제원표 첨부, 충격계수(30%) 적용 인양능력 산정, 간섭·전도·부속용구 안전성 검토</li><li>국토안전관리원 누리집 &gt; 기술자료실 &gt; ‘해체계획서 적정성 사전검토tool(장비편)’ 활용 권고</li></ul></div></div><div class="row1"><div class="card"><span class="badge rust">3 · 해체순서 및 구조보강계획 불명확</span><div class="formula">해체순서 미비 + 구조보강계획 누락 → 부재별·구간별 재구획 및 보강계획 재수립 필요</div><ol class="nlist"><li><span class="no">①</span>저층부 등 수직부재 형식(벽식·기둥식)을 고려하지 않은 구간 동시해체 계획(4.3)</li><li><span class="no">②</span>전이 PIT 등 구조보강(잭서포트) 설치계획(수량·제원·방법) 및 구조안전성 검토 누락(4.3)</li><li><span class="no">③</span>장경간 트러스 외 기타 부재(퍼린·가새·패널)의 시기·순서·장비 계획 불분명(4.1)</li><li><span class="no">④</span>구조형식(RC/조적조·연와조/경량철골조/SRC)별 계획을 구분하지 않고 RC 위주로만 수립(4.4, 4.6)</li></ol></div></div><div class="row2"><div class="card"><span class="badge">4 · 가시설물·풍하중 기준 미준수</span><ul class="list"><li>비계 풍하중 산정 시 기본풍속(KDS 41 12 00)을 임의 작업조건으로 제한(4.5)</li><li>→ 대책: 지역별 기본풍속·유효 풍관측자료를 그대로 적용해 검토, 매번 파악 어려운 임의조건 배제</li><li>흙막이 우각부·접합부 등 구조적 취약부 시공상세도 및 구조안전성 검토(4.6 적정사례 참고)</li><li>가설비계는 KDS 21 60 00(비계 및 안전시설물 설계기준) 준수 확인</li></ul></div><div class="card"><span class="badge">5 · 안전관리계획 구체성 부족</span><ul class="list"><li>동시다발적 해체 시 작업자 이동동선의 물리적 분리계획 없이 교육·경보에만 의존(4.4)</li><li>고소작업(지붕패널·트러스 인력해체) 추락방지대책 미수립(4.2, 4.7)</li><li>→ 대책: 위험물과의 물리적 분리계획(신호수·경보기·후방감지기 등) 및 추락방지망·안전대 부착설비 구체화</li><li>소규모 건축물도 「건축물관리법 시행규칙」 제12조 항목 누락 없이 작성(고시 제2장 참고)</li></ul></div></div><div class="row1"><div class="card"><span class="badge">6 · 핵심 수치</span><div class="chips"><span class="chip"><b>사례 건수</b> 총 7건(허가 6·신고 1)</span><span class="chip"><b>보완사유 유형</b> 5개 대분류</span><span class="chip"><b>화재현장 참고</b> 위험관리정보 제183호</span><span class="chip"><b>비계 풍하중 기준</b> KDS 41 12 00</span><span class="chip"><b>가시설 설계기준</b> KDS 21 60 00</span><span class="chip"><b>장비검토 도구</b> 관리원 사전검토tool(장비편)</span></div></div></div><div class="row1"><div class="card"><span class="badge">7 · 우수 적정사례 공통 패턴(참고)</span><ul class="list"><li>해체순서를 3D·평단면도로 도식화하여 구간·부재별 순서를 명확히 시각화(4.1, 4.3, 4.6)</li><li>인양물·장비 하중산정 근거를 규격·길이·단위중량·개수까지 구체적으로 명기(4.1, 4.2, 4.5)</li><li>대규모 현장은 작업구역(Zoning) 구분 후 구간별·동별 해체순서를 별도 수립(4.4, 4.6)</li><li>인접시설물 영향은 계측관리계획(종류·수량·기준치·초과 시 대책)까지 정량화(4.6)</li></ul></div></div><div class="rule-gray"></div><p class="note">국토교통부·국토안전관리원 「건축물 해체계획서 작성·검토 사례집」(2025.12.) 요약 · 문의 국토안전관리원(☏1588-8788)</p><p class="pageno">4 / 4</p>
+</div>
+</body></html>

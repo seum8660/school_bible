@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>학교시설 인허가 워크플로우</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff; --text:#1d1f20; --divider:rgba(29,31,32,.16); --muted:rgba(29,31,32,.62); --faint:rgba(29,31,32,.48);
+  --a300:#b5d9fd; --a500:#5980a6; --a700:#416180; --a900:#1d2d3d; --key-bg:#eef6ff; --bot-bg:#d6ebff;
+  --head:'Barlow Condensed','Pretendard',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fff;color:var(--text);font-family:'Pretendard','Malgun Gothic',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{padding:26px 28px 44px}
+.kick{font-family:var(--head);font-size:12px;font-weight:500;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+h1{font-family:var(--head);font-size:34px;font-weight:600;letter-spacing:-.01em;line-height:1.1;margin-top:6px}
+.sub{font-size:13.5px;color:var(--muted);margin-top:7px}
+.hd{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--divider)}
+.hd .right{margin-left:auto;text-align:right;font-size:12.5px;color:var(--muted);line-height:1.6}
+.hd .right b{display:block;font-size:11.5px;color:var(--faint);font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--divider);margin-top:20px}
+.stat{padding:15px 18px;border-left:1px solid var(--divider)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font-family:var(--head);font-size:28px;font-weight:600;line-height:1}
+.stat span{font-size:11.5px;color:var(--faint)}
+.leg{display:flex;gap:26px;flex-wrap:wrap;margin-top:16px;font-size:12px;color:var(--muted)}
+.leg span{display:inline-flex;align-items:center;gap:8px}
+.leg i{width:20px;height:13px;display:inline-block;background:#fff;border:1px solid var(--divider)}
+.i-lead{border-top:3px solid var(--a300)}
+.i-key{background:var(--key-bg);border-top:3px solid var(--a500)}
+.i-bot{background:var(--bot-bg);border-top:5px solid var(--a900)}
+.leg em{font-style:normal;font-weight:700;color:var(--text)}
+.leg .ln{width:26px;height:0;border:0;border-top:2px solid var(--a500)}
+.leg .ln.rt{border-top-style:dashed;border-top-color:var(--faint)}
+.board{position:relative;margin-top:18px;border:1px solid var(--divider)}
+#edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+.grid{display:grid;grid-template-columns:132px repeat(4,1fr) 96px;position:relative;z-index:1}
+.hc{padding:12px;border-right:1px solid var(--divider);border-bottom:1px solid var(--text);font-family:var(--head);font-size:16px;font-weight:500;line-height:1.2}
+.hc small{display:block;font-family:'Pretendard',sans-serif;font-size:10.5px;font-weight:500;color:var(--faint);letter-spacing:.08em;margin-top:3px}
+.hc0{padding:12px 12px 10px;display:flex;align-items:flex-end;font-family:var(--head);font-size:12px;color:var(--faint);border-right:1px solid var(--divider);border-bottom:1px solid var(--text)}
+.hcx{border-bottom:1px solid var(--text)}
+.sc{padding:14px 12px;border-right:1px solid var(--divider);border-bottom:1px dashed var(--divider);display:flex;flex-direction:column;justify-content:center;gap:2px}
+.sc b{font-family:var(--head);font-size:20px;font-weight:600;line-height:1;color:var(--a700)}
+.sc span{font-size:11px;color:var(--faint)}
+.cl{padding:16px 20px;border-right:1px solid var(--divider);border-bottom:1px dashed var(--divider);display:flex;flex-direction:column;gap:10px}
+.cl.last{border-right:0}
+.cl.pad{min-height:96px}
+.gap{border-bottom:1px dashed var(--divider)}
+.grid > .end{border-bottom:0}
+.node{position:relative;background:#fff;border-top:3px solid var(--a300);padding:10px 11px;display:flex;flex-direction:column;gap:5px;cursor:pointer;
+  transition:transform .22s cubic-bezier(.2,.8,.3,1),box-shadow .22s,opacity .22s,filter .22s}
+.node:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.10)}
+.node .r{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.node .id{font-family:var(--head);font-size:12.5px;font-weight:500;letter-spacing:.06em;color:var(--faint)}
+.node .tg{font-size:10.5px;font-weight:700;color:var(--a700)}
+.node .t{font-size:12.5px;line-height:1.45;color:var(--text);word-break:keep-all;text-wrap:pretty}
+.node .lw{font-size:10.5px;color:var(--faint)}
+.node.key{background:var(--key-bg);border-top-color:var(--a500)}
+.node.bot{background:var(--bot-bg);border-top:6px solid var(--a900)}
+.node.bot .tg{color:var(--a900)}
+.node.post{border-top:1px solid var(--divider)}
+.node.post .tg{color:var(--faint)}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.045)}100%{transform:scale(1.02)}}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(89,128,166,.38)}70%{box-shadow:0 0 0 12px rgba(89,128,166,0)}100%{box-shadow:0 0 0 0 rgba(89,128,166,0)}}
+@keyframes dash{to{stroke-dashoffset:-24}}
+.node.on{transform:scale(1.02);z-index:5;box-shadow:0 10px 26px rgba(0,0,0,.16),0 0 0 2px rgba(89,128,166,.6);animation:pop .32s ease both}
+.node.on::after{content:"";position:absolute;inset:-2px;pointer-events:none;animation:ring 1.1s ease-out}
+body.focus .node:not(.on){opacity:.32;filter:saturate(.5)}
+#edges path.e{transition:opacity .22s,stroke-width .22s}
+body.focus #edges path.e{opacity:.12}
+body.focus #edges path.e.lit{opacity:.62;stroke-width:2;stroke-dasharray:7 6;animation:dash .9s linear infinite}
+#panel{position:fixed;left:0;right:0;bottom:0;z-index:90;background:#fff;border-top:1px solid var(--divider);box-shadow:0 -10px 30px rgba(0,0,0,.12);padding:16px 24px;max-height:46vh;overflow:auto;transform:translateY(110%);transition:transform .28s cubic-bezier(.2,.8,.3,1)}
+#panel.show{transform:translateY(0)}
+.foot{margin-top:18px;font-size:11.5px;color:var(--faint);line-height:1.8}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:100px repeat(4,1fr) 40px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd">
+    <div>
+      <div class="kick">Process Board / 학교시설사업 촉진법 제4조·제5조</div>
+      <h1>학교시설 인허가</h1>
+      <div class="sub">도시계획 결정부터 시행계획 승인(인허가 의제) · 사용전검사 · 사용승인 · 대장 등재까지의 업무 경로</div>
+    </div>
+    <div class="right"><b>기준 법령</b>학교시설사업 촉진법 · 국토계획법 · 건축법</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>15</b><span>절차 노드</span></div>
+    <div class="stat"><b>4</b><span>행위 레인</span></div>
+    <div class="stat"><b>6</b><span>단계 게이트</span></div>
+    <div class="stat"><b>4</b><span>병목 구간</span></div>
+    <div class="stat"><b>2</b><span>회귀 경로</span></div>
+  </div>
+
+  <div class="leg">
+    <span><i class="i-lead"></i><em>선행</em> 절차를 여는 사유 발생·조기 판단</span>
+    <span><i class="i-key"></i><em>핵심</em> 반드시 거쳐야 하는 산출물·계약행위</span>
+    <span><i class="i-bot"></i><em>병목</em> 검토·승인 지연과 재작업이 잦은 구간</span>
+  </div>
+  <div class="leg" style="margin-top:9px">
+    <span><i></i><em>후속</em> 앞 단계 결과를 이행·관리하는 업무</span>
+    <span><i class="ln"></i>업무 순서</span>
+    <span><i class="ln rt"></i>회귀(보완·반려 재신청)</span>
+  </div>
+
+  <div class="board" id="board">
+    <svg id="edges" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#5980a6"></path></marker>
+      <marker id="arr" markerWidth="8" markerHeight="8" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8c8f91"></path></marker></defs>
+    </svg>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="foot">※ 본 워크플로우는 실무 참고용입니다. 실제 적용 시 관련 법령·계약조건 원문과 소속 기관 기준을 반드시 확인하세요.</div>
+</div>
+
+<div id="panel"></div>
+
+<script>
+var STAGES=[
+  {k:'S0',n:'도시계획·사전협의'},{k:'S1',n:'시행계획 작성'},{k:'S2',n:'관계기관 협의(의제)'},
+  {k:'S3',n:'승인·착공'},{k:'S4',n:'사용전검사'},{k:'S5',n:'사용승인·등재'}
+];
+var LANES=['own','des','ins','per'];
+var NODES=[
+  {id:'N01',s:0,l:'per',k:'bot',t:'도시·군관리계획(학교시설) 결정 — 지자체 권한',law:'국토계획법 제30조',
+   title:'도시계획시설 결정',lane:'S0 도시계획 · 지자체(허가권자)',chips:['입안 요청','결정·고시'],due:'설계 착수 전',conf:'60%',
+   bottle:'학교시설 결정·변경은 지자체 도시계획 절차라 발주청이 일정을 통제할 수 없습니다. 미결정 부지는 수개월이 걸리므로 가장 먼저 착수하세요.',
+   lawT:'도시·군관리계획의 결정권자는 지자체입니다. 학교시설 미결정 부지는 입안 요청 → 주민의견 청취 → 심의 → 결정·고시를 거쳐야 사업 추진이 가능합니다.'},
+  {id:'N02',s:0,l:'own',k:'lead',t:'부지 · 입지 사전협의 — 진출입 · 교통 · 재해 조건 확인',law:'개별 법령',
+   title:'입지 사전협의',lane:'S0 사전협의 · 발주청 담당팀',chips:['사전협의 회신','설계 조건'],due:'설계 착수 전',conf:'80%',
+   lawT:'사전협의에서 제시된 조건은 이후 의제 협의에서 그대로 요구됩니다. 회신 공문을 확보해 설계지침에 반영해야 재작업을 막습니다.'},
+  {id:'N03',s:1,l:'des',k:'key',t:'시행계획 도서 작성 — 건축 · 구조 · 설비 및 의제 인허가 도서',law:'촉진법 시행령',
+   title:'시행계획 도서 작성',lane:'S1 시행계획 · 설계자',chips:['시행계획서','설계도서','의제 인허가 도서'],due:'승인 신청 전',conf:'84%',
+   lawT:'시행계획 승인으로 여러 인허가가 의제되므로, 의제 대상 법령별 도서를 처음부터 함께 갖춰야 협의가 한 번에 돌아갑니다.'},
+  {id:'N04',s:1,l:'own',k:'key',t:'시행계획(안) 검토 — 의제 대상 인허가 목록 확정',law:'촉진법 제5조',
+   title:'시행계획(안) 검토',lane:'S1 시행계획 · 발주청 담당팀',chips:['의제 목록','검토 조서'],due:'협의 요청 전',conf:'80%',
+   lawT:'시행계획 승인 시 의제되는 인허가 범위를 먼저 확정해야 어떤 기관과 협의할지가 정해집니다. 목록 누락이 가장 흔한 지연 원인입니다.'},
+  {id:'N05',s:2,l:'per',k:'bot',t:'관계기관 협의 회신 — 교통 · 재해 · 환경 · 소방 등 의제 협의',law:'촉진법 제5조',
+   title:'관계기관 의제 협의',lane:'S2 협의 · 관계 행정기관',chips:['부서별 협의의견','협의 완료 공문'],due:'요청 후 법정기간 내',conf:'58%',
+   bottle:'기관·부서가 순차로 회신해 일정이 가장 많이 밀립니다. 담당자와 사전 접촉해 병렬로 돌리고 회신 기한을 명시해 요청하세요.',
+   lawT:'승인권자는 의제 대상 인허가에 관해 관계 행정기관의 장과 미리 협의해야 하며, 협의가 완료되면 해당 인허가를 받은 것으로 봅니다.'},
+  {id:'N06',s:2,l:'des',k:'post',t:'협의의견 반영 · 도서 보완 재제출',law:'촉진법 시행규칙',
+   title:'협의의견 반영',lane:'S2 협의 · 설계자',chips:['보완 도서','반영 대비표'],due:'의견 접수 후 14일 내',conf:'74%',
+   lawT:'보완은 회귀 경로입니다. 의견별 반영 위치를 대비표로 정리해 제출하면 재협의를 줄일 수 있습니다.'},
+  {id:'N07',s:3,l:'own',k:'key',t:'시행계획 승인 · 고시 — 승인권자는 발주청(교육감)',law:'촉진법 제4조',
+   title:'시행계획 승인 · 고시',lane:'S3 승인 · 발주청(승인권자)',chips:['승인 문서','고시문'],due:'착공 전',conf:'86%',
+   lawT:'학교시설사업의 시행계획은 발주청이 승인하고 고시합니다. 승인으로 건축허가 등 관계 인허가가 의제되므로 별도 허가 신청이 필요하지 않습니다.'},
+  {id:'N08',s:3,l:'own',k:'post',t:'착공 전 신고 — 착공신고 · 비산먼지 · 특정공사 사전신고',law:'대기환경보전법 · 소음진동관리법',
+   title:'착공 전 신고',lane:'S3 착공 · 발주청 담당팀',chips:['착공신고','비산먼지 신고','소음·진동 신고'],due:'착공 전',conf:'84%',
+   lawT:'인허가가 의제되어도 환경 관련 신고는 별도로 해야 하는 경우가 많습니다. 의제 목록에 포함됐는지 반드시 확인하세요.'},
+  {id:'N09',s:4,l:'des',k:'key',t:'사용전검사 신청 — 소방 · 전기 · 가스 · 승강기 · 정보통신',law:'개별 법령',
+   title:'사용전검사 신청',lane:'S4 검사 · 설계자·시공사',chips:['검사 신청서','시험성적서'],due:'사용승인 신청 전',conf:'80%',
+   lawT:'분야별 검사 주체와 소요기간이 달라 준공 일정에서 역산해야 합니다. 한 분야만 늦어도 사용승인이 막힙니다.'},
+  {id:'N10',s:4,l:'ins',k:'bot',t:'사용전검사 실시 · 필증 발급',law:'소방시설법 · 전기사업법 등',
+   title:'사용전검사 · 필증',lane:'S4 검사 · 검사기관',chips:['분야별 필증'],due:'신청 후 기관별 상이',conf:'62%',
+   bottle:'분야별 지적이 동시에 나와 보완 시공이 겹칩니다. 검사 일정을 분산 배치해 재검사 대기를 줄이세요.',
+   lawT:'필증이 없으면 사용승인 절차가 진행되지 않습니다. 지적사항 보완 완료 시점을 준공일에서 역산해 관리합니다.'},
+  {id:'N11',s:4,l:'des',k:'post',t:'검사 지적사항 보완 · 재검사 요청',law:'개별 법령',
+   title:'검사 지적 보완',lane:'S4 검사 · 설계자·시공사',chips:['보완 완료 보고','재검사 신청'],due:'지적 후 즉시',conf:'72%',
+   lawT:'보완은 회귀 경로입니다. 재검사 일정이 기관 사정에 좌우되므로 지적 즉시 착수해야 합니다.'},
+  {id:'N12',s:5,l:'own',k:'key',t:'사용승인 — 발주청이 감리완료보고서 확인 후 처리',law:'촉진법 제10조',
+   title:'사용승인 처리',lane:'S5 사용승인 · 발주청(승인권자)',chips:['사용승인 신청서','감리완료보고서','필증 일체'],due:'준공 후 즉시',conf:'82%',
+   lawT:'시행계획을 승인한 발주청이 사용승인도 처리합니다. 감리완료보고서와 분야별 필증이 모두 갖춰져야 합니다.'},
+  {id:'N13',s:5,l:'per',k:'post',t:'관계기관 준공 확인 · 의제 인허가 준공 통보',law:'촉진법 제5조',
+   title:'관계기관 준공 통보',lane:'S5 사용승인 · 관계 행정기관',chips:['준공 통보 공문'],due:'사용승인 후',conf:'76%',
+   lawT:'의제된 인허가에 따른 준공·완료 확인이 필요한 경우 해당 기관에 통보해야 이후 대장·재산 정리가 막히지 않습니다.'},
+  {id:'N14',s:5,l:'own',k:'post',t:'건축물대장 생성 · 등재',law:'건축물대장 규칙',
+   title:'건축물대장 생성',lane:'S5 등재 · 발주청 담당팀',chips:['대장 생성 신청','현황도'],due:'사용승인 후',conf:'82%',
+   lawT:'대장이 생성되어야 재산 등재와 이후 증축·용도변경 절차가 가능합니다.'},
+  {id:'N15',s:5,l:'own',k:'post',t:'공유재산대장 · 교육시설 정보시스템 등재',law:'공유재산법 · 교육시설법',
+   title:'재산 · 시설정보 등재',lane:'S5 등재 · 발주청 담당팀',chips:['공유재산 등재','시설정보 입력'],due:'대장 생성 후 1개월 내',conf:'80%',
+   lawT:'건축물대장·공유재산대장·교육시설 정보시스템의 면적과 구조 정보가 일치해야 이후 안전점검·유지관리 이력이 정상 관리됩니다.'}
+];
+var EDGES=[['N01','N02'],['N02','N03'],['N03','N04'],['N04','N05'],['N05','N06'],['N06','N05',1],['N05','N07'],['N07','N08'],['N08','N09'],['N09','N10'],['N10','N11'],['N11','N10',1],['N10','N12'],['N12','N13'],['N13','N14'],['N14','N15']];
+var TAGNM={lead:'선행',key:'핵심',bot:'병목',post:'후속'};
+
+(function(){
+  var g=document.getElementById('grid'), h='';
+  h+='<div class="hc0">단계 / 담당</div>';
+  [['발주청 담당팀','LANE 01'],['설계자·시공사','LANE 02'],['검사·인증기관','LANE 03'],['인허가기관(시·군·구)','LANE 04']]
+    .forEach(function(l,i){ h+='<div class="hc"'+(i===3?' style="border-right:0"':'')+'>'+l[0]+'<small>'+l[1]+'</small></div>'; });
+  h+='<div class="hcx"></div>';
+  STAGES.forEach(function(st,si){
+    var end=(si===STAGES.length-1)?' end':'';
+    h+='<div class="sc'+end+'"><b>'+st.k+'</b><span>'+st.n+'</span></div>';
+    LANES.forEach(function(ln,li){
+      var list=NODES.filter(function(n){return n.s===si&&n.l===ln;});
+      h+='<div class="cl'+(li===3?' last':'')+(li===0?' pad':'')+end+'">';
+      list.forEach(function(n){
+        h+='<div class="node '+n.k+'" id="node_'+n.id+'"><div class="r"><span class="id">'+n.id+'</span><span class="tg">'+TAGNM[n.k]+'</span></div>'
+         +'<div class="t">'+n.t+'</div>'+(n.law?'<div class="lw">'+n.law+'</div>':'')+'</div>';
+      });
+      h+='</div>';
+    });
+    h+='<div class="gap'+end+'"></div>';
+  });
+  g.innerHTML=h;
+  setTimeout(draw,60);
+})();
+
+function draw(){
+  var svg=document.getElementById('edges'), board=document.getElementById('board');
+  [].slice.call(svg.querySelectorAll('path.e')).forEach(function(p){p.remove();});[].slice.call(svg.querySelectorAll('circle.mdot')).forEach(function(c){c.remove();});svg.__mdotN=0;
+  var br=board.getBoundingClientRect();
+  svg.setAttribute('viewBox','0 0 '+br.width+' '+br.height);
+  EDGES.forEach(function(e,i){
+    var a=document.getElementById('node_'+e[0]), b=document.getElementById('node_'+e[1]);
+    if(!a||!b) return;
+    var ra=a.getBoundingClientRect(), rb=b.getBoundingClientRect(), back=!!e[2];
+    var d;
+    if(Math.abs(ra.top-rb.top)<8){
+      var y=ra.top-br.top+ra.height/2 + (back?12:-6);
+      if(rb.left>ra.left) d='M'+(ra.right-br.left+2)+','+y+' H'+(rb.left-br.left-7);
+      else d='M'+(ra.left-br.left-2)+','+y+' H'+(rb.right-br.left+7);
+    } else if(rb.top>ra.top){
+      var x1=ra.left-br.left+ra.width/2, x2=rb.left-br.left+rb.width/2;
+      var my=(ra.bottom-br.top)+((rb.top-br.top)-(ra.bottom-br.top))/2;
+      d='M'+x1+','+(ra.bottom-br.top)+' V'+my+' H'+x2+' V'+(rb.top-br.top-7);
+    } else {
+      var mx=br.width-46;
+      d='M'+(ra.right-br.left+2)+','+(ra.top-br.top+ra.height/2)+' H'+mx+' V'+(rb.top-br.top+rb.height/2)+' H'+(rb.right-br.left+7);
+    }
+    var p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('class','e'); p.setAttribute('d',d); p.setAttribute('fill','none');
+    p.setAttribute('stroke',back?'#8c8f91':'#5980a6'); p.setAttribute('stroke-width','1.4');
+    p.setAttribute('opacity',back?'.45':'.6'); p.setAttribute('marker-end',back?'url(#arr)':'url(#ar)');
+    if(back) p.setAttribute('stroke-dasharray','6 5');
+    p.dataset.a=e[0]; p.dataset.b=e[1];
+    svg.appendChild(p);if(typeof back==='undefined'||!back){var __dt=document.createElementNS('http://www.w3.org/2000/svg','circle');__dt.setAttribute('class','mdot');__dt.setAttribute('r','3');__dt.setAttribute('fill','#0075de');__dt.setAttribute('pointer-events','none');var __am=document.createElementNS('http://www.w3.org/2000/svg','animateMotion');__am.setAttribute('dur','2.6s');__am.setAttribute('repeatCount','indefinite');__am.setAttribute('path',d);__am.setAttribute('begin',(((svg.__mdotN=(svg.__mdotN||0)+1)%8)*0.4)+'s');__dt.appendChild(__am);svg.appendChild(__dt);}
+  });
+}
+window.addEventListener('resize',function(){clearTimeout(window.__rz);window.__rz=setTimeout(draw,200);});
+window.addEventListener('load',function(){setTimeout(draw,200);});
+
+var EMBED=false; try{EMBED=window.self!==window.top;}catch(e){EMBED=true;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function panelHTML(n){
+  var chips=(n.chips||[]).map(function(c){return '<span style="font-size:12px;color:#31302e;border:1px solid #e6e6e6;border-radius:5px;padding:3px 9px">'+esc(c)+'</span>';}).join('');
+  var bottle=n.bottle?'<div style="margin-top:10px;font-size:12.5px;line-height:1.55;color:#8a5a00;background:#fff8ec;border:1px solid #f0d9a8;border-radius:6px;padding:9px 11px;max-width:300px">병목 · '+esc(n.bottle)+'</div>':'';
+  return '<div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">'
+   +'<div style="min-width:210px;flex:1 1 230px">'
+    +'<div style="display:flex;align-items:center;gap:7px;font-size:11.5px;color:#615d59;font-weight:600">노드 상세 <b style="color:#000">'+esc(n.id)+'</b>'
+    +'<span style="font-size:11px;font-weight:700;color:#b45309;border:1px solid #f0d9a8;background:#fff8ec;border-radius:4px;padding:1px 7px">'+TAGNM[n.k]+'</span></div>'
+    +'<div style="font-size:19px;font-weight:700;letter-spacing:-.02em;margin-top:6px;color:#000">'+esc(n.title)+'</div>'
+    +'<div style="font-size:12px;color:#a39e98;margin-top:3px">'+esc(n.lane)+'</div>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">'+chips+'</div></div>'
+   +'<div style="flex:0 0 auto"><div style="display:flex;gap:10px">'
+    +'<div style="border:1px solid #e6e6e6;border-radius:8px;padding:10px 14px;min-width:124px"><div style="font-size:11px;color:#a39e98">기한</div><div style="font-size:13.5px;font-weight:600;margin-top:4px;color:#31302e;line-height:1.4">'+esc(n.due)+'</div></div>'
+   +'</div>'+bottle+'</div>'
+   +'<div style="flex:1 1 300px;min-width:250px"><div style="font-size:11.5px;color:#615d59;font-weight:600">법적 근거</div>'
+    +'<div style="font-size:13.5px;font-weight:700;margin-top:6px;color:#000">'+esc(n.law||'—')+'</div>'
+    +'<div style="font-size:12.5px;line-height:1.65;color:#615d59;margin-top:4px;text-wrap:pretty">'+esc(n.lawT)+'</div></div>'
+   +'<button type="button" id="__wfPanelX" style="flex:0 0 auto;align-self:flex-start;font:inherit;font-size:12px;font-weight:600;color:#615d59;background:#fff;border:1px solid #e6e6e6;border-radius:6px;padding:5px 11px;cursor:pointer">닫기 ✕</button>'
+   +'</div>';
+}
+function clearAll(){
+  var c=document.querySelector('.node.on'); if(c) c.classList.remove('on');
+  document.body.classList.remove('focus');
+  [].slice.call(document.querySelectorAll('#edges path.e')).forEach(function(p){p.classList.remove('lit');});
+  if(EMBED){ try{window.parent.postMessage({type:'wf-detail-close'},'*');}catch(e){} }
+  else document.getElementById('panel').classList.remove('show');
+}
+document.addEventListener('click',function(ev){
+  var el=ev.target.closest && ev.target.closest('.node');
+  var cur=document.querySelector('.node.on');
+  if(cur) cur.classList.remove('on');
+  [].slice.call(document.querySelectorAll('#edges path.e')).forEach(function(p){p.classList.remove('lit');});
+  if(el && el!==cur){
+    el.classList.add('on'); document.body.classList.add('focus');
+    var id=el.id.replace('node_','');
+    [].slice.call(document.querySelectorAll('#edges path.e')).forEach(function(p){
+      if(p.dataset.a===id||p.dataset.b===id) p.classList.add('lit');
+    });
+    var n=NODES.filter(function(x){return x.id===id;})[0]; if(!n) return;
+    var html=panelHTML(n);
+    if(EMBED){ try{window.parent.postMessage({type:'wf-detail',html:html},'*');}catch(e){} }
+    else{
+      var p=document.getElementById('panel');
+      p.innerHTML=html; p.classList.add('show');
+      var x=document.getElementById('__wfPanelX');
+      if(x) x.addEventListener('click',function(e2){e2.stopPropagation();clearAll();});
+    }
+  } else if(!ev.target.closest('#panel')) { clearAll(); }
+});
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') clearAll(); });
+window.addEventListener('message',function(ev){ if(ev.data&&ev.data.type==='wf-clear') clearAll(); });
+</script>
+<script>
+if(window.top===window.self){
+  var __cb=document.createElement('button');
+  __cb.type='button'; __cb.textContent='✕ 닫기';
+  __cb.style.cssText='position:fixed;top:14px;right:16px;z-index:60;font:600 13px/1 -apple-system,BlinkMacSystemFont,"Pretendard","Malgun Gothic",sans-serif;color:#1d2d3d;background:#fff;border:1px solid #d6dbe0;border-radius:8px;padding:10px 14px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.08)';
+  __cb.onclick=function(){ window.close(); setTimeout(function(){ if(!window.closed){ if(document.referrer) location.href=document.referrer; else location.href='bible.html?tab=overview&ov=flow'; } },200); };
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') __cb.click(); });
+  document.body.appendChild(__cb);
+}
+</script>
+<script id="__closeBtn">(function(){try{if(window.self!==window.top)return;}catch(e){return;}
+var b=document.createElement('button');b.textContent='✕ 닫기';b.title='창 닫기 / 이전으로';
+b.setAttribute('style','position:fixed;top:12px;right:12px;z-index:9999;border:1px solid rgba(29,31,32,.22);background:rgba(255,255,255,.95);color:#1d1f20;font:600 13px Pretendard,-apple-system,sans-serif;padding:9px 16px;border-radius:100px;box-shadow:0 2px 10px rgba(0,0,0,.10);cursor:pointer;-webkit-tap-highlight-color:transparent');
+b.addEventListener('click',function(){try{window.close();}catch(e){}
+setTimeout(function(){if(!document.hidden){if(history.length>1){history.back();}else{location.href='bible.html';}}},200);});
+document.body.appendChild(b);})();</script>
+<script src="close-button.js" defer></script></body>
+</html>

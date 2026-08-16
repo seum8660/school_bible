@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>도시·군관리계획 결정 워크플로우</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff; --text:#1d1f20; --divider:rgba(29,31,32,.16); --muted:rgba(29,31,32,.62); --faint:rgba(29,31,32,.48);
+  --a300:#b5d9fd; --a500:#5980a6; --a700:#416180; --a900:#1d2d3d; --key-bg:#eef6ff; --bot-bg:#d6ebff;
+  --head:'Barlow Condensed','Pretendard',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fff;color:var(--text);font-family:'Pretendard','Malgun Gothic',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{padding:26px 28px 44px}
+.kick{font-family:var(--head);font-size:12px;font-weight:500;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+h1{font-family:var(--head);font-size:34px;font-weight:600;letter-spacing:-.01em;line-height:1.1;margin-top:6px}
+.sub{font-size:13.5px;color:var(--muted);margin-top:7px}
+.hd{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--divider)}
+.hd .right{margin-left:auto;text-align:right;font-size:12.5px;color:var(--muted);line-height:1.6}
+.hd .right b{display:block;font-size:11.5px;color:var(--faint);font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--divider);margin-top:20px}
+.stat{padding:15px 18px;border-left:1px solid var(--divider)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font-family:var(--head);font-size:28px;font-weight:600;line-height:1}
+.stat span{font-size:11.5px;color:var(--faint)}
+.leg{display:flex;gap:26px;flex-wrap:wrap;margin-top:16px;font-size:12px;color:var(--muted)}
+.leg span{display:inline-flex;align-items:center;gap:8px}
+.leg i{width:20px;height:13px;display:inline-block;background:#fff;border:1px solid var(--divider)}
+.i-lead{border-top:3px solid var(--a300)}
+.i-key{background:var(--key-bg);border-top:3px solid var(--a500)}
+.i-bot{background:var(--bot-bg);border-top:5px solid var(--a900)}
+.leg em{font-style:normal;font-weight:700;color:var(--text)}
+.leg .ln{width:26px;height:0;border:0;border-top:2px solid var(--a500)}
+.leg .ln.rt{border-top-style:dashed;border-top-color:var(--faint)}
+.board{position:relative;margin-top:18px;border:1px solid var(--divider)}
+#edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+.grid{display:grid;grid-template-columns:132px repeat(4,1fr) 96px;position:relative;z-index:1}
+.hc{padding:12px;border-right:1px solid var(--divider);border-bottom:1px solid var(--text);font-family:var(--head);font-size:16px;font-weight:500;line-height:1.2}
+.hc small{display:block;font-family:'Pretendard',sans-serif;font-size:10.5px;font-weight:500;color:var(--faint);letter-spacing:.08em;margin-top:3px}
+.hc0{padding:12px 12px 10px;display:flex;align-items:flex-end;font-family:var(--head);font-size:12px;color:var(--faint);border-right:1px solid var(--divider);border-bottom:1px solid var(--text)}
+.hcx{border-bottom:1px solid var(--text)}
+.sc{padding:14px 12px;border-right:1px solid var(--divider);border-bottom:1px dashed var(--divider);display:flex;flex-direction:column;justify-content:center;gap:2px}
+.sc b{font-family:var(--head);font-size:20px;font-weight:600;line-height:1;color:var(--a700)}
+.sc span{font-size:11px;color:var(--faint)}
+.cl{padding:16px 20px;border-right:1px solid var(--divider);border-bottom:1px dashed var(--divider);display:flex;flex-direction:column;gap:10px}
+.cl.last{border-right:0}
+.cl.pad{min-height:96px}
+.gap{border-bottom:1px dashed var(--divider)}
+.grid > .end{border-bottom:0}
+.node{position:relative;background:#fff;border-top:3px solid var(--a300);padding:10px 11px;display:flex;flex-direction:column;gap:5px;cursor:pointer;
+  transition:transform .22s cubic-bezier(.2,.8,.3,1),box-shadow .22s,opacity .22s,filter .22s}
+.node:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.10)}
+.node .r{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.node .id{font-family:var(--head);font-size:12.5px;font-weight:500;letter-spacing:.06em;color:var(--faint)}
+.node .tg{font-size:10.5px;font-weight:700;color:var(--a700)}
+.node .t{font-size:12.5px;line-height:1.45;color:var(--text);word-break:keep-all;text-wrap:pretty}
+.node .lw{font-size:10.5px;color:var(--faint)}
+.node.key{background:var(--key-bg);border-top-color:var(--a500)}
+.node.bot{background:var(--bot-bg);border-top:6px solid var(--a900)}
+.node.bot .tg{color:var(--a900)}
+.node.post{border-top:1px solid var(--divider)}
+.node.post .tg{color:var(--faint)}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.045)}100%{transform:scale(1.02)}}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(89,128,166,.38)}70%{box-shadow:0 0 0 12px rgba(89,128,166,0)}100%{box-shadow:0 0 0 0 rgba(89,128,166,0)}}
+@keyframes dash{to{stroke-dashoffset:-24}}
+.node.on{transform:scale(1.02);z-index:5;box-shadow:0 10px 26px rgba(0,0,0,.16),0 0 0 2px rgba(89,128,166,.6);animation:pop .32s ease both}
+.node.on::after{content:"";position:absolute;inset:-2px;pointer-events:none;animation:ring 1.1s ease-out}
+body.focus .node:not(.on){opacity:.32;filter:saturate(.5)}
+#edges path.e{transition:opacity .22s,stroke-width .22s}
+body.focus #edges path.e{opacity:.12}
+body.focus #edges path.e.lit{opacity:.62;stroke-width:2;stroke-dasharray:7 6;animation:dash .9s linear infinite}
+#panel{position:fixed;left:0;right:0;bottom:0;z-index:90;background:#fff;border-top:1px solid var(--divider);box-shadow:0 -10px 30px rgba(0,0,0,.12);padding:16px 24px;max-height:46vh;overflow:auto;transform:translateY(110%);transition:transform .28s cubic-bezier(.2,.8,.3,1)}
+#panel.show{transform:translateY(0)}
+.foot{margin-top:18px;font-size:11.5px;color:var(--faint);line-height:1.8}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:100px repeat(4,1fr) 40px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd">
+    <div>
+      <div class="kick">Process Board / 국토의 계획 및 이용에 관한 법률 제24조~제32조</div>
+      <h1>도시·군관리계획 결정</h1>
+      <div class="sub">입안 제안 · 기초조사부터 주민 · 지방의회 의견청취 · 관계기관 협의 · 위원회 심의 · 결정 고시 · 지형도면 고시까지의 업무 경로</div>
+    </div>
+    <div class="right"><b>기준 법령</b>국토의 계획 및 이용에 관한 법률 · 시행령 제19조의2 · 제22조 · 제25조</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>16</b><span>절차 노드</span></div>
+    <div class="stat"><b>4</b><span>행위 레인</span></div>
+    <div class="stat"><b>6</b><span>단계 게이트</span></div>
+    <div class="stat"><b>4</b><span>병목 구간</span></div>
+    <div class="stat"><b>2</b><span>회귀 경로</span></div>
+  </div>
+
+  <div class="leg">
+    <span><i class="i-lead"></i><em>선행</em> 절차를 여는 사유 발생·조기 판단</span>
+    <span><i class="i-key"></i><em>핵심</em> 반드시 거쳐야 하는 산출물·계약행위</span>
+    <span><i class="i-bot"></i><em>병목</em> 검토·승인 지연과 재작업이 잦은 구간</span>
+  </div>
+  <div class="leg" style="margin-top:9px">
+    <span><i></i><em>후속</em> 앞 단계 결과를 이행·관리하는 업무</span>
+    <span><i class="ln"></i>업무 순서</span>
+    <span><i class="ln rt"></i>회귀(보완·반려 재신청)</span>
+  </div>
+
+  <div class="board" id="board">
+    <svg id="edges" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#5980a6"></path></marker>
+      <marker id="arr" markerWidth="8" markerHeight="8" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8c8f91"></path></marker></defs>
+    </svg>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="foot">※ 본 워크플로우는 실무 참고용입니다. 실제 적용 시 관련 법령·계약조건 원문과 소속 기관 기준을 반드시 확인하세요.<br>
+    참조: <a href="https://hosungseo.github.io/korea100/model/urban-planning/" target="_blank" rel="noopener noreferrer" style="color:#5980a6">대한민국 제도 지도 — 도시계획(도시·군관리계획)</a> · 해당 저장소의 소프트웨어는 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer" style="color:#5980a6">MIT License</a>로 공개되어 있으며, 본 보드는 공개 자료를 참고해 재구성한 것입니다.</div>
+</div>
+
+<div id="panel"></div>
+
+<script>
+var STAGES=[
+  {k:'S0',n:'입안 착수·제안'},{k:'S1',n:'기초조사·계획안'},{k:'S2',n:'주민·의회 의견청취'},
+  {k:'S3',n:'협의·심의'},{k:'S4',n:'결정·고시'},{k:'S5',n:'지형도면·효력'}
+];
+var LANES=['own','cit','rel','dec'];
+var NODES=[
+  {id:'N01',s:0,l:'cit',k:'lead',t:'입안 제안 — 토지주 동의 기반시설·입체복합구역 4/5, 지구단위계획·용도지구 2/3',law:'시행령 제19조의2',
+   title:'주민 입안 제안',lane:'S0 입안 착수 · 주민·제안자',chips:['제안서','토지주 동의서','제안 계획도서'],due:'수시',conf:'74%',
+   lawT:'주민(이해관계자 포함)은 기반시설 설치·정비, 지구단위계획구역 지정, 용도지구 지정 등에 대해 입안을 제안할 수 있고, 대상에 따라 토지면적 기준 동의 요건(2/3 또는 4/5)이 다릅니다.'},
+  {id:'N02',s:0,l:'own',k:'key',t:'입안 착수 결정 · 제안 수용 여부 통보',law:'법 제24조·제26조',
+   title:'입안 착수 결정',lane:'S0 입안 착수 · 입안권자(시·군·구)',chips:['입안 방침','제안 회신 공문'],due:'제안 접수 후',conf:'78%',
+   lawT:'도시·군관리계획은 특별시장·광역시장·시장 또는 군수가 입안합니다. 제안을 받은 경우 반영 여부를 제안자에게 통보하고, 반영하기로 한 경우 제안 내용을 입안에 포함합니다.'},
+  {id:'N03',s:1,l:'own',k:'key',t:'기초조사 — 토지적성평가 · 재해취약성분석 포함',law:'법 제27조(제13조 준용)',
+   title:'기초조사',lane:'S1 계획안 작성 · 입안권자',chips:['기초조사서','토지적성평가','재해취약성분석'],due:'법정 기간 규정 없음',conf:'70%',
+   lawT:'입안 시 인구·경제·환경·토지이용 등 기초조사를 실시하며, 토지적성평가와 재해취약성분석을 포함합니다. 법령에 소요기간 규정은 없어 용역 일정으로 관리합니다.'},
+  {id:'N04',s:1,l:'own',k:'key',t:'도시·군관리계획(안) · 계획도서 작성',law:'법 제25조',
+   title:'계획(안) 작성',lane:'S1 계획안 작성 · 입안권자',chips:['계획도서','계획설명서','기초조사 결과'],due:'의견청취 전',conf:'76%',
+   lawT:'계획도서(계획도·계획조서)와 계획설명서(기초조사 결과·재원조달방안 등)를 갖추어 입안합니다. 용도지역·지구, 기반시설, 지구단위계획 등이 담깁니다.'},
+  {id:'N05',s:2,l:'own',k:'bot',t:'주민 공람공고 · 14일 이상 열람',law:'법 제28조 / 시행령 제22조',
+   title:'주민 의견청취 공고',lane:'S2 의견청취 · 입안권자',chips:['공람공고문','계획안 열람'],due:'열람 14일 이상',conf:'66%',
+   bottle:'재산권 제한과 개발이익 기대가 충돌하는 구간입니다. 용도지역 상향·도시계획시설 결정은 집단 민원으로 이어져 일정이 크게 늘어납니다.',
+   lawT:'입안하려면 미리 주민의 의견을 들어야 하며, 공보·일간신문 공고와 14일 이상 열람으로 진행합니다. 국방상·국가안전보장상 기밀 사항은 예외입니다.'},
+  {id:'N06',s:2,l:'cit',k:'post',t:'주민 의견서 제출 → 반영 여부 60일 이내 통보',law:'시행령 제22조',
+   title:'주민 의견 제출·회신',lane:'S2 의견청취 · 주민',chips:['의견서','반영 여부 통보'],due:'열람기간 내 제출 / 60일 내 통보',conf:'72%',
+   lawT:'열람기간 내에 의견서를 제출할 수 있고, 입안권자는 의견 제출 후 60일 이내에 반영 여부를 제출자에게 통보해야 합니다.'},
+  {id:'N07',s:2,l:'rel',k:'bot',t:'지방의회 의견청취 — 명시한 기한까지 회신',law:'법 제28조',
+   title:'지방의회 의견청취',lane:'S2 의견청취 · 지방의회',chips:['의견청취 요청','의회 의견'],due:'요청 시 명시한 기한',conf:'62%',
+   bottle:'회기 일정에 좌우되어 대기가 깁니다. 법령에 구체적 회신 기간이 없고 「명시한 기한까지」만 규정되어 있어 기한을 명확히 적어 요청해야 합니다.',
+   lawT:'용도지역·지구 지정 등 대통령령으로 정하는 사항은 지방의회의 의견을 들어야 하며, 의회는 요청 시 명시한 기한까지 의견을 제시해야 합니다.'},
+  {id:'N08',s:3,l:'own',k:'key',t:'의견 반영 · 계획안 보완 후 결정 신청',law:'법 제29조·제30조',
+   title:'계획안 보완·결정 신청',lane:'S3 협의·심의 · 입안권자',chips:['수정 계획도서','의견 반영 대비표'],due:'심의 상정 전',conf:'74%',
+   lawT:'주민·의회 의견을 반영해 계획안을 정리하고, 결정권자에게 결정을 신청합니다. 경미한 변경은 절차를 간소화할 수 있습니다.'},
+  {id:'N09',s:3,l:'rel',k:'bot',t:'관계 행정기관 협의 — 환경 · 교통 · 재해 · 농지 · 산지 등',law:'법 제30조 제1항',
+   title:'관계기관 협의',lane:'S3 협의 · 관계 행정기관',chips:['협의 요청','기관별 협의의견'],due:'요청 후 기관별 상이',conf:'58%',
+   bottle:'기관별 회신이 순차로 이어지고 조건부 의견이 반복되면 결정이 장기화됩니다. 사전 실무협의로 쟁점을 좁혀 두는 것이 유일한 단축 수단입니다.',
+   lawT:'결정권자는 도시·군관리계획을 결정하려면 관계 행정기관의 장과 미리 협의해야 하며, 필요한 경우 국토교통부장관과의 협의가 요구됩니다.'},
+  {id:'N10',s:3,l:'dec',k:'bot',t:'지방도시계획위원회 심의 — 조건부 의결 · 재심의',law:'법 제30조 제3항',
+   title:'도시계획위원회 심의',lane:'S3 심의 · 도시계획위원회',chips:['심의 안건','의결서'],due:'위원회 개최 일정',conf:'60%',
+   bottle:'조건부 의결·재심의가 반복되면 계획안을 다시 수정해야 해 수개월이 더 걸립니다. 협의 조건과 심의 쟁점을 사전에 정리해 상정하세요.',
+   lawT:'결정 전에 지방도시계획위원회(국토교통부장관 결정 사항은 중앙도시계획위원회)의 심의를 거쳐야 합니다.'},
+  {id:'N11',s:4,l:'dec',k:'key',t:'도시·군관리계획 결정',law:'법 제30조',
+   title:'계획 결정',lane:'S4 결정 · 결정권자(시·도지사 등)',chips:['결정 문서'],due:'심의 의결 후',conf:'82%',
+   lawT:'도시·군관리계획은 시·도지사(위임 시 대도시 시장)가 결정하며, 국가계획·광역도시계획 관련 사항은 국토교통부장관이 결정합니다.'},
+  {id:'N12',s:4,l:'own',k:'key',t:'결정 고시 · 관계 서류 일반 열람',law:'법 제30조 제6항',
+   title:'결정 고시·열람',lane:'S4 고시 · 입안권자',chips:['결정 고시문','관계도서 열람'],due:'결정 후 지체 없이',conf:'84%',
+   lawT:'결정한 때에는 그 내용을 고시하고 관계 서류를 일반이 열람할 수 있도록 해야 합니다.'},
+  {id:'N13',s:5,l:'own',k:'key',t:'지형도면 작성 — 축척 기준에 따른 도면 제작',law:'법 제32조',
+   title:'지형도면 작성',lane:'S5 지형도면 · 입안권자',chips:['지형도면','좌표 성과'],due:'결정 고시 후',conf:'78%',
+   lawT:'결정·고시된 도시·군관리계획 사항은 지적이 표시된 지형도에 명시한 도면으로 작성해야 합니다.'},
+  {id:'N14',s:5,l:'dec',k:'post',t:'지형도면 도지사 승인 — 시장·군수 작성분',law:'법 제32조 제2항',
+   title:'지형도면 승인',lane:'S5 지형도면 · 도지사',chips:['승인 통보'],due:'대통령령으로 정하는 기간',conf:'72%',
+   lawT:'시장(대도시 시장 제외)·군수가 지형도면을 작성한 경우 도지사의 승인을 받아야 합니다.'},
+  {id:'N15',s:5,l:'own',k:'key',t:'지형도면 고시 → 계획 효력 발생',law:'법 제31조·제32조',
+   title:'지형도면 고시·효력',lane:'S5 효력 · 입안권자',chips:['지형도면 고시문'],due:'승인 후 지체 없이',conf:'80%',
+   lawT:'도시·군관리계획 결정의 효력은 지형도면을 고시한 날부터 발생합니다. 고시 전 행위제한 적용에 유의해야 합니다.'},
+  {id:'N16',s:5,l:'own',k:'post',t:'토지이음 · 도시계획정보시스템 공개 및 대장 정리',law:'토지이용규제 기본법',
+   title:'계획정보 공개',lane:'S5 사후관리 · 입안권자',chips:['토지이음 등재','계획 대장'],due:'고시 후',conf:'78%',
+   lawT:'결정 내용은 토지이음(eum.go.kr)과 지자체 도시계획정보시스템에 공개되어 토지이용계획확인서에 반영됩니다. 도시계획시설은 장기미집행 관리 대상이 됩니다.'}
+];
+var EDGES=[['N01','N02'],['N02','N03'],['N03','N04'],['N04','N05'],['N05','N06'],['N06','N07'],['N07','N08'],['N08','N09'],['N09','N08',1],['N09','N10'],['N10','N04',1],['N10','N11'],['N11','N12'],['N12','N13'],['N13','N14'],['N14','N15'],['N15','N16']];
+var TAGNM={lead:'선행',key:'핵심',bot:'병목',post:'후속'};
+
+(function(){
+  var g=document.getElementById('grid'), h='';
+  h+='<div class="hc0">단계 / 담당</div>';
+  [['입안권자(시·군·구)','LANE 01'],['주민·제안자','LANE 02'],['관계기관·지방의회','LANE 03'],['결정권자·도시계획위원회','LANE 04']]
+    .forEach(function(l,i){ h+='<div class="hc"'+(i===3?' style="border-right:0"':'')+'>'+l[0]+'<small>'+l[1]+'</small></div>'; });
+  h+='<div class="hcx"></div>';
+  STAGES.forEach(function(st,si){
+    var end=(si===STAGES.length-1)?' end':'';
+    h+='<div class="sc'+end+'"><b>'+st.k+'</b><span>'+st.n+'</span></div>';
+    LANES.forEach(function(ln,li){
+      var list=NODES.filter(function(n){return n.s===si&&n.l===ln;});
+      h+='<div class="cl'+(li===3?' last':'')+(li===0?' pad':'')+end+'">';
+      list.forEach(function(n){
+        h+='<div class="node '+n.k+'" id="node_'+n.id+'"><div class="r"><span class="id">'+n.id+'</span><span class="tg">'+TAGNM[n.k]+'</span></div>'
+         +'<div class="t">'+n.t+'</div>'+(n.law?'<div class="lw">'+n.law+'</div>':'')+'</div>';
+      });
+      h+='</div>';
+    });
+    h+='<div class="gap'+end+'"></div>';
+  });
+  g.innerHTML=h;
+  setTimeout(draw,60);
+})();
+
+function draw(){
+  var svg=document.getElementById('edges'), board=document.getElementById('board');
+  [].slice.call(svg.querySelectorAll('path.e')).forEach(function(p){p.remove();});[].slice.call(svg.querySelectorAll('circle.mdot')).forEach(function(c){c.remove();});svg.__mdotN=0;
+  var br=board.getBoundingClientRect();
+  svg.setAttribute('viewBox','0 0 '+br.width+' '+br.height);
+  EDGES.forEach(function(e,i){
+    var a=document.getElementById('node_'+e[0]), b=document.getElementById('node_'+e[1]);
+    if(!a||!b) return;
+    var ra=a.getBoundingClientRect(), rb=b.getBoundingClientRect(), back=!!e[2];
+    var d;
+    if(Math.abs(ra.top-rb.top)<8){
+      var y=ra.top-br.top+ra.height/2 + (back?12:-6);
+      if(rb.left>ra.left) d='M'+(ra.right-br.left+2)+','+y+' H'+(rb.left-br.left-7);
+      else d='M'+(ra.left-br.left-2)+','+y+' H'+(rb.right-br.left+7);
+    } else if(rb.top>ra.top){
+      var x1=ra.left-br.left+ra.width/2, x2=rb.left-br.left+rb.width/2;
+      var my=(ra.bottom-br.top)+((rb.top-br.top)-(ra.bottom-br.top))/2;
+      d='M'+x1+','+(ra.bottom-br.top)+' V'+my+' H'+x2+' V'+(rb.top-br.top-7);
+    } else {
+      var mx=br.width-46;
+      d='M'+(ra.right-br.left+2)+','+(ra.top-br.top+ra.height/2)+' H'+mx+' V'+(rb.top-br.top+rb.height/2)+' H'+(rb.right-br.left+7);
+    }
+    var p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('class','e'); p.setAttribute('d',d); p.setAttribute('fill','none');
+    p.setAttribute('stroke',back?'#8c8f91':'#5980a6'); p.setAttribute('stroke-width','1.4');
+    p.setAttribute('opacity',back?'.45':'.6'); p.setAttribute('marker-end',back?'url(#arr)':'url(#ar)');
+    if(back) p.setAttribute('stroke-dasharray','6 5');
+    p.dataset.a=e[0]; p.dataset.b=e[1];
+    svg.appendChild(p);if(typeof back==='undefined'||!back){var __dt=document.createElementNS('http://www.w3.org/2000/svg','circle');__dt.setAttribute('class','mdot');__dt.setAttribute('r','3');__dt.setAttribute('fill','#0075de');__dt.setAttribute('pointer-events','none');var __am=document.createElementNS('http://www.w3.org/2000/svg','animateMotion');__am.setAttribute('dur','2.6s');__am.setAttribute('repeatCount','indefinite');__am.setAttribute('path',d);__am.setAttribute('begin',(((svg.__mdotN=(svg.__mdotN||0)+1)%8)*0.4)+'s');__dt.appendChild(__am);svg.appendChild(__dt);}
+  });
+}
+window.addEventListener('resize',function(){clearTimeout(window.__rz);window.__rz=setTimeout(draw,200);});
+window.addEventListener('load',function(){setTimeout(draw,200);});
+
+var EMBED=false; try{EMBED=window.self!==window.top;}catch(e){EMBED=true;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function panelHTML(n){
+  var chips=(n.chips||[]).map(function(c){return '<span style="font-size:12px;color:#31302e;border:1px solid #e6e6e6;border-radius:5px;padding:3px 9px">'+esc(c)+'</span>';}).join('');
+  var bottle=n.bottle?'<div style="margin-top:10px;font-size:12.5px;line-height:1.55;color:#8a5a00;background:#fff8ec;border:1px solid #f0d9a8;border-radius:6px;padding:9px 11px;max-width:300px">병목 · '+esc(n.bottle)+'</div>':'';
+  return '<div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">'
+   +'<div style="min-width:210px;flex:1 1 230px">'
+    +'<div style="display:flex;align-items:center;gap:7px;font-size:11.5px;color:#615d59;font-weight:600">노드 상세 <b style="color:#000">'+esc(n.id)+'</b>'
+    +'<span style="font-size:11px;font-weight:700;color:#b45309;border:1px solid #f0d9a8;background:#fff8ec;border-radius:4px;padding:1px 7px">'+TAGNM[n.k]+'</span></div>'
+    +'<div style="font-size:19px;font-weight:700;letter-spacing:-.02em;margin-top:6px;color:#000">'+esc(n.title)+'</div>'
+    +'<div style="font-size:12px;color:#a39e98;margin-top:3px">'+esc(n.lane)+'</div>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">'+chips+'</div></div>'
+   +'<div style="flex:0 0 auto"><div style="display:flex;gap:10px">'
+    +'<div style="border:1px solid #e6e6e6;border-radius:8px;padding:10px 14px;min-width:124px"><div style="font-size:11px;color:#a39e98">기한</div><div style="font-size:13.5px;font-weight:600;margin-top:4px;color:#31302e;line-height:1.4">'+esc(n.due)+'</div></div>'
+   +'</div>'+bottle+'</div>'
+   +'<div style="flex:1 1 300px;min-width:250px"><div style="font-size:11.5px;color:#615d59;font-weight:600">법적 근거</div>'
+    +'<div style="font-size:13.5px;font-weight:700;margin-top:6px;color:#000">'+esc(n.law||'—')+'</div>'
+    +'<div style="font-size:12.5px;line-height:1.65;color:#615d59;margin-top:4px;text-wrap:pretty">'+esc(n.lawT)+'</div></div>'
+   +'<button type="button" id="__wfPanelX" style="flex:0 0 auto;align-self:flex-start;font:inherit;font-size:12px;font-weight:600;color:#615d59;background:#fff;border:1px solid #e6e6e6;border-radius:6px;padding:5px 11px;cursor:pointer">닫기 ✕</button>'
+   +'</div>';
+}
+function clearAll(){
+  var c=document.querySelector('.node.on'); if(c) c.classList.remove('on');
+  document.body.classList.remove('focus');
+  [].slice.call(document.querySelectorAll('#edges path.e')).forEach(function(p){p.classList.remove('lit');});
+  if(EMBED){ try{window.parent.postMessage({type:'wf-detail-close'},'*');}catch(e){} }
+  else document.getElementById('panel').classList.remove('show');
+}
+document.addEventListener('click',function(ev){
+  var el=ev.target.closest && ev.target.closest('.node');
+  var cur=document.querySelector('.node.on');
+  if(cur) cur.classList.remove('on');
+  [].slice.call(document.querySelectorAll('#edges path.e')).forEach(function(p){p.classList.remove('lit');});
+  if(el && el!==cur){
+    el.classList.add('on'); document.body.classList.add('focus');
+    var id=el.id.replace('node_','');
+    [].slice.call(document.querySelectorAll('#edges path.e')).forEach(function(p){
+      if(p.dataset.a===id||p.dataset.b===id) p.classList.add('lit');
+    });
+    var n=NODES.filter(function(x){return x.id===id;})[0]; if(!n) return;
+    var html=panelHTML(n);
+    if(EMBED){ try{window.parent.postMessage({type:'wf-detail',html:html},'*');}catch(e){} }
+    else{
+      var p=document.getElementById('panel');
+      p.innerHTML=html; p.classList.add('show');
+      var x=document.getElementById('__wfPanelX');
+      if(x) x.addEventListener('click',function(e2){e2.stopPropagation();clearAll();});
+    }
+  } else if(!ev.target.closest('#panel')) { clearAll(); }
+});
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') clearAll(); });
+window.addEventListener('message',function(ev){ if(ev.data&&ev.data.type==='wf-clear') clearAll(); });
+</script>
+<script>
+if(window.top===window.self){
+  var __cb=document.createElement('button');
+  __cb.type='button'; __cb.textContent='✕ 닫기';
+  __cb.style.cssText='position:fixed;top:14px;right:16px;z-index:60;font:600 13px/1 -apple-system,BlinkMacSystemFont,"Pretendard","Malgun Gothic",sans-serif;color:#1d2d3d;background:#fff;border:1px solid #d6dbe0;border-radius:8px;padding:10px 14px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.08)';
+  __cb.onclick=function(){ window.close(); setTimeout(function(){ if(!window.closed){ if(document.referrer) location.href=document.referrer; else location.href='bible.html?tab=overview&ov=flow'; } },200); };
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') __cb.click(); });
+  document.body.appendChild(__cb);
+}
+</script>
+<script id="__closeBtn">(function(){try{if(window.self!==window.top)return;}catch(e){return;}
+var b=document.createElement('button');b.textContent='✕ 닫기';b.title='창 닫기 / 이전으로';
+b.setAttribute('style','position:fixed;top:12px;right:12px;z-index:9999;border:1px solid rgba(29,31,32,.22);background:rgba(255,255,255,.95);color:#1d1f20;font:600 13px Pretendard,-apple-system,sans-serif;padding:9px 16px;border-radius:100px;box-shadow:0 2px 10px rgba(0,0,0,.10);cursor:pointer;-webkit-tap-highlight-color:transparent');
+b.addEventListener('click',function(){try{window.close();}catch(e){}
+setTimeout(function(){if(!document.hidden){if(history.length>1){history.back();}else{location.href='bible.html';}}},200);});
+document.body.appendChild(b);})();</script>
+<script src="close-button.js" defer></script></body>
+</html>

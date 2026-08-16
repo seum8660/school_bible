@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>감리·감독 발주방식 판단 대시보드</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --line:#e6e6e6; --line2:#efedeb;
+    --ink:#000; --sub:#615d59; --faint:#a39e98; --bg:#f6f5f4; --card:#fff;
+    --accent:#0075de; --accent-soft:#e7f1fc;
+    --radc:12px; --radsm:8px;
+  }
+  html[data-theme="dark"]{
+    --line:#343434; --line2:#2c2c2c;
+    --ink:#e9e9e7; --sub:#b4b2ad; --faint:#8f8d88; --bg:#191919; --card:#202020;
+    --accent:#4a9eff; --accent-soft:rgba(74,158,255,.16);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 20px 70px}
+
+  .cover{background:var(--card);border-bottom:1px solid var(--line);padding:44px 20px 26px}
+  .cover .inner{max-width:1240px;margin:0 auto;padding:0 20px;display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap}
+  .cover h1{margin:0 0 7px;font-size:34px;font-weight:700;letter-spacing:-1.1px;line-height:1.15}
+  .cover .sub{font-size:14px;color:var(--sub)}
+  .kicker{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.06em;color:var(--faint);
+          margin-bottom:12px}
+  .themebtn{margin-left:auto;font:inherit;font-size:12.5px;font-weight:500;color:var(--sub);background:var(--card);
+            border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+  .themebtn:hover{border-color:var(--accent);color:var(--accent)}
+
+  section{margin-top:30px}
+  .sec-title{display:flex;align-items:baseline;gap:9px;font-size:15px;font-weight:600;
+         margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);letter-spacing:-.01em}
+  .sec-title .n{flex:0 0 auto;font-size:13px;font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums;
+         min-width:14px;align-self:center}
+  .sec-title small{font-weight:500;color:var(--faint);font-size:12.5px;margin-left:auto}
+  h3.sub-h{font-size:14px;font-weight:700;margin:22px 0 8px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radc);padding:18px 20px}
+  .cols2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cols2>*{min-width:0}
+  @media(max-width:1100px){.cols2{grid-template-columns:1fr}}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{border-bottom:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+  thead th{background:var(--card);color:var(--faint);font-weight:600;font-size:11.5px;letter-spacing:.03em;
+           border-bottom:1px solid var(--line);white-space:nowrap;padding-top:12px;padding-bottom:8px}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:var(--line2)}
+  html[data-theme="dark"] tbody tr:hover{background:#262626}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.c,th.c{text-align:center;white-space:nowrap}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radc);background:var(--card);min-width:0}
+  .tbl-wrap table{min-width:640px}
+  .cols2 .tbl-wrap table{min-width:0}
+  b.k{color:var(--accent);font-weight:700}
+  .muted{color:var(--sub)}
+  .pill{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:4px;
+        background:var(--line2);color:var(--sub);white-space:nowrap}
+  .pill.off{background:transparent;border:1px solid var(--line);color:var(--faint)}
+  html[data-theme="dark"] .pill{background:#2c2c2c}
+
+  .lv{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:1000px){.lv{grid-template-columns:1fr}}
+  .lv .b{border:1px solid var(--line);border-radius:var(--radc);background:var(--card);padding:16px 18px}
+  .lv .b .no{font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--faint)}
+  .lv .b .t{font-size:16px;font-weight:700;margin:5px 0 3px;letter-spacing:-.02em}
+  .lv .b .s{font-size:12.5px;color:var(--sub);padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+  .lv .b ul{margin:0;padding-left:16px}
+  .lv .b li{font-size:13px;margin-bottom:5px}
+  .lv .b li:last-child{margin-bottom:0}
+
+  .judge{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 16px}
+  @media(max-width:900px){.judge{grid-template-columns:1fr 1fr}}
+  .fld{display:flex;flex-direction:column;gap:5px}
+  .fld label{font-size:11.5px;color:var(--faint);font-weight:500;letter-spacing:.01em}
+  .fld input,.fld select{font:inherit;font-size:14px;font-weight:500;padding:9px 11px;border:1px solid var(--line);
+         border-radius:var(--radsm);background:var(--card);color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
+  .fld input:focus,.fld select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .result{margin-top:16px;border:1px solid var(--line);border-radius:var(--radc);overflow:hidden}
+  .result-h{background:var(--card);color:var(--accent);padding:13px 16px;font-size:15px;font-weight:700;
+            border-bottom:1px solid var(--line);letter-spacing:-.01em}
+  .result-b{padding:14px 16px;background:var(--card)}
+  .result-b ul{margin:0;padding-left:18px}
+  .result-b li{font-size:13.5px;margin-bottom:5px}
+  .result-b li:last-child{margin-bottom:0}
+
+  .note{font-size:12.5px;color:var(--faint);margin-top:10px;line-height:1.6}
+  .callout{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--card);
+           border-radius:var(--radsm);padding:12px 16px;font-size:13.5px;font-weight:500;color:var(--ink);margin-top:14px}
+  .flow{display:flex;align-items:stretch;flex-wrap:wrap;border:1px solid var(--line);border-radius:var(--radc);overflow:hidden;background:var(--card)}
+  .flow .st{flex:1;min-width:150px;padding:14px 16px;border-right:1px solid var(--line)}
+  .flow .st:last-child{border-right:0}
+  .flow .st .no{font-size:11px;font-weight:600;color:var(--faint);letter-spacing:.1em}
+  .flow .st .t{font-size:14px;font-weight:700;margin-top:4px}
+  .flow .st .d{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="cover"><div class="inner">
+  <div>
+    <span class="kicker">공사감독 · 감리 · 건설사업관리</span>
+    <h1>감리 발주방식 판단</h1>
+    <div class="sub">발주청 역량평가 점수와 건설사업관리계획 수립 의무 여부로 감독방식을 3단계로 가릅니다.</div>
+  </div>
+  <button class="themebtn" id="themebtn" type="button">다크 모드</button>
+</div></div>
+
+<div class="wrap">
+
+<section>
+  <h2 class="sec-title"><span class="n">1</span>3단계 적용 구분<small>내부지침 · ○○과-4067</small></h2>
+  <div class="lv">
+    <div class="b">
+      <div class="no">LEVEL 1</div>
+      <div class="t">직접감독 / 상주·비상주감리</div>
+      <div style="font-size:11.5px;color:var(--sub);margin-bottom:3px">감독권한대행 등 건설사업관리를 적용할 수 있음</div>
+      <div class="s">역량평가 <b class="k">50점 미만</b> · 건진법 §59의2 <b>비대상</b></div>
+      <ul>
+        <li>연면적 <b class="k">660㎡ 미만</b> 건축공사</li>
+        <li>총공사비 <b class="k">5억원 미만</b> 토목공사</li>
+        <li>총공사비 <b class="k">2억원 미만</b> 전문공사 중 구조물 미포함</li>
+        <li>대수선이 아닌 보수공사</li>
+        <li>그린스마트스쿨 중 리모델링 — 건축사 상주감리</li>
+      </ul>
+    </div>
+    <div class="b">
+      <div class="no">LEVEL 2</div>
+      <div class="t">감독권한대행 제외 건설사업관리</div>
+      <div style="font-size:11.5px;color:var(--sub);margin-bottom:3px">감독권한대행 등 건설사업관리를 적용할 수 있음</div>
+      <div class="s">역량평가 <b class="k">50점 이상 80점 미만</b> · 건진법 §59의2 <b>대상</b></div>
+      <ul>
+        <li>연면적 <b class="k">660㎡ 이상</b> 증·개축 공사</li>
+        <li>대수선 공사(건축승인 대상)</li>
+        <li>시공단계 건설사업관리계획서 제출 의무 공사</li>
+        <li>총공사비 <b class="k">200억원 미만</b> 신설·이설·개축</li>
+      </ul>
+    </div>
+    <div class="b">
+      <div class="no">LEVEL 3</div>
+      <div class="t">감독권한대행 등 건설사업관리</div>
+      <div class="s">역량평가 <b class="k">80점 이상</b> · 건진법 §55 대상</div>
+      <ul>
+        <li>총공사비 <b class="k">200억원 이상</b> + 시행령 <b>별표7</b> 해당</li>
+        <li>총공사비 200억원 이상 신설·이설·개축</li>
+        <li>임대형 민자사업(BTL) 공사</li>
+        <li>통합 건설사업관리 실시 공사</li>
+        <li>그린스마트스쿨 중 개축 공사</li>
+        <li>적정성 검토 결과 필요하다고 인정하는 공사</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">각 적용 대상 공사 중 <b>1개 이상 해당 시 반드시 해당 공사감리를 적용</b>합니다. 상위 단계 해당 시 상위 방식을 적용할 수 있습니다.</div>
+</section>
+
+<section>
+  <h2 class="sec-title"><span class="n">2</span>우리 공사는 어디에 해당하나<small>입력하면 즉시 판정</small></h2>
+  <div class="card">
+    <div class="judge">
+      <div class="fld"><label>공사 종류</label><select id="type"><option value="건축" selected>건축</option><option value="토목">토목</option><option value="전문">전문</option></select></div>
+      <div class="fld"><label>연면적 (㎡)</label><input type="number" id="area" value="450" min="0" step="10"></div>
+      <div class="fld"><label>총공사비 (억원)</label><input type="number" id="cost" value="12" min="0" step="1"></div>
+      <div class="fld"><label>발주청 역량평가</label><select id="score">
+        <option value="0" selected>미충족 (50점 미만)</option>
+        <option value="60">충족 (50점 이상 80점 미만)</option>
+        <option value="90">충족 (80점 이상)</option>
+      </select></div>
+      <div class="fld"><label>공사 성격</label><select id="kind">
+        <option value="신설">신설·이설·개축</option>
+        <option value="증축">증축</option>
+        <option value="대수선">대수선(건축승인 대상)</option>
+        <option value="보수" selected>보수(대수선 아님)</option>
+        <option value="리모델링">그린스마트스쿨 리모델링</option>
+      </select></div>
+      <div class="fld"><label>구조물 포함 (전문공사)</label><select id="struct"><option value="n" selected>미포함</option><option value="y">포함</option></select></div>
+      <div class="fld"><label>건진법 별표7 공종</label><select id="table7"><option value="n" selected>미해당</option><option value="y">해당</option></select></div>
+      <div class="fld"><label>건축허가 대상</label><select id="permit"><option value="허가" selected>건축허가</option><option value="신고">건축신고</option><option value="비대상">비대상</option></select></div>
+      <div class="fld"><label>특수 유형</label><select id="special">
+        <option value="없음" selected>없음</option>
+        <option value="BTL">임대형 민자사업(BTL)</option>
+        <option value="통합">통합 건설사업관리 실시</option>
+        <option value="그린개축">그린스마트스쿨 개축</option>
+        <option value="적정성">적정성 검토 결과 필요 인정</option>
+      </select></div>
+    </div>
+    <div class="result">
+      <div class="result-h" id="rh">판정 결과</div>
+      <div class="result-b"><ul id="rb"></ul></div>
+    </div>
+    <div class="note"><b>별표7</b>은 「건설기술 진흥법 시행령」 별표 7 — 감독 권한대행 등 건설사업관리 대상 공사로 지정된 공종 목록입니다. 설계 완료 시 주된 공종이 별표 7에 해당하는지 원문으로 확인하십시오.</div>
+    <div class="note">본 판정은 내부지침의 대표 기준만 반영한 참고용입니다. 별표7 공종 해당 여부, 역량평가 결과, 적정성 검토 결과는 반드시 원문과 소관 부서 협의로 확정하십시오.</div>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-title"><span class="n">3</span>건설사업관리계획 수립 의무<small>건설기술 진흥법 시행령 제59조의2</small></h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>공사 종류</th><th class="num">의무 기준</th><th>미만 / 비대상</th><th>적용 방식</th></tr></thead>
+    <tbody>
+      <tr><td><b>건축공사</b></td><td class="num">연면적 <b class="k">660㎡ 이상</b></td><td>660㎡ 미만</td><td>미만 → 직접감독 또는 상주·비상주감리</td></tr>
+      <tr><td><b>토목공사</b></td><td class="num">총공사비 <b class="k">5억원 이상</b></td><td>5억원 미만</td><td>미만 → 직접감독 또는 상주·비상주감리</td></tr>
+      <tr><td><b>전문공사</b><br><span class="muted">구조물 미포함</span></td><td class="num">총공사비 <b class="k">2억원 이상</b></td><td>2억원 미만</td><td>미만 → 직접감독 또는 상주·비상주감리</td></tr>
+      <tr><td><b>전문공사</b><br><span class="muted">구조물 포함(건축협의·승인)</span></td><td class="num">2억원 미만</td><td class="muted">§59의2 비대상</td><td><span class="pill">상주감리 적용</span></td></tr>
+      <tr><td><b>보수공사</b></td><td class="num">대수선이 아닌 경우</td><td class="muted">비대상</td><td>직접감독 또는 비상주감리</td></tr>
+      <tr><td><b>대수선 공사</b></td><td class="num">건축승인 대상</td><td class="muted">-</td><td><span class="pill">건설사업관리 대상</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2 class="sec-title"><span class="n">4</span>감리 유형 및 자격 기준<small>상주 / 비상주 판단</small></h2>
+  <div class="cols2">
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>구분</th><th>규모</th><th class="c">권장 감리</th></tr></thead>
+      <tbody>
+        <tr><td>건축신고 대상</td><td>신축 연면적 <b class="k">100㎡ 이하</b><br>증·개·재축 <b class="k">85㎡ 이하</b></td><td class="c"><span class="pill off">비상주감리</span></td></tr>
+        <tr><td>건축허가 대상</td><td>연면적 <b class="k">660㎡ 미만</b> 적용</td><td class="c"><span class="pill">상주감리</span></td></tr>
+        <tr><td>건축허가 대상</td><td>연면적 660㎡ 이상<br><span class="muted">§59의2 의무 대상</span></td><td class="c"><span class="pill">건설사업관리</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>항목</th><th>기준</th></tr></thead>
+      <tbody>
+        <tr><td>감리 시 포함</td><td>안전관리자 포함</td></tr>
+        <tr><td><b>직접감독 자격</b></td><td>건축(토목) <b class="k">산업기사 이상</b> 소지자</td></tr>
+        <tr><td>종전 기준</td><td class="muted">기사 이상 또는 산업기사 + 경력 3년</td></tr>
+        <tr><td>통합 건설사업관리</td><td>직선거리 20km 이내 최대 3개 현장, 공사비 합산 산출</td></tr>
+        <tr><td>특급기술자 추가</td><td>통합 공사 중 1개가 총공사비 <b class="k">300억원 이상</b>이면 1명 추가 배치</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-title"><span class="n">5</span>공종별 별도 감리<small>건축 감리와 별개로 각각 발주</small></h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>공종</th><th>근거 법령</th><th>감리 대상 기준</th><th>제외·예외</th></tr></thead>
+    <tbody>
+      <tr><td><b>건축</b></td><td class="muted">건축법 §25</td><td>건축허가 대상 건축물 — 건축주가 건축사를 공사감리자로 지정</td><td>건진법 §39②로 건설사업관리하는 건축물</td></tr>
+      <tr><td><b>전기</b></td><td class="muted">전력기술관리법 §12</td><td>전력시설물공사는 원칙적으로 감리업자에게 공사감리를 발주</td><td>일반용전기설비, 전기수용설비 증설·변경 <b class="k">5천만원 미만</b> 등</td></tr>
+      <tr><td><b>소방</b></td><td class="muted">소방시설공사업법 §17</td><td>소방시설공사 착공신고 대상이면 감리업자 지정·통보</td><td>착공신고 비대상 보수·부분 교체</td></tr>
+      <tr><td><b>정보통신</b></td><td class="muted">정보통신공사업법 §8</td><td>용역업자에게 감리 발주 후 감리원 배치현황 신고</td><td>경미한 공사</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note">전기 감리는 「전력기술관리법 시행령」 제20조제2항의 소규모·특수시설물 공사에 해당하면 감리업자 발주 없이 처리할 수 있고, 비상용 예비발전설비 설치·변경은 총공사비 1억원 미만, 전기수용설비 증설·변경은 5천만원 미만일 때 전기안전관리자가 감리업무를 수행할 수 있습니다.</div>
+</section>
+
+<section>
+  <h2 class="sec-title"><span class="n">6</span>발주 절차<small>설계 완료 → 착공 전까지</small></h2>
+  <div class="flow">
+    <div class="st"><div class="no">STEP 1</div><div class="t">역량평가·의무 확인</div><div class="d">역량평가 점수와 건진법 §59의2 대상 여부로 3단계 중 하나 결정</div></div>
+    <div class="st"><div class="no">STEP 2</div><div class="t">건설사업관리계획 수립</div><div class="d">의무 대상이면 계획서 작성·제출, 기술자문위원회 심의</div></div>
+    <div class="st"><div class="no">STEP 3</div><div class="t">과업내용서·대가 산출</div><div class="d">감리원 등급·상주기간 확정, 엔지니어링 대가기준 적용</div></div>
+    <div class="st"><div class="no">STEP 4</div><div class="t">계약 방법 선정</div><div class="d">적격심사 · 협상에 의한 계약 · PQ 결정, 협회 접수</div></div>
+    <div class="st"><div class="no">STEP 5</div><div class="t">배치신고·착수</div><div class="d">감리원 배치신고 후 공사 착공과 동시 상주 개시</div></div>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-title"><span class="n">7</span>실무 체크포인트<small>자주 걸리는 것들</small></h2>
+  <div class="cols2">
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>확인 항목</th><th class="c">판단</th></tr></thead>
+      <tbody>
+        <tr><td>연면적 660㎡ 경계에서 방식을 확정했는가</td><td class="c"><span class="pill">설계 확정면적 기준</span></td></tr>
+        <tr><td>역량평가 점수를 확인했는가</td><td class="c"><span class="pill">50 / 80점</span></td></tr>
+        <tr><td>감리 용역 착수가 공사 착공보다 늦지 않은가</td><td class="c"><span class="pill">착공 전 계약</span></td></tr>
+        <tr><td>전기·소방·정보통신 감리를 각각 발주했는가</td><td class="c"><span class="pill">공종별 발주</span></td></tr>
+        <tr><td>감리원 교체 시 발주자 승인을 받았는가</td><td class="c"><span class="pill">사전 승인</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>흔한 오류</th><th>바로잡기</th></tr></thead>
+      <tbody>
+        <tr><td>보수공사인데 건설사업관리를 발주</td><td>대수선이 아닌 보수는 §59의2 비대상 — 직접감독 검토</td></tr>
+        <tr><td>전문공사 구조물 포함인데 직접감독</td><td>2억원 미만이라도 상주감리 적용</td></tr>
+        <tr><td>건축 감리만 발주하고 전기 감리 누락</td><td>전력기술관리법 제외 사유 해당 여부 먼저 확인</td></tr>
+        <tr><td>감리 대가를 공사비 요율만으로 산정</td><td>상주·비상주 구분, 추가업무비용 별도 계상</td></tr>
+        <tr><td>공기 연장 시 감리 기간 미조정</td><td>변경계약으로 상주기간·대가 동시 조정</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-title"><span class="n">8</span>근거<small>원문 확인 필수</small></h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>구분</th><th>조문·문서</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>내부지침</td><td class="muted">○○과-4067(2023.6.19.)</td><td>공사감독·감리·건설사업관리 적용기준 3단계 구분</td></tr>
+      <tr><td>건설기술 진흥법 시행령</td><td class="muted">§59의2</td><td>건설사업관리계획 수립 의무 — 660㎡ / 5억 / 2억</td></tr>
+      <tr><td>건설기술 진흥법 시행령</td><td class="muted">§55, 별표 7</td><td>감독 권한대행 등 건설사업관리 — 200억원 이상</td></tr>
+      <tr><td>건설기술 진흥법 시행규칙</td><td class="muted">§33·§35</td><td>통합시행 20km, 300억원 이상 특급기술인 추가 배치</td></tr>
+      <tr><td>업무지침</td><td class="muted">건설공사 사업관리방식 검토기준 및 업무지침</td><td>발주청 역량평가 점수 산정</td></tr>
+      <tr><td>건축법</td><td class="muted">§25</td><td>건축물의 공사감리, 감리자 지정</td></tr>
+      <tr><td>전력·소방·정보통신</td><td class="muted">각 개별법</td><td>공종별 감리 발주 및 감리원 배치</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<div class="note" style="margin-top:26px;text-align:center">본 대시보드는 학교시설업무 치트키의 실무 참고자료입니다. 실제 발주 시에는 시행 중인 법령·고시와 소속 기관의 최신 내부지침을 우선 적용하십시오.</div>
+</div>
+
+<script>
+(function(){
+  var t=localStorage.getItem('sb-theme');
+  if(t==='dark') document.documentElement.setAttribute('data-theme','dark');
+  var btn=document.getElementById('themebtn');
+  function label(){btn.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'라이트 모드':'다크 모드';}
+  label();
+  btn.addEventListener('click',function(){
+    var d=document.documentElement.getAttribute('data-theme')==='dark';
+    if(d){document.documentElement.removeAttribute('data-theme');localStorage.setItem('sb-theme','light');}
+    else{document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('sb-theme','dark');}
+    label();
+  });
+})();
+
+(function(){
+  var ids=['type','area','cost','score','kind','struct','table7','permit','special'];
+  var rh=document.getElementById('rh'), rb=document.getElementById('rb');
+  function v(id){return document.getElementById(id).value;}
+  function calc(){
+    var type=v('type'), area=parseFloat(v('area'))||0, cost=parseFloat(v('cost'))||0,
+        score=parseFloat(v('score'))||0, kind=v('kind'), struct=v('struct')==='y',
+        t7=v('table7')==='y', permit=v('permit');
+    var items=[], head, why=[];
+
+    // 건진법 §59의2 의무 여부
+    var duty=false;
+    if(kind==='보수'){ duty=false; why.push('대수선이 아닌 보수공사 — 건진법 시행령 제59조의2 비대상'); }
+    else if(kind==='대수선'){ duty=true; why.push('대수선(건축승인 대상) — 제59조의2 대상'); }
+    else if(type==='건축'){ duty = area>=660; why.push('건축공사 연면적 '+area.toLocaleString()+'㎡ — 660㎡ '+(duty?'이상, 제59조의2 대상':'미만, 제59조의2 비대상')); }
+    else if(type==='토목'){ duty = cost>=5; why.push('토목공사 총공사비 '+cost.toLocaleString()+'억원 — 5억원 '+(duty?'이상, 제59조의2 대상':'미만, 제59조의2 비대상')); }
+    else { duty = cost>=2; why.push('전문공사 총공사비 '+cost.toLocaleString()+'억원'+(struct?' · 구조물 포함(건축협의·승인)':' · 구조물 미포함')+' — 2억원 '+(duty?'이상, 제59조의2 대상':'미만, 제59조의2 비대상')); }
+
+    var special=v('special');
+    var lv3 = (cost>=200 && t7) || (cost>=200 && kind==='신설') || score>=80 || special!=='없음';
+    var lv2 = !lv3 && (duty || (score>=50 && score<80) || (cost<200 && kind==='신설'));
+
+    if(lv3){
+      head='LEVEL 3 — 감독권한대행 등 건설사업관리';
+      if(cost>=200 && t7) items.push('총공사비 '+cost.toLocaleString()+'억원 ≥ 200억원 + 별표7 공종 — 건진법 시행령 제55조 대상입니다.');
+      if(cost>=200 && kind==='신설') items.push('총공사비 200억원 이상 신설·이설·개축 공사에 해당합니다.');
+      if(score>=80) items.push('발주청 역량평가 충족(80점 이상) — 감독권한대행 등 건설사업관리 적용 대상입니다.');
+      if(special==='BTL') items.push('임대형 민자사업(BTL) 공사 — 감독권한대행 등 건설사업관리 적용 대상입니다.');
+      if(special==='통합') items.push('통합 건설사업관리 실시 공사 — 직선거리 20km 이내 최대 3개 현장까지 통합하고 공사비를 합산하여 용역비를 산출합니다.');
+      if(special==='그린개축') items.push('그린스마트스쿨(공간재구조화) 중 개축 공사 — 감독권한대행 등 건설사업관리 적용 대상입니다.');
+      if(special==='적정성') items.push('건설사업관리 적정성 검토 결과 필요하다고 인정한 공사입니다.');
+      items.push('건설사업관리기술인이 발주청의 감독 권한을 대행하며, 건축법 제25조 공사감리는 별도로 적용하지 않습니다.');
+      items.push('통합 시행 시 직선거리 20km 이내 최대 3개 현장까지 가능하고, 1개 공사가 300억원 이상이면 특급기술자 1명을 추가 배치합니다.');
+    } else if(lv2){
+      head='LEVEL 2 — 감독권한대행 제외 건설사업관리';
+      items.push('건설사업관리계획을 수립하고 감독권한대행을 포함하지 않는 건설사업관리 용역을 발주합니다.');
+      if(score>=50 && score<80) items.push('발주청 역량평가 충족(50점 이상 80점 미만) 구간입니다.');
+      if(cost<200 && kind==='신설') items.push('총공사비 200억원 미만 신설·이설·개축 공사에 해당합니다.');
+      items.push('감독 권한은 발주청이 보유하며, 공사감독자를 함께 지정합니다.');
+    } else {
+      head='LEVEL 1 — 직접감독 또는 상주·비상주감리';
+      items.push('건설사업관리계획 수립 의무 대상이 아니므로 직접감독 또는 감리 적용이 가능합니다.');
+      if(score<50) items.push('발주청 역량평가 미충족(50점 미만) — 상주감리가 필요하다고 인정하면 상주감리를 적용합니다.');
+      if(kind==='리모델링') items.push('그린스마트스쿨(공간재구조화) 리모델링 — 건축사 상주감리를 적용합니다.');
+      if(type==='전문' && struct) items.push('전문공사 구조물 포함(건축협의·승인) — 2억원 미만이어도 상주감리를 적용합니다.');
+      if(permit==='신고') items.push('건축신고 대상(신축 100㎡ 이하, 증·개·재축 85㎡ 이하) — 비상주감리를 권장합니다(안전관리자 포함).');
+      else if(permit==='허가' && type==='건축'){
+        if(area<660) items.push('건축허가 대상, 연면적 '+area.toLocaleString()+'㎡(660㎡ 미만) — 상주감리를 권장합니다(안전관리자 포함).');
+        else items.push('연면적 '+area.toLocaleString()+'㎡로 660㎡ 이상이나 대수선이 아닌 보수공사여서 제59조의2 비대상입니다. 규모를 고려해 상주감리 적용을 검토하십시오.');
+      }
+      else if(permit==='허가' && type==='토목') items.push('토목공사 총공사비 '+cost.toLocaleString()+'억원(5억원 미만) — 직접감독 또는 감리 적용이 가능합니다.');
+      else if(permit==='허가' && type==='전문') items.push('전문공사 총공사비 '+cost.toLocaleString()+'억원(2억원 미만, 구조물 미포함) — 직접감독 또는 비상주감리 적용이 가능합니다.');
+      items.push('직접감독 시 감독자 자격은 건축(토목) 산업기사 이상 소지자입니다.');
+    }
+    items = why.concat(items);
+    rh.textContent=head;
+    rb.innerHTML=items.map(function(s){return '<li>'+s+'</li>';}).join('');
+  }
+  ids.forEach(function(id){var e=document.getElementById(id);e.addEventListener('input',calc);e.addEventListener('change',calc);});
+  calc();
+})();
+</script>
+<script src="close-button.js" defer></script></body>
+</html>

@@ -73,6 +73,37 @@
   .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
 
   @media print{ body{ width:auto; min-height:auto; } }
+</style>
+<style>
+  /* 표준 요약문서 레이아웃(16번 규격) 통일 */
+  html,body{ font-family:'Noto Sans CJK KR','Noto Sans KR','Malgun Gothic',sans-serif; color:#1f2937; background:#fff; }
+  body{ width:auto; min-height:auto; padding:0; }
+  .sheet{ width:100%; max-width:1180px; min-height:auto; margin:0 auto; padding:26px 30px 22px; display:flex; flex-direction:column; }
+  .title{ font-size:26px; color:#1e3a5f; letter-spacing:-0.4px; line-height:1.2; }
+  .meta{ font-size:13px; color:#6b7280; margin:3px 0 0 0; line-height:1.5; }
+  .rule-navy{ height:0; border-bottom:2.5px solid #1e3a5f; background:none; margin:5px 0 8px 0; }
+  .rule-gray{ height:0; border-bottom:1px solid #d1d5db; background:none; margin:10px 0 8px 0; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:16px 18px; align-content:start; margin-bottom:16px; }
+  .row1{ margin-bottom:16px; }
+  .row1:last-of-type{ margin-bottom:0; }
+  .card{ border:1px solid #d1d5db; border-radius:10px; padding:16px 18px; }
+  .badge{ font-size:14.5px; color:#fff; background:#1e3a5f; display:inline-block; padding:4px 12px; border-radius:3px; margin-bottom:6px; letter-spacing:-0.3px; font-weight:700; }
+  .badge.rust{ background:#b45309; }
+  .list li,.nlist li{ font-size:14px; line-height:1.7; color:#374151; margin-bottom:5px; }
+  .list li{ padding-left:14px; text-indent:-14px; }
+  .nlist li{ padding-left:20px; text-indent:-20px; }
+  .term,.k{ color:#1e3a5f; font-weight:700; }
+  .num,.r{ color:#b45309; font-weight:700; }
+  .nlist .no{ color:#1e3a5f; font-weight:700; margin-right:4px; }
+  .formula{ background:#eef2f7; border-left:3px solid #1e3a5f; border-radius:3px; padding:12px 14px; margin:4px 0 10px 0; font-size:14.5px; text-align:center; font-weight:700; color:#1e3a5f; letter-spacing:-0.2px; }
+  .formula .sub{ display:block; font-size:12px; font-weight:500; color:#6b7280; margin-top:5px; letter-spacing:0; }
+  .note-grn{ background:#e8f4ec; border-left:3px solid #2e7d52; border-radius:3px; padding:12px 14px; margin:4px 0 10px 0; font-size:13px; line-height:1.65; color:#1e4b34; }
+  .note-grn b{ color:#2e7d52; font-weight:700; }
+  .chips{ display:flex; flex-wrap:wrap; gap:4px; }
+  .chip{ display:inline-block; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:3px; padding:3px 9px; font-size:12px; color:#334155; line-height:1.5; }
+  .chip b{ color:#1e3a5f; font-weight:700; }
+  .note{ border-top:1px solid #d1d5db; margin-top:10px; padding-top:5px; font-size:11.5px; color:#9ca3af; text-align:center; }
+  .pageno{ text-align:center; font-size:11.5px; color:#9ca3af; margin-top:6px; }
 </style></head><body><div class="sheet">
 <h1 class="title">건설공사하도급 심사지침 — 핵심 요약</h1>
 <p class="meta">건설공사 발주·계약관리 ｜ 건설산업기본법 제31조제1항, 동법시행령 제34조제2항, 공사계약일반조건 제42조 ｜ 시행 2000.5.29.</p>

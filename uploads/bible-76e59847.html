@@ -847,12 +847,6 @@
   .gz-tile.on .gz-t-b{color:var(--ink-2)}
   .gz-tile.on .gz-t-b .money-hl{color:#e5342b;font-weight:800}
   .gz-tile.on .gz-t-s::after{content:"적용"}
-  /* 금액으로 판독 불가 — 별도 확인 필요 */
-  .gz-tile.gz-chk{opacity:1;background:#e9f6ee;border-color:#2e7d52;box-shadow:0 0 0 2px rgba(46,125,82,.22),var(--shadow-sm)}
-  .gz-tile.gz-chk .gz-t-h{color:#1e4b34}
-  .gz-tile.gz-chk .gz-t-b{color:#2f6a4c}
-  .gz-tile.gz-chk .gz-t-s{background:#2e7d52;color:#fff}
-  .gz-tile.gz-chk .gz-t-s::after{content:"별도 확인"}
   /* 건축법령 체크 도구 (bl) */
   .bl-form{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--surface);border:1.5px solid var(--border);
     box-shadow:var(--shadow-sm);border-radius:var(--rad);padding:18px;margin-bottom:14px}
@@ -1735,7 +1729,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     <div class="ov-view" data-ovv="flow">
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px;padding:12px 15px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radsm);background:var(--surface)">
       <span style="font-size:13.5px;color:var(--muted)">사전기획부터 설계 · 발주 · 착공 · 시공관리 · 준공검사 · 사용승인까지 학교시설 사업 전체 흐름입니다.</span>
-      <a href="https://seum8660.github.io/school_bible/%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0_%ED%86%B5%ED%95%A9%EB%B3%B4%EB%93%9C.html" target="_blank" rel="noopener noreferrer" id="wfOpenLink" style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap">새 창에서 크게 보기 <span>↗</span></a>
+      <a href="워크플로우_통합보드.html" target="_blank" rel="noopener noreferrer" id="wfOpenLink" style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap">새 창에서 크게 보기 <span>↗</span></a>
     </div>
 <style>.wf-picker .wf-ic{display:none !important}</style>
 <div class="wf-picker" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px">
@@ -1794,13 +1788,11 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     </div>
 
     <div class="ov-view on" data-ovv="std">
-    <div class="note">💡 사업의 <b>총사업비·공사비·설계비·사업면적(㎡)</b> 규모에 따라 적용 절차가 달라집니다. 아래 입력값을 바꾸면 해당 절차 행이 <b style="color:var(--accent)">파랑</b>으로 켜집니다.</div>
+    <div class="note">💡 사업의 <b>총사업비·공사비·설계비</b> 규모에 따라 적용 절차가 달라집니다. 아래 입력값을 바꾸면 해당 절차 행이 <b style="color:var(--accent)">파랑</b>으로 켜집니다.</div>
     <div class="gz-panel">
       <div class="gz-field"><label>총사업비 <span>억원</span></label><input type="number" id="gz-total" min="0" step="0.1" value="30"></div>
       <div class="gz-field"><label>공사비 <span>억원</span></label><input type="number" id="gz-const" min="0" step="0.1" value="8"></div>
       <div class="gz-field"><label>설계비 <span>억원</span></label><input type="number" id="gz-design" min="0" step="0.01" value="0.7"></div>
-      <div class="gz-field"><label>사업면적 <span>㎡</span></label><input type="number" id="gz-area" min="0" step="10" value="1000"></div>
-      <div class="gz-field"><label>사업유형 <span>구분</span></label><select id="gz-type" style="font:inherit;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);color:var(--ink)"><option value="new">신축</option><option value="ext">증축</option><option value="reb">개축</option><option value="rem">리모델링</option><option value="rep">대수선</option><option value="etc">기타</option></select></div>
       <div class="gz-count">적용 <b id="gz-n">0</b>건</div>
     </div>
     <div class="tbl-wrap" style="display:none">
@@ -1829,7 +1821,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <div class="gz-tile" data-ax="total" data-amt="40"><div class="gz-t-h">투자심사</div><div class="gz-t-b">자체 40억↑ / 중앙 300억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">사전기획</div><div class="gz-t-b">설계비 1억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="design" data-amt="0.5"><div class="gz-t-h">공공건축심의</div><div class="gz-t-b">설계비 5천↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="design" data-amt="1" data-ty="new,ext,reb,rem"><div class="gz-t-h">설계공모</div><div class="gz-t-b">설계비 1억↑ 우선적용</div><span class="gz-t-s"></span></div>
+      <div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">설계공모</div><div class="gz-t-b">설계비 1억↑ 우선적용</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="design" data-amt="2"><div class="gz-t-h">일상감사(용역)</div><div class="gz-t-b">설계·감리·기술용역 2억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="2"><div class="gz-t-h">일상감사(공사)</div><div class="gz-t-b">공사비 2억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="5"><div class="gz-t-h">건설사업관리계획 수립</div><div class="gz-t-b">공사비 5억↑(토목)</div><span class="gz-t-s"></span></div>
@@ -1841,21 +1833,10 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">공사기간 적정성 심의</div><div class="gz-t-b">총공사비 100억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="200"><div class="gz-t-h">감독권한대행 건설사업관리</div><div class="gz-t-b">총공사비 200억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="total" data-amt="300"><div class="gz-t-h">중앙투자심사</div><div class="gz-t-b">총사업비 300억↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk"><div class="gz-t-h">설계의 안전성 검토(DfS)</div><div class="gz-t-b">금액 무관 — 굴착깊이·층수·가설구조물로 판정, 별도 확인 필요</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk"><div class="gz-t-h">안전관리계획 수립</div><div class="gz-t-b">금액 무관 — 시설물 종류·굴착 10m·가설구조물로 판정, 별도 확인 필요</div><span class="gz-t-s"></span></div>
+      <div class="gz-tile" data-ax="const" data-amt="50"><div class="gz-t-h">설계의 안전성 검토(DfS)</div><div class="gz-t-b">공사비 50억↑</div><span class="gz-t-s"></span></div>
+      <div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">안전관리계획 수립</div><div class="gz-t-b">공사비 100억↑(1종시설물)</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="0.2"><div class="gz-t-h">산업안전보건관리비 계상</div><div class="gz-t-b">총공사금액 2천만원↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="const" data-amt="1"><div class="gz-t-h">재해예방 기술지도</div><div class="gz-t-b">공사비 1억↑~120억 미만</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">종합심사낙찰제</div><div class="gz-t-b">추정가격 100억↑(그 미만 적격심사)</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk" data-ty="new,ext,reb,rem"><div class="gz-t-h">교육시설 안전성평가</div><div class="gz-t-b">금액 무관 — 굴착영향거리·통학로 인접 여부로 판정</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk" data-ty="reb,rem,rep,etc"><div class="gz-t-h">석면 해체·제거</div><div class="gz-t-b">개축·리모델링·대수선·기타 — 석면조사 결과로 판정</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk" data-ty="new,ext,reb"><div class="gz-t-h">BF(장애물 없는 생활환경) 인증</div><div class="gz-t-b">신축·증축·개축 — 공공건축물 해당 여부로 판정</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="area" data-amt="500" data-ty="new,ext,reb"><div class="gz-t-h">에너지절약계획서</div><div class="gz-t-b">연면적 500㎡↑ 신축·증축·개축</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="area" data-amt="660"><div class="gz-t-h">건설사업관리·감리(건축)</div><div class="gz-t-b">연면적 660㎡↑ 건축공사</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="area" data-amt="1000" data-ty="new,ext,reb"><div class="gz-t-h">제로에너지건축물(ZEB) 인증</div><div class="gz-t-b">연면적 1,000㎡↑ 공공건축물</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="area" data-amt="3000" data-ty="new,ext,reb"><div class="gz-t-h">녹색건축 인증</div><div class="gz-t-b">연면적 3,000㎡↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="area" data-amt="10000"><div class="gz-t-h">BEMS 설치</div><div class="gz-t-b">연면적 10,000㎡↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk"><div class="gz-t-h">하도급 적정성 심사</div><div class="gz-t-b">금액 무관 — 하도급율·심사점수 85점 미만시 변경요구</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk"><div class="gz-t-h">일요일 휴무제</div><div class="gz-t-b">금액 무관 — 모든 공공공사 현장 적용, 예외는 승인</div><span class="gz-t-s"></span></div>
     </div>
 
     </div>
@@ -4614,13 +4595,11 @@ runRatioCalc();
 (function(){
   const tb=document.getElementById('gz-tbody');
   const nEl=document.getElementById('gz-n');
-  const it=document.getElementById('gz-total'),ic=document.getElementById('gz-const'),id=document.getElementById('gz-design'),ia=document.getElementById('gz-area'),ity=document.getElementById('gz-type');
+  const it=document.getElementById('gz-total'),ic=document.getElementById('gz-const'),id=document.getElementById('gz-design');
   if(!tb||!nEl) return;
-  function val(el){if(!el) return 0;const v=parseFloat(el.value);return isNaN(v)?0:v;}
+  function val(el){const v=parseFloat(el.value);return isNaN(v)?0:v;}
   function render(){
-    const m={total:val(it),const:val(ic),design:val(id),area:val(ia)};
-    const ty=ity?ity.value:'';
-    const tyOk=el=>{const s=el.dataset.ty;return !s||s.split(',').indexOf(ty)>-1;};
+    const m={total:val(it),const:val(ic),design:val(id)};
     tb.querySelectorAll('tr').forEach(tr=>{
       const ax=tr.dataset.ax, amt=parseFloat(tr.dataset.amt);
       tr.classList.toggle('on',(m[ax]||0)>=amt);
@@ -4629,11 +4608,8 @@ runRatioCalc();
     const dash=document.getElementById('gz-dash');
     if(dash) dash.querySelectorAll('.gz-tile').forEach(t=>{
       const on=(m[t.dataset.ax]||0)>=parseFloat(t.dataset.amt);
-      const fit=tyOk(t);
-      t.style.display=fit?'':'none';
-      t.classList.toggle('gz-chk-off',false);
       t.classList.toggle('on',on);
-      if(on&&fit) n++;
+      if(on) n++;
       const b=t.querySelector('.gz-t-b');
       if(b&&!b.dataset.raw) b.dataset.raw=b.innerHTML;
       if(b) b.innerHTML = on
@@ -4642,8 +4618,7 @@ runRatioCalc();
     });
     nEl.textContent=n;
   }
-  [it,ic,id,ia,ity].filter(Boolean).forEach(el=>el.addEventListener('input',render));
-  if(ity) ity.addEventListener('change',render);
+  [it,ic,id].forEach(el=>el.addEventListener('input',render));
   render();
   var mo=new MutationObserver(function(){ render(); });
   mo.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
@@ -5435,7 +5410,7 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 (function(){
   var picks=document.querySelectorAll('.wf-pick'), f=document.getElementById('wfFrame');
   var link=document.getElementById('wfOpenLink');
-  var UNI='https://seum8660.github.io/school_bible/%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0_%ED%86%B5%ED%95%A9%EB%B3%B4%EB%93%9C.html';
+  var UNI='워크플로우_통합보드.html';
   var UKEY={'워크플로우_전주기_대시보드.html':'cycle','워크플로우_설계변경_대시보드.html':'change','워크플로우_공기연장_대시보드.html':'extend','워크플로우_감리방식_대시보드.html':'cm','워크플로우_안전사고_대시보드.html':'safety','워크플로우_인허가_대시보드.html':'permit','워크플로우_엔지니어링평가_대시보드.html':'evalx','워크플로우_하도급심사_대시보드.html':'subcon'};
   function paint(b){
     picks.forEach(function(x){
@@ -5469,7 +5444,7 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
   if(!t) return;
   t.addEventListener('click',function(e){
     e.stopPropagation(); e.preventDefault();
-    window.open('https://seum8660.github.io/school_bible/%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0_%ED%86%B5%ED%95%A9%EB%B3%B4%EB%93%9C.html','_blank','noopener');
+    window.open('워크플로우_통합보드.html','_blank','noopener');
   },true);
 })();
 // __wfDeepLink — ?ov= / ?wf= 딥링크

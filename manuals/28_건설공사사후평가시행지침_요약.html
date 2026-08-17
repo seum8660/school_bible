@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건설공사 사후평가 시행지침 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:14mm 12mm 0 12mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }   /* 잘라내지 않음 — overflow:hidden 금지 */
+
+  .title{ margin:0; font-size:13.1pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:6pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:7.9pt; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.7pt; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.7pt; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:7pt; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6pt; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:6pt; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+.page{ width:210mm; min-height:297mm; padding:14mm 12mm; page-break-after:always; box-sizing:border-box; }
+.page:last-child{ page-break-after:auto; }
+.pageno{ text-align:center; font-size:5.7pt; color:var(--note); margin-top:2mm; }
+@media screen{
+  body{ background:#e5e7eb; }
+  .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 3mm rgba(0,0,0,0.15); }
+}
+</style></head><body>
+<div class="page">
+<h1 class="title">건설공사 사후평가 시행지침 ① — 총칙·평가내용·시기·수행주체</h1>
+<p class="meta">건설공사 사후평가 ｜ 「건설기술진흥법 시행령」 제86조⑥~⑦ ｜ 국토교통부고시 제2025-466호(2025.8.28. 일부개정)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 목적·주요 정의</span>
+    <ul class="list">
+      <li><b class="term">사후평가</b> — 계획단계 예측치와 준공후 실제치(공사비·기간·수요·효과)를 종합분석·평가</li>
+      <li>평가지표 3분야 — 사업수행성과(비용·기간·안전 등), 사업효율(수요·기대효과 비교), 파급효과(지역경제·주민생활 영향)</li>
+      <li>전문관리기관 — 국토교통부장관 지정기관(한국건설기술연구원)</li>
+      <li>공사구분 — 선형공사(도로·철도), 비선형(I)(주택·산업단지), 비선형(II)(공항·항만·댐·상하수도), 기타공사</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 적용대상·제외대상</span>
+    <ul class="list">
+      <li>적용대상 — 발주청 발주 <b class="term">총공사비 300억원 이상</b> 건설공사</li>
+      <li>제외① — 「국가재정법」 제38조②의 건설공사</li>
+      <li>제외② — 기숙사 등 정형화되고 사업효과가 특정지역에 한정된 시설(단독·공동주택, 고등교육시설, 도서관, 의료시설, 연수원 신·증축 등)</li>
+      <li>제외③ — 군사기지 및 군사시설 등 국가안보·보안 관련 국방사업</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 평가시기·절차</span>
+    <div class="formula">사업수행성과평가 — 준공후 <span class="num">120일</span> 이내 / 사업효율·파급효과평가(총공사비 500억원 이상) — 준공후 <span class="num">5년</span> 이내
+      <span class="sub">전문관리기관은 사후평가 대상 공사현황을 매년 2월말까지 발주청에 통보</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>공종별·내역별 분리발주시 — 사업수행성과평가는 분리발주 건별로 각각 실시</li>
+      <li><span class="no">②</span>사업효율·파급효과평가는 분리발주 전체 준공 이후 실시</li>
+      <li><span class="no">③</span>발주청은 기간 내 사후평가서 작성·위원회 자문·공개 등 모든 절차 완료 의무</li>
+      <li><span class="no">④</span>전문관리기관은 건설산업지식정보시스템 등을 통해 공사현황 파악 가능</li>
+    </ol>
+  </div>
+</div>
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 사후평가 내용(제4조)</span>
+    <ul class="list">
+      <li>예상 대비 실제 공사비·공사기간 비교분석, 예측 대비 실제 수요·효과 비교분석</li>
+      <li>문제점 및 개선방안, 주민 호응도·사용자 만족도</li>
+      <li>시행단계별 건설정보 내용·조치계획</li>
+      <li>일괄입찰등(일괄·대안·기술제안입찰) 방식 추진성과, 기타 발주청 인정사항</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 시행단계별 자료수집·관리</span>
+    <ul class="list">
+      <li><b class="term">타당성조사단계</b> — 타당성조사 결과, 수요예측 관련자료</li>
+      <li><b class="term">설계단계</b> — 기본·실시설계 도서, 공사비 증가 조치자료</li>
+      <li><b class="term">시공단계</b> — 준공보고서, 일괄입찰등 추진성과</li>
+      <li>수집자료는 '건설사업정보포털시스템' 내 사후평가시스템에 입력 의무</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>적용대상 공사비</b> 300억원 이상</span>
+      <span class="chip"><b>사업수행성과평가</b> 준공후 120일 이내</span>
+      <span class="chip"><b>사업효율·파급효과평가</b> 준공후 5년 이내(500억 이상)</span>
+      <span class="chip"><b>공사현황 통보</b> 매년 2월말까지</span>
+      <span class="chip"><b>전문관리기관</b> 한국건설기술연구원</span>
+      <span class="chip"><b>고시번호</b> 제2025-466호</span>
+      <span class="chip"><b>시행일</b> 2025.8.28.(발령일)</span>
+    </div>
+  </div>
+</div>
+<div class="row2">
+  <div class="card">
+    <span class="badge">7 · 평가 수행주체</span>
+    <ul class="list">
+      <li>발주청 직접수행 원칙, 전문인력 부족시 외부전문기관에 전부·일부 위탁 가능</li>
+      <li>외부전문기관 — 국가·지자체 출연연구기관, 설계등 업무수행 가능한 건설엔지니어링사업자</li>
+      <li>기타 사후평가 수행경력 있는 기관으로 발주청이 인정하는 기관도 포함</li>
+      <li>사후평가결과보고서에는 제4조 각호 항목의 평가결과 포함 필수</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">8 · 전문관리기관 사전검토</span>
+    <ul class="list">
+      <li>발주청 — 위원회 개최 <b class="term">30일 이전</b>까지 사후평가서를 시스템에 입력해 사전검토 의뢰 가능</li>
+      <li>전문관리기관 — 입력일로부터 <b class="term">20일 이내</b> 검토결과 발주청 통보</li>
+      <li>검토결과 타당하면 발주청은 사후평가서에 반영 후 위원회 개최</li>
+      <li>전문관리기관은 필요시 발주청에 추가자료 요청 가능(발주청은 특별사유 없는 한 제출)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">본 요약은 국토교통부고시 제2025-466호(2025.8.28. 일부개정) 및 「건설공사 사후평가 매뉴얼」(국토교통부·한국건설기술연구원) 기준. 별표·별지 서식은 원문 참조.</p>
+<p class="pageno">1 / 3</p>
+</div>
+<div class="page">
+<h1 class="title">건설공사 사후평가 시행지침 ② — 전문검토·용역대가·평가위원회</h1>
+<p class="meta">건설공사 사후평가 ｜ 제3~5장(제9~12조) ｜ 국토교통부고시 제2025-466호(2025.8.28. 일부개정)</p>
+<div class="rule-navy"></div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">1 · 용역대가 산정 구성·방법</span>
+    <div class="formula">직접인건비 + 직접경비 + 제경비(직접인건비의 <span class="num">110%</span>) + 기술료((인건비+제경비)의 <span class="num">20%</span>) + 부가가치세
+      <span class="sub">외부전문기관에 사후평가업무 전부·일부를 위탁하는 경우에 한해 적용</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>직접인건비 — 소요인력수 × 한국엔지니어링협회 공표 노임단가 × 보정계수(별표1)</li>
+      <li><span class="no">②</span>소요인력 — 시설물 유형별(별표1) 등급별(특급·고급·중급·초급) 기준 활용, 소수점 둘째자리 반올림 합산</li>
+      <li><span class="no">③</span>직접경비 — 인쇄비(조달청·발주청 기준), 자문비·전산처리비 등 실비 반영</li>
+      <li><span class="no">④</span>발주청은 공사특성에 따라 기본업무 추가·생략·변경 및 소요인력수 조정 가능</li>
+    </ol>
+  </div>
+</div>
+<div class="row2">
+  <div class="card">
+    <span class="badge">2 · 사후평가위원회 구성</span>
+    <ul class="list">
+      <li><b class="term">사업수행성과평가</b> — 외부전문가 1인 이상 포함 5인 이상</li>
+      <li><b class="term">사업효율·파급효과평가</b> — 외부전문가 3인 이상 포함 7인 이상</li>
+      <li>전문관리기관 위원추천 — 요청인원의 최대 3배수(15인 미만) 추천 가능</li>
+      <li>해당공사와 이해관계 있는 자(건설엔지니어링·자문·연구·시공기관 등)는 배제</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">3 · 위원회 심의·결과처리</span>
+    <ul class="list">
+      <li>심의사항 — 조사분석 결과, 평가지표·측정방법, 수요예측 차이분석 적정성, 일괄입찰등 평가표 등</li>
+      <li>일괄입찰등 평가표 심의완료일로부터 <b class="term">20일 이내</b> 건설기술심의위원회 주관기관장에 제출</li>
+      <li>일괄입찰등 방식이 목적달성 미흡 의결시 — 향후 유사공사 동일방식 추진 금지</li>
+      <li>자문결과는 특별사유 없는 한 사후평가서에 반영, 의견반영결과·위원별 의견서 작성관리</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge">4 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>사전검토 입력시한</b> 위원회 개최 30일 전</span>
+      <span class="chip"><b>전문관리기관 검토기한</b> 입력일로부터 20일 이내</span>
+      <span class="chip"><b>제경비</b> 직접인건비의 110%</span>
+      <span class="chip"><b>기술료</b> (인건비+제경비)의 20%</span>
+      <span class="chip"><b>위원회 구성(수행성과)</b> 5인 이상(외부 1인↑)</span>
+      <span class="chip"><b>위원회 구성(효율·파급)</b> 7인 이상(외부 3인↑)</span>
+      <span class="chip"><b>위원추천</b> 요청인원 최대 3배수(15인 미만)</span>
+      <span class="chip"><b>평가표 제출</b> 심의완료후 20일 이내</span>
+    </div>
+  </div>
+</div>
+<div class="row2">
+  <div class="card">
+    <span class="badge">5 · 결과입력·공개</span>
+    <ul class="list">
+      <li>발주청 — 위원회 심의결과 반영한 사후평가서를 사후평가시스템에 입력</li>
+      <li>입력완료 후 인터넷 홈페이지 게재 등 일반인 공개 의무</li>
+      <li>사후평가서 = 사후평가결과보고서 + 사후평가표(별지 제1~6호 해당 서식)</li>
+      <li>의견반영결과(별지7호)·위원별 의견서(별지8호)도 함께 관리</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">6 · 결과활용</span>
+    <ul class="list">
+      <li>발주청 — 신규 건설공사 시행전 사후평가시스템에서 유사공사 확인·기본구상에 반영</li>
+      <li>발주청 — 사후평가서 축적·분석해 소요기간·비용 기준 설정 가능</li>
+      <li>국토교통부장관 — 전문관리기관 통해 목적물별·시행과정별 표준 소요기간·투자비용 기준 마련 가능</li>
+      <li>일괄입찰등 심의시 — 평가표·심의결과를 건설기술심의위원회 심의위원에 사전배포</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">7 · 용역대가 소요인력 산정개요(별표1)</span>
+    <div class="formula">공사유형(선형·비선형Ⅰ·비선형Ⅱ·기타) 확인 → 유형별 소요인력 기준표(8개 기본업무×4개 등급) 적용 → 보정계수 반영
+      <span class="sub">보정계수는 유형별로 거리·면적·공사규모·평가분야·통합발주 계수 중 해당하는 것을 적용</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>선형공사(도로·철도) — 거리보정계수(사업연장 10~150㎞ 구간 적용), 평가분야 보정계수(일반도로 1.0·고속국도 0.75·복선철도 0.75·단선철도 0.5)</li>
+      <li><span class="no">②</span>비선형(I)(주택·산업단지) — 면적보정계수(기준면적 주택100만㎡·산업330만㎡, 사업면적 70만~3,000만㎡ 구간)</li>
+      <li><span class="no">③</span>비선형(II)(공항·항만·댐·상하수도) — 면적보정계수(35만~600만㎡ 구간), 평가분야 보정계수(공항 1.3·기타 1.0)</li>
+      <li><span class="no">④</span>기타공사 — 공사규모(총공사비) 보정계수(500억원~2조원 구간), 4개 유형 공통으로 통합발주시 보정계수 1.1 적용</li>
+    </ol>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">사후평가서 서식(별지 제3~8호)은 원문 참조. 사후평가위원회 구성·운영 세부사항은 발주청이 정함.</p>
+<p class="pageno">2 / 3</p>
+</div>
+<div class="page">
+<h1 class="title">건설공사 사후평가 시행지침 ③ — 결과활용·소요인력산정·제도소개</h1>
+<p class="meta">건설공사 사후평가 ｜ 제6~7장·별표1 및 매뉴얼 제도소개 ｜ 국토교통부고시 제2025-466호(2025.8.28. 일부개정)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 재검토기한·경과조치</span>
+    <ul class="list">
+      <li>재검토기한 — <b class="term">2026.1.1. 기준 매 3년</b>(매 3년째 12월 31일까지) 타당성 검토</li>
+      <li>부칙(2025-466호) — 발령일부터 시행(2025.8.28.)</li>
+      <li>일반 경과조치 — 시행당시 종전규정으로 사후평가 시행중이거나 외부전문기관에 의뢰한 경우 종전규정 적용</li>
+      <li>제정 2001.5.10. 이후 이번이 11번째 개정(2006~2025년 순차 개정)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 2025년 개정 특례(분리발주)</span>
+    <ul class="list">
+      <li>분리발주 사업수행성과평가 개정규정 — 이 고시 시행 후 준공되는 분리발주 공사부터 적용</li>
+      <li>시행 전 준공 + 종전규정상 미시행 건 — 분리발주 공사별로 개정규정에 따라 각각 평가 실시</li>
+      <li>이 경우 평가완료 기한 — 준공후 120일 이내 규정에도 불구하고 <b class="term">2025년 12월 31일까지</b> 완료</li>
+      <li>전문관리기관은 요청시 최대 3배수(15인 미만) 위원 추천(변동없음, ②쪽 참조)</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge">3 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>재검토기한</b> 2026.1.1. 기준 매 3년</span>
+      <span class="chip"><b>거리보정 구간</b> 10~150㎞</span>
+      <span class="chip"><b>비선형Ⅰ 면적구간</b> 70만~3,000만㎡</span>
+      <span class="chip"><b>비선형Ⅱ 면적구간</b> 35만~600만㎡</span>
+      <span class="chip"><b>기타공사 규모구간</b> 500억원~2조원</span>
+      <span class="chip"><b>통합발주 보정계수</b> 대부분 1.1</span>
+      <span class="chip"><b>분리발주 특례 완료기한</b> 2025.12.31.까지</span>
+    </div>
+  </div>
+</div>
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 제도 도입배경·연혁</span>
+    <ul class="list">
+      <li>목적 — 공공건설사업 성과평가 후 차후 유사사업에 활용, 사업 효율화 기여</li>
+      <li>2000.3. 제도도입 → 2001.5. 지침제정 → 2012.1. 법적근거 대통령령→법률 격상</li>
+      <li>2014.5. 평가대상 총공사비 500억원→300억원으로 확대</li>
+      <li>2019.11. 전문관리기관 법적근거 마련 → 2021.1. 한국건설기술연구원 사후평가센터 운영 개시</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 총공사비·발주청 정의 보충</span>
+    <ul class="list">
+      <li><b class="term">총공사비</b> — 공사비에 관급자재비 포함, 토지 취득·사용 보상비는 제외한 금액</li>
+      <li><b class="term">공사비</b> — 「예정가격 작성기준」(기획재정부 예규) 근거 공사원가</li>
+      <li>500억원 미만(300억~500억) 대상공사 — <b class="term">사업수행성과평가만</b> 실시, 사업효율·파급효과평가는 제외</li>
+      <li><b class="term">발주청 범위</b> — 국가·지자체 외 공기업·준정부기관, 지방공사·공단, 민자사업시행자 등 대통령령이 정하는 기관 포함</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">6 · 사후평가 예고제 운영</span>
+    <div class="formula">전문관리기관(사후평가센터)이 공공건설사업 정보 사전수집 → 대상·미시행 사업 파악 → 발주청에 <span class="num">매년 2월말까지</span> 통보
+      <span class="sub">발주청의 평가 지연·누락 방지 목적으로 운영되는 사전예고 체계</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>건설산업지식정보시스템 등을 통해 사후평가 대상 공사현황 파악</li>
+      <li><span class="no">②</span>신규 예고사업·미시행 사업을 구분하여 발주청별로 통보</li>
+      <li><span class="no">③</span>2025.9.1. 기준 신규 예고사업 — 300억~500억 미만 34건, 500억 이상 132건(국토부·타부처·지자체 합산)</li>
+      <li><span class="no">④</span>발주청은 예고 통보 이후 지침상 평가시기(120일·5년) 내 절차를 완료해야 함</li>
+    </ol>
+  </div>
+</div>
+<div class="row2">
+  <div class="card">
+    <span class="badge">7 · 전문관리기관(사후평가센터) 주요임무</span>
+    <ul class="list">
+      <li>평가결과의 적정성 확인·점검, 평가 이행여부 확인·점검</li>
+      <li>평가 관련 정보의 축적·분석 및 분석정보 보급</li>
+      <li>평가기준·절차·평가기법 연구, 교육·훈련·기술교류·국제협력</li>
+      <li>사후평가 시행 관련 검토·자문(제9조의2 사전검토 포함)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">8 · 평가주체·용역대가 실무참고</span>
+    <ul class="list">
+      <li>평가주체 원칙 — 발주청 직접수행, 자문은 사후평가위원회(건설기술심의위원회 등)에서 담당</li>
+      <li>용역대가 산정 프로그램 — 건설사업정보포털시스템(calspia.go.kr) 알림마당·통합자료실에서 제공</li>
+      <li>외부전문기관 위탁시에도 대가산정 구성(직접인건비·직접경비·제경비·기술료·부가세)은 동일 적용</li>
+      <li>「엔지니어링사업대가의 기준」 제12조 노임단가(한국엔지니어링협회 공표) 연동</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge">9 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>제도도입</b> 2000.3.28.</span>
+      <span class="chip"><b>지침제정</b> 2001.5.10.</span>
+      <span class="chip"><b>평가대상 확대</b> 2014.5.23.(500억→300억)</span>
+      <span class="chip"><b>사후평가센터 운영</b> 2021.1.1.부터</span>
+      <span class="chip"><b>총공사비 정의</b> 공사비+관급자재비-보상비</span>
+      <span class="chip"><b>500억 미만 평가범위</b> 사업수행성과만</span>
+      <span class="chip"><b>예고사업 통보</b> 매년 2월말까지</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">별표1 세부 소요인력 수치 및 별지 서식은 원문 참조. 매뉴얼 제3~5편(수행 실무·서식작성·시스템등록)은 분량상 별도 문서 제안.</p>
+<p class="pageno">3 / 3</p>
+</div>
+</body></html>

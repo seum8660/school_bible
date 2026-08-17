@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건설엔지니어링 설계용역평가 매뉴얼 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:14mm 12mm 0 12mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }   /* 잘라내지 않음 — overflow:hidden 금지 */
+
+  .title{ margin:0; font-size:13.1pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:6pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:7.9pt; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.7pt; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.7pt; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:7pt; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6pt; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:6pt; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+.page{ width:210mm; min-height:297mm; padding:14mm 12mm; page-break-after:always; box-sizing:border-box; }
+.page:last-child{ page-break-after:auto; }
+.pageno{ text-align:center; font-size:5.7pt; color:var(--note); margin-top:2mm; }
+@media screen{
+  body{ background:#e5e7eb; }
+  .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 3mm rgba(0,0,0,0.15); }
+}
+</style></head><body>
+<div class="page">
+<h1 class="title">건설엔지니어링 설계용역평가 매뉴얼 ① — 총론·평가체계·운영방법</h1>
+<p class="meta">건설엔지니어링 평가 ｜ 「건설기술진흥법」 시행령 제82조제1항제1호, 「건설엔지니어링 및 시공 평가지침」 제7~10조 ｜ 국토교통부 기술혁신과, 2022. 1.(고시 제2021-1198호 기준)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 평가대상 및 용어</span>
+    <ul class="list">
+      <li><b class="term">대상금액</b> — 계약금액(부가가치세 포함)이 국가계약법 제4조제1항 고시금액 이상인 사업</li>
+      <li><b class="term">대상사업</b> — 기본설계용역 / 실시설계용역 / 기본·실시설계 동시시행 사업</li>
+      <li><b class="term">기본설계</b> — 규모·배치·형태·개략공사비 등 비교검토로 최적안 선정, 인허가 설계 포함</li>
+      <li><b class="term">실시설계</b> — 설계도서·도면·시방서·내역서·구조 및 수리계산서 등을 작성</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 평가체계 및 평가횟수</span>
+    <ul class="list">
+      <li>평가체계는 <b class="term">과정평가</b>와 <b class="term">결과평가</b>로 이원화하여 운영함</li>
+      <li>기본설계용역 — <span class="num">1회</span>(과정평가 + 결과평가)</li>
+      <li>실시설계용역 — 과정평가 <span class="num">1회</span>, 결과평가 <span class="num">1회</span>(필요시 결과평가 시 과정 병행)</li>
+      <li>동시시행 사업 — 위 횟수를 준용, 결과평가 시 과정·기본설계 일괄 평가 가능</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 배점비중 및 설계용역평가점수 산정</span>
+    <div class="formula">개별발주 = (실시설계 과정×<span class="num">40%</span>) + (실시설계 결과×<span class="num">60%</span>) ／ 통합발주 = (기본설계×<span class="num">30%</span>) + (실시설계 과정×<span class="num">30%</span>) + (실시설계 결과×<span class="num">40%</span>)
+      <span class="sub">발주청은 설계용역의 특성을 고려하여 ±10% 범위 내에서 배점비중을 조정할 수 있음</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>기본설계·실시설계 각 <b class="term">100점 만점</b>으로 평가하며, 개별발주 시 기본설계는 100%를 단독 적용함</li>
+      <li><span class="no">②</span>통합발주 시 기본설계 30%·실시설계 과정 30%·결과 40%의 비중으로 합산함</li>
+      <li><span class="no">③</span>평가에 쓰이는 각종 수치는 소수점 둘째 자리로 하고 셋째 자리에서 <b class="term">반올림</b>함</li>
+      <li><span class="no">④</span>평가대상 업체는 발주청의 요청을 받은 날부터 <span class="num">20일</span> 이내에 별지 제1호서식 평가자료를 제출하여야 함</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 평가시기(지침 제8조)</span>
+    <ul class="list">
+      <li><b class="term">기본설계</b> — 해당 용역이 완료된 날부터 <span class="num">1개월</span> 이내</li>
+      <li><b class="term">실시설계 과정</b> — 해당 용역의 완료 <span class="num">1개월</span> 이내(결과평가와 통합 실시 가능)</li>
+      <li><b class="term">실시설계 결과</b> — 해당 건설공사를 착공한 날부터 <span class="num">6개월</span> 이내</li>
+      <li><b class="term">동시시행 용역</b> — 각 시기에 평가하거나 실시설계 결과평가 시기에 일괄 평가 가능</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 평가위원회 구성</span>
+    <ul class="list">
+      <li>기본방침 — 자체·외부위원 등 <span class="num">5인 이상</span>으로 구성함</li>
+      <li><b class="term">기본설계·실시설계 과정</b> — 설계감독자 또는 설계용역 지도·감독·지원 담당자 포함</li>
+      <li><b class="term">실시설계 결과</b> — 위 담당자와 공사감독자(또는 공사관리관)를 포함</li>
+      <li>실시설계 결과평가는 발주청 <span class="num">2인</span>·외부위원 <span class="num">3인</span> 이상으로 구성함</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>평가대상</b> 국가계약법 고시금액 이상</span>
+      <span class="chip"><b>기본설계 평가</b> 완료일부터 1개월 이내</span>
+      <span class="chip"><b>실시설계 과정</b> 완료 1개월 이내</span>
+      <span class="chip"><b>실시설계 결과</b> 착공일부터 6개월 이내</span>
+      <span class="chip"><b>평가자료 제출</b> 요청일부터 20일 이내</span>
+      <span class="chip"><b>평가위원회</b> 5인 이상</span>
+      <span class="chip"><b>배점비중 조정</b> ±10% 이내</span>
+      <span class="chip"><b>수치처리</b> 소수점 둘째 자리</span>
+    </div>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">7 · 평가 운영 시 유의사항</span>
+    <ul class="list">
+      <li>발주청이 필요하다고 판단하는 경우 실시설계 <b class="term">과정평가와 결과평가를 통합</b>하여 실시할 수 있음</li>
+      <li>용역 완료 이전에도 과정평가가 가능한 경우 시행할 수 있으나, 실시설계용역이 완료된 날부터 1개월 이내에는 평가가 완료되어야 함</li>
+      <li>평가표의 배점 구성은 지침 별표 1의 대분류 수준 점수 범위 내에서 사업특성을 고려하여 설정하되, 대분류 배점의 합산은 <span class="num">100점</span> 만점으로 하여야 함</li>
+      <li>중분류 평가항목에 대한 하위 세부평가항목의 구성 및 평가방법은 본 매뉴얼의 제시사항을 기초로 함</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">본 매뉴얼은 발주청·관계기관의 업무 편의를 위한 참고사항이며, 평가의 법적 근거와 세부기준은 「건설엔지니어링 및 시공 평가지침」 별표 1을 따름.</p>
+<p class="pageno">1 / 3</p>
+</div>
+<div class="page">
+<h1 class="title">건설엔지니어링 설계용역평가 매뉴얼 ② — 평가항목 구성·배점·세부평가기준</h1>
+<p class="meta">건설엔지니어링 평가 ｜ 「건설엔지니어링 및 시공 평가지침」 제10조 및 별표 1(설계용역평가 기준) ｜ 국토교통부 기술혁신과, 2022. 1.(고시 제2021-1198호 기준)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 평가항목 체계</span>
+    <ul class="list">
+      <li>대분류 <span class="num">5개</span>·중분류 <span class="num">12개</span>로 구성되며 원칙적으로 변경할 수 없음</li>
+      <li><b class="term">A1 과정에 대한 이해도</b> — 조사준비 / 과업과정에 대한 이해도</li>
+      <li><b class="term">A2 효율적인 업무추진</b> — 의사소통 / 사업추진 적정성 / 과업기간 준수 / 상생협력</li>
+      <li><b class="term">A3</b> 참여기술인 적정성, <b class="term">B1</b> 과업이행결과 적정성, <b class="term">B2</b> 과업이행내용 충실성</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 배점 운영범위(합계 100점)</span>
+    <ul class="list">
+      <li><b class="term">기본설계</b> — A1 10~20, A2 30~40, A3 10~20, B1 20~30, B2 10~20</li>
+      <li><b class="term">실시설계 과정</b> — A1 10~30, A2 50~60, A3 20~30(B 항목 미적용)</li>
+      <li><b class="term">실시설계 결과</b> — B1 60~70, B2 30~40(A 항목 미적용)</li>
+      <li>발주청은 대분류 수준 배점 범위 내에서 세부배점을 조정할 수 있음</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 세부평가항목 선정 및 평가 절차</span>
+    <div class="formula">대분류 5개·중분류 12개 고정 → 중분류별 세부평가항목 <span class="num">1개 이상</span> 선택 → 절대평가 후 5단계 가중치 적용
+      <span class="sub">가중치 — 우수 1.0 · 양호 0.9 · 보통 0.8 · 미흡 0.7 · 불량 0.6</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>중분류 단위에 세부평가항목 <b class="term">1개 이상</b>을 선택함을 원칙으로 함</li>
+      <li><span class="no">②</span>발주청은 사업특성에 따라 중분류 정의에 부합하는 세부평가항목을 별도로 정하여 평가할 수 있음</li>
+      <li><span class="no">③</span>중분류 개념을 평가할 수 있는 발주청 내부지침의 유사 항목·방법이 있으면 이를 선택할 수 있음</li>
+      <li><span class="no">④</span>평가는 정성 또는 정량으로 구분하여 <b class="term">절대평가</b>로 하되 지침 별표 1의 세부평가기준을 준수하여야 함</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 과정평가 세부기준(A1~A3)</span>
+    <ul class="list">
+      <li><b class="term">A11</b> — 사전조사·지반조사·관련계획 현황조사의 충실성</li>
+      <li><b class="term">A12</b> — 과업지시내용과 설계내용 부합성, 관련법규·설계기준 준수, (건축)설계공모 구현 노력</li>
+      <li><b class="term">A21~A24</b> — 보고회 운영·업무협의 및 보고일정 준수·협의결과 반영, 인허가·민원·대관 대처, 설계일정 준수 및 과업기간 지체, 하도급 이행과 공종별 협업</li>
+      <li><b class="term">A31~A32</b> — 회의·심의 참여도, 업무처리 노력도, 투입기술인 전문성, 교체 적정성</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 결과평가 세부기준(B1~B2)</span>
+    <ul class="list">
+      <li><b class="term">B11 설계 성과품</b> — 구조·수리계산서, 도면 불일치, 공사시방서, 설계예산서, 수량산출서, 도서간 불일치, 전문분야 성과품 등 <span class="num">7개</span> 항목</li>
+      <li><b class="term">B12</b> — 시공단계에서 확인된 설계오류의 AS 대응 적정성</li>
+      <li><b class="term">B21</b> — 구조형식·공법, 실시설계VE·기술심의 반영, 신기술·신공법, 친환경 설계, 에너지 절감 및 유지관리 대책</li>
+      <li><b class="term">B22</b> — 공정 및 공사기간 산정, 공사비 준수, 설계 안전성(DFS) 확보, 주요 자재·장비 사용성</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>평가항목</b> 대분류 5개·중분류 12개</span>
+      <span class="chip"><b>가중치</b> 우수 1.0~불량 0.6(5단계)</span>
+      <span class="chip"><b>기본설계 A2</b> 30~40점</span>
+      <span class="chip"><b>실시설계 과정 A2</b> 50~60점</span>
+      <span class="chip"><b>실시설계 결과 B1</b> 60~70점</span>
+      <span class="chip"><b>세부항목 선택</b> 중분류당 1개 이상</span>
+      <span class="chip"><b>단계별 합계</b> 각 100점</span>
+    </div>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">7 · 항목 적용 시 유의사항</span>
+    <ul class="list">
+      <li><b class="term">건축분야</b>는 기본설계 단계에서 A12를 '설계공모 구현을 위한 노력' 항목으로 평가할 수 있음</li>
+      <li><b class="term">과업기간 지체여부</b> 평가 시 발주기관이 승인한 지체일정은 제외한 후 평가함</li>
+      <li>질병·퇴사 등의 사유로 발주자의 사전승인을 얻지 못한 <b class="term">참여기술인 교체</b>는 적정한 것으로 평가할 수 있음</li>
+      <li><b class="term">공사비 준수</b> 평가 시 수요기관의 요청, 민원·관계기관 협의 등 기타요인에 따라 변경된 공사비를 반영하여 평가하여야 함</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">기본설계·실시설계 과정평가는 A1~A3, 실시설계 결과평가는 B1~B2 항목만 적용함. 항목별 정의와 세부평가기준의 전문은 지침 별표 1 참조.</p>
+<p class="pageno">2 / 3</p>
+</div>
+<div class="page">
+<h1 class="title">건설엔지니어링 설계용역평가 매뉴얼 ③ — 세부항목별 평가방법·자체평가서</h1>
+<p class="meta">건설엔지니어링 평가 ｜ 매뉴얼 제4장(세부항목별 평가방법)·제5장(자체평가서 양식)·별첨 ｜ 국토교통부 기술혁신과, 2022. 1.(고시 제2021-1198호 기준)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 정성평가 방법</span>
+    <ul class="list">
+      <li><b class="term">척도평가</b> — 검토의 적정성·충실성을 <span class="num">5점 척도</span>로 판정</li>
+      <li><b class="term">체크리스트 평가</b> — 세부내용 체크 수에 따라 '배점 × 체크 수 가중치'로 산정</li>
+      <li>세부평가항목마다 1순위·2순위 권장 평가방법을 제시함</li>
+      <li>평가기관은 제시된 평가기준 중 사업특성에 적합한 항목을 선정하여 반영할 수 있음</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 정량평가 방법</span>
+    <ul class="list">
+      <li><b class="term">계획대비 실적평가</b> — 목적물의 목표 대비 실적률(%)로 평가</li>
+      <li><b class="term">건수평가</b> — 설계사 과실에 따른 재검토·오류 발생 건수로 평가</li>
+      <li>예) 시추조사 실적률 = 시행 시추공수 ÷ 계획 시추공수 × 100</li>
+      <li>발주기관 사유로 지체된 경우는 제외하며, 감독원 사전승인 대체 시추공은 실적으로 인정함</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 계획대비 실적평가 등급 및 주요 산정식</span>
+    <div class="formula"><span class="num">95%</span> 이상 1.0 → <span class="num">85%</span> 이상 0.9 → <span class="num">75%</span> 이상 0.8 → <span class="num">65%</span> 이상 0.7 → <span class="num">65%</span> 미만 0.6
+      <span class="sub">건수평가도 동일하게 1.0~0.6의 5단계 가중치를 적용함</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span><b class="term">설계기간 지체율</b> = 단계별 지체기간(일수) 합계 ÷ 해당 단계까지의 용역기간(일수) × 100</li>
+      <li><span class="no">②</span><b class="term">책임기술인 참석비율</b> = 참여횟수 ÷ 개최횟수 × 100</li>
+      <li><span class="no">③</span><b class="term">공사비 변경비율</b> = (현 단계 공사비 − 기획단계 공사비) ÷ 기획단계 공사비 × 100</li>
+      <li><span class="no">④</span>지체기간은 과업일정표상 납품 예정일과 실제 납품일의 차이로 하되, 일정표가 변경된 경우 변경된 과업일정표를 기준으로 산정함</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 자체평가서 작성</span>
+    <ul class="list">
+      <li>평가대상 업체가 준비하는 자료로, 요청받은 날부터 <span class="num">20일</span> 이내 제출하여야 함</li>
+      <li>발주청은 대분류·중분류를 유지하고 세부항목별 <b class="term">평가대상자 기술내용</b>을 구성하여 배포함</li>
+      <li>항목별로 검토사항·증빙서류·평가대상자 의견을 기재함</li>
+      <li>평가대상자 의견은 사실관계 등 부연설명을 <b class="term">서술문 형식</b>으로 작성함</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 증빙서류 요건</span>
+    <ul class="list">
+      <li>원칙 — 공문, 회의록(참석자 서명 수록), 결과보고서 등 <b class="term">공문서</b>로 제한함</li>
+      <li>과업과정 이해도 — 증빙 분량은 최대 용지 <span class="num">4페이지</span> 미만(A4 한 매는 2페이지로 산정)</li>
+      <li>협의결과 반영 — 개선사항이 포함된 설계도서명·도면번호를 기재한 리스트로 제출함</li>
+      <li>공사비 준수 — 공사비 내역서, 변경내역 및 사유서, 공사비 절감방안으로 제한함</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>척도평가</b> 5점 척도</span>
+      <span class="chip"><b>체크리스트</b> 배점 × 체크 수 가중치</span>
+      <span class="chip"><b>실적률 95% 이상</b> 가중치 1.0</span>
+      <span class="chip"><b>실적률 65% 미만</b> 가중치 0.6</span>
+      <span class="chip"><b>자체평가서 제출</b> 요청일부터 20일 이내</span>
+      <span class="chip"><b>증빙 분량</b> 용지 4페이지 미만</span>
+      <span class="chip"><b>평가방법 제시</b> 1순위·2순위</span>
+    </div>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">7 · 매뉴얼 구성 및 활용</span>
+    <ul class="list">
+      <li>구성 — 제2장 운영방법, 제3장 평가항목 구성 및 정의, 제4장 세부항목별 평가방법, 제5장 자체평가서 양식, 별첨 평가방법 예시</li>
+      <li><b class="term">별첨</b>은 세부평가항목별 정의·권장 평가방법·기타 평가방법과 각 평가기준을 항목 단위로 수록함</li>
+      <li>발주청은 별첨 내용을 참고하여 사업특성에 적합한 세부항목별 평가방법을 선정할 수 있음</li>
+      <li>매뉴얼의 목적은 지침 '제2절 설계용역평가' 개정사항의 세부 운영방법과 예시를 제시하여 이해도를 높이는 데 있음</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">세부항목별 평가방법은 강제사항이 아닌 참고사항이며, 발주청 내부기준으로 평가할 경우 평가기준·방법을 용역수행업체에 사전 통보하여야 함.</p>
+<p class="pageno">3 / 3</p>
+</div>
+</body></html>

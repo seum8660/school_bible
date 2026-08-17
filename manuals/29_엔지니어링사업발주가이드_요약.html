@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>2026 엔지니어링사업 발주가이드 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:14mm 12mm 0 12mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }   /* 잘라내지 않음 — overflow:hidden 금지 */
+
+  .title{ margin:0; font-size:13.1pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:6pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:7.9pt; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.7pt; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.7pt; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:7pt; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6pt; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:6pt; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+.page{ width:210mm; min-height:297mm; padding:14mm 12mm; page-break-after:always; box-sizing:border-box; }
+.page:last-child{ page-break-after:auto; }
+.pageno{ text-align:center; font-size:5.7pt; color:var(--note); margin-top:2mm; }
+@media screen{
+  body{ background:#e5e7eb; }
+  .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 3mm rgba(0,0,0,0.15); }
+}
+</style></head><body>
+<div class="page">
+<h1 class="title">2026 엔지니어링사업 발주가이드 ① — 총론·발주 준비·계약방법 결정</h1>
+<p class="meta">엔지니어링 발주 ｜ 「엔지니어링산업 진흥법」·국가계약법·지방계약법 ｜ 한국엔지니어링협회, 2026. 6.</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 가이드 개요 및 적용범위</span>
+    <ul class="list">
+      <li>국가·지방자치단체·공공기관(엔산법 제2조제7호 <b class="term">발주청</b>)이 추진하는 엔지니어링사업의 발주·관리 지원 목적</li>
+      <li><b class="term">엔지니어링</b>과 <b class="term">기술용역</b>의 정의는 동일함(기술용역육성법이 엔산법으로 전부개정되며 명칭만 변경)</li>
+      <li>2013년부터 매년 발간하며, 관련 법령·유권해석·판례·실무 유의사항을 발주 준비부터 계약 이행까지 정리함</li>
+      <li>2026년 개정 반영 — 엔산법령, 계약법령 및 계약예규, 총사업비 관리지침, 신규 표준품셈·임금실태조사 결과</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 발주 준비 절차와 과업지시서</span>
+    <ul class="list">
+      <li>절차 — 계획수립(기본구상) → 용역의 구분 → 과업지시서 작성 → 계약방법 결정 → 대가 산정</li>
+      <li>엔지니어링사업은 공사와 달리 설계도면·시방서가 아닌 <b class="term">과업지시서</b>에 따라 과업을 수행함</li>
+      <li>구성 — 과업명·목적·범위·기간·내용·보고사항·특이사항·성과품 작성 및 납품</li>
+      <li>누락된 사항은 계약체결 후 <b class="term">과업내용 변경에 따른 계약금액 조정</b> 대상이 되므로 구체적·명확하게 작성함</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 추정가격별 계약방법 결정</span>
+    <div class="formula"><span class="num">2천만원</span> 이하 1인 견적 → <span class="num">1억원</span> 이하 2인 이상 견적(전자공개 수의계약) → 1억원 초과 경쟁입찰·적격심사 → <span class="num">2.3억원</span> 이상 PQ 적용
+      <span class="sub">여성·장애인·사회적기업 등은 1인 견적 5천만원 이하, 2인 이상 견적 1억원 미만까지 가능</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>경쟁형태 — <b class="term">일반경쟁</b>(원칙) / 제한경쟁 / 지명경쟁(입찰대상자 10인 이내) / 수의계약(특수한 사유에 한한 예외)</li>
+      <li><span class="no">②</span>전자공개 수의계약 — 예정가격 대비 <span class="num">88%</span>(추정가격 2천만원 이하는 90%) 이상 견적 제출자 중 최저가부터 순서대로 선정</li>
+      <li><span class="no">③</span>계약체결 형태 — 확정／개산, 총액／단가, 단년도／장기계속／계속비, 단독／공동으로 구분함</li>
+      <li><span class="no">④</span>기술용역을 지역제한으로 발주하는 경우 지방계약은 <span class="num">3.3억원</span> 미만까지 가능함</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 사업별 수행자격</span>
+    <ul class="list">
+      <li><b class="term">全부문</b> — 타당성조사·계획·조사·설계·평가·검사·사업관리·견적 등은 엔지니어링사업자(엔산법 제21조)</li>
+      <li><b class="term">건설</b> — 설계등용역·건설사업관리·품질검사는 건설엔지니어링사업자(건진법 제26조), 계획·조사·설계는 엔지니어링사업자 선등록 필요</li>
+      <li>건축 설계·감리는 건축사사무소, 측량은 측량업자, 정보통신은 용역업자, 전기는 설계·감리업자</li>
+      <li>다른 법령에 따른 업무가 아니거나 관련 법령이 없는 경우에는 엔지니어링사업자가 수행함</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 계약체결 형태</span>
+    <ul class="list">
+      <li><b class="term">확정계약</b> — 계약금액을 확정하여 체결하는 통상적 계약으로, 임의적 사후 정산은 불가함</li>
+      <li><b class="term">개산계약</b> — 미리 가격을 정할 수 없을 때 개략금액으로 체결하고 이행 완료 후 정산함</li>
+      <li>예정가격 중 일부 비목의 금액을 결정할 수 없는 때에는 사후원가검토 조건부 계약으로 체결할 수 있음</li>
+      <li><b class="term">공동계약</b> — 원칙적으로 허용하며, 공동수급체 구성원 수는 국가·지방계약 모두 5인 이하</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>1인 견적</b> 2천만원 이하</span>
+      <span class="chip"><b>2인 이상 견적</b> 1억원 이하</span>
+      <span class="chip"><b>전자공개 수의 견적률</b> 88% 이상</span>
+      <span class="chip"><b>PQ 적용</b> 2.3억원 이상</span>
+      <span class="chip"><b>지명경쟁</b> 대상자 10인 이내</span>
+      <span class="chip"><b>공동수급체</b> 5인 이하</span>
+      <span class="chip"><b>지역제한 기술용역</b> 3.3억원 미만</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">본 가이드는 발주 실무 참고자료이며, 관련 법령·예규는 수시로 변동될 수 있으므로 발주 시점의 최신 규정을 확인하여야 함.</p>
+<p class="pageno">1 / 5</p>
+</div>
+<div class="page">
+<h1 class="title">2026 엔지니어링사업 발주가이드 ② — 엔지니어링사업 대가 산정</h1>
+<p class="meta">엔지니어링 발주 ｜ 「엔지니어링산업 진흥법」 제31조제2항, 「엔지니어링사업대가의 기준」 제7~17조 ｜ 한국엔지니어링협회, 2026. 6.</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 대가 산정 원칙</span>
+    <ul class="list">
+      <li>발주청은 「엔지니어링사업 대가의 기준」(산업부고시)에 따라 대가(기초금액)를 산출함</li>
+      <li><b class="term">실비정액가산방식</b>이 원칙이며, 사업 특성상 부적절하다고 판단되는 경우 공사비요율방식을 적용할 수 있음</li>
+      <li>구매·조달·노하우 전수 등 대가 산출이 불가능한 경우에는 계약당사자 간 합의로 정함</li>
+      <li>엔산법 개정(2025.12.2. 공포)으로 <span class="num">2026. 6. 3.</span>부터 발주청은 대가 산출내역을 입찰참가자에게 공개하여야 함</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 직접인건비 및 직접경비</span>
+    <ul class="list">
+      <li><b class="term">직접인건비</b> — 투입인원수 × 기술등급별 노임단가, 투입인원수는 인가된 표준품셈을 우선 적용함</li>
+      <li>노임단가는 한국엔지니어링협회가 조사·공표한 <b class="term">임금실태조사보고서</b>를 적용(매년 1월 1일 공표)</li>
+      <li><b class="term">직접경비</b> — 여비·특수자료비·인쇄비·측량비·시험비·조사비·모형제작비·자문비·현장운영경비 등 실소요 비용 일체</li>
+      <li>산정이 어려운 경우 국내 출장여비는 비상주 직접인건비의 <span class="num">10%</span>, 주재비는 상주 직접인건비의 <span class="num">30%</span>로 할 수 있음</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 대가 산정식</span>
+    <div class="formula">실비정액가산방식 = 직접인건비 + 직접경비 + 제경비(직접인건비의 <span class="num">110~120%</span>) + 기술료((직접인건비+제경비)의 <span class="num">20~40%</span>) + 부가가치세
+      <span class="sub">공사비요율방식 = 기본업무비용(공사비 × 요율) + 추가업무비용 + 부가가치세</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span><b class="term">제경비</b> — 기획·경영·총무 등 행정운영 간접경비이며, 관련 법령에 의한 손해배상보험료·공제료는 별도로 계산함</li>
+      <li><span class="no">②</span><b class="term">기술료</b> — 조사연구비·기술개발비·기술훈련비 및 이윤을 포함하며, 제경비 중 손해배상보험료는 제외하고 산정함</li>
+      <li><span class="no">③</span>공사비요율은 <b class="term">건설·통신·산업플랜트</b> 부문별로 기본설계·실시설계·공사감리(비상주) 업무를 구분하여 적용함</li>
+      <li><span class="no">④</span>요율은 기본업무 비용만 포함하므로 측량·지반조사 등 <b class="term">추가업무</b>가 필요한 경우 별도 비용을 산정하여 포함시켜야 함</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 공사비요율방식 적용 제한</span>
+    <ul class="list">
+      <li>최근 <span class="num">3년</span>간 발주청 관할구역 및 인접 시·군·구에서 유사사업에 실비정액가산방식을 적용한 사례가 있는 경우 적용 불가</li>
+      <li>엔지니어링사업자가 견적서 등을 제공하여 거래실례가격을 추산할 수 있는 경우 적용 불가</li>
+      <li>여러 부문의 기술이 복합된 엔지니어링사업인 경우 적용 불가</li>
+      <li>추가업무 — 발주청의 요구, 사업자의 책임에 귀속되지 않는 사유, 발주청 승인을 얻어 수행한 업무에 대해 별도 대가를 지급함</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 업무 동시발주 시 가산요율</span>
+    <ul class="list">
+      <li>기본설계·실시설계 동시발주 — 실시설계요율의 건설 <span class="num">1.45배</span>, 통신 1.27배, 산업플랜트 1.31배</li>
+      <li>타당성조사·기본설계 동시발주 — 기본설계요율의 건설 <span class="num">1.35배</span>, 통신 1.18배, 산업플랜트 1.22배</li>
+      <li>기본설계를 시행하지 않은 실시설계 발주 — 실시설계요율의 건설 1.35배, 통신 1.18배, 산업플랜트 1.22배</li>
+      <li>타당성조사를 시행하지 않은 기본설계 발주 — 기본설계요율의 건설 <span class="num">1.24배</span>, 통신 1.09배, 산업플랜트 1.12배</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 판례 및 실무 유의사항</span>
+    <ul class="list">
+      <li>발주청이 표준품셈이 정한 기준에서 <b class="term">예측 가능한 합리적 조정 범위를 벗어난 방식</b>으로 기초예비가격을 산정한 경우, 그 사정을 입찰공고 등으로 미리 고지할 의무가 있음</li>
+      <li>고지의무를 위반하여 낙찰자가 계약금액을 초과하는 비용을 지출한 경우 국가는 상당인과관계 있는 손해를 배상할 책임이 있음(대법원 2013다23617)</li>
+      <li>표준품셈은 엔지니어링종합정보시스템(etis.or.kr) 또는 엔지니어링대가산정서비스(engcost.or.kr)에서 확인하며, 온라인 자동산출 서비스가 제공됨</li>
+      <li>예산 요구 시에는 기획재정부·행정안전부의 예산편성 지침상 설계비(기본조사설계비·실시설계비) 및 감리비 항목을 참조함</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">7 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>제경비</b> 직접인건비 110~120%</span>
+      <span class="chip"><b>기술료</b> (인건비+제경비) 20~40%</span>
+      <span class="chip"><b>국내 출장여비</b> 비상주 인건비 10%</span>
+      <span class="chip"><b>주재비</b> 상주 인건비 30%</span>
+      <span class="chip"><b>기본·실시 동시발주</b> 건설 1.45배</span>
+      <span class="chip"><b>노임단가 공표</b> 매년 1월 1일</span>
+      <span class="chip"><b>대가 산출내역 공개</b> 2026.6.3. 시행</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">공사비요율 세부요율은 「엔지니어링사업대가의 기준」 [별표1]~[별표3], 추가업무 종류 및 비용산출 방법은 같은 기준 제17조 참조.</p>
+<p class="pageno">2 / 5</p>
+</div>
+<div class="page">
+<h1 class="title">2026 엔지니어링사업 발주가이드 ③ — 입찰 단계</h1>
+<p class="meta">엔지니어링 발주 ｜ 엔산법 제28조·시행령 제36·37조, 건진법 제35조·시행규칙 제28조 및 별표2~4 ｜ 한국엔지니어링협회, 2026. 6.</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 경쟁입찰 참가자격</span>
+    <ul class="list">
+      <li>다른 법령에 따른 허가·인가·면허·등록·신고 또는 자격요건에 적합하여야 함</li>
+      <li>부정당업자로 제한을 받지 않은 자 또는 <b class="term">입찰참가등록마감일 전일</b>까지 제한기간이 만료된 자</li>
+      <li>소득세법·법인세법·부가가치세법에 따라 사업자등록증을 교부받거나 고유번호를 부여받은 자</li>
+      <li>지방계약 수의계약·적격심사 시에는 한국엔지니어링협회가 발급하는 <b class="term">기술자보유증명서</b>를 제출함</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 공동계약 여부 결정</span>
+    <ul class="list">
+      <li>2인 이상의 수급인이 결성한 공동수급체와 체결하는 계약으로, 부적절한 경우를 제외하고 원칙적으로 허용함</li>
+      <li>방식 — <b class="term">공동이행·분담이행·혼합방식</b> 중 선택하여 입찰공고에 명시함</li>
+      <li>대표자는 자율선임하되, 요구 자격자 또는 출자비율·분담 중요도가 높은 자를 우선 선임함</li>
+      <li>수 개의 전문분야가 요구되는 <b class="term">복합사업</b>에서 공동 참가를 원하는 경우 원칙적으로 허용하여야 함</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · PQ(사업수행능력 사전심사) 업무처리 절차</span>
+    <div class="formula">입찰공고 → 사업수행능력평가서(PQ) 제출 → PQ심사·적격자 선정 → 심사결과 통보 → 이의신청 → 입찰 → 적격심사 → 낙찰자 선정 → 계약체결
+      <span class="sub">타 법령에 사업수행능력 평가기준이 있으면 해당 법령을 적용하고, 기준이 없는 원자력·해양수산·정보통신 부문 등은 엔산법 PQ기준을 적용함</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>적용대상 — 추정가격 <span class="num">2.3억원</span> 이상 엔지니어링사업, 2단계 경쟁입찰 사업, 과당경쟁으로 성과품 부실 우려가 있는 사업</li>
+      <li><span class="no">②</span>제외대상 — 설계·시공 일괄발주로 설계만 분리 평가가 곤란한 사업, 수의계약 가능 사업, 건진법 등 다른 법률로 사업수행능력을 평가하는 사업</li>
+      <li><span class="no">③</span>평가항목 — 참여기술자 능력(실적·전문화 정도·업무 여유도), 업체능력 및 신용도, 참여의향서(과업이해도·문제점 분석·창의성)</li>
+      <li><span class="no">④</span>PQ심사는 입찰공고와 <b class="term">별도로 공고</b>하거나, 입찰공고 시 사업수행능력평가 공고일을 지정하여 시행할 수 있음</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 건설엔지니어링 규모별 평가기준</span>
+    <ul class="list">
+      <li>추정가격 2.3억~10억원 — <b class="term">PQ</b>만 적용</li>
+      <li>기본계획·기본설계 10억~30억원, 실시설계 15억~40억원 — PQ와 <b class="term">기술인평가서(SOQ)</b></li>
+      <li>기본계획·기본설계 <span class="num">30억원</span> 이상, 실시설계 <span class="num">40억원</span> 이상 — PQ와 <b class="term">기술제안서(TP)</b></li>
+      <li>건설사업관리는 20억원 이상, 정밀안전점검·정밀안전진단은 2억원 이상에서 기술인평가서 또는 기술제안서를 평가함</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 입찰공고</span>
+    <ul class="list">
+      <li>일반 — 입찰서 제출마감일 전일부터 <span class="num">7일</span>, 긴급을 요하는 경우 및 재공고입찰은 <span class="num">5일</span> 전까지</li>
+      <li>협상에 의한 계약(국가) — <span class="num">40일</span>, 긴급·재공고·추정가격 고시금액 미만은 10일 전까지</li>
+      <li>협상에 의한 계약(지방) — 1억원 미만 10일, 1억~10억원 20일, 10억원 이상 40일 전까지</li>
+      <li>공고 내용에 <b class="term">엔지니어링사업대가 산정기준을 적용하여 산출한 가격 내역</b>을 포함하여야 함</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>PQ 적용</b> 2.3억원 이상</span>
+      <span class="chip"><b>SOQ 기본설계</b> 10억~30억원</span>
+      <span class="chip"><b>SOQ 실시설계</b> 15억~40억원</span>
+      <span class="chip"><b>TP 기본설계</b> 30억원 이상</span>
+      <span class="chip"><b>TP 실시설계</b> 40억원 이상</span>
+      <span class="chip"><b>일반 입찰공고</b> 7일 전</span>
+      <span class="chip"><b>긴급·재공고</b> 5일 전</span>
+      <span class="chip"><b>협상계약(국가)</b> 40일 전</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">공고일은 입찰공고 게시일과 입찰서 제출마감일을 제외한 기간으로 산정함(예: 게시일 1일 + 공고기간 7일 + 제출마감일 1일 = 9일).</p>
+<p class="pageno">3 / 5</p>
+</div>
+<div class="page">
+<h1 class="title">2026 엔지니어링사업 발주가이드 ④ — 낙찰자 결정 단계</h1>
+<p class="meta">엔지니어링 발주 ｜ 국가계약법 제10조·시행령 제42~43조의3, 지방계약법 제13조·시행령 제42~43조 ｜ 한국엔지니어링협회, 2026. 6.</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 낙찰자 결정 방법</span>
+    <ul class="list">
+      <li><b class="term">적격심사</b> — 예정가격 이하 최저가격 입찰자 순으로 계약이행능력을 심사하여 결정함</li>
+      <li><b class="term">종합심사낙찰제</b> — 입찰가격·용역수행능력·사회적 책임을 종합 심사하여 합산점수 최고자를 결정(국가계약법만 해당)</li>
+      <li><b class="term">협상에 의한 계약</b> — 다수 사업자의 제안서를 평가한 후 협상절차를 통해 가장 유리한 자와 계약함</li>
+      <li>엔지니어링사업은 지식기반사업이므로 협상에 의한 계약을 우선 적용할 수 있으나, 건설엔지니어링은 고난도·고기술을 요하는 경우에 한함</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 적격심사 낙찰제</span>
+    <ul class="list">
+      <li>대상 — 추정가격 <span class="num">1억원</span> 초과 엔지니어링사업(1억원 이하는 수의계약 체결 가능)</li>
+      <li>절차 — 낙찰하한율 이상 가격입찰 → 선순위자부터 이행능력평가 → 종합평점이 적격통과점수 이상이면 낙찰자로 결정</li>
+      <li>적격통과점수 — 일반적으로 10억원 미만 <span class="num">95점</span>, 10억원 이상 <span class="num">92점</span>(발주청·계약규모에 따라 상이)</li>
+      <li>선순위자가 통과하면 차순위자 심사는 불요하며, 기준점수에 미달하는 경우 차순위자를 심사함</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 종합심사 낙찰제 적용대상 및 배점</span>
+    <div class="formula">기술능력 평가 <span class="num">80~95점</span> + 입찰가격 평가 <span class="num">5~20점</span> = 합계 <span class="num">100점</span> → 합산점수 최고자를 낙찰자로 결정
+      <span class="sub">지방계약법의 종합평가 낙찰제는 현재 공사 분야만 시행 중임</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span><b class="term">기본설계용역</b> — 건진법 시행령 제69조 건설공사기본계획 또는 제71조 기본설계 용역으로서 추정가격 <span class="num">30억원</span> 이상</li>
+      <li><span class="no">②</span><b class="term">실시설계용역</b> — 건진법 시행령 제73조 실시설계 용역으로서 추정가격 <span class="num">40억원</span> 이상</li>
+      <li><span class="no">③</span><b class="term">건설사업관리</b> — 건진법 제39조제2항에 따른 건설사업관리 용역으로서 추정가격 <span class="num">50억원</span> 이상</li>
+      <li><span class="no">④</span>건진법에 따른 기본계획·기본설계·실시설계·건설사업관리 용역의 세부 평가기준은 국토교통부장관이 별도로 정할 수 있음</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 협상에 의한 계약</span>
+    <ul class="list">
+      <li>사유 — 계약이행의 전문성·기술성·창의성·긴급성, 공공시설물의 안정성 등이 필요하다고 인정되는 경우</li>
+      <li>절차 — 사전규격 공개(추정가격 <span class="num">5천만원</span> 이상) → 제안서평가위원회 구성 → 입찰공고 → 가격투찰·제안서 제출 → 평가 → 협상적격자 선정·협상 → 계약체결</li>
+      <li>평가 — 정량평가 및 가격평가는 사업부서가, <b class="term">정성평가</b>는 제안서평가위원회가 수행함</li>
+      <li>계약 체결 — 낙찰자 결정 통보일부터 <span class="num">10일</span> 이내</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 그 밖의 낙찰자 결정 방식</span>
+    <ul class="list">
+      <li><b class="term">2단계 경쟁입찰</b> — 기술(규격)입찰과 가격입찰을 2단계로 거쳐 결정하며, 각 단계마다 2인 이상의 유효한 입찰이 있어야 성립함</li>
+      <li><b class="term">규격·가격 분리 동시입찰</b> — 동시에 입찰에 부친 후 기술적격자로 확정된 자의 가격입찰을 개찰하여 결정함</li>
+      <li><b class="term">희망수량 경쟁입찰</b> — 최저가 입찰자부터 순차적으로 수요량에 달할 때까지 낙찰자로 결정함</li>
+      <li><b class="term">설계공모</b> — 정량평가(Pass or Fail) 후 심사위원회 정성평가를 거쳐 종합점수 <span class="num">70점</span> 이상 중 최고점자와 수의계약</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 제안서 평가위원 선정 방식</span>
+    <ul class="list">
+      <li>평가위원 예비명부는 최종 평가위원 수의 <b class="term">3배수</b>로 구성하며, 위원 실명은 공개하지 않고 고유번호만 부여함</li>
+      <li>입찰참가자는 제안서 제출 시 최종 평가위원 수만큼 평가위원을 추첨함</li>
+      <li>각 위원별 <b class="term">다빈도 수</b>에 따라 위원 순위를 정하고 상위 순위자를 평가위원으로 선정함</li>
+      <li>동일한 수로 추첨된 위원이 있는 경우 나이를 비교하여 <b class="term">연장자</b>를 더 높은 순위자로 선정함</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">7 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>적격심사 대상</b> 1억원 초과</span>
+      <span class="chip"><b>적격통과점수</b> 10억 미만 95점·이상 92점</span>
+      <span class="chip"><b>종합심사 기본설계</b> 30억원 이상</span>
+      <span class="chip"><b>종합심사 실시설계</b> 40억원 이상</span>
+      <span class="chip"><b>종합심사 건설사업관리</b> 50억원 이상</span>
+      <span class="chip"><b>기술능력 : 입찰가격</b> 80~95 : 5~20</span>
+      <span class="chip"><b>사전규격 공개</b> 5천만원 이상</span>
+      <span class="chip"><b>협상계약 체결</b> 통보일부터 10일 이내</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">설계공모는 지방계약법 시행령 제42조의4에 따라 상징성·기념성·예술성 등 창의성이 요구되는 설계용역에 적용함.</p>
+<p class="pageno">4 / 5</p>
+</div>
+<div class="page">
+<h1 class="title">2026 엔지니어링사업 발주가이드 ⑤ — 계약 이행 단계</h1>
+<p class="meta">엔지니어링 발주 ｜ 국가계약법 제19조·시행령 제64조, 지방계약법 제22조·시행령 제73조 등 ｜ 한국엔지니어링협회, 2026. 6.</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 계약 체결 및 계약문서</span>
+    <ul class="list">
+      <li>계약서에 계약의 목적·금액·이행기간·계약보증금·하자보수보증금·지체상금 등을 명백히 기재함</li>
+      <li><b class="term">계약문서</b> — 계약서, 입찰유의서, 용역계약일반조건, 용역계약특수조건, 과업내용서 및 산출내역서로 구성되며 상호보완의 효력이 있음</li>
+      <li>산출내역서는 계약금액 조정 및 기성부분 대가 지급 시 적용할 기준으로서 계약문서의 효력을 가짐</li>
+      <li>특수조건이 계약상대자의 계약상 이익을 <b class="term">부당하게 제한</b>하는 경우 그 내용의 효력은 인정되지 않음</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 계약이행보증제도</span>
+    <ul class="list">
+      <li><b class="term">손해배상보험·공제</b> — 타당성조사·설계 등은 시공 착공일부터 완공 후 1년까지, 감리·사업관리 등은 착수일부터 완료 후 1년까지 가입</li>
+      <li>보험가입금액은 계약금액에서 부가가치세와 손해보험료를 제외한 금액으로 함</li>
+      <li><b class="term">하자보증</b> — 계약 성질상 필요한 경우 계약금액의 2%를 준공 시 제출하며, 건설사업관리는 공종별로 상이함</li>
+      <li><b class="term">선금보증</b> — 선금액과 약정이자 상당액을 합한 금액을 선금 지급 시 제출함</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 계약금액 조정</span>
+    <div class="formula">계약 체결일부터 <span class="num">90일</span> 이상 경과 + 입찰일 기준 대가 대비 <span class="num">3%</span> 이상 증감 → 물가변동으로 인한 계약금액 조정(의무) → 청구일부터 <span class="num">30일</span> 이내 변경계약
+      <span class="sub">천재지변 또는 원자재 가격 급등으로 계약 이행이 곤란한 경우에는 90일 이내에도 조정 가능</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>조정 유형 — 물가변동, 과업내용 변경, 그 밖의 계약내용 변경·계약기간 연장·휴일 및 야간작업 지시에 따른 실비 범위 내 조정</li>
+      <li><span class="no">②</span>조정요건이 충족되면 증액·감액을 불문하고 조정이 <b class="term">의무</b>이며, 이를 부당하게 제한하는 특약은 계약법령에 위배됨</li>
+      <li><span class="no">③</span><b class="term">품목조정률</b>과 <b class="term">지수조정률</b>은 동시에 적용할 수 없으며, 계약상대자가 원하는 경우 외에는 품목조정률을 적용하도록 계약서에 명시함</li>
+      <li><span class="no">④</span>2차 이후의 조정은 <b class="term">직전 조정기준일부터 90일</b>이 경과하여야 하며, 조정기준일 이후 이행되는 부분의 대가에 적용함</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 계약의 해제·해지 및 지체상금</span>
+    <ul class="list">
+      <li>지연배상금 = 계약금액 × 지체상금률 × 지체일수, 계약금액의 <span class="num">30%</span>를 초과할 수 없음</li>
+      <li>지체상금률 — 국가계약 <span class="num">1,000분의 1.25</span>, 지방계약 <span class="num">1,000분의 1.3</span></li>
+      <li>지체상금이 계약보증금 상당액(계약금액의 10% 이상)에 달하고 이행가능성이 없음이 명백하면 <b class="term">의무적으로 해제·해지</b>함</li>
+      <li>계약상대자는 과업내용 변경에 따른 조정으로 계약금액이 <span class="num">40%</span> 이상 감소된 경우 해제·해지할 수 있음</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 하도급 및 부정당업자 제재</span>
+    <ul class="list">
+      <li>엔산법에 하도급 관련 규정은 없으나, 발주관서 승인 없이 하도급하거나 승인 조건을 변경하면 <b class="term">부정당업자</b>로 입찰참가자격을 제한함</li>
+      <li>엔지니어링사업은 원칙적으로 하도급이 불가하며, 발주기관 승인이 없는 실적은 지방계약법령상 실적으로 인정되지 않음</li>
+      <li>제한기간 — 사유에 따라 <span class="num">1개월 이상 2년 이하</span></li>
+      <li>가중은 국가계약 1/2 범위·지방계약 2배까지(최대 2년), 감경은 국가계약 1/2 범위·지방계약 6개월 범위(최소 1개월)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 지체일수 산정 시 유의사항</span>
+    <ul class="list">
+      <li>불산입 — 용역수행기간 안에 완료보고서를 제출한 경우의 검사소요 기간, 불가항력 사유로 인한 기간</li>
+      <li>불산입 — 발주기관 책임으로 착수가 지연·중단된 기간, 보증기관이 보증이행업체를 지정하여 이행한 기간</li>
+      <li>산입 — 기간 내 제출하였으나 시정조치가 있는 경우 시정조치일부터 최종 검사 합격일까지의 기간</li>
+      <li>계약금액은 설계변경·물가변동이 있었던 경우 <b class="term">변경계약금액</b>을 기준으로 하며, 인수·사용 중인 기성부분은 제외할 수 있음</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">7 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>물가변동 조정요건</b> 90일 경과·3% 이상</span>
+      <span class="chip"><b>조정기한</b> 청구일부터 30일 이내</span>
+      <span class="chip"><b>지체상금률</b> 국가 1.25/1,000</span>
+      <span class="chip"><b>지체상금률</b> 지방 1.3/1,000</span>
+      <span class="chip"><b>지연배상금 상한</b> 계약금액 30%</span>
+      <span class="chip"><b>계약보증금</b> 계약금액 10% 이상</span>
+      <span class="chip"><b>상대자 해지사유</b> 계약금액 40% 이상 감소</span>
+      <span class="chip"><b>부정당 제한기간</b> 1개월~2년</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">부록에는 계약관리 단계별 요약, 과업지시서 예시, 전문분야별 업무범위, 해외 입·낙찰 제도, 대가의 기준 및 사업자 선정기준이 수록되어 있음.</p>
+<p class="pageno">5 / 5</p>
+</div>
+</body></html>

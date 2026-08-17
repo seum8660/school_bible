@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건설현장 사업장 건강보험 실무안내 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:14mm 12mm 0 12mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }   /* 잘라내지 않음 — overflow:hidden 금지 */
+
+  .title{ margin:0; font-size:13.1pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:6pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:7.9pt; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.7pt; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.7pt; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:7pt; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6pt; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:6pt; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+.page{ width:210mm; min-height:297mm; padding:14mm 12mm; page-break-after:always; box-sizing:border-box; }
+.page:last-child{ page-break-after:auto; }
+.pageno{ text-align:center; font-size:5.7pt; color:var(--note); margin-top:2mm; }
+@media screen{
+  body{ background:#e5e7eb; }
+  .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 3mm rgba(0,0,0,0.15); }
+}
+</style></head><body>
+<div class="page">
+<h1 class="title">건설현장 사업장 건강보험 실무안내 ① — 사업장 적용·자격 개요</h1>
+<p class="meta">건설안전관리 ｜ 국토교통부고시 제2021-905호 등 ｜ 국민건강보험공단(2026.1.)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 관련근거·적용대상</span>
+    <ul class="list">
+      <li>보험정책과-3614호(2018.8.1.) — 건설일용근로자 직장가입 적용기준 변경 통보</li>
+      <li>사후정산제도 적용 사업장 6개 법률 — 건설산업기본법·전기공사업법·정보통신공사업법·소방시설공사업법·국가유산수리법·산림자원법</li>
+      <li>각 법에 따른 건설·전기·정보통신·소방시설·국가유산수리·산림사업 공사</li>
+      <li>본사 및 일반근로자와 구분해 건설일용직만 사업장 분리 적용</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 동일현장·분리적용 판단</span>
+    <ul class="list">
+      <li>원수급인·하수급인 사업장별 건설현장 단위로 분리 적용</li>
+      <li>동일현장 판단 — 계약서상 공사 장소·규모·인접성 종합고려</li>
+      <li>동일 발주처·건설업체 다수계약시 공사기간 1일 이상 중복 → 분리적용 불가(기간연장)</li>
+      <li>중복없이 공백 후 재연장으로 중복 발생시 — 선적용 현장 연장신고 후 별도현장 취소신고</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 사업장 적용 요건 및 절차</span>
+    <div class="formula">사후정산 적용 사업장 대상 → 공사기간 <span class="num">1개월 이상</span> → 요건 미충족 근로자 없어도 신고 의무
+      <span class="sub">최초 공사기간이 1개월 미만이라도 연장·갱신으로 1개월 이상 되면 적용대상 포함</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>공사기간 1개월 이상·사후정산 가능시 공사시작일 이후 공단에 사업장 적용 신고 필수</li>
+      <li><span class="no">②</span>공사기간 종료 후에는 적용신고 불가 — 반드시 공사기간 내 완료</li>
+      <li><span class="no">③</span>건설업자 아닌 시공참여자(현장대리인 등)는 건설현장 사업장을 별도 성립할 수 없음</li>
+      <li><span class="no">④</span>건설공사현장 업무는 근로자파견 사업 금지(「파견근로자보호법」 제5조③1호)</li>
+    </ol>
+  </div>
+</div>
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 사업장 신고방법</span>
+    <ul class="list">
+      <li>제출서류 — 사업장(기관)적용신고서, 보험료 일괄경정·전자고지 신청서, 공사계약서</li>
+      <li>제출지사 — 건설현장 소재지 관할지사</li>
+      <li>신고방법 — 방문·우편·FAX·인터넷(4대사회보험 포털)</li>
+      <li>사업장 적용 이후 EDI 가입 필수 — 적용신고·공사기간변경 외 모든 업무는 EDI로 신고</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 사업장 등록 요령</span>
+    <ul class="list">
+      <li>사업장명칭 — 회사명+(일용)+현장명(예: ㈜○○건설 ○○동공사현장)</li>
+      <li>사업장주소 — 공사현장 주소(본점 주소지 송달지 신청 가능)</li>
+      <li>사업자(법인)등록번호·사용자 — 본점 사업장 기준 등록</li>
+      <li>본점 미가입시 본점 우선 등록 후 건설현장 분리등록(개인사업장 포함)</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>사후정산 적용 근거법률</b> 6개</span>
+      <span class="chip"><b>사업장 분리 기준</b> 건설현장 단위</span>
+      <span class="chip"><b>적용요건</b> 공사기간 1개월 이상</span>
+      <span class="chip"><b>고시 근거</b> 국토교통부고시 제2021-905호</span>
+      <span class="chip"><b>고시 시행일</b> 2021.7.1.</span>
+      <span class="chip"><b>EDI 가입</b> 사업장 적용 후 필수</span>
+      <span class="chip"><b>적용신고</b> 공사기간 내 완료 필수</span>
+    </div>
+  </div>
+</div>
+<div class="row2">
+  <div class="card">
+    <span class="badge">7 · 가입대상</span>
+    <ul class="list">
+      <li>건설공사 현장에서 <b class="term">1개월 이상</b> 근로 + <b class="term">월 8일 이상</b> 근로한 사람</li>
+      <li>1개월 이상 — 최초근로일부터 1개월되는 날까지 또는 그 이후까지 근로</li>
+      <li>8일 이상 — 1개월내 8일 이상 또는 연속근로시 익월 초일~말일 8일 이상</li>
+      <li>제외자 — 기초생활수급자, 의료보호대상 중 배제신청자, 불법체류자(강제퇴거명령자 포함)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">8 · 최초근로일·재취득 판단</span>
+    <ul class="list">
+      <li>최초근로일 — 1개월(매월초~말일) 이상 근로를 전혀 제공하지 않다가 다시 근로 제공하는 날</li>
+      <li>재취득일 — 위 최초근로일 판단기준에 따라 (재)결정</li>
+      <li>월중 취득자가 익월 8일 미만이라도 다다음달 8일 이상 근무시 자격 유지</li>
+      <li>1개월 미만 취득기간이라 하여 취득 대상 아니라고 결정하지 않도록 유의</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">본 요약은 국민건강보험공단 「건설현장 사업장 건강보험 실무안내」(2026.1.) 기준. 세부 서식·절차는 관할지사 문의 요함.</p>
+<p class="pageno">1 / 3</p>
+</div>
+<div class="page">
+<h1 class="title">건설현장 사업장 건강보험 실무안내 ② — 자격 판단·보험료 부과 기준</h1>
+<p class="meta">건설안전관리 ｜ 건설 일용근로자 자격·보수 판단기준 ｜ 국민건강보험공단(2026.1.)</p>
+<div class="rule-navy"></div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">1 · 자격 취득일·상실일 결정절차</span>
+    <div class="formula">최초근로일 속한 달 <span class="num">1개월내 8일 이상</span> → 취득일=최초근로일 / 미충족시 <span class="num">익월 8일 이상</span> → 취득일=익월 초일
+      <span class="sub">상실일: 취득일 1일이면 매월 8일미만시 해당월 초일 / 1일 아니면 최종근로일 익일 또는 다다음달 초일</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>자격취득일이 1일인 경우 — 매월(1~말일) 8일 미만 근무시 해당 월의 초일 상실</li>
+      <li><span class="no">②</span>취득일 1일 아니고 최초근로일 속한달 다음달 8일 미만 — 해당 월 최종근로일의 다음날 상실</li>
+      <li><span class="no">③</span>다만 다음달 8일 미만이라도 다다음달 8일 이상 근무시 자격 유지(부과월 실제 보수월액 적용)</li>
+      <li><span class="no">④</span>최초근로일 속한달의 다다음달 이후 8일 미만 근무시 — 해당 월의 초일 상실</li>
+    </ol>
+  </div>
+</div>
+<div class="row2">
+  <div class="card">
+    <span class="badge">2 · 신고 및 제출서류</span>
+    <ul class="list">
+      <li>모든 자격변동신고(취득·상실·소득변경) — 다음달 <b class="term">5일까지</b> 반드시 EDI 신고</li>
+      <li>직장가입자 자격취득·상실신고서, 보수월액 변경신청서</li>
+      <li>직장피부양자자격(취득·상실)신고서, 건강보험 자격 취득취소·상실취소 신고서</li>
+      <li>공사기간 종료 후에는 사업장 적용·내용변경 신고 불가(자격신고는 탈퇴 전 제한적 접수)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">3 · 실무 유의사항</span>
+    <ul class="list">
+      <li>일용근로자 자격 모의계산 — 공단홈페이지 민원서비스 또는 웹EDI 자격취득신고서 내 제공</li>
+      <li>실제 고용·지휘감독한 회사의 근로자로 취득 — 계약당사자와 실제고용회사 다르면 실제고용회사 기준</li>
+      <li>적용이력 없거나 공사종료 후 신고건 — 사업자등록번호(본사) 기준으로 취득 판단</li>
+      <li>착공일 판단 서류 — 착공신고필증·예정공정표·착공계·공사계약보증서 중 확인</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge">4 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>가입대상</b> 1개월 이상·월 8일 이상</span>
+      <span class="chip"><b>취득일(최초월)</b> 최초근로일</span>
+      <span class="chip"><b>취득일(익월)</b> 해당월 초일</span>
+      <span class="chip"><b>상실일(취득1일)</b> 8일 미만시 해당월 초일</span>
+      <span class="chip"><b>상실일(취득월중)</b> 최종근로일 익일</span>
+      <span class="chip"><b>신고기한</b> 다음달 5일까지</span>
+      <span class="chip"><b>신고방법</b> 반드시 EDI</span>
+    </div>
+  </div>
+</div>
+<div class="row2">
+  <div class="card">
+    <span class="badge">5 · 보수적용 기준</span>
+    <ul class="list">
+      <li>건설일용근로자만 매월 변동보수 적용, 본사 사업장과 분리하여 산정</li>
+      <li>자격취득시 — 취득월·부과대상월 실제 보수월액 기준, 적용기간은 취득월~변경신청월 전월까지</li>
+      <li>가입기간중 — 사업장 신고에 따른 부과대상월 실제 보수월액 적용</li>
+      <li>보수월액 변경시 매월 신고 필요</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">6 · 사후정산제도·보험료 요율</span>
+    <ul class="list">
+      <li>정의 — 하도급자→원도급자→발주기관 보험료 납부영수증 제출시 예정가격 계상 범위내 기성지급, 완료후 최종정산</li>
+      <li>건강보험료 = 직접노무비 × (「국민건강보험법」 요율의 <b class="term">2분의 1</b>)</li>
+      <li>노인장기요양보험료 = 건강보험료 × 장기요양보험 요율</li>
+      <li>적용대상 — 공사기간 1개월 이상인 모든 건설공사(고시 제2021-905호)</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">7 · EDI 고지경정 시스템 처리 절차</span>
+    <div class="formula">①공단 고지내역 전송(20~25일경) → ②사업장 정정신고(~5일) → ③공단 경정처리(6일) → ④사업장 조회·재신청(~9일) → ⑤공단 최종내역 재송부(~10일) → ⑥사업장 최종조회·납부(~10일)
+      <span class="sub">경정 후에는 최초 고지금액이 아닌 최종 결정금액 기준 납부, 미납·과소납시 연체금 발생</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>정기고지 — 매월 15일 기준 자격변동·보수신고내역 산정, 22~25일 EDI 전자고지(1차)</li>
+      <li><span class="no">②</span>일괄경정고지 — 다음달 5일까지 신고 마감, 마감 다음날 일괄경정고지 송부</li>
+      <li><span class="no">③</span>수시경정고지신청 — 신고일부터 납부마감 1일전(매월9일)까지 EDI 신청, 즉시 최종금액 확정·재전송</li>
+      <li><span class="no">④</span>보험료 납부 — 매월 10일까지 전자납부번호로 사회보험통합징수포털·인터넷지로·인터넷뱅킹·CD/ATM 납부</li>
+    </ol>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">자격 취득·상실일 세부 사례(사례1~9)는 원문 8~13쪽 참조. 모의계산 기능으로 개별 사안 검증 권장.</p>
+<p class="pageno">2 / 3</p>
+</div>
+<div class="page">
+<h1 class="title">건설현장 사업장 건강보험 실무안내 ③ — 고지절차·경과조치·다빈도질의</h1>
+<p class="meta">건설안전관리 ｜ 국토교통부고시 제2021-905호(사회보험료 적용기준) ｜ 국민건강보험공단(2026.1.)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 사후정산제 도입배경·시행시기</span>
+    <ul class="list">
+      <li>배경 — 낙찰률 연동 보험료 부족으로 가입회피 지속, EITC(근로장려세제) 기반 조성 과제</li>
+      <li>시행 — 국가계약법령 회계예규 2006.12.29. 개정, 정부·지자체·공공기관 공사 2007.4월부터 적용</li>
+      <li>민간건설 공사 — 2008.1.1.부터 적용</li>
+      <li>적용범위 — 정부·지자체·공공기관 공사와 민간건설 공사 전체</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 신청서 제출·납부확인</span>
+    <ul class="list">
+      <li>'보험료 일괄경정·전자고지 신청서' — 건설현장 사업장 최초 적용신고시 제출</li>
+      <li>하도급자 절차 — 하도급금액산출내역서에 보험별 적정 보험료 계상 약정, 전월 납부영수증 첨부해 기성청구</li>
+      <li>사업장별·가입자별 「보험료 납부증명서」 발급 가능(EDI·방문·팩스·인터넷)</li>
+      <li>착오로 최초고지금액 납부·미납시 최종 경정고지금액 기준 연체금 발생</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge">3 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>정기고지</b> 매월 22~25일</span>
+      <span class="chip"><b>산정기준일</b> 매월 15일</span>
+      <span class="chip"><b>일괄경정 신고마감</b> 다음달 5일</span>
+      <span class="chip"><b>수시경정신청</b> 매월 9일까지</span>
+      <span class="chip"><b>납부기한</b> 매월 10일까지</span>
+      <span class="chip"><b>건강보험료율</b> 법정요율의 2분의 1</span>
+      <span class="chip"><b>사후정산 시행</b> 공공 2007.4월·민간 2008.1.1.</span>
+    </div>
+  </div>
+</div>
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 경과조치 개요</span>
+    <ul class="list">
+      <li>2018.8.1. 가입기준 변경 — 월 근무일수 "20일 이상"→"8일 이상"</li>
+      <li>경과조치 — 시행일 전 계약체결·입찰공고 개시 현장은 종전기준(20일) 적용</li>
+      <li>경과조치 적용기한 — <b class="term">2020.7.31.까지</b></li>
+      <li>판단기준일 — 공사 착공일이 아닌 계약일·입찰공고일 기준(유의)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 경과조치 판단·입증서류</span>
+    <ul class="list">
+      <li>입찰공고 없는 경우 — 발주자·원수급인 간 공사계약일 기준</li>
+      <li>입찰공고 있는 경우 — 발주자 입찰공고 시작일 기준</li>
+      <li>입증서류 — 입찰공고문, 원도급 공사계약서, 원수급인 고용·산재보험 가입증명원 중 1종</li>
+      <li>하수급 현장 — 원수급인 "경과조치 사업장 사실확인서"로 갈음 가능(하도급계약일 8.1전 확인시 생략)</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">6 · 사업장 분리적용·공사기간 판단 핵심</span>
+    <div class="formula">동일 발주처·동일 건설업체 다수계약 → 공사기간 <span class="num">중복여부</span> 확인 → 중복시 분리적용 불가(기간연장) / 중복없으면 별도 사업장
+      <span class="sub">공사기간은 계약서상 '계약기간' 표기와 무관하게 실제 착공일~준공일 기준으로 판단</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>용역계약 명칭이라도 실질이 단순 유지관리 용역이면 건설현장 사업장 적용 불가(Q2)</li>
+      <li><span class="no">②</span>발주자·건설업체 동일한 자체공사는 사후정산 주체 동일해 적용대상 아님(Q5)</li>
+      <li><span class="no">③</span>공동도급은 계약지분과 무관하게 참여 건설사별로 각각 사업장 적용(Q8)</li>
+      <li><span class="no">④</span>본사 미가입 상태에서는 본사 우선 적용 후 건설현장 분리적용, 본사는 무가입자 탈퇴(Q7)</li>
+    </ol>
+  </div>
+</div>
+<div class="row2">
+  <div class="card">
+    <span class="badge">7 · 공사계약서 미비시 처리</span>
+    <ul class="list">
+      <li>국가·지자체 소액계약(3천만원·5천만원 이하 등)으로 계약서 생략시 — 지자체 공문·지출결의서로 확인</li>
+      <li>공기업·준정부기관 발주계약도 동일 서류로 처리 가능</li>
+      <li>착공일 상이시 — 착공신고필증(지자체 직인) 또는 실착공확인서(발주처 직인)</li>
+      <li>여러 현장 1건 계약시 — 현장별 공사기간 1개월 이상 + 현장별 사후정산 확인시 각 현장 적용</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">8 · 양도·분할합병시 처리</span>
+    <ul class="list">
+      <li>신규계약서 작성시 — 사업장 신규적용(공사기간은 신규계약서 기준)</li>
+      <li>신규계약서 미작성시 — 지자체 양도신고수리결과서로 기존사업장 탈퇴 후 신규적용</li>
+      <li>보험료 납부의무 승계 증명서 제출시 — 사업장 기재변경으로 처리 가능</li>
+      <li>양도신고 대상 아닌 경우 — 법인등기부등본·합병내역통보서 등으로 갈음(기재변경 불가)</li>
+    </ul>
+  </div>
+</div>
+<div class="row1">
+  <div class="card">
+    <span class="badge">9 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>가입기준 변경일</b> 2018.8.1.</span>
+      <span class="chip"><b>경과조치 적용기한</b> 2020.7.31.</span>
+      <span class="chip"><b>판단기준</b> 계약일·입찰공고일(착공일 아님)</span>
+      <span class="chip"><b>공사기간 판단</b> 착공일~준공일</span>
+      <span class="chip"><b>자체공사</b> 적용대상 아님</span>
+      <span class="chip"><b>공동도급</b> 건설사별 각각 적용</span>
+      <span class="chip"><b>계약서 생략 기준</b> 국가 3천만원·지방 5천만원 이하</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">보험료 산정 세부는 원문 14~15쪽, 다빈도 질의사항 전체(Q1~Q23)는 16~24쪽 참조. 본 요약은 실무상 빈출 판단기준만 발췌함.</p>
+<p class="pageno">3 / 3</p>
+</div>
+</body></html>

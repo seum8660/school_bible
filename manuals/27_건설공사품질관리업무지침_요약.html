@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건설공사 품질관리 업무지침 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:8mm 8mm 0 8mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .sheet{ min-height:149mm; }
+
+  .title{ margin:0; font-size:17pt; font-weight:800; color:var(--navy); letter-spacing:-0.01em; line-height:1.25; }
+  .meta{ margin:1.8mm 0 0 0; font-size:8pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.4; }
+  .rule-navy{ height:0.7mm; background:var(--navy); margin:2.6mm 0 3.8mm 0; }
+  .rule-gray{ height:0.3mm; background:var(--line); margin:4mm 0 2.4mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:4.6mm; margin-bottom:3.6mm; }
+  .row1{ margin-bottom:3.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.35mm solid var(--line); border-radius:1.4mm; background:none; padding:3mm 3.8mm 3.2mm 3.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:10.2pt; font-weight:700; letter-spacing:0; line-height:1.3;
+    padding:1.2mm 3mm; border-radius:1mm; margin-bottom:2.2mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:9pt; line-height:1.58; padding-left:3.2mm; text-indent:-3.2mm; margin-bottom:1.5mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:9pt; line-height:1.58; padding-left:5.2mm; text-indent:-5.2mm; margin-bottom:1.5mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1.2mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1.2mm; padding:2.8mm 3.8mm; margin:0 0 2.8mm 0;
+    text-align:center; font-size:9.3pt; font-weight:600; line-height:1.45;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:7.6pt; font-weight:500; color:var(--meta); margin-top:1.2mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:2mm; }
+  .chip{
+    font-size:8pt; line-height:1.3; background:var(--chip-bg);
+    border:0.3mm solid var(--chip-line); border-radius:1.2mm;
+    padding:1.4mm 2.6mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:7.2pt; line-height:1.5; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+.page{ width:210mm; min-height:297mm; padding:8mm; page-break-after:always; box-sizing:border-box; }
+.page:last-child{ page-break-after:auto; }
+.pageno{ text-align:center; font-size:7.2pt; color:var(--note); margin-top:2.6mm; }
+@media screen{
+  body{ background:#e5e7eb; }
+  .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 3mm rgba(0,0,0,0.15); }
+}
+</style></head><body>
+<div class="page">
+<h1 class="title">건설공사 품질관리 업무지침 ① — 총칙·품질관리계획</h1>
+<p class="meta">건설공사 품질관리 ｜ 「건설기술진흥법」 제55~61조 ｜ 국토교통부고시 제2026-360호(2026.7.8. 시행)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 목적·적용범위</span>
+    <ul class="list">
+      <li>목적 — 발주자·시공자·품질검사대행 건설엔지니어링사업자의 품질관리 업무수행 세부기준</li>
+      <li>2편1·2장 — 영 제89조 품질관리계획·품질시험계획 수립대상 공사</li>
+      <li>2편3장 — 건설엔지니어링업 등록·품질검사 대행 평가</li>
+      <li>3편(레미콘·아스콘·배치플랜트) / 4편(철강구조물 인증) / 5편(가설기자재)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 주요 정의</span>
+    <ul class="list">
+      <li><b class="term">품질관리</b> — 품질시험·검사활동 + 부적합공사 사전예방 활동</li>
+      <li><b class="term">중점품질관리(특별프로세스)</b> — 하자빈도 높고 시정 어려운 공종 품질관리</li>
+      <li><b class="term">시험인력</b> — 특급·고급·중급·초급품질관리원으로 구분</li>
+      <li><b class="term">적절성 확인</b> — 발주청 등이 품질관리계획 이행여부 확인하는 것</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 품질관리계획 수립·승인 절차</span>
+    <div class="formula">시공자 계획수립 → 공사감독자·건설사업관리기술인 검토·확인 → 발주자 <span class="num">적정/조건부적정/부적정</span> 심사 → 서면통보
+      <span class="sub">비발주청 발주자는 시공자가 제출한 계획을 인·허가행정기관에 제출해 검토받아야 함</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>발주자 — 계획서 제출시기·수량, 검토승인시기, 하도급자 이행책임, 부적합 처리를 공사계약문서에 명시</li>
+      <li><span class="no">②</span>공사감독자 — 승인 전에는 시공자에게 해당업무 수행시키지 못함, 이행상태 확인계획 수립·이행 의무</li>
+      <li><span class="no">③</span>시공자 — 규모·활동형태, 프로세스 복잡성, 인력 수행능력 고려해 계획서 구성</li>
+      <li><span class="no">④</span>공동도급 — 통합조직시 대표사가 통합계획 수립(수급인별 동의서명), 구간분할시 수급인별 독립 수립</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 이행상태 확인계획 포함사항</span>
+    <ul class="list">
+      <li>점검기준·범위·점검자 선정 계획, 이행확인 중점 점검표·수행방법</li>
+      <li>객관적 증거 기술 포함한 이행여부 확인결과 기록방법</li>
+      <li>시정·시정조치 요구 및 조치결과 검증방법</li>
+      <li>품질검사 실시대장 확인, 품질검사성적서의 CSI 입력여부·내용 확인방법</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 계획서 작성기준·변경절차</span>
+    <ul class="list">
+      <li>품질관리계획서 작성기준 — 별표 1에 따름(영 제89조④)</li>
+      <li>승인 — 별지 제1호 서식 품질관리계획서 검토·승인서에 따름</li>
+      <li>계획서 변경시 — 발주자·공사감독자 모두 동일한 검토·승인 절차 재적용</li>
+      <li>신공법·신기술 등 국내 시험방법 없는 경우 — 발주자·설계자 협의로 시방서 명기시 시험한 것으로 인정</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>근거법령</b> 건설기술진흥법 제55~61조</span>
+      <span class="chip"><b>고시번호</b> 제2026-360호</span>
+      <span class="chip"><b>시행일</b> 2026.7.8.</span>
+      <span class="chip"><b>담당</b> 국토교통부 건설안전과</span>
+      <span class="chip"><b>계획서 심사결과</b> 적정·조건부적정·부적정 3단계</span>
+      <span class="chip"><b>작성기준</b> 별표1</span>
+      <span class="chip"><b>재검토기한</b> 2020.7.1. 기준 매 3년</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">본 요약은 국토교통부고시 제2026-360호(2026.7.8. 시행) 「건설공사 품질관리 업무지침」 기준. 별표·별지 서식은 원문 참조.</p>
+<p class="pageno">1 / 4</p>
+</div>
+<div class="page">
+<h1 class="title">건설공사 품질관리 업무지침 ② — 품질시험기준·엔지니어링사업자 평가</h1>
+<p class="meta">건설공사 품질관리 ｜ 제2편2·3장(제8~30조) ｜ 국토교통부고시 제2026-360호(2026.7.8. 시행)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 품질시험기준·적절성확인</span>
+    <ul class="list">
+      <li>건설공사 품질시험기준(종류별·공종별 종목·방법·빈도) — 별표 2</li>
+      <li>별표2 미명시 공종·자재는 시방서 등 설계도서 기준에 따름</li>
+      <li>발주자는 공사 종류·규모·중요성 등 감안해 시험빈도 조정 가능</li>
+      <li>적절성확인 기준·요령 — 별표 3(규칙 제52조)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 품질시험비 산정</span>
+    <ul class="list">
+      <li>인건비·공공요금 산출 단위량 — 별표 4</li>
+      <li>시험관리인력 노임단가 — 한국엔지니어링협회 공표 / 시험인력 — 대한건설협회 공표</li>
+      <li>재료비·장비손료·시설비·검정교정비 — 규칙 별표6에 따라 산정</li>
+      <li>단위량 미규정시 — 발주자·설계자 협의해 시장거래가·견적가 반영 가능</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 품질검사대행 건설엔지니어링업 등록평가 절차</span>
+    <div class="formula">평가의뢰 → 서류검토(<span class="num">7일</span> 이내) → 평가반 구성·계획통보 → 평가 수행 → 보고서 작성(<span class="num">7일</span> 이내) → 결과통보
+      <span class="sub">부적합시 1개월 조치기간 부여, 재평가는 요청 후 14일 이내 실시</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>등록 등 업무수탁기관 — 서류 미비시 보완요구(대상자는 30일 이내 완료)</li>
+      <li><span class="no">②</span>평가기관 — 제출서류 7일 이내 검토, 미비시 보완요청 가능</li>
+      <li><span class="no">③</span>평가사 — 기술인력·시설장비 적합성, 품질관리규정 적합·이행성, 수행능력 평가</li>
+      <li><span class="no">④</span>시정조치 미이행시 — 1회 한정 1개월 이내 이행기간 연기 신청 가능</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 품질검사의 적정성 평가</span>
+    <ul class="list">
+      <li>성적서 발급일로부터 <b class="term">7일 이내</b> CSI(건설공사 안전관리 종합정보망) 입력</li>
+      <li>지방국토관리청장 — 매년 <b class="term">2월 15일까지</b> 평가계획 홈페이지 공고</li>
+      <li>평가 연기요청시 — 1회 한정 2개월까지 연장 가능</li>
+      <li>부적합 지적시 — 시정명령 또는 등록취소 등 요청(영 제115조②4호)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 평가기관 조직·운영</span>
+    <ul class="list">
+      <li>평가기관 — 한국건설기술연구원</li>
+      <li>자문위원회 — 세부분야별 <b class="term">5인 이상 15인 이내</b> 전문가 구성 가능</li>
+      <li>평가인력 — 평가사 <b class="term">5인 이상</b> 소속 직원으로 확보(자격기준 별표8)</li>
+      <li>세부운영지침 — 국토교통부장관 승인 후 공고</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>품질시험기준</b> 별표2</span>
+      <span class="chip"><b>서류보완기한</b> 30일 이내</span>
+      <span class="chip"><b>평가기관 서류검토</b> 7일 이내</span>
+      <span class="chip"><b>평가보고서 작성</b> 7일 이내</span>
+      <span class="chip"><b>부적합 조치기간</b> 1개월</span>
+      <span class="chip"><b>재평가</b> 요청 후 14일 이내</span>
+      <span class="chip"><b>CSI 입력기한</b> 성적서 발급 후 7일 이내</span>
+      <span class="chip"><b>적정성평가계획 공고</b> 매년 2월 15일까지</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">평가서식(별지 제3~7호), 등록요건(영 별표5)은 원문 참조. 자문위원 수당은 예산범위내 지급 가능.</p>
+<p class="pageno">2 / 4</p>
+</div>
+<div class="page">
+<h1 class="title">건설공사 품질관리 업무지침 ③ — 레미콘·아스콘 품질관리</h1>
+<p class="meta">건설공사 품질관리 ｜ 제3편1·2장(제31~45조) ｜ 국토교통부고시 제2026-360호(2026.7.8. 시행)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 자재공급원 승인</span>
+    <ul class="list">
+      <li>공급원 승인권자 — 승인신청 접수 후 <b class="term">10일 이내</b> 승인여부 회신·발주청 보고</li>
+      <li>승인거부·취소 사유 — 정기점검 거부, 지적사항 미시정, 배합비 조작, 물량 속임, 최근 2년내 불량자재 공급이력 등</li>
+      <li>KS표시인증 관련 지적시 — 산업통상부 국가기술표준원에 통보</li>
+      <li>승인내용 — 공장별 기록·정리해 사후 승인업무·지도점검에 활용</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 사전·정기·특별점검</span>
+    <ul class="list">
+      <li><b class="term">사전점검</b> — 레미콘 총설계량 1천㎥ 이상 또는 아스콘 2천톤 이상시 공사감독자와 합동 실시</li>
+      <li><b class="term">정기점검</b> — 레미콘 3천㎥ 이상 또는 아스콘 5천톤 이상, 반기별 1회 이상</li>
+      <li>산업표준화법 정기점검 3개월 이내 수검·항목 중복시 — 점검항목 제외 가능</li>
+      <li><b class="term">특별점검</b> — 불량자재 사회적 물의, 허위통보, 품질문제 판단시 등 실시</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 시공 품질관리·불량자재 처리 절차</span>
+    <div class="formula">현장반입 자재 확인 → 시험·검사(수요자 직접 또는 국립·공립기관·엔지니어링사업자 의뢰) → 불량 판정시 <span class="num">즉시 반품</span> → 폐기확약서 징구·3년 보관
+      <span class="sub">현장 시험과정에는 공사감독자가 입회하여 시료채취 위치 결정·시험방법 적절성 확인</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>레미콘 확인항목 — 슬럼프·공기량·염화물이온량(Cl⁻)·강도 등, 아스콘 — 온도·마샬안정도·흐름값·역청함유량 등</li>
+      <li><span class="no">②</span>혼화재(고로슬래그·플라이애시) 단위결합재량 대비 <span class="num">10%</span> 초과 사용시 별표9 품질관리 적용</li>
+      <li><span class="no">③</span>불량자재 즉시반품 사유 — 슬럼프·공기량·염화물이온량 기준초과, 생산 후 시방기준 시간경과, 재료분리 등</li>
+      <li><span class="no">④</span>불량 시공부위는 재시공 원칙(발주청 승인하 안전진단으로 대체 가능)</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 현장배치플랜트 설치조건</span>
+    <ul class="list">
+      <li>전량공급 설치사유 — 90분 이내 운반불가, 압축강도 40MPa 이상 또는 슬럼프 50mm 이하, 특수콘크리트 등</li>
+      <li>일부공급 사유 — 레미콘 수요성수기, 대규모 구조물공사로 수요급증시(일반레미콘 소요량 1/2까지 주변업체 협조)</li>
+      <li>원칙 — 현장배치플랜트 생산 레미콘은 해당 현장 외 반출 금지</li>
+      <li>예외적 인근현장 반출 허용 — 공공주택지구(200만㎡ 이상), 고속국도(총공사비 1,000억원 이상), 신공항 건설사업</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 기록물 보관·관급자재 관리</span>
+    <ul class="list">
+      <li>비치서류 — 자재공급원 승인서류, 시공품질관리 점검표, 품질시험·검사대장</li>
+      <li>준공시 — 감리전문회사 및 시공사가 보관, 서류중복시 별도작성 불요</li>
+      <li>관급자재도 이 지침 준용 — 사전·정기점검 등 품질관리 가능</li>
+      <li>생산자 변경요청 사유 — 승인취소 해당, 하자관계 불분명 우려, 불필요한 장거리 공급 등</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>공급원 승인회신</b> 10일 이내</span>
+      <span class="chip"><b>사전점검 대상</b> 레미콘 1천㎥·아스콘 2천톤 이상</span>
+      <span class="chip"><b>정기점검 대상</b> 레미콘 3천㎥·아스콘 5천톤 이상</span>
+      <span class="chip"><b>정기점검 주기</b> 반기별 1회 이상</span>
+      <span class="chip"><b>혼화재 기준</b> 단위결합재량 10% 초과시 별표9</span>
+      <span class="chip"><b>배치플랜트 운반기준</b> 90분 이내</span>
+      <span class="chip"><b>불량자재폐기확약서</b> 3년 비치</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">품질확인 세부항목(밀도·흡수율·입도 등)은 원문 제32조 참조. 철강자재 품질관리는 별도 쪽 참조.</p>
+<p class="pageno">3 / 4</p>
+</div>
+<div class="page">
+<h1 class="title">건설공사 품질관리 업무지침 ④ — 철강자재·구조물 인증·가설기자재</h1>
+<p class="meta">건설공사 품질관리 ｜ 제3편3장·제4편·제5편(제45조의2~55조) ｜ 국토교통부고시 제2026-360호(2026.7.8. 시행)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 철강자재 현장 품질관리</span>
+    <ul class="list">
+      <li>반입 확인사항 — 송장, 반입일자, 종별·규격·수량, 품질확인서류(Mill Sheets, C of C 등)</li>
+      <li>반입 금지사유 — 품질확인서 없음, 시방서 요구사항 미충족, 품질기준 미충족</li>
+      <li>KS인증 미획득 제품 — 시험종류·빈도·방법, 시험성적서 적합여부 확인(별지 제13호의2 점검표)</li>
+      <li>시험 — 수요자 직접 또는 국립·공립기관·엔지니어링사업자 의뢰, 공사감독자 입회</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 철강자재 기록물 보관</span>
+    <ul class="list">
+      <li>비치서류 — 자재공급원 승인서류, 자재 품질관리·품질확인 관련서류</li>
+      <li>준공까지 현장 비치, 발주청·관계기관 요구시 제출</li>
+      <li>사업관리방식 지침 서류와 중복시 별도작성 불요</li>
+      <li>발주청 인계 문서목록 포함여부 — 발주청과 협의</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 철강구조물 제작공장 인증·재심사·실태조사 절차</span>
+    <div class="formula">공장인증 신청 → 심사 → 부적합시 재심사(신청일로부터 <span class="num">14일</span> 이내) → 인증 후 실태조사 → 부적합시 보완요청(<span class="num">1개월</span> 이내)
+      <span class="sub">이의제기는 결과통지일로부터 14일 이내 제출, 심사기관은 접수일로부터 20일 이내 처리</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>재심사 미신청시 — 심사결과 통지 후 60일 이내 미신청하면 신청서 반려</li>
+      <li><span class="no">②</span>실태조사 부적합시 — 확인조사 14일 이내 실시, 재차 부적합이면 재보완 요청</li>
+      <li><span class="no">③</span>2회 보완 결과도 부적합 또는 보완거부시 — 국토교통부장관이 시정조치 명령(법 제58조②)</li>
+      <li><span class="no">④</span>적합판정 기준 — 신청 분야·등급의 판정기준점과 항목별 필수점 동시 만족</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 공장인증 운영·인력편성</span>
+    <ul class="list">
+      <li>교량·건축분야 동시신청시 — 공장개요·기술인력·설비 등 중복부문 심사 생략 가능</li>
+      <li>인력편성 — 별표12에 따라 심사기관이 편성·운영</li>
+      <li>교육훈련 — 심사기관장이 공장 소속 건설기술인 대상 프로그램 제공 가능</li>
+      <li>세부운영지침 — 국토교통부장관 승인 후 공고(수수료·납부절차 포함)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 가설기자재 품질관리</span>
+    <ul class="list">
+      <li>시공자·공급원승인권자·공사감독자 — 불량자재 반입 차단 등 성실의무</li>
+      <li>가설기자재 자재별·시험종목·방법·빈도 — 별표2에 따름</li>
+      <li>별표2 미명시 자재는 시방서 등 설계도서 기준 적용</li>
+      <li>발주자는 공사 특성 감안해 시험빈도 조정 가능</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>재심사 처리</b> 신청일로부터 14일 이내</span>
+      <span class="chip"><b>재심사 미신청 반려</b> 통지 후 60일 경과시</span>
+      <span class="chip"><b>실태조사 보완</b> 1개월 이내</span>
+      <span class="chip"><b>확인조사</b> 14일 이내</span>
+      <span class="chip"><b>이의제기 기한</b> 통지일로부터 14일 이내</span>
+      <span class="chip"><b>이의제기 처리</b> 접수일로부터 20일 이내</span>
+      <span class="chip"><b>재검토기한</b> 2020.7.1. 기준 매 3년(6.30까지)</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">철강구조물 공장인증 세부기준(별표10), 실태조사 세부기준(별표11)은 원문 참조. 부칙: 2026.7.8. 발령일부터 시행.</p>
+<p class="pageno">4 / 4</p>
+</div>
+</body></html>

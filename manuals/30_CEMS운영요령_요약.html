@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>CEMS(건설엔지니어링 관리시스템) 운영요령(발주기관용) — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:14mm 12mm 0 12mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }   /* 잘라내지 않음 — overflow:hidden 금지 */
+
+  .title{ margin:0; font-size:13.1pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:6pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:7.9pt; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.7pt; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.7pt; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:7pt; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6pt; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:6pt; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+.page{ width:210mm; min-height:297mm; padding:14mm 12mm; page-break-after:always; box-sizing:border-box; }
+.page:last-child{ page-break-after:auto; }
+.pageno{ text-align:center; font-size:5.7pt; color:var(--note); margin-top:2mm; }
+@media screen{
+  body{ background:#e5e7eb; }
+  .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 3mm rgba(0,0,0,0.15); }
+}
+</style></head><body>
+<div class="page">
+<h1 class="title">CEMS(건설엔지니어링 관리시스템) 운영요령 ① — 개요·등재범위·신청방법</h1>
+<p class="meta">실적 입력 및 승인 업무 매뉴얼(발주기관용) ｜ 건설기술 진흥법 제26·30조, 같은 법 시행령 제3·45조 등 ｜ 한국건설엔지니어링협회(2026.1.16.)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · CEMS 개요 및 등재 효과</span>
+    <ul class="list">
+      <li>발주기관(인허가기관)이 실적정보를 입력·확인(등록)하면 <b class="term">입찰참가(PQ)</b> 및 업무중첩도 등 증빙자료(실적증명서 등)로 인정</li>
+      <li>발주청은 계약체결·변경·준공 시 <span class="num">10일</span> 이내 국토교통부장관에게 통보 의무(법 제30조②)</li>
+      <li>건설사업관리 수행 시 건축법 공사감리·주택법 감리를 한 것으로 간주(법 제42조)</li>
+      <li>등재자격 — 법 제26조에 따라 등록한 <b class="term">건설엔지니어링사업자</b>(법 제2조8호)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · CEMS 입력 대상 및 발주청 범위</span>
+    <ul class="list">
+      <li>①건설기술진흥법령 건설엔지니어링 ②건축법령 다중이용 건축물 감리</li>
+      <li>③주택법령 공동주택 공사감리 ④건축·주택법령 (민간)건설사업관리</li>
+      <li>발주청 — 국가·지자체·공기업·준정부기관 및 시행령 제3조 8개 호 기관(출연기관, 위탁시행자 등)</li>
+      <li>300세대 이상 주택건설공사는 건설엔지니어링사업자만 감리자 지정 가능(주택법 시행령 제47조①)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 신청 및 회원가입 절차</span>
+    <div class="formula">홈페이지 접속(www.cems.kr) → 회원가입 클릭 → 이용약관 동의·사용자분류 &quot;발주처&quot; 선택 → 본인인증 → 회원등록정보 입력·승인요청 → 관리자 승인 후 이용
+      <span class="sub">CEMS는 안정적 활용을 위해 크롬(Chrome) 브라우저 사용을 권장함</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>이용약관 동의 및 사용자 분류를 &quot;발주처&quot;로 선택</li>
+      <li><span class="no">②</span>개인정보보호·고유식별정보처리 동의 후 인증방법(핸드폰인증 또는 I-PIN) 선택·인증</li>
+      <li><span class="no">③</span>회원등록정보 입력 후 승인요청 → 관리자 승인 후 이용 가능</li>
+      <li><span class="no">④</span>이직·부서이동 시 로그인 후 MY PAGE에서 사업담당·계약담당 정보만 변경</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 회원가입 유의사항</span>
+    <ul class="list">
+      <li>회원가입은 <b class="term">한 차례만</b> 가능하며 가입 시 ID·PW 반드시 기억</li>
+      <li>중복 회원가입 시 실적 등 계약 현황 관리에 문제 발생 가능</li>
+      <li>담당자는 개인자격으로 가입하며 회사대표ID와는 별도로 운용</li>
+      <li>발주청 담당자 미가입 시, 우선 회원가입을 통해 등록 후 작성 가능</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 실적정보 신규작성 개시</span>
+    <ul class="list">
+      <li>신규작성 메뉴 — &quot;건설엔지니어링 정보관리&quot; 탭 &quot;발주청 용역 실적 현황 리스트&quot;</li>
+      <li>최초 신규작성은 <b class="term">계약담당자만</b> 작성 가능</li>
+      <li>사업담당자에게 알림(안내문)이 뜨면 확인 후 작성</li>
+      <li>사업계약 1건 = 실적입력 1건, 저장 후 &apos;용역명&apos; 클릭하여 수정</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>시스템 URL</b> www.cems.kr</span>
+      <span class="chip"><b>계약체결·준공 통보</b> 10일 이내(국토부)</span>
+      <span class="chip"><b>회원가입</b> 1회만 가능</span>
+      <span class="chip"><b>사용자분류</b> 발주처 선택</span>
+      <span class="chip"><b>최초 신규작성</b> 계약담당자 전용</span>
+      <span class="chip"><b>등재자격</b> 법 제26조 등록 사업자</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">본 요약은 「CEMS 운영요령(발주기관용) 실적 입력 및 승인 업무 매뉴얼」(한국건설엔지니어링협회, 2026.1.16.)에 근거함.</p>
+<p class="pageno">1 / 5</p>
+</div>
+<div class="page">
+<h1 class="title">CEMS(건설엔지니어링 관리시스템) 운영요령 ② — 용역기본정보·입찰계약정보</h1>
+<p class="meta">실적정보 입력(필수 등재 항목) ｜ 용역기본정보·입찰계약정보 작성 기준 ｜ 한국건설엔지니어링협회(2026.1.16.)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 용역기본정보</span>
+    <ul class="list">
+      <li>용역명 입력 후 <b class="term">중복체크</b> 필수(동일 용역 등재 여부 확인)</li>
+      <li>이행방식 — <b class="term">단독·공동·분담·혼합</b> 4가지, 방식별 입력절차 상이</li>
+      <li>분담·혼합은 참여사가 별도 신규작성 후 사업책임기술인이 승인요청</li>
+      <li>부문은 8개 항목 중 연관성 높은 것 선택, 해당없으면 &quot;기타&quot;</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 용역종류</span>
+    <ul class="list">
+      <li>용역분야 — <b class="term">재정</b>(공공정책) · <b class="term">민자</b>(민간투자사업) · <b class="term">민간</b>(순수민간자본)</li>
+      <li>대분류 — 부문이 건축이면 건설사업관리·감리, 그 외는 건설사업관리·설계등</li>
+      <li>사업단계 — 설계전단계·시공단계·시공후단계 중 선택</li>
+      <li>세부분야 — 용역명(사업명)과 반드시 유관한 항목 선택</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 용역개요·발주기관정보 입력 절차</span>
+    <div class="formula">위치·개요(사업규모)·공종 입력 → 발주기관 검색·선택 → 사업담당자/계약담당자 각각 검색·선택 → 계약담당자가 용역계약현황 입력 → 사업담당자가 사업개요·참여기술인현황 입력·저장
+      <span class="sub">사업담당자 정보 미등록(미가입) 시 발주청 담당자 회원가입을 통한 등록이 선행되어야 함</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>공종은 여러 개를 수행하더라도 주된 대표 공종 <span class="num">1개</span>만 선택·입력</li>
+      <li><span class="no">②</span>사업담당자/계약담당자 세팅 후 저장 시 입력된 담당자만 실적을 수정 가능</li>
+      <li><span class="no">③</span>해당 담당자는 최초 저장 이후에도 수정 가능</li>
+      <li><span class="no">④</span>담당자별 요청사항은 &quot;사업담당자 요청사항 입력&quot;으로 메시지 전달·확인 가능</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 전체용역기간</span>
+    <ul class="list">
+      <li>계약일·착수일 — 용역계약서 기준으로 입력</li>
+      <li><b class="term">준공예정일은 필히 기재</b>, 준공일 입력 후 승인을 거쳐야 준공처리</li>
+      <li>공사기간 — 착수일부터 준공일까지 기산 일자</li>
+      <li>중지일·재개일 — 여러 차례인 경우 마지막 중지·재개일만 입력</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 용역금액</span>
+    <ul class="list">
+      <li>전기·통신·소방 등 타법 관리 분야는 제외하고 산정</li>
+      <li>예정가격(입찰공고 기준) · 최초계약금액(계약서 명기금액)</li>
+      <li>준공(예정)금액 — 최초계약금액과 동일 입력 후 준공정산 시 정정</li>
+      <li>낙찰률 — 예정가격 대비 투찰금액 비율(경쟁입찰 수주 시)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>대표공종</b> 1개만 선택</span>
+      <span class="chip"><b>준공예정일</b> 필히 기재</span>
+      <span class="chip"><b>대가산정방식</b> 공사비요율·실비정액가산 등</span>
+      <span class="chip"><b>계약방식</b> 총액·장기계속계약·계속비</span>
+      <span class="chip"><b>주계약업체 지분율</b> 단독 100%</span>
+      <span class="chip"><b>공사개요</b> 시공단계 건설사업관리·감리만 생성</span>
+      <span class="chip"><b>총공사비</b> 관급자재비 포함, 보상비 제외</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">차수별 용역기간·용역금액, 수주업체 지분, 공사개요, 변경사항 입력 세부사항은 원문 13~20면 참조.</p>
+<p class="pageno">2 / 5</p>
+</div>
+<div class="page">
+<h1 class="title">CEMS(건설엔지니어링 관리시스템) 운영요령 ③ — 참여기술인정보·기타정보</h1>
+<p class="meta">필수·선택 등재 항목 ｜ 참여기술인정보·용역일반정보·기성실적·하도급용역현황 ｜ 한국건설엔지니어링협회(2026.1.16.)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 사업 책임기술인</span>
+    <ul class="list">
+      <li>해당 용역을 <b class="term">총괄하는 기술인</b>, 성명·생년월일·회사명 자동입력</li>
+      <li>성명 클릭 시 팝업창에서 참여기간·직무분야 등 추가입력</li>
+      <li>발주청 사업담당자 ID로는 &apos;책임기술인&apos;란만 입력</li>
+      <li>실적 입력 자체는 사업담당자·계약담당자 ID로 로그인 후 진행</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 분야별 책임·참여·실무기술인</span>
+    <ul class="list">
+      <li>추가버튼으로 기술인 검색·입력, 또는 <b class="term">엑셀 일괄입력</b>(예제양식 다운로드 후 업로드)</li>
+      <li>설계등용역은 기술인 검색이 안 되는 경우 임의 입력 가능</li>
+      <li>공사종류에 해당하는 기술인의 &apos;직무분야&apos;에 따른 &apos;전문분야&apos;를 반드시 확인 후 입력</li>
+      <li>엑셀 업로드 후에도 개별 기술인 정보의 정확한 등재 여부 반드시 확인</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 실적 등재 대상 항목 체계</span>
+    <div class="formula">필수 등재: 용역기본정보 + 입찰계약정보 + 참여기술인정보 → 선택 등재: 용역일반정보 + 용역세부정보 + 기성실적현황 + 하도급용역현황
+      <span class="sub">필수 항목은 모든 용역에 공통 적용, 선택 항목은 등재 필요성 판단에 따라 입력</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>용역기본정보 — 모든 용역 공통 필수, 사업명·용역종류·용역개요·발주기관</li>
+      <li><span class="no">②</span>입찰계약정보 — 모든 용역 공통 필수, 용역기간·용역금액·수주업체</li>
+      <li><span class="no">③</span>참여기술인정보 — 모든 용역 공통 필수, 참여한 건설기술인 현황</li>
+      <li><span class="no">④</span>선택 항목은 반드시 등재할 필요는 없으나 필요시 등재</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 용역일반정보·용역세부정보</span>
+    <ul class="list">
+      <li>&quot;용역기본정보&quot;의 부문에 따라 입력창 변경(도로·항만·철도·공항·수자원·상수도·하수도·국토도시·건축·플랜트)</li>
+      <li>전문분야 별로 입력내용이 상이하며, 실제 계약서·세부내역서 상 내용을 입력</li>
+      <li>건축 부문은 <b class="term">용역세부정보 해당사항 없음</b>(입력 탭 미생성)</li>
+      <li>선택 항목이므로 필요하다고 판단되는 항목만 등재</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 기성실적현황·하도급용역현황</span>
+    <ul class="list">
+      <li>기성실적현황 — 입찰계약정보의 차수별 기간·금액을 기반으로 구성</li>
+      <li>차수별·회수별 기성금액 입력 시 상단에 전체 합산 금액 표기</li>
+      <li>하도급용역현황 — 업체가 &apos;하도급 실적&apos; 등재 후 원도급 실적과 연계</li>
+      <li>발주기관 입력창은 비활성화되며, 실제 하도급 시 업체에 등록 통보 의무</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>필수 등재</b> 3개 항목</span>
+      <span class="chip"><b>선택 등재</b> 4개 항목</span>
+      <span class="chip"><b>기술인 입력</b> 검색 또는 엑셀 일괄</span>
+      <span class="chip"><b>전문분야 확인</b> 공사종류·직무분야 일치 필수</span>
+      <span class="chip"><b>건축 세부정보</b> 입력탭 없음</span>
+      <span class="chip"><b>참여기술인 첨부파일</b> 용역계약서 동일</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">직무분야·전문분야·직책·기술등급·공사종류 코드값 전체 목록은 시스템 내 코드표(원문 25~28면) 참조.</p>
+<p class="pageno">3 / 5</p>
+</div>
+<div class="page">
+<h1 class="title">CEMS(건설엔지니어링 관리시스템) 운영요령 ④ — 실적 정보의 변경 및 승인 방법</h1>
+<p class="meta">신규·변경 승인 절차 ｜ 건설사업관리계획 연계(건진법 제39조의2) ｜ 한국건설엔지니어링협회(2026.1.16.)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 실적의 신규 및 변경 승인</span>
+    <ul class="list">
+      <li>등재된 건설엔지니어링 사업은 <b class="term">준공 이후에도 변경 가능</b></li>
+      <li>변경 사유를 &apos;변경내용&apos;에 기재하고 저장 후 승인절차 진행</li>
+      <li>승인완료 즉시 &quot;건설엔지니어링 실적확인서 및 업무중복도 현황&quot;에 반영</li>
+      <li>사업담당자·계약담당자를 겸임하는 경우 승인 클릭 시 바로 승인 완료</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 담당자별 승인요청 대상</span>
+    <ul class="list">
+      <li>용역기본정보·참여기술인정보·입찰계약정보 수정 시 — <b class="term">사업담당 및 계약담당</b> 각각 승인요청</li>
+      <li>참여기술인정보만 수정 시 — <b class="term">사업담당</b> 승인요청</li>
+      <li>입찰계약정보 또는 기성실적현황 수정 시 — <b class="term">계약담당</b> 승인요청</li>
+      <li>계약담당자가 먼저 신규입력 시 사업담당자에게, 그 반대도 메시지 자동 전송</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 건설사업관리계획 연계 승인 절차</span>
+    <div class="formula">실적 승인 화면 → 계획 제출여부 선택(제출/미제출/예외대상) → 사유·계획자료 입력 → 실적 승인
+      <span class="sub">시공단계 건설사업관리에 해당하면 계획 수립·제출 여부 확인 및 실적 연계가 반드시 필요(건진법 제39조의2)</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>계획자료 CEMS 제출: &quot;제출&quot; 선택 → 해당 발주기관 계획 목록 검색·선택 → 연계 승인(1건의 계획은 1건의 실적과만 연동, 중복연결 불가)</li>
+      <li><span class="no">②</span>계획 미수립·미제출: &quot;미제출&quot; 선택 → 경고 확인 후 승인 가능(단, 국토교통부에 계획 미수립 통보 조치)</li>
+      <li><span class="no">③</span>계획수립 예외대상: &quot;예외대상&quot; 선택 → 예외대상 사유 필히 기재(공란 불가) 후 승인</li>
+      <li><span class="no">④</span>계획 미제출 후 사후 제출 시 협회 담당자에게 유선 연락(02-3460-8646) 후 반드시 연계</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · G2B 연계 확인</span>
+    <ul class="list">
+      <li>건진법 시행령 제45조⑦에 따라 조달청 G2B 계약정보가 연계되어 발주청 실적 목록에 자동 조회</li>
+      <li>등재자 목록이 &quot;G2B&quot;인데 승인목록에 &quot;계약완료&quot;로만 있는 경우, 즉시 해당 업체에 실적정보 등재·승인요청 연락</li>
+      <li>1건 등재·승인요청에는 발주기관(사업·계약담당자)ID와 사업책임기술인ID가 필수</li>
+      <li>업체가 업무중복도 회피 목적으로 계약내용을 고의 방치하는 사례 유의</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 실적 등재·승인 절차도</span>
+    <ul class="list">
+      <li>CEMS 접속 → 건설ENG 실적 입력(회사대표ID·책임기술인ID) → 신청 및 승인 → 승인완료</li>
+      <li>승인완료 즉시 CEMS를 통해 건설엔지니어링 실적확인서에 반영</li>
+      <li>보완요청 시(관리자→업체) 보완내용 수정 후 책임기술인ID로 재승인요청</li>
+      <li>승인된 정보는 &apos;경력관리기관&apos;에 전송</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>계획연계 근거</b> 건진법 제39조의2</span>
+      <span class="chip"><b>계획 미제출 시</b> 국토교통부 통보</span>
+      <span class="chip"><b>예외대상 사유</b> 공란 불가</span>
+      <span class="chip"><b>협회 계획업무 문의</b> 02-3460-8646</span>
+      <span class="chip"><b>등재·승인 필수 ID</b> 발주기관ID + 책임기술인ID</span>
+      <span class="chip"><b>승인 즉시</b> 실적확인서 반영</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">건설사업관리계획 수립·절차·제출방법 세부사항은 협회 홈페이지 자료센터 &quot;건설사업관리계획&quot; 업무처리요령서 참조.</p>
+<p class="pageno">4 / 5</p>
+</div>
+<div class="page">
+<h1 class="title">CEMS(건설엔지니어링 관리시스템) 운영요령 ⑤ — 사후관리·활용·별표·참고</h1>
+<p class="meta">반려·재승인 ｜ 계획 수립·제출 예외대상 ｜ 감독권한대행 대상공사 ｜ 한국건설엔지니어링협회(2026.1.16.)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 반려 및 재승인, 권한변경</span>
+    <ul class="list">
+      <li>오기 등 수정사항 발생 시 &apos;정정내용&apos;란에 입력 후 재승인 가능</li>
+      <li>계약 후 미이행·사업 취소(타절 등 사업중단은 제외) 시 <b class="term">협회 관리자만</b> 삭제 가능</li>
+      <li>참여기술인 현황은 경력관리 수탁기관에 연계되어 익일 15시 이후 반영</li>
+      <li>발주청 담당자 수정 불가 시 업체 담당자(사업책임기술인)에게 수정 권한 이관 가능</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 발주청 실적 승인 여부 확인</span>
+    <ul class="list">
+      <li>담당 용역만 별도 조회하는 검색 기능(&apos;담당 용역&apos; 체크) 제공</li>
+      <li>CEMS 관리자(협회 담당자) 승인 이후 사업·계약담당자 승인이 <b class="term">7일 이내</b> 미완료 시 붉은색 표기</li>
+      <li>승인 지연 용역은 신속 확인·승인 필요</li>
+      <li>실적 입력·승인 시 꼼꼼한 검토·확인이 실적 등재 오류를 예방</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 건설사업관리계획 수립·제출 예외대상</span>
+    <div class="formula">설계 입찰공고일 &apos;19.7.1. 이전 또는 건진법 시행령 제59조의2②1~4호 해당 공사는 계획 수립·제출 예외
+      <span class="sub">예외대상임에도 미제출로 판명되면 허위신고로 처벌·과태료 대상(별표)</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>소액용역비 — 예정 용역사업비(부가세 제외)가 기획재정부 고시금액 <span class="num">2억 3천만 원</span> 미만</li>
+      <li><span class="no">②</span>문화재수리·농어촌정비사업·생활환경정비·농공단지개발, 단순·반복 건설공사(포장덧씌우기·준설 등 7종)</li>
+      <li><span class="no">③</span>보안 필요 군 특수공사·교정시설·국가기밀 공사, 방송시설공사, 원자력시설공사</li>
+      <li><span class="no">④</span>전시·사변 등 국가비상사태 시행 공사, 재해복구 등 긴급공사, 설계단계만 발주하는 건설사업관리</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 감독 권한대행 대상 공사(제55조①1호)</span>
+    <ul class="list">
+      <li>길이 100m 이상 교량·터널 포함 공사, 공항·댐·고속도로·철도·지하철 건설공사</li>
+      <li>발전소·폐기물처리시설·공공폐수(하수)처리시설, 상수도(급수설비 제외)·하수관로</li>
+      <li>연면적 5천㎡ 이상 공용청사, 송전·변전공사, 관람집회·전시시설공사</li>
+      <li>300세대 이상 공동주택 건설공사 등 <span class="num">총 22종</span></li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 실적정보의 활용</span>
+    <ul class="list">
+      <li>CEMS 등재정보 기반으로 <b class="term">실적확인서·계약현황 신고필증·보유증명서·경력증명서</b> 발급</li>
+      <li>건진법 시행령 제45조⑧에 따라 협회(실적관리 수탁기관)가 발주청에 실시간 공개·제공</li>
+      <li>사업자현황·기술인력보유현황·수행실적·계약이행현황·벌점제재현황 등 포함</li>
+      <li>&apos;건설엔지니어링 정보관리&apos;·&apos;건설엔지니어링 검색&apos; 메뉴에서 조회 가능</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 실적관리 업무(CEMS) 담당자 연락처</span>
+    <div class="chips">
+      <span class="chip"><b>실적관리팀 총괄</b> 김대진 부장 02-3460-8641</span>
+      <span class="chip"><b>실적관리(설계·건설사업관리)</b> 백미정·금민주 02-3460-8642~3</span>
+      <span class="chip"><b>실적관리(주택·건축법 감리)</b> 김정현 대리 02-3460-8644</span>
+      <span class="chip"><b>건설사업관리계획</b> 김현철·정미영 02-3460-8646~7</span>
+      <span class="chip"><b>실적관리팀 메일</b> k8634@ekacem.or.kr</span>
+      <span class="chip"><b>협회 홈페이지</b> www.ekacem.or.kr</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">예외대상 상세 근거·단순반복공사 7종 세부정의, 감독권한대행 대상공사 22종 전체 목록은 원문 [별표]·[참고](62~63면) 참조.</p>
+<p class="pageno">5 / 5</p>
+</div>
+</body></html>

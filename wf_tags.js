@@ -45,11 +45,11 @@ var WF_PHASE={
 
 window.WF_GRAPH=(function(){
   var WFC='#e8590c', nodes=[], links=[], seen={};
-  nodes.push({id:'wf:hub',label:'워크플로우 보드',group:'wf',color:WFC,url:'워크플로우_통합보드.html'});
+  nodes.push({id:'wf:hub',label:'워크플로우 보드',group:'wf',color:WFC,url:'https://seum8660.github.io/workflow/%ED%95%99%EA%B5%90%EC%8B%9C%EC%84%A4%20%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0%20%EB%B3%B4%EB%93%9C.dc.html'});
   links.push({source:'root',target:'wf:hub',kind:'wf'});
   Object.keys(WF_TAGS).forEach(function(k){
     var bid='wf:'+k;
-    nodes.push({id:bid,label:WF_BOARDNM[k]||k,group:'wf',color:WFC,url:'워크플로우_통합보드.html#'+k,board:k});
+    nodes.push({id:bid,label:WF_BOARDNM[k]||k,group:'wf',color:WFC,url:'https://seum8660.github.io/workflow/%ED%95%99%EA%B5%90%EC%8B%9C%EC%84%A4%20%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0%20%EB%B3%B4%EB%93%9C.dc.html',board:k});
     links.push({source:'wf:hub',target:bid,kind:'wf'});
     var ph=WF_PHASE[k];
     if(ph && ph!=='root') links.push({source:ph,target:bid,kind:'wf'});

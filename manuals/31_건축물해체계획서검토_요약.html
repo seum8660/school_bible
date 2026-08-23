@@ -76,7 +76,60 @@
     .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 3mm rgba(0,0,0,0.15); }
   }
   @media print{ body{ width:auto; } }
-</style></head><body>
+</style><style id="onepaper">:root{--navy:#1B3A5B;--navy2:#16304D;--teal:#227C8E;--rust:#B45309;--line:#DCE4EC;--band:#EAF0F5;--chip-bg:#F3F7F9;--chip-line:#DCE4EC;--body:#42505F;--meta:#6B7280;--note:#8A93A0;--grad:linear-gradient(135deg,#1B3A5B,#227C8E);--shadow:0 1px 6px rgba(27,58,91,.13)}
+.rule-navy{height:1.4mm;width:46mm;border-radius:1mm;background:var(--grad)}.rule-gray{background:var(--line)}
+.card{background:#fff;border:.25mm solid var(--line);border-radius:3mm;box-shadow:var(--shadow)}
+.badge{background:none;color:var(--navy);border-radius:0;white-space:normal;border-bottom:.5mm solid var(--teal);padding:0 0 1.4mm 0}
+.badge.rust{background:none;color:#B45309;border-bottom-color:#D9730D}
+.list li::before{content:"▪ ";color:var(--teal);font-weight:400}.nlist .no{color:var(--teal)}.num,.formula .num{color:var(--teal)}
+.formula{background:var(--band);border-left:1.4mm solid var(--teal);border-radius:1.4mm 2mm 2mm 1.4mm}
+.chip{background:var(--chip-bg);border-color:var(--line);border-radius:1.6mm}
+.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1;border-left:1.4mm solid #D9730D;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0;font-size:7.6pt;line-height:1.5}
+.rolet{color:#B45309;font-weight:800}
+.conclude{background:var(--grad);border-radius:3mm;padding:3.4mm 4.2mm;margin:3.2mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
+.conclude .lab{display:inline-block;font-size:6.6pt;font-weight:800;letter-spacing:.06em;opacity:.85;margin-right:2.4mm}
+.conclude .txt{font-size:8pt;font-weight:600;line-height:1.5}</style>
+<style id="onepaper-flow">.row2,.grid{grid-template-columns:1fr!important}
+.page{min-height:0!important;height:auto!important;page-break-after:auto!important;break-after:auto!important;margin:0 auto!important;box-shadow:none!important;padding-top:0!important;padding-bottom:0!important}
+.page:first-of-type{padding-top:13mm!important}
+.card,.box,.formula,table,.chips,.stage,.flow{break-inside:avoid;page-break-inside:avoid}
+.pageno{display:none!important}
+@media screen{body{background:#fff!important}}</style>
+<style id="onepaper-ig">:root{--navy:#1B3A5B;--navy2:#16304d;--teal:#227C8E;--ink:#1B3A5B;--body:#42505F;--gray:#6B7280;--light:#8A93A0;--panel:#EAF0F5;--panel2:#F3F7F9;--line:#DCE4EC;--grad:linear-gradient(135deg,#1B3A5B 0%,#227C8E 100%);--shadow:0 .5mm 1.8mm rgba(27,58,91,.13)}
+body{color:var(--body)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.title,.hd h1{color:var(--navy)!important;font-size:18pt!important;font-weight:800!important;letter-spacing:-.02em;line-height:1.25;padding:0 0 2.4mm 0!important;border:none!important}
+.title::after,.hd h1::after{content:"";display:block;height:1.4mm;width:46mm;margin-top:2mm;border-radius:1mm;background:var(--grad)}
+.hd,.hd::after{border:none!important}
+.meta,.hd .meta,.hd p{color:var(--gray)!important;font-size:6.4pt!important;line-height:1.45}
+.rule-navy{height:0!important;border:none!important;margin:2.4mm 0 3.6mm 0!important;background:none!important}
+.rule-gray{height:0!important;border:none!important;border-top:.25mm solid var(--line)!important;margin:3.6mm 0 2mm 0!important;background:none!important}
+.card,.box{border:none!important;border-top:.3mm solid var(--line)!important;border-bottom:.3mm solid var(--line)!important;border-radius:0!important;background:#fff!important;box-shadow:none!important;padding:3.2mm 4mm 3.4mm 4mm!important}
+.badge,.box h2{display:inline-block!important;background:none!important;color:var(--navy)!important;font-size:9.2pt!important;font-weight:800!important;letter-spacing:-.01em;line-height:1.35;white-space:normal!important;padding:0 0 1.6mm 0!important;border:none!important;border-bottom:.5mm solid var(--teal)!important;border-radius:0!important;margin:0 0 2.6mm 0!important}
+.badge.emph{background:var(--navy2)!important;color:#fff!important;border-bottom:none!important;border-radius:1.6mm!important;padding:1mm 2.8mm!important}
+.list li,.box li,.nlist li{font-size:7.6pt!important;line-height:1.62!important;color:var(--body)!important;margin-bottom:1.7mm!important}
+.list li::before,.box li::before{content:"▪  "!important;color:var(--teal)!important;font-weight:700!important}
+.nlist li::before{content:none!important}
+.nlist .no,.box .num{display:inline-block!important;color:#fff!important;background:var(--teal)!important;font-weight:700!important;font-size:6.6pt!important;width:4mm;height:4mm;line-height:4mm!important;text-align:center;border-radius:50%!important;margin-right:1.4mm}
+.term,.k,.chip b{color:var(--navy)!important;font-weight:700!important}
+.num,.r{color:var(--teal)!important;font-weight:800!important}
+.formula{background:var(--panel)!important;border:none!important;border-left:1.4mm solid var(--teal)!important;border-radius:1.4mm 2mm 2mm 1.4mm!important;padding:2.8mm 3.8mm!important;margin:0 0 3mm 0!important;text-align:center;font-size:7.6pt!important;font-weight:600;line-height:1.55;color:var(--navy)!important}
+.formula .num{color:var(--teal)!important}
+.formula .sub{display:block;font-size:6.5pt;font-weight:500;color:var(--gray)!important;margin-top:1.4mm;line-height:1.45}
+.chip,.law,.tag{background:var(--panel2)!important;border:.25mm solid var(--line)!important;border-radius:1.6mm!important;font-size:6.7pt!important;line-height:1.35;padding:1.4mm 2.6mm!important;color:var(--body)!important}
+.chips{display:flex;flex-wrap:wrap;gap:2mm}
+.hl{background:#DCEBEF!important;color:#155E6E!important;font-weight:800;padding:.2mm 1mm;border-radius:.8mm}
+th{background:var(--panel)!important;color:var(--navy)!important}th,td{border-color:var(--line)!important}
+.stage div,.flow div{background:var(--panel2)!important;border-color:var(--line)!important;color:var(--body)!important}
+.stage span{color:var(--navy)!important}.arw,.ar{color:var(--teal)!important}
+.note,.ft{text-align:center;font-size:6.1pt!important;line-height:1.5;color:var(--light)!important;border-top-color:var(--line)!important}
+.conclude{background:var(--grad)!important;border-radius:3mm;padding:4mm 5mm;margin:1mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
+.conclude .lab{display:inline-block;color:#7FD4E3;font-weight:800;font-size:8.4pt;margin-right:2mm}
+.conclude .txt{font-size:9pt;font-weight:700;line-height:1.5}.conclude .txt b{color:#8FE0EE}
+.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1!important;border-left:1.4mm solid #D9730D!important;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0}
+.rolebar .t{font-size:7.3pt;line-height:1.52;color:#7C3D0A!important}.rolebar .t b{color:#B45309!important;font-weight:800}
+.rolet{color:#B45309!important;font-weight:800}
+.page{padding:13mm 10mm 8mm!important}</style>
+</head><body>
 <div class="page">
 <h1 class="title">건축물 해체계획서 검토 사례집 ① — 제도·검토대상·작성항목 체계</h1>
 <p class="meta">건축물 해체 안전관리 ｜ 건축물관리법 제30~34조·시행령 제21조·국토교통부고시 제2022-446호 ｜ 국토교통부·국토안전관리원 사례집(2023.12)</p>
@@ -166,19 +219,19 @@
   <div class="card">
     <span class="badge">1 · 주변조사·지하매설물조사(2.1)</span>
     <ul class="list">
-      <li><b class="term">인접 건축물</b> — 용도·높이·구조형식·이격거리 조사, 소음·진동·균열·침하 피해 영향성 검토</li>
-      <li><b class="term">주변도로·공공시설</b> — 도로 폭·출입구·버스정류장·도시철도 역사 출입구·횡단보도 이격거리, 우회로·이설계획</li>
-      <li><b class="term">부지 내 공지</b> — 장비 가동범위·해체잔재 임시보관장소, 안전 이격거리(없으면 즉시 반출계획)</li>
-      <li><b class="term">지하매설물</b> — 전기·상하수도·가스·난방배관·통신·오수정화조 조사, 굴착영향반경 간섭 검토</li>
+      <li><b class="term">인접 건축물</b> — 용도·높이·구조형식·이격거리 조사, 소음·진동·균열·침하 영향성 검토</li>
+      <li><b class="term">주변도로·공공시설</b> — 도로 폭·버스정류장·역사 출입구·횡단보도 이격거리, 우회로·이설계획</li>
+      <li><b class="term">부지 내 공지</b> — 장비 가동범위·잔재 임시보관장소·안전 이격거리</li>
+      <li><b class="term">지하매설물</b> — 전기·상하수도·가스·통신·정화조 조사, 굴착영향반경 간섭</li>
     </ul>
   </div>
   <div class="card">
     <span class="badge">2 · 지하건축물·대상건축물·유해물질 조사</span>
     <ul class="list">
-      <li><b class="term">지하건축물(2.2)</b> — 지하저수조·전기실·기계실·지하주차장 현황, 단계별 지반·인접건축물 침하·균열 영향</li>
-      <li><b class="term">대상건축물(2.3)</b> — 설계도서 유무별 부재배치·콘크리트 강도·철근 배근 현장조사, 박락 우려 내·외장재·옥탑 현황</li>
-      <li><b class="term">유해물질(2.4)</b> — 산안법 제119조 기관석면조사, 무석면 증빙, 석면해체 완료보고서·타 공정 중복 여부</li>
-      <li><b class="term">환경공해(2.4)</b> — 소음·진동·비산먼지 인근 피해 검토, 생활소음·진동 규제기준 대상지역 여부</li>
+      <li><b class="term">지하건축물(2.2)</b> — 저수조·전기실·기계실·주차장 현황, 단계별 침하·균열 영향</li>
+      <li><b class="term">대상건축물(2.3)</b> — 부재배치·콘크리트 강도·철근 배근 현장조사, 박락 우려 내·외장재</li>
+      <li><b class="term">유해물질(2.4)</b> — 산안법 제119조 기관석면조사·무석면 증빙·해체 완료보고서</li>
+      <li><b class="term">환경공해(2.4)</b> — 소음·진동·비산먼지 피해, 규제기준 대상지역 여부</li>
     </ul>
   </div>
 </div>
@@ -186,14 +239,14 @@
 <div class="row1">
   <div class="card">
     <span class="badge rust">3 · 장비이동 계획 — 양중장비 안전성 검토 절차(3.2)</span>
-    <div class="formula">투입장비 개요(종류·대수·제원) → 이동식크레인 최대접지하중 검토(KOSHA GUIDE C-99-2015) → 줄걸이·샤클 안전성(M-186-2015) → 작업반경·인양능력·이격거리 검토
+    <div class="formula">투입장비 개요(종류·대수·제원) → 이동식크레인 최대접지하중 검토(C-99-2015) → 줄걸이·샤클 안전성(M-186-2015) → 작업반경·인양능력 검토
       <span class="sub">투입장비는 산업안전보건법 제84·93조에 따른 안전인증·안전검사 필증 포함</span>
     </div>
     <ol class="nlist">
-      <li><span class="no">①</span>이동식크레인 — 자중·<b class="term">카운터웨이트</b>·충격하중·최대인양물 하중 반영, 지반 허용지내력·보강부재 산정(C-99-2015)</li>
-      <li><span class="no">②</span>줄걸이·부속용구 — 인양물 최대하중 대비 <b class="term">와이어로프·샤클</b> 안전성, 제원표 값 일치 확인(M-186-2015)</li>
-      <li><span class="no">③</span>굴착기 — 제원표 적용 굴착기 중량과 사용 굴착기 중량 비교, 구조형식·공법(압쇄·절단)별 선택작업장치 적정성</li>
-      <li><span class="no">④</span>작업반경·동선 — 붐·암 옵션별 수평·수직 작업범위, 이동구간·잔재물 투하구·동시작업 금지구역 검토</li>
+      <li><span class="no">①</span>이동식크레인 — 자중·<b class="term">카운터웨이트</b>·충격하중 반영, 지반 허용지내력·보강부재 산정(C-99-2015)</li>
+      <li><span class="no">②</span>줄걸이·부속용구 — 최대하중 대비 <b class="term">와이어로프·샤클</b> 안전성, 제원표 값 일치 확인(M-186-2015)</li>
+      <li><span class="no">③</span>굴착기 — 제원표 적용 중량과 사용 굴착기 중량 비교, 공법(압쇄·절단)별 선택작업장치 적정성</li>
+      <li><span class="no">④</span>작업반경·동선 — 붐·암 옵션별 작업범위, 잔재물 투하구·동시작업 금지구역</li>
     </ol>
   </div>
 </div>
@@ -211,8 +264,8 @@
   <div class="card">
     <span class="badge">5 · 가시설물(외부비계) 설치계획(3.3)</span>
     <ul class="list">
-      <li><b class="term">설계기준</b> — 외부비계 KDS 21 60 00 준수, 2차원·3차원 구조해석, 풍하중·충실률·기본풍속 적정성</li>
-      <li><b class="term">개구부·돌출부</b> — 구조적 취약부 구조해석, 잔재물 반출구·작업자 출입구 반영, 벽이음철물 위치</li>
+      <li><b class="term">설계기준</b> — KDS 21 60 00 준수, 구조해석·풍하중·충실률·기본풍속 적정성</li>
+      <li><b class="term">개구부·돌출부</b> — 취약부 구조해석, 반출구·출입구·벽이음철물 위치</li>
       <li><b class="term">설치 높이</b> — 건물높이 대비 비계 설치높이, 설계속도 초과 풍속 시 가림막 해체 등 대책</li>
       <li><b class="term">순차 해체</b> — 해체 단계별 외부비계 해체순서, 존치 시 전도방지 대책</li>
     </ul>
@@ -327,7 +380,7 @@
     <span class="badge">1 · 해체작업자·인접건축물 안전관리(5.1)</span>
     <ul class="list">
       <li><b class="term">직무별 교육</b> — 장비운전원·살수작업자·신호수 직무별 안전교육(건설기술진흥법·산안법)</li>
-      <li><b class="term">추락 방지</b> — 잔재물 투하구 주변 추락방지, 내부 안전통로·비상탈출구·비상계단, 안전난간·추락방지망</li>
+      <li><b class="term">추락 방지</b> — 투하구 주변 추락방지, 안전통로·비상탈출구·안전난간·방지망</li>
       <li><b class="term">화재 방지</b> — 소화기 배치·대피로 계획, 사고 시 초기진압 대책</li>
       <li><b class="term">인접건축물</b> — 해체 단계별 인접건축물 보호 대책, 계측관리 계획</li>
     </ul>
@@ -335,9 +388,9 @@
   <div class="card">
     <span class="badge">2 · 주변통행·보행자 안전관리(5.1)</span>
     <ul class="list">
-      <li><b class="term">차량 이동계획</b> — 교통안내원·차량유도원 배치, 우회도로 설치, 보행자 안전통로</li>
+      <li><b class="term">차량 이동계획</b> — 교통안내원·유도원 배치, 우회도로·보행자 안전통로</li>
       <li><b class="term">버스정류장 이설</b> — 차량 진출입·통행량 고려한 이설 위치 적정성, 신호수·안전관리원 배치</li>
-      <li><b class="term">인접건축물 보호</b> — 단계별 보호대책·가시설물 순차 해체, 울타리 설치 곤란 시 별도 보호대책</li>
+      <li><b class="term">인접건축물 보호</b> — 단계별 보호대책·가시설물 순차 해체, 울타리 곤란 시 대책</li>
       <li><b class="term">안전통로</b> — 살수작업자·신호수 추락방지 안전시설물, 상시 유지관리</li>
     </ul>
   </div>
@@ -352,7 +405,7 @@
     <ol class="nlist">
       <li><span class="no">①</span>소음·진동 — 생활소음·진동 규제기준 대상지역 여부, 장비 운영·측정 주기·기록관리, 작업시간대 설정</li>
       <li><span class="no">②</span>비산먼지 — 방진막 설치 위치, 살수장비 위치·개수, 장비 이동경로·살수작업자 안전 이격거리</li>
-      <li><span class="no">③</span>해체물 처리 — 폐콘크리트·폐목재·폐합성수지 성상별 분리·임시보관·반출, 잭서포트·E/V 벽체 간섭 고려 운반동선</li>
+      <li><span class="no">③</span>해체물 처리 — 폐콘크리트·폐목재·폐합성수지 성상별 분리·임시보관·반출, 운반동선 간섭 검토</li>
       <li><span class="no">④</span>세륜·오탁수 — 세륜수 우수관로 배출 시 오탁수 처리계획, 수질검사 후 배출(제6.2절)</li>
     </ol>
   </div>
@@ -365,7 +418,7 @@
       <li><b class="term">잔재물 확인</b> — 전체 부지 해체 폐기물·잔재물 유무 확인, 확인주체(시공사·감리·건축주)</li>
       <li><b class="term">되메우기·평탄</b> — 되메우기·평탄작업, 배수로 정비 등 복구계획(경사도 10% 이내)</li>
       <li><b class="term">복구</b> — 보도·통행로·인접건물 접근로 복구계획</li>
-      <li><b class="term">우수 유입방지</b> — 1층 바닥 슬래브 존치 시 계단실·E/V 개구부 보호, 우기 작업 시 우수 유입방지</li>
+      <li><b class="term">우수 유입방지</b> — 1층 슬래브 존치 시 계단실·개구부 보호, 우기 유입방지</li>
     </ul>
   </div>
   <div class="card">

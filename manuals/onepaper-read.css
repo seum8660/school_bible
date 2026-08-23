@@ -1,0 +1,27 @@
+/* 가독성 레이어 — 화면·인쇄 공통 (base_infographic 위에 적용) */
+.title,.hd h1{font-size:13.5pt!important;line-height:1.35!important;padding-bottom:3mm!important;white-space:nowrap!important;overflow:hidden!important;letter-spacing:-.03em!important}
+.title::after,.hd h1::after{height:1.6mm!important;width:54mm!important;margin-top:2.6mm!important}
+.meta,.hd .meta,.hd p.meta{font-size:8.2pt!important;line-height:1.55!important;margin-top:2.4mm!important}
+.rule-navy{margin:3mm 0 5mm 0!important}
+.badge,.box h2{font-size:11.4pt!important;line-height:1.4!important;padding-bottom:2mm!important;margin-bottom:3.6mm!important}
+.badge.emph{padding:1.4mm 3.4mm!important}
+.list li,.box li,.nlist li{font-size:9.6pt!important;line-height:1.78!important;margin-bottom:2.6mm!important}
+.list li{padding-left:4.4mm!important;text-indent:-4.4mm!important}
+.nlist li{padding-left:6.2mm!important;text-indent:-6.2mm!important}
+.nlist .no,.box .num{font-size:8pt!important;width:5mm!important;height:5mm!important;line-height:5mm!important;margin-right:2mm!important}
+.card,.box{padding:4.6mm 5mm 5mm 5mm!important}
+.row1,.row2,.grid{margin-bottom:5mm!important;gap:5mm!important}
+.formula{font-size:9.4pt!important;line-height:1.7!important;padding:4mm 5mm!important;margin-bottom:4mm!important;text-align:left!important}
+.formula .sub{font-size:8.2pt!important;line-height:1.6!important;margin-top:2.2mm!important}
+.chips{gap:2.6mm!important}
+.chip,.law,.tag{font-size:8.4pt!important;line-height:1.45!important;padding:1.8mm 3.2mm!important}
+table{font-size:9.2pt!important}
+th,td{padding:2.4mm 3mm!important;line-height:1.6!important}
+.note,.ft{font-size:7.8pt!important;line-height:1.65!important}
+.rolebar,.rolebar .t{font-size:9.2pt!important;line-height:1.7!important}
+.conclude{padding:5mm 6mm!important}
+.conclude .lab{font-size:9.4pt!important}
+.conclude .txt{font-size:10.6pt!important;line-height:1.62!important}
+.rule-gray{margin:5mm 0 3mm 0!important}
+.page{padding:15mm 14mm 11mm!important}
+.stage div,.flow div{font-size:9pt!important;line-height:1.55!important;padding:2.6mm 3mm!important}

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<title>소규모 건설공사 품질관리 실무업무 매뉴얼 — 핵심 요약</title>
+<style>
+  /* onepaper — 인포그래픽 스타일 (네이비→틸) */
+  :root{
+    --navy:#1B3A5B; --navy2:#274E74; --teal:#227C8E; --teal2:#2E9AAD;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --line:#D4DCE4; --panel:#EDF3F6; --panel-line:#C8D8DF;
+    --body:#33414F; --meta:#6B7684; --note:#9AA5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm 12mm 12mm;
+    page-break-after:always; background:#fff; position:relative;
+  }
+  .page:last-child{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+
+  /* ── 제목 ── */
+  .title{
+    margin:0; font-size:13.2pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.025em; line-height:1.18; white-space:nowrap;
+  }
+  .ubar{ height:0.9mm; width:34mm; margin:1.4mm 0 0 0;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal2) 100%); }
+  .meta{ margin:1.8mm 0 0 0; font-size:6pt; color:var(--meta); line-height:1.4; letter-spacing:0.01em; }
+  .rule-navy{ height:0.4mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  /* ── 레이아웃 ── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:5mm; margin-bottom:3.4mm; }
+  .row1{ margin-bottom:3.4mm; }
+  .row1.recap{ margin-top:auto; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  /* ── 열린 카드(상하 가로 라인만) ── */
+  .card{
+    background:none; border:0; border-radius:0;
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    padding:2.2mm 0 2.6mm 0;
+  }
+
+  /* ── 배지 + SVG 아이콘 타일 ── */
+  .bh{ margin-bottom:1.8mm; line-height:1; }
+  .tile{
+    display:inline-block; width:6mm; height:6mm; vertical-align:middle;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal2) 100%);
+    border-radius:1.2mm; margin-right:1.8mm;
+  }
+  .tile svg{ display:block; width:3.8mm; height:3.8mm; margin:1.1mm auto;
+    fill:none; stroke:#fff; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+  .badge{
+    display:inline-block; vertical-align:middle; white-space:nowrap;
+    font-size:8.4pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em; line-height:1.2;
+  }
+  .badge .n{ color:var(--teal); font-weight:800; margin-right:0.6mm; }
+
+  /* ── 목록 ── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.9pt; line-height:1.46; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:1mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.9pt; line-height:1.46; padding-left:5.4mm; text-indent:-5.4mm; margin-bottom:1.2mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    display:inline-block; width:4mm; height:4mm; border-radius:50%;
+    background:var(--teal); color:#fff; text-align:center; line-height:4mm;
+    font-size:5.6pt; font-weight:800; margin-right:1.4mm; text-indent:0; vertical-align:baseline;
+  }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tnum{ color:var(--teal); font-weight:700; }
+
+  /* ── 패널(수식·타임라인 밴드) ── */
+  .formula{
+    background:var(--panel); border-left:1.2mm solid var(--teal);
+    padding:2.2mm 3.2mm; margin:0 0 2.4mm 0;
+    text-align:center; font-size:7.2pt; font-weight:700; line-height:1.45; color:var(--navy);
+  }
+  .formula .sub{ display:block; font-size:6.1pt; font-weight:500; color:var(--meta); margin-top:0.9mm; }
+
+  /* ── 역할(책임 주체) 강조 ── */
+  .rolebar{
+    background:var(--amber-bg); border-left:1.2mm solid var(--amber);
+    padding:1.8mm 2.6mm; margin:0 0 2mm 0; line-height:1.4;
+  }
+  .rolebar .rtile{
+    display:inline-block; width:5mm; height:5mm; vertical-align:middle;
+    background:var(--amber); border-radius:1mm; margin-right:1.6mm;
+  }
+  .rolebar .rtile svg{ display:block; width:3.2mm; height:3.2mm; margin:0.9mm auto;
+    fill:none; stroke:#fff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .rolebar .rtx{ display:inline-block; vertical-align:middle; font-size:6.6pt; font-weight:600;
+    color:#7A3E06; width:calc(100% - 7.2mm); }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ── */
+  .chips{ margin:0; padding:0; font-size:0; }
+  .chip{
+    display:inline-block; font-size:6.1pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 2mm; color:var(--body); white-space:nowrap;
+    margin:0 1.6mm 1.6mm 0; vertical-align:top;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+
+  /* ── 결론 밴드 ── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; padding:3.2mm 4mm; margin:3mm 0 0 0; border-radius:0.8mm;
+  }
+  .conclude .ct{ font-size:6pt; font-weight:700; letter-spacing:0.14em; opacity:0.78; margin-bottom:1.2mm; }
+  .conclude .cb{ font-size:8.2pt; font-weight:800; line-height:1.4; letter-spacing:-0.02em; }
+
+  /* ── 각주·쪽번호 ── */
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+  .pageno{ text-align:center; font-size:5.7pt; color:var(--note); margin:1.4mm 0 0 0; letter-spacing:0.06em; }
+
+  /* ── 표지 ── */
+  .cover{ width:210mm; min-height:297mm; padding:0; page-break-after:always;
+    position:relative; background:#fff; }
+  .cover .band{ height:84mm; background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%); }
+  .cover .inner{ padding:0 22mm; }
+  .cover .kicker{ font-size:6.6pt; font-weight:700; letter-spacing:0.26em; color:#fff;
+    padding:26mm 22mm 0 22mm; opacity:0.85; }
+  .cover .ctitle{ padding:6mm 22mm 0 22mm; font-size:20pt; font-weight:800; color:#fff;
+    line-height:1.3; letter-spacing:-0.03em; }
+  .cover .csub{ padding:4.5mm 22mm 0 22mm; font-size:7.8pt; color:#DCEAF0; font-weight:500; letter-spacing:0.01em; }
+  .cover .cmeta{ margin-top:18mm; }
+  .cover .cmeta .lbl{ font-size:6.2pt; font-weight:700; letter-spacing:0.16em; color:var(--teal); }
+  .cover .cmeta .val{ font-size:8.4pt; font-weight:600; color:var(--navy); margin-top:1.2mm; }
+  .cover .crow{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:6mm;
+    border-top:0.5mm solid var(--navy); padding-top:4mm; }
+  .cover .toc{ margin-top:18mm; border-top:0.25mm solid var(--line); padding-top:6mm; }
+  .cover .toc .th{ font-size:6.2pt; font-weight:700; letter-spacing:0.16em; color:var(--teal); margin-bottom:5mm; }
+  .cover .toc ul{ margin:0; padding:0; list-style:none; }
+  .cover .toc li{ font-size:8pt; color:var(--body); line-height:1.5; margin-bottom:4.2mm;
+    padding-left:9mm; text-indent:-9mm; }
+  .cover .toc li b{ color:var(--teal); font-weight:800; display:inline-block; width:9mm; text-indent:0; }
+  .cover .srcbox{ margin-top:14mm; background:var(--panel); border-left:1.2mm solid var(--teal);
+    padding:3.4mm 4mm; }
+  .cover .srcbox .sh{ font-size:6.2pt; font-weight:700; letter-spacing:0.16em; color:var(--teal); margin-bottom:2.4mm; }
+  .cover .srcbox ul{ margin:0; padding:0; list-style:none; }
+  .cover .srcbox li{ font-size:6.3pt; line-height:1.5; color:var(--body); margin-bottom:2mm;
+    padding-left:2.6mm; text-indent:-2.6mm; }
+  .cover .srcbox li:last-child{ margin-bottom:0; }
+  .cover .srcbox li::before{ content:"· "; color:var(--teal); font-weight:800; }
+  .cover .srcbox li b{ color:var(--navy); font-weight:700; margin-right:0.8mm; }
+  .cover .srcbox .u{ color:var(--teal); font-weight:600; }
+  .cover .cfoot{ position:absolute; left:22mm; right:22mm; bottom:16mm;
+    border-top:0.25mm solid var(--line); padding-top:3mm;
+    font-size:6pt; color:var(--note); }
+
+  @media screen{ body{ background:#E9EDF1; }
+    .page,.cover{ margin:0 auto 6mm auto; box-shadow:0 1mm 3mm rgba(0,0,0,0.12); } }
+  @media print{ body{ background:#fff; } .page,.cover{ margin:0; box-shadow:none; } }
+</style></head><body>
+<div class="cover">
+<div class="band">
+  <div class="kicker">QUALITY CONTROL FIELD MANUAL</div>
+  <div class="ctitle">소규모 건설공사<br>품질관리 실무업무 매뉴얼</div>
+  <div class="csub">핵심 요약 — 계획 수립부터 공장 점검·벌점까지 한눈에</div>
+</div>
+<div class="inner">
+  <div class="cmeta">
+    <div class="crow">
+      <div><div class="lbl">발간기관</div><div class="val">익산지방국토관리청 건설관리과</div></div>
+      <div><div class="lbl">발간일 · 분량</div><div class="val">2023년 3월 · 본문 72쪽</div></div>
+      <div><div class="lbl">근거</div><div class="val">건설기술 진흥법 제55~61조</div></div>
+    </div>
+  </div>
+  <div class="toc">
+    <div class="th">CONTENTS</div>
+    <ul>
+      <li><b>1</b>일반사항 — 목적·근거법령·핵심용어·제도 연혁</li>
+      <li><b>2</b>품질관리·시험계획 수립 — 대상 기준·수립 절차·시험실 및 인력</li>
+      <li><b>3</b>적절성 확인과 제재 — 점검 실시·벌점 기준·벌칙</li>
+      <li><b>4</b>레미콘 공장 점검요령 — 설비·운전실·시험실·공장시험</li>
+      <li><b>5</b>아스콘 공장 점검요령과 주요 지적사례</li>
+      <li><b>6</b>품질관리 질의회신 17선 — 실무 쟁점 정리</li>
+    </ul>
+  </div>
+  <div class="srcbox">
+    <div class="sh">자료 출처</div>
+    <ul>
+      <li><b>원문 매뉴얼</b> 익산지방국토관리청 공지사항 「2023년 품질관리 컨설팅 직무교육(소규모 건설공사 품질관리 실무업무 매뉴얼)」 2023.3.20. 등록<br><span class="u">www.molit.go.kr/irocm/USR/BORD0201/m_15642/BRD.jsp</span> (게시글 idx=237195, 첨부 「품질관리 실무업무 매뉴얼.pdf」)</li>
+      <li><b>근거 법령·고시</b> 국가법령정보센터 — 「건설기술 진흥법」·같은 법 시행령·시행규칙, 「건설공사 품질관리 업무지침」(국토교통부고시 제2022-30호)<br><span class="u">www.law.go.kr</span></li>
+      <li><b>기관 홈페이지</b> 익산지방국토관리청 <span class="u">www.molit.go.kr/irocm</span> · 국토교통부 <span class="u">www.molit.go.kr</span></li>
+    </ul>
+  </div>
+  <div class="cfoot">본 요약본은 원문 매뉴얼의 실무 핵심만 발췌·재구성한 것으로, 개별 사안의 최종 판단은 반드시 원문과 현행 법령·고시를 확인하시기 바랍니다.</div>
+</div>
+</div>
+<div class="page haspin"><h1 class="title">1 ｜ 일반사항 — 목적 · 근거법령 · 핵심용어</h1><div class="ubar"></div><p class="meta">분류 : 실무 매뉴얼 ｜ 근거 : 건설기술 진흥법 제55~61조, 건설공사 품질관리 업무지침 ｜ 출처 : 익산지방국토관리청(2023.3.)</p><div class="rule-navy"></div><div class="row2"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span><span class="badge"><span class="n">1</span>· 목적</span></div><ul class="list"><li>건설공사 품질을 <b class="term">확보·향상</b>시키고 공사 후 예상되는 <b class="term">하자를 미연에 방지</b>함</li><li>건설 및 유지·운영관리 <b class="term">비용 절감</b>과 <b class="term">건설사고 예방</b>이 최종 목적임</li><li>설계도서와 불일치된 <b class="term">부적합공사를 사전 예방</b>하는 활동까지 품질관리에 포함됨</li><li>적용 범위 — 익산지방국토관리청이 발주한 도로 및 국토관리사무소 소규모 건설공사 현장</li></ul></div><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M12 4v16M7 20h10M6 8h12M5 8l-3 6h6zM19 8l-3 6h6z"/></svg></span><span class="badge"><span class="n">2</span>· 근거 법령</span></div><ul class="list"><li>「건설기술 진흥법」 <b class="term">제55조~제61조</b></li><li>「건설공사 품질관리 업무지침」 국토교통부고시 <b class="term">제2022-30호</b>(<span class="num">2022.1.18.</span>)</li><li>시행령 제89조~제91조 · 시행규칙 제50조 및 <b class="term">[별표 5]</b>(2022.12.30. 개정)</li><li>품질시험 기준은 업무지침 <b class="term">[별표 2]</b>, 점검표는 <b class="term">[별지 2]</b>·[별지 제8호서식]을 적용함</li></ul></div></div><div class="row1"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="badge"><span class="n">3</span>· 제도 연혁과 4대 핵심 개념</span></div><div class="formula">’87 제도 도입 → ’97 품질보증계획(ISO 9001) → ’10 품질관리지침 제정 → ’15 업무지침 통합 → ’22 현행 고시<span class="sub">’22.1.18. 개정으로 시험과정의 적절성 증빙을 사진촬영 등 식별 가능한 정보로 기록·관리하도록 강화</span></div><div class="rolebar"><span class="rtile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/></svg></span><span class="rtx"><span class="rolet">발주자 = 발주청 + 자재 공급원 승인권한자</span> — 품질관리·시험계획의 <b>승인</b>과 적절성 확인의 책임 주체이며, <span class="rolet">공사감독자</span>(발주청의 장이 임명한 자·건설사업관리기술인·감리자)는 <b>착공 전 검토·확인</b>의 책임을 진다.</span></div><ol class="nlist"><li><span class="no">1</span><b class="term">품질관리</b> — 법 제53~61조의 요구사항을 충족시키기 위한 활동. 시공·사용자재 품질시험 및 검사에 부적합공사 사전예방 활동을 포함함</li><li><span class="no">2</span><b class="term">적절성 확인</b> — 발주청 또는 인·허가기관의 장이 계획서에 규정된 품질관리를 적절히 수행하는지 확인하는 것</li><li><span class="no">3</span><b class="term">중점 품질관리</b> — 하자 발생빈도가 높고 부적합 판명 시 시정이 어려워 많은 노력·경비가 드는 공종·부위의 강화 관리</li><li><span class="no">4</span><b class="term">공급원 승인권자</b> — 자재 공급원 승인요청에 대한 승인 권한을 갖는 <span class="rolet">발주청 또는 공사감독자</span></li></ol></div></div><div class="row2"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M8 8h8M8 12h6"/></svg></span><span class="badge"><span class="n">4</span>· 실무에서 자주 쓰는 용어</span></div><ul class="list"><li><b class="term">검사</b>(측정·시험·계측에 따른 적합 여부 평가) ↔ <b class="term">시험</b>(특성의 결정)</li><li><b class="term">시험관리인력</b> : 배치 건설기술인 중 최하위 등급자 / <b class="term">시험인력</b> 등급은 특급·고급·중급·초급</li><li><b class="term">혼화재</b> : 플라이애시 또는 고로슬래그 미분말</li><li><b class="term">현장배치플랜트</b> : 시공자가 해당 공사용 레미콘 생산·공급을 위해 설치한 고정식·이동식 플랜트</li><li><b class="term">공사시방서·설계도서</b> : 품질시험 및 검사 등 품질관리 사항을 기술한 시공기준과 그 관련 서류 일체</li><li><b class="term">품질관리규정</b> : KS Q ISO 17025에 따라 시험업무 처리요령과 인력·장비 관리·운영 절차를 정한 문서</li></ul></div><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><span class="badge"><span class="n">5</span>· 매뉴얼 구성(4장 + 부록)</span></div><ul class="list"><li>제1장 목적·적용범위·용어·제도 연혁</li><li>제2장 품질관리 적절성 확인 — 정의·업무흐름도·점검요령·지침 및 기준</li><li>제3장 레미콘·아스콘 공장 점검 개요·업무흐름도·점검요령 및 주요 지적사례</li><li>제4장 품질관리 질의응답 <span class="num">17선</span></li><li>부록 — 적절성 확인 점검표, 레미콘·아스콘 공장 사전(정기)점검표, 품질시험 검사대장 등 <span class="num">서식 9종</span></li></ul></div></div><div class="row1 recap"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-6M2 20h20"/></svg></span><span class="badge"><span class="n">6</span>· 핵심 수치 재확인</span></div><div class="chips"><span class="chip"><b>품질관리계획</b> 총공사비 500억원 이상</span><span class="chip"><b>품질시험계획</b> 토목 5억원 · 전문 2억원 이상</span><span class="chip"><b>건축공사</b> 연면적 660㎡ 이상</span><span class="chip"><b>다중이용 건축물</b> 연면적 3만㎡ 이상</span><span class="chip"><b>현행 고시</b> 제2022-30호</span><span class="chip"><b>질의응답</b> 17선</span></div></div></div><div class="rule-gray"></div><p class="note">출처 ｜ 익산지방국토관리청 건설관리과, 「소규모 건설공사 품질관리 실무업무 매뉴얼」(2023.3., 72쪽) — 익산지방국토관리청 공지사항(www.molit.go.kr/irocm, 2023.3.20. 등록)<br>근거 법령·고시 원문 ｜ 국가법령정보센터 www.law.go.kr · 「건설기술 진흥법」 제55~61조, 「건설공사 품질관리 업무지침」 국토교통부고시 제2022-30호</p><p class="pageno">1 / 6</p></div>
+<div class="page haspin"><h1 class="title">2 ｜ 품질관리 · 시험계획의 수립과 승인</h1><div class="ubar"></div><p class="meta">근거 : 건설기술 진흥법 제55조 ｜ 시행령 제89조·제90조 ｜ 시행규칙 제50조 및 [별표 5](2022.12.30. 개정)</p><div class="rule-navy"></div><div class="row2"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h4"/></svg></span><span class="badge"><span class="n">1</span>· 수립 대상 — 품질관리계획</span></div><ul class="list"><li>감독 권한대행 등 건설사업관리 대상으로 총공사비 <span class="num">500억원 이상</span>인 건설공사</li><li>다중이용 건축물로서 연면적 <span class="num">3만㎡ 이상</span>인 건축물의 건설공사</li><li>해당 공사의 <b class="term">계약에 품질관리계획 수립이 규정</b>된 건설공사</li><li>내용 : 업무지침에 규정된 <span class="num">36개 항목</span>의 운영계획 · 시험실 <span class="num">50㎡ 이상</span></li><li>세부 작성기준은 업무지침 <b class="term">제7조</b>에 열거된 사항을 포함하여야 함</li></ul></div><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h4"/></svg></span><span class="badge"><span class="n">2</span>· 수립 대상 — 품질시험계획</span></div><ul class="list"><li>총공사비 <span class="num">5억원 이상</span>인 토목공사</li><li>연면적 <span class="num">660㎡ 이상</span>인 건축물의 건축공사</li><li>총공사비 <span class="num">2억원 이상</span>인 전문공사</li><li>내용 : 시험계획(종목·빈도·횟수), 시험시설 및 기술인 배치계획 · 시험실 <span class="num">20㎡ 이상</span></li><li>포함 내용은 시행령 제89조 제2항 관련 <b class="term">[별표 9]</b>에 따르며, 작성자는 건설사업자임</li></ul></div></div><div class="row1"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M4 7h11M15 4l3 3-3 3"/><path d="M20 17H9M9 14l-3 3 3 3"/></svg></span><span class="badge"><span class="n">3</span>· 수립 · 승인 절차 (영 제90조)</span></div><div class="formula">시공자 계획 수립 → 공사감독자 검토·확인 → <b>착공 전</b> 발주자 승인 → 변경 시 동일 절차 재이행<span class="sub">부지 정리·가설사무소 설치 등 공사준비는 착공으로 보지 않음</span></div><div class="rolebar"><span class="rtile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/></svg></span><span class="rtx"><span class="rolet">공사감독자·건설사업관리기술인</span>의 <b>검토·확인</b>을 먼저 받아야 하며, 최종 <b>승인권자는 발주자</b>다. 발주청이 아닌 발주자는 계획서 사본을 미리 <span class="rolet">인·허가기관의 장</span>에게 제출하여야 한다.</span></div><ol class="nlist"><li><span class="no">1</span>작성자는 <b class="term">건설사업자·주택건설등록업자</b>이며, 계획 수립 없이 착공하면 벌칙 대상이 됨</li><li><span class="no">2</span>검토 항목 — 대상공사 규모·시설비 금액(특급·고급·중급·초급 품질관리 대상 구분)</li><li><span class="no">3</span>시험·검사장비는 영 제91조 제1항의 품질검사에 필요한 장비를, 시험 횟수는 업무지침 <b class="term">[별표 2] 품질시험기준</b>을 검토하여 반영함</li><li><span class="no">4</span>발주자는 한국산업표준·설계 및 시공기준과 [별표 2]가 다를 경우 공사 종류·구조물 특성을 감안해 <b class="term">적합한 기준을 선정하여 설계도서에 반영</b>하여야 함(지침 제9조)</li></ol></div></div><div class="row2"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/></svg></span><span class="badge"><span class="n">4</span>· 시험실 규모 · 건설기술인 배치 [별표 5]</span></div><ul class="list"><li><b class="term">특급</b> : 총공사비 1,000억원 이상 또는 연면적 5만㎡ 이상 → 시험실 <span class="num">50㎡</span>, 특급(경력 3년↑)·중급·초급 각 1명 이상</li><li><b class="term">고급</b> : 품질관리계획 대상 중 특급 외 → 시험실 <span class="num">50㎡</span>, 고급(경력 2년↑)·중급·초급 각 1명 이상</li><li><b class="term">중급</b> : 총공사비 100억원 이상 또는 연면적 5,000㎡ 이상 → 시험실 <span class="num">20㎡</span>, 중급(경력 1년↑)·초급 각 1명 이상</li><li><b class="term">초급</b> : 품질시험계획 대상 중 중급 외 → 시험실 <span class="num">20㎡</span>, 초급 이상 1명 이상</li><li>배치 기술인은 법 제21조 제1항 신고를 마친 사람에 한하며, <span class="rolet">발주청·인·허가기관의 장</span>이 필요하다고 인정하면 규모·인력을 조정할 수 있음</li></ul></div><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M9 3v6L4 19a2 2 0 0 0 1.8 3h12.4A2 2 0 0 0 20 19L15 9V3"/><path d="M8 3h8M7 14h10"/></svg></span><span class="badge"><span class="n">5</span>· 시험실 시험·검사장비 최소 구비목록</span></div><ul class="list"><li>압축강도·슬럼프·공기량·염화물·단위수량 시험기 각 <span class="num">1대</span></li><li>공시체몰드 <span class="num">12개</span> · 공시체집게 2 · 콘크리트양생수조 1 · 양생히터 1</li><li>유리제온도계 2 · 디지털온도계 1 · 들밀도시험기 2 · 버니어캘리퍼스 1</li><li>표준사 5 · 시료팬 5 · 전자저울 2 · 건조기 1</li><li>장비의 <b class="term">교정검사 실시 및 교정 상태 식별표시</b>는 적절성 확인 점검항목이므로 상시 관리 필요</li></ul></div></div><div class="row1 recap"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-6M2 20h20"/></svg></span><span class="badge"><span class="n">6</span>· 핵심 수치 재확인</span></div><div class="chips"><span class="chip"><b>시험실 규모</b> 50㎡ / 20㎡ 이상</span><span class="chip"><b>품질관리계획 항목</b> 36개</span><span class="chip"><b>특급 경력</b> 3년 이상</span><span class="chip"><b>중급 경력</b> 1년 이상</span><span class="chip"><b>승인 시점</b> 착공 전</span><span class="chip"><b>변경 시</b> 재승인 필요</span></div></div></div><div class="rule-gray"></div><p class="note">출처 ｜ 익산지방국토관리청 건설관리과, 「소규모 건설공사 품질관리 실무업무 매뉴얼」(2023.3., 72쪽) — 익산지방국토관리청 공지사항(www.molit.go.kr/irocm, 2023.3.20. 등록)<br>근거 법령·고시 원문 ｜ 국가법령정보센터 www.law.go.kr · 「건설기술 진흥법」 제55~61조, 「건설공사 품질관리 업무지침」 국토교통부고시 제2022-30호</p><p class="pageno">2 / 6</p></div>
+<div class="page haspin"><h1 class="title">3 ｜ 적절성 확인과 제재 — 점검 · 벌점 · 벌칙</h1><div class="ubar"></div><p class="meta">근거 : 건설공사 품질관리 업무지침 [별지 2] 점검표 ｜ 건설기술 진흥법 제88조·제91조 ｜ 건설산업기본법 제82조</p><div class="rule-navy"></div><div class="row2"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/></svg></span><span class="badge"><span class="n">1</span>· 적절성 확인 실시 내용</span></div><ul class="list"><li>품질관리(시험)계획의 <b class="term">이행 및 품질목표 달성 가능 여부</b> 점검</li><li>품질시험계획상 <b class="term">시험횟수 산출 및 이행</b> 확인</li><li>품질 시험·검사의 적정 여부와 시험결과의 <b class="term">기준 만족 여부</b> 확인</li><li>공정별 시험기구 등의 구비·관리 실태 점검, 필요시 <b class="term">시료 채취·봉인</b> 후 청 시험실에서 품질 확인</li><li>공정별 주요 품질시험 기준 — 현장밀도 노체 <span class="num">90%</span>·노상 <span class="num">95%</span> 이상, 콘크리트 염화물 <span class="num">0.30㎏/㎥</span> 또는 <span class="num">0.04%</span> 이하</li></ul></div><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h4"/></svg></span><span class="badge"><span class="n">2</span>· 점검표 주요 점검사항 [별지 2]</span></div><ul class="list"><li>품질시험·검사에 필요한 관련 자료의 구비·활용 여부</li><li>계획 내용의 적절성 — 주요 자재 및 주요 공정의 <b class="term">검사 포함 여부</b></li><li>건설기술인·시설·장비의 적정 확보 여부, 적기·적정빈도 실시 여부</li><li>성과의 기록유지, 장비 <b class="term">교정검사 및 식별표시</b>, 부적합품·부적합공정 처리의 적정 여부</li><li>점검내용란에는 점검 시 확인한 <b class="term">문서화된 정보를 상세히 기록</b>하여야 하며, 공사 규모·특성에 따라 항목을 추가·수정할 수 있음</li></ul></div></div><div class="row1"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M4 7h11M15 4l3 3-3 3"/><path d="M20 17H9M9 14l-3 3 3 3"/></svg></span><span class="badge"><span class="n">3</span>· 점검 → 보고 → 조치 → 확인의 순환</span></div><div class="formula">현장 점검 실시 → <b>매월</b> 결과 취합·보고 → 시정 조치 및 부실벌점 부과 요청 → 조치 결과 청에 보고·사후확인<span class="sub">지적사항 미이행 시 건설기술 진흥법 등 관련 규정에 따라 처리</span></div><div class="rolebar"><span class="rtile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/></svg></span><span class="rtx"><span class="rolet">발주청(익산지방국토관리청 건설관리과)</span>이 점검·보고·조치 요구의 주체이며, <span class="rolet">공사감독자</span>는 시공자가 제출한 계획·시험 성과를 검토하고 미흡 시 <b>시정지시</b>를 해야 한다. 시정지시를 하지 않으면 감독자 본인이 벌점 대상이다.</span></div><ol class="nlist"><li><span class="no">1</span>시공자 벌점 — 계획 수립·실시 미흡 <span class="num">1~2점</span>, 시험실·장비·기술인 확보 미흡 <span class="num">0.5~3점</span></li><li><span class="no">2</span>시공자 벌점 — 자재·기계기구 관리 불량 <span class="num">1~3점</span>, 콘크리트 타설·양생 소홀 <span class="num">1~3점</span></li><li><span class="no">3</span>시공자 벌점 — 레미콘·아스콘 플랜트 현장관리 불량 <span class="num">1~3점</span>, 아스콘 포설·다짐 불량 <span class="num">0.5~2점</span></li><li><span class="no">4</span>건설사업관리기술인 벌점 — 계획·시험성과 검토 불철저 <span class="num">0.5~3점</span>, 자재·기계기구 적합성 검토 소홀 <span class="num">0.5~2점</span></li></ol></div></div><div class="row2"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17.3v.2"/></svg></span><span class="badge"><span class="n">4</span>· 대표적 벌점 부과 사유</span></div><ul class="list"><li>고의로 기준을 초과하여 <b class="term">레미콘 물타기</b>를 한 경우 — <span class="num">3점</span></li><li>계량장치를 검정하지 않은 경우 — <span class="num">3점</span></li><li>배합설계 미실시·타설계획 미수립·거푸집 해체시기 미준수 — <span class="num">3점</span></li><li>교육·훈련 미이수자를 품질관리 건설기술인으로 배치 — <span class="num">1점</span></li><li>시험장비 고장 방치 또는 유효기간 지난 장비 사용 — <span class="num">0.5점</span>(대체 장비가 있으면 제외)</li></ul></div><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg></span><span class="badge"><span class="n">5</span>· 벌칙 · 과태료 · 영업정지</span></div><ul class="list"><li>계획 미수립·미이행 또는 품질시험·검사 미실시 — <b class="term">2년 이하 징역 또는 2천만원 이하 벌금</b>(건진법 제88조 제4호)</li><li>반품된 레미콘을 품질인증 없이 재사용 — 동일 벌칙(제88조 제6호)</li><li>품질이 확보되지 않은 자재·부재를 공급·사용 — 동일 벌칙(제88조 제5호)</li><li>품질관리비 미계상·목적 외 사용 — <b class="term">1천만원 이하 과태료</b>(건진법 제91조 제2항 제2호)</li><li>품질시험 또는 검사를 성실하게 수행하지 않은 경우 — <b class="term">영업정지 6개월 이내 또는 과징금 1억원 이하</b>(건산법 제82조 제1항 제6호)</li></ul></div></div><div class="row1 recap"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-6M2 20h20"/></svg></span><span class="badge"><span class="n">6</span>· 핵심 수치 재확인</span></div><div class="chips"><span class="chip"><b>최고 벌점</b> 3점</span><span class="chip"><b>최저 벌점</b> 0.5점</span><span class="chip"><b>벌칙</b> 징역 2년 · 벌금 2천만원</span><span class="chip"><b>과태료</b> 1천만원 이하</span><span class="chip"><b>영업정지</b> 6개월 이내</span><span class="chip"><b>과징금</b> 1억원 이하</span><span class="chip"><b>보고 주기</b> 매월</span></div></div></div><div class="rule-gray"></div><p class="note">출처 ｜ 익산지방국토관리청 건설관리과, 「소규모 건설공사 품질관리 실무업무 매뉴얼」(2023.3., 72쪽) — 익산지방국토관리청 공지사항(www.molit.go.kr/irocm, 2023.3.20. 등록)<br>근거 법령·고시 원문 ｜ 국가법령정보센터 www.law.go.kr · 「건설기술 진흥법」 제55~61조, 「건설공사 품질관리 업무지침」 국토교통부고시 제2022-30호</p><p class="pageno">3 / 6</p></div>
+<div class="page haspin"><h1 class="title">4 ｜ 레미콘 공장 점검요령</h1><div class="ubar"></div><p class="meta">근거 : 건설기술 진흥법 제57조 ｜ 건설공사 품질관리 업무지침 제34조(자재공급원의 정기점검) ｜ 부록 [붙임 1] 사전·정기점검표</p><div class="rule-navy"></div><div class="row2"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M3 21V10l6 4V10l6 4V6l6 4v11z"/><path d="M3 21h18"/></svg></span><span class="badge"><span class="n">1</span>· 점검 대상과 주기</span></div><ul class="list"><li>지침상 정기점검 대상 : 레미콘 총 설계량 <span class="num">3천㎥ 이상</span> 또는 아스콘 총 설계량 <span class="num">5천톤 이상</span> 공사</li><li>익산청 실무 기준은 레미콘 <span class="num">1,000~3,000㎥</span>, 아스콘 <span class="num">2,000~5,000톤</span> 이상 납품 공장까지 확대 적용</li><li>정기점검은 감독자·수요자 등이 <b class="term">반기별 1회 이상</b> 실시(사용량이 특정 반기에 집중되면 해당 반기만 가능)</li><li>발주청이 자재 사용량·구조물 중요도를 판단해 불필요하다고 인정하면 <b class="term">생략 가능</b></li><li>필요시 <span class="rolet">발주청·공급원 승인권자</span>가 감독자·수요자와 <b class="term">합동 특별점검</b> 실시, 결과는 반기별 본부 보고</li></ul></div><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5z"/><path d="M3 13l9 5 9-5"/></svg></span><span class="badge"><span class="n">2</span>· 골재저장설비 점검</span></div><ul class="list"><li>최대 출하량 대비 <b class="term">골재 저장량</b> 확인</li><li>골재 칸막이 적정 여부, 배수로 막힘·역구배, 바닥 강성포장, 살수장치 가동 여부 확인</li><li>입도 및 표면수율 시험용 <b class="term">시료 채취</b>, 원산지·저장용량 표시 확인</li><li>자연사(세척사)와 부순잔골재를 임의 혼합 보관·사용하는 사례가 많아 <b class="term">분리 저장 여부를 반드시 확인</b>(야적장 포함)</li><li>불량골재를 납품·사용한 골재채취·판매업자 및 생산 공장은 법 제57조 제4항에 따라 <b class="term">중앙행정기관의 장에게 시정명령 등 조치 요청</b></li></ul></div></div><div class="row1"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M3 17V7h10v10z"/><path d="M13 10h4l4 4v3h-8z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></span><span class="badge"><span class="n">3</span>· 생산설비 점검 순서와 확인 포인트</span></div><div class="formula">골재저장설비 → 시멘트·혼화재 사일로 → 벨트컨베이어 → 회수수·폐레미콘 설비 → 믹서·계량장치 → 옥외 시험 → 운전실 → 시험실<span class="sub">교반날개 끝부분과 믹서 내벽의 간격 기준은 20mm 이하 — 확인 시 생산공정을 정지하고 믹서 내부를 청소 후 측정</span></div><div class="rolebar"><span class="rtile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/></svg></span><span class="rtx">점검 결과 지적사항은 <span class="rolet">공급원 승인권자(발주청 또는 공사감독자)</span>가 생산자에게 <b>시정을 요구</b>하며, 불이행 시 <b>자재공급원 승인거부·공급 일시중단·승인취소</b> 등의 조치를 취할 수 있다. 중대 사항은 산업통상자원부 행정처분을 요청한다.</span></div><ol class="nlist"><li><span class="no">1</span><b class="term">사일로</b> — 시멘트·혼화재 방습시설, 투입구 식별표시, 풍화 방지 장치, 혼화제 희석 교반기 설치·가동 여부</li><li><span class="no">2</span><b class="term">운반장치</b> — 벨트컨베이어 파손 여부와 덮개 상태를 전 구간에 걸쳐 확인(우수 혼입 방지)</li><li><span class="no">3</span><b class="term">회수수</b> — 저장탱크 이물질 유입, 교반기의 주기적 작동, 사용 시 시공사·발주처 승인 여부를 현장배합표와 슈퍼프린트로 대조</li><li><span class="no">4</span><b class="term">계량·믹서</b> — 시멘트·물·골재·혼화재료 계량장치 교정필증 부착, 믹서트럭 잔수 유무를 임의 차량 선정으로 확인</li></ol></div></div><div class="row2"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h4"/></svg></span><span class="badge"><span class="n">4</span>· 운전실 점검</span></div><ul class="list"><li>생산기록지의 <b class="term">표면수율 보정현황</b> 확인 — <span class="num">1일 2회 이상</span> 또는 <span class="num">150㎥</span>마다</li><li>해당 <b class="term">현장배합표와 자동생산기록지(슈퍼프린트)</b>를 확보하여 대조</li><li>계량조의 믹서 배출 후 <b class="term">영점관리</b> 여부 확인</li><li>재료별 계량오차가 범위 내에서 작동하는지, <b class="term">혼합시간 준수</b> 여부 확인</li><li>회수수 사용 시 <b class="term">시공사 또는 발주처 승인</b> 없이 사용하는 사례가 많으므로 배합표·기록지 대조 필수</li></ul></div><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M9 3v6L4 19a2 2 0 0 0 1.8 3h12.4A2 2 0 0 0 20 19L15 9V3"/><path d="M8 3h8M7 14h10"/></svg></span><span class="badge"><span class="n">5</span>· 시험실 점검과 공장시험</span></div><ul class="list"><li>시험기구 <b class="term">교정필증 부착 및 유효기간</b> 확인</li><li>마모시험기 철구무게, 체가름시험기 고정상태, 양생수조 온도의 적정 여부 확인</li><li>공장시험 — 골재(염화물함유량·입도·씻기·마모), 레미콘(슬럼프·공기량·염화물)</li><li>잔골재 <b class="term">염화물함유량 0.04% 이하</b>(2회 실시 평균값), 세척사·부순잔골재 혼합 시 <b class="term">합성입도</b>로 합격 판단</li><li>레미콘 시험 — 슬럼프(KS F 2402), 공기량(KS F 2421), 염화물(KS F 4009 9.6, 골재수정계수 0.2 차감)</li></ul></div></div><div class="row1 recap"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-6M2 20h20"/></svg></span><span class="badge"><span class="n">6</span>· 핵심 수치 재확인</span></div><div class="chips"><span class="chip"><b>교반날개 간격</b> 20mm 이하</span><span class="chip"><b>표면수율 보정</b> 1일 2회 또는 150㎥</span><span class="chip"><b>골재 염화물</b> 0.04% 이하</span><span class="chip"><b>정기점검</b> 반기별 1회 이상</span><span class="chip"><b>레미콘 설계량</b> 3천㎥ 이상</span><span class="chip"><b>표면수 시험</b> KS F 2509</span><span class="chip"><b>염화물 시험</b> KS F 2515</span></div></div></div><div class="rule-gray"></div><p class="note">출처 ｜ 익산지방국토관리청 건설관리과, 「소규모 건설공사 품질관리 실무업무 매뉴얼」(2023.3., 72쪽) — 익산지방국토관리청 공지사항(www.molit.go.kr/irocm, 2023.3.20. 등록)<br>근거 법령·고시 원문 ｜ 국가법령정보센터 www.law.go.kr · 「건설기술 진흥법」 제55~61조, 「건설공사 품질관리 업무지침」 국토교통부고시 제2022-30호</p><p class="pageno">4 / 6</p></div>
+<div class="page haspin"><h1 class="title">5 ｜ 아스콘 공장 점검요령과 주요 지적사례</h1><div class="ubar"></div><p class="meta">근거 : 건설공사 품질관리 업무지침 ｜ 아스팔트 콘크리트 포장 시공지침(국토교통부) ｜ 부록 [붙임 2] 아스콘공장 사전·정기점검표</p><div class="rule-navy"></div><div class="row2"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5z"/><path d="M3 13l9 5 9-5"/></svg></span><span class="badge"><span class="n">1</span>· 저장설비 점검</span></div><ul class="list"><li>최대 출하량 대비 골재 저장량, 칸막이·배수로 막힘·역구배·바닥 강성포장 확인</li><li>골재가 <b class="term">우수·빙설로부터 보호</b>되는 시설 설치 여부 확인, 입도시험용 시료 채취</li><li>아스팔트 저장설비 — <b class="term">자기온도계 교정필증</b> 부착, 종류별·제조사별 보관 및 식별표시</li><li>채움재 사일로 — 방습시설, 투입구 식별표시, <b class="term">풍화 방지 장치</b> 설치 유무</li></ul></div><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M14 14.8V4a2 2 0 1 0-4 0v10.8a4 4 0 1 0 4 0z"/></svg></span><span class="badge"><span class="n">2</span>· 콜드빈 · 드라이어 · 핫빈</span></div><ul class="list"><li>콜드빈 — 이물질·오버사이즈 제거 스크린 설치 및 막힘 상태를 육안 확인, 컨베이어 덮개 파손 여부 전 구간 확인</li><li>드라이어 — 출구 <b class="term">자기온도계 교정필증</b> 부착(온도 조절이 아스콘 생산의 최중요 공정)</li><li>예비 스크린을 핫빈 수에 맞게 보유하고 방청·휨 없이 보관하는지 확인</li><li>핫빈·믹서 — 재료·혼합물 유출, 시료 채취장치 개폐 용이성, <b class="term">오버플로우 파이프</b> 설치 여부</li></ul></div></div><div class="row1"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M9 3v6L4 19a2 2 0 0 0 1.8 3h12.4A2 2 0 0 0 20 19L15 9V3"/><path d="M8 3h8M7 14h10"/></svg></span><span class="badge"><span class="n">3</span>· 운전실 · 시험실 점검과 공장시험 기준</span></div><div class="formula">현장배합표 대비 생산기록지 대조 → 영점관리·계량오차·혼합시간 확인 → 콜드빈·핫빈 골재 <b>1회 이상 입도시험</b> → 입도 변화 시 배합 보정<span class="sub">시험기구 교정필증·유효기간, 이론최대밀도시험기 압력, 마샬안정도시험기 속도, 항온수조 온도의 적정 여부를 함께 확인</span></div><ol class="nlist"><li><span class="no">1</span><b class="term">입도</b>(KS F 2502) — 배합설계의 기본이 되는 골재 입도 확인</li><li><span class="no">2</span><b class="term">밀도 및 흡수량</b>(KS F 2503·2504) — 평균값과의 차이가 밀도 <span class="num">0.01g/㎤ 이하</span>, 흡수율 <span class="num">0.03% 이하</span></li><li><span class="no">3</span><b class="term">마모율</b>(KS F 2508) — 로스앤젤레스 마모시험기로 마모 저항력 확인</li><li><span class="no">4</span><b class="term">편장석률</b>(KS F 2575) — 1등급 <span class="num">10%</span>, 2등급 <span class="num">20%</span>, 3등급 <span class="num">30%</span> 이하</li></ol><div class="rolebar"><span class="rtile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/></svg></span><span class="rtx">공장품질관리자의 <b>KS규정 숙지 여부</b>를 원재료·공정·최종검사 방법 질문으로 확인한다. <span class="rolet">공급원 승인권자</span>는 시정 요구 후 <b>사후확인</b>까지 책임지며, 미이행 건은 관련 규정에 따라 처리한다.</span></div></div></div><div class="row2"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17.3v.2"/></svg></span><span class="badge"><span class="n">4</span>· 레미콘 공장 주요 지적사례</span></div><ul class="list"><li>시험기구·시약이 없음에도 골재 안정성시험(KS F 2507) <b class="term">자체 시험데이터를 작성·보관</b> — 기술표준원 통보</li><li>배합표상 회수수(W2)는 0이나 자동계량기록지에는 투입 기록 — <b class="term">입력 배합과 불일치 생산</b>, 기술표준원 통보</li><li>공시체 캐핑 두께 기준 <span class="num">2mm 이하</span>(지름의 2%)인데 일부가 <span class="num">15mm 이상</span>으로 제작 — 현지시정</li><li>시멘트 사일로 투입구 고무패킹·이중장치 미설치, 체가름 시험기 앙카 미설치, 혼합잔골재 입도기준 오적용 — 현지시정</li></ul></div><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17.3v.2"/></svg></span><span class="badge"><span class="n">5</span>· 아스콘 공장 주요 지적사례</span></div><ul class="list"><li>혼합시간을 건식 5초·습식 40초로 결정했으나 실제 건식 <span class="num">2초</span>·습식 38초 적용 — 시공지침 기준(건식 5초·습식 30초 이상) 미달</li><li>채움재 투입구 마개에 고무패킹이 없어 <b class="term">풍화 방지에 취약</b> — 현지시정</li><li>콜드빈 5칸 중 지붕 <b class="term">1칸 파손</b>으로 우수보호시설 관리 미흡 — 현지시정</li><li>순환골재를 야적 높이 <span class="num">5m 이하</span>로 준수했으나 천막 미설치, 침입도 시험을 품질검사전문기관에 미실시 — 현지시정</li></ul></div></div><div class="row1 recap"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-6M2 20h20"/></svg></span><span class="badge"><span class="n">6</span>· 핵심 수치 재확인</span></div><div class="chips"><span class="chip"><b>편장석률</b> 10 / 20 / 30% 이하</span><span class="chip"><b>밀도 편차</b> 0.01g/㎤ 이하</span><span class="chip"><b>흡수율 편차</b> 0.03% 이하</span><span class="chip"><b>혼합시간</b> 건식 5초 · 습식 30초 이상</span><span class="chip"><b>혼합물 온도</b> 150℃ 이상</span><span class="chip"><b>순환골재 야적</b> 5m 이하</span><span class="chip"><b>캐핑 두께</b> 2mm 이하</span></div></div></div><div class="rule-gray"></div><p class="note">출처 ｜ 익산지방국토관리청 건설관리과, 「소규모 건설공사 품질관리 실무업무 매뉴얼」(2023.3., 72쪽) — 익산지방국토관리청 공지사항(www.molit.go.kr/irocm, 2023.3.20. 등록)<br>근거 법령·고시 원문 ｜ 국가법령정보센터 www.law.go.kr · 「건설기술 진흥법」 제55~61조, 「건설공사 품질관리 업무지침」 국토교통부고시 제2022-30호</p><p class="pageno">5 / 6</p></div>
+<div class="page haspin"><h1 class="title">6 ｜ 품질관리 질의회신 17선 — 실무 쟁점</h1><div class="ubar"></div><p class="meta">근거 : 매뉴얼 제4장 Q&A ｜ 건설기술 진흥법 제55·56·60조, 시행령 제90·91·95조, 시행규칙 제50·56조</p><div class="rule-navy"></div><div class="row2"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.3 9.4a2.8 2.8 0 1 1 3.6 3.2v1.3"/><path d="M12 17.3v.2"/></svg></span><span class="badge"><span class="n">1</span>· 계획 수립 · 제출 (Q1~Q4)</span></div><ul class="list"><li>수립 대상은 금액·연면적 기준으로 판정하며, 계약에 규정된 경우도 품질관리계획 대상임</li><li>제출 시기 — 감독자 검토·확인 후 <b class="term">착공 전</b> 발주자 승인, <b class="term">변경 시에도 재승인</b></li><li>품질관리계획서는 업무지침 <b class="term">제7조에 열거된 사항</b>을 포함하여 작성</li><li>품질시험계획서는 공종별 시험횟수·시험실 면적·장비 현황·<b class="term">시험인력의 적정 배치 여부</b>를 작성</li></ul></div><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/></svg></span><span class="badge"><span class="n">2</span>· 인력 · 교육 (Q5·Q7·Q13)</span></div><ul class="list"><li>시험실 규모와 기술인 배치는 [별표 5] 등급 기준에 따름(50㎡/20㎡)</li><li>품질관리 건설기술인은 영 제91조 제3항의 업무범위에 한정되어 원칙적으로 <b class="term">겸직 불가</b></li><li>품질관리 건설기술인은 국토교통부장관이 실시하는 <b class="term">교육·훈련을 기준일 이내 이수</b></li><li><span class="rolet">사용자(고용주)</span>는 교육·훈련 경비를 부담해야 하며 이를 이유로 불이익을 줄 수 없음</li></ul></div></div><div class="row1"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/></svg></span><span class="badge"><span class="n">3</span>· 시험 · 검사와 자재 (Q6·Q8·Q9·Q10)</span></div><div class="formula">품질검사 대장(별지 제42호서식)에 <b>전자적 처리가 가능한 방법</b>으로 결과를 기록·관리<span class="sub">구조물 안전에 중요한 영향을 미치는 시험종목의 품질시험은 발주자가 확인하여야 함</span></div><ol class="nlist"><li><span class="no">1</span>현장에서 하는 것이 적절한 품질검사는 <b class="term">반드시 건설공사현장에서</b> 실시함</li><li><span class="no">2</span>품질검사 생략 가능 재료 — 국·공립 시험기관·건설엔지니어링사업자 성적서 제출 재료, KS 인증제품, 산업안전보건법 제84조 안전인증 제품, 관계 법령상 품질검사·인증을 받은 재료 (단, 품질 변화 우려로 발주자가 필요하다고 인정하거나 <b class="term">재사용</b>하는 경우는 검사 실시)</li><li><span class="no">3</span>건설자재·부재 범위(영 제95조 제1항) — 레미콘·아스콘·바닷모래·부순 골재·철근·H형강·구조용 I형강·두께 6mm 이상 강판·구조용 및 기초용 강관·고장력 볼트·용접봉·PC강선·PC강연선·PC강봉·순환골재</li><li><span class="no">4</span>품질검사 대행 의뢰는 규칙 제56조 절차에 따르며, 의뢰 내용은 사전 확인을, <b class="term">시료 채취 시에는 발주자 또는 건설사업관리기술인의 봉인·확인</b>을 받아야 함</li></ol></div></div><div class="row2"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg></span><span class="badge"><span class="n">4</span>· 품질관리비 (Q11·Q12)</span></div><ul class="list"><li>발주자는 계약 체결 시 품질관리에 필요한 비용을 <b class="term">공사금액에 계상</b>하여야 함(법 제56조 제1항)</li><li>설계변경에 따른 물량 증감·현장여건 변동으로 실제 사용액과 설계상 금액의 차이가 발생할 수 있음</li><li>초과·부족분은 <b class="term">사용명세서와 감독·책임건설사업기술인이 확인한 시험성적서</b> 등 증빙 제시로 정산 가능</li><li>미계상 또는 목적 외 사용은 <span class="num">1천만원 이하 과태료</span> 대상</li></ul></div><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M3 21V10l6 4V10l6 4V6l6 4v11z"/><path d="M3 21h18"/></svg></span><span class="badge"><span class="n">5</span>· 자재 · 공급원 관리 (Q14~Q17)</span></div><ul class="list"><li><b class="term">관급자재</b>도 별도 공급원 점검 없이 공급되므로 품질관리 지침에 준하여 정기점검 등 관리 필요</li><li>레미콘·아스콘 공급원 확인 — 원자재 품질 적합성, 일일 현장배합설계 확인, 시방 적합 골재의 계속 사용 가능 여부, 시험장비 비치와 기술인력 상주</li><li>생산 전 또는 공급 시 <b class="term">불시 점검</b>으로 불량골재 사용 여부를 확인하는 것도 필요함</li><li>지적사항 미이행 시 <b class="term">공급원 승인거부 · 공급 일시중단 · 승인취소</b> 등 조치 가능</li></ul><div class="rolebar"><span class="rtile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/></svg></span><span class="rtx"><span class="rolet">발주자</span>는 계약 시 품질관리비를 <b>공사금액에 계상</b>할 의무가 있고, <span class="rolet">공급원 승인권자</span>는 지적사항의 시정 요구와 미이행 시 승인취소까지 책임진다. 관급자재도 <span class="rolet">발주청</span>이 지침에 준하여 정기점검하여야 한다.</span></div></div></div><div class="row1 recap"><div class="card"><div class="bh"><span class="tile"><svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-6M2 20h20"/></svg></span><span class="badge"><span class="n">6</span>· 핵심 수치 재확인</span></div><div class="chips"><span class="chip"><b>품질검사 대장</b> 별지 제42호서식</span><span class="chip"><b>작성 방법</b> 전자적 처리</span><span class="chip"><b>강판 기준</b> 두께 6mm 이상</span><span class="chip"><b>겸직</b> 원칙적 불가</span><span class="chip"><b>정기점검</b> 반기별 1회 이상</span><span class="chip"><b>품질관리비</b> 공사금액 계상 의무</span></div></div></div><div class="conclude"><div class="ct">CONCLUSION</div><div class="cb">품질관리는 <b>착공 전 계획 승인</b>에서 시작해 <b>현장 적절성 확인</b>과 <b>공급원 정기점검</b>으로 이어지는 순환 구조다. 발주청·공사감독자는 검토·승인·시정지시의 책임 주체이며, 이를 소홀히 하면 시공자와 함께 벌점·벌칙 대상이 된다.</div></div><div class="rule-gray"></div><p class="note">출처 ｜ 익산지방국토관리청 건설관리과, 「소규모 건설공사 품질관리 실무업무 매뉴얼」(2023.3., 72쪽) — 익산지방국토관리청 공지사항(www.molit.go.kr/irocm, 2023.3.20. 등록)<br>근거 법령·고시 원문 ｜ 국가법령정보센터 www.law.go.kr · 「건설기술 진흥법」 제55~61조, 「건설공사 품질관리 업무지침」 국토교통부고시 제2022-30호</p><p class="pageno">6 / 6</p></div>
+</body></html>

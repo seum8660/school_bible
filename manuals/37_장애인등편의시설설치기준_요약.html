@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>장애인등 편의시설 설치기준 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:auto; position:relative;
+  }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드 ──────────────────────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 ──────────────────────── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  /* ── 표 ─────────────────────────────── */
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl thead th.h1{ text-align:left; }
+  .tbl th.grp{
+    background:#F7FAFC; color:var(--teal); font-weight:800; text-align:left;
+    font-size:6.1pt; letter-spacing:0.04em; padding:0.35mm 0.8mm;
+  }
+  .tbl td.it{ text-align:left; color:var(--body); }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .r{ color:var(--teal); font-weight:700; }
+  .tbl .x{ color:var(--note); font-weight:400; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주 ───────────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style><link rel="stylesheet" href="onepaper-read-v2.css"></head><body>
+
+<div class="page haspin">
+
+  <h1 class="title">장애인등 편의시설 설치기준 — 핵심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">법령 별표 ｜ 근거: 편의증진법 제8조·제9조 · 같은 법 시행령 제4조 [별표 2](개정 2024. 9. 19. 현행) ｜ 출처: 국가법령정보센터 www.law.go.kr</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">시설주(학교의 장·교육청) = 설치·유지관리의 책임 주체</span> — 설치 또는 주요 부분 변경(용도변경 포함) 시 기준에 적합하게 설치·유지관리하여야 함(법 제9조). <span class="rolet">시설주관기관(교육감)</span>이 지도·감독하고 위반 시 시정명령·이행강제금을 부과함.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>1</i>법적 체계</span></span>
+      <ul class="list">
+        <li><b class="term">종류</b> — 규모·용도를 고려해 <span class="tl">대통령령</span>으로 정함(법 제8조①)</li>
+        <li><b class="term">세부기준</b> — 구조·재질은 <span class="tl">보건복지부령</span>(법 제8조②)</li>
+        <li><b class="term">적용시점</b> — 설치 또는 주요 부분 변경 시</li>
+        <li><b class="term">시설주</b> — 대상시설의 소유자 또는 관리자</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>2</i>의무·권장의 구분</span></span>
+      <ul class="list">
+        <li><b class="term">의무</b> — 반드시 설치. 미설치 시 제재 대상</li>
+        <li><b class="term">권장</b> — 강제되지 않으나 설치하도록 노력</li>
+        <li><b class="term">공란(—)</b> — 해당 시설에는 적용되지 않음</li>
+        <li><b class="term">유의</b> — <span class="tl">BF 인증 등 개별 기준</span>이 우선 적용될 수 있음</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V6l8-3 8 3v15"/><path d="M9 21v-5h6v5"/><path d="M8 10h2M14 10h2"/></svg></span><span class="lb"><i>3</i>교육연구시설 대상별 편의시설의 종류</span></span>
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th class="h1" style="width:31%">편의시설</th>
+            <th style="width:17%">학교<br>(특수학교 포함·유치원 제외)</th>
+            <th style="width:15%">유치원</th>
+            <th style="width:19%">교육원·직업훈련소·학원 등<br>(500㎡ 이상)</th>
+            <th style="width:18%">도서관<br>(1,000㎡ 이상)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th class="grp" colspan="5">매개시설</th></tr>
+          <tr><td class="it">주출입구 접근로</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td></tr>
+          <tr><td class="it">장애인전용주차구역</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td></tr>
+          <tr><td class="it">주출입구 높이차이 제거</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td></tr>
+          <tr><th class="grp" colspan="5">내부시설</th></tr>
+          <tr><td class="it">출입구(문)</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td></tr>
+          <tr><td class="it">복도</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td></tr>
+          <tr><td class="it">계단 또는 승강기</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td></tr>
+          <tr><th class="grp" colspan="5">위생시설 — 화장실</th></tr>
+          <tr><td class="it">대변기</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td></tr>
+          <tr><td class="it">소변기</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td><td class="o">의무</td></tr>
+          <tr><td class="it">세면대</td><td class="r">권장</td><td class="r">권장</td><td class="r">권장</td><td class="o">의무</td></tr>
+          <tr><th class="grp" colspan="5">안내시설</th></tr>
+          <tr><td class="it">점자블록</td><td class="o">의무</td><td class="x">—</td><td class="r">권장</td><td class="r">권장</td></tr>
+          <tr><td class="it">유도 및 안내설비</td><td class="o">의무</td><td class="x">—</td><td class="r">권장</td><td class="r">권장</td></tr>
+          <tr><td class="it">경보 및 피난설비</td><td class="o">의무</td><td class="x">—</td><td class="o">의무</td><td class="o">의무</td></tr>
+          <tr><th class="grp" colspan="5">그 밖의 시설</th></tr>
+          <tr><td class="it">관람석·열람석</td><td class="r">권장</td><td class="x">—</td><td class="r">권장</td><td class="o">의무</td></tr>
+          <tr><td class="it">접수대·작업대</td><td class="r">권장</td><td class="x">—</td><td class="r">권장</td><td class="r">권장</td></tr>
+          <tr><td class="it">임산부 등을 위한 휴게시설</td><td class="r">권장</td><td class="r">권장</td><td class="r">권장</td><td class="r">권장</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="2.5"/></svg></span><span class="lb"><i>4</i>설치기준 요점</span></span>
+      <ul class="list">
+        <li><b class="term">화장실</b> — 대변기 <span class="num">남·여 각 1개 이상</span> + 영유아용 거치대</li>
+        <li><b class="term">승강기</b> — <span class="num">6층</span>·연면적 <span class="num">2,000㎡</span> 이상은 1대(곳) 이상</li>
+        <li><b class="term">주차구역</b> — 부설주차장 <span class="num">10대 이상</span>일 때 설치</li>
+        <li><b class="term">열람석</b> — 전체의 <span class="num">1% 이상</span>(2,000석↑은 20석 이상)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></span><span class="lb"><i>5</i>위반 시 제재</span></span>
+      <ul class="list">
+        <li><b class="term">시정명령</b> — 기간을 정하여 설치·보수·개선 명령(제23조①)</li>
+        <li><b class="term">이행강제금</b> — <span class="num">3천만원 이하</span>, <span class="num">매년 1회</span> 반복 부과</li>
+        <li><b class="term">벌칙</b> — 미이행 시 <span class="num">500만원 이하</span> 벌금(제25조)</li>
+        <li><b class="term">중지</b> — 이행하면 신규 부과 중지, 기부과분은 징수</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>학원 등</b> <span class="num">500㎡</span> 이상</span>
+        <span class="chip"><b>도서관</b> <span class="num">1,000㎡</span> 이상</span>
+        <span class="chip"><b>승강기</b> <span class="num">6층</span>·<span class="num">2,000㎡</span> 이상</span>
+        <span class="chip"><b>주차구역</b> 부설주차장 <span class="num">10대</span> 이상</span>
+        <span class="chip"><b>열람석</b> <span class="num">1%</span> 이상 · 2,000석↑ <span class="num">20석</span></span>
+        <span class="chip"><b>대변기</b> 남·여 각 <span class="num">1개</span> 이상</span>
+        <span class="chip"><b>이행강제금</b> <span class="num">3천만원</span> 이하 · 매년 <span class="num">1회</span></span>
+        <span class="chip"><b>벌금</b> <span class="num">500만원</span> 이하</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">학교는 안내시설(점자블록·유도안내·경보피난)까지 의무이나 유치원은 안내시설이 적용되지 않고 도서관은 세면대·열람석까지 의무이므로, 같은 교육연구시설이라도 용도와 면적 요건에 따라 의무 범위가 달라지는 점을 설계 단계에서 먼저 확정하여야 함.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">근거: 편의증진법 제2조·제8조·제9조·제23조~제25조(시행 2025. 12. 21.) · 같은 법 시행령 제3조·제4조 및 [별표 2](개정 2024. 9. 19.) ｜ 욕실·샤워실·탈의실·객실·침실·매표소·판매기·음료대는 교육연구시설 4개 유형 모두 적용 대상이 아니어서 표에서 제외함 ｜ 출처: 국가법령정보센터 www.law.go.kr</p>
+
+</div>
+</body></html>

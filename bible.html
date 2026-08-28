@@ -853,6 +853,56 @@
   .gz-tile.gz-chk .gz-t-b{color:#2f6a4c}
   .gz-tile.gz-chk .gz-t-s{background:#2e7d52;color:#fff}
   .gz-tile.gz-chk .gz-t-s::after{content:"별도 확인"}
+  /* 사업 절차 요약 — 절차 보드 카드(번호 블랙·수치 레드·호버 화이트) */
+  .gz-dash{counter-reset:gzt;gap:10px}
+  .gz-tile{counter-increment:gzt;display:flex;flex-direction:column;min-height:106px;
+    padding:10px 12px;border-radius:0;border:1px solid var(--line);box-shadow:none;
+    transition:border-color .12s,background-color .12s,opacity .12s}
+  .gz-tile:hover{border-color:var(--ink);background:var(--surface);opacity:1}
+  .gz-tile.gz-hide{display:none}
+  .gz-tile::before{content:counter(gzt,decimal-leading-zero);display:block;font-size:16px;font-weight:900;
+    color:var(--ink);letter-spacing:-.02em;line-height:1;margin-bottom:7px;padding-right:70px}
+  .gz-tile.on::before{color:var(--ink)}
+  .gz-tile .gz-t-h{font-size:12.5px;font-weight:800;padding-right:0;letter-spacing:-.012em;line-height:1.3;word-break:keep-all}
+  .gz-tile .gz-t-b{font-size:11.5px;line-height:1.5;margin-top:5px;word-break:keep-all}
+  .gz-tile .gz-t-b .money-hl{font-size:13px}
+  .gz-tile .gz-t-s{top:11px;right:12px;border-radius:0;font-size:10px;padding:3px 8px}
+  .gz-tile.on{opacity:1;border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+  .gz-tile.on .gz-t-s{background:var(--ink);color:var(--surface)}
+  .gz-tile.gz-chk{background:#f4faf6;border-color:#8cc2a4;box-shadow:none}
+  .gz-tile.gz-chk .gz-t-s{background:transparent;color:#1f6b45;border:1px solid #8cc2a4}
+  .gz-tile::after{content:"판정 기준";margin-top:auto;align-self:flex-start;margin-top:8px;
+    font-size:10px;font-weight:800;color:var(--muted);background:var(--surface-2);
+    border:1px solid var(--line);border-radius:0;padding:3px 8px;white-space:nowrap}
+  .gz-tile[data-ax="total"]::after{content:"총사업비 기준"}
+  .gz-tile[data-ax="design"]::after{content:"설계비 기준"}
+  .gz-tile[data-ax="const"]::after{content:"공사비 기준"}
+  .gz-tile[data-ax="area"]::after{content:"연면적 기준"}
+  .gz-tile.gz-chk::after{content:"금액 무관 · 별도 확인";color:#1f6b45;background:#eaf5ee;border-color:#b9d9c6}
+  .gz-tile.on::after{color:var(--ink);background:var(--surface-2);border-color:var(--line)}
+  [data-theme="dark"] .gz-tile.gz-chk{background:rgba(127,216,166,.07)}
+  [data-theme="dark"] .gz-tile.gz-chk::after{color:#7fd8a6;background:rgba(127,216,166,.14);border-color:rgba(127,216,166,.35)}
+  /* 절차 보드 필터 바 */
+  .gz-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:14px 0 12px}
+  .gz-chips{display:flex;flex-wrap:wrap;gap:7px}
+  .gz-chip{font:inherit;font-size:11.5px;font-weight:800;padding:7px 13px;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface);color:var(--muted);transition:border-color .12s}
+  .gz-chip:hover{border-color:var(--ink)}
+  .gz-chip.act{border-color:var(--ink);color:var(--ink)}
+  .gz-chip b{margin-left:6px;color:#e5342b}
+  #gz-q{font:inherit;font-size:14.5px;font-weight:700;color:var(--ink);background:var(--surface);
+    border:1px solid var(--line);padding:9px 13px;width:260px;outline:none;transition:border-color .12s}
+  #gz-q:hover,#gz-q:focus{border-color:var(--ink)}
+  /* 입력 패널 — 카드 문법 통일 */
+  .gz-panel{gap:14px;border:1px solid var(--line);border-radius:0;box-shadow:none;padding:14px 16px;margin-bottom:0}
+  .gz-field{align-items:flex-start;gap:5px}
+  .gz-field label{font-size:11.5px;font-weight:800;color:var(--ink);text-align:left}
+  .gz-field label span{color:var(--muted);font-weight:700}
+  .gz-field input,.gz-field select{width:118px;border:1px solid var(--line)!important;border-radius:0!important;box-shadow:none!important;
+    padding:8px 12px;font-size:14px;font-weight:800;background:var(--surface-2);text-align:left;transition:border-color .12s}
+  .gz-field input:hover,.gz-field select:hover,.gz-field input:focus,.gz-field select:focus{border-color:var(--ink)!important;box-shadow:none!important}
+  .gz-count{font-size:13px;font-weight:800;color:var(--ink-2);align-items:baseline;gap:6px}
+  .gz-count b{font-size:30px;font-weight:900;color:#e5342b;margin:0;letter-spacing:-.03em}
   /* 건축법령 체크 도구 (bl) */
   .bl-form{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--surface);border:1.5px solid var(--border);
     box-shadow:var(--shadow-sm);border-radius:var(--rad);padding:18px;margin-bottom:14px}
@@ -1693,6 +1743,41 @@ window.dispatchEvent(new Event('qa-fb-ready'));
         </table></div>
       </div>
     </div>
+    <script>
+    (function(){
+      var dash=document.getElementById('gz-dash'),chips=document.getElementById('gz-chips'),q=document.getElementById('gz-q');
+      if(!dash||!chips)return;
+      var f='all';
+      function tiles(){return Array.prototype.slice.call(dash.querySelectorAll('.gz-tile'));}
+      function apply(){
+        var kw=(q&&q.value||'').trim();
+        tiles().forEach(function(t){
+          var ax=t.dataset.ax||'chk', ok=true;
+          if(f==='hit') ok=t.classList.contains('on')||t.classList.contains('gz-chk');
+          else if(f!=='all') ok=(f==='chk')?t.classList.contains('gz-chk'):(ax===f&&!t.classList.contains('gz-chk'));
+          if(ok&&kw) ok=t.textContent.indexOf(kw)>-1;
+          t.classList.toggle('gz-hide',!ok);
+        });
+        counts();
+      }
+      function counts(){
+        var all=tiles();
+        var map={all:all.length,hit:all.filter(function(t){return t.classList.contains('on')||t.classList.contains('gz-chk')}).length};
+        ['total','design','const','area'].forEach(function(k){map[k]=all.filter(function(t){return t.dataset.ax===k&&!t.classList.contains('gz-chk')}).length});
+        map.chk=all.filter(function(t){return t.classList.contains('gz-chk')}).length;
+        chips.querySelectorAll('.gz-chip').forEach(function(c){var b=c.querySelector('b');if(b)b.textContent=map[c.dataset.f]});
+      }
+      chips.addEventListener('click',function(e){
+        var c=e.target.closest('.gz-chip');if(!c)return;
+        f=c.dataset.f;
+        chips.querySelectorAll('.gz-chip').forEach(function(x){x.classList.toggle('act',x===c)});
+        apply();
+      });
+      if(q) q.addEventListener('input',apply);
+      new MutationObserver(apply).observe(dash,{subtree:true,attributes:true,attributeFilter:['class']});
+      apply();
+    })();
+    </script>
 
     </div>
 
@@ -1826,6 +1911,18 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <span class="chip" style="background:var(--accent)">요약</span>
       <div><h2>사업 절차 요약</h2><p>위 입력값 기준으로 필수 절차가 자동 판정됩니다</p></div>
     </div>
+    <div class="gz-bar">
+      <div class="gz-chips" id="gz-chips">
+        <button type="button" class="gz-chip act" data-f="all">전체<b></b></button>
+        <button type="button" class="gz-chip" data-f="hit">적용<b></b></button>
+        <button type="button" class="gz-chip" data-f="total">총사업비<b></b></button>
+        <button type="button" class="gz-chip" data-f="design">설계비<b></b></button>
+        <button type="button" class="gz-chip" data-f="const">공사비<b></b></button>
+        <button type="button" class="gz-chip" data-f="area">연면적<b></b></button>
+        <button type="button" class="gz-chip" data-f="chk">별도 확인<b></b></button>
+      </div>
+      <input type="text" id="gz-q" placeholder="절차명 · 기준 검색">
+    </div>
     <div class="gz-dash" id="gz-dash">
       <div class="gz-tile" data-ax="total" data-amt="40"><div class="gz-t-h">투자심사</div><div class="gz-t-b">자체 40억↑ / 중앙 300억↑</div><span class="gz-t-s"></span></div>
       <div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">사전기획</div><div class="gz-t-b">설계비 1억↑</div><span class="gz-t-s"></span></div>
@@ -1862,6 +1959,41 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <div class="gz-tile gz-chk"><div class="gz-t-h">하도급 적정성 심사</div><div class="gz-t-b">금액 무관 — 하도급율·심사점수 85점 미만시 변경요구</div><span class="gz-t-s"></span></div>
       <div class="gz-tile gz-chk"><div class="gz-t-h">일요일 휴무제</div><div class="gz-t-b">금액 무관 — 모든 공공공사 현장 적용, 예외는 승인</div><span class="gz-t-s"></span></div>
     </div>
+    <script>
+    (function(){
+      var dash=document.getElementById('gz-dash'),chips=document.getElementById('gz-chips'),q=document.getElementById('gz-q');
+      if(!dash||!chips)return;
+      var f='all';
+      function tiles(){return Array.prototype.slice.call(dash.querySelectorAll('.gz-tile'));}
+      function apply(){
+        var kw=(q&&q.value||'').trim();
+        tiles().forEach(function(t){
+          var ax=t.dataset.ax||'chk', ok=true;
+          if(f==='hit') ok=t.classList.contains('on')||t.classList.contains('gz-chk');
+          else if(f!=='all') ok=(f==='chk')?t.classList.contains('gz-chk'):(ax===f&&!t.classList.contains('gz-chk'));
+          if(ok&&kw) ok=t.textContent.indexOf(kw)>-1;
+          t.classList.toggle('gz-hide',!ok);
+        });
+        counts();
+      }
+      function counts(){
+        var all=tiles();
+        var map={all:all.length,hit:all.filter(function(t){return t.classList.contains('on')||t.classList.contains('gz-chk')}).length};
+        ['total','design','const','area'].forEach(function(k){map[k]=all.filter(function(t){return t.dataset.ax===k&&!t.classList.contains('gz-chk')}).length});
+        map.chk=all.filter(function(t){return t.classList.contains('gz-chk')}).length;
+        chips.querySelectorAll('.gz-chip').forEach(function(c){var b=c.querySelector('b');if(b)b.textContent=map[c.dataset.f]});
+      }
+      chips.addEventListener('click',function(e){
+        var c=e.target.closest('.gz-chip');if(!c)return;
+        f=c.dataset.f;
+        chips.querySelectorAll('.gz-chip').forEach(function(x){x.classList.toggle('act',x===c)});
+        apply();
+      });
+      if(q) q.addEventListener('input',apply);
+      new MutationObserver(apply).observe(dash,{subtree:true,attributes:true,attributeFilter:['class']});
+      apply();
+    })();
+    </script>
 
     </div>
 
@@ -2884,15 +3016,13 @@ window.dispatchEvent(new Event('qa-fb-ready'));
   <aside class="sidebar side-right">
     <nav class="side-nav">
       <div class="nav-grp">📚 통합자료실</div>
-      <a class="extlink" href="https://jne365-my.sharepoint.com/:f:/g/personal/seum8660_o365_jne_go_kr/IgB3esNJMRYBSZsEMOjgGQbMAZKDjWMuY1J0BUQjk0scxks?e=GcNgkV" target="_blank" rel="noopener noreferrer" title="각종 양식모음 (OneDrive 공유 폴더)"><span class="lb">각종 양식모음</span></a>
+      <a class="extlink" href="https://jne365-my.sharepoint.com/:f:/g/personal/seum8660_o365_jne_go_kr/IgB3esNJMRYBSZsEMOjgGQbMAZKDjWMuY1J0BUQjk0scxks?e=GcNgkV" target="_blank" rel="noopener noreferrer" title="문서모음 (OneDrive 공유 폴더)" style="background:#1a1d21;border-color:#000;color:#fff"><svg viewBox="0 0 24 24" width="16" height="16" fill="#f5b400" stroke="none" style="flex:0 0 auto;display:block"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="lb">문서모음</span></a>
       <a class="extlink" href="사업비_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">사업비 산출</span></a>
       <a class="extlink" href="설계용역비_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">설계용역비 산출</span></a>
       <a class="extlink" href="감리발주_방식_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">감리 발주방식 판정</span></a>
       <span class="extlink" aria-disabled="true" title="감리용역비 산출 (준비중)" style="opacity:.4;filter:grayscale(1);cursor:not-allowed;pointer-events:none"><span class="lb">감리용역비 산출</span><span class="ext">준비중</span></span>
       <span class="extlink" aria-disabled="true" title="건설사업관리용역비 산출 (준비중)" style="opacity:.4;filter:grayscale(1);cursor:not-allowed;pointer-events:none"><span class="lb">건설사업관리용역비 산출</span><span class="ext">준비중</span></span>
       <a class="extlink" href="공사기간_산출_대시보드.html" target="_blank" rel="noopener noreferrer"><span class="lb">공사기간 산출</span></a>
-      <a class="extlink" id="macroGrp" href="https://jne365-my.sharepoint.com/:f:/g/personal/seum8660_o365_jne_go_kr/IgB3esNJMRYBSZsEMOjgGQbMAZKDjWMuY1J0BUQjk0scxks?e=GcNgkV" target="_blank" rel="noopener noreferrer" title="매크로 모음 (OneDrive 공유 폴더)" style="background:#1a1d21;border-color:#000;color:#fff"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6 1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.35.4.64.73.82H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="lb">매크로 모음</span></a>
-      <a class="extlink" href="문서자동생성기.html" target="_blank" rel="noopener noreferrer" title="문서자동생성기" data-nowrap><svg viewBox="0 0 24 24" width="16" height="16" fill="#f5b400" stroke="none" style="flex:0 0 auto;display:block"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="lb">문서자동생성기</span></a>
       <div class="nav-grp" style="background:#6d28d9;color:#fff;">CHECK NOW</div>
       <button class="tab" data-p="calc"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h2M13 12h2M9 16h2M13 16h2"/></svg></span>규모별 절차 체크</button>
       <button class="tab" data-p="cert"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M8.5 13.5 7 21l5-2.5L17 21l-1.5-7.5"/></svg></span>인증 체크</button>
@@ -4652,9 +4782,7 @@ runRatioCalc();
       if(on&&fit) n++;
       const b=t.querySelector('.gz-t-b');
       if(b&&!b.dataset.raw) b.dataset.raw=b.innerHTML;
-      if(b) b.innerHTML = on
-        ? b.dataset.raw.replace(/(\d[\d,.]*\s*(?:억|천만원|천|만원|원))/g,'<span class="money-hl">$1</span>')
-        : b.dataset.raw;
+      if(b) b.innerHTML = b.dataset.raw.replace(/(\d[\d,.]*\s*(?:억|천만원|천|만원|원|㎡|점|m))/g,'<span class="money-hl">$1</span>');
     });
     nEl.textContent=n;
   }

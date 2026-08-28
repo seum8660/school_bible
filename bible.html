@@ -1264,7 +1264,33 @@
   .note{border-left:3px solid var(--accent);}
   .sec-head .chip{border-radius:100px;font-weight:600;letter-spacing:.1px;box-shadow:none;}
   .pill,.pb,.pm,.mtag,.who-pill{border-radius:100px;font-weight:600;}
-  .mcard,.pnode,.tl-row,.res-card,.certcard,.man-card{border-radius:var(--rad);}
+  .mcard,.pnode,.tl-row,.res-card,.certcard{border-radius:var(--rad);}
+  /* 매뉴얼 및 지침 — 절차 보드 컴팩트 행형(2c) */
+  .man-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;margin-top:12px;border:0}
+  .man-card{display:grid!important;grid-template-columns:32px minmax(0,1fr) auto;grid-template-rows:auto auto auto;
+    align-items:center;column-gap:10px;row-gap:7px;
+    padding:12px 13px;min-height:0;border:1px solid var(--line);border-radius:0;box-shadow:none;background:var(--surface);
+    transition:border-color .12s,background-color .12s}
+  .man-card + .man-card{border-top:1px solid var(--line)}
+  .man-card:hover{transform:none;box-shadow:none;border-color:var(--ink);background:var(--surface)}
+  .man-card::before{content:attr(data-kind);grid-column:3;grid-row:1;justify-self:end;
+    font-size:10px;font-weight:800;letter-spacing:-.01em;white-space:nowrap;
+    padding:3px 8px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted)}
+  .man-card[data-kind="지침"]::before{border-color:#c9d4e6;background:#eef3fa;color:#28518c}
+  .man-card[data-kind="가이드"]::before{border-color:#cfe0d5;background:#eff6f2;color:#1f6b45}
+  [data-theme="dark"] .man-card[data-kind="지침"]::before{border-color:rgba(143,184,255,.35);background:rgba(143,184,255,.14);color:#8fb8ff}
+  [data-theme="dark"] .man-card[data-kind="가이드"]::before{border-color:rgba(127,216,166,.35);background:rgba(127,216,166,.14);color:#7fd8a6}
+  .man-card .man-no{grid-column:1;grid-row:1;width:auto;height:auto;background:none;border:0;border-radius:0;
+    font-size:16px;font-weight:900;color:var(--ink);letter-spacing:-.02em;justify-content:flex-start}
+  .man-card:hover .man-no{background:none;border:0;color:var(--ink)}
+  .man-card .man-t{grid-column:1 / -1;grid-row:2;align-self:start}
+  .man-card .man-t b{font-size:12.5px;-webkit-line-clamp:2;line-height:1.32}
+  .man-card .man-t span{font-size:11px;margin-top:3px}
+  .man-card .man-tagrow{grid-column:1 / 3;grid-row:3;justify-content:flex-start;flex-wrap:nowrap;overflow:hidden;gap:4px;align-self:center}
+  .man-card .man-tagrow .htag{font-size:10px;padding:2px 7px;border-radius:0;white-space:nowrap}
+  .man-card .man-badges{grid-column:3;grid-row:3;display:grid;grid-auto-flow:column;gap:5px;align-items:stretch}
+  .man-card .man-badges .man-go{border-radius:0!important;font-size:10px;font-weight:800;padding:3px 9px;text-align:center}
+  .man-card .man-go.g-sum{background:transparent!important;color:var(--ink)!important;border:1px solid var(--ink)!important}
   .mcard:hover,.pnode:hover,.tl-row.lk:hover{transform:none;box-shadow:var(--cardsh);}
   .cfield input,.cfield select,.search-box input,#global-q,.gz-field input,.bl-field input,.bl-field select,#qbox-input{
     border:1px solid #ddd;border-radius:4px;box-shadow:none;}

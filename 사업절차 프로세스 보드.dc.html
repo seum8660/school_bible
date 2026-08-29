@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  body{margin:0;background:#f4f5f7;font-family:Pretendard,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:#14213d;text-decoration:none}
+  a:hover{text-decoration:underline}
+</style>
+</helmet>
+
+<div style="min-height:100vh;padding:34px 30px 64px">
+  <div style="max-width:1420px;margin:0 auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #dcdfe4;padding-bottom:12px">
+      <span style="font-size:11.5px;font-weight:800;letter-spacing:.12em;color:#8a919b">SCHOOL BIBLE / PROCESS × THRESHOLD</span>
+      <a href="bible.html" style="font-size:12px;font-weight:800">← 대시보드</a>
+    </div>
+
+    <div style="margin-top:28px;display:flex;align-items:baseline;gap:12px">
+      <span style="font-size:12px;font-weight:900;color:#14213d;letter-spacing:.1em">Procedure Matrix</span>
+      <span style="font-size:12px;color:#9aa1ab">가로 = 사업단계 · 세로 = 판정 기준금액</span>
+    </div>
+    <h1 style="margin:8px 0 0;font-size:30px;font-weight:800;color:#14213d;letter-spacing:-.03em">사업절차 프로세스 보드</h1>
+    <p style="margin:10px 0 0;max-width:760px;font-size:13.5px;line-height:1.7;color:#5b6470;text-wrap:pretty">기획부터 유지관리까지 사업 흐름을 가로축에, 절차를 발동시키는 기준금액을 세로축에 놓았습니다. 사업 규모를 입력하면 해당 구간의 행이 열리고 각 절차가 적용·별도 확인·해당없음으로 판정됩니다.</p>
+
+    <div style="margin-top:20px;background:#fff;border:1px solid #dfe3e8;padding:16px 18px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end">
+      <sc-for list="{{ fields }}" as="f" hint-placeholder-count="4">
+        <label style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:11.5px;font-weight:800;color:#14213d">{{ f.label }} <span style="color:#9aa1ab;font-weight:700">{{ f.unit }}</span></span>
+          <input type="text" value="{{ f.value }}" onInput="{{ f.onInput }}" style="font:inherit;font-size:14px;font-weight:800;color:#14213d;background:#f7f8fa;border:1px solid #dfe3e8;padding:8px 12px;width:106px;outline:none;transition:border-color .12s" style-hover="border-color:#14213d" style-focus="border-color:#14213d">
+        </label>
+      </sc-for>
+      <label style="display:flex;flex-direction:column;gap:6px">
+        <span style="font-size:11.5px;font-weight:800;color:#14213d">사업유형 <span style="color:#9aa1ab;font-weight:700">구분</span></span>
+        <select value="{{ ty }}" onChange="{{ onType }}" style="font:inherit;font-size:14px;font-weight:800;color:#14213d;background:#f7f8fa;border:1px solid #dfe3e8;padding:8px 12px;width:130px;outline:none">
+          <option value="new">신축</option>
+          <option value="ext">증축</option>
+          <option value="reb">개축</option>
+          <option value="rem">리모델링·대수선</option>
+          <option value="rep">보수·보강</option>
+          <option value="etc">기타</option>
+        </select>
+      </label>
+      <label style="display:flex;flex-direction:column;gap:6px;margin-left:4px">
+        <span style="font-size:11.5px;font-weight:800;color:#14213d">보기 <span style="color:#9aa1ab;font-weight:700">필터</span></span>
+        <div style="display:flex;gap:6px">
+          <sc-for list="{{ modes }}" as="m" hint-placeholder-count="2">
+            <button type="button" onClick="{{ m.onClick }}" style="{{ m.style }}">{{ m.label }}</button>
+          </sc-for>
+        </div>
+      </label>
+      <div style="margin-left:auto;display:flex;align-items:baseline;gap:8px">
+        <span style="font-size:13px;font-weight:800;color:#5b6470">적용</span>
+        <span style="font-size:30px;font-weight:900;color:#e5342b;letter-spacing:-.03em;line-height:1">{{ hitCount }}</span>
+        <span style="font-size:13px;font-weight:800;color:#5b6470">건 / {{ totalCount }}건</span>
+      </div>
+    </div>
+
+    <div style="margin-top:18px;display:grid;grid-template-columns:118px repeat(5,1fr);gap:1px;background:#e3e5e9;border:1px solid #e3e5e9">
+      <div style="background:#f4f5f7"></div>
+      <sc-for list="{{ stages }}" as="s" hint-placeholder-count="5">
+        <div style="{{ s.headStyle }}">
+          <div style="display:flex;align-items:baseline;gap:8px">
+            <span style="font-size:10.5px;font-weight:900;color:#9aa1ab;letter-spacing:.08em">{{ s.idx }}</span>
+            <span style="font-size:14px;font-weight:900;color:#14213d;letter-spacing:-.02em">{{ s.name }}</span>
+          </div>
+          <div style="margin-top:4px;font-size:11px;color:#8a919b;font-weight:700">{{ s.desc }}</div>
+          <div style="margin-top:7px;display:flex;align-items:baseline;gap:5px">
+            <span style="font-size:15px;font-weight:900;color:#e5342b;line-height:1">{{ s.hit }}</span>
+            <span style="font-size:10.5px;font-weight:800;color:#9aa1ab">/ {{ s.total }} 적용</span>
+          </div>
+        </div>
+      </sc-for>
+
+      <sc-for list="{{ grid }}" as="row" hint-placeholder-count="5">
+        <div style="{{ row.tierStyle }}">
+          <div style="font-size:12px;font-weight:900;color:#14213d;line-height:1.35;word-break:keep-all">{{ row.tier }}</div>
+          <div style="margin-top:5px;font-size:10.5px;font-weight:800;color:#9aa1ab">{{ row.axis }}</div>
+          <sc-if value="{{ row.active }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:9px;display:inline-block;font-size:10px;font-weight:900;color:#fff;background:#e5342b;padding:3px 7px">현재 구간</div>
+          </sc-if>
+        </div>
+        <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="5">
+          <div style="{{ cell.style }}">
+            <sc-for list="{{ cell.items }}" as="p" hint-placeholder-count="1">
+              <div style="{{ p.cardStyle }}" style-hover="border-color:#14213d;opacity:1">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+                  <span style="font-size:12.5px;font-weight:800;color:#14213d;line-height:1.3;letter-spacing:-.012em;word-break:keep-all">{{ p.name }}</span>
+                  <span style="{{ p.dotStyle }}"></span>
+                </div>
+                <div style="font-size:11px;color:#6b7280;margin-top:5px;line-height:1.5;word-break:keep-all"><sc-for list="{{ p.parts }}" as="t" hint-placeholder-count="2"><span style="{{ t.style }}">{{ t.t }}</span></sc-for></div>
+                <sc-if value="{{ p.sub }}" hint-placeholder-val="{{ false }}">
+                  <span style="margin-top:7px;display:inline-block;font-size:9.5px;font-weight:800;color:#6b7280;border:1px solid #e0e3e8;background:#f7f8fa;padding:2px 6px">{{ p.sub }}</span>
+                </sc-if>
+              </div>
+            </sc-for>
+            <sc-if value="{{ cell.empty }}" hint-placeholder-val="{{ false }}">
+              <div style="min-height:34px"></div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </sc-for>
+    </div>
+
+    <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;font-size:11.5px;font-weight:700;color:#6b7280">
+      <span style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;background:#14213d;display:inline-block"></span>적용</span>
+      <span style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;background:#8cc2a4;display:inline-block"></span>별도 확인</span>
+      <span style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;background:#dfe3e8;display:inline-block"></span>미입력</span>
+      <span style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;background:#b3b9c2;display:inline-block"></span>해당없음(회색 음영)</span>
+      <span style="margin-left:auto;color:#9aa1ab">기준금액은 전남교육청 시설사업 기준 — 실제 적용 전 소관 부서 확인 필요</span>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1100}}">
+const STAGES = [
+  ["기획","투자심사 · 사전기획"],
+  ["설계","설계공모 · 심의 · 인증"],
+  ["시공","발주 · 계약 · 현장관리"],
+  ["준공","검사 · 평가 · 정산"],
+  ["유지관리","점검 · 하자 · 운영"]
+];
+const TIERS = [
+  ["금액 무관","조건·대상으로 판정",p=>p.ax==="chk"],
+  ["1,000㎡ 미만","소규모 건축 구간",p=>p.ax==="area"&&p.amt<1000],
+  ["1,000㎡ ~ 3,000㎡","중규모 건축 구간",p=>p.ax==="area"&&p.amt>=1000&&p.amt<3000],
+  ["3,000㎡ 이상","대규모 건축 구간",p=>p.ax==="area"&&p.amt>=3000],
+  ["5억 미만","소규모 사업 구간",p=>p.amt!=null&&p.ax!=="area"&&p.ax!=="chk"&&p.amt<5],
+  ["5억 ~ 25억","건설사업관리 · 품질 구간",p=>p.amt!=null&&p.ax!=="area"&&p.ax!=="chk"&&p.amt>=5&&p.amt<25],
+  ["25억 ~ 50억","투자심사 구간",p=>p.amt!=null&&p.ax!=="area"&&p.ax!=="chk"&&p.amt>=25&&p.amt<50],
+  ["50억 ~ 100억","심의 · 안전보건 구간",p=>p.amt!=null&&p.ax!=="area"&&p.ax!=="chk"&&p.amt>=50&&p.amt<100],
+  ["100억 이상","대규모 사업 구간",p=>p.amt!=null&&p.ax!=="area"&&p.ax!=="chk"&&p.amt>=100]
+];
+
+// [절차명, 기준, 판정축, 기준금액(억), 단계, 세부단계, 적용 사업유형]
+const P = [
+["투자심사","자체 40억↑ / 중앙 300억↑","total",40,0,"타당성"],
+["중앙투자심사","총사업비 300억↑","total",300,0,"타당성"],
+["대규모 시설 일상감사","사립 예산액 25억↑","total",25,0,"감사"],
+["사전기획","설계비 1억↑","design",1,0,"기획용역"],
+["설계공모","설계비 1억↑ 우선적용","design",1,1,"발주","new,ext,reb,rem"],
+["공공건축심의","설계비 5천↑","design",0.5,1,"심의"],
+["일상감사(설계용역)","설계·감리·기술용역 2억↑","design",2,1,"감사"],
+["기술자문위원회","100억↑(본청) / 50억↑(지원청·학교)","const",50,1,"심의"],
+["설계 경제성 검토(VE)","공사비 100억↑","const",100,1,"심의"],
+["산업안전보건관리비 계상","총공사금액 2천만원↑","const",0.2,1,"안전"],
+["안전보건대장(기본·설계)","공사비 50억↑","const",50,1,"안전"],
+["설계의 안전성 검토(DfS)","굴착깊이·층수·가설구조물로 판정","chk",null,1,"안전"],
+["교육시설 안전성평가","굴착영향거리·통학로 인접 여부","chk",null,1,"안전","new,ext,reb,rem"],
+["BF 인증(예비)","공공건축물 해당 여부","chk",null,1,"인증","new,ext,reb"],
+["에너지절약계획서","연면적 500㎡↑ 신축·증축·개축","area",500,1,"인증","new,ext,reb"],
+["제로에너지건축물(ZEB) 인증","연면적 1,000㎡↑ 공공건축물","area",1000,1,"인증","new,ext,reb"],
+["녹색건축 인증","연면적 3,000㎡↑","area",3000,1,"인증","new,ext,reb"],
+["BEMS 설치","연면적 10,000㎡↑","area",10000,1,"설비"],
+["일상감사(시설공사)","공사비 2억↑","const",2,2,"발주"],
+["건설사업관리계획 수립","공사비 5억↑(토목)","const",5,2,"발주"],
+["건설사업관리·감리","공사비 5억↑(토목)","const",5,2,"감리"],
+["공사기간 적정성 심의","총공사비 100억↑","const",100,2,"발주"],
+["종합심사낙찰제","추정가격 100억↑(미만은 적격심사)","const",100,2,"발주"],
+["감독권한대행 건설사업관리","총공사비 200억↑","const",200,2,"감리"],
+["품질시험계획 수립","공사비 5억↑ / 660㎡↑ / 전문 2억↑","const",5,2,"품질"],
+["품질관리계획 수립","총공사비 500억↑ 또는 연면적 3만㎡↑","const",500,2,"품질"],
+["재해예방 기술지도","공사비 1억↑ ~ 120억 미만","const",1,2,"안전"],
+["건설사업관리·감리(건축)","연면적 660㎡↑ 건축공사","area",660,2,"감리"],
+["안전관리계획 수립","시설물 종류·굴착 10m·가설구조물","chk",null,2,"안전"],
+["석면 해체·제거","석면조사 결과에 따름","chk",null,2,"안전","reb,rem,rep,etc"],
+["하도급 적정성 심사","하도급율·심사점수 85점 미만 변경요구","chk",null,2,"계약"],
+["일요일 휴무제","모든 공공공사 현장, 예외는 승인","chk",null,2,"현장"],
+["건설공사 사후평가","총공사비 300억↑ (500억↑ 파급효과평가 추가)","total",300,3,"평가"],
+["준공검사·사용승인","전 사업 공통 — 검사조서·대장 등재","chk",null,3,"검사"],
+["설계용역 평가","계약금액이 국가계약법 고시금액↑","chk",null,3,"평가"],
+["BF 인증(본인증)","예비인증 사업의 준공 후 본인증","chk",null,3,"인증","new,ext,reb"],
+["준공정산·대가지급","전 사업 공통 — 정산검사 후 지급","chk",null,3,"정산"],
+["하자검사·하자보수보증","하자담보책임기간 내 정기·최종검사","chk",null,4,"하자"],
+["건축물 관리계획 수립","연면적 200㎡↑ 사용승인 건축물","area",200,4,"점검"],
+["시설물 정기안전점검","1·2·3종 시설물 지정 여부","chk",null,4,"점검"],
+["에너지사용량 신고·관리","공공건축물 에너지 사용 실적 보고","chk",null,4,"운영"]
+].map((r,i)=>({no:i+1,name:r[0],crit:r[1],ax:r[2],amt:r[3],stage:r[4],sub:r[5],ty:r[6]||null}));
+
+const NUM = /([\d][\d,\.]*\s*(?:억원|억|천만원|천|만원|만|㎡|점|m|일|%)?)/g;
+function tokenize(s){
+  const out=[]; let last=0,m; NUM.lastIndex=0;
+  while((m=NUM.exec(s))){
+    if(m.index>last) out.push({t:s.slice(last,m.index),style:""});
+    out.push({t:m[0],style:"color:#e5342b;font-weight:800"});
+    last=m.index+m[0].length;
+  }
+  if(last<s.length) out.push({t:s.slice(last),style:""});
+  return out;
+}
+const CARD="border:1px solid #dfe3e8;background:#fff;padding:9px 11px;display:flex;flex-direction:column;align-items:flex-start;transition:border-color .12s,opacity .12s";
+const DOT="width:9px;height:9px;flex:0 0 9px;margin-top:3px;display:inline-block;background:";
+
+class Component extends DCLogic {
+  state={ total:"", const:"", design:"", area:"", ty:"new", mode:"all" };
+
+  judge(p){
+    if(p.ty && !p.ty.split(",").includes(this.state.ty)) return "해당없음";
+    if(p.ax==="chk") return "별도 확인";
+    const k = p.ax==="area" ? "area" : p.ax;
+    const raw = (this.state[k]||"").trim();
+    if(raw==="") return "미입력";
+    return (parseFloat(raw)||0)>=p.amt ? "적용" : "해당없음";
+  }
+
+  renderVals(){
+    const mode=this.state.mode;
+    const rows=P.map(p=>{
+      const status=this.judge(p), hit=status==="적용", chk=status==="별도 확인", off=status==="해당없음";
+      return Object.assign({},p,{
+        status,hit,chk,parts:tokenize(p.crit),
+        cardStyle:CARD+(hit?";border-color:#14213d;box-shadow:inset 0 0 0 1px #14213d"
+          :chk?";border-color:#8cc2a4;background:#f4faf6"
+          :off?";background:#e8eaee;border-color:#d7dbe0;color:#9aa1ab;opacity:.75":""),
+        dotStyle:DOT+(hit?"#14213d":chk?"#8cc2a4":off?"#b3b9c2":"#dfe3e8")
+      });
+    });
+    const visible = mode==="hit" ? rows.filter(r=>r.status!=="해당없음") : rows;
+
+    const cvRaw=(this.state.const||"").trim(), avRaw=(this.state.area||"").trim();
+    const cv=parseFloat(cvRaw)||0, av=parseFloat(avRaw)||0;
+    const activeTier = cvRaw===""?-1:cv>=100?8:cv>=50?7:cv>=25?6:cv>=5?5:4;
+    const activeArea = avRaw===""?-1:av>=3000?3:av>=1000?2:1;
+
+    const grid=TIERS.map(([tier,axis,test],ti)=>{
+      const active = ti===activeTier||ti===activeArea;
+      return {
+        tier,axis,active,
+        tierStyle:"background:"+(active?"#fff":"#fafbfc")+";padding:14px 12px;border-left:3px solid "+(active?"#e5342b":"transparent"),
+        cells:STAGES.map((_,si)=>{
+          const items=visible.filter(p=>test(p)&&p.stage===si);
+          return {items,empty:items.length===0,
+            style:"background:"+(active?"#fff":"#fafbfc")+";padding:10px;display:flex;flex-direction:column;gap:8px"};
+        })
+      };
+    });
+
+    const stages=STAGES.map(([name,desc],i)=>({
+      idx:"0"+(i+1),name,desc,
+      hit:rows.filter(r=>r.stage===i&&(r.hit||r.chk)).length,
+      total:rows.filter(r=>r.stage===i).length,
+      headStyle:"background:#fff;padding:14px 14px 13px;border-bottom:2px solid #14213d"
+    }));
+
+    const set=k=>e=>this.setState({[k]:e.target.value});
+    const btn=on=>"font:inherit;font-size:11.5px;font-weight:800;padding:9px 13px;cursor:pointer;border:1px solid "+(on?"#14213d":"#dfe3e8")+";background:"+(on?"#14213d":"#f7f8fa")+";color:"+(on?"#fff":"#8a919b");
+
+    return {
+      fields:[
+        {label:"총사업비",unit:"억원",value:this.state.total,onInput:set("total")},
+        {label:"공사비",unit:"억원",value:this.state.const,onInput:set("const")},
+        {label:"설계비",unit:"억원",value:this.state.design,onInput:set("design")},
+        {label:"사업면적",unit:"㎡",value:this.state.area,onInput:set("area")}
+      ],
+      ty:this.state.ty,onType:set("ty"),
+      modes:[
+        {label:"전체",onClick:()=>this.setState({mode:"all"}),style:btn(mode==="all")},
+        {label:"적용만",onClick:()=>this.setState({mode:"hit"}),style:btn(mode==="hit")}
+      ],
+      hitCount:rows.filter(r=>r.hit).length,
+      totalCount:rows.length,
+      stages,grid
+    };
+  }
+}
+
+</script>
+</body>
+</html>

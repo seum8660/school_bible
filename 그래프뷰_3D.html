@@ -6,15 +6,22 @@
 <title>학교시설업무 관계망 · 3D 그래프 뷰</title>
 <style>
   :root{
-    --bg:#ffffff; --surface:#ffffff; --surface-2:#f7f6f4; --surface-3:#efedea;
-    --line:#e6e3df; --ink:#191919; --ink-2:#3b3b3b; --muted:#6b6b6b; --faint:#9b9b9b;
-    --accent:#0075de; --accent-soft:#e8f2fd; --rad:12px;
+    --bg:#05060a; --surface:#0d0f16; --surface-2:#141824; --surface-3:#1c2130;
+    --line:rgba(255,255,255,.13); --ink:#eceaf3; --ink-2:#c6c3d2; --muted:#8e8ba0; --faint:#5f5d73;
+    --accent:#7aa2ff; --accent-soft:rgba(122,162,255,.16); --rad:12px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:var(--bg);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",sans-serif;
     font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
   .wrap{max-width:1280px;margin:0 auto;padding:28px 24px 40px}
+  /* 단독 창에서 전체화면 */
+  body.full{overflow:hidden}
+  body.full .wrap{max-width:none;margin:0;padding:14px 16px;height:100vh;display:flex;flex-direction:column}
+  body.full .hd{margin-bottom:10px}
+  body.full .grid{flex:1;min-height:0}
+  body.full .stage{height:100%}
+  body.full #cv{height:100%!important}
   .hd{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
   .hd h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
   .hd p{font-size:13px;color:var(--muted);margin-top:4px;max-width:640px}
@@ -31,7 +38,13 @@
   .chip:hover{border-color:var(--accent);color:var(--accent)}
   .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:700}
   .grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:start}
-  .stage{position:relative;border:1px solid var(--line);border-radius:var(--rad);overflow:hidden;background:var(--surface)}
+  .stage{position:relative;border:1px solid var(--line);border-radius:var(--rad);overflow:hidden;
+    background:
+      radial-gradient(ellipse 60% 45% at 22% 18%, rgba(88,101,242,.20), transparent 70%),
+      radial-gradient(ellipse 55% 40% at 78% 78%, rgba(178,84,220,.16), transparent 72%),
+      radial-gradient(ellipse 80% 70% at 50% 50%, #0a0c14 0%, #04050a 100%)}
+  .stage .legend{background:rgba(18,18,20,.82);border-color:rgba(255,255,255,.14);color:#c9c6c1}
+  .stage .hint{background:rgba(18,18,20,.82);border-color:rgba(255,255,255,.14);color:#9b9791}
   #cv{display:block;width:100%;height:560px}
   #tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;font-size:12px;font-weight:600;
     padding:5px 9px;border-radius:6px;opacity:0;transition:opacity .1s;white-space:nowrap;z-index:4}
@@ -132,7 +145,7 @@ const PALETTES = {
   mono:  { plan:'#31302e', design:'#4a4845', const:'#615d59', cm:'#7b766f', manual:'#a39e98', comp:'#8e8981', safety:'#94908a' }
 };
 let PHASE_COL = PALETTES.earth;
-const INK2 = '#31302e', MUTED = '#615d59', FAINT = '#a39e98', ACCENT = '#0075de', SOFT = '#e7f1fc';
+const INK2 = '#e4e2ee', MUTED = '#a9a6bb', FAINT = '#7d7a92', ACCENT = '#8fb0ff', SOFT = 'rgba(143,176,255,.18)';
 const isHot = n => n.group === 'phase' || n.group === 'root' || n.id === 'wf:hub';
 function phaseOf(n) {
   const g = n.group || '', id = n.id || '';
@@ -210,6 +223,25 @@ controls.minDistance = 90; controls.maxDistance = 1200;
 
 const root = new THREE.Group(); scene.add(root);
 
+// ---- 별밭 (원경·근경 2겹) ----
+function starfield(count, spread, size, opacity) {
+  const g = new THREE.BufferGeometry(), p = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const r = spread * (0.55 + Math.random() * 0.45);
+    const th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
+    p.set([r * Math.sin(ph) * Math.cos(th), r * Math.cos(ph) * 0.6, r * Math.sin(ph) * Math.sin(th)], i * 3);
+  }
+  g.setAttribute('position', new THREE.BufferAttribute(p, 3));
+  return new THREE.Points(g, new THREE.PointsMaterial({
+    color: 0xffffff, size, sizeAttenuation: true, transparent: true,
+    opacity, depthWrite: false, blending: THREE.AdditiveBlending
+  }));
+}
+const stars = new THREE.Group();
+stars.add(starfield(1400, 2600, 3.4, 0.75));
+stars.add(starfield(700, 1500, 2.0, 0.42));
+scene.add(stars);
+
 // links
 const lgeo = new THREE.BufferGeometry();
 const lpos = new Float32Array(links.length * 6);
@@ -217,10 +249,21 @@ links.forEach((l, i) => {
   lpos.set([l.s.x, l.s.y, l.s.z, l.t.x, l.t.y, l.t.z], i * 6);
 });
 lgeo.setAttribute('position', new THREE.BufferAttribute(lpos, 3));
-const lcol = new Float32Array(links.length * 6).fill(0.79);
+const lcol = new Float32Array(links.length * 6).fill(0.62);
 lgeo.setAttribute('color', new THREE.BufferAttribute(lcol, 3));
-const lines = new THREE.LineSegments(lgeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.62 }));
+const lines = new THREE.LineSegments(lgeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.2, linewidth: 1, blending: THREE.AdditiveBlending, depthWrite: false }));
 root.add(lines);
+
+// 광채 텍스처
+const GLOW = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const g = c.getContext('2d'), gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+  gr.addColorStop(0, 'rgba(255,255,255,1)');
+  gr.addColorStop(.28, 'rgba(255,255,255,.45)');
+  gr.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+  return new THREE.CanvasTexture(c);
+})();
 
 // nodes as spheres
 const sphere = new THREE.SphereGeometry(1, 14, 12);
@@ -230,6 +273,12 @@ const meshes = nodes.map(n => {
   m.scale.setScalar(rad(n));
   m.userData.node = n;
   root.add(m);
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: GLOW, color: new THREE.Color(colorOf(n)), transparent: true,
+    opacity: isHot(n) ? 0.9 : 0.55, blending: THREE.AdditiveBlending, depthWrite: false
+  }));
+  glow.scale.setScalar(isHot(n) ? 7 : 5);
+  m.add(glow);
   if (n.group === 'law' || n.group === 'cert') {
     const ring = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: new THREE.Color(FAINT), wireframe: true, transparent: true, opacity: .5 }));
     ring.scale.setScalar(1.12); m.add(ring);
@@ -460,6 +509,7 @@ growReset();
 </script>
 <script>
   // 임베드(iframe)로 열릴 땐 페이지 헤더·여백 제거 — 호스트 대시보드와 중복 방지
+  if (window.top === window.self) document.body.classList.add('full');
   if (window.top !== window.self) {
     document.documentElement.style.background = 'transparent';
     document.addEventListener('DOMContentLoaded', function () {

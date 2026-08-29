@@ -885,6 +885,9 @@
   .gz-panel{margin-left:auto;display:grid;grid-template-columns:repeat(5,auto) auto;align-items:end;gap:8px 12px;
     background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radsm);padding:10px 14px}
   .gz-cap{margin:0 0 10px;font-size:12.5px;line-height:1.6;color:var(--faint)}
+  .gz-pop{align-self:center;font-size:12px;font-weight:800;color:var(--ink);border:1px solid var(--line);
+    padding:6px 11px;border-radius:6px;text-decoration:none;white-space:nowrap;transition:border-color .12s}
+  .gz-pop:hover{border-color:var(--ink);background:var(--surface-2);text-decoration:none}
   @media(max-width:1100px){.gz-panel{margin-left:0;width:100%;grid-template-columns:repeat(3,minmax(0,1fr))}}
   @media(max-width:640px){.gz-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.gz-count{grid-column:1/-1}}
   .gz-field{display:flex;flex-direction:column;gap:6px;align-items:center;min-width:0}
@@ -1621,6 +1624,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     <div class="sec-head gz-head">
       <span class="chip" id="ovChip" style="background:var(--amber);display:none">기준</span>
       <div><h2 id="ovH2">간단 기준 프로세스 안내</h2><p id="ovP">사업 규모에 따라 필수 절차를 한눈에 확인</p></div>
+      <a class="gz-pop" href="bible.html?ov=std" target="_blank" rel="noopener noreferrer" title="새 창에서 열기">새 창 ↗</a>
       <div class="gz-panel" id="gzPanel">
         <div class="gz-field"><label>총사업비 <span>억원</span></label><input type="number" id="gz-total" min="0" step="0.1" placeholder="전체"></div>
         <div class="gz-field"><label>공사비 <span>억원</span></label><input type="number" id="gz-const" min="0" step="0.1" placeholder="전체"></div>
@@ -5438,7 +5442,12 @@ window.__gvInit = (function(){
 (function(){
   const tabs=document.querySelectorAll('.ov-tab');
   document.querySelectorAll('.nav-ovjump .ov-tab').forEach(function(b){
-    b.addEventListener('click',function(){
+    b.addEventListener('click',function(e){
+      if(b.dataset.ovgo==='graph'||b.dataset.ov==='graph'){
+        e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+        window.open('그래프뷰_3D.html','_blank','noopener');
+        return;
+      }
       var ov=document.getElementById('overview');
       if(ov&&!ov.classList.contains('show')){
         var st=document.querySelector('.side-nav .tab[data-p="overview"]'); if(st) st.click();

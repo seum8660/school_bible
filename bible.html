@@ -58,6 +58,66 @@
   .nav-title{font-size:18px;font-weight:900;letter-spacing:-.6px;color:var(--ink);display:flex;align-items:baseline;gap:8px;}
   .nav-title b{font-family:'Pretendard',sans-serif;font-weight:800;color:var(--accent);font-size:12px;letter-spacing:.3px;}
   .nav-util{display:flex;align-items:center;gap:10px;flex:1;justify-content:flex-end;}
+  .nav-jump{display:flex;flex-direction:column;align-items:stretch;gap:4px;width:124px;}
+  .nav-jump .nav-row1{display:flex;gap:4px;align-items:stretch;}
+  .nav-jump .nav-row1>#introBtn,.nav-jump .nav-row1>#homeBtn{flex:1 1 0;min-width:0;justify-content:center;}
+  .nav-jump .nav-row1>#introBtn>span,.nav-jump .nav-row1>#homeBtn>span{height:28px!important;width:auto!important;}
+  .nav-jump .nav-row1>#homeBtn>span{width:32px!important;}
+  .nav-ovjump{display:flex;gap:6px;padding-left:0;margin-left:0;border-left:0;}
+  .nav-ovjump .ov-tab{width:100%;justify-content:flex-start!important;height:27px;padding:0 9px!important;
+    font-size:12px!important;gap:7px;}
+  /* 아이콘 블랙 채움 + 모션 */
+  .nav-ovjump .ov-tab svg *{opacity:1!important;}
+  .nav-ovjump .ov-tab svg line,.nav-ovjump .ov-tab svg path{fill:none!important;stroke-width:2!important;}
+  .nav-ovjump .ov-tab.on svg *,.nav-ovjump .ov-tab:hover svg *{fill:#fff!important;stroke:#fff!important;}
+  .nav-ovjump .ov-tab.on .gvstar,.nav-ovjump .ov-tab.on .wficon,.nav-ovjump .ov-tab.on svg,
+  .nav-ovjump .ov-tab:hover .gvstar,.nav-ovjump .ov-tab:hover .wficon,.nav-ovjump .ov-tab:hover svg{animation:none!important;filter:none!important;}
+  .nav-ovjump .ov-tab.on svg line,.nav-ovjump .ov-tab.on svg path,
+  .nav-ovjump .ov-tab:hover svg line,.nav-ovjump .ov-tab:hover svg path{fill:none!important;}
+  .nav-ovjump .ov-tab .gvstar line,.nav-ovjump .ov-tab .wficon .ln,.nav-ovjump .ov-tab .wficon .ar{
+    stroke:#000!important;opacity:1!important;stroke-width:1.6!important;fill:none!important;}
+  .nav-ovjump .ov-tab .gvstar *,.nav-ovjump .ov-tab .wficon *{color:#000!important;}
+  .nav-ovjump .ov-tab .wficon rect,.nav-ovjump .ov-tab .gvstar circle{stroke:none!important;}
+  .nav-ovjump .ov-tab.on .gvstar circle,.nav-ovjump .ov-tab.on .wficon .nd,
+  .nav-ovjump .ov-tab:hover .gvstar circle,.nav-ovjump .ov-tab:hover .wficon .nd{fill:var(--surface)!important;}
+  .nav-ovjump .ov-tab.on .gvstar line,.nav-ovjump .ov-tab.on .wficon .ln,.nav-ovjump .ov-tab.on .wficon .ar,
+  .nav-ovjump .ov-tab:hover .gvstar line,.nav-ovjump .ov-tab:hover .wficon .ln,.nav-ovjump .ov-tab:hover .wficon .ar{
+    stroke:var(--surface)!important;}
+  @keyframes navHue{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+  .nav-ovjump .ov-tab .gvstar,.nav-ovjump .ov-tab .wficon,.nav-ovjump .ov-tab svg{animation:navHue 6s linear infinite!important;}
+  .nav-ovjump .ov-tab .gvstar circle,.nav-ovjump .ov-tab .wficon .nd,
+  .nav-ovjump .ov-tab svg *{fill:#e5342b!important;stroke:#e5342b!important;}
+  .nav-ovjump .ov-tab svg line,.nav-ovjump .ov-tab svg path{fill:none!important;}
+  @keyframes navArrowSlide{0%{transform:translateX(-2.5px);opacity:.35}45%{opacity:1}100%{transform:translateX(2.5px);opacity:.35}}
+  @keyframes navTrace{0%{stroke-dashoffset:26}70%,100%{stroke-dashoffset:0}}
+  @keyframes navDash{to{stroke-dashoffset:-12}}
+  .nav-ovjump .ov-tab .gvstar circle,.nav-ovjump .ov-tab .wficon .nd{animation:none!important;opacity:1!important;}
+  .nav-ovjump .ov-tab .wficon .ar{animation:navArrowSlide 1.6s ease-in-out infinite alternate!important;}
+  .nav-ovjump .ov-tab .wficon .ln{stroke-dasharray:none!important;animation:none!important;}
+  .nav-ovjump .ov-tab .gvstar line{stroke-dasharray:26!important;animation:navTrace 2.2s ease-in-out infinite!important;}
+  .nav-ovjump .ov-tab .gvstar line:nth-of-type(2){animation-delay:.35s!important;}
+  .nav-ovjump .ov-tab .gvstar line:nth-of-type(3){animation-delay:.7s!important;}
+  @media(prefers-reduced-motion:reduce){.nav-ovjump .ov-tab *{animation:none!important;}}
+  /* 3단 스택 안에서는 레거시 그래프 캡슐 스타일 무효화 — 두 버튼 동일 규격 */
+  .nav-ovjump .ov-tab[data-ov="graph"],.nav-ovjump .ov-tab[data-ov="flow"]{
+    margin:0!important;width:100%!important;height:32px!important;padding:0 10px!important;
+    font-size:12.5px!important;font-weight:700!important;letter-spacing:0!important;
+    background:var(--surface)!important;color:var(--ink-2)!important;
+    border:1px solid var(--border)!important;border-radius:10px!important;box-shadow:none!important;}
+  .nav-ovjump .ov-tab[data-ov="graph"]:hover,.nav-ovjump .ov-tab[data-ov="flow"]:hover{
+    background:var(--surface)!important;color:var(--ink)!important;border-color:var(--ink)!important;}
+  .nav-ovjump .ov-tab[data-ov="graph"].on,.nav-ovjump .ov-tab[data-ov="flow"].on{
+    background:var(--ink)!important;color:var(--surface)!important;border-color:var(--ink)!important;}
+  .nav-ovjump .ov-tab{border:1px solid var(--border)!important;background:var(--surface)!important;
+    border-radius:10px!important;height:34px;padding:0 13px!important;
+    font-size:13px!important;font-weight:700!important;line-height:1!important;color:var(--ink-2)!important;
+    display:inline-flex!important;align-items:center;justify-content:center;gap:7px;white-space:nowrap;cursor:pointer;}
+
+  .nav-ovjump .ov-tab>span{margin:0!important;display:inline-flex;align-items:center;}
+  .nav-ovjump .ov-tab::after{display:none!important;}
+  .nav-ovjump .ov-tab:hover{background:var(--ink)!important;border-color:var(--ink)!important;color:var(--surface)!important;}
+  .nav-ovjump .ov-tab.on{background:var(--ink)!important;color:var(--surface)!important;border-color:var(--ink)!important;}
+  .nav-ovjump .ov-tab.on svg{stroke:currentColor;}
   .mk-block{display:flex;flex-direction:column;gap:5px;border:1.5px solid var(--border);border-radius:12px;padding:8px 10px;background:var(--surface);}
   .mk-title{font-size:11px;font-weight:800;letter-spacing:.4px;color:var(--ink);text-align:center;}
   .mk-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
@@ -137,6 +197,7 @@
   .extlink .ext{color:var(--muted);font-size:13px;flex:0 0 auto;font-weight:800;}
   .extlink:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--border);color:var(--accent);}
   .tab.active{color:var(--accent-ink);border-color:var(--border);box-shadow:3px 3px 0 var(--border);}
+  .tab.active[data-ovgo]{background:var(--ink);color:var(--surface);}
   .tab.active[data-p="overview"]{background:var(--ink);color:var(--surface);}
   .tab.active[data-p="plan"]{background:var(--p-plan);}
   .tab.active[data-p="design"]{background:var(--p-design);}
@@ -546,6 +607,7 @@
   .ov-tab.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink);}
   /* 그래프 뷰 — accent 캡슐로 강조 */
   .ov-tabs{align-items:center;}
+  div.ov-tabs.ov-tabs-hidden{display:none!important;}
   .ov-tab[data-ov="graph"]{color:var(--accent)!important;font-weight:700!important;
     display:inline-flex;align-items:center;gap:7px;background:var(--accent-soft)!important;
     padding:7px 15px 7px 13px!important;border-radius:100px!important;margin:0 0 8px 4px;
@@ -571,6 +633,7 @@
   .ov-tab[data-ov="flow"] .wficon .ar{fill:none;stroke:currentColor;stroke-width:1.1;opacity:.6;stroke-linecap:round;stroke-linejoin:round}
   .ov-frame{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:26px 26px 24px;box-shadow:var(--shadow);}
   .ov-frame .sec-head:first-child{margin-top:0;}
+  .ov-frame:not(:has(.ov-view.on)){display:none}
   .ov-view{display:none;}
   .ov-view.on{display:block;animation:fade .3s ease;}
 
@@ -817,16 +880,23 @@
     .side-right .nav-grp{display:inline-block;}
   }
   /* ===== 금액·규모별 절차 기준 : 판정기 연동 하이라이트 ===== */
-  .gz-panel{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--surface);border:1.5px solid var(--border);
-    box-shadow:var(--shadow-sm);border-radius:var(--rad);padding:16px 18px;margin-bottom:12px}
-  .gz-field{display:flex;flex-direction:column;gap:6px;align-items:center}
-  .gz-field label{font-size:15px;font-weight:800;color:var(--accent);text-transform:none;text-align:center;width:100%}
+  .gz-head{align-items:flex-start;gap:14px;flex-wrap:wrap}
+  .gz-head>div:nth-of-type(1){flex:1 1 240px;min-width:0}
+  .gz-panel{margin-left:auto;display:grid;grid-template-columns:repeat(5,auto) auto;align-items:end;gap:8px 12px;
+    background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radsm);padding:10px 14px}
+  .gz-cap{margin:0 0 10px;font-size:12.5px;line-height:1.6;color:var(--faint)}
+  @media(max-width:1100px){.gz-panel{margin-left:0;width:100%;grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:640px){.gz-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.gz-count{grid-column:1/-1}}
+  .gz-field{display:flex;flex-direction:column;gap:6px;align-items:center;min-width:0}
+  .gz-field label{font-size:11.5px;font-weight:800;color:var(--muted);text-transform:none;text-align:center;width:100%;white-space:nowrap}
   .gz-field label span{color:var(--muted);font-weight:600}
-  .gz-field input,.gz-field select{width:130px;border:1.5px solid var(--border);border-radius:var(--radsm);padding:10px 12px;font-size:15px;
+  .gz-field input,.gz-field select{width:82px;border:1px solid var(--border);border-radius:var(--radsm);padding:6px 8px;font-size:13.5px;
     font-family:inherit;font-weight:700;color:var(--ink);background:var(--surface-2);outline:none;text-align:center}
   .gz-field input:focus,.gz-field select:focus{box-shadow:0 0 0 3px var(--accent-soft)}
-  .gz-count{margin-left:auto;align-self:center;display:flex;align-items:center;font-size:20px;font-weight:800;color:var(--ink-2)}
-  .gz-count b{font-size:52px;font-weight:900;color:#1b64da;margin:0 4px}
+  .gz-count{align-self:end;display:flex;align-items:baseline;justify-content:flex-end;gap:3px;white-space:nowrap;
+    font-size:12.5px;font-weight:800;color:var(--muted);padding-bottom:6px;padding-left:6px;
+    border-left:1px solid var(--line);margin-left:4px}
+  .gz-count b{font-size:22px;line-height:1;font-weight:900;color:#1b64da;margin:0 4px}
   #gz-tbody tr.on{background:color-mix(in oklch,var(--ops) 16%,transparent)}
   #gz-tbody tr.on .thr{color:var(--ops-d)}
   #gz-tbody tr.on td:nth-child(2){font-weight:700;color:var(--ink)}
@@ -847,11 +917,13 @@
   .gz-tile.on .gz-t-b{color:var(--ink-2)}
   .gz-tile.on .gz-t-b .money-hl{color:#e5342b;font-weight:800}
   .gz-tile.on .gz-t-s::after{content:"적용"}
+  .gz-tile.gz-chk .gz-t-s::after{content:"별도 확인"}
+  .gz-tile.gz-chk.on{border-color:var(--ink);border-width:1.5px;box-shadow:none}
   /* 금액으로 판독 불가 — 별도 확인 필요 */
-  .gz-tile.gz-chk{opacity:1;background:#e9f6ee;border-color:#2e7d52;box-shadow:0 0 0 2px rgba(46,125,82,.22),var(--shadow-sm)}
-  .gz-tile.gz-chk .gz-t-h{color:#1e4b34}
-  .gz-tile.gz-chk .gz-t-b{color:#2f6a4c}
-  .gz-tile.gz-chk .gz-t-s{background:#2e7d52;color:#fff}
+  .gz-tile.gz-chk{opacity:1;background:var(--surface);border-color:var(--line);box-shadow:none}
+  .gz-tile.gz-chk .gz-t-h{color:#1f6b45}
+  .gz-tile.gz-chk .gz-t-b{color:var(--muted)}
+  .gz-tile.gz-chk .gz-t-s{background:transparent;color:var(--muted);border:1px solid var(--line)}
   .gz-tile.gz-chk .gz-t-s::after{content:"별도 확인"}
   /* 사업 절차 요약 — 절차 보드 카드(번호 블랙·수치 레드·호버 화이트) */
   .gz-dash{counter-reset:gzt;gap:10px}
@@ -867,10 +939,12 @@
   .gz-tile .gz-t-b{font-size:11.5px;line-height:1.5;margin-top:5px;word-break:keep-all}
   .gz-tile .gz-t-b .money-hl{font-size:13px}
   .gz-tile .gz-t-s{top:11px;right:12px;border-radius:0;font-size:10px;padding:3px 8px}
-  .gz-tile.on{opacity:1;border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
-  .gz-tile.on .gz-t-s{background:var(--ink);color:var(--surface)}
-  .gz-tile.gz-chk{background:#f4faf6;border-color:#8cc2a4;box-shadow:none}
-  .gz-tile.gz-chk .gz-t-s{background:transparent;color:#1f6b45;border:1px solid #8cc2a4}
+  .gz-tile.on{opacity:1;border-color:var(--ink);border-width:1.5px;box-shadow:none}
+  .gz-tile.on .gz-t-s{display:none}
+  .gz-tile.gz-chk{background:var(--surface);border-color:var(--line);box-shadow:none}
+  .gz-tile.gz-chk .gz-t-s{display:none}
+  .gz-tile.gz-chk .gz-t-h{color:#1f6b45}
+  [data-theme="dark"] .gz-tile.gz-chk .gz-t-h{color:#7fd8a6}
   .gz-tile::after{content:"판정 기준";margin-top:auto;align-self:flex-start;margin-top:8px;
     font-size:10px;font-weight:800;color:var(--muted);background:var(--surface-2);
     border:1px solid var(--line);border-radius:0;padding:3px 8px;white-space:nowrap}
@@ -878,31 +952,70 @@
   .gz-tile[data-ax="design"]::after{content:"설계비 기준"}
   .gz-tile[data-ax="const"]::after{content:"공사비 기준"}
   .gz-tile[data-ax="area"]::after{content:"연면적 기준"}
-  .gz-tile.gz-chk::after{content:"금액 무관 · 별도 확인";color:#1f6b45;background:#eaf5ee;border-color:#b9d9c6}
+  .gz-tile.gz-chk::after{content:"DD";display:none}
   .gz-tile.on::after{color:var(--ink);background:var(--surface-2);border-color:var(--line)}
-  [data-theme="dark"] .gz-tile.gz-chk{background:rgba(127,216,166,.07)}
-  [data-theme="dark"] .gz-tile.gz-chk::after{color:#7fd8a6;background:rgba(127,216,166,.14);border-color:rgba(127,216,166,.35)}
+  [data-theme="dark"] .gz-tile.gz-chk{background:var(--surface)}
+  /* 단계 × 기준 매트릭스 */
+  .gz-mx-wrap{margin-top:14px;overflow-x:auto;container-type:inline-size}
+  .gz-mx{display:grid;grid-template-columns:112px repeat(5,minmax(150px,1fr));gap:1px;background:transparent;
+    border:0;min-width:960px}
+  .gz-cell,.gz-rh,.gz-sh,.gz-mx .gz-tile{min-width:0}
+  .gz-mx .gz-t-h,.gz-mx .gz-t-b{overflow-wrap:anywhere}
+  .gz-corner{background:var(--bg)}
+  .gz-sh{background:var(--surface);padding:13px 13px 12px;border-bottom:2px solid var(--ink)}
+  .gz-sh i{font-style:normal;font-size:10.5px;font-weight:900;color:var(--faint);letter-spacing:.08em;margin-right:7px}
+  .gz-sh b{font-size:14px;font-weight:900;color:var(--ink);letter-spacing:-.02em}
+  .gz-sh span{display:block;margin-top:4px;font-size:11px;font-weight:700;color:var(--muted)}
+  .gz-rh{background:var(--surface-2);padding:13px 11px;border-left:3px solid transparent}
+  .gz-rh b{display:block;font-size:12px;font-weight:900;color:var(--ink);line-height:1.35;word-break:keep-all}
+  .gz-rh span{display:block;margin-top:5px;font-size:10.5px;font-weight:800;color:var(--faint)}
+  .gz-rh.gz-act{background:var(--surface);border-left-color:#e5342b}
+  .gz-rh.gz-act::after{content:"현재 구간";display:inline-block;margin-top:9px;font-size:10px;
+    font-weight:900;color:#fff;background:#e5342b;padding:3px 7px}
+  .gz-cell{background:var(--surface-2);padding:9px;display:flex;flex-direction:column;gap:8px;min-height:38px;
+    border-top:1.5px solid var(--ink)}
+  .gz-rh{border-top:1.5px solid var(--ink)}
+  .gz-cell.gz-act{background:var(--surface)}
+  .gz-mx .gz-tile{min-height:0;padding:9px 11px}
+  .gz-mx .gz-tile::before,.gz-mx .gz-tile::after{display:none!important}
+  .gz-mx .gz-tile .gz-t-h{padding-right:0}
+  @container (max-width:700px){
+    .gz-mx{grid-template-columns:1fr;min-width:0}
+    .gz-corner,.gz-sh{display:none}
+    .gz-cell:empty{display:none}
+    .gz-cell::before{content:attr(data-stage);display:block;font-size:10.5px;font-weight:900;
+      letter-spacing:.06em;color:var(--faint);border-bottom:1px solid var(--line);padding-bottom:6px}
+  }
   /* 절차 보드 필터 바 */
-  .gz-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:14px 0 12px}
-  .gz-chips{display:flex;flex-wrap:wrap;gap:7px}
-  .gz-chip{font:inherit;font-size:11.5px;font-weight:800;padding:7px 13px;cursor:pointer;
+  .gz-bar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between;margin:10px 0 14px;
+    padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .gz-chips{display:flex;flex-wrap:wrap;gap:6px}
+  .gz-chip{font:inherit;font-size:11.5px;font-weight:800;padding:6px 12px;cursor:pointer;border-radius:999px;
     border:1px solid var(--line);background:var(--surface);color:var(--muted);transition:border-color .12s}
   .gz-chip:hover{border-color:var(--ink)}
-  .gz-chip.act{border-color:var(--ink);color:var(--ink)}
+  .gz-chip.act{border-color:var(--ink);background:var(--ink);color:var(--surface)}
+  .gz-chip.act b{color:var(--surface);opacity:.8}
   .gz-chip b{margin-left:6px;color:#e5342b}
-  #gz-q{font:inherit;font-size:14.5px;font-weight:700;color:var(--ink);background:var(--surface);
-    border:1px solid var(--line);padding:9px 13px;width:260px;outline:none;transition:border-color .12s}
+  #gz-q{font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--surface);border-radius:999px;
+    border:1px solid var(--line);padding:7px 14px;width:230px;outline:none;transition:border-color .12s}
   #gz-q:hover,#gz-q:focus{border-color:var(--ink)}
   /* 입력 패널 — 카드 문법 통일 */
-  .gz-panel{gap:14px;border:1px solid var(--line);border-radius:0;box-shadow:none;padding:14px 16px;margin-bottom:0}
-  .gz-field{align-items:flex-start;gap:5px}
-  .gz-field label{font-size:11.5px;font-weight:800;color:var(--ink);text-align:left}
-  .gz-field label span{color:var(--muted);font-weight:700}
-  .gz-field input,.gz-field select{width:118px;border:1px solid var(--line)!important;border-radius:0!important;box-shadow:none!important;
-    padding:8px 12px;font-size:14px;font-weight:800;background:var(--surface-2);text-align:left;transition:border-color .12s}
-  .gz-field input:hover,.gz-field select:hover,.gz-field input:focus,.gz-field select:focus{border-color:var(--ink)!important;box-shadow:none!important}
-  .gz-count{font-size:13px;font-weight:800;color:var(--ink-2);align-items:baseline;gap:6px}
-  .gz-count b{font-size:30px;font-weight:900;color:#e5342b;margin:0;letter-spacing:-.03em}
+  .gz-panel{gap:12px;border:1px solid var(--line);border-radius:0;box-shadow:none;padding:14px 16px;margin-bottom:0;
+    background:var(--surface)}
+  .gz-field{align-items:stretch;gap:0;padding:0;border-left:0}
+  .gz-field label{font-size:11px;font-weight:800;color:var(--muted);text-align:left;letter-spacing:.02em;
+    text-transform:none;margin-bottom:6px;white-space:nowrap}
+  .gz-field label span{color:var(--faint);font-weight:600;font-size:10.5px}
+  .gz-field input,.gz-field select{width:100%;border:1.5px solid var(--ink)!important;
+    border-radius:4px!important;box-shadow:none!important;padding:9px 11px;font-size:15px;font-weight:800;
+    color:var(--ink);background:var(--surface-2);text-align:left;transition:border-color .12s}
+  .gz-field input::placeholder{color:var(--faint);font-weight:600;font-size:13px}
+  .gz-field input:hover,.gz-field select:hover,.gz-field input:focus,.gz-field select:focus{
+    border-color:var(--ink)!important;background:var(--surface);box-shadow:none!important}
+  .gz-count{font-size:11.5px;font-weight:800;color:var(--muted);align-items:baseline;gap:5px;
+    padding:0 0 0 16px;border-left:1px solid var(--line);background:transparent;align-self:end;
+    padding-bottom:9px}
+  .gz-count b{font-size:32px;font-weight:900;color:var(--ink);margin:0;letter-spacing:-.03em}
   /* 건축법령 체크 도구 (bl) */
   .bl-form{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:var(--surface);border:1.5px solid var(--border);
     box-shadow:var(--shadow-sm);border-radius:var(--rad);padding:18px;margin-bottom:14px}
@@ -1422,13 +1535,23 @@ window.dispatchEvent(new Event('qa-fb-ready'));
 <!-- ================= 상단 네비게이션 (네이버형) ================= -->
 <header class="navbar">
   <div class="nav-in">
+    <button class="theme-toggle" id="themeToggle" title="라이트 / 다크 전환" aria-label="테마 전환"><span class="tg-sun">☀︎</span><span class="tg-moon">☾</span></button>
     <div class="nav-brand" id="homeLink" title="홈으로 (전체 개요)">
       <span class="nav-title">학교시설업무 치트키<b>SCHOOL BIBLE</b></span>
     </div>
     <div class="nav-util">
-      <a class="theme-toggle" id="introBtn" href="intro.html" title="인트로 페이지로" aria-label="인트로" style="padding:0;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:#0075de;border-color:#0075de"><span style="height:34px;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;color:#fff;font-size:12px;font-weight:900;line-height:1;letter-spacing:.03em">intro</span></a>
-      <button class="theme-toggle" id="homeBtn" title="홈으로 (전체 개요)" aria-label="홈" style="padding:0;"><span style="width:34px;height:34px;color:var(--ink-2);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/></svg></span></button>
-      <button class="theme-toggle" id="themeToggle" title="라이트 / 다크 전환" aria-label="테마 전환"><span class="tg-sun">☀︎</span><span class="tg-moon">☾</span></button>
+      <div class="nav-jump">
+        <div class="nav-row1">
+        <a class="theme-toggle" id="introBtn" href="intro.html" title="인트로 페이지로" aria-label="인트로" style="padding:0;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:#0075de;border-color:#0075de"><span style="height:34px;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;color:#fff;font-size:12px;font-weight:900;line-height:1;letter-spacing:.03em">intro</span></a>
+        <button class="theme-toggle" id="homeBtn" title="홈으로 (전체 개요)" aria-label="홈" style="padding:0;"><span style="width:34px;height:34px;color:var(--ink-2);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/></svg></span></button>
+        </div>
+        <div class="nav-ovjump">
+          <button class="ov-tab" data-ov="flow" title="워크플로우" aria-label="워크플로우"><span class="wficon" id="wfSiteBtn" role="button" tabindex="0" title="워크플로우 사이트 열기" onclick="event.stopPropagation();window.open('https://seum8660.github.io/workflow/%ED%95%99%EA%B5%90%EC%8B%9C%EC%84%A4%20%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0%20%EB%B3%B4%EB%93%9C.dc.html','_blank','noopener')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();window.open('https://seum8660.github.io/workflow/%ED%95%99%EA%B5%90%EC%8B%9C%EC%84%A4%20%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0%20%EB%B3%B4%EB%93%9C.dc.html','_blank','noopener')}" style="display:inline-flex;align-items:center;margin-right:6px;cursor:pointer"><svg width="20" height="14" viewBox="0 0 20 14"><line class="ln" x1="4.5" y1="1" x2="4.5" y2="13"/><line class="ln" x1="10" y1="1" x2="10" y2="13"/><line class="ln" x1="15.5" y1="1" x2="15.5" y2="13"/><rect class="nd" x="1.5" y="4" width="6" height="3.4" rx="1"/><rect class="nd" x="12.5" y="7.4" width="6" height="3.4" rx="1"/><path class="ar" d="M8 5.7h3.6M11.6 5.7v3.4h.6"/></svg></span>워크플로우</button>
+        </div>
+        <div class="nav-ovjump">
+          <button class="ov-tab" data-ov="graph" title="그래프 뷰" aria-label="그래프 뷰"><span id="gv3dBtn" role="button" tabindex="0" title="3차원 그래프 뷰 열기 (하부 대시보드)" style="display:inline-flex;align-items:center;cursor:pointer"><svg class="gvstar" width="20" height="16" viewBox="0 0 20 16" aria-hidden="true"><line x1="3.5" y1="3.5" x2="12" y2="7"/><line x1="12" y1="7" x2="7.5" y2="13"/><circle cx="3.5" cy="3.5" r="2"/><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="13" r="1.8"/></svg></span>그래프</button>
+        </div>
+      </div>
       <div class="mk-block">
         <div class="mk-title">✏️ 간단 시리즈 📝</div>
         <div class="mk-grid">
@@ -1466,8 +1589,11 @@ window.dispatchEvent(new Event('qa-fb-ready'));
 <div class="layout">
   <aside class="sidebar">
     <nav class="side-nav">
+      <div class="nav-grp">프로세스</div>
+      <button class="tab active" data-ovgo="std"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="6" height="4" rx="1"/><rect x="15" y="15" width="6" height="4" rx="1"/><path d="M9 7h4a2 2 0 0 1 2 2v6a2 2 0 0 0 2 2h-2"/></svg></span>사업절차안내</button>
+      <button class="tab" data-ovgo="deleg"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h9l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M14 4v5h5"/><path d="M9 15l2 2 4-4"/></svg></span>위임전결</button>
       <div class="nav-grp">제도 · 법령</div>
-      <button class="tab active" data-p="overview"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>전체 개요</button>
+      <button class="tab" data-p="overview"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>전체 개요</button>
       <button class="tab" data-p="plan"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><circle cx="12" cy="14" r="5"/><path d="M10 20h4"/></svg></span>제1장 기획</button>
       <button class="tab" data-p="design"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20 20 4M14 4h6v6"/><path d="M4 14v6h6"/></svg></span>제2장 설계</button>
       <button class="tab" data-p="const"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M6 21V9l6-4 6 4v12"/><path d="M10 21v-5h4v5"/></svg></span>제3장 시공</button>
@@ -1492,18 +1618,24 @@ window.dispatchEvent(new Event('qa-fb-ready'));
 
   <!-- ============ 전체 개요 ============ -->
   <section class="panel show" id="overview">
-    <div class="sec-head">
-      <span class="chip" id="ovChip" style="background:var(--amber)">기준</span>
+    <div class="sec-head gz-head">
+      <span class="chip" id="ovChip" style="background:var(--amber);display:none">기준</span>
       <div><h2 id="ovH2">간단 기준 프로세스 안내</h2><p id="ovP">사업 규모에 따라 필수 절차를 한눈에 확인</p></div>
+      <div class="gz-panel" id="gzPanel">
+        <div class="gz-field"><label>총사업비 <span>억원</span></label><input type="number" id="gz-total" min="0" step="0.1" placeholder="전체"></div>
+        <div class="gz-field"><label>공사비 <span>억원</span></label><input type="number" id="gz-const" min="0" step="0.1" placeholder="전체"></div>
+        <div class="gz-field"><label>설계비 <span>억원</span></label><input type="number" id="gz-design" min="0" step="0.01" placeholder="전체"></div>
+        <div class="gz-field"><label>사업면적 <span>㎡</span></label><input type="number" id="gz-area" min="0" step="10" placeholder="전체"></div>
+        <div class="gz-field"><label>사업유형 <span>구분</span></label><select id="gz-type"><option value="new">신축</option><option value="ext">증축</option><option value="reb">개축</option><option value="rem">리모델링</option><option value="rep">대수선</option><option value="etc">기타</option></select></div>
+        <div class="gz-count">적용 <b id="gz-n">0</b>건</div>
+      </div>
     </div>
 
-    <div class="ov-tabs">
+    <div class="ov-tabs ov-tabs-hidden">
       <button class="ov-tab on" data-ov="std">절차 기준</button>
       <button class="ov-tab" data-ov="law">간단 법령 체크</button>
       <button class="ov-tab" data-ov="proc">업무 프로세스</button>
-      <button class="ov-tab" data-ov="deleg">위임전결</button>
-      <button class="ov-tab" data-ov="graph"><span id="gv3dBtn" role="button" tabindex="0" title="3차원 그래프 뷰 열기 (하부 대시보드)" style="display:inline-flex;align-items:center;cursor:pointer"><svg class="gvstar" width="20" height="16" viewBox="0 0 20 16" aria-hidden="true"><line x1="3.5" y1="3.5" x2="12" y2="7"/><line x1="12" y1="7" x2="7.5" y2="13"/><circle cx="3.5" cy="3.5" r="2"/><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="13" r="1.8"/></svg></span>그래프</button>
-      <button class="ov-tab" data-ov="flow"><span class="wficon" id="wfSiteBtn" role="button" tabindex="0" title="워크플로우 사이트 열기" onclick="event.stopPropagation();window.open('https://seum8660.github.io/workflow/%ED%95%99%EA%B5%90%EC%8B%9C%EC%84%A4%20%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0%20%EB%B3%B4%EB%93%9C.dc.html','_blank','noopener')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();window.open('https://seum8660.github.io/workflow/%ED%95%99%EA%B5%90%EC%8B%9C%EC%84%A4%20%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0%20%EB%B3%B4%EB%93%9C.dc.html','_blank','noopener')}" style="display:inline-flex;align-items:center;margin-right:6px;cursor:pointer"><svg width="20" height="14" viewBox="0 0 20 14"><line class="ln" x1="4.5" y1="1" x2="4.5" y2="13"/><line class="ln" x1="10" y1="1" x2="10" y2="13"/><line class="ln" x1="15.5" y1="1" x2="15.5" y2="13"/><rect class="nd" x="1.5" y="4" width="6" height="3.4" rx="1"/><rect class="nd" x="12.5" y="7.4" width="6" height="3.4" rx="1"/><path class="ar" d="M8 5.7h3.6M11.6 5.7v3.4h.6"/></svg></span>워크플로우</button>
+      <button class="ov-tab" data-ov="deleg" style="display:none">위임전결</button>
     </div>
 
     <div class="ov-frame">
@@ -1653,8 +1785,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     <div class="ov-view" data-ovv="proc">
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px;padding:12px 15px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radsm);background:var(--surface)">
       <span style="font-size:13.5px;color:var(--muted)">기획부터 준공까지 단계별 업무추진 절차입니다.</span>
-      <a href="사업절차_프로세스_보드.dc.html" target="_blank" rel="noopener noreferrer" style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap">절차 기준 대시보드 <span>↗</span></a>
-      <a href="업무추진절차_대시보드.html" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap">새 창에서 크게 보기 <span>↗</span></a>
+      <a href="업무추진절차_대시보드.html" target="_blank" rel="noopener noreferrer" style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap">새 창에서 크게 보기 <span>↗</span></a>
     </div>
     <div class="pv-wrap">
       <div class="pv-grp">
@@ -1769,6 +1900,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
           </tbody>
         </table></div>
       </div>
+    </div>
     </div>
     <script>
     (function(){
@@ -1906,15 +2038,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     </div>
 
     <div class="ov-view on" data-ovv="std">
-    <div class="note">💡 사업의 <b>총사업비·공사비·설계비·사업면적(㎡)</b> 규모에 따라 적용 절차가 달라집니다. 아래 입력값을 바꾸면 해당 절차 행이 <b style="color:var(--accent)">파랑</b>으로 켜집니다.</div>
-    <div class="gz-panel">
-      <div class="gz-field"><label>총사업비 <span>억원</span></label><input type="number" id="gz-total" min="0" step="0.1" value="30"></div>
-      <div class="gz-field"><label>공사비 <span>억원</span></label><input type="number" id="gz-const" min="0" step="0.1" value="8"></div>
-      <div class="gz-field"><label>설계비 <span>억원</span></label><input type="number" id="gz-design" min="0" step="0.01" value="0.7"></div>
-      <div class="gz-field"><label>사업면적 <span>㎡</span></label><input type="number" id="gz-area" min="0" step="10" value="1000"></div>
-      <div class="gz-field"><label>사업유형 <span>구분</span></label><select id="gz-type"><option value="new">신축</option><option value="ext">증축</option><option value="reb">개축</option><option value="rem">리모델링</option><option value="rep">대수선</option><option value="etc">기타</option></select></div>
-      <div class="gz-count">적용 <b id="gz-n">0</b>건</div>
-    </div>
+    <p class="gz-cap">입력값을 비워 두면 전체 절차가 보입니다. 총사업비·공사비·설계비·사업면적을 입력하면 해당 규모에 걸리는 절차만 활성으로 표시됩니다.</p>
     <div class="tbl-wrap" style="display:none">
       <table>
         <thead><tr><th style="width:110px">금액</th><th>절차</th><th style="width:370px">근거</th></tr></thead>
@@ -1934,10 +2058,6 @@ window.dispatchEvent(new Event('qa-fb-ready'));
     </div>
     <div style="margin-top:14px;display:none" class="note">🏗️ <b>연면적 기준</b> — 660㎡↑ 건축(건설사업관리·감리 의무) · 1,000㎡↑ 교육연구시설(ZEB 4등급 의무) · 3,000㎡↑ (녹색건축 인증) · 10,000㎡↑ (BEMS 설치).</div>
 
-    <div class="sec-head" style="margin-top:30px">
-      <span class="chip" style="background:var(--accent)">요약</span>
-      <div><h2>사업 절차 요약</h2><p>위 입력값 기준으로 필수 절차가 자동 판정됩니다</p></div>
-    </div>
     <div class="gz-bar">
       <div class="gz-chips" id="gz-chips">
         <button type="button" class="gz-chip act" data-f="all">전체<b></b></button>
@@ -1950,41 +2070,68 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       </div>
       <input type="text" id="gz-q" placeholder="절차명 · 기준 검색">
     </div>
-    <div class="gz-dash" id="gz-dash">
-      <div class="gz-tile" data-ax="total" data-amt="40"><div class="gz-t-h">투자심사</div><div class="gz-t-b">자체 40억↑ / 중앙 300억↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">사전기획</div><div class="gz-t-b">설계비 1억↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="design" data-amt="0.5"><div class="gz-t-h">공공건축심의</div><div class="gz-t-b">설계비 5천↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="design" data-amt="1" data-ty="new,ext,reb,rem"><div class="gz-t-h">설계공모</div><div class="gz-t-b">설계비 1억↑ 우선적용</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="design" data-amt="2"><div class="gz-t-h">일상감사(용역)</div><div class="gz-t-b">설계·감리·기술용역 2억↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="2"><div class="gz-t-h">일상감사(공사)</div><div class="gz-t-b">공사비 2억↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="5"><div class="gz-t-h">건설사업관리계획 수립</div><div class="gz-t-b">공사비 5억↑(토목)</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="5"><div class="gz-t-h">건설사업관리·감리</div><div class="gz-t-b">공사비 5억↑(토목)</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="total" data-amt="25"><div class="gz-t-h">대규모 시설 일상감사</div><div class="gz-t-b">사립 예산액 25억↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="50"><div class="gz-t-h">안전보건대장</div><div class="gz-t-b">공사비 50억↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="50"><div class="gz-t-h">기술자문위원회</div><div class="gz-t-b">100억↑(본청) / 50억↑(지원청·학교)</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">경제성 검토(VE)</div><div class="gz-t-b">공사비 100억↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">공사기간 적정성 심의</div><div class="gz-t-b">총공사비 100억↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="200"><div class="gz-t-h">감독권한대행 건설사업관리</div><div class="gz-t-b">총공사비 200억↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="total" data-amt="300"><div class="gz-t-h">중앙투자심사</div><div class="gz-t-b">총사업비 300억↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk"><div class="gz-t-h">설계의 안전성 검토(DfS)</div><div class="gz-t-b">금액 무관 — 굴착깊이·층수·가설구조물로 판정, 별도 확인 필요</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk"><div class="gz-t-h">안전관리계획 수립</div><div class="gz-t-b">금액 무관 — 시설물 종류·굴착 10m·가설구조물로 판정, 별도 확인 필요</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="0.2"><div class="gz-t-h">산업안전보건관리비 계상</div><div class="gz-t-b">총공사금액 2천만원↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="1"><div class="gz-t-h">재해예방 기술지도</div><div class="gz-t-b">공사비 1억↑~120억 미만</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">종합심사낙찰제</div><div class="gz-t-b">추정가격 100억↑(그 미만 적격심사)</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk" data-ty="new,ext,reb,rem"><div class="gz-t-h">교육시설 안전성평가</div><div class="gz-t-b">금액 무관 — 굴착영향거리·통학로 인접 여부로 판정</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk" data-ty="reb,rem,rep,etc"><div class="gz-t-h">석면 해체·제거</div><div class="gz-t-b">개축·리모델링·대수선·기타 — 석면조사 결과로 판정</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk" data-ty="new,ext,reb"><div class="gz-t-h">BF(장애물 없는 생활환경) 인증</div><div class="gz-t-b">신축·증축·개축 — 공공건축물 해당 여부로 판정</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="area" data-amt="500" data-ty="new,ext,reb"><div class="gz-t-h">에너지절약계획서</div><div class="gz-t-b">연면적 500㎡↑ 신축·증축·개축</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="area" data-amt="660"><div class="gz-t-h">건설사업관리·감리(건축)</div><div class="gz-t-b">연면적 660㎡↑ 건축공사</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="area" data-amt="1000" data-ty="new,ext,reb"><div class="gz-t-h">제로에너지건축물(ZEB) 인증</div><div class="gz-t-b">연면적 1,000㎡↑ 공공건축물</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="area" data-amt="3000" data-ty="new,ext,reb"><div class="gz-t-h">녹색건축 인증</div><div class="gz-t-b">연면적 3,000㎡↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="5"><div class="gz-t-h">품질시험계획 수립</div><div class="gz-t-b">공사비 5억↑(토목) / 연면적 660㎡↑(건축) / 2억↑(전문)</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="const" data-amt="500"><div class="gz-t-h">품질관리계획 수립</div><div class="gz-t-b">총공사비 500억↑ 또는 연면적 3만㎡↑ 다중이용건축물</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="total" data-amt="300"><div class="gz-t-h">건설공사 사후평가</div><div class="gz-t-b">총공사비 300억↑(500억↑는 파급효과평가 추가)</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk"><div class="gz-t-h">설계용역 평가</div><div class="gz-t-b">설계 계약금액이 국가계약법 고시금액↑ — 별도 확인 필요</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile" data-ax="area" data-amt="10000"><div class="gz-t-h">BEMS 설치</div><div class="gz-t-b">연면적 10,000㎡↑</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk"><div class="gz-t-h">하도급 적정성 심사</div><div class="gz-t-b">금액 무관 — 하도급율·심사점수 85점 미만시 변경요구</div><span class="gz-t-s"></span></div>
-      <div class="gz-tile gz-chk"><div class="gz-t-h">일요일 휴무제</div><div class="gz-t-b">금액 무관 — 모든 공공공사 현장 적용, 예외는 승인</div><span class="gz-t-s"></span></div>
+    <div class="gz-mx-wrap">
+      <div class="gz-dash gz-mx" id="gz-dash">
+      <div class="gz-corner"></div>
+      <div class="gz-sh"><i>01</i><b>기획</b><span>투자심사 · 사전기획</span></div>
+      <div class="gz-sh"><i>02</i><b>설계</b><span>심의 · 인증 · 안전</span></div>
+      <div class="gz-sh"><i>03</i><b>시공</b><span>발주 · 계약 · 현장관리</span></div>
+      <div class="gz-sh"><i>04</i><b>준공</b><span>검사 · 평가 · 정산</span></div>
+      <div class="gz-sh"><i>05</i><b>유지관리</b><span>점검 · 하자 · 운영</span></div>
+      <div class="gz-rh" data-row="1"><b>1,000㎡ 미만</b><span>소규모 건축 구간</span></div>
+      <div class="gz-cell" data-row="1" data-stage="기획"></div>
+      <div class="gz-cell" data-row="1" data-stage="설계"><div class="gz-tile" data-ax="area" data-amt="500" data-ty="new,ext,reb"><div class="gz-t-h">에너지절약계획서</div><div class="gz-t-b">연면적 500㎡↑ 신축·증축·개축</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="1" data-stage="시공"><div class="gz-tile" data-ax="area" data-amt="660"><div class="gz-t-h">건설사업관리·감리(건축)</div><div class="gz-t-b">연면적 660㎡↑ 건축공사</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="1" data-stage="준공"></div>
+      <div class="gz-cell" data-row="1" data-stage="유지관리"><div class="gz-tile" data-ax="area" data-amt="200"><div class="gz-t-h">건축물 관리계획 수립</div><div class="gz-t-b">연면적 200㎡↑ 사용승인 건축물</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-rh" data-row="2"><b>1,000㎡ ~ 3,000㎡</b><span>중규모 건축 구간</span></div>
+      <div class="gz-cell" data-row="2" data-stage="기획"></div>
+      <div class="gz-cell" data-row="2" data-stage="설계"><div class="gz-tile" data-ax="area" data-amt="1000" data-ty="new,ext,reb"><div class="gz-t-h">제로에너지건축물(ZEB) 인증</div><div class="gz-t-b">연면적 1,000㎡↑ 공공건축물</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="2" data-stage="시공"></div>
+      <div class="gz-cell" data-row="2" data-stage="준공"></div>
+      <div class="gz-cell" data-row="2" data-stage="유지관리"></div>
+      <div class="gz-rh" data-row="3"><b>3,000㎡ 이상</b><span>대규모 건축 구간</span></div>
+      <div class="gz-cell" data-row="3" data-stage="기획"></div>
+      <div class="gz-cell" data-row="3" data-stage="설계"><div class="gz-tile" data-ax="area" data-amt="3000" data-ty="new,ext,reb"><div class="gz-t-h">녹색건축 인증</div><div class="gz-t-b">연면적 3,000㎡↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="area" data-amt="10000"><div class="gz-t-h">BEMS 설치</div><div class="gz-t-b">연면적 10,000㎡↑</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="3" data-stage="시공"></div>
+      <div class="gz-cell" data-row="3" data-stage="준공"></div>
+      <div class="gz-cell" data-row="3" data-stage="유지관리"></div>
+      <div class="gz-rh" data-row="4"><b>5억 미만</b><span>소규모 사업 구간</span></div>
+      <div class="gz-cell" data-row="4" data-stage="기획"><div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">사전기획</div><div class="gz-t-b">설계비 1억↑</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="4" data-stage="설계"><div class="gz-tile" data-ax="const" data-amt="0.2"><div class="gz-t-h">산업안전보건관리비 계상</div><div class="gz-t-b">총공사금액 2천만원↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="design" data-amt="0.5"><div class="gz-t-h">공공건축심의</div><div class="gz-t-b">설계비 5천↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="design" data-amt="1" data-ty="new,ext,reb,rem"><div class="gz-t-h">설계공모</div><div class="gz-t-b">설계비 1억↑ 우선적용</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="design" data-amt="2"><div class="gz-t-h">일상감사(설계용역)</div><div class="gz-t-b">설계·감리·기술용역 2억↑</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="4" data-stage="시공"><div class="gz-tile" data-ax="const" data-amt="2"><div class="gz-t-h">일상감사(시설공사)</div><div class="gz-t-b">공사비 2억↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="1"><div class="gz-t-h">재해예방 기술지도</div><div class="gz-t-b">공사비 1억↑~120억 미만</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="4" data-stage="준공"></div>
+      <div class="gz-cell" data-row="4" data-stage="유지관리"></div>
+      <div class="gz-rh" data-row="5"><b>5억 ~ 25억</b><span>건설사업관리 · 품질 구간</span></div>
+      <div class="gz-cell" data-row="5" data-stage="기획"></div>
+      <div class="gz-cell" data-row="5" data-stage="설계"></div>
+      <div class="gz-cell" data-row="5" data-stage="시공"><div class="gz-tile" data-ax="const" data-amt="5"><div class="gz-t-h">건설사업관리계획 수립</div><div class="gz-t-b">공사비 5억↑(토목)</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="5"><div class="gz-t-h">건설사업관리·감리</div><div class="gz-t-b">공사비 5억↑(토목)</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="5"><div class="gz-t-h">품질시험계획 수립</div><div class="gz-t-b">공사비 5억↑(토목) / 연면적 660㎡↑(건축) / 2억↑(전문)</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="5" data-stage="준공"></div>
+      <div class="gz-cell" data-row="5" data-stage="유지관리"></div>
+      <div class="gz-rh" data-row="6"><b>25억 ~ 50억</b><span>투자심사 구간</span></div>
+      <div class="gz-cell" data-row="6" data-stage="기획"><div class="gz-tile" data-ax="total" data-amt="25"><div class="gz-t-h">대규모 시설 일상감사</div><div class="gz-t-b">사립 예산액 25억↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="total" data-amt="40"><div class="gz-t-h">투자심사</div><div class="gz-t-b">자체 40억↑ / 중앙 300억↑</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="6" data-stage="설계"></div>
+      <div class="gz-cell" data-row="6" data-stage="시공"></div>
+      <div class="gz-cell" data-row="6" data-stage="준공"></div>
+      <div class="gz-cell" data-row="6" data-stage="유지관리"></div>
+      <div class="gz-rh" data-row="7"><b>50억 ~ 100억</b><span>심의 · 안전보건 구간</span></div>
+      <div class="gz-cell" data-row="7" data-stage="기획"></div>
+      <div class="gz-cell" data-row="7" data-stage="설계"><div class="gz-tile" data-ax="const" data-amt="50"><div class="gz-t-h">안전보건대장</div><div class="gz-t-b">공사비 50억↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="50"><div class="gz-t-h">기술자문위원회</div><div class="gz-t-b">100억↑(본청) / 50억↑(지원청·학교)</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="7" data-stage="시공"></div>
+      <div class="gz-cell" data-row="7" data-stage="준공"></div>
+      <div class="gz-cell" data-row="7" data-stage="유지관리"></div>
+      <div class="gz-rh" data-row="8"><b>100억 이상</b><span>대규모 사업 구간</span></div>
+      <div class="gz-cell" data-row="8" data-stage="기획"><div class="gz-tile" data-ax="total" data-amt="300"><div class="gz-t-h">중앙투자심사</div><div class="gz-t-b">총사업비 300억↑</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="8" data-stage="설계"><div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">경제성 검토(VE)</div><div class="gz-t-b">공사비 100억↑</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="8" data-stage="시공"><div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">공사기간 적정성 심의</div><div class="gz-t-b">총공사비 100억↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">종합심사낙찰제</div><div class="gz-t-b">추정가격 100억↑(그 미만 적격심사)</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="200"><div class="gz-t-h">감독권한대행 건설사업관리</div><div class="gz-t-b">총공사비 200억↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="500"><div class="gz-t-h">품질관리계획 수립</div><div class="gz-t-b">총공사비 500억↑ 또는 연면적 3만㎡↑ 다중이용건축물</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="8" data-stage="준공"><div class="gz-tile" data-ax="total" data-amt="300"><div class="gz-t-h">건설공사 사후평가</div><div class="gz-t-b">총공사비 300억↑(500억↑는 파급효과평가 추가)</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="8" data-stage="유지관리"></div>
+      <div class="gz-rh" data-row="0"><b>금액 무관</b><span>조건·대상으로 판정</span></div>
+      <div class="gz-cell" data-row="0" data-stage="기획"></div>
+      <div class="gz-cell" data-row="0" data-stage="설계"><div class="gz-tile gz-chk"><div class="gz-t-h">설계의 안전성 검토(DfS)</div><div class="gz-t-b">금액 무관 — 굴착깊이·층수·가설구조물로 판정</div><span class="gz-t-s"></span></div><div class="gz-tile gz-chk" data-ty="new,ext,reb,rem"><div class="gz-t-h">교육시설 안전성평가</div><div class="gz-t-b">금액 무관 — 굴착영향거리·통학로 인접 여부로 판정</div><span class="gz-t-s"></span></div><div class="gz-tile gz-chk" data-ty="new,ext,reb"><div class="gz-t-h">BF(장애물 없는 생활환경) 예비인증</div><div class="gz-t-b">신축·증축·개축 — 공공건축물 해당 여부로 판정</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="0" data-stage="시공"><div class="gz-tile gz-chk"><div class="gz-t-h">안전관리계획 수립</div><div class="gz-t-b">금액 무관 — 시설물 종류·굴착 10m·가설구조물로 판정</div><span class="gz-t-s"></span></div><div class="gz-tile gz-chk" data-ty="reb,rem,rep,etc"><div class="gz-t-h">석면 해체·제거</div><div class="gz-t-b">개축·리모델링·대수선·기타 — 석면조사 결과로 판정</div><span class="gz-t-s"></span></div><div class="gz-tile gz-chk"><div class="gz-t-h">하도급 적정성 심사</div><div class="gz-t-b">금액 무관 — 하도급율·심사점수 85점 미만시 변경요구</div><span class="gz-t-s"></span></div><div class="gz-tile gz-chk"><div class="gz-t-h">일요일 휴무제</div><div class="gz-t-b">금액 무관 — 모든 공공공사 현장 적용, 예외는 승인</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="0" data-stage="준공"><div class="gz-tile gz-chk"><div class="gz-t-h">준공검사 · 사용승인</div><div class="gz-t-b">전 사업 공통 — 검사조서 작성, 건축물대장 등재</div><span class="gz-t-s"></span></div><div class="gz-tile gz-chk"><div class="gz-t-h">준공정산 · 대가지급</div><div class="gz-t-b">전 사업 공통 — 정산검사 후 지급</div><span class="gz-t-s"></span></div><div class="gz-tile gz-chk"><div class="gz-t-h">설계용역 평가</div><div class="gz-t-b">설계 계약금액이 국가계약법 고시금액↑ — 별도 확인 필요</div><span class="gz-t-s"></span></div><div class="gz-tile gz-chk" data-ty="new,ext,reb"><div class="gz-t-h">BF 본인증</div><div class="gz-t-b">예비인증 사업의 준공 후 본인증</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="0" data-stage="유지관리"><div class="gz-tile gz-chk"><div class="gz-t-h">하자검사 · 하자보수보증</div><div class="gz-t-b">하자담보책임기간 내 정기·최종검사</div><span class="gz-t-s"></span></div><div class="gz-tile gz-chk"><div class="gz-t-h">시설물 정기안전점검</div><div class="gz-t-b">1·2·3종 시설물 지정 여부로 판정</div><span class="gz-t-s"></span></div><div class="gz-tile gz-chk"><div class="gz-t-h">에너지사용량 신고 · 관리</div><div class="gz-t-b">공공건축물 에너지 사용 실적 보고</div><span class="gz-t-s"></span></div></div>
     </div>
     <script>
     (function(){
@@ -3870,8 +4017,9 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>acti
   window.__loadIlwidan=load;
 })();
 // URL ?tab= 딥링크 (__tabParam)
-(function(){ try{ var tp=new URLSearchParams(location.search).get('tab');
-  if(tp && document.getElementById(tp)){ activate(tp); if(tp==='ilwidan' && window.__loadIlwidan) window.__loadIlwidan(); } }catch(e){} })();
+(function(){ try{ var q=new URLSearchParams(location.search); var tp=q.get('tab'), ov=q.get('ov');
+  if(tp && document.getElementById(tp)){ activate(tp); if(tp==='ilwidan' && window.__loadIlwidan) window.__loadIlwidan(); }
+  if(ov){ var t=document.querySelector('.ov-tabs .ov-tab[data-ov="'+ov+'"]'); if(t) t.click(); } }catch(e){} })();
 document.querySelectorAll('[data-goto]').forEach(c=>c.addEventListener('click',()=>activate(c.dataset.goto)));
 // 제목(홈) 클릭 → 전체 개요 + 최상단
 // 홈/치트키 클릭 사운드
@@ -4793,18 +4941,20 @@ runRatioCalc();
   const it=document.getElementById('gz-total'),ic=document.getElementById('gz-const'),id=document.getElementById('gz-design'),ia=document.getElementById('gz-area'),ity=document.getElementById('gz-type');
   if(!tb||!nEl) return;
   function val(el){if(!el) return 0;const v=parseFloat(el.value);return isNaN(v)?0:v;}
+  function blank(el){return !el||!String(el.value).trim();}
   function render(){
     const m={total:val(it),const:val(ic),design:val(id),area:val(ia)};
+    const bl={total:blank(it),const:blank(ic),design:blank(id),area:blank(ia)};
+    const hit=(ax,amt)=>!ax?true:bl[ax]?true:(m[ax]||0)>=amt;
     const ty=ity?ity.value:'';
     const tyOk=el=>{const s=el.dataset.ty;return !s||s.split(',').indexOf(ty)>-1;};
     tb.querySelectorAll('tr').forEach(tr=>{
-      const ax=tr.dataset.ax, amt=parseFloat(tr.dataset.amt);
-      tr.classList.toggle('on',(m[ax]||0)>=amt);
+      tr.classList.toggle('on',hit(tr.dataset.ax,parseFloat(tr.dataset.amt)));
     });
     let n=0;
     const dash=document.getElementById('gz-dash');
     if(dash) dash.querySelectorAll('.gz-tile').forEach(t=>{
-      const on=(m[t.dataset.ax]||0)>=parseFloat(t.dataset.amt);
+      const on=hit(t.dataset.ax,parseFloat(t.dataset.amt));
       const fit=tyOk(t);
       t.style.display=fit?'':'none';
       t.classList.toggle('gz-chk-off',false);
@@ -4821,6 +4971,23 @@ runRatioCalc();
   render();
   var mo=new MutationObserver(function(){ render(); });
   mo.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+})();
+
+// ===== 절차 매트릭스 : 현재 구간 행 하이라이트 =====
+(function(){
+  var mx=document.getElementById('gz-dash'); if(!mx||!mx.classList.contains('gz-mx')) return;
+  var ic=document.getElementById('gz-const'), ia=document.getElementById('gz-area');
+  function mark(){
+    var cv=parseFloat(ic&&ic.value), av=parseFloat(ia&&ia.value);
+    var rowC = isNaN(cv)||!(ic&&ic.value.trim()) ? -1 : cv>=100?8:cv>=50?7:cv>=25?6:cv>=5?5:4;
+    var rowA = isNaN(av)||!(ia&&ia.value.trim()) ? -1 : av>=3000?3:av>=1000?2:1;
+    mx.querySelectorAll('[data-row]').forEach(function(el){
+      var r=parseInt(el.dataset.row,10);
+      el.classList.toggle('gz-act', r===rowC||r===rowA);
+    });
+  }
+  [ic,ia].filter(Boolean).forEach(function(el){el.addEventListener('input',mark)});
+  mark();
 })();
 
 // ===== 교육연구시설 건축법령 체크 도구 =====
@@ -5252,24 +5419,91 @@ window.__gvInit = (function(){
   };
 })();
 
+// ===== 사이드바 프로세스 그룹 → 전체 개요 서브뷰 이동 =====
+(function(){
+  document.querySelectorAll('.side-nav .tab[data-ovgo]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var ov=document.getElementById('overview');
+      if(ov&&!ov.classList.contains('show')){
+        var st=document.querySelector('.side-nav .tab[data-p="overview"]'); if(st) st.click();
+      }
+      var t=document.querySelector('.ov-tabs .ov-tab[data-ov="'+b.dataset.ovgo+'"]');
+      if(t) t.click();
+      window.scrollTo(0,0);
+    });
+  });
+})();
+
 // ===== 전체 개요 서브탭 =====
 (function(){
   const tabs=document.querySelectorAll('.ov-tab');
+  document.querySelectorAll('.nav-ovjump .ov-tab').forEach(function(b){
+    b.addEventListener('click',function(){
+      var ov=document.getElementById('overview');
+      if(ov&&!ov.classList.contains('show')){
+        var st=document.querySelector('.side-nav .tab[data-p="overview"]'); if(st) st.click();
+      }
+      window.scrollTo(0,0);
+    },true);
+  });
   const META={
     std:{chip:'기준',color:'var(--amber)',h2:'간단 기준 프로세스 안내',p:'사업 규모에 따라 필수 절차를 한눈에 확인'},
     law:{chip:'체크',color:'var(--p-design)',h2:'법령 Checking',p:'연면적·층수·용도를 입력하면 건축법령상 적용 규정과 근거 조문을 즉시 확인'},
     proc:{chip:'업무',color:'var(--accent)',h2:'학교시설사업 4단계 안내',p:'전 생애주기 4단계 흐름과 단계별 주요 업무 · 대상기준'},
     flow:{chip:'흐름',color:'var(--p-const)',h2:'설계변경 워크플로우',p:'설계변경 사유 발생부터 검토 · 전결 승인 · 계약금액 조정 · 사후관리까지의 업무 경로'},
-    graph:{chip:'흐름',color:'var(--p-cm)',h2:'업무 프로세스 그래프 뷰',p:'문서 전체를 단계·업무·법령·인증 노드로 연결한 관계 그래프'}
+    graph:{chip:'흐름',color:'var(--p-cm)',h2:'업무 프로세스 그래프 뷰',p:'문서 전체를 단계·업무·법령·인증 노드로 연결한 관계 그래프'},
+    deleg:{chip:'전결',color:'var(--p-cm)',h2:'단계별 위임전결 안내',p:'사업 단계별 전결권자와 위임 범위'}
   };
   const chip=document.getElementById('ovChip'),h2=document.getElementById('ovH2'),p=document.getElementById('ovP');
   tabs.forEach(t=>t.addEventListener('click',()=>{
     const v=t.dataset.ov;
     tabs.forEach(x=>x.classList.toggle('on',x===t));
     document.querySelectorAll('.ov-view').forEach(x=>x.classList.toggle('on',x.dataset.ovv===v));
-    const m=META[v]; if(m&&chip){chip.textContent=m.chip;chip.style.background=m.color;h2.textContent=m.h2;p.textContent=m.p;}
+    var gp=document.getElementById('gzPanel'); if(gp) gp.style.display=(v==='std')?'':'none';
+    const m=META[v]; if(m&&chip){chip.textContent=m.chip;chip.style.background=m.color;chip.style.display='none';h2.textContent=m.h2;p.textContent=m.p;}
     if(v==='graph' && window.__gvInit) window.__gvInit();
   }));
+})();
+
+// ===== 사이드바 프로세스 그룹 활성 상태 동기화 =====
+function syncOvgo(){
+  var cur=document.querySelector('.ov-tabs .ov-tab.on');
+  var v=cur?cur.dataset.ov:null;
+  var bar=document.querySelector('.ov-tabs'); if(bar) bar.classList.add('ov-tabs-hidden');
+  var ovOpen=document.getElementById('overview');
+  ovOpen=ovOpen&&ovOpen.classList.contains('show');
+  document.querySelectorAll('.side-nav .tab[data-ovgo]').forEach(function(b){
+    var on=ovOpen&&b.dataset.ovgo===v;
+    b.classList.toggle('active',on);
+    if(on){ b.style.setProperty('color','#fff','important');
+      b.querySelectorAll('*').forEach(function(c){c.style.setProperty('color','#fff','important');}); }
+    else { b.style.removeProperty('color');
+      b.querySelectorAll('*').forEach(function(c){c.style.removeProperty('color');}); }
+  });
+  var ob=document.querySelector('.side-nav .tab[data-p="overview"]');
+  if(ob&&ovOpen&&document.querySelector('.side-nav .tab[data-ovgo].active')){
+    ob.classList.remove('active');
+    ob.style.removeProperty('color'); ob.style.removeProperty('-webkit-text-fill-color');
+    ob.querySelectorAll('*').forEach(function(c){c.style.removeProperty('color');c.style.removeProperty('-webkit-text-fill-color');});
+  }
+}
+document.addEventListener('click',function(e){
+  if(e.target.closest('.ov-tabs .ov-tab')||e.target.closest('.side-nav .tab')) setTimeout(syncOvgo,0);
+  setTimeout(function(){
+    document.querySelectorAll('.side-nav .tab:not(.active)').forEach(function(t){
+      t.style.removeProperty('color'); t.style.removeProperty('-webkit-text-fill-color');
+      t.querySelectorAll('*').forEach(function(c){c.style.removeProperty('color');c.style.removeProperty('-webkit-text-fill-color');});
+    });
+  },0);
+});
+
+// ===== 전체 개요 탭 → 업무 프로세스 뷰로 진입 =====
+(function(){
+  var ob=document.querySelector('.side-nav .tab[data-p="overview"]');
+  if(ob) ob.addEventListener('click',function(){
+    var t=document.querySelector('.ov-tabs .ov-tab[data-ov="proc"]'); if(t) t.click();
+  });
+  syncOvgo();
 })();
 
 // ===== 테마 (라이트/다크) 토글 =====
@@ -5511,6 +5745,8 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 /* 인트로(히어로 공지) 자동 업데이트 — 매뉴얼/유틸 카드 수를 DOM에서 직접 집계 */
 (function(){
   var NOTICES=[
+    {d:'2026-08-29', tx:'<b>사업절차안내</b> 신설 — 기획·설계·시공·준공·유지관리 5단계 × 금액·면적 구간 매트릭스로 적용 절차 자동 판정(41개 절차)'},
+    {d:'2026-08-29', tx:'<b>장애인등편의시설 설치기준</b> 요약문서 추가'},
     {d:'2026-08-27', tx:'<b>공공 건설공사의 공사기간 산정</b> 요약문서로 교어질 — 기존 ‘2026 적정공사기간 확보 가이드라인’ 대심'},
     {d:'2026-08-27', tx:'<b>현장 건설기술자 배치 기준</b> 추가 — 공사예정금액별 배치기술자 등급·통보 절차·중복배치 제한'},
     {d:'2026-08-27', tx:'<b>정산서 매크로 모음</b>에 자료 업로드'},
@@ -5526,7 +5762,7 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
     {d:'2026-07-24', tx:'초간단 수선견적서 <b>견적이</b> 공개 · 현장사진관리 <b>현장이</b> 개발 중'},
     {d:'2026-07-18', tx:'<b>간단내역서 만들기</b> 추가 — 일위대가 자동참조 내역서·원가계산서·단가조사'}
   ];
-  var VER='4.6';
+  var VER='4.7';
   function fmt(iso){var p=iso.split('-');return (+p[1])+'월 '+(+p[2])+'일';}
   function render(){
     var cards=document.querySelectorAll('#manGrid .man-card');

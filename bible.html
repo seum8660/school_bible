@@ -2847,6 +2847,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <a class="man-card" data-kind="기준" href="manuals/35_현장건설기술자배치기준_요약.html" data-inline="manuals/35_현장건설기술자배치기준_요약.html" data-title="현장 건설기술자 배치 기준 — 핵심 요약"><span class="man-no">29</span><div class="man-t"><b>현장 건설기술자 배치 기준</b><span>건산법 제40조 · 공사예정금액별 배치기술자 등급 · 통보·중복배치 제한 · 위반 제재</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="기술자배치">#기술자배치</span><span class="htag" data-tag="현장대리인">#현장대리인</span><span class="htag" data-tag="배치기술자">#배치기술자</span><span class="htag" data-tag="중복배치">#중복배치</span><span class="htag" data-tag="건산법제40조">#건산법제40조</span><span class="htag" data-tag="경력인정">#경력인정</span></div></a>
       <a class="man-card" data-kind="기준" href="manuals/36_공사관련각종가격정의_요약.html" data-inline="manuals/36_공사관련각종가격정의_요약.html" data-title="공사 관련 각종 가격의 정의 — 핵심 요약"><span class="man-no">30</span><div class="man-t"><b>공사 관련 각종 가격의 정의</b><span>추정가격·예정가격·추정금액·설계금액 구분과 적용</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="추정가격">#추정가격</span><span class="htag" data-tag="예정가격">#예정가격</span><span class="htag" data-tag="추정금액">#추정금액</span><span class="htag" data-tag="설계금액">#설계금액</span><span class="htag" data-tag="계약실무">#계약실무</span></div></a>
       <a class="man-card" data-kind="법령" href="manuals/37_장애인등편의시설설치기준_요약.html" data-inline="manuals/37_장애인등편의시설설치기준_요약.html" data-title="장애인등 편의시설 설치기준 — 핵심 요약"><span class="man-no">31</span><div class="man-t"><b>장애인등 편의시설 설치기준</b><span>편의증진법 시행령 [별표 2] · 대상시설별 의무·권장 설치기준</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="편의시설">#편의시설</span><span class="htag" data-tag="장애인">#장애인</span><span class="htag" data-tag="BF인증">#BF인증</span><span class="htag" data-tag="편의증진법">#편의증진법</span><span class="htag" data-tag="설계">#설계</span></div></a>
+      <a class="man-card" data-kind="지침" href="manuals/38_건설공사안전관리계획_요약.html" data-inline="manuals/38_건설공사안전관리계획_요약.html" data-title="건설공사 안전관리계획 — 핵심 요약"><span class="man-no">32</span><div class="man-t"><b>건설공사 안전관리계획</b><span>수립 대상·작성 항목·검토 승인 절차 및 이행 점검</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="안전관리계획">#안전관리계획</span><span class="htag" data-tag="건설안전">#건설안전</span><span class="htag" data-tag="시공">#시공</span><span class="htag" data-tag="산업안전">#산업안전</span></div></a>
     </div>
     <div id="man-inline" style="display:none;margin-top:16px"></div>
 
@@ -4032,9 +4033,10 @@ function __homeChime(){try{__homeAC=__homeAC||new(window.AudioContext||window.we
 document.getElementById('homeLink').addEventListener('click',()=>{
   __homeChime();
   activate('overview');
+  var t=document.querySelector('.ov-tabs .ov-tab[data-ov="std"]'); if(t) t.click();
   window.scrollTo({top:0,behavior:'smooth'});
 });
-['homeLogo','homeBtn'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('click',()=>{__homeChime();activate('overview');window.scrollTo({top:0,behavior:'smooth'});});});
+['homeLogo','homeBtn'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('click',()=>{__homeChime();activate('overview');var t=document.querySelector('.ov-tabs .ov-tab[data-ov="std"]');if(t)t.click();window.scrollTo({top:0,behavior:'smooth'});});});
 
 // 아코디언 토글
 document.addEventListener('click',e=>{
@@ -5754,6 +5756,7 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 /* 인트로(히어로 공지) 자동 업데이트 — 매뉴얼/유틸 카드 수를 DOM에서 직접 집계 */
 (function(){
   var NOTICES=[
+    {d:'2026-08-29', tx:'<b>건설공사 안전관리계획</b> 요약문서 추가 — 수립 대상·작성 항목·검토 승인 절차'},
     {d:'2026-08-29', tx:'<b>사업절차안내</b> 신설 — 기획·설계·시공·준공·유지관리 5단계 × 금액·면적 구간 매트릭스로 적용 절차 자동 판정(41개 절차)'},
     {d:'2026-08-29', tx:'<b>장애인등편의시설 설치기준</b> 요약문서 추가'},
     {d:'2026-08-27', tx:'<b>공공 건설공사의 공사기간 산정</b> 요약문서로 교어질 — 기존 ‘2026 적정공사기간 확보 가이드라인’ 대심'},

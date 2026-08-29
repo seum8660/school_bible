@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>공사 관련 각종 가격의 정의 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:auto; position:relative;
+  }
+  
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드: 상하 가로 라인만 ─────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 ──────────────────────── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.46; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:1mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{
+    font-size:7pt; line-height:1.5; padding-left:5.2mm; text-indent:-5.2mm; margin-bottom:1.1mm;
+  }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    display:inline-block; width:3.8mm; height:3.8mm; line-height:3.8mm;
+    border-radius:50%; background:var(--teal); color:#fff;
+    font-size:5.6pt; font-weight:700; text-align:center;
+    text-indent:0; margin-right:1.4mm; vertical-align:middle;
+  }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  /* ── 패널(수식 밴드) ─────────────────── */
+  .formula{
+    background:var(--panel); border-left:1mm solid var(--teal);
+    padding:2.2mm 3mm; margin:0 0 2.4mm 0;
+    text-align:center; font-size:7.6pt; font-weight:700; line-height:1.45; color:var(--navy);
+  }
+  .formula .num{ color:var(--amber); }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1mm; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주 ───────────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pageno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head><body>
+
+<div class="page haspin">
+
+  <h1 class="title">공사 관련 각종 가격의 정의 — 핵심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">계약실무 용어 ｜ 근거: 국가·지방계약법 시행령 및 시행규칙 · 기획예산처 「총사업비 관리지침」 ｜ 기준일 2026. 8. 28. ｜ 출처: 국가법령정보센터 www.law.go.kr</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주청(중앙관서의 장·지방자치단체의 장) 또는 계약담당자 = 가격 산정·작성의 책임 주체</span> — 추정가격을 산정하고, 예정가격을 입찰이나 계약체결 <span class="rolet">전에 미리 작성하여 갖춰 두어야 함</span>. 총사업비는 <span class="rolet">중앙관서의 장</span>이 사업추진 단계별로 기획예산처장관과 협의하여 관리함.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6"/></svg></span><span class="lb"><i>1</i>총사업비</span></span>
+      <ul class="list">
+        <li><b class="term">정의</b> — 대규모 사업 추진에 소요되는 모든 사업비용의 합계액</li>
+        <li><b class="term">구성(건설사업)</b> — <span class="tl">공사비 + 보상비 + 시설부대경비</span>, 국가·지자체·공공기관·민간 부담분을 모두 포함</li>
+        <li><b class="term">관리대상</b> — 완성에 <span class="num">2년 이상</span> 소요되고, 건축사업 <span class="num">200억원</span> 이상 또는 토목·정보화사업 <span class="num">500억원</span> 이상(국가 재정지원 <span class="num">300억원</span> 이상)</li>
+        <li><b class="term">기준금액</b> — 예비타당성조사 또는 타당성조사·기본계획 수립에 따라 책정된 금액이 원칙임</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>2</i>총공사비</span></span>
+      <ul class="list">
+        <li><b class="term">정의</b> — <span class="tl">관급자재비는 포함</span>하되, 토지 등의 취득·사용에 따른 <span class="tl">보상비는 제외</span>한 금액</li>
+        <li><b class="term">공사비</b> — 총사업비 중 보상비와 시설부대경비를 제외한 일체의 경비</li>
+        <li><b class="term">시설부대경비</b> — 설계비·감리비·시설부대비. 사전조사 및 기본계획 수립 경비는 제외</li>
+        <li><b class="term">활용</b> — 총공사비 <span class="num">500억원</span> 미만으로 예상되는 건설사업은 타당성조사를 생략할 수 있음</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="2.5"/></svg></span><span class="lb"><i>3</i>포섭 관계와 산정 순서</span></span>
+      <div class="formula">
+        총사업비 ⊃ 총공사비 ⊃ <span class="num">추정금액</span> ⊃ <span class="num">추정가격</span> ＋ 부가세·관급자재 → <span class="num">예정가격</span>
+        <span class="sub">왼쪽으로 갈수록 보상비·부대경비까지 넓게 포함하고, 오른쪽으로 갈수록 실제 발주·계약 금액에 가까워짐</span>
+      </div>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">추정가격 산정</b> — 예산에 계상된 금액이나 규격서·설계서 등에 따라 산출된 금액을 기준으로 <span class="tl">관급자재로 공급될 부분의 가격을 제외</span>하여 산정함</li>
+        <li><span class="no">2</span><b class="term">추정금액 산출</b> — 추정가격에 <span class="tl">부가가치세와 관급자재로 공급될 부분의 가격을 합산</span>함(지방계약은 계약상대자가 설치하는 관급자재로 한정)</li>
+        <li><span class="no">3</span><b class="term">예정가격 결정</b> — 예산상 총공사금액(<span class="tl">관급자재 금액 제외</span>)의 범위 안에서, 계약수량·이행기간·수급상황·계약조건 등 제반 여건을 참작하여 결정함</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/><path d="M8 11h6"/></svg></span><span class="lb"><i>4</i>추정가격</span></span>
+      <ul class="list">
+        <li><b class="term">정의</b> — 조달계약 체결 시 <span class="tl">국제입찰 대상 여부를 판단하는 기준</span> 등으로 삼기 위하여 예정가격이 결정되기 전에 산정된 가격</li>
+        <li><b class="term">산정 원칙</b> — 예산 계상액·설계서 산출액 등에서 부가가치세와 관급자재 공급분을 제외한 금액</li>
+        <li><b class="term">단가계약</b> — 추정단가 × 예정물량</li>
+        <li><b class="term">기간 불분명</b> — 1개월분 추정지급액 × <span class="num">48</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M17 7H9.5a2.5 2.5 0 000 5h5a2.5 2.5 0 010 5H6"/></svg></span><span class="lb"><i>5</i>추정금액</span></span>
+      <ul class="list">
+        <li><b class="term">정의</b> — <span class="tl">추정가격 + 부가가치세 + 관급자재로 공급될 부분의 가격</span></li>
+        <li><b class="term">국가계약</b> — 「공사에 있어서」 추정가격에 부가가치세와 <span class="tl">관급재료</span> 공급분 가격을 합한 금액</li>
+        <li><b class="term">지방계약</b> — 관급자재의 범위를 <span class="tl">계약상대자가 설치하는 것으로 한정</span>함</li>
+        <li><b class="term">성격</b> — 부가가치세와 관급자재를 다시 포함하므로 실제 공사 규모에 가장 가까운 금액임</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span class="lb"><i>6</i>예정가격 — 정의와 결정기준</span></span>
+      <ul class="list">
+        <li><b class="term">정의</b> — 입찰이나 계약체결 전에 <span class="tl">낙찰자 및 계약금액의 결정기준</span>으로 삼기 위하여 미리 작성하여 갖춰 두는 가액</li>
+        <li><b class="term">결정기준 ①</b> 적정한 거래가 형성된 경우 그 <span class="tl">거래실례가격</span> ｜ <b class="term">②</b> 거래실례가격이 없는 특수한 물품·공사·용역은 <span class="tl">원가계산에 의한 가격</span>(재료비·노무비·경비 + 일반관리비 + 이윤)</li>
+        <li><b class="term">결정기준 ③</b> 공사의 경우 이미 수행한 공사의 종류별 시장거래가격 등을 토대로 산정한 <span class="tl">표준시장단가</span> ｜ <b class="term">④</b> 위에 따를 수 없는 경우 <span class="tl">감정가격·유사거래실례가격·견적가격</span></li>
+        <li><b class="term">상한</b> — 예산상 총공사금액(관급자재 금액 제외)의 범위 안에서 결정하여야 하며, 결정 시 계약수량·이행기간·수급상황·계약조건 등을 참작함</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>7</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>총사업비 관리대상</b> 사업기간 <span class="num">2년</span> 이상</span>
+        <span class="chip"><b>건축사업</b> <span class="num">200억원</span> 이상</span>
+        <span class="chip"><b>토목·정보화</b> <span class="num">500억원</span> 이상 · 국고 <span class="num">300억원</span> 이상</span>
+        <span class="chip"><b>연구기반구축 R&amp;D</b> <span class="num">200억원</span> 이상</span>
+        <span class="chip"><b>타당성조사 생략</b> 총공사비 <span class="num">500억원</span> 미만</span>
+        <span class="chip"><b>추정금액</b> 추정가격 ＋ 부가세 ＋ 관급자재</span>
+        <span class="chip"><b>계약기간 불분명</b> 1개월 추정지급액 × <span class="num">48</span></span>
+        <span class="chip"><b>예정가격 결정기준</b> <span class="num">4</span>개 호</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">다섯 가격은 별개의 금액이 아니라 하나의 사업비를 어디까지 잘라 보느냐의 차이이므로, 국제입찰·계약방법 등 기준선 판단은 추정가격으로, 부가세·관급자재를 포함한 실제 공사 규모는 추정금액으로, 낙찰자와 계약금액의 결정은 예정가격으로 각각 구분하여 적용하여야 함.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">근거: 국가계약법 시행령 제2조·제8조·제9조 및 같은 법 시행규칙 제2조(시행 2026. 6. 3. / 2026. 1. 2.) ｜ 지방계약법 시행령 제2조·제7조·제9조 및 같은 법 시행규칙 제2조(시행 2026. 6. 3. / 2026. 7. 1.) ｜ 기획예산처 「총사업비 관리지침」 제2조·제3조·제25조·제61조·제68조 ｜ 출처: 국가법령정보센터 www.law.go.kr</p>
+  
+</div>
+
+</body></html>

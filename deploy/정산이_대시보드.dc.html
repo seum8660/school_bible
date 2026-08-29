@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Noto+Sans+KR:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+  <script src="settle-core.js"></script>
+  <script src="settle-export.js"></script>
+  <style>
+    :root {
+      --cream: #f2f0eb; --ceramic: #edebe9; --white: #ffffff;
+      --green: #006241; --accent: #00754A; --house: #1E3932; --uplift: #2b5148;
+      --mint: #d4e9e2; --gold: #cba258;
+      --ink: rgba(0,0,0,0.87); --ink-soft: rgba(0,0,0,0.58); --ink-dim: rgba(0,0,0,0.38);
+      --line: #e7e7e7; --field: #d6dbde; --red: #c82014;
+      --card-shadow: 0 0 0.5px rgba(0,0,0,0.14), 0 1px 1px rgba(0,0,0,0.24);
+      --nav-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 2px 2px rgba(0,0,0,0.06), 0 0 2px rgba(0,0,0,0.07);
+      --font: Manrope, "Noto Sans KR", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    body { margin: 0; background: var(--cream); color: var(--ink); font-family: var(--font);
+      font-size: 14px; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent); text-underline-offset: 3px; }
+    a:hover { color: var(--green); }
+    input, select, textarea, button { font-family: var(--font); letter-spacing: -0.01em; box-sizing: border-box; }
+    .num { font-variant-numeric: tabular-nums; text-align: right; }
+    .pill { display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      border-radius: 50px; padding: 7px 16px; font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: all 0.2s ease; border: 1px solid transparent; }
+    .pill:active { transform: scale(0.95); }
+    .pill:disabled { opacity: 0.4; cursor: not-allowed; }
+    .pill-fill { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .pill-fill:hover:enabled { background: var(--green); border-color: var(--green); }
+    .pill-out { background: transparent; color: var(--accent); border-color: var(--accent); }
+    .pill-out:hover { background: rgba(0,117,74,0.06); }
+    .pill-quiet { background: transparent; color: var(--ink-soft); border-color: transparent; }
+    .pill-quiet:hover { background: rgba(0,0,0,0.05); color: var(--ink); }
+    .cell { width: 100%; box-sizing: border-box; height: 28px; line-height: 20px;
+      border: 1px solid transparent; background: transparent; padding: 3px 8px;
+      font-size: 13px; font-variant-numeric: tabular-nums; text-align: right; color: var(--ink); border-radius: 4px; }
+    .cell:hover { border-color: var(--field); background: #fff; }
+    .cell:focus { outline: none; border-color: var(--accent); background: #fff; }
+    .cell[readonly] { color: var(--ink-soft); }
+    .cell[readonly]:hover { border-color: transparent; background: transparent; }
+    .sx { width: 100%; box-sizing: border-box; height: 30px; line-height: 20px;
+      border: 1px solid var(--field); background: #fff; border-radius: 4px; padding: 4px 8px;
+      font-size: 13px; font-variant-numeric: tabular-nums; text-align: right; color: var(--ink); }
+    .sx:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+    .sx[readonly] { background: transparent; border-color: transparent; color: var(--ink-dim); }
+    .adm { background: hsl(160 32% 87% / 33%); border-color: var(--accent); font-weight: 600; }
+    .tt { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+    .tt th { background: var(--house); color: #fff; font-weight: 600; font-size: 12.5px;
+      padding: 8px 9px; text-align: right; white-space: nowrap; }
+    .tt th:first-child { border-radius: 8px 0 0 0; }
+    .tt th:last-child { border-radius: 0 8px 0 0; }
+    .tt th.l, .tt td.l { text-align: left; }
+    .tt td { padding: 3px 9px; border-bottom: 1px solid var(--line); text-align: right;
+      vertical-align: middle; height: 34px; }
+    .tt td.l { padding-left: 12px; }
+    .tt th.l { padding-left: 12px; }
+    .tt tbody tr:hover td { background: var(--ceramic); }
+    .lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }
+    .in { width: 100%; box-sizing: border-box; border: 1px solid var(--field); background: #fff; padding: 8px 10px;
+      font-size: 14px; color: var(--ink); border-radius: 4px; }
+    .in:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+    .card { background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); padding: 24px; }
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:var(--cream);padding-bottom:56px">
+
+  <header style="background:var(--house);color:#fff;padding:22px 40px;display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;box-shadow:var(--nav-shadow)">
+    <div>
+      <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.70)">학교시설과 · 준공정산</div>
+      <h1 style="font-size:26px;font-weight:600;margin:4px 0 0;letter-spacing:-0.16px">학교시설공사 간단준공정산 (정산이)</h1>
+    </div>
+    <div style="flex:1"></div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.70);text-align:right;line-height:1.6">
+      내역서 업로드 → 정산 자동 산출 → 엑셀 내보내기<br>
+      <span>{{ savedLabel }}</span>
+    </div>
+  </header>
+
+  <div style="background:#fff;padding:0 40px;display:flex;gap:8px;flex-wrap:wrap;box-shadow:0 1px 2px rgba(0,0,0,0.06)">
+    <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+      <div style="{{ s.style }}">
+        <span style="{{ s.numStyle }}">{{ s.n }}</span>{{ s.label }}
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:32px 40px;display:flex;flex-direction:column;gap:24px">
+
+    <section class="card">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px">
+        <span style="font-size:13px;font-weight:700;color:var(--accent)">STEP 1</span>
+        <h2 style="font-size:24px;font-weight:600;color:var(--green);margin:0">내역서 업로드</h2>
+      </div>
+
+      <div style="background:hsl(160 32% 87% / 33%);border-radius:12px;padding:14px 18px;margin-bottom:16px;font-size:13px;line-height:1.7;color:rgba(0,0,0,0.72)">
+        <b style="color:#00754A">내역서 하나만 있어도 정산됩니다.</b> 설계·착공·설계변경 중 있는 것부터 기준으로 잡습니다. 착공내역서가 없으면 기준내역에 제비율만 고쳐 착공을 만들고, 설계변경내역서가 있으면 마지막 차수가 준공내역이 됩니다. 한 파일에 원가계산서 시트가 여러 개면 자동으로 설계 + 설계변경 차수로 나눠 읽습니다.
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start">
+        <label style="display: block; background: var(--ceramic); border-radius: 12px; padding: 18px 20px; cursor: pointer; min-height: 73px">
+          <input type="file" accept=".xlsx,.xls" onChange="{{ onDesignFile }}" style="display:none">
+          <div style="font-size:16px;font-weight:600;color:var(--green)">설계내역서 <span style="font-size:13px;font-weight:400;color:var(--ink-soft)">(선택)</span></div>
+          <div style="font-size:13px;color:var(--ink-soft);margin-top:3px">{{ designHint }}</div>
+          <div style="font-size:13px;font-weight:600;color:var(--accent);margin-top:8px;word-break:break-all">{{ designName }}</div>
+        </label>
+        <div>
+          <label style="display:block;background:var(--ceramic);border-radius:12px;padding:18px 20px;cursor:pointer;min-height:73px">
+            <input type="file" accept=".xlsx,.xls" onChange="{{ onChangeFile }}" style="display:none" disabled="{{ changeFull }}">
+            <div style="font-size:16px;font-weight:600;color:var(--green)">설계변경내역서 <span style="font-size:13px;font-weight:400;color:var(--ink-soft)">(선택 · 최대 3차)</span></div>
+            <div style="font-size:13px;color:var(--ink-soft);margin-top:3px">{{ changeHint }}</div>
+            <div style="font-size:13px;font-weight:600;color:var(--accent);margin-top:8px">{{ nextChangeLabel }}</div>
+          </label>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+            <sc-for list="{{ changeRows }}" as="c" hint-placeholder-count="1">
+              <div style="background:var(--mint);border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+                <div style="font-size:12.5px;line-height:1.4"><b style="color:var(--green)">{{ c.stage }}</b><br>{{ c.name }}</div>
+                <button class="pill pill-quiet" onClick="{{ c.onRemove }}" style="font-size:13px;padding:4px 12px;flex:none">삭제</button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <label style="display: block; background: var(--ceramic); border-radius: 12px; padding: 18px 20px; cursor: pointer; min-height: 73px">
+          <input type="file" accept=".xlsx,.xls" onChange="{{ onStartFile }}" style="display:none">
+          <div style="font-size:16px;font-weight:600;color:var(--green)">착공내역서 <span style="font-size:13px;font-weight:400;color:var(--ink-soft)">(선택)</span></div>
+          <div style="font-size:13px;color:var(--ink-soft);margin-top:3px">{{ startHint }}</div>
+          <div style="font-size:13px;font-weight:600;color:var(--accent);margin-top:8px;word-break:break-all">{{ startName }}</div>
+        </label>
+      </div>
+
+      <p style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin:16px 0 0">
+        원가계산서 시트의 비목명과 금액을 자동으로 읽습니다. 준공내역은 설계변경내역서가 있으면 마지막 차수, 없으면 착공내역이 됩니다.
+      </p>
+    </section>
+
+    <section class="card">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px">
+        <span style="font-size:13px;font-weight:700;color:var(--accent)">STEP 2</span>
+        <h2 style="font-size:24px;font-weight:600;color:var(--green);margin:0">기본정보</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px 20px">
+        <sc-for list="{{ basicFields }}" as="f" hint-placeholder-count="13">
+          <div>
+            <label class="lbl">{{ f.label }}</label>
+            <input class="in" type="{{ f.type }}" value="{{ f.value }}" placeholder="{{ f.placeholder }}" onChange="{{ f.onChange }}">
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section class="card">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px">
+        <span style="font-size:13px;font-weight:700;color:var(--accent)">STEP 3</span>
+        <h2 style="font-size:24px;font-weight:600;color:var(--green);margin:0">원가계산 대비표</h2>
+        <span style="font-size:13px;color:var(--ink-soft)">{{ costSrc }}</span>
+      </div>
+
+      <sc-if value="{{ hasDesign }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap">
+            <div style="font-size:14px;font-weight:600">제비율 조정 <span style="font-weight:400;color:var(--ink-soft)">— 업로드한 내역서에서 역산한 요율입니다. 달라진 값만 고치십시오</span></div>
+            <button class="pill pill-out" onClick="{{ onRateReset }}" style="font-size:13px;padding:5px 14px">업로드 파일 요율로 초기화</button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px 16px;margin-bottom:20px;background:var(--ceramic);border-radius:12px;padding:16px">
+            <sc-for list="{{ rateRows }}" as="r" hint-placeholder-count="12">
+              <div>
+                <label class="lbl" style="font-size:12.5px">{{ r.label }} <span style="font-weight:400;color:var(--ink-dim)">{{ r.base }}</span></label>
+                <div style="position:relative">
+                  <input class="in num" style="padding-right:30px" value="{{ r.value }}" onChange="{{ r.onChange }}">
+                  <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--ink-soft);pointer-events:none">%</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="overflow-x:auto">
+            <table class="tt" style="min-width:1000px">
+              <thead>
+                <tr>
+                  <th class="l" style="width:200px">비목</th>
+                  <th style="width:96px">요율</th>
+                  <th style="width:140px">착공</th>
+                  <th style="width:140px">{{ settleColLabel }}</th>
+                  <th style="width:124px">증감액</th>
+                  <th class="l">산출근거</th>
+                  <th style="width:92px">순서·삭제</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ costRows }}" as="r" hint-placeholder-count="20">
+                  <tr style="{{ r.rowStyle }}">
+                    <td class="l" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}<span style="{{ r.pillStyle }}">{{ r.pill }}</span></td>
+                    <td style="padding:1px 4px"><input class="cell" style="font-size:12px;color:var(--accent);font-weight:600" value="{{ r.rateValue }}" readOnly="{{ r.rateRo }}" onFocus="{{ r.onRateFocus }}" onBlur="{{ r.onBlur }}" onChange="{{ r.onRateChange }}"></td>
+                    <td style="padding:1px 4px"><input class="cell" value="{{ r.startValue }}" readOnly="{{ r.ro }}" onFocus="{{ r.onStartFocus }}" onBlur="{{ r.onBlur }}" onChange="{{ r.onStartChange }}"></td>
+                    <td style="padding:1px 4px"><input class="cell" value="{{ r.settleValue }}" readOnly="{{ r.ro }}" onFocus="{{ r.onSettleFocus }}" onBlur="{{ r.onBlur }}" onChange="{{ r.onSettleChange }}"></td>
+                    <td class="num" style="{{ r.chgStyle }}">{{ r.chgText }}</td>
+                    <td class="l" style="padding:1px 6px;display:flex;align-items:center;gap:4px;overflow:hidden">
+                      <input class="cell" style="text-align:left;font-size:12px;color:var(--ink-soft)" value="{{ r.formula }}" placeholder="{{ r.formulaPh }}" onChange="{{ r.onFormulaChange }}">
+                      <span style="{{ r.warnStyle }}" title="{{ r.warnTitle }}">{{ r.warn }}</span>
+                    </td>
+                    <td style="padding:1px 6px">
+                      <div style="{{ r.ctrlStyle }}">
+                        <button class="pill pill-quiet" onClick="{{ r.onUp }}" title="위로" style="font-size:12px;padding:2px 7px;flex:none">↑</button>
+                        <button class="pill pill-quiet" onClick="{{ r.onDown }}" title="아래로" style="font-size:12px;padding:2px 7px;flex:none">↓</button>
+                        <button class="pill pill-quiet" onClick="{{ r.onHide }}" title="비목 삭제" style="font-size:12px;padding:2px 7px;flex:none">✕</button>
+                      </div>
+                    </td>
+                  </tr>
+                </sc-for>
+                <sc-for list="{{ extraRows }}" as="x" hint-placeholder-count="0">
+                  <tr>
+                    <td class="l" style="padding:1px 8px"><input class="cell" style="text-align:left" value="{{ x.name }}" placeholder="추가 비목명" onChange="{{ x.onName }}"></td>
+                    <td></td>
+                    <td style="padding:1px 4px"><input class="cell" value="{{ x.start }}" placeholder="0" onChange="{{ x.onStart }}"></td>
+                    <td style="padding:1px 4px"><input class="cell" value="{{ x.settle }}" placeholder="0" onChange="{{ x.onSettle }}"></td>
+                    <td class="num" style="{{ x.chgStyle }}">{{ x.chg }}</td>
+                    <td class="l" style="padding:1px 8px;display:flex;align-items:center;gap:6px">
+                      <input class="cell" style="text-align:left;font-size:12px;color:var(--ink-soft)" value="{{ x.note }}" placeholder="산출근거" onChange="{{ x.onNote }}">
+                      <button class="pill pill-quiet" onClick="{{ x.onDel }}" style="font-size:13px;padding:2px 9px;flex:none">✕</button>
+                    </td>
+                    <td></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <sc-if value="{{ hasHidden }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;background:var(--ceramic);border-radius:12px;padding:12px 16px">
+              <span style="font-size:12.5px;font-weight:600;color:var(--ink-soft)">삭제한 비목</span>
+              <sc-for list="{{ hiddenRows }}" as="h" hint-placeholder-count="1">
+                <button class="pill pill-out" onClick="{{ h.onRestore }}" style="font-size:12.5px;padding:4px 12px">{{ h.name }} 되돌리기</button>
+              </sc-for>
+            </div>
+          </sc-if>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:12px">
+            <button class="pill pill-out" onClick="{{ onAddExtra }}" style="font-size:13px;padding:6px 16px">+ 비목 추가</button>
+            <span style="font-size:12.5px;color:var(--ink-soft)">{{ extraHint }}</span>
+          </div>
+          <p style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin:12px 0 0">
+공급가액·부가세·총합계액은 원단위 절사, 반올림, 천원 이하 절사가 들어갑니다. 원본 내역서와 1원~수천원 차이가 나면 절사·반올림 처리 때문이므로 반드시 대조 확인하십시오. 금액 칸은 바로 입력해 덮어쓸 수 있습니다. 착공 칸을 고치면 요율 재산정보다 입력값이 우선하고, 정산 칸을 고치면 사후정산 인정액으로 처리됩니다. 비우면 자동값으로 되돌아갑니다.
+          </p>
+        </div>
+      </sc-if>
+      <sc-if value="{{ noDesign }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:36px;text-align:center;color:var(--ink-soft);font-size:14px">내역서를 하나라도 업로드하면 원가계산 항목이 표시됩니다.</div>
+      </sc-if>
+    </section>
+
+    <section class="card">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px">
+        <span style="font-size:13px;font-weight:700;color:var(--accent)">STEP 4</span>
+        <h2 style="font-size:24px;font-weight:600;color:var(--green);margin:0">사후정산 입력</h2>
+        <span style="font-size:13px;color:var(--ink-soft)">{{ settleProgress }}</span>
+      </div>
+
+      <sc-if value="{{ hasDesign }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <table class="tt" style="margin-bottom:20px;min-width:820px">
+            <thead>
+              <tr><th class="l" style="text-align: center">정산 항목</th><th style="width: 130px; text-align: center">계상액</th><th style="width: 130px; text-align: center">제출액</th><th style="width: 130px; text-align: center">검토액</th><th style="width: 124px; text-align: center">증감</th><th style="width: 96px; text-align: center">상태</th></tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ overview }}" as="o" hint-placeholder-count="6">
+                <tr onClick="{{ o.onClick }}" style="{{ o.rowStyle }}">
+                  <td class="l" style="font-weight:600">{{ o.title }}</td>
+                  <td class="num">{{ o.calc }}</td>
+                  <td class="num">{{ o.submit }}</td>
+                  <td class="num" style="font-weight:700;color:var(--green)">{{ o.admit }}</td>
+                  <td class="num" style="{{ o.chgStyle }}">{{ o.chg }}</td>
+                  <td style="text-align:center"><span style="{{ o.badgeStyle }}">{{ o.badge }}</span></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="6">
+              <div onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.title }}</div>
+            </sc-for>
+          </div>
+
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+              <h3 style="font-size:18px;font-weight:600;color:var(--green);margin:0">{{ activeTitle }} 정산</h3>
+              <div style="display:flex;gap:8px">
+                <button class="pill pill-out" onClick="{{ onAcceptSubmitted }}" style="font-size:13px;padding:5px 14px">제출액 그대로 검토</button>
+                <button class="pill pill-out" onClick="{{ onAcceptCalc }}" style="font-size:13px;padding:5px 14px">계상액 전액 검토</button>
+                <button class="pill pill-quiet" onClick="{{ onClearSheet }}" style="font-size:13px;padding:5px 14px">입력 지우기</button>
+              </div>
+            </div>
+
+            <sc-if value="{{ isCmp }}" hint-placeholder-val="{{ true }}">
+              <table class="tt" style="min-width:860px">
+                <thead>
+                  <tr><th class="l" style="text-align: center">항목</th><th style="width: 136px; text-align: center">계상액</th><th style="width: 136px; text-align: center">시공사 제출액</th><th style="text-align: center">검토율</th><th style="width: 136px; text-align: center">감독자 검토액</th><th style="width: 124px; text-align: center">증감</th></tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ cmpRows }}" as="c" hint-placeholder-count="2">
+                    <tr>
+                      <td class="l" style="font-weight:600">{{ c.label }}</td>
+                      <td class="num">{{ c.calc }}</td>
+                      <td style="padding:3px 5px"><input class="sx" value="{{ c.submit }}" placeholder="0" onChange="{{ c.onSubmit }}"></td>
+                      <td style="{{ rateColStyle }};padding:3px 5px"><input class="sx" value="{{ c.rate }}" onChange="{{ c.onRate }}"></td>
+                      <td style="padding:3px 5px"><input class="sx adm" value="{{ c.admit }}" placeholder="{{ c.admitAuto }}" onChange="{{ c.onAdmit }}"></td>
+                      <td class="num" style="{{ c.chgStyle }}">{{ c.chg }}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </sc-if>
+
+            <sc-if value="{{ isItemized }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+                  <sc-for list="{{ statBoxes }}" as="s" hint-placeholder-count="4">
+                    <div style="background:var(--ceramic);border-radius:12px;padding:12px 16px">
+                      <div style="font-size:12.5px;color:var(--ink-soft)">{{ s.label }}</div>
+                      <div class="num" style="{{ s.style }}">{{ s.value }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+                <sc-for list="{{ dataLists }}" as="d" hint-placeholder-count="0">
+                  <datalist id="{{ d.id }}">
+                    <sc-for list="{{ d.opts }}" as="o" hint-placeholder-count="0">
+                      <option value="{{ o }}"></option>
+                    </sc-for>
+                  </datalist>
+                </sc-for>
+                <div>
+                  <table class="tt">
+                    <thead>
+                      <tr>
+                        <th class="l" style="width: 19%; text-align: center">항목</th><th class="l" style="width: 17%; text-align: center">세부품목</th><th style="width: 5%; text-align: center">단위</th>
+                        <th style="width: 9%; text-align: center">제출단가</th><th style="width: 7%; text-align: center">제출수량</th><th style="width: 10.5%; text-align: center">제출금액</th>
+                        <th style="width: 9%; text-align: center">검토단가</th><th style="width: 7%; text-align: center">검토수량</th><th style="width: 10.5%; text-align: center">검토금액</th><th style="width: 6%; text-align: center">품목</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <sc-for list="{{ itemRows }}" as="x" hint-placeholder-count="7">
+                        <tr>
+                          <td class="l" style="font-size:12.5px;color:var(--ink-soft);line-height:1.35">{{ x.cat }}</td>
+                          <td style="padding:3px 5px"><input class="sx" style="text-align:left" list="{{ x.listId }}" value="{{ x.name }}" placeholder="{{ x.namePlaceholder }}" onChange="{{ x.onName }}" readOnly="{{ x.empty }}"></td>
+                          <td style="padding:3px 5px"><input class="sx" style="text-align:center" value="{{ x.unit }}" onChange="{{ x.onUnit }}" readOnly="{{ x.empty }}"></td>
+                          <td style="padding:3px 5px"><input class="sx" value="{{ x.subPrice }}" placeholder="{{ x.pricePh }}" onChange="{{ x.onSubPrice }}" readOnly="{{ x.empty }}"></td>
+                          <td style="padding:3px 5px"><input class="sx" value="{{ x.subQty }}" onChange="{{ x.onSubQty }}" readOnly="{{ x.empty }}"></td>
+                          <td class="num" style="color:var(--ink-soft)">{{ x.subAmt }}</td>
+                          <td style="padding:3px 5px"><input class="sx adm" value="{{ x.price }}" onChange="{{ x.onPrice }}" readOnly="{{ x.empty }}"></td>
+                          <td style="padding:3px 5px"><input class="sx adm" value="{{ x.qty }}" onChange="{{ x.onQty }}" readOnly="{{ x.empty }}"></td>
+                          <td class="num" style="font-weight:700;color:var(--green)">{{ x.recAmt }}</td>
+                          <td style="padding:3px 4px">
+                            <div style="display:flex;gap:3px;justify-content:center">
+                              <button class="pill pill-out" onClick="{{ x.onAdd }}" title="이 항목에 세부품목 추가" style="font-size:13px;padding:2px 8px">+</button>
+                              <button class="pill" onClick="{{ x.onDel }}" title="이 세부품목 삭제" style="{{ x.delStyle }}">✕</button>
+                            </div>
+                          </td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </sc-if>
+
+            <div style="background:var(--ceramic);border-radius:12px;padding:14px 18px;margin-top:14px">
+              <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:6px">관련기준</div>
+              <p style="font-size:13px;color:var(--ink-soft);line-height:1.7;margin:0;white-space:pre-line">{{ activeNote }}</p>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ noDesign }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:36px;text-align:center;color:var(--ink-soft);font-size:14px">원가계산을 확인하면 정산 항목이 표시됩니다.</div>
+      </sc-if>
+    </section>
+
+    <section style="background:var(--house);border-radius:12px;padding:28px 32px;color:#fff">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:18px">
+        <span style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.70)">STEP 5</span>
+        <h2 style="font-size:24px;font-weight:600;margin:0;color:#fff">정산 결과 · 내보내기</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">
+        <sc-for list="{{ summaryBoxes }}" as="s" hint-placeholder-count="3">
+          <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:14px 18px">
+            <div style="font-size:13px;color:rgba(255,255,255,0.70)">{{ s.label }}</div>
+            <div class="num" style="{{ s.style }}">{{ s.value }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+        <button class="pill" onClick="{{ onExport }}" disabled="{{ exportDisabled }}" style="background:#fff;color:var(--accent);border-color:#fff;padding:12px 28px;font-size:15px">정산 엑셀 내보내기</button>
+        <a class="pill" href="%EC%A4%80%EA%B3%B5%EC%A0%95%EC%82%B0%20%EC%9D%B8%EC%87%84%EB%B3%B8.dc.html" target="_blank" rel="noopener" onClick="{{ onPrint }}" style="background:transparent;color:#fff;border-color:#fff;padding:12px 22px;text-decoration:none">인쇄 미리보기 / PDF</a>
+        <button class="pill" onClick="{{ onSaveSlot }}" style="background:transparent;color:#fff;border-color:#fff;padding:12px 22px">브라우저에 임시저장</button>
+        <button class="pill" onClick="{{ onDownloadState }}" style="background:transparent;color:#fff;border-color:#fff;padding:12px 22px">파일로 저장</button>
+        <label class="pill" style="background:transparent;color:#fff;border-color:#fff;padding:12px 22px;cursor:pointer">파일 불러오기
+          <input type="file" accept=".json" onChange="{{ onOpenStateFile }}" style="display:none">
+        </label>
+        <button class="pill" onClick="{{ onReset }}" style="background:transparent;color:#fff;border-color:#fff;padding:12px 22px">처음부터</button>
+      </div>
+      <sc-if value="{{ hasSlots }}" hint-placeholder-val="{{ false }}">
+        <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:14px 18px;margin-top:18px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.70)">임시저장 목록 <span style="font-weight:400">— 최근 10건까지 보관</span></div>
+          <sc-for list="{{ slotRows }}" as="s" hint-placeholder-count="1">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <span style="font-size:13.5px;font-weight:600;flex:1;min-width:200px">{{ s.name }}</span>
+              <span style="font-size:12.5px;color:rgba(255,255,255,0.70)">{{ s.at }}</span>
+              <button class="pill" onClick="{{ s.onLoad }}" style="background:#fff;color:var(--accent);border-color:#fff;font-size:12.5px;padding:4px 14px">불러오기</button>
+              <button class="pill" onClick="{{ s.onRemove }}" style="background:transparent;color:#fff;border-color:rgba(255,255,255,0.5);font-size:12.5px;padding:4px 12px">삭제</button>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <p style="font-size:13px;color:rgba(255,255,255,0.70);line-height:1.6;margin:18px 0 0">
+        표지 · 준공정산동의서 · 원가계산서(정산) · 사후정산 총괄표 · 검토서 6종이 각 시트로 포함됩니다.
+      </p>
+    </section>
+  </div>
+
+  <div style="{{ toastStyle }}">{{ toast }}</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:960},&quot;defaultOrg&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;전라남도교육비특별회계신안교육지원청&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;기본값&quot;}}">
+const LS_KEY = 'jggs.dashboard.v1';
+const SLOT_KEY = 'jggs.dashboard.slots.v1';
+
+/* 세부품목 추천 목록 — 직접 입력도 가능 */
+const SUGGEST = {
+  safe: [
+    ['안전관리자 임금','보건관리자 임금','안전보건관리책임자 업무수당','관리감독자 안전보건업무 수당','겸직 안전관리자 임금(50%)'],
+    ['안전난간 설치','추락방호망 설치','개구부 덮개','안전통로·가설계단','비계 안전시설','안전표지판·경고표지','임시 소화기구','가설 조명·경광등','낙하물 방지망'],
+    ['안전모','안전화','안전대(안전벨트)','보안경·보안면','방진마스크','방독마스크','귀마개','안전장갑','안전조끼','절연장갑'],
+    ['안전보건진단 용역','정기 안전점검','가설구조물 구조검토','작업환경측정','유해위험방지계획서 확인'],
+    ['정기 안전보건교육','신규채용자 교육','특별안전보건교육','작업내용 변경 시 교육','관리감독자 교육','안전보건행사·캠페인'],
+    ['근로자 건강진단(일반)','특수건강진단','응급처치 용품·구급약품','혹서기 보건용품','혹한기 보건용품','뇌심혈관질환 예방'],
+    ['재해예방 기술지도 수수료','전문지도기관 기술지도비'],
+    ['본사 전담조직 근로자 임금','본사 안전보건조직 운영비'],
+    ['위험성평가 개선조치 비용','노사협의체 결정 소요비용','아차사고 개선 비용']
+  ],
+  env: [
+    ['가설방음벽 설치','세륜시설 설치·운영','살수시설 설치','방진막·방진벽','비산먼지 억제제'],
+    ['건설폐기물 운반·처리','폐토사 처리','재활용 골재 처리','폐기물 보관시설'],
+    ['소음·진동 측정','비산먼지 측정','수질 측정','환경영향 모니터링'],
+    ['환경관리 교육','환경 관련 인허가 대행','환경관리 담당자 교육'],
+    ['현장 주변 청소','도로 청소·살수','세륜수 처리','현장 정리정돈 인건비'],
+    ['환경보전 표지판','기타 환경보전 비용']
+  ]
+};
+
+function blankState(org) {
+  return {design:null, start:null, changes:[], change:null, scenario:1,
+    basic:{org: org || '전라남도교육비특별회계신안교육지원청', orient:'portrait',
+      reason:'개인보호구 및 안전장구 구입비 등 중 미사용 항목 및 증빙서류 미비 항목을 제외'},
+    rateInput:{}, startManual:{}, settleManual:{}, settleInput:{}, extras:[], cost:{}};
+}
+
+class Component extends DCLogic {
+  state = {S: blankState(this.props.defaultOrg), active: 0, focus: null, draft: '', toast: '', saved: ''};
+
+  componentDidMount() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) {
+        const S = Object.assign(blankState(this.props.defaultOrg), JSON.parse(raw));
+        if (window.SettleCore.baseDoc(S)) window.SettleCore.recompute(S);
+        this.setState({S, saved: '이전 작업 불러옴'});
+      }
+    } catch (e) { console.warn('restore failed', e); }
+  }
+
+  snapshot() {
+    const S = this.state.S;
+    return {design:S.design, start:S.start, changes:S.changes,
+      scenario:S.scenario, basic:S.basic, rateInput:S.rateInput, startManual:S.startManual,
+      settleManual:S.settleManual, settleInput:S.settleInput, extras:S.extras,
+      hidden:S.hidden, order:S.order, noteInput:S.noteInput};
+  }
+
+  slots() {
+    try { return JSON.parse(localStorage.getItem(SLOT_KEY) || '[]'); } catch (e) { return []; }
+  }
+  writeSlots(list) {
+    try { localStorage.setItem(SLOT_KEY, JSON.stringify(list)); this.forceUpdate(); }
+    catch (e) { this.flash('임시저장 공간이 부족합니다'); }
+  }
+  saveSlot() {
+    const S = this.state.S;
+    const now = new Date();
+    const list = this.slots();
+    list.unshift({id: String(now.getTime()),
+      name: (S.basic.name || '무제 공사') + (S.changes.length ? ' · ' + S.changes.length + '차 설계변경' : ''),
+      at: now.toLocaleString('ko-KR', {month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'}),
+      data: this.snapshot()});
+    this.writeSlots(list.slice(0, 10));
+    this.flash('임시저장했습니다');
+  }
+  loadSlot(id) {
+    const it = this.slots().find(x => x.id === id);
+    if (!it) return;
+    const S = Object.assign(blankState(this.props.defaultOrg), it.data);
+    if (window.SettleCore.baseDoc(S)) window.SettleCore.recompute(S);
+    this.setState({S});
+    this.save();
+    this.flash('불러왔습니다 — ' + it.name);
+  }
+  removeSlot(id) { this.writeSlots(this.slots().filter(x => x.id !== id)); }
+
+  downloadState() {
+    const S = this.state.S;
+    const blob = new Blob([JSON.stringify({app:'jggs', savedAt:new Date().toISOString(), data:this.snapshot()}, null, 2)],
+      {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = ((S.basic.name || '준공정산').replace(/[\\/:*?"<>|]/g,'')) + '_작업파일.json';
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    this.flash('작업파일을 내려받았습니다');
+  }
+  openStateFile(e) {
+    const f = e.target.files[0]; e.target.value = '';
+    if (!f) return;
+    const fr = new FileReader();
+    fr.onload = ev => {
+      try {
+        const j = JSON.parse(ev.target.result);
+        const S = Object.assign(blankState(this.props.defaultOrg), j.data || j);
+        if (window.SettleCore.baseDoc(S)) window.SettleCore.recompute(S);
+        this.setState({S});
+        this.save();
+        this.flash('작업파일을 불러왔습니다');
+      } catch (err) { this.flash('작업파일을 읽지 못했습니다'); }
+    };
+    fr.readAsText(f);
+  }
+
+  save() {
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(this.snapshot()));
+      this.setState({saved: '자동 저장됨 · ' + new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'})});
+    } catch (e) { console.warn('save failed', e); }
+  }
+
+  update(fn) {
+    const S = this.state.S;
+    fn(S);
+    if (window.SettleCore.baseDoc(S)) window.SettleCore.recompute(S);
+    this.setState({S});
+    this.save();
+  }
+
+  flash(msg) {
+    this.setState({toast: msg});
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({toast: ''}), 2200);
+  }
+
+  num(v) { const t = String(v == null ? '' : v).replace(/,/g, '').trim(); if (t === '') return null; const n = parseFloat(t); return isNaN(n) ? null : n; }
+
+  readInto(file, which) {
+    const fr = new FileReader();
+    fr.onload = e => {
+      try {
+        const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'});
+        const parsed = window.SettleCore.parseWorkbook(wb);
+        if (!parsed.ok) { this.flash('원가계산서 시트를 찾지 못했습니다 — ' + (parsed.sheets||[]).join(', ')); return; }
+        const projectName = window.SettleCore.extractProjectName(wb) || '';
+        // 한 파일에 설계 + 설계변경 원가계산서가 함께 있는 경우 자동 분리
+        const all = window.SettleCore.parseCostSheets(wb);
+        let split = 0;
+        if (which === 'design' && all.length > 1) split = all.length - 1;
+        this.update(S => {
+          const rec = {name:file.name, sheetName:parsed.sheetName, cost:parsed.cost, costBefore:parsed.costBefore,
+            labels:(parsed.raw||[]).map(r => r.label)};
+          if (which === 'change') S.changes.push(rec); else S[which] = rec;
+          if (split) {
+            S.design = {name:file.name, sheetName:all[0].sheetName, cost:all[0].cost, costBefore:all[0].costBefore};
+            S.changes = all.slice(1, 4).map(s => ({name:file.name, sheetName:s.sheetName, cost:s.cost, costBefore:s.costBefore}));
+          }
+          if (projectName && !S.basic.name) S.basic.name = projectName;
+          const bd = window.SettleCore.baseDoc(S);
+          if (bd) {
+            // 업로드된 내역서에서 역산한 요율로 항상 다시 채운다
+            const dr = window.SettleCore.deriveRates(bd.cost);
+            window.SettleCore.RATE_KEYS.forEach(k => {
+              S.rateInput[k] = String(Math.round((dr[k]||0)*100*1000)/1000);
+              delete S.startManual[k];
+            });
+          }
+        });
+        this.flash(split
+          ? '한 파일에서 원가계산서 ' + all.length + '개 시트를 인식 — 설계 1개 + 설계변경 ' + split + '차'
+          : (which === 'design' ? '설계' : which === 'start' ? '착공' : '설계변경') + '내역서 인식 완료 — ' + parsed.sheetName + ' 시트');
+      } catch (err) { console.error(err); this.flash('파일을 읽지 못했습니다: ' + err.message); }
+    };
+    fr.readAsArrayBuffer(file);
+  }
+  onFile(which, e) { const f = e.target.files[0]; if (f) this.readInto(f, which); e.target.value = ''; }
+
+  cellValue(field, raw) {
+    if (this.state.focus === field) return this.state.draft;
+    return window.SettleCore.nf(raw);
+  }
+  commitCell(col, key, text) {
+    const v = this.num(text);
+    this.update(S => {
+      const bag = col === 'start' ? S.startManual : S.settleManual;
+      if (v == null) delete bag[key]; else bag[key] = Math.round(v);
+    });
+  }
+
+  sheetKeys(s) {
+    if (s.kind === 'itemized') return [];
+    return (s.kind === 'simple' ? [s.row] : s.rows).map(r => r[0]);
+  }
+  acceptCalc() {
+    const s = window.SettleCore.SETTLE_SHEETS[this.state.active];
+    this.update(S => {
+      if (s.kind === 'itemized') return;
+      this.sheetKeys(s).forEach(k => {
+        const calc = (S.cost[k] && S.cost[k].start) || 0;
+        S.settleInput[k] = Object.assign({}, S.settleInput[k], {submit: calc, admit: calc});
+      });
+    });
+    if (s.kind === 'itemized') this.flash('항목별 검토서는 사용내역을 입력해 검토액을 산출합니다');
+  }
+  acceptSubmitted() {
+    const s = window.SettleCore.SETTLE_SHEETS[this.state.active];
+    this.update(S => {
+      if (s.kind === 'itemized') {
+        const items = (S.settleInput[s.key] && S.settleInput[s.key].items) || [];
+        items.forEach(x => { if (x.subPrice != null) x.price = x.subPrice; if (x.subQty != null) x.qty = x.subQty; });
+        return;
+      }
+      this.sheetKeys(s).forEach(k => {
+        const inp = S.settleInput[k] || {};
+        const calc = (S.cost[k] && S.cost[k].start) || 0;
+        const rate = s.kind === 'triple' ? (inp.rate ?? 0.5) : 1;
+        if (inp.submit != null) S.settleInput[k] = Object.assign({}, inp, {admit: Math.min(calc, inp.submit*rate)});
+      });
+    });
+  }
+  clearSheet() {
+    const s = window.SettleCore.SETTLE_SHEETS[this.state.active];
+    this.update(S => {
+      if (s.kind === 'itemized') { delete S.settleInput[s.key]; return; }
+      this.sheetKeys(s).forEach(k => { delete S.settleInput[k]; });
+    });
+  }
+
+  async exportExcel() {
+    const C = window.SettleCore, S = this.state.S;
+    const start = (S.cost.grand && S.cost.grand.start) || 0;
+    const settle = (S.cost.grand && S.cost.grand.settle != null) ? S.cost.grand.settle : start;
+    const basic = Object.assign({}, S.basic, {
+      start, grand: settle,
+      hasChange: S.changes.length > 0, changeStage: S.changes.length,
+      landscape: S.basic.orient === 'landscape',
+      today: new Date().toISOString().slice(0,10).replace(/-/g,'. ')});
+    const rates = C.RATE_DEFS.map(d => ({label:d.label, base:d.base,
+      design: (S.designRates && S.designRates[d.key]) || 0, contract: (S.rates && S.rates[d.key]) || 0}));
+    try {
+      const costRows = C.buildCostRows(S);
+      const extras = (S.extras || []).filter(x => (x.name || '').trim() || x.start || x.settle);
+      if (extras.length) {
+        costRows.push({kind:'section', name:'추가 비목'});
+        extras.forEach(x => costRows.push({kind:'item', name: x.name || '(무제)',
+          start: x.start || 0, settle: x.settle != null ? x.settle : (x.start || 0), note: x.note || '', rate: null}));
+      }
+      const wb = window.SettleExport.buildWorkbook({basic, costRows,
+        rates, overview: C.settleOverview(S), settleSheets: C.buildSettlePayload(S)});
+      const buf = await wb.xlsx.writeBuffer();
+      const blob = new Blob([buf], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = (basic.name || '준공정산').replace(/[\\/:*?"<>|]/g,'') + '_정산.xlsx';
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      this.flash('엑셀을 내보냈습니다');
+    } catch (err) { console.error(err); this.flash('내보내기 오류: ' + err.message); }
+  }
+
+  renderVals() {
+    const C = window.SettleCore, S = this.state.S, nf = C.nf;
+    const has = !!C.baseDoc(S);
+    const nCh = S.changes.length;
+    const stepNow = !has ? 1 : (S.cost.grand ? 5 : 3);
+    const neg = 'color:#c82014;font-weight:600';
+    const pos = 'color:#00754A;font-weight:600';
+
+    const steps = ['내역서 업로드','기본정보','원가계산 확인','사후정산 입력','내보내기'].map((label, i) => {
+      const n = i + 1, on = n <= stepNow;
+      return {n, label,
+        style: 'display:flex;align-items:center;gap:8px;padding:14px 4px;font-size:13.5px;font-weight:600;border-bottom:2px solid ' +
+          (on ? '#00754A;color:rgba(0,0,0,0.87)' : 'transparent;color:rgba(0,0,0,0.38)'),
+        numStyle: 'width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;font-weight:700;' +
+          (on ? 'background:#00754A;color:#fff' : 'background:#edebe9;color:rgba(0,0,0,0.38)')};
+    });
+
+    const basicDefs = [['name','공사명','text','예: 자은초 화장실 보수공사'],['org','발주기관(재무관)','text',''],
+      ['bid','낙찰률 (선택)','text','미입력'],['cdate','계약일자','date',''],['sdate','착공일자','date',''],
+      ['edate','준공(예정)일자','date',''],['vendor','시공사 상호','text','예: ○○건설(주)'],
+      ['vaddr','시공사 주소','text',''],['vrep','시공사 대표자','text','예: 홍길동'],
+      ['writerRank','작성자 직급','text','예: 지방시설서기'],['writer','작성자 성명','text',''],
+      ['supervisor','감독자','text','예: 지방시설주사 홍길동'],['inspector','검사자','text',''],
+      ['signDate','정산 서명일','text','예: 2026년 3월    일'],
+      ['reason','정산 사유','text','예: 건강·연금보험료, 환경보전비 등 미납부 금액에 대한 감액 조정']];
+    const basicFields = basicDefs.map(([k, label, type, ph]) => ({label, type, placeholder: ph,
+      value: S.basic[k] == null ? '' : S.basic[k],
+      onChange: e => { const v = e.target.value; this.update(St => { St.basic[k] = v; }); }}));
+
+    const rateRows = C.RATE_DEFS.map(d => ({label: d.label, base: '(' + d.base + ')',
+      value: S.rateInput[d.key] == null ? '' : S.rateInput[d.key],
+      onChange: e => { const v = e.target.value; this.update(St => { St.rateInput[d.key] = v; }); }}));
+
+    const settleColLabel = '준공';
+    const costRows = has ? C.visibleItems(S).map(it => {
+      const c = S.cost[it.key]; if (!c) return null;
+      const settleVal = c.settle != null ? c.settle : (c.start != null ? c.start : 0);
+      const chg = c.start != null ? settleVal - c.start : null;
+      const ro = C.AGG_ONLY.indexOf(it.key) >= 0;
+      const manual = S.settleManual[it.key] != null;
+      const isGrand = it.key === 'grand';
+      const AGGMAP = {gen:'gen', profit:'pro', sup:'sup', vat:'vat', grand:'grand'};
+      let diff = null;
+      const calcV = (S.startCalc || {})[AGGMAP[it.key] || it.key];
+      if (calcV != null && c.start != null && (C.RATE_KEYS.indexOf(it.key) >= 0 || AGGMAP[it.key])) {
+        const d = c.start - calcV;
+        // 절사·반올림 수준(1,000원 미만이면서 0.1% 이내)은 알리지 않는다
+        if (!(Math.abs(d) < 1000 && Math.abs(d) <= Math.abs(calcV)*0.001)) diff = {d, calc: calcV};
+      }
+      return {
+        name: it.name,
+        pill: it.settle ? (manual ? ' 정산' : ' 자동') : '',
+        pillStyle: it.settle ? ('margin-left:6px;font-size:11px;font-weight:600;padding:1px 8px;border-radius:50px;' +
+          (manual ? 'background:#00754A;color:#fff' : 'background:#edebe9;color:rgba(0,0,0,0.58)')) : 'display:none',
+        rateRo: C.RATE_KEYS.indexOf(it.key) < 0,
+        rateValue: C.RATE_KEYS.indexOf(it.key) < 0 ? ''
+          : (this.state.focus === 'rate:' + it.key ? this.state.draft
+             : (((S.rates && S.rates[it.key]) || 0)*100).toFixed(3).replace(/\.?0+$/,'') + '%'),
+        onRateFocus: () => this.setState({focus: 'rate:' + it.key,
+          draft: String(Math.round(((S.rates && S.rates[it.key]) || 0)*100*1000)/1000)}),
+        onRateChange: e => { const v = e.target.value; this.setState({draft: v});
+          this.update(St => { const n = this.num(v); St.rateInput[it.key] = n == null ? '' : String(n); }); },
+        ro,
+        startValue: this.cellValue('start:' + it.key, c.start),
+        settleValue: this.cellValue('settle:' + it.key, settleVal),
+        onStartFocus: () => this.setState({focus:'start:'+it.key, draft: c.start == null ? '' : String(c.start)}),
+        onSettleFocus: () => this.setState({focus:'settle:'+it.key, draft: settleVal == null ? '' : String(settleVal)}),
+        onBlur: () => this.setState({focus:null, draft:''}),
+        onStartChange: e => { const v = e.target.value; this.setState({draft:v}); this.commitCell('start', it.key, v); },
+        onSettleChange: e => { const v = e.target.value; this.setState({draft:v}); this.commitCell('settle', it.key, v); },
+        chgText: chg == null || chg === 0 ? '' : (chg > 0 ? '+' : '') + nf(chg),
+        chgStyle: chg < 0 ? neg : pos,
+        formula: ((S.noteInput || {})[it.key] != null && String(S.noteInput[it.key]).trim() !== '')
+          ? S.noteInput[it.key] : C.formulaLabel(S, it),
+        formulaPh: C.formulaLabel(S, it),
+        onFormulaChange: e => { const v = e.target.value;
+          this.update(St => { St.noteInput = St.noteInput || {}; if (v.trim() === '') delete St.noteInput[it.key]; else St.noteInput[it.key] = v; }); },
+
+        canMove: !!C.GROUPS[it.group],
+        warn: diff ? '⚠ 수식 차이' : '',
+        warnTitle: diff ? ('수식 산출값 ' + nf(diff.calc) + ' 과 ' + nf(Math.abs(diff.d)) + '원 차이 — 확인 필요') : '',
+        warnStyle: 'color:#c82014;font-weight:600;margin-left:6px',
+        ctrlStyle: C.GROUPS[it.group] ? 'display:flex;gap:4px;justify-content:flex-end' : 'display:none',
+        onUp: () => this.update(St => C.moveItem(St, it.key, -1)),
+        onDown: () => this.update(St => C.moveItem(St, it.key, 1)),
+        onHide: () => this.update(St => C.toggleHidden(St, it.key, true)),
+        rowStyle: isGrand ? 'background:#d4e9e2;font-weight:700' : (it.settle ? 'background:#faf9f7' : '')};
+    }).filter(Boolean) : [];
+
+    const hiddenRows = (S.hidden || []).map(k => {
+      const it = C.ITEMS.find(x => x.key === k);
+      return {name: it ? it.name : k, onRestore: () => this.update(St => C.toggleHidden(St, k, false))};
+    });
+
+    const extras = S.extras || [];
+    const setExtra = (i, f, raw, isText) => this.update(St => {
+      St.extras[i][f] = isText ? raw : this.num(raw);
+    });
+    const extraRows = extras.map((x, i) => {
+      const chg = (x.settle != null ? x.settle : (x.start || 0)) - (x.start || 0);
+      return {name: x.name || '', note: x.note || '',
+        start: x.start == null ? '' : nf(x.start),
+        settle: x.settle == null ? '' : nf(x.settle),
+        chg: chg === 0 ? '' : (chg > 0 ? '+' : '') + nf(chg), chgStyle: chg < 0 ? neg : pos,
+        onName: e => setExtra(i, 'name', e.target.value, true),
+        onNote: e => setExtra(i, 'note', e.target.value, true),
+        onStart: e => setExtra(i, 'start', e.target.value),
+        onSettle: e => setExtra(i, 'settle', e.target.value),
+        onDel: () => this.update(St => { St.extras.splice(i, 1); })};
+    });
+
+    const ov = has ? C.settleOverview(S) : [];
+    const overview = ov.map((o, i) => ({title:o.title, calc:nf(o.calc), submit:o.submit ? nf(o.submit) : '', admit:nf(o.admit),
+      chg: o.chg === 0 ? '' : (o.chg > 0 ? '+' : '') + nf(o.chg), chgStyle: o.chg < 0 ? neg : pos,
+      badge: o.filled ? '검토완료' : '미입력',
+      badgeStyle: 'display:inline-block;font-size:11.5px;font-weight:600;padding:2px 10px;border-radius:50px;' +
+        (o.filled ? 'background:#00754A;color:#fff' : 'background:#edebe9;color:rgba(0,0,0,0.58)'),
+      rowStyle: 'cursor:pointer;' + (this.state.active === i ? 'background:hsl(160 32% 87% / 33%)' : ''),
+      onClick: () => this.setState({active: i})}));
+    const doneCount = ov.filter(o => o.filled).length;
+
+    const tabs = C.SETTLE_SHEETS.map((s, i) => ({title: s.title,
+      onClick: () => this.setState({active: i}),
+      style: 'padding:7px 16px;border-radius:50px;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .2s ease;border:1px solid ' +
+        (this.state.active === i ? '#00754A;background:#00754A;color:#fff' : '#d6dbde;background:#fff;color:rgba(0,0,0,0.58)')}));
+
+    const active = C.SETTLE_SHEETS[this.state.active];
+    const isItemized = has && active.kind === 'itemized';
+    const isCmp = has && !isItemized;
+    const withRate = active.kind === 'triple';
+
+    const cmpRows = isCmp ? (active.kind === 'simple' ? [active.row] : active.rows).map(([ik, label]) => {
+      const item = C.ITEMS.find(x => x.key === ik);
+      const calc = (S.cost[ik] && S.cost[ik].start) || 0;
+      const inp = S.settleInput[ik] || {};
+      const auto = C.admitValue(S, item);
+      const admitShown = inp.admit != null ? inp.admit : auto;
+      const chg = admitShown != null ? admitShown - calc : null;
+      const set = (f, raw) => this.update(St => {
+        const cur = Object.assign({}, St.settleInput[ik]);
+        const v = this.num(raw);
+        if (v == null) delete cur[f]; else cur[f] = v;
+        if (f === 'submit' && cur.admit == null && v != null) cur.admit = Math.min(calc, v * (withRate ? (cur.rate ?? 0.5) : 1));
+        St.settleInput[ik] = cur;
+      });
+      return {label, calc: nf(calc),
+        submit: inp.submit == null ? '' : String(inp.submit),
+        rate: withRate ? String(inp.rate ?? 0.5) : '',
+        admit: inp.admit == null ? '' : String(inp.admit),
+        admitAuto: auto == null ? '0' : nf(auto),
+        chg: chg == null || chg === 0 ? '' : nf(chg), chgStyle: chg < 0 ? neg : pos,
+        onSubmit: e => set('submit', e.target.value),
+        onRate: e => set('rate', e.target.value),
+        onAdmit: e => set('admit', e.target.value)};
+    }) : [];
+
+    let itemRows = [], statBoxes = [], dataLists = [];
+    if (isItemized) {
+      const key = active.key;
+      const items = (S.settleInput[key] && S.settleInput[key].items) || [];
+      const calc = (S.cost[key] && S.cost[key].start) || 0;
+      const sub = C.itemizedSubmit(S, key), rec = C.itemizedTotal(S, key);
+      statBoxes = [['계상액', calc], ['시공사 제출액', sub], ['감독자 검토액', rec], ['증감액', rec - calc]]
+        .map(([label, v], i) => ({label, value: (i === 3 && v > 0 ? '+' : '') + nf(v),
+          style: 'font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px;' +
+            (i === 3 ? (v < 0 ? neg : pos) : (i === 2 ? 'color:#006241' : ''))}));
+      const addItem = ci => this.update(St => {
+        St.settleInput[key] = St.settleInput[key] || {items: []};
+        St.settleInput[key].items = St.settleInput[key].items || [];
+        St.settleInput[key].items.push({cat: ci, name:'', unit:'', subPrice:null, subQty:null, price:null, qty:null});
+      });
+      dataLists = active.cats.map((cat, ci) => ({id: 'sug-' + key + '-' + ci,
+        opts: ((SUGGEST[key] || [])[ci]) || []}));
+      active.cats.forEach((cat, ci) => {
+        const mine = items.map((x, idx) => ({x, idx})).filter(o => o.x.cat === ci);
+        if (!mine.length) {
+          // 빈 항목도 입력 가능한 셀 1개를 기본으로 노출 — 값을 넣으면 실제 품목으로 생성
+          const seed = (f, raw, isText) => this.update(St => {
+            St.settleInput[key] = St.settleInput[key] || {items: []};
+            St.settleInput[key].items = St.settleInput[key].items || [];
+            const it = {cat: ci, name:'', unit:'', subPrice:null, subQty:null, price:null, qty:null};
+            it[f] = isText ? raw : this.num(raw);
+            if (f === 'subQty') it.qty = it.subQty;
+            if (f === 'subPrice') it.price = it.subPrice;
+            St.settleInput[key].items.push(it);
+          });
+          itemRows.push({cat, empty: false, listId: 'sug-' + key + '-' + ci,
+            name:'', namePlaceholder:'품목명 입력 또는 선택', unit:'', subPrice:'', subQty:'',
+            subAmt:'', price:'', qty:'', recAmt:'', pricePh:'', delStyle:'display:none',
+            onAdd: () => addItem(ci), onDel: () => {},
+            onName: e => seed('name', e.target.value, true), onUnit: e => seed('unit', e.target.value, true),
+            onSubPrice: e => seed('subPrice', e.target.value), onSubQty: e => seed('subQty', e.target.value),
+            onPrice: e => seed('price', e.target.value), onQty: e => seed('qty', e.target.value)});
+          return;
+        }
+        mine.forEach((o, mi) => {
+          const x = o.x, idx = o.idx;
+          const subP = (x.subPrice != null ? x.subPrice : x.price) || 0;
+          const subQ = (x.subQty != null ? x.subQty : (x.qty || 0));
+          const set = (f, raw, isText) => this.update(St => {
+            const arr = St.settleInput[key].items;
+            if (isText) arr[idx][f] = raw;
+            else arr[idx][f] = this.num(raw);
+            if (f === 'subQty' && arr[idx].qty == null) arr[idx].qty = arr[idx].subQty;
+            if (f === 'subPrice' && arr[idx].price == null) arr[idx].price = arr[idx].subPrice;
+          });
+          itemRows.push({cat: mi === 0 ? cat : '', empty: false, listId: 'sug-' + key + '-' + ci,
+            name: x.name || '', namePlaceholder: '품목명 입력 또는 선택', unit: x.unit || '',
+            subPrice: x.subPrice == null ? '' : String(x.subPrice), pricePh: x.price == null ? '' : String(x.price),
+            subQty: x.subQty == null ? '' : String(x.subQty), subAmt: nf(subP * subQ),
+            price: x.price == null ? '' : String(x.price), qty: x.qty == null ? '' : String(x.qty),
+            recAmt: nf((x.price || 0) * (x.qty || 0)),
+            delStyle: 'font-size:13px;padding:2px 10px;background:#fff;color:#c82014;border-color:#e3b6b2',
+            onAdd: () => addItem(ci),
+            onDel: () => this.update(St => { St.settleInput[key].items.splice(idx, 1); }),
+            onName: e => set('name', e.target.value, true), onUnit: e => set('unit', e.target.value, true),
+            onSubPrice: e => set('subPrice', e.target.value), onSubQty: e => set('subQty', e.target.value),
+            onPrice: e => set('price', e.target.value), onQty: e => set('qty', e.target.value)});
+        });
+      });
+    }
+
+    const gStart = (S.cost.grand && S.cost.grand.start) || 0;
+    const gSettle = (S.cost.grand && S.cost.grand.settle != null) ? S.cost.grand.settle : gStart;
+    const gChg = gSettle - gStart;
+    const white = 'font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;color:#fff;margin-top:2px';
+    const summaryBoxes = [
+      {label: '착공 도급액', value: nf(gStart), style: white},
+      {label: '준공 정산액', value: nf(gSettle), style: white},
+      {label: '증감액', value: (gChg > 0 ? '+' : '') + nf(gChg),
+        style: 'font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px;color:' + (gChg < 0 ? '#f0a9a3' : '#d4e9e2')}];
+
+    const src = [];
+    if (S.start) src.push('착공내역서');
+    else if (S.hasBefore) src.push('업로드 파일 변경전(착공) 열');
+    else if (S.basic.bid) src.push('설계×낙찰률');
+    if (nCh) src.push(nCh + '차 설계변경 반영');
+
+    return {
+      extraRows, dataLists,
+      onAddExtra: () => this.update(St => { St.extras = St.extras || []; St.extras.push({name:'', start:null, settle:null, note:''}); }),
+      extraHint: '표에 없는 비목을 직접 넣습니다. 총합계에는 반영되지 않고 엑셀 「추가 비목」 항목으로 출력됩니다.',
+      hiddenRows, hasHidden: (S.hidden || []).length > 0,
+      onSaveSlot: () => this.saveSlot(),
+      onDownloadState: () => this.downloadState(),
+      onOpenStateFile: e => this.openStateFile(e),
+      hasSlots: this.slots().length > 0,
+      slotRows: this.slots().map(x => ({name: x.name, at: x.at,
+        onLoad: () => this.loadSlot(x.id), onRemove: () => this.removeSlot(x.id)})),
+      steps, basicFields, rateRows, costRows, overview, tabs, cmpRows, itemRows, statBoxes, summaryBoxes,
+      hasDesign: has, noDesign: !has, settleColLabel, isItemized, isCmp,
+      rateColStyle: withRate ? 'width:70px' : 'display:none',
+      activeTitle: active.title, activeNote: active.note,
+      settleProgress: has ? (doneCount + ' / 6 항목 검토완료') : '',
+      costSrc: has ? (src.length ? '· ' + src.join(' + ') : '· 설계내역 기준') : '',
+      designName: S.design ? '✓ ' + S.design.name + ' (' + S.design.sheetName + ' 시트)' : '',
+      designHint: S.design ? '적산 프로그램 출력 xlsx (원가계산서 포함)'
+        : (has ? '없어도 됩니다 — ' + (S.start ? '착공내역서' : '설계변경내역서') + '를 기준으로 계산합니다'
+               : '적산 프로그램 출력 xlsx (원가계산서 포함)'),
+      startName: S.start ? '✓ ' + S.start.name + ' (' + S.start.sheetName + ' 시트)' : '',
+      startHint: S.start ? '이 착공내역이 착공 도급액이 됩니다'
+        : '없어도 됩니다 — 설계내역 + 제비율 조정으로 착공을 만듭니다',
+      showChanges: true, canAddChange: S.changes.length < 3,
+      changeColStyle: '',
+      changeFull: S.changes.length >= 3,
+      changeHint: nCh ? '마지막 차수가 준공내역이 됩니다' : '있으면 이 내역이 준공내역이 됩니다',
+      nextChangeLabel: S.changes.length >= 3 ? '최대 3차까지 등록됨' : '+ ' + (S.changes.length + 1) + '차 설계변경내역서 업로드',
+      changeRows: S.changes.map((c, i) => ({stage: (i+1) + '차 설계변경', name: c.name, sheet: '(' + c.sheetName + ' 시트)',
+        onRemove: () => this.update(St => { St.changes.splice(i, 1); })})),
+      onDesignFile: e => this.onFile('design', e),
+      onStartFile: e => this.onFile('start', e),
+      onChangeFile: e => this.onFile('change', e),
+      onRateReset: () => this.update(St => {
+        const bd = C.baseDoc(St);
+        const dr = window.SettleCore.deriveRates(bd ? bd.cost : {});
+        C.RATE_KEYS.forEach(k => { St.rateInput[k] = String(Math.round((dr[k]||0)*100*1000)/1000); delete St.startManual[k]; });
+        St.startManual = {}; St.settleManual = {};
+      }),
+      onAcceptCalc: () => this.acceptCalc(),
+      onAcceptSubmitted: () => this.acceptSubmitted(),
+      onClearSheet: () => this.clearSheet(),
+      orient: S.basic.orient || 'portrait',
+      onOrient: e => { const v = e.target.value; this.update(St => { St.basic.orient = v; }); },
+      exportDisabled: !has,
+      onExport: () => this.exportExcel(),
+      onPrint: () => { this.save(); },
+      onReset: () => { if (confirm('입력을 모두 지우고 처음부터 시작할까요?')) { localStorage.removeItem(LS_KEY); this.setState({S: blankState(this.props.defaultOrg), active:0, saved:''}); } },
+      savedLabel: this.state.saved,
+      toast: this.state.toast,
+      toastStyle: 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1E3932;color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:600;z-index:50;box-shadow:0 0 6px rgba(0,0,0,0.24), 0 8px 12px rgba(0,0,0,0.14);transition:opacity .2s;pointer-events:none;opacity:' + (this.state.toast ? '1' : '0')
+    };
+  }
+}
+
+</script>
+</body>
+</html>

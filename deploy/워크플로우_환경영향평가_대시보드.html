@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>환경영향평가 협의 워크플로우</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff; --text:#1d1f20; --divider:rgba(29,31,32,.16); --muted:rgba(29,31,32,.62); --faint:rgba(29,31,32,.48);
+  --a300:#b5d9fd; --a500:#5980a6; --a700:#416180; --a900:#1d2d3d; --key-bg:#eef6ff; --bot-bg:#d6ebff;
+  --head:'Barlow Condensed','Pretendard',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fff;color:var(--text);font-family:'Pretendard','Malgun Gothic',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{padding:26px 28px 44px}
+.kick{font-family:var(--head);font-size:12px;font-weight:500;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+h1{font-family:var(--head);font-size:34px;font-weight:600;letter-spacing:-.01em;line-height:1.1;margin-top:6px}
+.sub{font-size:13.5px;color:var(--muted);margin-top:7px}
+.hd{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--divider)}
+.hd .right{margin-left:auto;text-align:right;font-size:12.5px;color:var(--muted);line-height:1.6}
+.hd .right b{display:block;font-size:11.5px;color:var(--faint);font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--divider);margin-top:20px}
+.stat{padding:15px 18px;border-left:1px solid var(--divider)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font-family:var(--head);font-size:28px;font-weight:600;line-height:1}
+.stat span{font-size:11.5px;color:var(--faint)}
+.leg{display:flex;gap:26px;flex-wrap:wrap;margin-top:16px;font-size:12px;color:var(--muted)}
+.leg span{display:inline-flex;align-items:center;gap:8px}
+.leg i{width:20px;height:13px;display:inline-block;background:#fff;border:1px solid var(--divider)}
+.i-lead{border-top:3px solid var(--a300)}
+.i-key{background:var(--key-bg);border-top:3px solid var(--a500)}
+.i-bot{background:var(--bot-bg);border-top:5px solid var(--a900)}
+.leg em{font-style:normal;font-weight:700;color:var(--text)}
+.leg .ln{width:26px;height:0;border:0;border-top:2px solid var(--a500)}
+.leg .ln.rt{border-top-style:dashed;border-top-color:var(--faint)}
+.board{position:relative;margin-top:18px;border:1px solid var(--divider)}
+#edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+.grid{display:grid;grid-template-columns:132px repeat(4,1fr) 96px;position:relative;z-index:1}
+.hc{padding:12px;border-right:1px solid var(--divider);border-bottom:1px solid var(--text);font-family:var(--head);font-size:16px;font-weight:500;line-height:1.2}
+.hc small{display:block;font-family:'Pretendard',sans-serif;font-size:10.5px;font-weight:500;color:var(--faint);letter-spacing:.08em;margin-top:3px}
+.hc0{padding:12px 12px 10px;display:flex;align-items:flex-end;font-family:var(--head);font-size:12px;color:var(--faint);border-right:1px solid var(--divider);border-bottom:1px solid var(--text)}
+.hcx{border-bottom:1px solid var(--text)}
+.sc{padding:14px 12px;border-right:1px solid var(--divider);border-bottom:1px dashed var(--divider);display:flex;flex-direction:column;justify-content:center;gap:2px}
+.sc b{font-family:var(--head);font-size:20px;font-weight:600;line-height:1;color:var(--a700)}
+.sc span{font-size:11px;color:var(--faint)}
+.cl{padding:16px 20px;border-right:1px solid var(--divider);border-bottom:1px dashed var(--divider);display:flex;flex-direction:column;gap:10px}
+.cl.last{border-right:0}
+.cl.pad{min-height:96px}
+.gap{border-bottom:1px dashed var(--divider)}
+.grid > .end{border-bottom:0}
+.node{position:relative;background:#fff;border-top:3px solid var(--a300);padding:10px 11px;display:flex;flex-direction:column;gap:5px;cursor:pointer;
+  transition:transform .22s cubic-bezier(.2,.8,.3,1),box-shadow .22s,opacity .22s,filter .22s}
+.node:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.10)}
+.node .r{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.node .id{font-family:var(--head);font-size:12.5px;font-weight:500;letter-spacing:.06em;color:var(--faint)}
+.node .tg{font-size:10.5px;font-weight:700;color:var(--a700)}
+.node .t{font-size:12.5px;line-height:1.45;color:var(--text);word-break:keep-all;text-wrap:pretty}
+.node .lw{font-size:10.5px;color:var(--faint)}
+.node.key{background:var(--key-bg);border-top-color:var(--a500)}
+.node.bot{background:var(--bot-bg);border-top:6px solid var(--a900)}
+.node.bot .tg{color:var(--a900)}
+.node.post{border-top:1px solid var(--divider)}
+.node.post .tg{color:var(--faint)}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.045)}100%{transform:scale(1.02)}}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(89,128,166,.38)}70%{box-shadow:0 0 0 12px rgba(89,128,166,0)}100%{box-shadow:0 0 0 0 rgba(89,128,166,0)}}
+@keyframes dash{to{stroke-dashoffset:-24}}
+.node.on{transform:scale(1.02);z-index:5;box-shadow:0 10px 26px rgba(0,0,0,.16),0 0 0 2px rgba(89,128,166,.6);animation:pop .32s ease both}
+.node.on::after{content:"";position:absolute;inset:-2px;pointer-events:none;animation:ring 1.1s ease-out}
+body.focus .node:not(.on){opacity:.32;filter:saturate(.5)}
+#edges path.e{transition:opacity .22s,stroke-width .22s}
+body.focus #edges path.e{opacity:.12}
+body.focus #edges path.e.lit{opacity:.62;stroke-width:2;stroke-dasharray:7 6;animation:dash .9s linear infinite}
+#panel{position:fixed;left:0;right:0;bottom:0;z-index:90;background:#fff;border-top:1px solid var(--divider);box-shadow:0 -10px 30px rgba(0,0,0,.12);padding:16px 24px;max-height:46vh;overflow:auto;transform:translateY(110%);transition:transform .28s cubic-bezier(.2,.8,.3,1)}
+#panel.show{transform:translateY(0)}
+.foot{margin-top:18px;font-size:11.5px;color:var(--faint);line-height:1.8}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:100px repeat(4,1fr) 40px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd">
+    <div>
+      <div class="kick">Process Board / 환경영향평가법 제22조~제36조</div>
+      <h1>환경영향평가 협의</h1>
+      <div class="sub">평가 대상 판단 · 스코핑부터 초안 · 주민 의견수렴 · 평가서 협의 · 보완 · 협의내용 반영 · 사후환경영향조사까지의 업무 경로</div>
+    </div>
+    <div class="right"><b>기준 법령</b>환경영향평가법 · 시행령 제34조 · 제46조~제50조</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>16</b><span>절차 노드</span></div>
+    <div class="stat"><b>4</b><span>행위 레인</span></div>
+    <div class="stat"><b>6</b><span>단계 게이트</span></div>
+    <div class="stat"><b>4</b><span>병목 구간</span></div>
+    <div class="stat"><b>2</b><span>회귀 경로</span></div>
+  </div>
+
+  <div class="leg">
+    <span><i class="i-lead"></i><em>선행</em> 절차를 여는 사유 발생·조기 판단</span>
+    <span><i class="i-key"></i><em>핵심</em> 반드시 거쳐야 하는 산출물·계약행위</span>
+    <span><i class="i-bot"></i><em>병목</em> 검토·승인 지연과 재작업이 잦은 구간</span>
+  </div>
+  <div class="leg" style="margin-top:9px">
+    <span><i></i><em>후속</em> 앞 단계 결과를 이행·관리하는 업무</span>
+    <span><i class="ln"></i>업무 순서</span>
+    <span><i class="ln rt"></i>회귀(보완·반려 재신청)</span>
+  </div>
+
+  <div class="board" id="board">
+    <svg id="edges" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#5980a6"></path></marker>
+      <marker id="arr" markerWidth="8" markerHeight="8" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8c8f91"></path></marker></defs>
+    </svg>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="foot">※ 본 워크플로우는 실무 참고용입니다. 실제 적용 시 관련 법령·계약조건 원문과 소속 기관 기준을 반드시 확인하세요.<br>
+    참조: <a href="https://hosungseo.github.io/korea100/model/environmental-impact-assessment/" target="_blank" rel="noopener noreferrer" style="color:#5980a6">대한민국 제도 지도 — 환경영향평가</a> · 해당 저장소의 소프트웨어는 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer" style="color:#5980a6">MIT License</a>로 공개되어 있으며, 본 보드는 공개 자료를 참고해 재구성한 것입니다.</div>
+</div>
+
+<div id="panel"></div>
+
+<script>
+var STAGES=[
+  {k:'S0',n:'대상 판단·준비'},{k:'S1',n:'스코핑(평가항목·범위)'},{k:'S2',n:'초안·주민 의견수렴'},
+  {k:'S3',n:'평가서 작성·협의 요청'},{k:'S4',n:'검토·보완·협의'},{k:'S5',n:'반영·사후관리'}
+];
+var LANES=['biz','age','cit','env'];
+var NODES=[
+  {id:'N01',s:0,l:'biz',k:'lead',t:'평가 대상·유형 판단 — 전략환경영향평가 / 환경영향평가 / 소규모',law:'환경영향평가법 제22조',
+   title:'평가 대상·유형 판단',lane:'S0 대상 판단 · 사업자(발주청)',chips:['대상 판단 조서','사업규모 확인'],due:'승인 신청 전',conf:'78%',
+   lawT:'사업 종류와 규모에 따라 전략환경영향평가·환경영향평가·소규모 환경영향평가로 나뉩니다. 유형을 잘못 잡으면 절차 전체를 다시 밟아야 하므로 사업계획 초기에 확정해야 합니다.'},
+  {id:'N02',s:0,l:'age',k:'key',t:'환경영향평가 대행 용역 발주 · 평가대행자 계약',law:'환경영향평가법 제53조',
+   title:'평가대행자 계약',lane:'S0 준비 · 평가대행자',chips:['대행 용역 계약','과업지시서'],due:'평가 착수 전',conf:'80%',
+   lawT:'평가서는 등록된 환경영향평가업자가 대행 작성합니다. 거짓·부실 작성은 영업정지 등 제재 대상이므로 과업 범위와 조사 계절을 계약서에 명시하세요.'},
+  {id:'N03',s:1,l:'age',k:'key',t:'평가준비서 작성 — 평가항목·범위·방법 제안',law:'환경영향평가법 제24조',
+   title:'평가준비서 작성',lane:'S1 스코핑 · 평가대행자',chips:['평가준비서','조사계획'],due:'협의회 개최 전',conf:'76%',
+   lawT:'평가준비서에는 평가항목·범위·방법과 조사 지점·시기를 담습니다. 여기서 정해진 범위가 이후 조사 기간과 비용을 결정합니다.'},
+  {id:'N04',s:1,l:'env',k:'bot',t:'환경영향평가협의회 심의 — 평가항목·범위 확정(스코핑)',law:'환경영향평가법 제24조',
+   title:'평가협의회 심의',lane:'S1 스코핑 · 협의기관',chips:['협의회 심의 결과','확정된 평가항목·범위'],due:'협의회 일정',conf:'64%',
+   bottle:'여기서 계절별 조사나 추가 항목이 붙으면 전체 일정이 수개월~1년 늘어납니다. 쟁점을 조기에 확정하지 못하면 뒤에서 보완 루프로 돌아옵니다.',
+   lawT:'승인기관장 등은 환경영향평가협의회의 심의를 거쳐 평가항목·범위 등을 결정하고 이를 공개해야 합니다.'},
+  {id:'N05',s:2,l:'age',k:'bot',t:'현황조사 — 계절별 조사 최대 4계절 소요',law:'환경영향평가법 제24조',
+   title:'환경현황 조사',lane:'S2 조사 · 평가대행자',chips:['현황조사 자료','조사 지점·시기 기록'],due:'확정 범위에 따름(최대 1년)',conf:'58%',
+   bottle:'계절별 조사 요구가 붙으면 조사만으로 1년 가까이 걸립니다. 사업 일정은 조사 완료 시점에서 역산해 잡아야 합니다.',
+   lawT:'확정된 평가항목·범위에 따라 대기·수질·소음·생태 등 현황을 조사합니다. 조사 시기와 지점이 부실하면 보완 요구의 주된 사유가 됩니다.'},
+  {id:'N06',s:2,l:'age',k:'key',t:'평가서 초안 작성',law:'시행령 제34조',
+   title:'평가서 초안 작성',lane:'S2 초안 · 평가대행자',chips:['평가서 초안','저감방안'],due:'공람 공고 전',conf:'74%',
+   lawT:'초안에는 현황·예측·저감방안·대안 검토가 담깁니다. 주민 공람 대상이므로 이해하기 쉬운 요약을 함께 준비하는 것이 갈등을 줄입니다.'},
+  {id:'N07',s:2,l:'cit',k:'bot',t:'공고·공람(시·군·구) · 주민 의견수렴 · 공청회',law:'환경영향평가법 제25조',
+   title:'주민 의견수렴',lane:'S2 의견수렴 · 주민·시·군·구',chips:['공고·공람','주민 의견서','공청회 회의록'],due:'공람 20일 이상',conf:'56%',
+   bottle:'사업 갈등이 표면화되는 지점입니다. 공청회 요구가 성립하면 개최·재개최로 일정이 크게 늘어나므로 설명 자료와 대응 창구를 미리 준비하세요.',
+   lawT:'사업자는 초안을 공고·공람하고 설명회를 열어 주민 의견을 들어야 하며, 일정 요건을 갖춘 요구가 있으면 공청회를 개최해야 합니다.'},
+  {id:'N08',s:3,l:'age',k:'key',t:'주민의견 반영 · 본 평가서 작성',law:'시행령 제46조',
+   title:'평가서 작성',lane:'S3 평가서 · 평가대행자',chips:['본 평가서','의견 반영 대비표'],due:'협의 요청 전',conf:'74%',
+   lawT:'제출된 주민 의견과 반영 여부를 평가서에 기재해야 합니다. 반영하지 않은 의견은 사유를 명확히 남겨야 이후 분쟁을 줄일 수 있습니다.'},
+  {id:'N09',s:3,l:'biz',k:'key',t:'승인기관 제출 → 협의 요청 (승인 전 요청)',law:'시행령 제47조',
+   title:'협의 요청',lane:'S3 협의 요청 · 사업자·승인기관',chips:['평가서','협의 요청 공문'],due:'사업계획 승인 전',conf:'78%',
+   lawT:'사업자는 승인기관의 장에게 평가서를 제출하고, 승인기관의 장이 협의기관에 협의를 요청합니다. 승인 전에 협의를 마쳐야 합니다.'},
+  {id:'N10',s:4,l:'env',k:'key',t:'협의기관 접수 · 한국환경연구원 등 전문 검토',law:'시행령 제48조',
+   title:'평가서 검토',lane:'S4 검토 · 협의기관·검토기관',chips:['검토 의견서'],due:'접수 후',conf:'70%',
+   lawT:'협의기관은 검토기관의 전문 검토 의견을 받아 평가서의 적정성과 저감방안의 실효성을 검토합니다.'},
+  {id:'N11',s:4,l:'env',k:'bot',t:'보완 요구 — 반복 시 협의기간 대폭 증가',law:'환경영향평가법 제28조',
+   title:'보완 요구',lane:'S4 보완 · 협의기관',chips:['보완 요구 공문','보완 항목'],due:'검토 중 수시',conf:'56%',
+   bottle:'보완 요구 회귀 루프가 이 절차의 최대 병목입니다. 조사 부실·저감방안 미흡이 반복 사유이므로 스코핑 단계에서 쟁점을 잡아두는 것이 유일한 예방책입니다.',
+   lawT:'협의기관은 평가서의 보완이 필요하면 승인기관의 장을 거쳐 사업자에게 보완을 요구할 수 있으며, 보완 기간은 협의기간에서 제외됩니다.'},
+  {id:'N12',s:4,l:'age',k:'post',t:'보완서 작성 · 재제출',law:'환경영향평가법 제28조',
+   title:'보완서 재제출',lane:'S4 보완 · 평가대행자',chips:['보완서','보완 대비표'],due:'요구 후 정한 기한',conf:'66%',
+   lawT:'보완은 회귀 경로입니다. 요구 항목별 대응 위치를 대비표로 정리해 제출하면 재보완 횟수를 줄일 수 있습니다.'},
+  {id:'N13',s:4,l:'env',k:'key',t:'협의내용 통보 — 협의 요청 후 45일(연장 가능)',law:'시행령 제50조',
+   title:'협의내용 통보',lane:'S4 협의 · 협의기관',chips:['협의내용 통보서'],due:'요청 후 45일',conf:'74%',
+   lawT:'협의기관은 협의 요청을 받은 날부터 정해진 기간(환경영향평가 45일) 내에 협의내용을 통보해야 하며, 보완 기간은 산입되지 않습니다.'},
+  {id:'N14',s:5,l:'biz',k:'key',t:'협의내용 사업계획 반영 · 반영결과 통보',law:'환경영향평가법 제30조',
+   title:'협의내용 반영',lane:'S5 반영 · 사업자·승인기관',chips:['반영결과 통보','설계 반영 내역'],due:'승인 전',conf:'78%',
+   lawT:'승인기관의 장은 협의내용이 사업계획에 반영되었는지 확인하고 그 결과를 협의기관에 통보해야 합니다. 미반영 시 조치 요구 대상이 됩니다.'},
+  {id:'N15',s:5,l:'biz',k:'post',t:'착공 통보 · 사후환경영향조사 실시',law:'환경영향평가법 제35조·제36조',
+   title:'사후환경영향조사',lane:'S5 사후관리 · 사업자',chips:['착공 통보','사후조사 계획·결과'],due:'착공 시 ~ 운영 단계',conf:'72%',
+   lawT:'사업자는 공사 착공을 통보하고, 협의내용 이행 여부와 환경영향을 조사해 결과를 제출해야 합니다. 비용은 사업자 부담입니다.'},
+  {id:'N16',s:5,l:'env',k:'post',t:'조사결과 검토 · EIASS 등록·공개',law:'환경영향평가법 제36조',
+   title:'사후조사 결과 관리',lane:'S5 사후관리 · 협의기관',chips:['조사결과 검토','EIASS 공개'],due:'결과 제출 후',conf:'72%',
+   lawT:'제출된 사후환경영향조사 결과는 검토 후 환경영향평가정보지원시스템(EIASS)에 등록·공개됩니다. 협의내용 미이행 시 조치명령이 내려질 수 있습니다.'}
+];
+var EDGES=[['N01','N02'],['N02','N03'],['N03','N04'],['N04','N05'],['N05','N06'],['N06','N07'],['N07','N06',1],['N07','N08'],['N08','N09'],['N09','N10'],['N10','N11'],['N11','N12'],['N12','N10',1],['N10','N13'],['N13','N14'],['N14','N15'],['N15','N16']];
+var TAGNM={lead:'선행',key:'핵심',bot:'병목',post:'후속'};
+
+(function(){
+  var g=document.getElementById('grid'), h='';
+  h+='<div class="hc0">단계 / 담당</div>';
+  [['사업자(발주청)','LANE 01'],['평가대행자','LANE 02'],['주민·시·군·구','LANE 03'],['협의기관·검토기관','LANE 04']]
+    .forEach(function(l,i){ h+='<div class="hc"'+(i===3?' style="border-right:0"':'')+'>'+l[0]+'<small>'+l[1]+'</small></div>'; });
+  h+='<div class="hcx"></div>';
+  STAGES.forEach(function(st,si){
+    var end=(si===STAGES.length-1)?' end':'';
+    h+='<div class="sc'+end+'"><b>'+st.k+'</b><span>'+st.n+'</span></div>';
+    LANES.forEach(function(ln,li){
+      var list=NODES.filter(function(n){return n.s===si&&n.l===ln;});
+      h+='<div class="cl'+(li===3?' last':'')+(li===0?' pad':'')+end+'">';
+      list.forEach(function(n){
+        h+='<div class="node '+n.k+'" id="node_'+n.id+'"><div class="r"><span class="id">'+n.id+'</span><span class="tg">'+TAGNM[n.k]+'</span></div>'
+         +'<div class="t">'+n.t+'</div>'+(n.law?'<div class="lw">'+n.law+'</div>':'')+'</div>';
+      });
+      h+='</div>';
+    });
+    h+='<div class="gap'+end+'"></div>';
+  });
+  g.innerHTML=h;
+  setTimeout(draw,60);
+})();
+
+function draw(){
+  var svg=document.getElementById('edges'), board=document.getElementById('board');
+  [].slice.call(svg.querySelectorAll('path.e')).forEach(function(p){p.remove();});[].slice.call(svg.querySelectorAll('circle.mdot')).forEach(function(c){c.remove();});svg.__mdotN=0;
+  var br=board.getBoundingClientRect();
+  svg.setAttribute('viewBox','0 0 '+br.width+' '+br.height);
+  EDGES.forEach(function(e,i){
+    var a=document.getElementById('node_'+e[0]), b=document.getElementById('node_'+e[1]);
+    if(!a||!b) return;
+    var ra=a.getBoundingClientRect(), rb=b.getBoundingClientRect(), back=!!e[2];
+    var d;
+    if(Math.abs(ra.top-rb.top)<8){
+      var y=ra.top-br.top+ra.height/2 + (back?12:-6);
+      if(rb.left>ra.left) d='M'+(ra.right-br.left+2)+','+y+' H'+(rb.left-br.left-7);
+      else d='M'+(ra.left-br.left-2)+','+y+' H'+(rb.right-br.left+7);
+    } else if(rb.top>ra.top){
+      var x1=ra.left-br.left+ra.width/2, x2=rb.left-br.left+rb.width/2;
+      var my=(ra.bottom-br.top)+((rb.top-br.top)-(ra.bottom-br.top))/2;
+      d='M'+x1+','+(ra.bottom-br.top)+' V'+my+' H'+x2+' V'+(rb.top-br.top-7);
+    } else {
+      var mx=br.width-46;
+      d='M'+(ra.right-br.left+2)+','+(ra.top-br.top+ra.height/2)+' H'+mx+' V'+(rb.top-br.top+rb.height/2)+' H'+(rb.right-br.left+7);
+    }
+    var p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('class','e'); p.setAttribute('d',d); p.setAttribute('fill','none');
+    p.setAttribute('stroke',back?'#8c8f91':'#5980a6'); p.setAttribute('stroke-width','1.4');
+    p.setAttribute('opacity',back?'.45':'.6'); p.setAttribute('marker-end',back?'url(#arr)':'url(#ar)');
+    if(back) p.setAttribute('stroke-dasharray','6 5');
+    p.dataset.a=e[0]; p.dataset.b=e[1];
+    svg.appendChild(p);if(typeof back==='undefined'||!back){var __dt=document.createElementNS('http://www.w3.org/2000/svg','circle');__dt.setAttribute('class','mdot');__dt.setAttribute('r','3');__dt.setAttribute('fill','#0075de');__dt.setAttribute('pointer-events','none');var __am=document.createElementNS('http://www.w3.org/2000/svg','animateMotion');__am.setAttribute('dur','2.6s');__am.setAttribute('repeatCount','indefinite');__am.setAttribute('path',d);__am.setAttribute('begin',(((svg.__mdotN=(svg.__mdotN||0)+1)%8)*0.4)+'s');__dt.appendChild(__am);svg.appendChild(__dt);}
+  });
+}
+window.addEventListener('resize',function(){clearTimeout(window.__rz);window.__rz=setTimeout(draw,200);});
+window.addEventListener('load',function(){setTimeout(draw,200);});
+
+var EMBED=false; try{EMBED=window.self!==window.top;}catch(e){EMBED=true;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function panelHTML(n){
+  var chips=(n.chips||[]).map(function(c){return '<span style="font-size:12px;color:#31302e;border:1px solid #e6e6e6;border-radius:5px;padding:3px 9px">'+esc(c)+'</span>';}).join('');
+  var bottle=n.bottle?'<div style="margin-top:10px;font-size:12.5px;line-height:1.55;color:#8a5a00;background:#fff8ec;border:1px solid #f0d9a8;border-radius:6px;padding:9px 11px;max-width:300px">병목 · '+esc(n.bottle)+'</div>':'';
+  return '<div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">'
+   +'<div style="min-width:210px;flex:1 1 230px">'
+    +'<div style="display:flex;align-items:center;gap:7px;font-size:11.5px;color:#615d59;font-weight:600">노드 상세 <b style="color:#000">'+esc(n.id)+'</b>'
+    +'<span style="font-size:11px;font-weight:700;color:#b45309;border:1px solid #f0d9a8;background:#fff8ec;border-radius:4px;padding:1px 7px">'+TAGNM[n.k]+'</span></div>'
+    +'<div style="font-size:19px;font-weight:700;letter-spacing:-.02em;margin-top:6px;color:#000">'+esc(n.title)+'</div>'
+    +'<div style="font-size:12px;color:#a39e98;margin-top:3px">'+esc(n.lane)+'</div>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">'+chips+'</div></div>'
+   +'<div style="flex:0 0 auto"><div style="display:flex;gap:10px">'
+    +'<div style="border:1px solid #e6e6e6;border-radius:8px;padding:10px 14px;min-width:124px"><div style="font-size:11px;color:#a39e98">기한</div><div style="font-size:13.5px;font-weight:600;margin-top:4px;color:#31302e;line-height:1.4">'+esc(n.due)+'</div></div>'
+   +'</div>'+bottle+'</div>'
+   +'<div style="flex:1 1 300px;min-width:250px"><div style="font-size:11.5px;color:#615d59;font-weight:600">법적 근거</div>'
+    +'<div style="font-size:13.5px;font-weight:700;margin-top:6px;color:#000">'+esc(n.law||'—')+'</div>'
+    +'<div style="font-size:12.5px;line-height:1.65;color:#615d59;margin-top:4px;text-wrap:pretty">'+esc(n.lawT)+'</div></div>'
+   +'<button type="button" id="__wfPanelX" style="flex:0 0 auto;align-self:flex-start;font:inherit;font-size:12px;font-weight:600;color:#615d59;background:#fff;border:1px solid #e6e6e6;border-radius:6px;padding:5px 11px;cursor:pointer">닫기 ✕</button>'
+   +'</div>';
+}
+function clearAll(){
+  var c=document.querySelector('.node.on'); if(c) c.classList.remove('on');
+  document.body.classList.remove('focus');
+  [].slice.call(document.querySelectorAll('#edges path.e')).forEach(function(p){p.classList.remove('lit');});
+  if(EMBED){ try{window.parent.postMessage({type:'wf-detail-close'},'*');}catch(e){} }
+  else document.getElementById('panel').classList.remove('show');
+}
+document.addEventListener('click',function(ev){
+  var el=ev.target.closest && ev.target.closest('.node');
+  var cur=document.querySelector('.node.on');
+  if(cur) cur.classList.remove('on');
+  [].slice.call(document.querySelectorAll('#edges path.e')).forEach(function(p){p.classList.remove('lit');});
+  if(el && el!==cur){
+    el.classList.add('on'); document.body.classList.add('focus');
+    var id=el.id.replace('node_','');
+    [].slice.call(document.querySelectorAll('#edges path.e')).forEach(function(p){
+      if(p.dataset.a===id||p.dataset.b===id) p.classList.add('lit');
+    });
+    var n=NODES.filter(function(x){return x.id===id;})[0]; if(!n) return;
+    var html=panelHTML(n);
+    if(EMBED){ try{window.parent.postMessage({type:'wf-detail',html:html},'*');}catch(e){} }
+    else{
+      var p=document.getElementById('panel');
+      p.innerHTML=html; p.classList.add('show');
+      var x=document.getElementById('__wfPanelX');
+      if(x) x.addEventListener('click',function(e2){e2.stopPropagation();clearAll();});
+    }
+  } else if(!ev.target.closest('#panel')) { clearAll(); }
+});
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') clearAll(); });
+window.addEventListener('message',function(ev){ if(ev.data&&ev.data.type==='wf-clear') clearAll(); });
+</script>
+<script>
+if(window.top===window.self){
+  var __cb=document.createElement('button');
+  __cb.type='button'; __cb.textContent='✕ 닫기';
+  __cb.style.cssText='position:fixed;top:14px;right:16px;z-index:60;font:600 13px/1 -apple-system,BlinkMacSystemFont,"Pretendard","Malgun Gothic",sans-serif;color:#1d2d3d;background:#fff;border:1px solid #d6dbe0;border-radius:8px;padding:10px 14px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.08)';
+  __cb.onclick=function(){ window.close(); setTimeout(function(){ if(!window.closed){ if(document.referrer) location.href=document.referrer; else location.href='bible.html?tab=overview&ov=flow'; } },200); };
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') __cb.click(); });
+  document.body.appendChild(__cb);
+}
+</script>
+<script id="__closeBtn">(function(){try{if(window.self!==window.top)return;}catch(e){return;}
+var b=document.createElement('button');b.textContent='✕ 닫기';b.title='창 닫기 / 이전으로';
+b.setAttribute('style','position:fixed;top:12px;right:12px;z-index:9999;border:1px solid rgba(29,31,32,.22);background:rgba(255,255,255,.95);color:#1d1f20;font:600 13px Pretendard,-apple-system,sans-serif;padding:9px 16px;border-radius:100px;box-shadow:0 2px 10px rgba(0,0,0,.10);cursor:pointer;-webkit-tap-highlight-color:transparent');
+b.addEventListener('click',function(){try{window.close();}catch(e){}
+setTimeout(function(){if(!document.hidden){if(history.length>1){history.back();}else{location.href='bible.html';}}},200);});
+document.body.appendChild(b);})();</script>
+<script src="close-button.js" defer></script></body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>공공 건설공사의 공사기간 산정 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-child{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드: 상하 가로 라인만 ─────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 ─────────────────────── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.46; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:1mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{
+    font-size:7pt; line-height:1.5; padding-left:5.2mm; text-indent:-5.2mm; margin-bottom:1.1mm;
+  }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    display:inline-block; width:3.8mm; height:3.8mm; line-height:3.8mm;
+    border-radius:50%; background:var(--teal); color:#fff;
+    font-size:5.6pt; font-weight:700; text-align:center;
+    text-indent:0; margin-right:1.4mm; vertical-align:middle;
+  }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  /* ── 패널(수식·타임라인 밴드) ─────────── */
+  .formula{
+    background:var(--panel); border-left:1mm solid var(--teal);
+    padding:2.2mm 3mm; margin:0 0 2.4mm 0;
+    text-align:center; font-size:7.6pt; font-weight:700; line-height:1.45; color:var(--navy);
+  }
+  .formula .num{ color:var(--amber); }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1mm; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주 ───────────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pageno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head><body>
+
+<!-- ════════════════ 1쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">공공 건설공사 공사기간 산정 ① — 제도·적용·절차</h1>
+  <div class="ubar"></div>
+  <p class="meta">시공관리 기준 ｜ 근거: 건설기술 진흥법 제45조의2제2항 · 「공공 건설공사의 공사기간 산정기준」(국토교통부 고시, 2021. 9. 8. 제정 → 2024. 12. 31. 개정) ｜ 참고: 「적정 공사기간 확보를 위한 가이드라인」(국토교통부·한국건설기술연구원) ｜ 출처: 국가법령정보센터 행정규칙 www.law.go.kr</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주청 = 적정 공사기간 확보의 책임 주체</span> — 산정 지시·적정성 검토·심의·입찰서류 명시·조정까지 전 과정의 의무자이며, 공사기간을 <span class="rolet">부당하게 삭감하거나 과잉 계상해서는 안 됨</span>(제3조③). <span class="rolet">설계자</span>는 산정근거를 명시해 설계 성과품으로 제출하고, <span class="rolet">시공자</span>는 그 산정근거를 검토한 뒤 입찰에 참가하여야 함.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg></span><span class="lb"><i>1</i>제도 개요</span></span>
+      <ul class="list">
+        <li><b class="term">목적</b> — 공사의 품질·안전성·경제성을 확보하고, 규모·특성·현장여건을 고려한 <span class="tl">적정 공사기간</span> 산정 기준 마련</li>
+        <li><b class="term">양방향 금지</b> — 공사기간의 <span class="num">부당 삭감</span>과 <span class="num">과잉 계상</span>을 모두 금지하며, 가이드라인을 참고하여 산정</li>
+        <li><b class="term">반영 요인</b> — 기후변화요인, 주5일제 근무, 근로시간 단축 등 건설환경의 변화를 반영</li>
+        <li><b class="term">연혁</b> — 종전 훈령(2019) 폐지 → 고시 제정 <span class="num">'21. 9. 8.</span>(시행 <span class="num">'21. 9. 17.</span>) → <span class="num">'24. 12. 31.</span> 개정</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>2</i>적용대상과 고려사항</span></span>
+      <ul class="list">
+        <li><b class="term">적용 시점</b> — 기준 시행(<span class="num">'21. 9. 17.</span>) 이후 <span class="tl">최초로 입찰공고 하는 건설엔지니어링</span>부터 적용</li>
+        <li><b class="term">고려 요소</b> — 공사 규모·특성, 지역여건, 자연조건, <span class="tl">법정근로시간</span> 및 그 밖의 제반여건(제3조②)</li>
+        <li><b class="term">시공조건 정보제공</b> — 인·허가, 용지 보상, 문화재 시발굴 등으로 착공·진행에 차질이 예상되면 그 진행현황을 <span class="tl">입찰참가자에게 제공</span>(제15조)</li>
+        <li><b class="term">시공조건 예</b> — 건축협의조건, 지장물 이설, 타 공사로 인한 시공시기 제한, 지급자재, 신기술 적용 등</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10"/><path d="M4 12h16"/><path d="M4 18h7"/><path d="M17 3l3 3-3 3"/><path d="M14 15l3 3-3 3"/></svg></span><span class="lb"><i>3</i>단계별 적용 흐름 — 설계 → 발주 → 시행 → 관리</span></span>
+      <div class="formula">
+        <span class="tl">설계단계</span> → <span class="tl">발주단계</span> → <span class="tl">공사 시행단계</span> → <span class="tl">관리단계</span>
+        <span class="sub">산정은 설계자가, 검토·명시는 발주청이, 조정은 시행 중에, 실적 축적은 준공 후에 이루어짐</span>
+      </div>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">설계단계</b> — 설계자에게 공사기간 산정 및 산출근거 제출을 지시(실시설계 단계)하고, <span class="tl">설계용역 완료 전</span> 건설기술인이 이행</li>
+        <li><span class="no">2</span><b class="term">발주단계</b> — 공사기간 및 건설사업관리기술인 배치계획의 적정성 검토(<span class="tl">감독부서</span>) → 입찰공고 시 공사기간 및 시공조건 명시(<span class="tl">계약부서</span>)</li>
+        <li><span class="no">3</span><b class="term">공사 시행단계</b> — 연장 사유 발생 시 계약기간 조정 및 계약금액 조정(시공사 간접비 증가 및 건설사업관리기술인 배치 연장 반영)</li>
+        <li><span class="no">4</span><b class="term">관리단계</b> — 실제 공사기간, 표준 작업량, 연장 사유 및 기간을 <span class="tl">실적자료로 축적·활용</span></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><path d="M9 12h6M12 9v6"/></svg></span><span class="lb"><i>4</i>심의단계 — 공사기간 적정성 심의(제4조)</span></span>
+      <ul class="list">
+        <li><b class="term">심의 대상</b> — 총공사비 <span class="num">100억원 이상</span>(시·군·구는 <span class="num">50억원 이상</span>) 건설공사는 지방심의위원회·특별심의위원회 또는 기술자문위원회의 심의를 받아야 함</li>
+        <li><b class="term">심의 내용</b> — 공사기간 산정의 적정성 및 <span class="tl">건설사업관리 시행의 적정성</span>(건설사업관리기술인 배치기준과 공사기간은 서로 연관됨)</li>
+        <li><b class="term">대체</b> — 지방심의위원회·기술자문위원회가 설치되지 않은 발주청은 <span class="tl">전문가 자문</span>으로 대체 가능</li>
+        <li><b class="term">사전 검토</b> — 입찰공고 전에 준비기간·비작업일수·작업일수·정리기간의 적정성을 검토하고, 필요 시 전문가 자문을 받을 수 있음</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>입찰서류 명시 의무(제5조)</span></span>
+      <ul class="list">
+        <li><b class="term">원칙</b> — 입찰 시 <span class="tl">공사기간 산출내용 및 시공조건</span>을 입찰에 관한 서류에 명시. 단 일괄·대안·기술제안입찰은 입찰참가자가 실시설계서에 포함하여 제출</li>
+        <li><b class="term">현장설명서</b> — 설계도서 열람란에 기재 시, 입찰공고문에 반드시 현장설명서를 확인한 후 입찰에 참여하도록 안내</li>
+        <li><b class="term">설계도서·계약특수조건</b> — 시방서에 시공조건 및 공기산출근거를 명기하고, 계약특수조건 시에는 <span class="tl">입찰유의서에 별도 게재</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"/><path d="M8 7l4-4 4 4"/><path d="M5 21h14"/><path d="M5 21v-6h14v6"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>근거</b> 건진법 <span class="num">제45조의2②</span></span>
+        <span class="chip"><b>시행</b> <span class="num">'21. 9. 17.</span> 이후 최초 입찰공고분</span>
+        <span class="chip"><b>개정</b> <span class="num">'24. 12. 31.</span></span>
+        <span class="chip"><b>심의 대상</b> 총공사비 <span class="num">100억원</span> 이상</span>
+        <span class="chip"><b>시·군·구</b> <span class="num">50억원</span> 이상</span>
+        <span class="chip"><b>적용 단계</b> 설계·발주·시행·관리 <span class="num">4</span>단계</span>
+        <span class="chip"><b>재검토기한</b> 매 <span class="num">3년</span>(기준일 '25. 1. 1.)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">보완 사항: 원문에는 "총공사비 100억원 이상"만 표기되어 있으나, 고시 제4조제3항은 <b>시·군·구의 경우 50억원 이상</b>을 심의 대상으로 규정함 ｜ 출처: 「공공 건설공사의 공사기간 산정기준」(국토교통부 고시, 2024. 12. 31.) · 국가법령정보센터 행정규칙</p>
+  <p class="pageno">1 / 3</p>
+
+</div>
+
+<!-- ════════════════ 2쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">공공 건설공사 공사기간 산정 ② — 산정방법과 조정</h1>
+  <div class="ubar"></div>
+  <p class="meta">시공관리 기준 ｜ 근거: 「공공 건설공사의 공사기간 산정기준」 제6조~제19조 ｜ 설계단계에서 산출하고, 시행단계에서 연장·단축으로 조정함 ｜ 출처: 국가법령정보센터 행정규칙 www.law.go.kr</p>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><span class="lb"><i>1</i>공사기간 산정식(제6조)과 비작업일수(제8조~제10조)</span></span>
+      <div class="formula">
+        공사기간 = <span class="num">준비기간</span> + <span class="num">작업일수</span> + <span class="num">비작업일수</span> + <span class="num">정리기간</span> + (<span class="num">보정기간</span>)
+        <span class="sub">비작업일수 = 법정공휴일수 + 기상조건 비작업일수 − 중복일수(소수점 첫째자리 반올림)</span>
+      </div>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">법정공휴일</b> — 일요일, 국경일, 설·추석 명절 등 관공서 공휴일 및 <span class="tl">근로기준법상 근로자의 날</span>. 착수 예정일 기준 산출 후 <span class="tl">계약 착수일 기준으로 재산출 가능</span></li>
+        <li><span class="no">2</span><b class="term">기상조건</b> — 주공정(critical path)에 영향을 미치는 기상조건을 반영하며, 해당 지역 <span class="num">최근 5년 또는 10년</span> 기상청 관측 데이터를 적용</li>
+        <li><span class="no">3</span><b class="term">작업제한 기준</b> — 건설기준·산업안전보건 및 환경기준에서 공종별로 정한 기상조건(강우·적설·바람·혹서·혹한·미세먼지 등)을 반영</li>
+        <li><span class="no">4</span><b class="term">하한 보정</b> — 월별 비작업일수가 <span class="tl">주 40시간 근무제에 따른 비작업일수보다 작으면</span> 주 40시간 기준값을 적용(제8조②)</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-4 6 4v12"/><path d="M10 21v-5h4v5"/></svg></span><span class="lb"><i>2</i>준비기간(제7조)</span></span>
+      <ul class="list">
+        <li><b class="term">범위</b> — 설계도서 검토, 안전관리계획서 작성·승인, 하도급업체 선정, 측량</li>
+        <li><b class="term">가설 준비</b> — 현장사무소·세륜시설·가설건물 설치, 건설자재·장비 및 공장제작 조달</li>
+        <li><b class="term">실무 기준</b> — 공동주택 <span class="num">45일</span>, 하천공사 <span class="num">40일</span>, 강교 가설공사 <span class="num">90일</span> 등</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M6 20V11M11 20V7M16 20V14M21 20V4"/></svg></span><span class="lb"><i>3</i>작업일수(제11조)</span></span>
+      <ul class="list">
+        <li><b class="term">정의</b> — 해당 공사의 <span class="tl">공종별 수량을 시공하는 데 필요한 총 작업일수</span></li>
+        <li><b class="term">산출</b> — 주공정을 구성하는 작업량 기준, 또는 과거 실적자료·경험치·동종시설 사례 활용(실적 활용 시 근로기준법상 근로시간으로 보정)</li>
+        <li><b class="term">근로시간</b> — <span class="num">1일 8시간·주 40시간</span> 준수 원칙, 연속작업은 연장 및 교대·주야간 구분 산출</li>
+        <li><b class="term">조정</b> — 현장여건, 공사규모, 지질조건, 기상·기후조건에 따라 조정</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="lb"><i>4</i>정리기간·보정기간(제12조·제13조)</span></span>
+      <ul class="list">
+        <li><b class="term">정리기간</b> — 준공검사 준비, 시설물 인수 등 행정절차 및 현장 청소·정리에 드는 기간. 공사 규모·난이도·시설물 특성을 고려하여 산출</li>
+        <li><b class="term">실무 관행</b> — 주요공종 마무리 이후 준공 전 <span class="num">1개월</span> 범위에서 계상하며, <span class="tl">비작업일수에는 계상하지 않음</span></li>
+        <li><b class="term">보정기간</b> — 공사의 규모·성격(구조형식, 신설/확장/개량 등)과 지역여건(도심지·도서지역·보안구역 등)에 따라 공사일수를 <span class="tl">가감</span>할 수 있음</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/><path d="M16.5 16.5L21 21"/></svg></span><span class="lb"><i>5</i>공사기간 적정성 검토(제14조)</span></span>
+      <ul class="list">
+        <li><b class="term">방법</b> — 산정한 공사기간을 <span class="tl">실적공기와 비교</span>하여 타당성을 검토할 수 있음</li>
+        <li><b class="term">실적공기</b> — <span class="num">최근 5년간</span> 준공된 동종 또는 유사 공사의 실제 공사기간 <span class="tl">평균값</span></li>
+        <li><b class="term">주의</b> — 실적공기에는 <span class="tl">준비기간(제7조)과 정리기간(제12조)을 합산</span>하여야 함</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M4 17h16"/><path d="M7 4L4 7l3 3"/><path d="M17 14l3 3-3 3"/></svg></span><span class="lb"><i>6</i>공사기간의 조정 — 연장(제16조)·단축(제17조)</span></span>
+      <ul class="list">
+        <li><b class="term">연장 사유 6가지</b> — ① 시공자 책임이 아닌 사유로 인한 공사 지연(문화재 시발굴 포함) ② 시공자 책임 없는 설계변경으로 준공기한 내 이행 불가 ③ 발주청 책임 있는 사유 ④ 천재·지변 등 불가항력 ⑤ 공사기간에 영향을 미치는 법령의 제·개정 ⑥ 시공자 부도 등으로 보증기관이 보증이행업체를 지정하여 보증 시공하는 경우</li>
+        <li><b class="term">연장 절차</b> — 발주청은 요구 즉시 사실을 조사·확인하여 <span class="tl">계약기간 연장 및 계약금액 조정</span> 등 필요한 조치. 협의가 이루어지지 않으면 건설기술심의위원회·기술자문위원회 자문(미설치 시 전문가 자문회의) 결과로 협의·조정</li>
+        <li><b class="term">단축</b> — 발주청은 단축 사유를 <span class="tl">서면 통보</span>하고 단축가능 기간을 협의하며, 시공자가 제출한 단축계획서(안전대책 등)를 검토한 뒤 증가비용에 대한 <span class="tl">계약금액 조정</span> 조치</li>
+        <li><b class="term">비작업일수 차이</b> — 입찰서류에 명시한 비작업일수가 실제와 차이 나 공사수행이 지연되면 <span class="tl">계약기간·계약금액을 조정할 수 있음</span>(제18조)</li>
+        <li><b class="term">세부시행기준</b> — 발주청은 공사특성·지역여건을 반영한 세부기준을 운영할 수 있고, 산정 세부기준 및 실적자료를 <span class="tl">축적·관리</span>하여야 함(제19조)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"/><path d="M8 7l4-4 4 4"/><path d="M5 21h14"/><path d="M5 21v-6h14v6"/></svg></span><span class="lb"><i>7</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>산정식</b> 준비+작업+비작업+정리+(보정)</span>
+        <span class="chip"><b>근로시간</b> <span class="num">1일 8시간</span> · <span class="num">주 40시간</span></span>
+        <span class="chip"><b>기상통계</b> 최근 <span class="num">5년</span> 또는 <span class="num">10년</span></span>
+        <span class="chip"><b>중복일수</b> 소수점 첫째자리 반올림</span>
+        <span class="chip"><b>준비기간 예</b> 공동주택 <span class="num">45일</span> · 하천 <span class="num">40일</span> · 강교 <span class="num">90일</span></span>
+        <span class="chip"><b>정리기간</b> 준공 전 <span class="num">1개월</span> 범위</span>
+        <span class="chip"><b>실적공기</b> 최근 <span class="num">5년</span> 동종·유사 평균</span>
+        <span class="chip"><b>연장 사유</b> <span class="num">6</span>가지</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">정리기간은 공사기간에는 포함하되 비작업일수로는 계상하지 않으며, 실적공기와 비교할 때에는 준비기간·정리기간을 반드시 합산하여 같은 기준으로 대조하여야 함 ｜ 출처: 「공공 건설공사의 공사기간 산정기준」 제6조~제19조</p>
+  <p class="pageno">2 / 3</p>
+
+</div>
+
+<!-- ════════════════ 3쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">공공 건설공사 공사기간 산정 ③ — 산정 검토서 예시</h1>
+  <div class="ubar"></div>
+  <p class="meta">예시: 119안전센터 신축공사(업무시설) ｜ 적용기준: 「공공 건설공사의 공사기간 산정기준」(국토교통부 고시, 2024. 12. 31. 개정) ｜ 적용사유: 공공 건설공사의 품질 향상 및 건설안전 확보, 공정한 계약관행 정착 ｜ 주요내용: 기후변화요인·주5일제 근무·근로시간 단축 등 건설환경 변화 반영</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주청 = 검토서 작성·보관의 주체</span> — 산정 검토서는 <span class="rolet">입찰공고 전 적정성 검토</span>와 <span class="rolet">건설기술심의</span>의 근거 문서이며, 준공 후에는 실적자료로 축적·관리하여 다음 공사의 실적공기 비교 자료로 활용함.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V6l8-3 8 3v15"/><path d="M9 21v-5h6v5"/><path d="M8 10h2M14 10h2"/></svg></span><span class="lb"><i>1</i>사업 규모</span></span>
+      <ul class="list">
+        <li><b class="term">용도·규모</b> — 업무시설(119안전센터) / 연면적 <span class="num">1,399.72㎡</span> / 지상 <span class="num">3층</span></li>
+        <li><b class="term">지역·착공</b> — ○○시 / <span class="num">'21. 10월</span></li>
+        <li><b class="term">기초형식</b> — 파일기초(<span class="num">10m 이하</span>, <span class="num">101본</span>)</li>
+        <li><b class="term">총공사비</b> — <span class="num">40.7억원</span></li>
+        <li><b class="term">공사기간</b> — 착공일로부터 <span class="num">425일</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg></span><span class="lb"><i>2</i>작업일수 225일 — 공종별 내역</span></span>
+      <ul class="list">
+        <li><b class="term">기초공사</b> — 터파기 <span class="num">10</span> · 파일지정 <span class="num">20</span></li>
+        <li><b class="term">골조공사</b> — 기초 바닥~옥상층 타설 <span class="num">20</span></li>
+        <li><b class="term">습식공사</b> — 조적 <span class="num">10</span> · 방수 <span class="num">15</span> · 미장 및 타일 <span class="num">20</span></li>
+        <li><b class="term">수장·외장·마감</b> — 칸막이 <span class="num">15</span> · 외장 <span class="num">30</span> · 내부마감 <span class="num">30</span></li>
+        <li><b class="term">합계</b> — 총 소요 작업일 <span class="num">225일</span>(근거: 산정기준 제11조)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><span class="lb"><i>3</i>공기산정 결과 — 425일의 구성</span></span>
+      <div class="formula">
+        <span class="num">425일</span> = 준비 <span class="num">15</span> + 작업 <span class="num">225</span> + 비작업 <span class="num">170</span> + 정리 <span class="num">15</span> + 보정 <span class="num">0</span>
+        <span class="sub">근거: 산정기준 제6조 · 제7조 · 제11조 · 제8조~제10조 · 제12조 · 제13조</span>
+      </div>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">준비기간 15일</b> — 설계 검토, 측량, 가설시설물 설치 등을 고려(제7조)</li>
+        <li><span class="no">2</span><b class="term">작업일수 225일</b> — 119안전센터 실적공기를 참고한 공종별 소요일수 합계(제11조)</li>
+        <li><span class="no">3</span><b class="term">비작업일수 170일</b> — 기상조건 및 공휴일 등을 고려하여 산정(제8조·제9조·제10조)</li>
+        <li><span class="no">4</span><b class="term">정리기간 15일</b> — 주 공정 완료 후 시운전, 잔손보기, 각종 필증 발급 기간을 고려(제12조)</li>
+        <li><span class="no">5</span><b class="term">보정기간 0일</b> — 특수시설·대규모공사 또는 산간지역 공사에 해당하는 사항 없음(제13조)</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 0 1 4-4 5 5 0 0 1 9.6-1.5A3.5 3.5 0 1 1 18 17H7a4 4 0 0 1-4-2z"/></svg></span><span class="lb"><i>4</i>비작업일수 170일 — 산정 구조와 기상 기준</span></span>
+      <ul class="list">
+        <li><b class="term">산식</b> — 비작업일수 = <span class="tl">A(기상여건에 의한 비작업일)</span> + <span class="tl">B(법정공휴일)</span> − <span class="tl">C(월별 중복일수, A×B÷달력일수)</span>, 중복일수는 소수점 첫째자리에서 반올림</li>
+        <li><b class="term">집계</b> — 대상기간 <span class="num">457일</span>('21. 10월~'22. 12월) 중 기상 비작업 <span class="num">72일</span>, 법정공휴일 <span class="num">69일</span>, 월별 중복 <span class="num">11일</span></li>
+        <li><b class="term">하한 보정</b> — 주 40시간 근무제에 따른 <span class="tl">월별 최소 비작업일수 8일</span>을 적용하여 최종 <span class="num">170일</span>, 월별 작업 가능일수 합계는 <span class="num">225일</span></li>
+        <li><b class="term">기상 판정기준</b> — 혹한(최고 ≤0℃, 최저 ≤−12℃), 강설(신적설 ≥5cm), 혹서(최고 ≥33℃·≥35℃), 강우(일강수 ≥10mm·≥20mm), 풍속(최대순간 ≥15m/s)</li>
+        <li><b class="term">동절기</b> — 기후여건으로 계획 공종의 작업이 불가능한 일수에는 <span class="tl">동절기 공사 정지기간 59일</span>('22. 1~2월)이 포함됨</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/><path d="M16.5 16.5L21 21"/></svg></span><span class="lb"><i>5</i>공기 적정성 검토 — 실적공기 대비(제14조)</span></span>
+      <ul class="list">
+        <li><b class="term">비교 대상</b> — 최근 준공된 유사 공종(119안전센터) <span class="num">5개</span> 사업, 평균 공사비 <span class="num">35.8억원</span> · 평균 실적공기 <span class="num">458.2일</span></li>
+        <li><b class="term">개별 실적</b> — 화성 팔탄 <span class="num">451일</span>(999㎡/지상2) · 용인 성복 <span class="num">515일</span>(956㎡/지하1·지상1) · 평택 세교 <span class="num">471일</span>(993㎡/지상3) · 남양주 다산 <span class="num">437일</span>(943㎡/지상2) · 송탄 고덕 <span class="num">417일</span>(995㎡/지상2)</li>
+        <li><b class="term">판단</b> — 산정 공사기간 <span class="num">425일</span>은 실적공기 <span class="num">458.2일</span> 대비 약 <span class="num">93%</span>로 <span class="tl">적정한 것으로 판단</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"/><path d="M8 7l4-4 4 4"/><path d="M5 21h14"/><path d="M5 21v-6h14v6"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>총공사비</b> <span class="num">40.7억원</span></span>
+        <span class="chip"><b>연면적</b> <span class="num">1,399.72㎡</span> / 지상 <span class="num">3층</span></span>
+        <span class="chip"><b>공사기간</b> <span class="num">425일</span></span>
+        <span class="chip"><b>준비</b> <span class="num">15일</span></span>
+        <span class="chip"><b>작업</b> <span class="num">225일</span></span>
+        <span class="chip"><b>비작업</b> <span class="num">170일</span></span>
+        <span class="chip"><b>정리</b> <span class="num">15일</span></span>
+        <span class="chip"><b>보정</b> <span class="num">0일</span></span>
+        <span class="chip"><b>월별 최소 비작업</b> <span class="num">8일</span></span>
+        <span class="chip"><b>실적공기</b> <span class="num">458.2일</span> 대비 <span class="num">93%</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">공사기간은 「준비 + 작업 + 비작업 + 정리 (+보정)」으로 쌓아 올린 뒤 최근 5년 동종 공사의 실적공기와 대조해 검증하는 구조이며, 발주청은 산출근거를 입찰서류에 명시하고 100억원 이상(시·군·구 50억원 이상) 공사는 심의를 거쳐야 함.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">원문의 월별 비작업일수 상세표는 지면 관계로 합계·기준만 수록함(대상기간 457일, 기상 72일·공휴일 69일·중복 11일, 주 40시간 기준 보정 후 170일) ｜ 출처: 「공공 건설공사의 공사기간 산정기준」 및 산정 검토서 예시 ｜ 참고: 적정 공사기간 확보를 위한 가이드라인(국토교통부·한국건설기술연구원)</p>
+  <p class="pageno">3 / 3</p>
+
+</div>
+</body></html>

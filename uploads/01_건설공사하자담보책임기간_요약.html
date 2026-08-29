@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건설공사 종류별 하자담보책임기간 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-child{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드: 상하 가로 라인만 ─────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 (그라데이션 아이콘 타일 + 라벨) ── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.46; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:1mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{
+    font-size:7pt; line-height:1.5; padding-left:5.2mm; text-indent:-5.2mm; margin-bottom:1.1mm;
+  }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    display:inline-block; width:3.8mm; height:3.8mm; line-height:3.8mm;
+    border-radius:50%; background:var(--teal); color:#fff;
+    font-size:5.6pt; font-weight:700; text-align:center;
+    text-indent:0; margin-right:1.4mm; vertical-align:middle;
+  }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  /* ── 패널(수식·타임라인 밴드) ─────────── */
+  .formula{
+    background:var(--panel); border-left:1mm solid var(--teal);
+    padding:2.2mm 3mm; margin:0 0 2.4mm 0;
+    text-align:center; font-size:7.6pt; font-weight:700; line-height:1.45; color:var(--navy);
+  }
+  .formula .num{ color:var(--amber); }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1mm; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주 ───────────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pageno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head><body>
+<div class="page haspin">
+
+  <h1 class="title">건설공사 종류별 하자담보책임기간 — 핵심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">법령 별표 ｜ 근거: 건설산업기본법 제28조 · 같은 법 시행령 제30조 [별표 4] ｜ 별표 4 개정 2021. 8. 3. (현행) ｜ 출처: 국가법령정보센터 www.law.go.kr</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">수급인(건설사업자) = 하자담보책임의 주체</span> — 발주자에 대하여 별표 4의 기간에 발생한 하자를 담보할 책임을 짐. <span class="rolet">하수급인</span>도 법 제28조제4항에 따라 준용되며, 이때 상대방은 <span class="rolet">발주자 또는 수급인</span>임.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg></span><span class="lb"><i>1</i>적용 체계와 기산일</span></span>
+      <ul class="list">
+        <li><b class="term">법정 상한</b> — 구조내력에 해당하는 구조는 <span class="num">10년</span>, 그 밖은 <span class="num">5년</span> 범위에서 공종별로 정함(법 제28조①)</li>
+        <li><b class="term">기산일</b> — 완공일과 목적물의 관리·사용 개시일 중 <span class="tl">먼저 도래한 날</span></li>
+        <li><b class="term">복합공종</b> — 하자책임을 구분할 수 없는 경우를 제외하고 <span class="tl">세부 공종별로 각각</span> 적용(비고)</li>
+        <li><b class="term">특약</b> — 따로 정한 기간·사유와 추가 하자보수보증 수수료를 계약서에 명시(영 제30조②)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>2</i>담보책임이 없는 경우</span></span>
+      <ul class="list">
+        <li>발주자가 제공한 재료의 품질·규격이 기준미달이거나 재료의 성질로 인한 경우</li>
+        <li>발주자의 지시에 따라 시공한 경우</li>
+        <li>발주자가 내구연한 또는 설계상 구조내력을 초과하여 사용한 경우</li>
+        <li><b class="term">단서</b> — 재료·지시가 부적당함을 <span class="tl">알고도 알리지 않았다면 면책되지 않음</span>(법 제28조②)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><span class="lb"><i>3</i>기간 스펙트럼과 판정 순서</span></span>
+      <div class="formula">
+        <span class="num">10년</span> → <span class="num">7년</span> → <span class="num">5년</span> → <span class="num">3년</span> → <span class="num">2년</span> → <span class="num">1년</span>
+        <span class="sub">구조내력 핵심부(철근콘크리트·철골구조부)일수록 장기, 부대·마감·설비로 갈수록 단기</span>
+      </div>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">구조부 여부</b> — 철근콘크리트 또는 철골구조부이면 7~10년, 그 밖의 시설은 5년 이하로 내려감</li>
+        <li><span class="no">2</span><b class="term">규모 요건</b> — 교량은 기둥 사이 거리 50m 이상 또는 길이 500m 이상이면 10년, 미만이면 7년</li>
+        <li><span class="no">3</span><b class="term">용도·층수</b> — 건축은 대형공공성 건축물인지, 그리고 기둥·내력벽인지에 따라 10년·5년·1년으로 갈림</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M5 18V9m14 9V9"/><path d="M3 9h18"/><path d="M8 9v-3M16 9v-3"/><path d="M9 18v-4h6v4"/></svg></span><span class="lb"><i>4</i>토목시설 — 제1호~제13호</span></span>
+      <ul class="list">
+        <li><span class="num">10년</span> 교량(기둥 사이 50m 이상 또는 길이 500m 이상)·터널(지하철 포함)의 철근콘크리트·철골구조부, 댐 본체 및 여수로</li>
+        <li><span class="num">7년</span> 길이 500m 미만 교량, 철도(교량·터널 제외), 공항·삭도, 항만·사방간척, 상·하수도, 발전·가스 및 산업설비의 철근콘크리트·철골구조부</li>
+        <li><span class="num">5년</span> 터널·철도·공항삭도·항만사방간척·댐의 구조부 외 시설, 압력 1㎠당 10kg 이상 고압가스 관로 설치공사</li>
+        <li><span class="num">3년</span> 콘크리트 포장 도로(암거·측구 포함), 상·하수도 관로매설·기기설치, 발전가스 및 산업설비 기타 시설, 관개수로·매립</li>
+        <li><span class="num">2년</span> 아스팔트 포장 도로(암거·측구 포함), 부지정지, 조경시설물 및 조경식재, 교량 중 교면포장·이음부·난간시설 등</li>
+        <li><span class="num">1년</span> 기타 토목공사</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V6l8-3 8 3v15"/><path d="M9 21v-5h6v5"/><path d="M8 10h2M14 10h2"/></svg></span><span class="lb"><i>5</i>건축 제14호 · 전문공사 제15호</span></span>
+      <ul class="list">
+        <li><span class="num">건축 10년</span> 대형공공성 건축물(공동주택·종합병원·관광숙박시설·문화 및 집회시설·대규모 점포·16층 이상 기타 용도)의 <b class="term">기둥 및 내력벽</b></li>
+        <li><span class="num">건축 5년</span> 대형공공성 건축물의 기둥·내력벽 외 구조상 주요부분, 그 밖의 건축물 중 구조상 주요부분</li>
+        <li><span class="num">건축 1년</span> 위 두 항목과 제15호 전문공사를 제외한 기타부분</li>
+        <li><span class="num">전문 3년</span> 방수, 지붕, 철근콘크리트(제1~14호 해당분 제외) 및 콘크리트 포장, 승강기 및 인양기기 설비</li>
+        <li><span class="num">전문 2년</span> 토공, 석공사·조적, 철물(제1~14호 철골 제외), 급배수·공동구·지하저수조·냉난방·환기·공기조화·자동제어·가스·배연설비, 아스팔트 포장, 온실설치</li>
+        <li><span class="num">전문 1년</span> 실내건축, 미장·타일, 도장, 창호설치, 판금, 보일러 설치, 그 밖의 건물내 설비, 보링, 건축물조립(기둥·내력벽 조립은 제14호)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>법정 상한</b> 구조내력 <span class="num">10년</span> · 그 밖 <span class="num">5년</span></span>
+        <span class="chip"><b>교량 10년 요건</b> 기둥 사이 <span class="num">50m</span> 이상 또는 길이 <span class="num">500m</span> 이상</span>
+        <span class="chip"><b>고압가스 관로 5년</b> 1㎠당 <span class="num">10kg</span> 이상</span>
+        <span class="chip"><b>대형공공성</b> <span class="num">16층</span> 이상 기타 용도</span>
+        <span class="chip"><b>도로</b> 콘크리트 <span class="num">3년</span> · 아스팔트 <span class="num">2년</span></span>
+        <span class="chip"><b>전문공사</b> 총 <span class="num">19</span>개 세부공종</span>
+        <span class="chip"><b>공사별 분류</b> <span class="num">15</span>개 호</span>
+        <span class="chip"><b>최단</b> 기타 토목공사 <span class="num">1년</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">하자담보책임기간은 「구조부인가 → 규모·용도 요건을 넘는가 → 세부 공종이 무엇인가」의 순서로 판정하며, 복합공사는 하나로 뭉뚱그리지 말고 세부 공종별 기간을 각각 적용하여야 함.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">근거: 건설산업기본법 제28조(시행 2025. 11. 27.) · 같은 법 시행령 제30조 및 [별표 4](개정 2021. 8. 3.) ｜ 다른 법령(민법 제670조·제671조 제외)에 특별규정이 있으면 그 법령에 따름(법 제28조③) ｜ 출처: 국가법령정보센터 www.law.go.kr</p>
+  <p class="pageno">1 / 1</p>
+
+</div>
+</body></html>

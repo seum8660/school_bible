@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>소규모 건설공사 설계 시 유의사항 — 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-child{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드: 상하 가로 라인만 ─────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 (그라데이션 아이콘 타일 + 라벨) ── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.46; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:1mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{
+    font-size:7pt; line-height:1.5; padding-left:5.2mm; text-indent:-5.2mm; margin-bottom:1.1mm;
+  }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    display:inline-block; width:3.8mm; height:3.8mm; line-height:3.8mm;
+    border-radius:50%; background:var(--teal); color:#fff;
+    font-size:5.6pt; font-weight:700; text-align:center;
+    text-indent:0; margin-right:1.4mm; vertical-align:middle;
+  }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  /* ── 패널(수식·타임라인 밴드) ─────────── */
+  .formula{
+    background:var(--panel); border-left:1mm solid var(--teal);
+    padding:2.2mm 3mm; margin:0 0 2.4mm 0;
+    text-align:center; font-size:7.6pt; font-weight:700; line-height:1.45; color:var(--navy);
+  }
+  .formula .num{ color:var(--amber); }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1mm; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주 ───────────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pageno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+
+  /* ── 표(품셈 발췌) ───────────────────── */
+  .tbl{ width:100%; border-collapse:collapse; margin:0 0 2.2mm 0; }
+  .tbl th{
+    background:var(--panel); color:var(--navy); font-weight:700;
+    border:0.2mm solid var(--panel-line); padding:1mm 1.2mm;
+    font-size:6.1pt; line-height:1.25; text-align:center;
+  }
+  .tbl td{
+    border:0.2mm solid var(--panel-line); padding:1mm 1.2mm;
+    font-size:6.3pt; line-height:1.3; text-align:center; color:var(--body);
+  }
+  .tbl td.l{ text-align:left; }
+  .tbl td b{ color:var(--navy); font-weight:700; }
+  .tbl td .num{ color:var(--amber); font-weight:700; }
+  .tcap{ font-size:6.3pt; font-weight:700; color:var(--teal); margin:0 0 1.2mm 0; }
+  .tnote{ font-size:6pt; color:var(--meta); line-height:1.4; margin:0 0 1.6mm 0; }
+</style></head><body>
+<div class="page haspin">
+
+  <h1 class="title">소규모 건설공사 설계 시 유의사항 — 제도 개요</h1>
+  <div class="ubar"></div>
+  <p class="meta">전라남도교육청 계약업무 안내 12항 ｜ 근거: 부패방지 및 국민권익위원회의 설치와 운영에 관한 법률 제47조 · 국민권익위원회 경제제도개선과-160(2021. 2. 9.) 「지역 중소건설업체 권익보호 방안」 · 감사관-2634(2021. 2. 17.) 추진계획 ｜ 적용: 2024. 5. 1. 이후 계약분</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주기관 = 전라남도교육청·직속기관 / 교육지원청·소속기관 / 공·사립학교 / 단설유치원의 장</span> — 기초금액(예정가격)을 현장 여건에 맞게 적정 산정할 책임 주체. 설계(단가산출) 단계에서 소규모 공사품·할증을 빠뜨리면 그 결과(업체 손해·부실시공)에 대한 책임은 <span class="rolet">발주기관</span>에 돌아온다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9.5 17H2.5z"/><path d="M12 9v5"/><path d="M12 17h.01"/></svg></span><span class="lb"><i>1</i>왜 이 지침이 생겼나 — 적용배경</span></span>
+      <ul class="list">
+        <li><b class="term">문제</b> — 소규모 건설공사의 기초금액(예정가격)을 <span class="tl">저가·과소 산정</span>하여 입찰에 부침</li>
+        <li><b class="term">결과</b> — 지역 중소건설업체의 손해와 관급공사 부실을 함께 초래</li>
+        <li><b class="term">원인 ①</b> — 장비임대료·자재운반비·기계경비 산정 시 <span class="tl">소규모 공사품과 할증을 적용하지 않음</span></li>
+        <li><b class="term">원인 ②</b> — 단위시간당·단위수량당 공사비를 그대로 써서 소규모 현장 여건을 반영하지 못함</li>
+        <li><b class="term">경위</b> — 국민권익위원회가 권익위법 제47조에 따라 제도개선을 권고하고, 도교육청이 추진계획을 수립·시행</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/><path d="M8.5 11h5"/></svg></span><span class="lb"><i>2</i>실제로 있었던 과소산정 사례</span></span>
+      <ul class="list">
+        <li><b class="term">장비 규격</b> — <span class="tl">대형장비 진출·입이 불가능한 현장</span>인데도 터파기 단가를 대형건설장비 기준(굴삭기 <span class="num">0.4㎥</span> → <span class="num">0.7·1.0㎥</span>)으로 산출</li>
+        <li><b class="term">운반비</b> — 운반차량이 들어갈 수 없는 지역인데 건설자재 <span class="tl">상·하차비 또는 소운반비를 반영하지 않음</span></li>
+        <li><b class="term">공통점</b> — 큰 장비·큰 물량을 전제로 한 단가는 단위당 금액이 낮아 계약금액은 줄지만, <span class="tl">실제 시공은 불가능하거나 부실로 이어짐</span></li>
+        <li><b class="term">교훈</b> — 설계자는 현장을 보지 않고 표준단가만 옮겨 적으면 안 되고, 반드시 <span class="tl">현장 여건(진입로·작업공간·물량 규모)</span>을 확인해야 함</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 12.5l1.6 1.6L15 10"/><path d="M9 17h6"/></svg></span><span class="lb"><i>3</i>적용 요건 — 언제부터·누구에게·얼마부터·무엇을</span></span>
+      <div class="formula">
+        적용시기 <span class="num">2024. 5. 1.</span> 이후 계약 &nbsp;→&nbsp; 적용대상 <span class="num">발주기관</span> &nbsp;→&nbsp; 적용기준 예정가격 <span class="num">5천만원 미만</span> &nbsp;→&nbsp; 적용내용 기초금액에 <span class="num">적정 대가</span> 반영
+        <span class="sub">네 요건이 모두 맞으면 설계(단가산출) 단계에서 소규모 공사품·할증을 반드시 검토한다</span>
+      </div>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">적용시기</b> — <span class="num">2024. 5. 1.</span> 이후 <span class="tl">계약되는</span> 건설공사 및 용역. 기준일은 설계일·공고일이 아니라 <span class="tl">계약일</span>이므로, 그 전에 이미 계약된 건은 종전 기준을 따른다.</li>
+        <li><span class="no">2</span><b class="term">적용대상</b> — 발주기관, 즉 건설공사를 발주하는 전라남도교육청과 그 직속기관, 교육지원청과 그 소속기관, 공·사립학교, 단설유치원의 장. <span class="tl">학교장이 직접 발주하는 소규모 공사도 그대로 적용</span>된다.</li>
+        <li><span class="no">3</span><b class="term">적용기준</b> — 예정가격 <span class="num">5천만원 미만</span>. 이때 예정가격은 <span class="tl">부가가치세를 포함</span>하고 <span class="tl">관급자재비는 포함하지 않는다</span>. 판정 실수가 가장 잦은 지점이므로 산출서에 계산 근거를 남긴다.</li>
+        <li><span class="no">4</span><b class="term">적용내용</b> — 기초금액(예정가격) 산정 시 적정 대가를 적용한다. 구체적인 방법은 <span class="tl">[붙임 8] 소규모 건설공사 설계 적용 예시</span>의 7개 항목(2·3쪽)에 정리되어 있다.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M12 8H6l-3 4 3 4h6"/><path d="M12 8h6l3 4-3 4h-6"/></svg></span><span class="lb"><i>4</i>신규 담당자가 가장 헷갈리는 두 '소규모'</span></span>
+      <ul class="list">
+        <li><b class="term">제도상 소규모</b> — 예정가격 <span class="num">5천만원 미만</span>. 이 지침 자체를 적용할지 말지를 가르는 <span class="tl">문턱</span>이다.</li>
+        <li><b class="term">품셈상 소규모</b> — 개소당 작업면적, 1일 시공량 등 <span class="tl">표준품셈 항목마다 따로 정해진 기준</span>. 실제 가산·할증을 붙이는 단위다.</li>
+        <li><b class="term">둘은 별개</b> — 5천만원 미만이어도 품셈 기준 이상의 물량이면 그 항목에는 가산을 붙일 수 없다.</li>
+        <li><b class="term">공통 의무</b> — 어느 쪽이든 적용 근거(품셈 조항번호)를 설계설명서·산출근거에 명시해야 한다.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h4M4 12h4M4 18h4"/><path d="M11 6h9M11 12h9M11 18h9"/></svg></span><span class="lb"><i>5</i>설계 단계 실무 순서</span></span>
+      <ol class="nlist">
+        <li><span class="no">1</span>개략 공사비를 뽑아 <b class="term">예정가격 5천만원 미만</b> 여부를 먼저 확인한다(부가세 포함·관급자재 제외).</li>
+        <li><span class="no">2</span><b class="term">현장을 답사</b>해 장비 진출입 가능 여부, 작업공간, 도로 폭, 작업시간 제한(휴전·단수 등)을 기록한다.</li>
+        <li><span class="no">3</span>공종별로 해당하는 <b class="term">표준품셈의 소규모 규정과 할증 조항</b>을 찾아 단가에 반영한다.</li>
+        <li><span class="no">4</span>적용한 <b class="term">품셈 조항번호와 현장 여건 사진</b>을 산출근거에 첨부해 계약·감사 단계에서 설명할 수 있게 한다.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>적용시기</b> <span class="num">2024. 5. 1.</span> 이후 계약분</span>
+        <span class="chip"><b>적용기준</b> 예정가격 <span class="num">5천만원 미만</span></span>
+        <span class="chip"><b>예정가격</b> 부가세 <span class="num">포함</span> · 관급자재비 <span class="num">미포함</span></span>
+        <span class="chip"><b>근거</b> 권익위법 제<span class="num">47</span>조</span>
+        <span class="chip"><b>권익위</b> 경제제도개선과-<span class="num">160</span>(2021. 2. 9.)</span>
+        <span class="chip"><b>추진</b> 감사관-<span class="num">2634</span>(2021. 2. 17.)</span>
+        <span class="chip"><b>적용 예시</b> [붙임 <span class="num">8</span>] <span class="num">7</span>개 항목</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">출처: 전라남도교육청 「소규모 건설공사 설계 적용(안)」 12. 소규모 건설공사 설계 시 유의사항 ｜ 법령 확인: 국가법령정보센터 www.law.go.kr ｜ 품셈 확인: 건설공사 표준품셈(한국건설기술연구원) www.kict.re.kr</p>
+  <p class="pageno">1 / 3</p>
+
+</div>
+
+<div class="page haspin">
+
+  <h1 class="title">소규모 건설공사 설계 적용 예시 ① — 건축 · 토목 · 공통부문</h1>
+  <div class="ubar"></div>
+  <p class="meta">[붙임 8] 소규모 건설공사 설계 적용 예시 1~4항(할증 포함) ｜ 모든 가산·할증은 「건설공사 표준품셈」 해당 조항을 근거로 적용한다</p>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l8 8-3 3-8-8z"/><path d="M10 6L4 12l8 8 6-6"/><path d="M3 21h6"/></svg></span><span class="lb"><i>1</i>유지관리부문 — 방수층 철거<span class="rolet"> [건축]</span></span></span>
+      <ul class="list">
+        <li><b class="term">품셈</b> — 3-2 해체공사 / <span class="tl">3-2-10 기존 방수층 및 보호층 철거</span></li>
+        <li><b class="term">규정</b> — 소규모공사(<span class="tl">개소당 작업면적 <span class="num">40㎡</span> 미만</span>)인 경우 장비사용기간과 품을 <span class="num">40%</span> 범위 내에서 가산할 수 있다.</li>
+        <li><b class="term">적용</b> — 옥상 부분 방수 보수처럼 작업면적이 40㎡ 미만이면 <span class="tl">장비 사용 + 인력 품에 40% 가산</span>을 적용한다.</li>
+        <li><b class="term">유의</b> — 건물 전체가 아니라 <span class="tl">'개소당'</span> 면적으로 판단한다.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>2</i>가설공사 — 안전조치 비용<span class="rolet"> [건축]</span></span></span>
+      <ul class="list">
+        <li><b class="term">근거</b> — 「산업안전보건법」 제3절, 「중대재해 처벌 등에 관한 법률」 제4조(사업주·경영책임자등의 안전 및 보건 확보의무)</li>
+        <li><b class="term">적용</b> — 공사 관련 법령 강화에 따라 안전조치를 위한 <span class="tl">임시 및 가설 칸막이 등 설치 비용</span>을 <span class="num">직접공사비</span>에 반영한다.</li>
+        <li><b class="term">이유</b> — 학교는 <span class="tl">학생이 생활하는 공간에서 공사가 진행</span>되므로 공사구역 분리용 가설 칸막이·통행로 확보가 사실상 필수다.</li>
+        <li><b class="term">유의</b> — 산업안전보건관리비(요율 계상)와 별개로, <span class="tl">직접공사비 내역에 수량·규격으로 계상</span>해야 누락되지 않는다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21l5-5"/><path d="M8 12l4 4"/><path d="M10 10l4-4 4 4-4 4z"/><path d="M14 18h7"/></svg></span><span class="lb"><i>3</i>인력굴착(토사) 3-2-1 — 현장 여건에 따라 1일 시공량이 달라진다<span class="rolet"> [토목]</span></span></span>
+      <p class="tcap">굴착(인력/토사) 특별인부 1인 기준 1일 시공량 (단위: ㎡/일)</p>
+      <table class="tbl">
+        <tr>
+          <th style="width:34%">현장 여건 구분</th><th style="width:9%">수량(인)</th>
+          <th>보통토사</th><th>경질토사</th><th>고사점토 및<br>자갈 섞인 토사</th><th>호박돌<br>섞인 토사</th>
+        </tr>
+        <tr>
+          <td class="l"><b>소규모 공사</b> — 장애물이 있고 협소한 구역</td><td>특별인부 1</td>
+          <td><span class="num">3.6</span></td><td><span class="num">2.7</span></td><td><span class="num">2.2</span></td><td><span class="num">1.2</span></td>
+        </tr>
+        <tr>
+          <td class="l"><b>소규모 공사 외</b> — 장애물이 없고 넓은 구역(40% 가산)</td><td>특별인부 1</td>
+          <td><span class="num">5.04</span></td><td><span class="num">3.78</span></td><td><span class="num">3.08</span></td><td><span class="num">1.68</span></td>
+        </tr>
+      </table>
+      <ul class="list">
+        <li><b class="term">읽는 법</b> — 1일 시공량이 <span class="tl">작을수록</span> 같은 물량에 더 많은 품(일수)이 들어가 <span class="tl">단가는 올라간다</span>. 협소한 학교 현장은 위쪽 표를 쓴다.</li>
+        <li><b class="term">가산 규정</b> — 품셈은 "장애물이 없고 넓은 구역의 터파기인 경우 시공량을 <span class="num">40%</span>까지 가산한다"고 정한다. 즉 아래쪽 값이 <span class="tl">가산된 값</span>, 위쪽이 기본값이다.</li>
+        <li><b class="term">가장 흔한 오류</b> — 교사동 사이·화단·담장 옆처럼 <span class="tl">장애물이 많은 학교 부지</span>에 가산된 값(소규모 공사 외)을 그대로 적용해 품을 과소 계상하는 것</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/></svg></span><span class="lb"><i>4</i>공통부문 적용기준 1-2-9 — 소규모(작업물량 제한) 산정식<span class="rolet"> [토목·공통]</span></span></span>
+      <p class="tcap">'시공량/일'로 명시된 항목 중 총 시공량이 본품의 기준에 미달하는 소규모 공사의 적용 시공량</p>
+      <table class="tbl">
+        <tr><th style="width:12%">구분</th><th style="width:40%">조건</th><th>적용 시공량</th></tr>
+        <tr><td>1</td><td><b>A ≦ B / 2</b> 인 경우</td><td><span class="num">Q = B / 2</span></td></tr>
+        <tr><td>2</td><td><b>B / 2 &lt; A &lt; B</b> 인 경우</td><td><span class="num">Q = B</span></td></tr>
+      </table>
+      <p class="tnote">※ A = 실제 시공량, B = 1일 시공량(표준품셈), Q = 설계에 적용할 시공량</p>
+      <ul class="list">
+        <li><b class="term">취지</b> — 물량이 아주 적어도 <span class="tl">인력·장비를 부르는 최소 단위</span>는 발생하므로, 실제 물량이 아닌 최소 적용량으로 품을 계상한다.</li>
+        <li><b class="term">예시</b> — 1일 시공량 B가 <span class="num">10㎡</span>인 공종에서 실제 물량 A가 <span class="num">3㎡</span>라면 A ≦ B/2 이므로 <span class="tl">Q = 5㎡</span>로 보아 품을 계상한다. A가 <span class="num">7㎡</span>라면 B/2 &lt; A &lt; B 이므로 <span class="tl">Q = 10㎡</span>(1일분 전체)로 본다.</li>
+        <li><b class="term">유의</b> — 이 규정은 <span class="tl">'시공량/일'로 표시된 품셈 항목</span>에만 적용된다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><span class="lb"><i>5</i>공통부문 1-4 할증 — 작업제한과 작업환경<span class="rolet"> [토목·공통]</span></span></span>
+      <ul class="list">
+        <li><b class="term">1-4-6 작업제한(’24년 보완)</b> — 휴전, 단수, 선로사용중지 등으로 작업시간이 제한되거나, 1일 작업물량에 못 미치는 소규모 시공 등 <span class="tl">일일 작업시간(<span class="num">8시간</span>) 미만의 시공</span>이 발생하는 경우가 대상이다. → 해당 시 <span class="tl">할증 적용</span></li>
+        <li><b class="term">1-4-7 작업환경(’23년 보완)</b> — 공사 외적 시공환경(작업시간대, 환경, 위치 이동 및 분산 등)이 변하거나 특수작업이 발생하는 경우가 대상이다. → <span class="tl">야간작업, 특수작업, 작업공간 협소</span> 등에 할증 적용</li>
+        <li><b class="term">1-2-9 연계</b> — 총 시공량이 본품 기준에 미달하는 소규모 공사에는 <span class="tl">소규모(작업물량 제한) 할증</span>을 적용한다(2쪽 산정식과 함께 검토).</li>
+        <li><b class="term">학교 적용례</b> — 수업 소음 때문에 방과 후에만 작업, 정전·단수 시간대 제한, 방학 중 집중 시공 등은 <span class="tl">전형적인 할증 사유</span>다. 할증률은 임의로 정하지 말고 표준품셈 도표 값을 그대로 쓴다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>방수층 철거</b> 개소당 <span class="num">40㎡</span> 미만 → 장비·품 <span class="num">40%</span> 가산</span>
+        <span class="chip"><b>인력굴착 소규모</b> 보통토사 <span class="num">3.6</span> · 경질 <span class="num">2.7</span> · 고사점토 <span class="num">2.2</span> · 호박돌 <span class="num">1.2</span></span>
+        <span class="chip"><b>소규모 외</b> <span class="num">5.04</span> · <span class="num">3.78</span> · <span class="num">3.08</span> · <span class="num">1.68</span>(40% 가산)</span>
+        <span class="chip"><b>작업물량 제한</b> A ≦ B/2 → <span class="num">Q=B/2</span> ｜ B/2&lt;A&lt;B → <span class="num">Q=B</span></span>
+        <span class="chip"><b>가설 칸막이</b> <span class="num">직접공사비</span> 반영</span>
+        <span class="chip"><b>작업제한 할증</b> 일일 작업시간 <span class="num">8시간</span> 미만 시공</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">출처: 전라남도교육청 「소규모 건설공사 설계 적용(안)」 [붙임 8] 소규모 건설공사 설계 적용 예시 ｜ 수치·표는 「건설공사 표준품셈」 해당 조항 원문 확인 후 적용</p>
+  <p class="pageno">2 / 3</p>
+
+</div>
+
+<div class="page haspin">
+
+  <h1 class="title">소규모 건설공사 설계 적용 예시 ② — 할증 · 포장 · 기계인력 조합</h1>
+  <div class="ubar"></div>
+  <p class="meta">[붙임 8] 소규모 건설공사 설계 적용 예시 5~7항 및 설계 검토 체크리스트 ｜ 도표 및 세부 내용은 「건설공사 표준품셈」 참고</p>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21L8 3M21 21L16 3"/><path d="M12 5v3M12 11v3M12 17v3"/></svg></span><span class="lb"><i>1</i>아스콘포장 1-5-2<span class="rolet"> [토목]</span></span></span>
+      <ul class="list">
+        <li><b class="term">품셈</b> — 1장 도로포장공사 / 1-5 아스콘포장 / <span class="tl">1-5-2 아스팔트 기층 소규모 포설</span></li>
+        <li><b class="term">적용</b> — 표준 기층 포설 두께는 <span class="num">15cm</span>이므로, 이를 적용할 때는 <span class="tl">포설 및 다짐을 <span class="num">2회</span></span>로 계상한다.</li>
+        <li><b class="term">유의</b> — 1회 포설로 계상하면 실제 시공 방법과 달라 품이 부족해진다. 도표와 세부 내용은 표준품셈을 확인한다.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/><path d="M12 5v14"/><path d="M3 12h3M18 12h3"/></svg></span><span class="lb"><i>2</i>콘크리트포장 1-6-6<span class="rolet"> [토목]</span></span></span>
+      <ul class="list">
+        <li><b class="term">품셈</b> — 1장 도로포장공사 / 1-6 콘크리트 포장 / <span class="tl">1-6-6 포장 줄눈 절단</span></li>
+        <li><b class="term">적용</b> — 콘크리트 및 아스콘포장의 <span class="tl">절단 깊이가 <span class="num">20cm</span> 이상</span>이면 절단을 <span class="num">2회</span>로 계상한다.</li>
+        <li><b class="term">유의</b> — 절단 깊이는 설계도면에서 포장 단면 두께로 확인한다. 도표와 세부 내용은 표준품셈을 확인한다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16V9h10v7z"/><path d="M13 12h4l3 3v1h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></span><span class="lb"><i>3</i>기계 및 인력 조합 — 도로폭원과 현장 여건에 맞춰 비율을 조정한다<span class="rolet"> [기계·공통]</span></span></span>
+      <p class="tcap">굴착 및 되메우기 · 덤프트럭 운반 조합 (품셈기준은 작업규모(양)에 따라 굴삭기·덤프트럭을 적용)</p>
+      <table class="tbl">
+        <tr>
+          <th style="width:18%">도로폭원</th>
+          <th style="width:33%">일반 현장 — 굴삭기 <span style="color:#D9730D">90%</span> + 인력 <span style="color:#D9730D">10%</span></th>
+          <th style="width:33%">소규모 현장 — 굴삭기 <span style="color:#D9730D">80%</span> + 인력 <span style="color:#D9730D">20%</span></th>
+          <th>덤프트럭 운반</th>
+        </tr>
+        <tr><td><b>2.5~4m 이하</b></td><td>굴삭기(0.2㎥급) 90% + 인력 10%</td><td>굴삭기(0.2㎥급) 80% + 인력 20%</td><td><span class="num">4.5ton</span></td></tr>
+        <tr><td><b>4~6m 이하</b></td><td>굴삭기(0.4㎥급) 90% + 인력 10%</td><td>굴삭기(0.4㎥급) 80% + 인력 20%</td><td><span class="num">10.5ton</span></td></tr>
+        <tr><td><b>6m 이상</b></td><td>굴삭기(0.6㎥급) 90% + 인력 10%</td><td>굴삭기(0.6㎥급) 80% + 인력 20%</td><td><span class="num">15.0ton</span></td></tr>
+      </table>
+      <ul class="list">
+        <li><b class="term">일반 현장</b> — 일반적인 공사현장은 도로폭원별 굴삭기 규격에 <span class="tl">기계 90% + 인력 10%</span>로 조합한다.</li>
+        <li><b class="term">소규모 현장</b> — <span class="tl">작업장소 협소 등 기계 사용이 현저히 저하되는 불량한 공사현장</span>(예: 교사 주변 상·하수도공사)은 <span class="tl">기계 80% + 인력 20%</span>로 비율을 조정한다.</li>
+        <li><b class="term">핵심</b> — 굴삭기 규격과 덤프트럭 톤수는 <span class="tl">도로폭원(2.5~6m 이상)</span>이 정하고, 기계·인력 비율은 <span class="tl">현장 여건</span>이 정한다. 두 축을 각각 판단해 조합한다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6v3H9z"/><path d="M15 5h4v16H5V5h4"/><path d="M8.5 12l1.5 1.5L13 10.5"/><path d="M8.5 17l1.5 1.5L13 15.5"/></svg></span><span class="lb"><i>4</i>설계·검토 체크리스트와 흔히 하는 실수</span></span>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">예정가격 판정</b> — 부가세를 포함하고 관급자재비를 뺀 금액으로 <span class="num">5천만원 미만</span> 여부를 확인했는가. <span class="rolet">실수</span>: 부가세를 빼고 계산해 대상에서 누락</li>
+        <li><span class="no">2</span><b class="term">현장 여건 확인</b> — 장비 진출입, 작업공간, 도로 폭, 작업시간 제한을 답사로 확인하고 사진을 남겼는가. <span class="rolet">실수</span>: 도면만 보고 표준단가를 그대로 사용</li>
+        <li><span class="no">3</span><b class="term">품셈 근거 명시</b> — 적용한 소규모 규정·할증의 <span class="tl">조항번호</span>를 산출근거에 적었는가. <span class="rolet">실수</span>: 할증률을 임의로 정해 근거 없이 계상</li>
+        <li><span class="no">4</span><b class="term">누락 항목 점검</b> — 상·하차비, 소운반비, 가설 칸막이 등 안전조치 비용을 <span class="tl">직접공사비</span>에 계상했는가. <span class="rolet">실수</span>: 자재비만 넣고 운반·설치 품을 빠뜨림</li>
+        <li><span class="no">5</span><b class="term">중복·과다 방지</b> — 같은 사유로 소규모 가산과 할증을 <span class="tl">이중 적용</span>하지 않았는가. 가산·할증은 각각의 근거 조항이 정한 범위 내에서만 적용한다.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>아스콘 기층</b> 표준 두께 <span class="num">15cm</span> → 포설·다짐 <span class="num">2회</span></span>
+        <span class="chip"><b>줄눈 절단</b> 깊이 <span class="num">20cm</span> 이상 → <span class="num">2회</span></span>
+        <span class="chip"><b>일반 현장</b> 기계 <span class="num">90%</span> + 인력 <span class="num">10%</span></span>
+        <span class="chip"><b>소규모 현장</b> 기계 <span class="num">80%</span> + 인력 <span class="num">20%</span></span>
+        <span class="chip"><b>굴삭기</b> <span class="num">0.2</span> / <span class="num">0.4</span> / <span class="num">0.6㎥</span>급</span>
+        <span class="chip"><b>덤프트럭</b> <span class="num">4.5</span> / <span class="num">10.5</span> / <span class="num">15.0ton</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">예정가격 5천만원 미만 공사는 표준단가를 그대로 옮기지 말고, ① 현장을 답사해 장비 진출입·작업공간·작업시간 제한을 확인하고 ② 공종별 표준품셈의 소규모 규정과 할증을 적용한 뒤 ③ 그 근거를 산출근거에 남겨야 한다. 적정 공사비 산정은 업체 보호인 동시에 부실시공을 막는 발주기관의 의무다.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">출처: 전라남도교육청 「소규모 건설공사 설계 적용(안)」 [붙임 8] ｜ 근거 법령: 부패방지 및 국민권익위원회의 설치와 운영에 관한 법률 제47조 · 중대재해 처벌 등에 관한 법률 제4조(국가법령정보센터 www.law.go.kr) ｜ 품셈 도표 원문: 건설공사 표준품셈</p>
+  <p class="pageno">3 / 3</p>
+
+</div>
+</body></html>

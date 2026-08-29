@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건축물 해체계획서 검토 사례집 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .title{ margin:0; font-size:14pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.25; }
+  .meta{ margin:1.6mm 0 0 0; font-size:6.4pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.4; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2.4mm 0 3.4mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3.4mm 0 2mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.8mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.4mm; background:none; padding:2.6mm 3.4mm 2.8mm 3.4mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:8.4pt; font-weight:700; letter-spacing:0; line-height:1.3;
+    padding:1mm 2.6mm; border-radius:1mm; margin-bottom:2mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7.5pt; line-height:1.52; padding-left:2.8mm; text-indent:-2.8mm; margin-bottom:1.3mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7.5pt; line-height:1.52; padding-left:4.6mm; text-indent:-4.6mm; margin-bottom:1.3mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1.2mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1.2mm; padding:2.6mm 3.6mm; margin:0 0 2.8mm 0;
+    text-align:center; font-size:7.6pt; font-weight:600; line-height:1.5;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6.5pt; font-weight:500; color:var(--meta); margin-top:1.1mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.8mm; }
+  .chip{
+    font-size:6.6pt; line-height:1.3; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1.2mm;
+    padding:1.2mm 2.2mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:6.1pt; line-height:1.5; color:var(--note); margin:0; }
+
+  .page{ width:210mm; padding:13mm 10mm 7mm; page-break-after:always; box-sizing:border-box; }
+  .page:last-child{ page-break-after:auto; }
+  .pageno{ text-align:center; font-size:6.1pt; color:var(--note); margin-top:2.4mm; }
+  @media screen{
+    body{ background:#e5e7eb; }
+    .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 3mm rgba(0,0,0,0.15); }
+  }
+  @media print{ body{ width:auto; } }
+</style></head><body>
+<div class="page">
+<h1 class="title">건축물 해체계획서 검토 사례집 ① — 제도·검토대상·작성항목 체계</h1>
+<p class="meta">건축물 해체 안전관리 ｜ 건축물관리법 제30~34조·시행령 제21조·국토교통부고시 제2022-446호 ｜ 국토교통부·국토안전관리원 사례집(2023.12)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 해체 신고·허가 대상 구분</span>
+    <ul class="list">
+      <li><b class="term">신고 대상</b> — 주요구조부 해체 없이 일부만 해체(법 제30조①1호)</li>
+      <li>연면적 <span class="num">500㎡</span>·높이 <span class="num">12m</span>·지상지하 <span class="num">3개층</span> 미만 모두 충족 전체해체(①2호)</li>
+      <li>관리·농림·자연환경보전지역 12m 미만 등 시행령 제21조① 각 호</li>
+      <li><b class="term">허가 대상</b> — 위 신고 대상에 해당하지 않는 건축물</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 허가 전환·변경허가(신고)</span>
+    <ul class="list">
+      <li><b class="term">★신설(법 제30조②)</b> — 신고 대상이라도 버스정류장·도시철도 역사 출입구·횡단보도 인근(조례) 시 <span class="num">허가</span> 전환</li>
+      <li>외벽∼건물높이 범위 내 조례 폭 이상 도로 인접 시에도 허가</li>
+      <li><b class="term">변경허가(신고)</b> — 해체공법·작업순서·면적·장비종류·석면함유·안전관리대책 변경(제30조의3①)</li>
+      <li>착공 후 변경 — 착공예정일 <span class="num">30일</span> 이상, 해체작업자·하수급인 변경(제30조의3②)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 국토안전관리원 해체계획서 검토 대상 및 절차</span>
+    <div class="formula">해체계획서 접수 → 관련자료 검토(필요시 보완요청) → 적정성 검토 → 검토위원회 심의(필요시·외부위원 3명) → 검토결과 통보 <span class="num">처리기한 7일(1회 연장)</span>
+      <span class="sub">검토 의뢰 대상 = 건축물관리법 시행령 제21조제6항 각 호(허가권자 의무 의뢰)</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>검토 대상 — <b class="term">특수구조 건축물</b>(건축법 시행령 제2조18호 나·다목), <b class="term">10톤 이상</b> 장비 탑재 해체, <b class="term">폭파</b> 해체</li>
+      <li><span class="no">②</span>검토 사항 — 건축물관리법령·고시·관계법령·국가설계기준 준수 여부 및 해체공사 안전 확보 적정성</li>
+      <li><span class="no">③</span>검토 결과 — <b class="term">적정 / 조건부적정 / 부적정</b>, 부적정·조건부 판정 시 재검토 요청 가능(1회)</li>
+      <li><span class="no">④</span>검토 기관·기한 — 국토안전관리원, 처리기한 <span class="num">7일</span>(첫날 산입·공휴일·토요일 불산입, 1회 연장)</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 해체계획서 8대 작성항목 (1~4)</span>
+    <ul class="list">
+      <li><b class="term">1 일반사항</b> — 공사개요·관리조직·비상연락망·예정공정표</li>
+      <li><b class="term">2 사전조사</b> — 주변·지하매설물·지하건축물·대상건축물·유해물질(석면)·환경공해</li>
+      <li><b class="term">3 건축설비 이동·철거·보호</b> — 지하매설물 조치·장비이동·가시설물 설치</li>
+      <li><b class="term">4 작업순서·해체공법·구조안전</b> — 해체공법·구조안전·구조보강·안전점검표</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 해체계획서 8대 작성항목 (5~8)</span>
+    <ul class="list">
+      <li><b class="term">5 안전관리계획</b> — 해체작업자·인접건축물·주변통행·보행자 안전관리</li>
+      <li><b class="term">6 환경관리계획</b> — 소음·진동·비산먼지 관리, 해체물 처리계획</li>
+      <li><b class="term">7 부지정리</b> — 부지정리 및 주변시설물 복구계획</li>
+      <li><b class="term">8 폭파에 의한 해체계획</b> — 발파진동·폭풍압 구조검토·발파시공·안전관리</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치·기준 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>신고 요건</b> 연면적 500㎡·높이 12m·3개층 미만</span>
+      <span class="chip"><b>KALIS 검토</b> 특수구조·10톤 이상·폭파</span>
+      <span class="chip"><b>검토위원회</b> 외부위원 3명·서면 또는 대면</span>
+      <span class="chip"><b>변경 착공일</b> 30일 이상 변경 시</span>
+      <span class="chip"><b>해체계획서 서명</b> 건축사·기술사(건축구조·시공·건설안전)</span>
+      <span class="chip"><b>세부 작성기준</b> 국토교통부고시 제2022-446호</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">「건축물관리법」 제30조에 근거함. 법 제30조제2항(버스정류장·도로 인근 허가 전환)은 2025.6.4. 시행 개정으로 신설(사례집 미반영). 세부 작성·검토 방법은 고시 제2022-446호 및 국토안전관리원 세부지침을 따름.</p>
+<p class="pageno">1 / 6</p>
+</div>
+<div class="page">
+<h1 class="title">건축물 해체계획서 검토 사례집 ② — 사전조사·건축설비 이동·철거·보호</h1>
+<p class="meta">건축물 해체 안전관리 ｜ 사례집 4.2 사전조사·4.3 건축설비의 이동·철거 및 보호 ｜ 국토교통부·국토안전관리원(2023.12)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 주변조사·지하매설물조사(2.1)</span>
+    <ul class="list">
+      <li><b class="term">인접 건축물</b> — 용도·높이·구조형식·이격거리 조사, 소음·진동·균열·침하 피해 영향성 검토</li>
+      <li><b class="term">주변도로·공공시설</b> — 도로 폭·출입구·버스정류장·도시철도 역사 출입구·횡단보도 이격거리, 우회로·이설계획</li>
+      <li><b class="term">부지 내 공지</b> — 장비 가동범위·해체잔재 임시보관장소, 안전 이격거리(없으면 즉시 반출계획)</li>
+      <li><b class="term">지하매설물</b> — 전기·상하수도·가스·난방배관·통신·오수정화조 조사, 굴착영향반경 간섭 검토</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 지하건축물·대상건축물·유해물질 조사</span>
+    <ul class="list">
+      <li><b class="term">지하건축물(2.2)</b> — 지하저수조·전기실·기계실·지하주차장 현황, 단계별 지반·인접건축물 침하·균열 영향</li>
+      <li><b class="term">대상건축물(2.3)</b> — 설계도서 유무별 부재배치·콘크리트 강도·철근 배근 현장조사, 박락 우려 내·외장재·옥탑 현황</li>
+      <li><b class="term">유해물질(2.4)</b> — 산안법 제119조 기관석면조사, 무석면 증빙, 석면해체 완료보고서·타 공정 중복 여부</li>
+      <li><b class="term">환경공해(2.4)</b> — 소음·진동·비산먼지 인근 피해 검토, 생활소음·진동 규제기준 대상지역 여부</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 장비이동 계획 — 양중장비 안전성 검토 절차(3.2)</span>
+    <div class="formula">투입장비 개요(종류·대수·제원) → 이동식크레인 최대접지하중 검토(KOSHA GUIDE C-99-2015) → 줄걸이·샤클 안전성(M-186-2015) → 작업반경·인양능력·이격거리 검토
+      <span class="sub">투입장비는 산업안전보건법 제84·93조에 따른 안전인증·안전검사 필증 포함</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>이동식크레인 — 자중·<b class="term">카운터웨이트</b>·충격하중·최대인양물 하중 반영, 지반 허용지내력·보강부재 산정(C-99-2015)</li>
+      <li><span class="no">②</span>줄걸이·부속용구 — 인양물 최대하중 대비 <b class="term">와이어로프·샤클</b> 안전성, 제원표 값 일치 확인(M-186-2015)</li>
+      <li><span class="no">③</span>굴착기 — 제원표 적용 굴착기 중량과 사용 굴착기 중량 비교, 구조형식·공법(압쇄·절단)별 선택작업장치 적정성</li>
+      <li><span class="no">④</span>작업반경·동선 — 붐·암 옵션별 수평·수직 작업범위, 이동구간·잔재물 투하구·동시작업 금지구역 검토</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 지하매설물 조치계획(3.1)</span>
+    <ul class="list">
+      <li><b class="term">조치계획</b> — 전기·가스·상하수도 등 이동·철거·보호 조치, 방호·안전시공계획 수립</li>
+      <li><b class="term">관계기관 협의</b> — 매설물 유형별 관계기관·관리주체 협의(한전·도시가스·수도사업소 등)</li>
+      <li><b class="term">비상연락체계</b> — 비상사태 시 긴급대피·응급조치·복구 업무 구분 및 긴급연락체계</li>
+      <li>착공 전 현장관계자의 지하매설물 안전조치 결과 확인 절차 수립</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 가시설물(외부비계) 설치계획(3.3)</span>
+    <ul class="list">
+      <li><b class="term">설계기준</b> — 외부비계 KDS 21 60 00 준수, 2차원·3차원 구조해석, 풍하중·충실률·기본풍속 적정성</li>
+      <li><b class="term">개구부·돌출부</b> — 구조적 취약부 구조해석, 잔재물 반출구·작업자 출입구 반영, 벽이음철물 위치</li>
+      <li><b class="term">설치 높이</b> — 건물높이 대비 비계 설치높이, 설계속도 초과 풍속 시 가림막 해체 등 대책</li>
+      <li><b class="term">순차 해체</b> — 해체 단계별 외부비계 해체순서, 존치 시 전도방지 대책</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 확인사항 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>이동식크레인</b> KOSHA GUIDE C-99-2015</span>
+      <span class="chip"><b>줄걸이·샤클</b> KOSHA GUIDE M-186-2015</span>
+      <span class="chip"><b>외부비계 설계</b> KDS 21 60 00</span>
+      <span class="chip"><b>장비 안전인증</b> 산안법 제84·93조</span>
+      <span class="chip"><b>석면조사 근거</b> 산안법 제119조</span>
+      <span class="chip"><b>지반영향</b> 굴착영향반경 검토</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">사전조사 결과는 구조안전성 검토·해체계획에 반영되어야 함. 인접건축물 피해 예상 시 별도 보강 또는 계측관리 방안을 수립함.</p>
+<p class="pageno">2 / 6</p>
+</div>
+<div class="page">
+<h1 class="title">건축물 해체계획서 검토 사례집 ③ — 작업순서·해체공법·구조안전계획</h1>
+<p class="meta">건축물 해체 안전관리 ｜ 사례집 4.4 작업순서·해체공법 및 구조안전계획(공법·구조안전·구조보강·안전점검표) ｜ 국토교통부·국토안전관리원(2023.12)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 해체공법·선해체·작업순서(4.1)</span>
+    <ul class="list">
+      <li><b class="term">공법 선정</b> — 대상건축물 규모·구조형식·노후도·주변 보행자통행·차량이동·해체범위 종합 고려</li>
+      <li><b class="term">선해체 범위</b> — 장비 진출입·간섭 회피 우선철거, 낙하물 우려 외장재(철골조·캔틸레버·간판) 가설물 설치 전 선철거</li>
+      <li><b class="term">본구조체 외</b> — 광고탑·옥외간판 등 별도 해체계획(해체방법·장비·잔재물 반출)</li>
+      <li><b class="term">단계별 해체</b> — 지상 장비탑재 해체 시 층별 사용장비·작업범위·이동경로·잔재물 투하구 적정성</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 지하건축물 단계별 해체(4.1)</span>
+    <ul class="list">
+      <li><b class="term">되메우기·버팀대(STRUT)</b> — 층별 구조체 해체·버팀대 설치 시 단계별 외벽(흙막이) 안전성</li>
+      <li><b class="term">작업공간</b> — 단계별 해체장비 작업공간·작업반경, 버팀대 설치높이·순서별 작업가능 높이</li>
+      <li><b class="term">보강재</b> — 보강재 인양·회수 계획, 흙막이와 지하외벽 간섭 여부</li>
+      <li><b class="term">기존 활용</b> — 지하외벽·흙막이 활용 시 노후도 사전조사·구조안전성 검토 반영</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 구조안전계획 — 작용하중·단계별 구조안전성 검토(4.2)</span>
+    <div class="formula">작용하중 산정(고정·장비·잔재·이동·경사로 하중) → 해체 단계별 구조해석 → 부재별 응력비·처짐 검토 → 부족 시 구조보강(잭서포트 등)
+      <span class="sub">관계전문가 서명·기명 날인한 해체 순서별 구조설계도서 첨부</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>작용하중 — 층간 수직 이동구간에 <b class="term">해체장비 하중·잔재물 하중 동시</b> 고려, 충격하중·잔재물 밀실도 반영</li>
+      <li><span class="no">②</span>단계별 검토 — 해체 단계 누락·중복 여부, 각 단계 안전 여유·작업공간, 외력(토압·수압·상재하중) 적정성</li>
+      <li><span class="no">③</span>지하외벽 — 지상1층 슬래브 해체 시 <b class="term">지하외벽 휨·전단내력</b> 검토(외력·해체순서 부합), 부족 시 보강</li>
+      <li><span class="no">④</span>지반영향 — 지하층 해체 시 주변 지반·인접 지하건축물·매설물 침하·각변형 <span class="num">1/500</span> 관리기준 이내 확인</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 구조보강계획 — 잭서포트(4.3)</span>
+    <ul class="list">
+      <li><b class="term">잭서포트</b> — 지하 구조체 상부 천공장비 진입 대비 층별 잭서포트 제원·설치수량 계획</li>
+      <li><b class="term">허용하중</b> — 잭서포트 설치 길이별 최대 허용하중 확인(시험성적서)</li>
+      <li><b class="term">설치 위치</b> — 개구부·경사로·포스트파일 간섭 없는 위치, 적용 하중 적정성(장비·잔재물·경사로)</li>
+      <li><b class="term">설치 후</b> — 보강재 인양·설치·회수 계획, 설치 후 3차원 안전성 검토</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 안전점검표 — 단계별 필수확인점(4.4)</span>
+    <ul class="list">
+      <li><b class="term">사전 준비</b> — 도시가스 철거·전기 폐전·정화조 청소·통신선 폐전 확인</li>
+      <li><b class="term">최초 마감재 해체 전</b> — 가설비계 설치·벽이음, 석면조사 및 해체 여부 확인</li>
+      <li><b class="term">지붕층 해체 전</b> — 탑재장비 제원·잔재물 투하구·잭서포트 설치 확인</li>
+      <li><b class="term">중간·지하층 해체 전</b> — 대형장비 제원·해체순서 준수, 계측관리·가시설물 적정성</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 확인사항 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>구조해석 하중</b> 고정·장비·잔재·이동·경사로</span>
+      <span class="chip"><b>지반 관리기준</b> 각변형 1/500 이내</span>
+      <span class="chip"><b>잭서포트</b> 시험성적서 허용하중</span>
+      <span class="chip"><b>지하외벽</b> 휨·전단내력 검토</span>
+      <span class="chip"><b>구조설계도서</b> 관계전문가 서명·날인</span>
+      <span class="chip"><b>안전점검표</b> 시기별 필수확인점</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">구조안전성 검토는 콘크리트 강도·부재배치 등 현장조사 결과를 반영해야 하며, 해체계획과 검토 결과가 일치하여야 함. 보강재 설치 후 3차원 안전성 검토를 실시함.</p>
+<p class="pageno">3 / 6</p>
+</div>
+<div class="page">
+<h1 class="title">건축물 해체계획서 검토 사례집 ④ — 안전·환경관리·부지정리·폭파해체</h1>
+<p class="meta">건축물 해체 안전관리 ｜ 사례집 4.5 안전관리·4.6 환경관리·4.7 부지정리·4.8 폭파에 의한 해체계획 ｜ 국토교통부·국토안전관리원(2023.12)</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 해체작업자·인접건축물 안전관리(5.1)</span>
+    <ul class="list">
+      <li><b class="term">직무별 교육</b> — 장비운전원·살수작업자·신호수 직무별 안전교육(건설기술진흥법·산안법)</li>
+      <li><b class="term">추락 방지</b> — 잔재물 투하구 주변 추락방지, 내부 안전통로·비상탈출구·비상계단, 안전난간·추락방지망</li>
+      <li><b class="term">화재 방지</b> — 소화기 배치·대피로 계획, 사고 시 초기진압 대책</li>
+      <li><b class="term">인접건축물</b> — 해체 단계별 인접건축물 보호 대책, 계측관리 계획</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 주변통행·보행자 안전관리(5.1)</span>
+    <ul class="list">
+      <li><b class="term">차량 이동계획</b> — 교통안내원·차량유도원 배치, 우회도로 설치, 보행자 안전통로</li>
+      <li><b class="term">버스정류장 이설</b> — 차량 진출입·통행량 고려한 이설 위치 적정성, 신호수·안전관리원 배치</li>
+      <li><b class="term">인접건축물 보호</b> — 단계별 보호대책·가시설물 순차 해체, 울타리 설치 곤란 시 별도 보호대책</li>
+      <li><b class="term">안전통로</b> — 살수작업자·신호수 추락방지 안전시설물, 상시 유지관리</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 환경관리계획 — 소음·진동·비산먼지·해체물 처리(4.6)</span>
+    <div class="formula">규제기준 확인(소음·진동관리법 시행규칙 제20조③) → 저소음·저진동 공법·잔재물 투하 저감 → 방진막·고압살수·살수작업자 → 성상별 분리배출·처리
+      <span class="sub">해체물 처리는 폐기물관리법 제17조 배출자 의무, 건설폐기물 처리계획 신고필증 확인</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>소음·진동 — 생활소음·진동 규제기준 대상지역 여부, 장비 운영·측정 주기·기록관리, 작업시간대 설정</li>
+      <li><span class="no">②</span>비산먼지 — 방진막 설치 위치, 살수장비 위치·개수, 장비 이동경로·살수작업자 안전 이격거리</li>
+      <li><span class="no">③</span>해체물 처리 — 폐콘크리트·폐목재·폐합성수지 성상별 분리·임시보관·반출, 잭서포트·E/V 벽체 간섭 고려 운반동선</li>
+      <li><span class="no">④</span>세륜·오탁수 — 세륜수 우수관로 배출 시 오탁수 처리계획, 수질검사 후 배출(제6.2절)</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">4 · 부지정리계획(4.7)</span>
+    <ul class="list">
+      <li><b class="term">잔재물 확인</b> — 전체 부지 해체 폐기물·잔재물 유무 확인, 확인주체(시공사·감리·건축주)</li>
+      <li><b class="term">되메우기·평탄</b> — 되메우기·평탄작업, 배수로 정비 등 복구계획(경사도 10% 이내)</li>
+      <li><b class="term">복구</b> — 보도·통행로·인접건물 접근로 복구계획</li>
+      <li><b class="term">우수 유입방지</b> — 1층 바닥 슬래브 존치 시 계단실·E/V 개구부 보호, 우기 작업 시 우수 유입방지</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">5 · 폭파에 의한 해체계획(4.8)</span>
+    <ul class="list">
+      <li><b class="term">구조안전성</b> — 발파진동·폭풍압·발파압에 대한 잔여 구조체 전도·붕괴 가능성 구조검토</li>
+      <li><b class="term">발파시공</b> — 대상건축물 작업반경 영향분석, 인접건축물 안전평가·영향 검토, 화약류 사용계획</li>
+      <li><b class="term">안전관리</b> — 발파진동·폭풍 방지·방화 계획, 비산·소음·진동 방지대책</li>
+      <li><b class="term">주변 안전</b> — 건물 높이 <span class="num">2.5배</span> 이상 구역 안전관리계획, 불발 시 응급대책</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">6 · 핵심 수치·기준 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>소음규제 근거</b> 소음·진동관리법 시행규칙 제20조③</span>
+      <span class="chip"><b>건설폐기물</b> 폐기물관리법 제17조 배출자 의무</span>
+      <span class="chip"><b>분별해체</b> 건설폐기물 재활용촉진법 제4·5조</span>
+      <span class="chip"><b>부지 경사도</b> 10% 이내</span>
+      <span class="chip"><b>배수로</b> 규격 200×200 이상·구배 3% 이상</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">본 요약은 「건축물 해체계획서 검토 사례집」(국토교통부·국토안전관리원, 2023.12)의 주요검토내용을 발췌·정리한 것으로, 세부 사안은 현장여건에 따라 검토 결과가 다를 수 있음. 문의 국토안전관리원 건축물관리지원센터(1588-8788).</p>
+<p class="pageno">4 / 6</p>
+</div>
+<div class="page">
+<h1 class="title">건축물 해체계획서 검토 사례집 ⑤ — 학교시설 적용 관점·안전관리</h1>
+<p class="meta">건축물 해체 안전관리 ｜ 학교시설 관리자 실무 관점 ｜ 건축물관리법 제30조 및 사례집(국토교통부·국토안전관리원) 재구성</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">1 · 학교 건물 해체의 허가·신고 판단</span>
+    <ul class="list">
+      <li>대부분 교사동은 연면적 <span class="num">500㎡</span>·높이 <span class="num">12m</span>·<span class="num">3개층</span> 기준을 초과 → <b class="term">허가 대상</b></li>
+      <li>학교는 정문·통학로·정류장·횡단보도 인근이 많아 <b class="term">제30조② 허가 전환</b> 가능(조례 확인)</li>
+      <li>해체계획서 — 건축사 또는 기술사(건축구조·시공·건설안전)가 작성·서명날인</li>
+      <li>발주 전 관할 지자체 조례(허가 전환 시설·도로 폭 기준) 사전 확인</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">2 · 국토안전관리원 검토대상</span>
+    <ul class="list">
+      <li>검토 의무 대상 — <b class="term">특수구조 건축물</b>·<b class="term">10톤 이상</b> 장비 탑재 해체·<b class="term">폭파</b> 해체(허가권자 의뢰)</li>
+      <li>학교 해체는 통상 압쇄공법 — <span class="num">10톤 이상</span> 대형장비 탑재 시 검토대상 편입</li>
+      <li>검토 처리기한 <span class="num">7일</span>(1회 연장), 결과 적정 / 조건부적정 / 부적정</li>
+      <li>부적정·조건부 판정 시 재검토 1회 요청, 착공 전 검토결과 반영</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">3 · 학교 특성 반영 안전관리 절차</span>
+    <div class="formula">학사일정 협의(방학 중 시행 원칙) → 재학생 동선·통학로 완전 분리 → 가림막·안전통로·신호수 배치 → 존치 교사동 계측관리
+      <span class="sub">재학 중 부분해체가 불가피한 경우 등하교·수업시간대를 회피하고 안전관리원 상주 배치</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>학사일정 — <b class="term">방학 중 시행 원칙</b>, 공기 산정 시 방학기간 내 완료 가능성 및 개학 전 부지정리 검토</li>
+      <li><span class="no">②</span>재학생 안전 — 통학로·운동장 동선과 해체구역 <b class="term">완전 분리</b>, 가설울타리·안전통로·CCTV·신호수 배치</li>
+      <li><span class="no">③</span>존치 교사동 — 인접 존치 건물 침하·균열 계측관리, 각변형 <span class="num">1/500</span> 관리기준 이내 확인</li>
+      <li><span class="no">④</span>석면 — 최초 마감재 해체 전 <b class="term">석면조사·해체 선행</b>(산안법 제119조), 음압시설 하 습식 제거 후 본해체 착수</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">4 · 핵심 수치·기준 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>허가 요건</b> 연면적 500㎡·높이 12m·3개층 이상</span>
+      <span class="chip"><b>KALIS 검토</b> 특수구조·10톤 이상·폭파</span>
+      <span class="chip"><b>검토 처리기한</b> 7일(1회 연장)</span>
+      <span class="chip"><b>존치 교사동</b> 각변형 1/500 이내</span>
+      <span class="chip"><b>석면조사</b> 산안법 제119조</span>
+      <span class="chip"><b>학사일정</b> 방학 중 시행 원칙</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">학교 건물 해체는 「건축물관리법」 제30조가 적용되며, 방학 중 시행·재학생 안전관리는 학교 현장 실무 관행으로 개별 학사일정·현장여건에 따라 조정함.</p>
+<p class="pageno">5 / 6</p>
+</div>
+<div class="page">
+<h1 class="title">건축물 해체계획서 검토 사례집 ⑥ — 감리대상·환경·발주 실무</h1>
+<p class="meta">건축물 해체 안전관리 ｜ 학교시설 관리자 실무 관점 ｜ 건축물관리법 제31·32조·시행령 제22조 재구성</p>
+<div class="rule-navy"></div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge rust">1 · 해체공사 감리자 지정 대상 (건축물관리법 제31조·시행령 제22조)</span>
+    <div class="formula">감리대상 = <b>허가 대상 건축물 전부</b> + 신고 대상 중 ①검토대상(특수구조·10톤 이상·폭파) 또는 ②유동인구 많거나 건물 밀집지역 등 허가권자가 필요 인정하는 건축물
+      <span class="sub">감리자는 허가권자가 시·도 명부에서 지정 — 공사시공자 본인 및 계열회사는 제외(관리자 임의선정 불가)</span>
+    </div>
+    <ol class="nlist">
+      <li><span class="no">①</span>학교 교사동은 대부분 <b class="term">허가 대상</b> → 감리자 지정 대상. 통학로·정류장 인근으로 허가 전환 시에도 감리 지정</li>
+      <li><span class="no">②</span>감리자 자격 — 감리자격자 중 <b class="term">해체공사감리 교육 이수자</b>(제31조의2)</li>
+      <li><span class="no">③</span>상주 여부 — 해체공법·범위 등 고려 <b class="term">대통령령으로 정하는 건축물은 전체 해체공사 기간 감리원 상주</b>, 그 외는 수시 감리(제31조③)</li>
+      <li><span class="no">④</span>해체+신축 연계 — 후속 신축(「건축법」 제25조②) 시 관리자 요청으로 <b class="term">해체감리자를 공사감리자로 지정</b> 가능(시행령 제22조③)</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <span class="badge">2 · 환경·민원 관리</span>
+    <ul class="list">
+      <li><b class="term">소음·진동</b> — 인접 교사동·주거 영향 고려, 저소음·저진동 공법(소음·진동관리법 시행규칙 제20조③)</li>
+      <li><b class="term">비산먼지</b> — 방진막·고압살수, 운동장·급식실·인접 교사 유입 방지</li>
+      <li><b class="term">해체물 처리</b> — 폐기물관리법 제17조 배출자 의무, 석면 함유 폐기물 별도 지정폐기물 처리</li>
+      <li><b class="term">사전 안내</b> — 인근 학부모·주민 사전 공지 및 민원 대응 창구 운영</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="badge">3 · 발주·감독 실무 체크</span>
+    <ul class="list">
+      <li>해체 착공신고(법 제30조의2), 해체공사감리 지정 및 상주 여부 확인</li>
+      <li><b class="term">변경허가(신고)</b> — 공법·작업순서·면적·장비종류·석면함유·안전대책 변경 시</li>
+      <li>착공 후 변경 — 착공예정일 <span class="num">30일</span> 이상·해체작업자(하수급인) 변경 시 신고</li>
+      <li>준공 — 되메우기·평탄·배수로 정비, 잔재물·석면 완전 반출 확인(시공사·감리·학교)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row1">
+  <div class="card">
+    <span class="badge">4 · 핵심 수치·기준 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>감리대상</b> 허가대상 전부+검토·밀집 신고건축물</span>
+      <span class="chip"><b>감리자 지정</b> 허가권자·시도 명부(시공자 제외)</span>
+      <span class="chip"><b>상주감리</b> 대통령령 정하는 건축물</span>
+      <span class="chip"><b>변경 착공일</b> 30일 이상</span>
+      <span class="chip"><b>소음규제</b> 소음·진동관리법 시행규칙 제20조③</span>
+      <span class="chip"><b>해체물</b> 폐기물관리법 제17조 배출자 의무</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">본 페이지는 학교시설 관리자 관점에서 사례집을 재구성한 것으로, 감리대상·절차·수치는 「건축물관리법」 제30~32조·시행령 제22조 및 사례집 본문에 근거함.</p>
+<p class="pageno">6 / 6</p>
+</div>
+</body></html>

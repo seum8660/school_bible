@@ -1,0 +1,101 @@
+  /* base_infographic.css — 인포그래픽 스타일 변형 (BIBLE 요약문서)
+     첨부 인포그래픽(네이비→틸 그라데이션, 열린 카드(상하 가로 라인만), 틸 넘버서클,
+     그라데이션 아이콘 타일, 하단 '한줄 결론' 밴드) 언어를 요약문서에 이식.
+     화면/공유용(색채우기·그라데이션 O). 인쇄 무채움이 필요하면 base_notion.css를 쓴다.
+
+     핵심 구성:
+       .title        : 네이비 굵은 18pt + 틸 그라데이션 언더바(::after). nowrap로 '한 줄' 유지.
+                       긴 제목은 접두어를 줄인다(예: '건축물 해체계획서 검토 사례집'→'건축물 해체 사례집').
+       .tic / .ic    : 네이비→틸 그라데이션 라운드 타일 + 흰색 SVG 라인 아이콘(이모지 금지).
+       .nlist .no    : 틸 넘버서클(원 안 흰 숫자).
+       .num          : 틸 굵게(핵심 수치).
+       .formula      : 라이트 블루그레이 패널 + 틸 좌측 바.
+       .badge.emph   : 다크 네이비 pill(중요 섹션, 예: 발주청).
+       .conclude     : 네이비→틸 그라데이션 '한줄 결론' 밴드(마지막 페이지).
+
+     [역할(책임 주체) 강조 — 필수] 발주청·감독자·감리자 등 '누가 책임지는가'가 나오는 카드에는
+       .rolebar (앰버 #FDF0E1 바 + #D9730D 인물 아이콘 타일 + 굵은 강조 문구)를 넣는다.
+       본문 속 역할어는 .rolet (앰버 볼드 텍스트)로 색상 강조. 워밍 앰버가 네이비·틸과 대비되어 눈에 띈다.
+  */
+
+  :root{
+    --navy:#1B3A5B; --navy2:#16304d; --teal:#227C8E; --teal2:#2E8C9E;
+    --ink:#1B3A5B; --body:#42505F; --gray:#6B7280; --light:#8A93A0;
+    --panel:#EAF0F5; --panel2:#F3F7F9; --card:#ffffff;
+    --line:#DCE4EC; --line2:#C8D3DE;
+    --grad:linear-gradient(135deg,#1B3A5B 0%,#227C8E 100%);
+    --shadow:0 0.5mm 1.8mm rgba(27,58,91,0.13);
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{ width:210mm; font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .sheet{ min-height:160mm; }
+  .title{ margin:0; color:var(--navy); font-size:18pt; font-weight:800; letter-spacing:-0.02em; line-height:1.25; white-space:nowrap;
+    padding:0 0 2.4mm 0; }
+  .title::after{ content:""; display:block; height:1.4mm; margin-top:2mm; border-radius:1mm;
+    background:var(--grad); width:46mm; }
+  .meta{ margin:2mm 0 0 0; font-size:6.4pt; font-weight:400; color:var(--gray); letter-spacing:0.01em; line-height:1.45; }
+  .rule-navy{ height:0; border:none; margin:2.4mm 0 3.6mm 0; }
+  .rule-gray{ height:0; border-top:0.25mm solid var(--line); margin:3.6mm 0 2mm 0; }
+  .row1{ margin-bottom:4mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+  .card{ border:none; border-top:0.3mm solid var(--line); border-bottom:0.3mm solid var(--line); border-radius:0; background:var(--card); box-shadow:none;
+    padding:3.2mm 4mm 3.4mm 4mm; }
+  .badge{ display:inline-block; background:none; color:var(--navy); white-space:normal;
+    font-size:9.2pt; font-weight:800; letter-spacing:-0.01em; line-height:1.35;
+    padding:0 0 1.6mm 0; border-bottom:0.5mm solid var(--teal); margin-bottom:2.6mm; }
+  .badge.rust{ color:var(--navy); border-bottom-color:var(--teal); }
+  .badge.emph{ background:var(--navy2); color:#fff; border-bottom:none; border-radius:1.6mm; padding:1mm 2.8mm; }
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7.6pt; line-height:1.62; padding-left:3.2mm; text-indent:-3.2mm; margin-bottom:1.7mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"▪  "; color:var(--teal); font-weight:700; }
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7.6pt; line-height:1.62; padding-left:5mm; text-indent:-5mm; margin-bottom:1.7mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ display:inline-block; color:#fff; background:var(--teal); font-weight:700; font-size:6.6pt;
+    width:4mm; height:4mm; line-height:4mm; text-align:center; border-radius:50%; margin-right:1.4mm; }
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--teal); font-weight:800; }
+  .formula{ background:var(--panel); border:none; border-left:1.4mm solid var(--teal); border-radius:1.4mm 2mm 2mm 1.4mm;
+    padding:2.8mm 3.8mm; margin:0 0 3mm 0; text-align:center; font-size:7.6pt; font-weight:600; line-height:1.55; color:var(--navy); }
+  .formula .num{ color:var(--teal); }
+  .formula .sub{ display:block; font-size:6.5pt; font-weight:500; color:var(--gray); margin-top:1.4mm; line-height:1.45; }
+  .chips{ display:flex; flex-wrap:wrap; gap:2mm; }
+  .chip{ font-size:6.7pt; line-height:1.35; background:var(--panel2); border:0.25mm solid var(--line);
+    border-radius:1.6mm; padding:1.4mm 2.6mm; color:var(--body); white-space:nowrap; }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:800; color:var(--teal); }
+  .hl{ background:#DCEBEF; color:#155E6E; font-weight:800; padding:0.2mm 1mm; border-radius:0.8mm; }
+  .note{ text-align:center; font-size:6.1pt; line-height:1.5; color:var(--light); margin:0; }
+  .conclude{ background:var(--grad); border-radius:3mm; padding:4mm 5mm; margin:1mm 0 0 0; color:#fff; box-shadow:var(--shadow); }
+  .conclude .lab{ display:inline-block; color:#7FD4E3; font-weight:800; font-size:8.4pt; margin-right:2mm; letter-spacing:0.02em; }
+  .conclude .txt{ font-size:9pt; font-weight:700; line-height:1.5; }
+  .conclude .txt b{ color:#8FE0EE; }
+  .page{ width:210mm; padding:13mm 10mm 8mm; page-break-after:always; box-sizing:border-box; }
+  .page.haspin{ min-height:297mm; display:flex; flex-direction:column; }
+  .row1.recap{ margin-top:auto; }
+  .page:last-child{ page-break-after:auto; }
+  .pageno{ text-align:center; font-size:6.1pt; color:var(--light); margin-top:2.6mm; }
+  @media screen{ html,body{ width:auto; } body{ background:#E7ECF1; display:flex; flex-direction:column; align-items:center; } .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,0.12); } }
+  @media print{ body{ width:auto; } }
+
+  .badge{ display:inline-flex; align-items:center; gap:2.2mm; }
+  .ic{ width:5.8mm; height:5.8mm; border-radius:1.5mm; background:var(--grad);
+       display:inline-flex; align-items:center; justify-content:center; flex:none; }
+  .ic svg{ width:3.7mm; height:3.7mm; stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .badge.emph .ic{ background:rgba(255,255,255,0.18); }
+  .tic{ display:inline-flex; align-items:center; justify-content:center; vertical-align:middle;
+        width:8mm; height:8mm; border-radius:2mm; background:var(--grad); margin-right:2.6mm; flex:none; }
+  .tic svg{ width:5mm; height:5mm; stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+  .rolebar{ display:flex; align-items:flex-start; gap:2.2mm; background:#FDF0E1; border-left:1.4mm solid #D9730D;
+    border-radius:0 1.6mm 1.6mm 0; padding:2mm 3mm; margin:0 0 2.8mm 0; }
+  .rolebar .ri{ flex:none; width:5.2mm; height:5.2mm; border-radius:1.3mm; background:#D9730D;
+    display:inline-flex; align-items:center; justify-content:center; }
+  .rolebar .ri svg{ width:3.4mm; height:3.4mm; stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .rolebar .t{ font-size:7.3pt; line-height:1.52; color:#7C3D0A; }
+  .rolebar .t b{ color:#B45309; font-weight:800; }
+  .rolet{ color:#B45309; font-weight:800; }

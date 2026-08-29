@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>건설엔지니어링 및 시공 평가 워크플로우</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff; --text:#1d1f20; --divider:rgba(29,31,32,.16); --muted:rgba(29,31,32,.62); --faint:rgba(29,31,32,.48);
+  --a300:#b5d9fd; --a500:#5980a6; --a700:#416180; --a900:#1d2d3d; --key-bg:#eef6ff; --bot-bg:#d6ebff;
+  --head:'Barlow Condensed','Pretendard',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fff;color:var(--text);font-family:'Pretendard','Malgun Gothic',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{padding:26px 28px 44px}
+.kick{font-family:var(--head);font-size:12px;font-weight:500;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+h1{font-family:var(--head);font-size:34px;font-weight:600;letter-spacing:-.01em;line-height:1.1;margin-top:6px}
+.sub{font-size:13.5px;color:var(--muted);margin-top:7px}
+.hd{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--divider)}
+.hd .right{margin-left:auto;text-align:right;font-size:12.5px;color:var(--muted);line-height:1.6}
+.hd .right b{display:block;font-size:11.5px;color:var(--faint);font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--divider);margin-top:20px}
+.stat{padding:15px 18px;border-left:1px solid var(--divider)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font-family:var(--head);font-size:28px;font-weight:600;line-height:1}
+.stat span{font-size:11.5px;color:var(--faint)}
+.leg{display:flex;gap:26px;flex-wrap:wrap;margin-top:16px;font-size:12px;color:var(--muted)}
+.leg span{display:inline-flex;align-items:center;gap:8px}
+.leg i{width:20px;height:13px;display:inline-block;background:#fff;border:1px solid var(--divider)}
+.i-lead{border-top:3px solid var(--a300)}
+.i-key{background:var(--key-bg);border-top:3px solid var(--a500)}
+.i-bot{background:var(--bot-bg);border-top:5px solid var(--a900)}
+.leg em{font-style:normal;font-weight:700;color:var(--text)}
+.leg .ln{width:26px;height:0;border:0;border-top:2px solid var(--a500)}
+.leg .ln.rt{border-top-style:dashed;border-top-color:var(--faint)}
+.board{position:relative;margin-top:18px;border:1px solid var(--divider)}
+#edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+.grid{display:grid;grid-template-columns:132px repeat(4,1fr) 96px;position:relative;z-index:1}
+.hc{padding:12px;border-right:1px solid var(--divider);border-bottom:1px solid var(--text);font-family:var(--head);font-size:16px;font-weight:500;line-height:1.2}
+.hc small{display:block;font-family:'Pretendard',sans-serif;font-size:10.5px;font-weight:500;color:var(--faint);letter-spacing:.08em;margin-top:3px}
+.hc0{padding:12px 12px 10px;display:flex;align-items:flex-end;font-family:var(--head);font-size:12px;color:var(--faint);border-right:1px solid var(--divider);border-bottom:1px solid var(--text)}
+.hcx{border-bottom:1px solid var(--text)}
+.sc{padding:14px 12px;border-right:1px solid var(--divider);border-bottom:1px dashed var(--divider);display:flex;flex-direction:column;justify-content:center;gap:2px}
+.sc b{font-family:var(--head);font-size:20px;font-weight:600;line-height:1;color:var(--a700)}
+.sc span{font-size:11px;color:var(--faint)}
+.cl{padding:16px 20px;border-right:1px solid var(--divider);border-bottom:1px dashed var(--divider);display:flex;flex-direction:column;gap:10px}
+.cl.last{border-right:0}
+.cl.pad{min-height:96px}
+.gap{border-bottom:1px dashed var(--divider)}
+.grid > .end{border-bottom:0}
+.node{position:relative;background:#fff;border-top:3px solid var(--a300);padding:10px 11px;display:flex;flex-direction:column;gap:5px;cursor:pointer;
+  transition:transform .22s cubic-bezier(.2,.8,.3,1),box-shadow .22s,opacity .22s,filter .22s}
+.node:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.10)}
+.node .r{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.node .id{font-family:var(--head);font-size:12.5px;font-weight:500;letter-spacing:.06em;color:var(--faint)}
+.node .tg{font-size:10.5px;font-weight:700;color:var(--a700)}
+.node .t{font-size:12.5px;line-height:1.45;color:var(--text);word-break:keep-all;text-wrap:pretty}
+.node .lw{font-size:10.5px;color:var(--faint)}
+.node.key{background:var(--key-bg);border-top-color:var(--a500)}
+.node.bot{background:var(--bot-bg);border-top:6px solid var(--a900)}
+.node.bot .tg{color:var(--a900)}
+.node.post{border-top:1px solid var(--divider)}
+.node.post .tg{color:var(--faint)}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.045)}100%{transform:scale(1.02)}}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(89,128,166,.38)}70%{box-shadow:0 0 0 12px rgba(89,128,166,0)}100%{box-shadow:0 0 0 0 rgba(89,128,166,0)}}
+@keyframes dash{to{stroke-dashoffset:-24}}
+.node.on{transform:scale(1.02);z-index:5;box-shadow:0 10px 26px rgba(0,0,0,.16),0 0 0 2px rgba(89,128,166,.6);animation:pop .32s ease both}
+.node.on::after{content:"";position:absolute;inset:-2px;pointer-events:none;animation:ring 1.1s ease-out}
+body.focus .node:not(.on){opacity:.32;filter:saturate(.5)}
+#edges path.e{transition:opacity .22s,stroke-width .22s}
+body.focus #edges path.e{opacity:.12}
+body.focus #edges path.e.lit{opacity:.62;stroke-width:2;stroke-dasharray:7 6;animation:dash .9s linear infinite}
+#panel{position:fixed;left:0;right:0;bottom:0;z-index:90;background:#fff;border-top:1px solid var(--divider);box-shadow:0 -10px 30px rgba(0,0,0,.12);padding:16px 24px;max-height:46vh;overflow:auto;transform:translateY(110%);transition:transform .28s cubic-bezier(.2,.8,.3,1)}
+#panel.show{transform:translateY(0)}
+.foot{margin-top:18px;font-size:11.5px;color:var(--faint);line-height:1.8}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:100px repeat(4,1fr) 40px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd">
+    <div>
+      <div class="kick">Process Board / 건설기술진흥법 제50조 · 시행령 제82조</div>
+      <h1>건설엔지니어링 및 시공 평가</h1>
+      <div class="sub">평가대상 확인부터 평가자료 요청 · 검토 · 평가위원회 · 결과 통보 · 이의신청 · CSI 제출까지의 업무 경로</div>
+    </div>
+    <div class="right"><b>기준 법령</b>건설기술진흥법 · 건설엔지니어링 및 시공 평가지침(국토부 고시 제2025-591호)</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>16</b><span>절차 노드</span></div>
+    <div class="stat"><b>4</b><span>행위 레인</span></div>
+    <div class="stat"><b>6</b><span>단계 게이트</span></div>
+    <div class="stat"><b>4</b><span>병목 구간</span></div>
+    <div class="stat"><b>2</b><span>회귀 경로</span></div>
+  </div>
+
+  <div class="leg">
+    <span><i class="i-lead"></i><em>선행</em> 절차를 여는 사유 발생·조기 판단</span>
+    <span><i class="i-key"></i><em>핵심</em> 반드시 거쳐야 하는 산출물·계약행위</span>
+    <span><i class="i-bot"></i><em>병목</em> 검토·승인 지연과 재작업이 잦은 구간</span>
+  </div>
+  <div class="leg" style="margin-top:9px">
+    <span><i></i><em>후속</em> 앞 단계 결과를 이행·관리하는 업무</span>
+    <span><i class="ln"></i>업무 순서</span>
+    <span><i class="ln rt"></i>회귀(보완·반려 재신청)</span>
+  </div>
+
+  <div class="board" id="board">
+    <svg id="edges" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#5980a6"></path></marker>
+      <marker id="arr" markerWidth="8" markerHeight="8" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8c8f91"></path></marker></defs>
+    </svg>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="foot">※ 본 워크플로우는 실무 참고용입니다. 실제 적용 시 관련 법령·계약조건 원문과 소속 기관 기준을 반드시 확인하세요.</div>
+</div>
+
+<div id="panel"></div>
+
+<script>
+var STAGES=[
+  {k:'S0',n:'평가대상 확인'},{k:'S1',n:'자료 요청·작성'},{k:'S2',n:'자료 제출·검토'},
+  {k:'S3',n:'평가계획 수립'},{k:'S4',n:'평가위원회·평가 실시'},{k:'S5',n:'통보·이의·제출'}
+];
+var LANES=['own','biz','com','csi'];
+var NODES=[
+  {id:'N01',s:0,l:'own',k:'lead',t:'평가대상 여부 판단 — 설계 2.3억↑ · 감독권한대행 CM 전건 · 공사 100억↑',law:'시행령 제82조',
+   title:'평가대상 여부 판단',lane:'S0 대상 확인 · 발주청 담당팀',chips:['대상 판단 조서','계약금액 확인'],due:'계약 직후',conf:'82%',
+   lawT:'설계용역은 부가세 포함 계약금액이 국가계약법 고시금액(2025년 기준 2.3억원) 이상인 기본·실시설계, 건설사업관리는 감독 권한대행 등 건설사업관리 전건, 시공은 총공사비 100억원 이상(도급자 설치 관급자재비 포함, 보상비 제외)이 대상입니다. 전기·통신·소방은 평가에서 제외합니다.'},
+  {id:'N02',s:0,l:'csi',k:'bot',t:'CSI 평가대상 목록 확인 — 없으면 직접입력 · 법인인증서 등록',law:'평가지침',
+   title:'CSI 대상 등록',lane:'S0 대상 확인 · 국토안전관리원(CSI)',chips:['회원가입','법인인증서 등록','평가대상 정보 입력'],due:'평가 착수 전',conf:'64%',
+   bottle:'회원가입·법인인증서 등록이 안 되면 대상 조회·입력 자체가 불가하고, 정보 입력 시 지정한 담당자만 수정할 수 있어 인사이동 때 막힙니다. 목록에 없어도 평가대상에서 제외되는 것이 아니므로 발주청이 기준으로 직접 확인해 입력해야 합니다.',
+   lawT:'건설공사 안전관리 종합정보망(csi.go.kr)의 평가대상 메뉴에서 확인하고, 목록에 없으면 하단 직접입력으로 등록합니다. 차수 계약·기 평가 완료 건은 사유를 선택해 「평가대상 제외」로 저장합니다.'},
+  {id:'N03',s:1,l:'own',k:'key',t:'평가 실시시기 산정 — 용역 완료 1개월 / 착공 6개월 / 공정 90%~준공 후 60일',law:'평가지침 제8조·제12조·제16조',
+   title:'평가 실시시기 산정',lane:'S1 자료 요청 · 발주청 담당팀',chips:['평가시기 산정표','착공일·준공일 확인'],due:'대상 확인 직후',conf:'78%',
+   lawT:'기본설계는 용역 완료 후 1개월 이내, 실시설계 과정평가는 완료 1개월 이내·결과평가는 건설공사 착공일부터 6개월 이내(실시설계 준공 여부와 무관)입니다. 건설사업관리·시공은 공사기간 기준 90% 이상 진척 시점부터 준공 후 60일까지 실시합니다.'},
+  {id:'N04',s:1,l:'own',k:'key',t:'평가자료 작성 요청 공문 — 본사 · 현장 동시 발송, 작성기간 20일 보장',law:'평가지침',
+   title:'평가자료 작성 요청',lane:'S1 자료 요청 · 발주청 담당팀',chips:['요청 공문','미제출 불이익 안내'],due:'평가시기 20일 전',conf:'80%',
+   lawT:'현장으로만 요청하거나 구두로 요청하면 증빙이 없어 민원이 생깁니다. 본사와 현장에 공문으로 요청하고, 미제출 항목에는 최하점수가 부여된다는 사실을 문서로 고지해야 합니다.'},
+  {id:'N05',s:1,l:'biz',k:'key',t:'평가자료 작성 — 설계 별표1 / 건설사업관리 별표2·3 / 시공 별표4·5',law:'평가지침 별표',
+   title:'평가자료 작성',lane:'S1 자료 작성 · 평가대상 사업자',chips:['평가자료 서식','증빙 일체'],due:'요청 후 20일 내',conf:'76%',
+   lawT:'공동이행은 대표사를 평가해 구성사에 결과를 적용하고, 분담이행은 분담 사업자별로 평가합니다. CSI 공지사항의 자료작성용 참고 양식을 쓰면 항목 누락을 줄일 수 있습니다.'},
+  {id:'N06',s:2,l:'biz',k:'bot',t:'평가자료 제출 — 요청받은 날부터 20일 이내',law:'평가지침',
+   title:'평가자료 제출',lane:'S2 제출 · 평가대상 사업자',chips:['평가자료 제출 공문'],due:'요청 후 20일 내',conf:'62%',
+   bottle:'제출 지연·누락이 전체 일정을 밀어냅니다. 미제출 항목은 최하점 부여 대상이지만 자료가 없어도 평가는 실시해야 하므로, 기한 임박 시 재촉 공문으로 증빙을 남기세요.',
+   lawT:'자료 제출을 요청받은 자는 특별한 사유가 없으면 20일 이내에 제출해야 하며, 제출하지 않은 평가항목에는 세부평가기준에 따라 최하점수를 부여합니다.'},
+  {id:'N07',s:2,l:'own',k:'key',t:'평가자료 사실관계 확인 · 정량항목 검토',law:'평가지침',
+   title:'평가자료 검토',lane:'S2 검토 · 발주청 담당팀',chips:['검토 조서','정량항목 확인표'],due:'위원회 개최 전',conf:'74%',
+   lawT:'문서 제출·승인일, 문서지적, 과태료·행정처분 내역 등 정량평가 항목의 사실관계와 거짓실적 여부를 확인하고 누락·오류를 검토합니다. 정량평가 외 항목은 위원별 정성평가로 진행합니다.'},
+  {id:'N08',s:2,l:'com',k:'post',t:'공사감독자 · 감독권한대행 건설사업관리기술인 사실관계 검토(시공평가)',law:'평가지침',
+   title:'감독자 사실관계 검토',lane:'S2 검토 · 공사감독자·CM기술인',chips:['검토 회신'],due:'통보 후 신속히',conf:'76%',
+   lawT:'발주청은 제출받은 시공평가 자료를 공사감독자 또는 감독 권한을 대행하는 건설사업관리기술인에게 통보해 사실관계를 검토하도록 해야 합니다.'},
+  {id:'N09',s:3,l:'own',k:'key',t:'평가위원회 구성 — 위원장 포함 5인 이상, 과반수 외부 전문가',law:'평가지침',
+   title:'평가위원회 구성',lane:'S3 평가계획 · 발주청 담당팀',chips:['위원 명단','이해당사자 배제 확인'],due:'평가 실시 전',conf:'72%',
+   lawT:'관계 공무원과 외부 전문가로 구성하되 과반수를 외부 전문가로 합니다(공정성·객관성을 확보한 별도 조직 구성 시 예외). 해당 공사·용역의 이해당사자는 위원에서 배제하며, 기술자문위원회 활용도 가능합니다.'},
+  {id:'N10',s:3,l:'csi',k:'post',t:'평가위원 Pool 조회 신청 — CSI 평가담당자 메뉴',law:'평가지침',
+   title:'평가위원 Pool 조회',lane:'S3 평가계획 · 국토안전관리원(CSI)',chips:['위원 조회 신청'],due:'위원 섭외 전',conf:'78%',
+   lawT:'자체 위원 확보가 어려우면 CSI의 「평가위원 관리 — 국토안전관리원 평가위원 조회 신청」으로 위원 Pool을 요청할 수 있습니다.'},
+  {id:'N11',s:3,l:'own',k:'post',t:'평가계획 통보 — 평가일시 · 장소 · 추가 지참자료 안내',law:'평가지침',
+   title:'평가계획 통보',lane:'S3 평가계획 · 발주청 담당팀',chips:['평가계획 통보 공문'],due:'위원회 개최 전',conf:'80%',
+   lawT:'평가 일시와 장소를 사업자에게 통보하고, 누락되거나 추가할 자료가 있으면 위원회 당일 지참하도록 안내합니다.'},
+  {id:'N12',s:4,l:'com',k:'bot',t:'평가위원회 개최 · 현장조사 · 평가표 작성(등급 · 절대평가)',law:'평가지침',
+   title:'평가위원회 개최·평가 실시',lane:'S4 평가 실시 · 평가위원회',chips:['평가표(법정서식)','현장조사 결과','항목별 평가사유'],due:'평가시기 내',conf:'66%',
+   bottle:'위원 일정 조율과 현장조사가 겹쳐 개최가 밀립니다. 설계 5개 분야, 건설사업관리 6개 분야 및 가·감점, 시공 9개 분야 및 가·감점으로 항목이 많아 당일 취합도 지연되기 쉽습니다.',
+   lawT:'평가대상 설명 → 위원 소개·위원장 호선 → 평가방법 안내 → 자료 검토 및 현장조사(건설사업관리·시공) → 평가표 작성·제출 → 결과 취합 순으로 진행합니다. 시공평가는 항목별 평가사유를 반드시 적어야 하며, CSI 실시 메뉴에서 위원별 등급을 입력·저장하면 점수가 자동 계산됩니다.'},
+  {id:'N13',s:5,l:'own',k:'key',t:'평가결과 사업자 통보 — 평가 완료 즉시',law:'평가지침',
+   title:'평가결과 통보',lane:'S5 통보 · 발주청 담당팀',chips:['평가결과 통보 공문'],due:'평가 완료 즉시',conf:'84%',
+   lawT:'발주청은 평가를 완료한 때에는 그 결과를 해당 피평가사업자에게 즉시 통보해야 합니다. 통보일이 이의신청 기산일이 되므로 발송 기록을 남기세요.'},
+  {id:'N14',s:5,l:'biz',k:'bot',t:'이의신청 — 통보받은 날부터 10일 이내, 1회에 한함',law:'평가지침',
+   title:'평가결과 이의신청',lane:'S5 이의 · 평가대상 사업자',chips:['세부평가항목별 의견서'],due:'통보 후 10일 내',conf:'64%',
+   bottle:'이의신청이 접수되면 14일 내 재평가위원회를 새로 구성해야 해 결과 제출 일정이 통째로 밀립니다. 점수가 낮다거나 기대와 다르다는 이유만으로는 신청 사유가 되지 않으므로 사유 판단을 먼저 정리하세요.',
+   lawT:'이의신청은 통보받은 날부터 10일 이내 1회에 한하며 세부평가항목별 의견서를 제출해야 합니다. 이유 없음이 명백하면 재평가를 실시하지 않을 수 있고, 이 경우 사업자에게 즉시 통보합니다.'},
+  {id:'N15',s:5,l:'com',k:'post',t:'재평가위원회 — 접수일부터 14일 이내, 기존 위원 과반 불가',law:'평가지침',
+   title:'재평가 실시',lane:'S5 재평가 · 재평가위원회',chips:['재평가 결과','위원 구성표'],due:'이의 접수 후 14일 내',conf:'70%',
+   lawT:'재평가위원회는 위원장 1인을 포함해 5명 이상으로 구성하며, 이의신청 대상인 기존 평가위원회에 참석했던 위원이 과반수가 되어서는 안 됩니다. 결과는 사업자에게 즉시 통보합니다.'},
+  {id:'N16',s:5,l:'csi',k:'post',t:'CSI 평가결과 제출 · 관리원 접수 — 평가 완료 후 15일 이내',law:'평가지침',
+   title:'평가결과 제출·접수',lane:'S5 제출 · 국토안전관리원(CSI)',chips:['평가결과 제출','평가근거자료 보관'],due:'평가 완료 후 15일 내',conf:'76%',
+   lawT:'발주청은 평가근거자료를 기록·보관하고, 평가 완료 후 15일 이내에 CSI를 통해 결과를 제출합니다. 건진법 제50조제4항에 따른 종합평가는 국토교통부장관에게 업무를 위탁받은 국토안전관리원이 시행합니다.'}
+];
+var EDGES=[['N01','N02'],['N02','N03'],['N03','N04'],['N04','N05'],['N05','N06'],['N06','N07'],['N06','N08'],['N07','N05',1],['N07','N09'],['N08','N09'],['N09','N10'],['N09','N11'],['N11','N12'],['N12','N13'],['N13','N14'],['N14','N15'],['N15','N12',1],['N15','N16'],['N13','N16']];
+var TAGNM={lead:'선행',key:'핵심',bot:'병목',post:'후속'};
+
+(function(){
+  var g=document.getElementById('grid'), h='';
+  h+='<div class="hc0">단계 / 담당</div>';
+  [['발주청 담당팀','LANE 01'],['평가대상 사업자','LANE 02'],['평가위원회·감독자','LANE 03'],['국토안전관리원·CSI','LANE 04']]
+    .forEach(function(l,i){ h+='<div class="hc"'+(i===3?' style="border-right:0"':'')+'>'+l[0]+'<small>'+l[1]+'</small></div>'; });
+  h+='<div class="hcx"></div>';
+  STAGES.forEach(function(st,si){
+    var end=(si===STAGES.length-1)?' end':'';
+    h+='<div class="sc'+end+'"><b>'+st.k+'</b><span>'+st.n+'</span></div>';
+    LANES.forEach(function(ln,li){
+      var list=NODES.filter(function(n){return n.s===si&&n.l===ln;});
+      h+='<div class="cl'+(li===3?' last':'')+(li===0?' pad':'')+end+'">';
+      list.forEach(function(n){
+        h+='<div class="node '+n.k+'" id="node_'+n.id+'"><div class="r"><span class="id">'+n.id+'</span><span class="tg">'+TAGNM[n.k]+'</span></div>'
+         +'<div class="t">'+n.t+'</div>'+(n.law?'<div class="lw">'+n.law+'</div>':'')+'</div>';
+      });
+      h+='</div>';
+    });
+    h+='<div class="gap'+end+'"></div>';
+  });
+  g.innerHTML=h;
+  setTimeout(draw,60);
+})();
+
+function draw(){
+  var svg=document.getElementById('edges'), board=document.getElementById('board');
+  [].slice.call(svg.querySelectorAll('path.e')).forEach(function(p){p.remove();});[].slice.call(svg.querySelectorAll('circle.mdot')).forEach(function(c){c.remove();});svg.__mdotN=0;
+  var br=board.getBoundingClientRect();
+  svg.setAttribute('viewBox','0 0 '+br.width+' '+br.height);
+  EDGES.forEach(function(e,i){
+    var a=document.getElementById('node_'+e[0]), b=document.getElementById('node_'+e[1]);
+    if(!a||!b) return;
+    var ra=a.getBoundingClientRect(), rb=b.getBoundingClientRect(), back=!!e[2];
+    var d;
+    if(Math.abs(ra.top-rb.top)<8){
+      var y=ra.top-br.top+ra.height/2 + (back?12:-6);
+      if(rb.left>ra.left) d='M'+(ra.right-br.left+2)+','+y+' H'+(rb.left-br.left-7);
+      else d='M'+(ra.left-br.left-2)+','+y+' H'+(rb.right-br.left+7);
+    } else if(rb.top>ra.top){
+      var x1=ra.left-br.left+ra.width/2, x2=rb.left-br.left+rb.width/2;
+      var my=(ra.bottom-br.top)+((rb.top-br.top)-(ra.bottom-br.top))/2;
+      d='M'+x1+','+(ra.bottom-br.top)+' V'+my+' H'+x2+' V'+(rb.top-br.top-7);
+    } else {
+      var mx=br.width-46;
+      d='M'+(ra.right-br.left+2)+','+(ra.top-br.top+ra.height/2)+' H'+mx+' V'+(rb.top-br.top+rb.height/2)+' H'+(rb.right-br.left+7);
+    }
+    var p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('class','e'); p.setAttribute('d',d); p.setAttribute('fill','none');
+    p.setAttribute('stroke',back?'#8c8f91':'#5980a6'); p.setAttribute('stroke-width','1.4');
+    p.setAttribute('opacity',back?'.45':'.6'); p.setAttribute('marker-end',back?'url(#arr)':'url(#ar)');
+    if(back) p.setAttribute('stroke-dasharray','6 5');
+    p.dataset.a=e[0]; p.dataset.b=e[1];
+    svg.appendChild(p);if(typeof back==='undefined'||!back){var __dt=document.createElementNS('http://www.w3.org/2000/svg','circle');__dt.setAttribute('class','mdot');__dt.setAttribute('r','3');__dt.setAttribute('fill','#0075de');__dt.setAttribute('pointer-events','none');var __am=document.createElementNS('http://www.w3.org/2000/svg','animateMotion');__am.setAttribute('dur','2.6s');__am.setAttribute('repeatCount','indefinite');__am.setAttribute('path',d);__am.setAttribute('begin',(((svg.__mdotN=(svg.__mdotN||0)+1)%8)*0.4)+'s');__dt.appendChild(__am);svg.appendChild(__dt);}
+  });
+}
+window.addEventListener('resize',function(){clearTimeout(window.__rz);window.__rz=setTimeout(draw,200);});
+window.addEventListener('load',function(){setTimeout(draw,200);});
+
+var EMBED=false; try{EMBED=window.self!==window.top;}catch(e){EMBED=true;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function panelHTML(n){
+  var chips=(n.chips||[]).map(function(c){return '<span style="font-size:12px;color:#31302e;border:1px solid #e6e6e6;border-radius:5px;padding:3px 9px">'+esc(c)+'</span>';}).join('');
+  var bottle=n.bottle?'<div style="margin-top:10px;font-size:12.5px;line-height:1.55;color:#8a5a00;background:#fff8ec;border:1px solid #f0d9a8;border-radius:6px;padding:9px 11px;max-width:300px">병목 · '+esc(n.bottle)+'</div>':'';
+  return '<div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">'
+   +'<div style="min-width:210px;flex:1 1 230px">'
+    +'<div style="display:flex;align-items:center;gap:7px;font-size:11.5px;color:#615d59;font-weight:600">노드 상세 <b style="color:#000">'+esc(n.id)+'</b>'
+    +'<span style="font-size:11px;font-weight:700;color:#b45309;border:1px solid #f0d9a8;background:#fff8ec;border-radius:4px;padding:1px 7px">'+TAGNM[n.k]+'</span></div>'
+    +'<div style="font-size:19px;font-weight:700;letter-spacing:-.02em;margin-top:6px;color:#000">'+esc(n.title)+'</div>'
+    +'<div style="font-size:12px;color:#a39e98;margin-top:3px">'+esc(n.lane)+'</div>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">'+chips+'</div></div>'
+   +'<div style="flex:0 0 auto"><div style="display:flex;gap:10px">'
+    +'<div style="border:1px solid #e6e6e6;border-radius:8px;padding:10px 14px;min-width:124px"><div style="font-size:11px;color:#a39e98">기한</div><div style="font-size:13.5px;font-weight:600;margin-top:4px;color:#31302e;line-height:1.4">'+esc(n.due)+'</div></div>'
+   +'</div>'+bottle+'</div>'
+   +'<div style="flex:1 1 300px;min-width:250px"><div style="font-size:11.5px;color:#615d59;font-weight:600">법적 근거</div>'
+    +'<div style="font-size:13.5px;font-weight:700;margin-top:6px;color:#000">'+esc(n.law||'—')+'</div>'
+    +'<div style="font-size:12.5px;line-height:1.65;color:#615d59;margin-top:4px;text-wrap:pretty">'+esc(n.lawT)+'</div></div>'
+   +'<button type="button" id="__wfPanelX" style="flex:0 0 auto;align-self:flex-start;font:inherit;font-size:12px;font-weight:600;color:#615d59;background:#fff;border:1px solid #e6e6e6;border-radius:6px;padding:5px 11px;cursor:pointer">닫기 ✕</button>'
+   +'</div>';
+}
+function clearAll(){
+  var c=document.querySelector('.node.on'); if(c) c.classList.remove('on');
+  document.body.classList.remove('focus');
+  [].slice.call(document.querySelectorAll('#edges path.e')).forEach(function(p){p.classList.remove('lit');});
+  if(EMBED){ try{window.parent.postMessage({type:'wf-detail-close'},'*');}catch(e){} }
+  else document.getElementById('panel').classList.remove('show');
+}
+document.addEventListener('click',function(ev){
+  var el=ev.target.closest && ev.target.closest('.node');
+  var cur=document.querySelector('.node.on');
+  if(cur) cur.classList.remove('on');
+  [].slice.call(document.querySelectorAll('#edges path.e')).forEach(function(p){p.classList.remove('lit');});
+  if(el && el!==cur){
+    el.classList.add('on'); document.body.classList.add('focus');
+    var id=el.id.replace('node_','');
+    [].slice.call(document.querySelectorAll('#edges path.e')).forEach(function(p){
+      if(p.dataset.a===id||p.dataset.b===id) p.classList.add('lit');
+    });
+    var n=NODES.filter(function(x){return x.id===id;})[0]; if(!n) return;
+    var html=panelHTML(n);
+    if(EMBED){ try{window.parent.postMessage({type:'wf-detail',html:html},'*');}catch(e){} }
+    else{
+      var p=document.getElementById('panel');
+      p.innerHTML=html; p.classList.add('show');
+      var x=document.getElementById('__wfPanelX');
+      if(x) x.addEventListener('click',function(e2){e2.stopPropagation();clearAll();});
+    }
+  } else if(!ev.target.closest('#panel')) { clearAll(); }
+});
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') clearAll(); });
+window.addEventListener('message',function(ev){ if(ev.data&&ev.data.type==='wf-clear') clearAll(); });
+</script>
+<script>
+if(window.top===window.self){
+  var __cb=document.createElement('button');
+  __cb.type='button'; __cb.textContent='✕ 닫기';
+  __cb.style.cssText='position:fixed;top:14px;right:16px;z-index:60;font:600 13px/1 -apple-system,BlinkMacSystemFont,"Pretendard","Malgun Gothic",sans-serif;color:#1d2d3d;background:#fff;border:1px solid #d6dbe0;border-radius:8px;padding:10px 14px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.08)';
+  __cb.onclick=function(){ window.close(); setTimeout(function(){ if(!window.closed){ if(document.referrer) location.href=document.referrer; else location.href='bible.html?tab=overview&ov=flow'; } },200); };
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') __cb.click(); });
+  document.body.appendChild(__cb);
+}
+</script>
+<script id="__closeBtn">(function(){try{if(window.self!==window.top)return;}catch(e){return;}
+var b=document.createElement('button');b.textContent='✕ 닫기';b.title='창 닫기 / 이전으로';
+b.setAttribute('style','position:fixed;top:12px;right:12px;z-index:9999;border:1px solid rgba(29,31,32,.22);background:rgba(255,255,255,.95);color:#1d1f20;font:600 13px Pretendard,-apple-system,sans-serif;padding:9px 16px;border-radius:100px;box-shadow:0 2px 10px rgba(0,0,0,.10);cursor:pointer;-webkit-tap-highlight-color:transparent');
+b.addEventListener('click',function(){try{window.close();}catch(e){}
+setTimeout(function(){if(!document.hidden){if(history.length>1){history.back();}else{location.href='bible.html';}}},200);});
+document.body.appendChild(b);})();</script>
+<script src="close-button.js" defer></script></body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<title>각종 양식모음 — 준비 중</title>
+<style>
+  :root{
+    --bg:#f2f4f6; --panel:#fff; --panel2:#f2f4f6; --line:#c4ccd6;
+    --text:#191f28; --sub:#8b95a1; --accent:#3182f6; --accent2:#1f6fe0; --accent-dim:#e8f2ff;
+    --sans:'Pretendard','Malgun Gothic',-apple-system,sans-serif;
+    --shadow:0 1px 3px rgba(0,27,55,.05),0 8px 24px rgba(0,27,55,.07);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;min-height:100%}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);display:flex;flex-direction:column;min-height:100vh}
+  .topbar{background:var(--panel);border-bottom:1.5px solid var(--line);padding:14px 24px;display:flex;align-items:center;gap:12px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand-ic{width:38px;height:38px;border-radius:11px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px}
+  .brand-tt b{display:block;font-size:17px;font-weight:900;letter-spacing:-.5px;line-height:1.2}
+  .brand-tt span{display:block;font-size:12px;color:var(--sub);margin-top:1px}
+  .wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px 60px}
+  .card{background:var(--panel);border:1.5px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:44px 40px;max-width:640px;width:100%;text-align:center}
+  .badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;color:var(--accent);background:var(--accent-dim);border:1px solid #b9d3ff;padding:5px 13px;border-radius:100px}
+  h1{margin:16px 0 8px;font-size:26px;font-weight:900;letter-spacing:-1px}
+  .lead{font-size:14px;color:var(--sub);line-height:1.65;margin:0 0 26px}
+  .prep{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;text-align:left;margin-bottom:26px}
+  .prep div{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .prep b{display:block;font-size:13.5px;font-weight:800;margin-bottom:3px}
+  .prep span{font-size:12px;color:var(--sub);line-height:1.5}
+  .bar{height:8px;background:var(--panel2);border:1px solid var(--line);border-radius:100px;overflow:hidden;margin-bottom:8px}
+  .bar i{display:block;height:100%;width:40%;background:var(--accent);border-radius:100px}
+  .barlb{font-size:12px;color:var(--sub);margin-bottom:26px}
+  .btn{border:1.5px solid var(--line);background:var(--panel);color:var(--text);font:inherit;font-size:13.5px;font-weight:800;padding:11px 22px;border-radius:100px;cursor:pointer;text-decoration:none;display:inline-block}
+  .btn-p{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btns{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+  .foot{padding:14px 24px;border-top:1px solid var(--line);background:var(--panel);color:var(--sub);font-size:11.5px;text-align:center}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand"><span class="brand-ic">📁</span>
+    <span class="brand-tt"><b>각종 양식모음</b><span>시설공사 실무 서식</span></span>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="card">
+    <span class="badge">🚧 준비 중</span>
+    <h1>각종 양식모음은 지금 정리하고 있어요</h1>
+    <p class="lead">설계·시공·감리·준공 단계별 실무 서식을 한곳에 모으고 있습니다.<br>OneDrive 팀 공유방과 연동해 최신 서식을 바로 내려받을 수 있게 준비 중입니다.</p>
+
+    <div class="prep">
+      <div><b>설계 단계</b><span>과업지시서 · 설계공모 · 계약심의</span></div>
+      <div><b>시공 단계</b><span>착공계 · 안전관리계획 · 시공계획서</span></div>
+      <div><b>감리 단계</b><span>감리보고서 · 검측요청서 · 검사조서</span></div>
+      <div><b>준공 단계</b><span>준공검사원 · 정산서 · 인수인계서</span></div>
+    </div>
+
+    <div class="bar"><i></i></div>
+    <div class="barlb">준비 진행률 약 40%</div>
+
+    <div class="btns">
+      <a class="btn btn-p" href="bible.html">치트키 홈으로</a>
+    </div>
+  </div>
+</div>
+
+<div class="foot">전남광주통합특별시교육청 · 행정운영국 교육시설과 — 실무 참조용 도구</div>
+<script src="blind.js" defer></script>
+<script src="close-button.js" defer></script></body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>폐기물 관리 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-child{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드 ──────────────────────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 ──────────────────────── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+  .cau{ color:var(--meta); font-size:6.5pt; }
+
+  /* ── 틸 넘버서클 목록 ───────────────── */
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  /* ── 표 ─────────────────────────────── */
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl thead th.h1{ text-align:left; }
+  .tbl th.grp{
+    background:#F7FAFC; color:var(--teal); font-weight:800; text-align:left;
+    font-size:6.1pt; letter-spacing:0.04em; padding:0.35mm 0.8mm;
+  }
+  .tbl td.it{ text-align:left; color:var(--body); }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .r{ color:var(--teal); font-weight:700; }
+  .tbl .x{ color:var(--note); font-weight:400; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주·쪽번호 ────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pageno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.4mm 0 0 0; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head><body>
+
+<!-- ════════════════ 1쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">폐기물 관리 ① — 시기별 이행사항과 주체별 역할</h1>
+  <div class="ubar"></div>
+  <p class="meta">업무편람 4-18 폐기물 관리 ｜ 시기 구분: 발생 예상 시 → 반출 당일 → 반출 종료 → 처리용역 준공 시 ｜ 관련 주체: 공사 현장대리인(현장소장) · 용역 현장대리인 · 감독관 · 폐기물처리 용역업체</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">감독관 = 공인계근의 실시·입회·검증 주체</span> — 반출 당일 현장에 도착해 사진을 촬영하고, <b class="term">임의 1대를 선정</b>하여 공인계근을 실시하며 계근 전표를 관리한다. <span class="rolet">용역 현장대리인</span>은 반출 전 사전보고와 <b class="term">계근 동행</b> 의무를 지며, 불가피하게 동행하지 못할 경우 반드시 사전보고하여야 한다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4"/><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg></span><span class="lb"><i>1</i>폐기물 발생 예상 시</span></span>
+      <ul class="list">
+        <li><b class="term">반출 협조요청</b> — <span class="tl">공사 현장대리인 → 용역업체</span>로 반출 협조를 요청</li>
+        <li><b class="term">사전보고</b> — <span class="tl">용역 현장대리인 → 감독관</span>에게 반출계획을 보고</li>
+        <li><b class="term">보고내용 3항목</b> — 반출일자 · 반출시간 · <span class="num">덤프 대수</span></li>
+        <li class="cau">※ 반출 일정이 확정되어야 감독관의 계근 입회 일정을 잡을 수 있으므로 사전보고가 절차의 출발점임</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>2</i>반출 당일 · 공사 현장소장</span></span>
+      <ul class="list">
+        <li><b class="term">폐기물 인계대장</b>(서식) 작성·제출 — <span class="num">즉시 처리</span></li>
+        <li><b class="term">인계·인수 전표 서명</b> — <span class="tl">덤프 1대마다</span> 서명. <span class="num">2장 중 1장</span>은 현장 보관, <span class="num">1장</span>은 용역업체 보관</li>
+        <li><b class="term">전표 물량 기입</b> — 폐기물 물량을 기입하되, 계근 중 수치가 아니라면 <span class="tl">개략적으로 기입</span></li>
+        <li><b class="term">상차 사진 촬영</b> — 상차 시 <span class="tl">차량마다 차량번호가 나오게</span> 촬영</li>
+        <li class="cau">※ 상주 감독이 아니라면 모든 사진을 찍을 수 없으므로, 현장소장의 촬영분이 실질적 증빙이 됨</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M6 6v13a2 2 0 002 2h8a2 2 0 002-2V6"/><path d="M9 6V4h6v2"/><path d="M10 11v6M14 11v6"/></svg></span><span class="lb"><i>3</i>반출 당일 · 감독관 수행사항 — 공인계근 5단계</span></span>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">현장 도착 후 사진촬영</b> — 반출 현장 상황과 상차 상태를 기록으로 남긴다</li>
+        <li><span class="no">2</span><b class="term">공인계근 실시</b> — 반출 차량 중 <span class="tl">임의 1대를 선정</span>하여 감독자가 지정한 공인계량소에서 계근한다(매 반출 시마다 <span class="num">1대</span> 임의선정)</li>
+        <li><span class="no">3</span><b class="term">계근 전표 관리</b> — 공인계근 결과 전표를 감독관이 직접 수령·보관하여 처리대장 대조의 기준으로 삼는다</li>
+        <li><span class="no">4</span><b class="term">공인계근 장면 사진 촬영</b> — 계근이 실제로 이루어졌음을 입증할 수 있도록 계근하는 장면을 촬영한다</li>
+        <li><span class="no">5</span><b class="term">용역 현장대리인 동행</b> — 계근 시 용역 현장대리인이 동행한다. <span class="tl">불가피할 경우 사전보고</span>를 거쳐야 한다</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="lb"><i>4</i>반출 종료 · 용역 현장대리인</span></span>
+      <ul class="list">
+        <li><b class="term">폐기물 처리대장</b>(서식) 작성·제출 — <span class="num">17:00까지</span></li>
+        <li class="cau">※ 처리가 일찍 종료될 경우 정리 후 바로 제출</li>
+        <li><b class="term">올바로 시스템 입력</b> — 당일 처리분을 시스템에 입력</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/><path d="M8.5 11l2 2 4-4"/></svg></span><span class="lb"><i>5</i>반출 종료 · 감독관</span></span>
+      <ul class="list">
+        <li><b class="term">물량 대조</b> — 용역업체가 작성한 <span class="tl">처리대장</span>과 <span class="tl">공인계근 물량</span>을 비교</li>
+        <li><b class="term">시스템 확인</b> — 올바로 시스템 입력 여부 확인</li>
+        <li><b class="term">내부 보고</b> — 당일 폐기물 처리내용을 내부 보고</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3H9z"/><path d="M15 4h3v17H6V4h3"/><path d="M9 11l2 2 4-4"/></svg></span><span class="lb"><i>6</i>폐기물처리용역 준공 시 — 제출과 검토</span></span>
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th class="h1" style="width:22%">주체</th>
+            <th class="h1" style="width:40%">수행사항</th>
+            <th class="h1" style="width:38%">확인 포인트</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th class="grp" colspan="3">용역 현장대리인 — 준공서류 제출</th></tr>
+          <tr><td class="it">준공서류</td><td class="lf">일반적인 준공서류 준비</td><td class="lf x">용역 준공 절차에 따른 통상 서류</td></tr>
+          <tr><td class="it">올바로 시스템</td><td class="lf">시스템 화면을 <span class="r">인쇄하여 출력물</span>로 제출</td><td class="lf x">화면 확인이 아닌 출력물 제출이 원칙</td></tr>
+          <tr><td class="it">계근 전표</td><td class="lf"><span class="r">차량마다</span> 업체 내부에서 계근한 전표 <span class="r">일체</span> 첨부</td><td class="lf x">누락 차량이 있으면 물량 검증 불가</td></tr>
+          <tr><th class="grp" colspan="3">감독관 — 준공서류 검토</th></tr>
+          <tr><td class="it">3중 대조 확인</td><td class="lf">① 배출 당시 작성된 <span class="r">처리대장</span> ② <span class="r">올바로시스템</span> ③ 업체 내부 <span class="r">계근 전표 일체</span></td><td class="lf x">세 자료의 물량·일자·차량이 서로 일치하는지 확인</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>7</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>처리대장 제출</b> <span class="num">17:00</span>까지</span>
+        <span class="chip"><b>인계대장</b> 작성·제출 <span class="num">즉시</span></span>
+        <span class="chip"><b>인계·인수 전표</b> <span class="num">2장</span> (현장 1 · 업체 1)</span>
+        <span class="chip"><b>공인계근</b> 매 반출 <span class="num">1대</span> 임의선정</span>
+        <span class="chip"><b>사전보고</b> 일자 · 시간 · <span class="num">덤프 대수</span></span>
+        <span class="chip"><b>전표 서명</b> <span class="num">덤프마다</span></span>
+        <span class="chip"><b>상차 사진</b> <span class="num">차량마다</span> 차량번호</span>
+        <span class="chip"><b>준공 검토</b> <span class="num">3중</span> 대조</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">출처: 업무편람 4-18 「폐기물 관리」 시기별 주요 이행사항 표 ｜ '올바로 시스템'은 한국환경공단 폐기물적법처리시스템(www.allbaro.or.kr)을 말함 ｜ 서식(폐기물 인계대장 · 폐기물 처리대장)은 각 기관 배포 서식을 따름</p>
+  <p class="pageno">1 / 2</p>
+
+</div>
+
+<!-- ════════════════ 2쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">폐기물 관리 ② — 건설폐기물 처리 흐름도</h1>
+  <div class="ubar"></div>
+  <p class="meta">업무편람 4-18 폐기물 처리 흐름도 ｜ 계약 → 처리계획서 제출 → 성상별 보관 → 공차계근 → 운반 → 계근 → 중간처리업체 반입 → 자체계근 → 파쇄·선별 → 순환골재 생산</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">감독자 = 공인계량소 지정 주체</span> — 공차계근과 계근은 모두 <b class="term">감독자가 지정한 공인계량소</b>에서 실시하며, <b class="term">매 반출 시마다 1대를 임의 선정</b>한다. 업체가 계량소를 임의로 정하거나 차량을 특정할 수 없다는 점이 이 흐름도의 핵심 통제장치이다.</span>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M4 12h16M4 18h7"/><path d="M17 3l3 3-3 3"/></svg></span><span class="lb"><i>1</i>건설폐기물 처리 흐름 10단계</span></span>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">계약</b> — 폐기물처리 용역 계약 체결</li>
+        <li><span class="no">2</span><b class="term">건설폐기물 처리계획서 제출</b> — 제출처는 <span class="tl">관할 지자체</span>. <span class="num">신고필증 교부 3일 이내</span></li>
+        <li><span class="no">3</span><b class="term">건설폐기물 발생</b> — 폐콘크리트 · 건설폐재류 · 폐아스콘 · 혼합건설폐기물. <span class="tl">성상별로 분리한 후 현장 보관</span></li>
+        <li><span class="no">4</span><b class="term">공차계근</b> — <span class="tl">감독자가 지정한 공인계량소</span>에서 실시. 매 반출 시마다 <span class="num">1대</span> 임의선정</li>
+        <li><span class="no">5</span><b class="term">건설폐기물 운반</b> — <span class="tl">☑ 전용차량 및 허가받은 임시차량</span>만 사용 가능</li>
+        <li><span class="no">6</span><b class="term">계근</b>(적차) — <span class="tl">감독자가 지정한 공인계량소</span>에서 실시. 매 반출 시마다 <span class="num">1대</span> 임의선정</li>
+        <li><span class="no">7</span><b class="term">중간처리업체 폐기물 반입</b> — 건설폐기물 중간처리업체로 반입. <span class="tl">☑ 검교정 확인서</span> 확인</li>
+        <li><span class="no">8</span><b class="term">계근(자체계근)</b> — 중간처리업체의 자체 계량설비로 반입량 계근</li>
+        <li><span class="no">9</span><b class="term">파쇄 및 선별</b> — 반입된 건설폐기물을 파쇄·선별 처리</li>
+        <li><span class="no">10</span><b class="term">순환골재 생산</b> — 최종적으로 순환골재를 생산하여 재활용</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18l-1.5 13a2 2 0 01-2 2H6.5a2 2 0 01-2-2z"/><path d="M9 7V4h6v3"/><path d="M10 12v6M14 12v6"/></svg></span><span class="lb"><i>2</i>건설폐기물 성상 4종</span></span>
+      <ul class="list">
+        <li><b class="term">폐콘크리트</b> — 구조체 철거·해체에서 발생</li>
+        <li><b class="term">건설폐재류</b> — 폐벽돌·폐블록 등 무기성 폐재</li>
+        <li><b class="term">폐아스콘</b> — 포장 절삭·철거에서 발생</li>
+        <li><b class="term">혼합건설폐기물</b> — 성상 분리가 되지 않은 혼합물</li>
+        <li class="cau">※ 성상별로 분리한 후 현장에 보관하는 것이 원칙 — 혼합 보관 시 혼합건설폐기물로 처리되어 처리비가 상승함</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4"/><path d="M5 7h14l2 6a9 9 0 01-18 0z"/><path d="M8 21h8"/><path d="M12 7v14"/></svg></span><span class="lb"><i>3</i>계근 3단계 체계</span></span>
+      <ul class="list">
+        <li><b class="term">① 공차계근</b> — 상차 전 빈 차량 중량. <span class="tl">감독자 지정 공인계량소</span></li>
+        <li><b class="term">② 계근(적차)</b> — 상차 후 중량. <span class="tl">감독자 지정 공인계량소</span></li>
+        <li><b class="term">③ 자체계근</b> — 중간처리업체 반입 시 업체 자체 계량</li>
+        <li class="cau">※ ①·②는 매 반출 시마다 <span class="num">1대</span>를 임의 선정하여 실시하며, 그 전표를 감독관이 관리한다</li>
+        <li class="cau">※ ③의 전표는 준공서류에 <span class="tl">차량마다 일체</span> 첨부하여 대조 근거로 삼는다</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 13l2 2 4-4"/></svg></span><span class="lb"><i>4</i>흐름 단계별 확인 서류</span></span>
+      <ul class="list">
+        <li><b class="term">처리계획서 · 신고필증</b> — 관할 지자체 제출, <span class="num">3일 이내</span> 교부</li>
+        <li><b class="term">인계·인수 전표</b> — 덤프마다 서명, <span class="num">2장</span> 분산 보관</li>
+        <li><b class="term">공인계근 전표</b> — 감독관이 직접 관리</li>
+        <li><b class="term">검교정 확인서</b> — 중간처리업체 반입 단계에서 확인</li>
+        <li><b class="term">폐기물 인계대장 · 처리대장</b> — 반출 당일 · 반출 종료 시 각각 제출</li>
+        <li><b class="term">올바로 시스템 출력물</b> — 준공 시 인쇄 제출</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>5</i>감독 유의사항 — 흐름도 체크(☑) 항목</span></span>
+      <ul class="list">
+        <li><b class="term">운반차량 자격</b> — <span class="tl">전용차량</span> 및 <span class="tl">허가받은 임시차량</span>에 한함. 미허가 차량 투입 여부를 반출 당일 확인</li>
+        <li><b class="term">계량설비 신뢰성</b> — 중간처리업체 반입 시 <span class="tl">검교정 확인서</span>로 계량설비의 유효성을 확인</li>
+        <li><b class="term">계량소 지정권</b> — 공인계량소는 감독자가 지정하며 업체가 선택하지 않는다</li>
+        <li><b class="term">차량 임의선정</b> — 계근 대상 차량은 사전에 알리지 않고 반출 시마다 임의 선정</li>
+        <li><b class="term">사진 증빙</b> — 상차 시 차량번호 · 공인계근 장면을 각각 촬영하여 보관</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>신고필증 교부</b> <span class="num">3일</span> 이내</span>
+        <span class="chip"><b>처리 흐름</b> <span class="num">10</span>단계</span>
+        <span class="chip"><b>건설폐기물 성상</b> <span class="num">4</span>종</span>
+        <span class="chip"><b>계근 체계</b> <span class="num">3</span>단계 (공차 · 적차 · 자체)</span>
+        <span class="chip"><b>공인계근</b> 매 반출 <span class="num">1대</span></span>
+        <span class="chip"><b>운반차량</b> 전용 · 허가 임시차량</span>
+        <span class="chip"><b>반입 확인</b> 검교정 확인서</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">폐기물 관리의 실질은 <b>물량 검증</b>이므로, 감독관이 <b>지정 공인계량소에서 매 반출 1대를 임의 계근</b>하고 그 전표를 직접 관리한 뒤 준공 시 <b>처리대장 · 올바로시스템 · 업체 계근 전표</b>를 3중 대조하는 것이 절차의 핵심이며, 사전보고와 사진 증빙이 이를 뒷받침한다.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">출처: 업무편람 4-18 「폐기물 관리」 및 「폐기물 처리 흐름도」 ｜ 건설폐기물 처리계획서 제출·신고 및 순환골재 생산의 법령 근거는 「건설폐기물의 재활용촉진에 관한 법률」·「폐기물관리법」에 따르나, 원문에 조문이 명시되지 않아 적용 시 시행일 기준 조문을 별도 확인할 것 ｜ 성상 4종의 설명은 실무 통용 구분으로 원문에는 명칭만 제시됨</p>
+  <p class="pageno">2 / 2</p>
+
+</div>
+</body></html>

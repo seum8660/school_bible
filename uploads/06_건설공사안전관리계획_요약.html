@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건설공사의 안전관리 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-child{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드 ──────────────────────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 ──────────────────────── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  /* ── 틸 넘버서클 목록 ───────────────── */
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  /* ── 표 ─────────────────────────────── */
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl thead th.h1{ text-align:left; }
+  .tbl th.grp{
+    background:#F7FAFC; color:var(--teal); font-weight:800; text-align:left;
+    font-size:6.1pt; letter-spacing:0.04em; padding:0.35mm 0.8mm;
+  }
+  .tbl td.it{ text-align:left; color:var(--body); }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .r{ color:var(--teal); font-weight:700; }
+  .tbl .x{ color:var(--note); font-weight:400; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주·쪽번호 ────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pageno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.4mm 0 0 0; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head><body>
+
+<!-- ════════════════ 1쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">건설공사의 안전관리 ① — 안전관리계획 수립·승인</h1>
+  <div class="ubar"></div>
+  <p class="meta">업무편람 4-6(일반 행정업무) ｜ 근거: 건설기술 진흥법 제62조 · 같은 법 시행령 제98조·제99조(시행 2026. 6. 9. 현행) ｜ 출처: 국가법령정보센터 www.law.go.kr</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주청(학교·교육청) = 검토·승인의 책임 주체</span> — 제출받은 날부터 20일 이내에 검토결과를 통보하고 승인서를 발급하여야 함(영 제98조③⑤). <span class="rolet">공사감독자·건설사업관리기술인</span>은 건설사업자가 제출하기 <b class="term">전에</b> 계획서를 검토·확인할 의무가 있음(영 제98조②).</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>1</i>목적과 적용</span></span>
+      <ul class="list">
+        <li><b class="term">목적</b> — <span class="tl">착공 전</span> 시공과정의 위험요소를 발굴하고 현장에 적합한 계획 수립을 유도해 사고를 예방함</li>
+        <li><b class="term">수립·제출</b> — 건설사업자·주택건설등록업자가 착공 전 발주청 또는 인·허가기관의 장에게 제출</li>
+        <li><b class="term">변경 시</b> — 계획 내용을 변경하는 경우에도 <span class="tl">같은 절차</span>를 다시 거쳐야 함</li>
+        <li><b class="term">제외·통합</b> — 원자력시설공사는 제외. 산안법 제42조 유해위험방지계획 대상은 <span class="tl">통합 작성 가능</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>2</i>수립기준 7항목 (영 제99조)</span></span>
+      <ul class="list">
+        <li><b class="term">① 개요·조직</b> 건설공사 개요 및 안전관리조직 ／ <b class="term">② 점검계획</b> 공정별 안전점검계획(계측장비·CCTV 등 모니터링 장비 설치·운용계획 포함)</li>
+        <li><b class="term">③ 주변대책</b> 발파·진동·소음·지하수 차단 피해방지대책과 굴착 위험징후 계측계획 ／ <b class="term">④ 통행안전</b> 통행안전시설 설치 및 교통소통계획</li>
+        <li><b class="term">⑤ 안전관리비</b> 집행계획 ／ <b class="term">⑥ 교육·비상</b> 안전교육 및 비상시 긴급조치계획</li>
+        <li><b class="term">⑦ 공종별 계획</b> 대상 시설물별 건설공법 및 시공절차 포함(세부 내용은 국토교통부령)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V6l8-3 8 3v15"/><path d="M9 21v-5h6v5"/><path d="M8 10h2M14 10h2"/></svg></span><span class="lb"><i>3</i>안전관리계획 수립대상 (영 제98조①)</span></span>
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th class="h1" style="width:26%">구분</th>
+            <th class="h1" style="width:48%">대상 건설공사</th>
+            <th class="h1" style="width:26%">유의사항</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="it">1. 시설물</td><td class="lf">1종시설물 및 2종시설물의 건설공사</td><td class="lf x">유지관리를 위한 공사는 제외</td></tr>
+          <tr><td class="it">2. 굴착</td><td class="lf">지하 <span class="num">10m 이상</span>을 굴착하는 건설공사</td><td class="lf x">집수정·E/V 피트·정화조 굴착분 제외</td></tr>
+          <tr><td class="it">3. 폭발물</td><td class="lf">폭발물 사용 공사로 <span class="num">20m</span> 내 시설물 또는 <span class="num">100m</span> 내 사육 가축이 있어 영향이 예상되는 공사</td><td class="lf x">영향 예상 여부로 판단</td></tr>
+          <tr><td class="it">4. 건축물</td><td class="lf"><span class="num">10층 이상 16층 미만</span>인 건축물의 건설공사</td><td class="lf x">16층 이상은 1·2종 시설물로 판단</td></tr>
+          <tr><td class="it">4의2. 리모델링·해체</td><td class="lf">10층 이상 건축물의 리모델링 또는 해체공사 ／ 주택법 제2조제25호다목의 <span class="tl">수직증축형 리모델링</span></td><td class="lf x">해체공사는 층수 요건 확인</td></tr>
+          <tr><td class="it">5. 건설기계</td><td class="lf">건설기계관리법 제3조 등록 기계 사용 — 천공기(높이 <span class="num">10m 이상</span>)·항타 및 항발기·타워크레인</td><td class="lf x">리프트카는 해당 없음</td></tr>
+          <tr><td class="it">5의2. 가설구조물</td><td class="lf">영 제101조의2제1항의 가설구조물을 사용하는 건설공사</td><td class="lf x">비계 31m↑, 거푸집·동바리 5m↑ 등</td></tr>
+          <tr><td class="it">6. 그 밖의 공사</td><td class="lf">발주자가 안전관리가 특히 필요하다고 인정하는 공사 ／ 지자체 조례로 정하는 공사 중 인·허가기관의 장이 인정하는 공사</td><td class="lf x">발주청 재량 — 학교공사 적용 여지</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="2.5"/></svg></span><span class="lb"><i>4</i>검토의뢰 기관</span></span>
+      <ul class="list">
+        <li><b class="term">원칙</b> — 발주청은 <span class="tl">건설안전점검기관</span>(안전진단전문기관 또는 국토안전관리원)에 검토를 의뢰</li>
+        <li><b class="term">1·2종 시설물</b> — 반드시 <span class="tl">국토안전관리원</span>에 의뢰(영 제98조④ 단서)</li>
+        <li><b class="term">1종 예시</b> — <span class="num">21층 이상</span> 또는 연면적 <span class="num">5만㎡</span> 이상</li>
+        <li><b class="term">2종 예시</b> — <span class="num">16층 이상</span> 또는 연면적 <span class="num">3만㎡</span> 이상, 연면적 <span class="num">5천㎡</span> 이상 의료·수련·운동·숙박·관광시설 등</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></span><span class="lb"><i>5</i>검토결과 판정과 사후</span></span>
+      <ul class="list">
+        <li><b class="term">적정</b> — 안전조치가 구체적·명료하여 시공상 안전성이 충분히 확보됨 → 승인서 발급</li>
+        <li><b class="term">조건부 적정</b> — 치명적 영향은 없으나 일부 보완 필요 → <span class="tl">보완사유를 포함</span>한 승인서 발급</li>
+        <li><b class="term">부적정</b> — 사고 우려 또는 근본적 결함 → 발주청이 계획 변경 등 필요한 조치</li>
+        <li><b class="term">적정성 검토</b> — 국토교통부장관이 성실 수립·검토 여부 등을 검토해 <span class="tl">시정명령 등</span> 요청 가능(조치 후 7일 이내 제출)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-4 6 4v12"/><path d="M10 21v-6h4v6"/></svg></span><span class="lb"><i>6</i>공종별 세부 안전관리계획 (시행규칙 [별표 7])</span></span>
+      <ul class="list">
+        <li><b class="term">① 가설공사</b> — 외부비계·가설울타리 설치해체계획(안전보건규칙 제13조·제54~62조·제69~70조), 이동식비계 안전대책(제67~68조), 낙하물방지대책(제14조), 고소작업차 안전대책(제147~150조)</li>
+        <li><b class="term">② 굴착 및 발파공사</b> — 안전보건규칙 제338~344조 ／ <b class="term">③ 콘크리트공사</b> — 거푸집·동바리 설치계획(제328~336조), 시스템동바리 설치계획(법 제62조 및 영 제101조의2)</li>
+        <li><b class="term">④ 강구조물공사 ⑤ 성토 및 절토공사 ⑥ 해체공사 ⑦ 건축설비공사 ⑧ 타워크레인 사용 공사</b> — 각 공종의 건설공법 및 시공절차를 포함하여 작성</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>7</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>굴착</b> 지하 <span class="num">10m</span> 이상</span>
+        <span class="chip"><b>건축물</b> <span class="num">10~16층</span> 미만</span>
+        <span class="chip"><b>리모델링·해체</b> <span class="num">10층</span> 이상</span>
+        <span class="chip"><b>폭발물</b> <span class="num">20m</span> 시설물 · <span class="num">100m</span> 가축</span>
+        <span class="chip"><b>천공기</b> 높이 <span class="num">10m</span> 이상</span>
+        <span class="chip"><b>검토결과 통보</b> <span class="num">20일</span> 이내</span>
+        <span class="chip"><b>국토부 제출</b> <span class="num">7일</span> 이내</span>
+        <span class="chip"><b>1종</b> <span class="num">21층</span>·<span class="num">5만㎡</span></span>
+        <span class="chip"><b>2종</b> <span class="num">16층</span>·<span class="num">3만㎡</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">근거: 건설기술 진흥법 제62조 · 같은 법 시행령 제98조·제99조·제101조의2 ｜ 1·2종 시설물의 층수·면적 요건은 「시설물의 안전 및 유지관리에 관한 특별법」 시행령 [별표 1]에 따른 예시임 ｜ 출처: 국가법령정보센터 www.law.go.kr</p>
+  <p class="pageno">1 / 2</p>
+
+</div>
+
+<!-- ════════════════ 2쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">건설공사의 안전관리 ② — 업무흐름·검토 체크리스트</h1>
+  <div class="ubar"></div>
+  <p class="meta">업무편람 4-6 ｜ 근거: 건설기술 진흥법 제62조·제64조 · 시행령 제98조·제100조·제102조 · 시행규칙 [별표 7]</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">안전총괄책임자 = 시공관리책임자</span>가 현장 안전관리를 총괄하며, <span class="rolet">분야별 안전관리책임자·안전관리담당자</span>와 <span class="rolet">수급인·하수급인 협의체</span>를 두어야 함(법 제64조, 영 제102조). 발주청은 계획서 검토 시 이 조직 구성의 적정 여부를 <b class="term">가장 먼저</b> 확인함.</span>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M4 12h16M4 18h7"/><path d="M17 3l3 3-3 3"/></svg></span><span class="lb"><i>1</i>안전관리계획서 업무처리 흐름</span></span>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">수립</b> — 건설사업자·주택건설등록업자가 안전관리계획 수립 → <b class="term">검토·확인</b> 공사감독자 또는 건설사업관리기술인의 사전 검토·확인(제출 전 필수)</li>
+        <li><span class="no">2</span><b class="term">제출·접수</b> — 착공 전 발주청 또는 인·허가기관의 장에게 제출·접수 → <b class="term">검토의뢰</b> 건설안전점검기관(1·2종 시설물은 국토안전관리원)에 의뢰</li>
+        <li><span class="no">3</span><b class="term">검토·통보</b> — 검토기관이 검토의견을 통보 → 발주청이 적정·조건부적정·부적정을 판정하고 <span class="num">20일 이내</span> 결과 통보·승인서 발급</li>
+        <li><span class="no">4</span><b class="term">착공</b> — 부적정은 보완 후 재제출, 적정·조건부적정은 <span class="tl">건설공사 착공 승인</span> → 착공</li>
+        <li><span class="no">5</span><b class="term">국토부 제출·적정성 검토</b> — 승인 계획서 사본·검토결과를 통보일부터 <span class="num">7일 이내</span> 국토교통부장관에게 제출(CSI). 국토부가 적정성을 검토해 시정명령 등을 요청하면 발주청이 수정·보완을 명하고 완료 후 <span class="num">7일 이내</span> 제출</li>
+        <li><span class="no">6</span><b class="term">공사 중</b> — 건설안전점검기관이 정기안전점검 실시 → 결과를 <span class="num">30일 이내</span> 통보, 건설사업자는 <span class="num">15일 이내</span> 국토교통부장관에게 제출</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/></svg></span><span class="lb"><i>2</i>안전관리조직 — 선임기준 체크리스트</span></span>
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th class="h1" style="width:34%">검토항목</th>
+            <th style="width:30%">선임·구성 기준</th>
+            <th class="h1" style="width:36%">근거</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th class="grp" colspan="3">건설기술 진흥법 체계</th></tr>
+          <tr><td class="it">안전총괄책임자</td><td class="lf">시공관리책임자 — 현장 총괄</td><td class="lf">법 제64조, 영 제102조</td></tr>
+          <tr><td class="it">분야별 안전관리책임자</td><td class="lf">토목·건축·전기 등 분야별</td><td class="lf">법 제64조</td></tr>
+          <tr><td class="it">안전관리담당자</td><td class="lf">직접 시공 및 안전관리 담당</td><td class="lf">법 제64조</td></tr>
+          <tr><td class="it">수급인·하수급인 협의체</td><td class="lf">법에 의한 협의체 구성</td><td class="lf">법 제64조, 영 제102조</td></tr>
+          <tr><th class="grp" colspan="3">산업안전보건법 병행 선임 — 공사금액 기준</th></tr>
+          <tr><td class="it">안전보건관리책임자</td><td><span class="num">20억원</span> 이상</td><td class="lf">산안법 제15조·제62조, 영 제14조</td></tr>
+          <tr><td class="it">안전보건조정자</td><td>공사비 <span class="num">50억원</span> 이상</td><td class="lf">산안법 제68조</td></tr>
+          <tr><td class="it">안전관리자</td><td><span class="num">50억원</span> 이상</td><td class="lf">산안법 제17조</td></tr>
+          <tr><td class="it">산업안전보건위원회 / 노사협의체</td><td><span class="num">120억원</span> 이상</td><td class="lf">산안법 제24조 / 제75조</td></tr>
+          <tr><td class="it">보건관리자 또는 산업의</td><td><span class="num">800억원</span> 이상</td><td class="lf">산안법 제18조·제22조</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/><path d="M8.5 11l2 2 4-4"/></svg></span><span class="lb"><i>3</i>안전점검계획</span></span>
+      <ul class="list">
+        <li><b class="term">자체안전점검</b> — 공사기간 동안 <span class="num">매일</span> 실시(영 제100조①)</li>
+        <li><b class="term">정기안전점검</b> — 국토교통부장관 고시 시기·횟수에 따라 건설안전점검기관에 의뢰(업무수행지침 제21~23조)</li>
+        <li><b class="term">정밀안전점검</b> — 정기점검에서 결함이 발견되어 보수·보강이 필요한 경우</li>
+        <li><b class="term">초기점검</b> — 1·2종 시설물은 준공 직전 정기점검 <span class="tl">수준 이상</span>, <span class="num">1년 이상</span> 방치 시 재개 전 점검</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3H9z"/><path d="M15 4h3v17H6V4h3"/><path d="M9 11l2 2 4-4"/></svg></span><span class="lb"><i>4</i>그 밖의 검토항목</span></span>
+      <ul class="list">
+        <li><b class="term">주변 안전관리</b> — 지하매설물 방호, 인접 시설물 및 지반 보호</li>
+        <li><b class="term">통행안전·교통</b> — 주변 교통소통대책, 교통사고예방대책, 교통안전시설물</li>
+        <li><b class="term">안전관리비</b> — 사용계획·사용금액 및 사용항목의 적정 여부(업무수행지침 [별표 7]·[별표 8])</li>
+        <li><b class="term">안전교육·비상조치</b> — 교육계획표·교육관리(영 제103조), 비상연락망·동원조직·경보체계, 응급·복구조치</li>
+      </ul>
+    </div>
+  </div>
+
+    <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>자체안전점검</b> <span class="num">매일</span></span>
+        <span class="chip"><b>점검결과 통보</b> <span class="num">30일</span> 이내</span>
+        <span class="chip"><b>점검결과 국토부 제출</b> <span class="num">15일</span> 이내</span>
+        <span class="chip"><b>안전보건관리책임자</b> <span class="num">20억원</span></span>
+        <span class="chip"><b>조정자·안전관리자</b> <span class="num">50억원</span></span>
+        <span class="chip"><b>위원회·노사협의체</b> <span class="num">120억원</span></span>
+        <span class="chip"><b>보건관리자</b> <span class="num">800억원</span></span>
+        <span class="chip"><b>공종별 계획</b> <span class="num">8개</span> 공종</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">계획은 건설사업자가 만들되 <b>제출 전 공사감독자·건설사업관리기술인의 검토·확인</b>과 <b>발주청의 20일 이내 승인</b>이 착공의 전제이므로, 착공일을 역산해 제출 시점과 검토기관 의뢰 일정을 먼저 확정하여야 함.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">근거: 건설기술 진흥법 제62조·제64조 · 시행령 제98조·제100조·제102조·제103조 · 시행규칙 [별표 7] · 안전관리 업무수행지침 제21~23조·[별표 7]·[별표 8] ｜ 산안법 선임 금액기준은 편람 기재값으로 공사 종류에 따라 달라질 수 있어 시행령 [별표]로 재확인 요망 ｜ 출처: www.law.go.kr · www.csi.go.kr</p>
+  <p class="pageno">2 / 2</p>
+
+</div>
+</body></html>

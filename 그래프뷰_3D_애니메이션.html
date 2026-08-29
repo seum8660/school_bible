@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>학교시설업무 관계망 · 15초 애니메이션</title>
+<style>
+  html,body{margin:0;height:100%;background:#07060f;overflow:hidden;
+    font-family:-apple-system,"Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+  #stage{position:fixed;inset:0;display:grid;place-items:center;background:
+    radial-gradient(120% 90% at 20% 10%,rgba(72,58,160,.34),transparent 60%),
+    radial-gradient(100% 80% at 82% 78%,rgba(20,96,132,.30),transparent 62%),
+    radial-gradient(70% 60% at 55% 45%,rgba(150,70,120,.16),transparent 70%),#07060f}
+  #frame{position:relative;width:100%;height:100%;overflow:hidden}
+  canvas{display:block;width:100%;height:100%}
+  #vig{position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(120% 100% at 50% 50%,transparent 45%,rgba(7,6,15,.72) 100%)}
+  #cap{position:absolute;left:0;right:0;bottom:9%;text-align:center;pointer-events:none;padding:0 8%}
+  #kicker{font-size:13px;letter-spacing:.34em;font-weight:700;color:#8fb0ff;opacity:0;
+    text-transform:uppercase;margin-bottom:14px}
+  #line1{font-size:46px;font-weight:800;line-height:1.2;color:#f2f0ff;opacity:0;
+    letter-spacing:-.01em;text-shadow:0 4px 40px rgba(7,6,15,.9)}
+  #line2{margin-top:12px;font-size:19px;font-weight:500;color:#b6b2cc;opacity:0}
+  #bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:#8fb0ff;opacity:.55}
+  #tools{position:absolute;right:18px;top:16px;display:flex;gap:8px}
+  #tools button,#tools select{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);
+    color:#e4e2ee;font:600 12px/1 inherit;padding:9px 14px;border-radius:999px;cursor:pointer;
+    backdrop-filter:blur(6px);opacity:.5;transition:opacity .2s}
+  #tools button:hover,#tools select:hover{opacity:1}
+  #rec.on{opacity:1;border-color:#e8590c;color:#ffb08a}
+  @media (max-width:760px){#line1{font-size:30px}#line2{font-size:15px}#kicker{font-size:11px}}
+</style>
+</head>
+<body>
+<div id="stage"><div id="frame">
+  <canvas id="cv"></canvas>
+  <div id="vig"></div>
+  <div id="cap">
+    <div id="kicker">School Bible</div>
+    <div id="line1"></div>
+    <div id="line2"></div>
+  </div>
+  <div id="bar"></div>
+  <div id="tools">
+    <select id="fmt" title="인스타그램 포맷">
+      <option value="portrait">피드 4:5 (1080×1350)</option>
+      <option value="reels">릴스 9:16 (1080×1920)</option>
+      <option value="square">피드 1:1 (1080×1080)</option>
+      <option value="wide">가로 16:9 (1920×1080)</option>
+    </select>
+    <button id="replay">다시 재생</button>
+    <button id="rec">동영상 저장</button>
+  </div>
+</div></div>
+
+<script src="graph_data.js"></script>
+<script src="wf_tags.js"></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+
+const G = window.BIBLE_GRAPH;
+if (window.WF_GRAPH) {
+  const have = new Set(G.nodes.map(n => n.id));
+  window.WF_GRAPH.nodes.forEach(n => { if (!have.has(n.id)) { have.add(n.id); G.nodes.push({ ...n }); } });
+  window.WF_GRAPH.links.forEach(l => { if (have.has(l.source) && have.has(l.target)) G.links.push({ ...l }); });
+}
+const PHASE_COL = { plan:'#3f6f8a', design:'#5b8c6e', const:'#c07a3e', cm:'#8a6a4f', comp:'#96794a', safety:'#9c5b4e', manual:'#7a7168' };
+const INK2 = '#e4e2ee', MUTED = '#a9a6bb', FAINT = '#7d7a92', ACCENT = '#8fb0ff';
+const isHot = n => n.group === 'phase' || n.group === 'root' || n.id === 'wf:hub';
+const phaseOf = n => { const m = (n.group||'').match(/^item:(\w+)/) || (n.id||'').match(/^(?:phase|item):(\w+)/); return m ? m[1] : null; };
+const colorOf = n => {
+  if (n.group === 'wf') return '#e8590c';
+  if (n.group === 'law' || n.group === 'cert') return '#ffffff';
+  const p = phaseOf(n);
+  if (p && PHASE_COL[p]) return PHASE_COL[p];
+  if (n.group === 'root') return INK2;
+  return MUTED;
+};
+const groupKey = n => n.group === 'wf' ? 'wf' : n.group === 'law' ? 'law' : n.group === 'cert' ? 'cert'
+  : n.group === 'tag' ? 'tag' : n.group === 'item:manual' ? 'manual' : n.group === 'item:safety' ? 'safety'
+  : (n.group === 'phase' || n.group === 'root') ? 'phase' : 'item';
+
+const nodes = G.nodes.map(n => ({ ...n }));
+const byId = new Map(nodes.map(n => [n.id, n]));
+const links = G.links.map(l => ({ s: byId.get(l.source), t: byId.get(l.target), kind: l.kind })).filter(l => l.s && l.t);
+const deg = new Map(nodes.map(n => [n.id, 0]));
+links.forEach(l => { deg.set(l.s.id, deg.get(l.s.id) + 1); deg.set(l.t.id, deg.get(l.t.id) + 1); });
+const nbr = new Map(nodes.map(n => [n.id, new Set()]));
+links.forEach(l => { nbr.get(l.s.id).add(l.t.id); nbr.get(l.t.id).add(l.s.id); });
+const rad = n => Math.max(2.2, Math.min(8, 2.2 + Math.sqrt(deg.get(n.id) || 1) * 1.5));
+
+// ---- force layout ----
+nodes.forEach(n => {
+  const r = 120 * Math.cbrt(Math.random()), th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
+  n.x = r * Math.sin(ph) * Math.cos(th); n.y = r * Math.sin(ph) * Math.sin(th); n.z = r * Math.cos(ph);
+  n.vx = n.vy = n.vz = 0;
+});
+const restOf = l => l.kind === 'flow' ? 105 : l.kind === 'phase' ? 66 : 40;
+for (let k = 0; k < 260; k++) {
+  for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
+    const a = nodes[i], b = nodes[j];
+    let dx = b.x - a.x, dy = b.y - a.y, dz = b.z - a.z;
+    let d2 = dx*dx + dy*dy + dz*dz || 0.01;
+    const f = -2600 / d2, d = Math.sqrt(d2);
+    dx /= d; dy /= d; dz /= d;
+    a.vx += dx*f; a.vy += dy*f; a.vz += dz*f;
+    b.vx -= dx*f; b.vy -= dy*f; b.vz -= dz*f;
+  }
+  links.forEach(l => {
+    const a = l.s, b = l.t, rest = restOf(l);
+    let dx = b.x - a.x, dy = b.y - a.y, dz = b.z - a.z;
+    const d = Math.sqrt(dx*dx + dy*dy + dz*dz) || 0.01, f = (d - rest) * 0.055;
+    dx = dx/d*f; dy = dy/d*f; dz = dz/d*f;
+    a.vx += dx; a.vy += dy; a.vz += dz;
+    b.vx -= dx; b.vy -= dy; b.vz -= dz;
+  });
+  nodes.forEach(n => {
+    n.vx -= n.x*0.006; n.vy -= n.y*0.006; n.vz -= n.z*0.006;
+    n.x += n.vx *= 0.62; n.y += n.vy *= 0.62; n.z += n.vz *= 0.62;
+  });
+}
+const c0 = nodes.reduce((a, n) => (a.x += n.x, a.y += n.y, a.z += n.z, a), { x:0, y:0, z:0 });
+c0.x /= nodes.length; c0.y /= nodes.length; c0.z /= nodes.length;
+nodes.forEach(n => { n.x -= c0.x; n.y -= c0.y; n.z -= c0.z; });
+
+// ---- scene ----
+const cv = document.getElementById('cv'), frame = document.getElementById('frame');
+const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(52, 1, 1, 6000);
+const root = new THREE.Group(); scene.add(root);
+
+function starfield(count, spread, size, opacity) {
+  const g = new THREE.BufferGeometry(), p = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const r = spread * (0.55 + Math.random() * 0.45);
+    const th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
+    p.set([r*Math.sin(ph)*Math.cos(th), r*Math.cos(ph)*0.6, r*Math.sin(ph)*Math.sin(th)], i*3);
+  }
+  g.setAttribute('position', new THREE.BufferAttribute(p, 3));
+  return new THREE.Points(g, new THREE.PointsMaterial({ color:0xffffff, size, sizeAttenuation:true,
+    transparent:true, opacity, depthWrite:false, blending:THREE.AdditiveBlending }));
+}
+const stars = new THREE.Group();
+stars.add(starfield(1600, 2600, 3.4, 0.75));
+stars.add(starfield(800, 1500, 2.0, 0.42));
+scene.add(stars);
+
+const lgeo = new THREE.BufferGeometry();
+lgeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(links.length * 6), 3));
+const lcol = new Float32Array(links.length * 6).fill(0.62);
+lgeo.setAttribute('color', new THREE.BufferAttribute(lcol, 3));
+const lineMat = new THREE.LineBasicMaterial({ vertexColors:true, transparent:true, opacity:0.2,
+  blending:THREE.AdditiveBlending, depthWrite:false });
+root.add(new THREE.LineSegments(lgeo, lineMat));
+
+const GLOW = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const g = c.getContext('2d'), gr = g.createRadialGradient(64,64,0,64,64,64);
+  gr.addColorStop(0,'rgba(255,255,255,1)'); gr.addColorStop(.28,'rgba(255,255,255,.45)');
+  gr.addColorStop(1,'rgba(255,255,255,0)');
+  g.fillStyle = gr; g.fillRect(0,0,128,128);
+  return new THREE.CanvasTexture(c);
+})();
+const sphere = new THREE.SphereGeometry(1, 14, 12);
+const glows = [];
+const meshes = nodes.map(n => {
+  const m = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color:new THREE.Color(colorOf(n)), transparent:true }));
+  m.position.set(n.x, n.y, n.z); m.scale.setScalar(rad(n)); m.userData.node = n; root.add(m);
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map:GLOW, color:new THREE.Color(colorOf(n)),
+    transparent:true, opacity: isHot(n) ? 0.9 : 0.55, blending:THREE.AdditiveBlending, depthWrite:false }));
+  glow.scale.setScalar(isHot(n) ? 7 : 5); glow.userData.base = isHot(n) ? 0.9 : 0.55; m.add(glow); glows.push(glow);
+  if (n.group === 'law' || n.group === 'cert') {
+    const ring = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color:new THREE.Color(FAINT), wireframe:true, transparent:true, opacity:.5 }));
+    ring.scale.setScalar(1.12); m.add(ring);
+  }
+  return m;
+});
+
+function labelSprite(text, hot, dim, tint) {
+  const pad = 8, fs = hot ? 30 : (dim ? 22 : 26), c = document.createElement('canvas'), g = c.getContext('2d');
+  const wt = hot ? 700 : (dim ? 500 : 600), font = `${wt} ${fs}px -apple-system, "Malgun Gothic", sans-serif`;
+  g.font = font;
+  c.width = Math.ceil(g.measureText(text).width + pad*2); c.height = fs + pad*2;
+  g.font = font;
+  if (hot) { g.fillStyle = (tint || ACCENT) + '1f'; g.beginPath(); g.roundRect(0,0,c.width,c.height,c.height/2); g.fill(); }
+  g.fillStyle = hot ? (tint || ACCENT) : (dim ? FAINT : INK2);
+  g.textBaseline = 'middle'; g.fillText(text, pad, c.height/2);
+  const tex = new THREE.CanvasTexture(c); tex.anisotropy = 4;
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map:tex, transparent:true, depthWrite:false, opacity:0 }));
+  sp.scale.set(c.width*0.26, c.height*0.26, 1);
+  return sp;
+}
+const labels = nodes.map((n, i) => {
+  const txt = n.label.length > 13 ? n.label.slice(0,13) + '…' : n.label;
+  const sp = labelSprite(txt, isHot(n), n.group === 'law' || n.group === 'cert', colorOf(n));
+  sp.userData = { node: n }; root.add(sp);
+  return sp;
+});
+
+const rs = nodes.map(n => Math.hypot(n.x, n.y, n.z)).sort((a,b) => a-b);
+const R0 = Math.max(1, rs[Math.floor(rs.length * 0.85)]);
+const DIST = R0 / Math.tan((camera.fov * Math.PI/180)/2) * 1.1;
+
+function resize() {
+  const w = frame.clientWidth, h = frame.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w/h; camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+// ---- BFS depth for the growth wave ----
+const home = new Map(nodes.map(n => [n.id, { x:n.x, y:n.y, z:n.z }]));
+const parent = new Map(), depth = new Map();
+{
+  const start = byId.get('root') || nodes[0];
+  depth.set(start.id, 0);
+  const q = [start];
+  while (q.length) {
+    const cur = q.shift();
+    nbr.get(cur.id).forEach(id => {
+      if (depth.has(id)) return;
+      depth.set(id, depth.get(cur.id) + 1); parent.set(id, cur.id); q.push(byId.get(id));
+    });
+  }
+  nodes.forEach(n => { if (!depth.has(n.id)) { depth.set(n.id, 1); parent.set(n.id, start.id); } });
+}
+const maxDepth = Math.max(...depth.values());
+
+// ---- 15s timeline ----
+const T = 15;
+const kicker = document.getElementById('kicker'), line1 = document.getElementById('line1'),
+      line2 = document.getElementById('line2'), bar = document.getElementById('bar');
+const ease = t => t <= 0 ? 0 : t >= 1 ? 1 : t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+const clamp01 = t => Math.max(0, Math.min(1, t));
+const seg = (t, a, b) => clamp01((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+
+const CAM = [
+  [0.0,  DIST * 0.34,  -0.55,  0.22],
+  [3.2,  DIST * 0.72,  -0.05,  0.10],
+  [6.6,  DIST * 1.06,   0.62, -0.16],
+  [9.6,  DIST * 0.86,   1.42,  0.30],
+  [12.4, DIST * 1.10,   2.05,  0.06],
+  [15.0, DIST * 1.42,   2.62,  0.26]
+];
+function camAt(t) {
+  let i = 0;
+  while (i < CAM.length - 2 && t > CAM[i+1][0]) i++;
+  const a = CAM[i], b = CAM[i+1], k = ease(seg(t, a[0], b[0]));
+  return { d: lerp(a[1], b[1], k), az: lerp(a[2], b[2], k), el: lerp(a[3], b[3], k) };
+}
+
+const BEATS = [
+  [0.6,  4.2, true,  '학교시설업무, 하나의 관계망',      '기획부터 준공까지 — 절차·법령·매뉴얼이 서로 연결됩니다'],
+  [4.6,  7.8, false, '6단계 · ' + nodes.length + '개 항목',  '기획 · 설계 · 계약 · 시공 · 건설사업관리 · 준공'],
+  [8.2, 11.4, false, '근거 법령이 항목마다 붙습니다',     '건진법 · 산안법 · 건축법 · 지방계약법'],
+  [11.8, 15.0, false, '워크플로우 보드 26종 · 매뉴얼 25건', 'SCHOOL BIBLE — 필요한 절차를 바로 찾습니다']
+];
+const HL = [
+  { at: 4.6, until: 7.8,  test: n => n.group === 'phase' || n.group === 'root' },
+  { at: 8.2, until: 11.4, test: n => groupKey(n) === 'law' || groupKey(n) === 'cert' },
+  { at: 11.8, until: 15.0, test: n => groupKey(n) === 'wf' || groupKey(n) === 'manual' }
+];
+
+let t0 = performance.now();
+let CAP = { k: 0, l1: '', l2: '', kick: 0, lift: 0 };
+function captions(t) {
+  let k = 0, l1 = '', l2 = '', kick = 0;
+  BEATS.forEach(b => {
+    const inK = seg(t, b[0], b[0] + 0.55), out = 1 - seg(t, b[1] - 0.45, b[1]);
+    const o = Math.min(inK, out);
+    if (o > k) { k = o; l1 = b[3]; l2 = b[4]; kick = b[2] ? o : 0; }
+  });
+  if (line1.textContent !== l1) line1.textContent = l1;
+  if (line2.textContent !== l2) line2.textContent = l2;
+  line1.style.opacity = k; line2.style.opacity = k * 0.92; kicker.style.opacity = kick;
+  const lift = (1 - k) * 14;
+  line1.style.transform = `translateY(${lift}px)`;
+  line2.style.transform = `translateY(${lift * 0.7}px)`;
+  CAP = { k, l1, l2, kick, lift };
+}
+
+function frameAt(t) {
+  const GROW_START = 0.5, STEP = 5.4 / Math.max(1, maxDepth), DUR = 0.9;
+  nodes.forEach(n => {
+    const d = depth.get(n.id);
+    const p = clamp01((t - GROW_START - d * STEP) / DUR);
+    n.grow = p;
+    const h = home.get(n.id);
+    if (d === 0 || p >= 1) { n.x = h.x; n.y = h.y; n.z = h.z; return; }
+    const ph = home.get(parent.get(n.id)) || h, e = 1 - Math.pow(1 - p, 3);
+    n.x = ph.x + (h.x - ph.x) * e; n.y = ph.y + (h.y - ph.y) * e; n.z = ph.z + (h.z - ph.z) * e;
+  });
+
+  let hl = null;
+  HL.forEach(g => { if (t >= g.at - 0.4 && t <= g.until) hl = g; });
+  const hlK = hl ? Math.min(seg(t, hl.at - 0.4, hl.at + 0.5), 1 - seg(t, hl.until - 0.5, hl.until)) : 0;
+  const pulse = 0.5 + 0.5 * Math.sin(t * 3.1);
+
+  meshes.forEach((m, i) => {
+    const n = nodes[i];
+    m.position.set(n.x, n.y, n.z);
+    const on = hl ? hl.test(n) : false;
+    const dim = hl ? lerp(1, on ? 1 : 0.16, hlK) : 1;
+    m.material.opacity = n.grow * dim;
+    m.visible = n.grow > 0.02;
+    const bump = on ? 1 + 0.22 * hlK * (0.6 + 0.4 * pulse) : 1;
+    m.scale.setScalar(rad(n) * (0.35 + 0.65 * n.grow) * bump);
+    const g = glows[i];
+    g.material.opacity = g.userData.base * n.grow * (on ? lerp(1, 1.9, hlK) : dim);
+  });
+
+  const p = lgeo.getAttribute('position');
+  links.forEach((l, i) => p.array.set([l.s.x, l.s.y, l.s.z, l.t.x, l.t.y, l.t.z], i*6));
+  p.needsUpdate = true;
+  const ca = lgeo.getAttribute('color');
+  links.forEach((l, i) => {
+    let v = 0.62 * Math.min(l.s.grow, l.t.grow);
+    if (hl) v *= lerp(1, (hl.test(l.s) || hl.test(l.t)) ? 1.5 : 0.25, hlK);
+    for (let k = 0; k < 6; k++) ca.array[i*6 + k] = v;
+  });
+  ca.needsUpdate = true;
+  lineMat.opacity = 0.2 + 0.1 * (hl ? hlK : 0);
+
+  labels.forEach((sp, i) => {
+    const n = nodes[i];
+    const on = hl ? hl.test(n) : false;
+    let o = clamp01((n.grow - 0.5) / 0.5);
+    if (hl) o *= lerp(1, on ? 1 : 0.05, hlK);
+    else o *= isHot(n) ? 1 : 0.5;
+    sp.material.opacity = o;
+    sp.visible = o > 0.02;
+    sp.position.set(n.x, n.y + rad(n) + 7, n.z);
+  });
+
+  const c = camAt(t);
+  const d = c.d * FIT;
+  camera.position.set(
+    d * Math.cos(c.el) * Math.sin(c.az),
+    d * Math.sin(c.el),
+    d * Math.cos(c.el) * Math.cos(c.az)
+  );
+  camera.lookAt(0, 0, 0);
+  stars.rotation.y = t * 0.012;
+  root.rotation.y = Math.sin(t * 0.22) * 0.03;
+
+  captions(t);
+  bar.style.width = (t / T * 100) + '%';
+}
+
+document.getElementById('replay').addEventListener('click', () => { t0 = performance.now(); });
+
+// ---- 녹화: 인스타그램 포맷 · 고화질 ----
+const FORMATS = {
+  reels:    { w:1080, h:1920, fit:1.62, capY:0.775, name:'릴스9x16' },
+  square:   { w:1080, h:1080, fit:1.18, capY:0.895, name:'정사각1x1' },
+  portrait: { w:1080, h:1350, fit:1.30, capY:0.870, name:'피드4x5' },
+  wide:     { w:1920, h:1080, fit:1.00, capY:0.910, name:'가로16x9' }
+};
+let FIT = 1;
+const comp = document.createElement('canvas');
+const cx2 = comp.getContext('2d');
+let recOn = false, FM = FORMATS.portrait;
+
+function composite(t) {
+  const W = comp.width, H = comp.height, S = W / 1080;
+  cx2.globalAlpha = 1;
+  cx2.fillStyle = '#07060f'; cx2.fillRect(0, 0, W, H);
+  const g1 = cx2.createRadialGradient(W*0.20, H*0.10, 0, W*0.20, H*0.10, Math.max(W,H)*0.75);
+  g1.addColorStop(0, 'rgba(72,58,160,.34)'); g1.addColorStop(1, 'rgba(72,58,160,0)');
+  cx2.fillStyle = g1; cx2.fillRect(0, 0, W, H);
+  const g2 = cx2.createRadialGradient(W*0.82, H*0.78, 0, W*0.82, H*0.78, Math.max(W,H)*0.62);
+  g2.addColorStop(0, 'rgba(20,96,132,.30)'); g2.addColorStop(1, 'rgba(20,96,132,0)');
+  cx2.fillStyle = g2; cx2.fillRect(0, 0, W, H);
+  const g3 = cx2.createRadialGradient(W*0.55, H*0.45, 0, W*0.55, H*0.45, Math.max(W,H)*0.42);
+  g3.addColorStop(0, 'rgba(150,70,120,.16)'); g3.addColorStop(1, 'rgba(150,70,120,0)');
+  cx2.fillStyle = g3; cx2.fillRect(0, 0, W, H);
+
+  cx2.drawImage(cv, 0, 0, W, H);
+
+  const vg = cx2.createRadialGradient(W/2, H/2, Math.min(W,H)*0.36, W/2, H/2, Math.max(W,H)*0.95);
+  vg.addColorStop(0, 'rgba(7,6,15,0)'); vg.addColorStop(1, 'rgba(7,6,15,.74)');
+  cx2.fillStyle = vg; cx2.fillRect(0, 0, W, H);
+  const sc = cx2.createLinearGradient(0, H, 0, H*0.58);
+  sc.addColorStop(0, 'rgba(7,6,15,.90)'); sc.addColorStop(.5, 'rgba(7,6,15,.45)'); sc.addColorStop(1, 'rgba(7,6,15,0)');
+  cx2.fillStyle = sc; cx2.fillRect(0, H*0.58, W, H*0.42);
+
+  const cxc = W/2, baseY = H*FM.capY + CAP.lift*2*S;
+  const F1 = Math.round(58*S), F2 = Math.round(27*S), FK = Math.round(17*S);
+  cx2.textAlign = 'center'; cx2.textBaseline = 'alphabetic';
+  if (CAP.kick > 0.02) {
+    cx2.globalAlpha = CAP.kick;
+    cx2.fillStyle = '#8fb0ff';
+    cx2.font = `700 ${FK}px -apple-system, "Malgun Gothic", sans-serif`;
+    const s = 'SCHOOL BIBLE', tr = 6*S;
+    let total = 0;
+    for (const ch of s) total += cx2.measureText(ch).width + tr;
+    let tx = cxc - (total - tr)/2;
+    cx2.textAlign = 'left';
+    for (const ch of s) { cx2.fillText(ch, tx, baseY - F1*1.9); tx += cx2.measureText(ch).width + tr; }
+    cx2.textAlign = 'center';
+  }
+  // 제목 — 화면 폭에 맞춰 두 줄까지 자동 줄바꿈
+  cx2.globalAlpha = CAP.k;
+  cx2.shadowColor = 'rgba(7,6,15,.9)'; cx2.shadowBlur = 34*S; cx2.shadowOffsetY = 5*S;
+  cx2.fillStyle = '#f2f0ff';
+  cx2.font = `800 ${F1}px -apple-system, "Malgun Gothic", sans-serif`;
+  const maxW = W*0.86;
+  const words = (CAP.l1 || '').split(' ');
+  const lines = [];
+  let cur = '';
+  words.forEach(w => {
+    const test = cur ? cur + ' ' + w : w;
+    if (cx2.measureText(test).width > maxW && cur) { lines.push(cur); cur = w; } else cur = test;
+  });
+  if (cur) lines.push(cur);
+  const lh = F1*1.22;
+  lines.forEach((ln, i) => cx2.fillText(ln, cxc, baseY - F1*0.75 - (lines.length-1-i)*lh));
+  cx2.shadowBlur = 0; cx2.shadowOffsetY = 0;
+  cx2.globalAlpha = CAP.k * 0.92;
+  cx2.fillStyle = '#b6b2cc';
+  cx2.font = `500 ${F2}px -apple-system, "Malgun Gothic", sans-serif`;
+  cx2.fillText(CAP.l2, cxc, baseY);
+
+  cx2.globalAlpha = 0.55;
+  cx2.fillStyle = '#8fb0ff';
+  cx2.fillRect(0, H - Math.round(4*S), W * (t/T), Math.round(4*S));
+  cx2.globalAlpha = 1;
+}
+
+const fmtSel = document.getElementById('fmt');
+const recBtn = document.getElementById('rec');
+recBtn.addEventListener('click', () => {
+  if (recOn) return;
+  // 인스타그램은 MP4(H.264)를 권장 — 지원 시 mp4, 아니면 webm
+  const types = ['video/mp4;codecs=avc1.640033', 'video/mp4;codecs=avc1.42E01E', 'video/mp4',
+                 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+  const mime = types.find(x => window.MediaRecorder && MediaRecorder.isTypeSupported(x));
+  if (!mime) { recBtn.textContent = 'MediaRecorder 미지원'; return; }
+  const ext = mime.startsWith('video/mp4') ? 'mp4' : 'webm';
+  FM = FORMATS[fmtSel.value] || FORMATS.portrait;
+  FIT = FM.fit;
+  comp.width = FM.w; comp.height = FM.h;
+  renderer.setPixelRatio(1);
+  renderer.setSize(FM.w, FM.h, false);
+  camera.aspect = FM.w / FM.h; camera.updateProjectionMatrix();
+  recOn = true;
+  recBtn.classList.add('on');
+  const rec = new MediaRecorder(comp.captureStream(30), { mimeType: mime, videoBitsPerSecond: 20000000 });
+  const chunks = [];
+  rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+  rec.onstop = () => {
+    const url = URL.createObjectURL(new Blob(chunks, { type: mime.split(';')[0] }));
+    const a = document.createElement('a');
+    a.href = url; a.download = '학교시설_관계망_15초_' + FM.name + '.' + ext; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 6000);
+    recOn = false; FIT = 1;
+    recBtn.classList.remove('on'); recBtn.textContent = '동영상 저장';
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    resize();
+  };
+  t0 = performance.now();
+  rec.start();
+  const tick = setInterval(() => {
+    const left = Math.max(0, T + 0.4 - (performance.now() - t0)/1000);
+    recBtn.textContent = '녹화 중 ' + left.toFixed(1) + 's';
+    if (left <= 0) { clearInterval(tick); rec.stop(); }
+  }, 100);
+});
+
+(function loop(now) {
+  requestAnimationFrame(loop);
+  const t = Math.min(T, ((now || performance.now()) - t0)/1000);
+  frameAt(t);
+  renderer.render(scene, camera);
+  if (recOn) composite(t);
+})();
+</script>
+<script src="close-button.js" defer></script>
+</body>
+</html>

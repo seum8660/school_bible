@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>공공건축 설계의도 구현 업무수행지침 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드 ──────────────────────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 ──────────────────────── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  /* ── 틸 넘버서클 목록 ───────────────── */
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  /* ── 순서 체인 ──────────────────────── */
+  .chain{ font-size:6.6pt; line-height:1.7; color:var(--body); }
+  .chain b{ color:var(--navy); font-weight:700; }
+  .chain s{ color:var(--teal); text-decoration:none; font-weight:800; margin:0 0.8mm; }
+
+  /* ── 표 ─────────────────────────────── */
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl thead th.h1{ text-align:left; }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .x{ color:var(--note); font-weight:400; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주 ───────────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head><body>
+<div class="page haspin">
+
+  <h1 class="title">공공건축 설계의도 구현 업무수행지침 — 핵심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">국토교통부고시 제775호(2020. 11. 4. 제정·시행) ｜ 근거: 「건축서비스산업 진흥법」 제22조 및 같은 법 시행령 제19조 ｜ 소관: 국토교통부 건축문화경관과(044-201-3782) ｜ 전문 3개 장 13개 조 + 부칙</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">공공기관(발주 주체) = 계약 체결과 대가 지급의 책임 주체</span> — 국가계약법·지방계약법에 따라 <b class="term">설계의도 구현 업무 계약을 체결</b>하고(제11조), 국가재정법 예산안편성지침에 따라 <b class="term">'사후설계관리업무' 예산을 편성해 대가를 지급</b>하여야 한다(제12조). <span class="rolet">시공자·감리자</span>는 설계자의 적정한 참여를 <span class="rolet">정당한 사유 없이 방해할 수 없고</span>(법 제22조③), 검토 자료 요청에 <span class="rolet">적극 협조</span>하여야 하며 회신 의견을 특별한 사유가 없으면 <b class="term">반영</b>하여야 한다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 4l9 6.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg></span><span class="lb"><i>1</i>목적·적용대상·용어 (제1조·제2조·제4조)</span></span>
+      <ul class="list">
+        <li><b class="term">설계의도 구현</b> — 설계자가 건축물의 건축과정에 <span class="tl">지속적으로 참여</span>하여 공공기관·시공자·감리자 등에게 설계의 취지 및 시공·유지관리에 필요한 사항을 <span class="tl">제안하는 행위</span></li>
+        <li><b class="term">적용·공공기관 4유형</b> — 공공기관이 법 제22조제1항에 따라 설계자를 참여시키는 경우. 국가기관 ／ 지방자치단체 ／ 공공기관운영법 제4조① 공공기관 ／ 「지방공기업법」 지방공기업</li>
+        <li><b class="term">준용</b> — 「건축법」 제25조제12항에 따라 <span class="tl">허가권자가 공사감리자를 지정하는 건축물의 건축주</span>가 설계자를 참여시켜야 하는 경우 이 지침을 준용하며, 이때 <span class="num">"공공기관"은 "건축주"</span>로 봄</li>
+        <li><b class="term">대상 건축물</b>(영 제19조①→제17조①) — 설계비 추정가격 <span class="num">1억원 이상</span> 건축물(공장·창고 등 일부 용도 제외), <span class="tl">지역자치센터·유치원·노유자시설</span> 등 국토교통부장관이 고시하는 용도</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>2</i>설계자의 의무 4가지 (제3조)</span></span>
+      <ul class="list">
+        <li><b class="term">① 성실 의무</b> — 관계 법령과 이에 따른 명령, <span class="tl">공공복리에 어긋나는 어떠한 행위도 하지 않으며</span> 신의와 성실로 업무에 임함</li>
+        <li><b class="term">② 청렴 의무</b> — 업무와 관련하여 제3자로부터 <span class="num">일체의 금품·이권·향응 수수 금지</span></li>
+        <li><b class="term">③ 공기 지연 금지</b> — 정당한 사유 없이 감리자·시공자에게 <span class="tl">설계도서와 다른 요구</span>를 하여 사업을 지연시켜서는 안 됨</li>
+        <li><b class="term">④ 현장 고려</b> — 감리자·시공자의 업무인 <span class="tl">품질관리·공사관리·안전관리</span>를 고려하여 업무 수행</li>
+        <li><b class="term">설계자</b> — 자기 책임으로 설계도서를 작성한 <span class="tl">건축사</span>로서 그 의도를 해설·지도하고 자문에 응하는 자</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></span><span class="lb"><i>3</i>업무별 회신기한과 서식 — 지침의 핵심 (제5조~제10조)</span></span>
+      <div class="chain">
+        <b>질의·검토 요청 접수</b><s>›</s><b>설계의도 부합 여부 검토</b><s>›</s><b>기한 내 별지 서식으로 회신(도면 등 첨부 가능)</b><s>›</s><b>감리자·시공자가 의견 반영</b><s>›</s><b>사용승인 시 참여설계자 확인서 제출</b>
+      </div>
+      <table class="tbl" style="margin-top:1.8mm">
+        <thead><tr><th style="width:38mm">업무</th><th class="h1">요청 주체 · 내용</th><th style="width:16mm">회신기한</th><th style="width:20mm">서식</th></tr></thead>
+        <tbody>
+          <tr><td class="it">설계도서 질의 답변<br>(제5조)</td><td class="lf">공공기관·시공자·감리자가 설계도서의 <b>해석이나 설명</b>이 필요할 때 질의 <span class="x">— 요청 임의</span></td><td class="o">5일</td><td>별지 제1호</td></tr>
+          <tr><td class="it">별도 용역 협조<br>(제6조)</td><td class="lf"><b>실내건축·전시기획</b> 등 별도 발주 용역의 수행업체가 추가 설명 요청 <span class="x">— 요청 임의</span></td><td class="o">5일</td><td>별지 제1호</td></tr>
+          <tr><td class="it">상세시공도면 검토<br>(제8조)</td><td class="lf">감리자·시공자가 「건축법」 제24조제4항 상세시공도면의 <b>디자인 관련 검토</b> 요청 <span class="x">— 요청 임의</span></td><td class="o">3일</td><td>별지 제2호</td></tr>
+          <tr><td class="it">설계도서 변경 검토<br>(제9조)</td><td class="lf">감리자·시공자가 공사 중 설계도서 변경이 필요하면 <b>반드시 검토 요청</b>(변경 업무를 설계자가 수행하면 제외). 설계자는 <b>당초 설계의도 부합 여부</b>를 검토</td><td class="o">10일</td><td>별지 제2호</td></tr>
+          <tr><td class="it">자재·장비 선정·변경<br>(제10조)</td><td class="lf">시공자가 <b>반드시</b> 자재·장비의 <b>치수·위치·재질·질감·색상</b> 등 선정·변경에 대한 디자인 검토 요청</td><td class="o">5일</td><td>별지 제2호</td></tr>
+          <tr><td class="it">설계의도 설명<br>(제7조)</td><td class="lf"><b>주민설명회·공사발주를 위한 현장설명</b> 등에 참여해 설계의도와 기술적 사항을 설명하고 답변 <span class="x">— 수행 가능(임의)</span></td><td class="x">—</td><td class="x">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l9 5-9 5-9-5z"/><path d="M3 14l9 5 9-5"/></svg></span><span class="lb"><i>4</i>자재·장비 검토가 의무인 4개 공정 (제10조①)</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">모델하우스 설치 전·후</b> — <span class="tl">인터넷을 활용한 모델하우스를 포함</span></li>
+        <li><span class="no">2</span><b class="term">외벽 및 실내 마감재료 선정·변경 전·후</b> — <span class="num">건축물 사용자에게 직접 노출되는 재료로 한정</span>하며, <span class="tl">구조·안전 관련 재료나 전기통신설비 등 개별 법령에 따라 설치하는 재료는 제외</span></li>
+        <li><span class="no">3</span><b class="term">건축물의 사용승인 전</b></li>
+        <li><span class="no">4</span><b class="term">공공기관과 설계자가 협의하여 계약으로 정한 공정</b></li>
+      </ul>
+      <ul class="list" style="margin-top:1.4mm">
+        <li><b class="term">반영 의무</b> — 시공자는 특별한 사유가 없으면 설계자가 제출한 <span class="tl">검토의견을 반영</span>하여야 함(제10조③)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9z"/><path d="M6 7h12v14H6z"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>계약·대가·사용승인 연계 (제11조~제13조)</span></span>
+      <ul class="list">
+        <li><b class="term">계약 체결</b> — 공공기관은 국가계약법·지방계약법 등에 따라 설계의도 구현 업무 계약을 체결하여야 함(<span class="num">설계자가 이행을 포기하는 경우는 제외</span>). 기간은 <span class="num">착공~준공</span>이 원칙이며, 제7조 업무를 포함하면 협의하여 <span class="tl">조정 가능</span></li>
+        <li><b class="term">대가 지급</b> — 「국가재정법」 예산안편성지침에 따라 <span class="tl">설계의도 구현(사후설계관리업무)</span> 예산을 편성해 지급</li>
+        <li><b class="term">사용승인·착공 연계</b> — 공사감리자는 사용승인 시 <span class="tl">감리완료보고서 또는 공사완료도서에 참여설계자 확인서</span>를 함께 제출(영 제19조④·시행규칙 별지 제8호서식). 건축법 준용 대상은 <span class="tl">착공신고 시 계약서 등을 허가권자에게 제출</span>(법 제25조⑬)</li>
+        <li><b class="term">재검토기한</b> — 2021. 1. 1. 기준 매 <span class="num">3년</span>(매 3년째 12월 31일)마다 타당성 검토</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>설계도서 질의</b> <span class="num">5일</span></span>
+        <span class="chip"><b>별도 용역 협조</b> <span class="num">5일</span></span>
+        <span class="chip"><b>상세시공도면</b> <span class="num">3일</span></span>
+        <span class="chip"><b>설계도서 변경</b> <span class="num">10일</span></span>
+        <span class="chip"><b>자재·장비</b> <span class="num">5일</span></span>
+        <span class="chip"><b>의무 검토 공정</b> <span class="num">4</span>개</span>
+        <span class="chip"><b>설계자 의무</b> <span class="num">4</span>가지</span>
+        <span class="chip"><b>공공기관</b> <span class="num">4</span>유형</span>
+        <span class="chip"><b>대상</b> 설계비 <span class="num">1억원</span> 이상</span>
+        <span class="chip"><b>계약기간</b> 착공~준공</span>
+        <span class="chip"><b>확인서</b> 별지 <span class="num">제8호</span>서식</span>
+        <span class="chip"><b>재검토</b> 매 <span class="num">3년</span>(12. 31.)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">공공기관은 설계자와 <b>착공~준공 기간의 설계의도 구현 계약</b>을 체결하고 <b>사후설계관리업무 예산</b>으로 대가를 지급하여야 한다. 시공자는 <b>자재·장비 선정·변경</b>을, 감리자·시공자는 <b>설계도서 변경</b>을 반드시 설계자에게 검토 요청하여야 하며, 설계자는 <b>질의 5일·상세시공도면 3일·설계도서 변경 10일·자재장비 5일</b> 내에 별지 서식으로 회신하고 그 의견은 특별한 사유가 없으면 <b>반영</b>되어야 한다.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">대상 건축물·참여설계자 확인서·착공신고 서류는 고시 본문에 없는 내용으로 「건축서비스산업 진흥법」 제22조·영 제17조·제19조·규칙 제6조 및 「건축법」 제25조⑫⑬ 현행 조문으로 보완함 ｜ 2026. 8. 30. 기준 제775호가 현행 ｜ 출처: 국가법령정보센터(www.law.go.kr)</p>
+
+</div>
+</body></html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건설공사 안전보건대장의 작성 등에 관한 고시 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드 ──────────────────────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 ──────────────────────── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  /* ── 틸 넘버서클 목록 ───────────────── */
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  /* ── 순서 체인 ──────────────────────── */
+  .chain{ font-size:6.6pt; line-height:1.7; color:var(--body); }
+  .chain b{ color:var(--navy); font-weight:700; }
+  .chain s{ color:var(--teal); text-decoration:none; font-weight:800; margin:0 0.8mm; }
+
+  /* ── 표 ─────────────────────────────── */
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl thead th.h1{ text-align:left; }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .x{ color:var(--note); font-weight:400; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주 ───────────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head><body>
+<div class="page haspin">
+
+  <h1 class="title">건설공사 안전보건대장 작성·이행 — 핵심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">고용노동부고시 제2024-35호(2024. 6. 28. 일부개정 ／ 2024. 7. 1. 시행) ｜ 근거: 「산업안전보건법」 제67조 및 같은 법 시행규칙 제86조제4항 ｜ 소관: 고용노동부 건설산재예방정책과(044-202-8936) ｜ 전문 9개 조 + 부칙</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">건설공사발주자 = 3단계 조치의 책임 주체</span> — 계획·설계·시공 단계마다 <b class="term">기본대장 작성 → 설계자 제공 → 수급인 제공 → 이행 확인</b>의 의무를 지고, <span class="rolet">적정한 비용과 기간을 계상·설정</span>하여야 한다(법 제67조③). <span class="rolet">설계자</span>는 설계대장을, <span class="rolet">최초 수급인</span>은 공사대장을 작성·제출하며, <span class="rolet">안전보건 분야 전문가</span>가 두 대장의 적정성을 검토해 발주자에게 제출한다. <b class="term">법 제67조제1항·제2항 위반 시 1천만원 이하의 과태료</b>(법 제175조④3).</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/><path d="M9 11h4"/></svg></span><span class="lb"><i>1</i>적용범위와 용어 (제2조·제3조)</span></span>
+      <ul class="list">
+        <li><b class="term">적용 대상</b> — 시행령 제55조에 따라 <span class="num">총공사금액 50억원 이상</span> 건설공사</li>
+        <li><b class="term">총공사금액</b> — 발주자가 <span class="tl">하나의 건설공사를 완성하기 위하여 발주한 공사금액의 합계액</span>. 다만 시간적·장소적으로 분리된 공사를 일정기간 총액계약한 경우에는 <span class="num">개별 공사금액 50억원 이상</span>인 경우에 한하여 적용</li>
+        <li><b class="term">설계자 6유형</b> — 건진법 건설엔지니어링사업자(설계용역), 「건축사법」·「전력기술관리법」·「정보통신공사업법」 설계자, 「소방시설공사업법」 설계도서 작성자, 국가유산수리법 실측설계자</li>
+        <li><b class="term">수급인</b> — 발주자로부터 건설공사를 <span class="tl">최초로 도급받은 수급인</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9z"/><path d="M6 7h12v14H6z"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>2</i>작성방법·서식·적용례 (제4조·부칙)</span></span>
+      <ul class="list">
+        <li><b class="term">분리발주 원칙</b> — 하나의 건설공사를 두 개 이상으로 분리발주하면 발주자·설계자·수급인이 안전보건대장을 <span class="num">각각 작성</span></li>
+        <li><b class="term">통합작성 허용</b> — 발주자는 분리발주 공사의 <span class="tl">기본안전보건대장을 통합</span>하여, 설계자·수급인은 같은 건설공사의 <span class="tl">설계·공사안전보건대장을 통합</span>하여 작성할 수 있음</li>
+        <li><b class="term">서식</b> — 별지 제<span class="num">1</span>호(기본) · 제<span class="num">2</span>호(설계) · 제<span class="num">3</span>호(공사)</li>
+        <li><b class="term">적용례·재검토</b> — 시행일 이후 발주자가 <span class="num">설계계약을 체결하는 경우</span>부터 적용, 2024. 7. 1. 기준 매 <span class="num">3년</span>(3년째 6월 30일)마다 타당성 검토</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></span><span class="lb"><i>3</i>계획 → 설계 → 시공 3단계 절차 (제5조~제8조)</span></span>
+      <div class="chain">
+        <b>계획단계 기본대장 작성</b><s>›</s><b>설계계약 시 설계자에게 제공</b><s>›</s><b>설계대장 작성·제출</b><s>›</s><b>전문가 검토 → 보완·변경 또는 공기·공사비 조정</b><s>›</s><b>입찰 고지·계약 시 수급인 제공</b><s>›</s><b>착공 전날까지 공사대장 제출</b><s>›</s><b>전문가 검토·보완요청</b><s>›</s><b>매 3개월 이행확인</b>
+      </div>
+      <ul class="nlist" style="margin-top:1.6mm">
+        <li><span class="no">1</span><b class="term">기본안전보건대장 (제5조)</b> — <span class="rolet">발주자</span>가 계획단계에서 규칙 제86조제1항 사항을 포함해 작성하고, <span class="tl">설계자와 설계계약을 체결할 때 설계자에게 제공</span></li>
+        <li><span class="no">2</span><b class="term">설계안전보건대장 (제6조)</b> — <span class="rolet">설계자</span>가 기본대장을 반영하고 <span class="num">작성이 완료된 설계도서</span>(설계도면·설계명세서·공사시방서·부대도면 등)를 기준으로 작성해 제출. 발주자는 <span class="tl">입찰 시 미리 고지</span>하고 <span class="tl">계약 체결 시 수급인에게 제공</span></li>
+        <li><span class="no">3</span><b class="term">공사안전보건대장 (제7조)</b> — <span class="rolet">수급인</span>이 설계대장을 반영해 <span class="num">착공 전날까지</span> 제출(<span class="tl">대지 정리·가설사무소 설치 등 준비기간은 착공으로 보지 않음</span>). 착공 후 <span class="tl">설계·공법 변경</span> 시 변경하여 제출</li>
+        <li><span class="no">4</span><b class="term">이행 확인 (제8조)</b> — 발주자는 조치계획 이행 여부를 <span class="num">착공 후 매 3개월마다 1회 이상</span> 확인(<span class="num">3개월 이내 종료</span> 시 종료 전). 급박한 위험이 있으면 <span class="tl">수급인에게 작업중단을 요청</span>할 수 있음</li>
+      </ul>
+      <table class="tbl" style="margin-top:1.8mm">
+        <thead><tr><th style="width:18mm">대장·주체</th><th class="h1">필수 기재사항 (「산업안전보건법 시행규칙」 제86조)</th></tr></thead>
+        <tbody>
+          <tr><td class="it">기본<br>발주자</td><td class="lf"><span class="tl">규칙 제86조①</span> ① 계획단계 예상 공사내용·규모 등 <b>공사 개요</b> ② 공사현장 제반 정보 ③ 설치·사용 예정 구조물·기계·기구 등 고시하는 <b>유해·위험요인과 안전조치 및 위험성 감소방안</b> ④ 발주자의 <b>법령상 주요 의무사항 및 확인</b></td></tr>
+          <tr><td class="it">설계<br>설계자</td><td class="lf"><span class="tl">규칙 제86조②</span> ① <b>안전한 작업을 위한 적정 공사기간 및 공사금액 산출서</b> ② 건설공사 중 발생할 수 있는 유해·위험요인 및 <b>시공단계에서 고려해야 할 감소방안</b> ③ <b>산업안전보건관리비 산출내역서</b><br><span class="num">※</span> 건진법 제39조③④ 설계용역 건설사업관리로 <b>공사기간·공사비 적정성 검토가 포함된 결과보고서</b>를 제출받은 경우 ①은 생략 가능</td></tr>
+          <tr><td class="it">공사<br>수급인</td><td class="lf"><span class="tl">규칙 제86조③</span> ① 설계대장 감소방안을 반영한 <b>공사 중 안전보건 조치 이행계획</b> ② <b>유해위험방지계획서</b> 심사·확인결과 조치내용 ③ <b>건설공사용 기계·기구 안전성 확보 배치·이동계획</b> ④ <b>산업재해 예방 지도</b> 계약 여부·지도결과·조치내용</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>4</i>안전보건 전문가 검토 (법 제67조②·영 제55조의2)</span></span>
+      <ul class="list">
+        <li><b class="term">의무</b> — 발주자는 설계·공사안전보건대장을 제출받으면 <span class="num">반드시</span> 안전보건 분야 전문가에게 기재내용의 <span class="tl">적정성 등을 검토하게</span> 하여야 함</li>
+        <li><b class="term">자격 4가지</b> — ⓐ 건설안전 분야 <span class="tl">산업안전지도사</span> ⓑ <span class="tl">건설안전기술사</span> ⓒ 건설안전기사 취득 후 실무 <span class="num">3년 이상</span> ⓓ 건설안전산업기사 취득 후 실무 <span class="num">5년 이상</span></li>
+        <li><b class="term">검토 범위</b> — <span class="tl">설계대장</span>: 시공단계 유해·위험요인과 감소방안, <span class="num">공사기간·공사비 산정 내역의 적정성</span> ／ <span class="tl">공사대장</span>: 유해·위험요인별 안전보건 조치 이행계획의 적정성</li>
+        <li><b class="term">자료 제공</b> — 발주자와 설계자·수급인은 검토에 필요한 설계도서를 제공(공사대장은 <span class="tl">시공상세도면·시공계획서·공정계획서</span> 포함)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span><span class="lb"><i>5</i>검토 후 조치와 제재</span></span>
+      <ul class="list">
+        <li><b class="term">개선 필요 시</b> — 설계대장은 설계자에게 <span class="tl">보완·변경 요청</span> 또는 <span class="num">공사기간·공사비 조정</span> 등 필요한 조치(제6조⑤), 공사대장은 수급인에게 <span class="tl">보완·변경 요청</span>(제7조⑤)</li>
+        <li><b class="term">비용·기간 계상</b> — 설계자·수급인이 <span class="tl">현장 안전을 우선 고려해 업무를 수행</span>하도록 적정 비용·기간을 계상·설정(법 제67조③)</li>
+        <li><b class="term">작업중단 요청</b> — 미이행으로 산업재해 발생의 급박한 위험이 있을 때 요청 가능(제8조②)</li>
+        <li><b class="term">과태료</b> — 법 제67조①②위반 <span class="num">1천만원 이하</span>(법 제175조④3), 지도계약 미체결 <span class="num">300만원 이하</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>적용</b> 총공사금액 <span class="num">50억원</span> 이상</span>
+        <span class="chip"><b>총액계약</b> 개별 <span class="num">50억원</span> 이상</span>
+        <span class="chip"><b>서식</b> 별지 <span class="num">1~3</span>호</span>
+        <span class="chip"><b>설계자</b> <span class="num">6</span>유형</span>
+        <span class="chip"><b>공사대장 제출</b> <span class="num">착공 전날</span></span>
+        <span class="chip"><b>이행확인</b> 매 <span class="num">3개월</span> 1회 이상</span>
+        <span class="chip"><b>전문가 자격</b> <span class="num">4</span>종</span>
+        <span class="chip"><b>기사</b> <span class="num">3년</span> · <b>산업기사</b> <span class="num">5년</span></span>
+        <span class="chip"><b>과태료</b> <span class="num">1천만원</span> 이하</span>
+        <span class="chip"><b>재검토</b> 매 <span class="num">3년</span>(6. 30.)</span>
+        <span class="chip"><b>시행</b> <span class="num">2024. 7. 1.</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb"><b>총공사금액 50억원 이상</b> 건설공사의 발주자는 계획·설계·시공 3단계에서 <b>기본→설계→공사안전보건대장</b>을 작성·제공·확인하고, 설계·공사대장은 <b>건설안전기술사 등 전문가</b>의 적정성 검토를 거쳐야 한다. 수급인은 <b>착공 전날까지</b> 공사대장을 제출하고 발주자는 <b>착공 후 매 3개월마다 1회 이상</b> 이행을 확인하여야 하며, 위반 시 <b>1천만원 이하 과태료</b>가 부과된다.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">기재사항 표·전문가 자격·과태료는 고시 본문에 없는 내용으로, 「산업안전보건법 시행규칙」 제86조①~③ · 같은 법 시행령 제55조의2 · 법 제175조제4항제3호 현행 조문을 확인하여 보완함 ｜ 2026. 8. 30. 기준 제2024-35호가 현행 ｜ 출처: 국가법령정보센터(www.law.go.kr)</p>
+
+</div>
+</body></html>

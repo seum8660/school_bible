@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>학교시설 내진설계기준(2020) — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드 ──────────────────────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 ──────────────────────── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  /* ── 틸 넘버서클 목록 ───────────────── */
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  /* ── 순서 체인 ──────────────────────── */
+  .chain{ font-size:6.6pt; line-height:1.7; color:var(--body); }
+  .chain b{ color:var(--navy); font-weight:700; }
+  .chain s{ color:var(--teal); text-decoration:none; font-weight:800; margin:0 0.8mm; }
+
+  /* ── 표 ─────────────────────────────── */
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl thead th.h1{ text-align:left; }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .x{ color:var(--note); font-weight:400; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주 ───────────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head><body>
+<div class="page haspin">
+
+  <h1 class="title">학교시설 내진설계기준 — 총칙과 내진등급</h1>
+  <div class="ubar"></div>
+  <p class="meta">교육부고시 제2020-223호(2020. 4. 1. 일부개정·시행) ｜ 근거: 「지진·화산재해대책법」 제14조 ｜ 소관: 교육부 ｜ 전문 8개 장 + [별표 1~3] 체크리스트, 123쪽 ｜ 「학교시설 내진성능평가 및 보강 매뉴얼」은 이 기준의 일부로 취급(1.11)</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">책임구조기술자 = 건축구조기술사</span> — 내진설계·내진보강설계를 <b class="term">책임지고 수행</b>하는 유일한 주체(1.7.1). 엔지니어링사업자 또는 기술사사무소를 등록한 기술사여야 하며, <span class="rolet">구조설계도서·시공상세도서·구조감리보고서·안전진단보고서는 책임구조기술자의 서명·날인이 있어야 유효</span>하다(1.7.3). <span class="rolet">건축주·시공자·감리자</span>는 서명·날인된 도서로만 인·허가와 시공·감리를 하여야 한다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 4l9 6.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg></span><span class="lb"><i>1</i>목적·적용범위 (1.1·1.2)</span></span>
+      <ul class="list">
+        <li><b class="term">목적</b> — 초·중등 및 특수학교 학교시설의 <span class="tl">내진설계, 기존 시설의 내진성능평가와 보강</span>에 관련된 기준·절차를 규정</li>
+        <li><b class="term">대상</b> — 「학교시설사업 촉진법」에 따른 초·중등 및 특수학교의 학교시설</li>
+        <li><b class="term">구조종별</b> — <span class="tl">콘크리트구조와 강구조</span>가 대상, 그 외는 건축구조기준에 따름</li>
+        <li><b class="term">보충 적용</b> — 이 기준에 정하지 않은 사항은 국토교통부장관 고시 <span class="tl">건축구조기준</span>. 다른 기준과 상이하면 <span class="num">이 기준이 우선</span>(1.11)</li>
+        <li><b class="term">예외</b> — 특수한 구조로 특별한 조사·연구에 의해 설계하는 경우 따르지 않을 수 있으나 <span class="tl">그 근거를 명시</span>하고 필요시 전문가 확인</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>2</i>내진등급 판정 (2.2)</span></span>
+      <ul class="list">
+        <li><b class="term">원칙</b> — 학교시설은 <span class="num">내진1등급</span>(중요도계수 1.2)</li>
+        <li><b class="term">특등급 ①</b> — 지진·태풍 또는 비상시 <span class="tl">긴급대피수용시설로 지정</span>한 학교시설</li>
+        <li><b class="term">특등급 ②</b> — 연면적 합계 <span class="num">10,000㎡ 이상</span> 학교시설에 포함된 <span class="tl">강당·체육관</span> 또는 유사 용도 건축물</li>
+        <li><b class="term">특등급 ③</b> — <span class="tl">특수학교</span>(대피능력이 낮아 상향)</li>
+        <li><b class="term">복합용도</b> — 둘 이상 용도가 섞이면 <span class="num">중요도계수가 가장 높은 등급</span>으로 분류</li>
+        <li><b class="term">분리 건물</b> — 구조적으로 분리된 부분은 독자 분류 가능. 단 <span class="tl">접근로·탈출로 제공 또는 인명안전요소 공유</span> 시 양쪽 모두 높은 등급</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></span><span class="lb"><i>3</i>내진설계 10단계 절차와 중요도계수 (1.4.2·2.2)</span></span>
+      <div class="chain">
+        <b>지진위험도·내진등급·성능목표 결정</b><s>›</s><b>내진구조계획</b><s>›</s><b>지진력 저항시스템·설계계수 결정</b><s>›</s><b>지진하중 산정</b><s>›</s><b>구조해석</b><s>›</s><b>해석결과 분석</b><s>›</s><b>시스템·부재 강도설계</b><s>›</s><b>연결부·철근상세 설계</b><s>›</s><b>(필요시) 비선형해석 결과 검증</b><s>›</s><b>비구조요소 설계</b>
+      </div>
+      <table class="tbl" style="margin-top:1.8mm">
+        <thead><tr><th>내진등급</th><th class="h1">건축물의 중요도</th><th>중요도계수 Iᴇ</th><th class="h1">학교시설 적용</th></tr></thead>
+        <tbody>
+          <tr><td class="it">특등급</td><td class="lf">지진 후 피해복구 중요시설 또는 유해물질 다량 저장 구조물</td><td class="o">1.5</td><td class="lf">긴급대피수용시설·10,000㎡ 이상 강당·체육관·특수학교</td></tr>
+          <tr><td class="it">1등급</td><td class="lf">피해 시 대중에게 큰 위험을 초래할 수 있는 구조물</td><td class="o">1.2</td><td class="lf">일반 학교시설(원칙)</td></tr>
+          <tr><td class="it">2등급</td><td class="lf">특등급·1등급 어디에도 해당되지 않는 구조물</td><td class="x">1.0</td><td class="lf">학교시설에는 부여되지 않음</td></tr>
+        </tbody>
+      </table>
+      <ul class="list" style="margin-top:1.6mm">
+        <li><b class="term">지진하중</b> — 지반분류·스펙트럼가속도·하중조합·지진력 저항시스템은 <span class="tl">건축물 내진설계기준(KDS 41 17 00)</span>을 따르되, 산출값은 「내진설계기준 공통적용사항」에 따른 값보다 작지 않아야 함(2.1)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a8 8 0 1116 0"/><path d="M12 18l4-5"/></svg></span><span class="lb"><i>4</i>내진성능목표 (1.4.1·6.4)</span></span>
+      <ul class="list">
+        <li><b class="term">구조체 3수준</b> — <span class="tl">즉시거주(IO) · 인명안전(LS) · 붕괴방지(CP)</span></li>
+        <li><b class="term">비구조요소 4수준</b> — <span class="tl">기능수행(OP) · 위치유지(PR) · 인명안전(LS) · 미고려(NC)</span></li>
+        <li><b class="term">전체건축물 4단계</b> — 기능수행(거주가능+기능수행) / 즉시복구(거주가능+위치유지) / 인명보호(인명안전+인명안전) / 붕괴방지(붕괴방지+미고려)</li>
+        <li><b class="term">특등급 목표</b> — 재현주기 <span class="num">2400년 인명보호</span> + <span class="num">1000년 기능수행</span> + <span class="num">2400년 붕괴방지</span></li>
+        <li><b class="term">1등급 목표</b> — 재현주기 <span class="num">1400년 인명보호</span> + <span class="num">2400년 붕괴방지</span></li>
+        <li><b class="term">간주 규정</b> — 이 기준과 건축구조기준을 만족하여 설계하면 <span class="tl">성능목표를 달성한 것으로 판단</span>(현행 설계기준의 안전율 1.5 = 설계지진 150% 붕괴방지 수준)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 012-2h13v18H6a2 2 0 01-2-2z"/><path d="M8 7h8M8 11h6"/></svg></span><span class="lb"><i>5</i>적용 기준·시방서 (1.11)</span></span>
+      <ul class="list">
+        <li><b class="term">건축구조기준</b> <span class="tl">KDS 41 00 00</span> — 하위 기준을 포괄</li>
+        <li><b class="term">건축물 내진설계기준</b> <span class="tl">KDS 41 17 00</span> — 지진하중·지진력 저항시스템·비구조요소의 근거</li>
+        <li><b class="term">콘크리트구조 설계기준</b> <span class="tl">KDS 41 30 00</span> ｜ <b class="term">강구조 설계기준</b> <span class="tl">KDS 41 31 00</span></li>
+        <li><b class="term">건축공사 표준시방서</b> <span class="tl">KCS 41 00 00</span> ｜ <b class="term">내진설계 일반</b> <span class="tl">KDS 17 10 00</span></li>
+        <li><b class="term">기타</b> — 냉간성형강구조설계기준(대한건축학회), 구조물기초설계기준(한국지반공학회), 기존 시설물(기초 및 지반) 내진성능 평가요령, 내진설계기준 공통적용사항(행정안전부)</li>
+        <li><b class="term">매뉴얼</b> — <span class="tl">「학교시설 내진성능평가 및 보강 매뉴얼」은 이 기준의 일부</span>. 모든 기준·시방서·매뉴얼은 <span class="num">최신 개정판</span> 적용이 원칙</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>기본 등급</b> 내진<span class="num">1등급</span></span>
+        <span class="chip"><b>중요도계수</b> 특 <span class="num">1.5</span> · 1등급 <span class="num">1.2</span></span>
+        <span class="chip"><b>특등급 면적</b> <span class="num">10,000㎡</span> 이상</span>
+        <span class="chip"><b>특등급 목표</b> <span class="num">2400</span>·<span class="num">1000</span>년</span>
+        <span class="chip"><b>1등급 목표</b> <span class="num">1400</span>·<span class="num">2400</span>년</span>
+        <span class="chip"><b>설계 절차</b> <span class="num">10</span>단계</span>
+        <span class="chip"><b>안전율(간주)</b> <span class="num">1.5</span></span>
+        <span class="chip"><b>시행일</b> <span class="num">2020. 4. 1.</span></span>
+        <span class="chip"><b>경과조치</b> <span class="num">2021. 3. 31.</span>까지 계약분</span>
+        <span class="chip"><b>재검토기한</b> 매 <span class="num">3년</span>(3월 31일)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">경과조치(부칙 제2조): 시행 후 내진설계 또는 내진보강 사업을 승인신청하는 경우부터 적용하되, 2021. 3. 31.까지 공사계약을 완료한 경우에 한하여 이전 기준으로 수행한 행위를 인정할 수 있음 ｜ 출처: 국가법령정보센터(www.law.go.kr) 교육부고시 제2020-223호 전문</p>
+  <p class="pgno">1 / 5</p>
+
+</div>
+<div class="page haspin">
+
+  <h1 class="title">설계단계 요구사항 — 계획·해석·설계·재료</h1>
+  <div class="ubar"></div>
+  <p class="meta">제1장 총칙 1.3 구조설계 · 1.4 내진설계 ｜ 제2장 2.3 지진력 저항시스템 ｜ 제3장 3.2~3.4 철근콘크리트구조 내진설계</p>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9z"/><path d="M6 7h12v14H6z"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>1</i>구조설계 원칙과 설계도서 (1.3)</span></span>
+      <ul class="list">
+        <li><b class="term">5대 원칙</b> — <span class="tl">안전성·사용성·내구성·경제성·친환경성</span></li>
+        <li><b class="term">3단계 설계</b> — 계획설계(SD) → 중간·기본설계(DD) → 실시설계(CD). 단계별 발주자·설계자·시공자 협의를 위한 설계도서를 작성</li>
+        <li><b class="term">구조설계서</b> — 구조설계개요·구조특기사항·구조설계요약·구조계산 4개 항목 필수</li>
+        <li><b class="term">구조설계도 14항목</b> — 구조평면·입면, 구조상세, 구조기준, 활하중 등 주요 설계하중, 재료강도, 부재의 종류·크기·위치, 철근과 앵커의 규격·설치위치, 정착길이·이음, 접합부 소요강도, 기둥 중심선 오프셋·위깅포인트, 접합 유형, 치올림, 부구조체 상세기준 등</li>
+        <li><b class="term">단계별 표현</b> — 계획설계는 ③⑤⑥⑪⑮⑯, 기본설계는 ③④⑤⑥⑦⑧⑨⑪⑮⑯만 표현 가능</li>
+        <li><b class="term">해석 소프트웨어</b> — 관련 전문가의 <span class="tl">검증을 거친 것</span>만 사용. 발주자·제3의 평가자 요구 시 개발자 작성 입증자료 제시(1.3.8)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 12h16M12 4v16"/></svg></span><span class="lb"><i>2</i>내진구조계획 9원칙 (1.4.3)</span></span>
+      <ul class="list">
+        <li><b class="term">부정정도</b> — 각 방향 지진하중에 대해 충분한 부정정도의 <span class="tl">횡력 저항시스템 복수 배치</span></li>
+        <li><b class="term">비틀림 최소화</b> — 횡력 저항시스템·골조를 <span class="tl">평면상 대칭</span>으로 배치</li>
+        <li><b class="term">약층 방지</b> — 수직적으로 구조재 크기·층고에 큰 차이가 없도록 계획</li>
+        <li><b class="term">중량 균형</b> — 설비 포함 한 층 무게가 다른 층보다 과도하게 크지 않게, 수직재는 위치 변경 없이 연속</li>
+        <li><b class="term">개구부·평면</b> — 슬래브의 과도한 개구부 회피, 장방형 평면은 <span class="tl">양쪽 끝에 횡력 저항시스템</span> 배치</li>
+        <li><b class="term">증축</b> — 증축계획이 있으면 그 영향을 반영. <span class="num">구조적으로 독립되지 않은 증축</span>은 전체를 신축구조물로 취급하여 설계·시공하되, 기존 부분은 소요강도가 기존 부재 구조내력을 <span class="num">5% 미만</span>까지 초과하는 것은 허용</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h3l2-6 3 12 3-9 2 3h7"/></svg></span><span class="lb"><i>3</i>내진구조해석·구조설계 요구사항과 유효강성 (1.4.4·1.4.5·3.4.1)</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">해석모델</b> — 구조부재뿐 아니라 <span class="tl">지진력과 저항성능에 영향을 주는 비구조요소</span>(구조재와 밀착 시공된 채움벽·허리벽)도 포함. <span class="tl">비틀림 고려를 위해 3차원 모델</span> 사용</li>
+        <li><span class="no">2</span><b class="term">과소·과대평가 금지</b> — 구조물의 무게와 초기강성을 과소평가하지 않고(지진하중 과소산정 방지), 극한상태의 손상·항복 후 강성을 과대평가하지 않을 것(비탄성변형 과소평가 방지)</li>
+        <li><span class="no">3</span><b class="term">연성 확보</b> — 각 부재가 연성능력을 발휘하고 취성파괴가 억제되도록 설계 — <span class="tl">휨항복을 유도</span>하고 전단파괴·연결부 파괴를 억제. 취성파괴 우려 부재(수직재 불연속, 취약 연결부)는 <span class="num">초과강도계수를 고려한 특별지진하중</span> 적용</li>
+        <li><span class="no">4</span><b class="term">강기둥-약보</b> — 보-기둥 연결부는 가능하면 강기둥-약보. 기둥이 큰 축력을 받으면 기둥 휨강도 &gt; 보 휨강도. 기둥·큰보 단부는 콘크리트기준·강구조기준의 <span class="tl">연성상세</span> 적용</li>
+        <li><span class="no">5</span><b class="term">채움벽·허리벽</b> — 밀착 시공 시 그 영향을 구조설계에 반영. 고려하지 않으려면 <span class="tl">내진슬릿 등으로 역학적 이격</span>하고 그 상세를 시공에 반영 — 내진슬릿 폭은 <span class="num">벽높이의 1/100</span>(골조 최대 예상변위) 이상</li>
+      </ul>
+      <table class="tbl" style="margin-top:1.8mm">
+        <thead><tr><th class="h1">구조해석을 위한 유효강성 &lt;표 3-1&gt;</th><th>휨강성</th><th>전단강성</th><th>축강성</th></tr></thead>
+        <tbody>
+          <tr><td class="it">보</td><td class="o">0.35 EcIg</td><td>0.4 EcAw</td><td>EcAg</td></tr>
+          <tr><td class="it">기둥</td><td class="o">0.70 EcIg</td><td>0.4 EcAw</td><td>EcAg ／ <span class="o">EsAs</span> (비선형해석에서 인장이 작용하는 기둥)</td></tr>
+          <tr><td class="it">비균열 벽체</td><td class="o">0.70 EcIg</td><td>0.4 EcAw</td><td>EcAg</td></tr>
+          <tr><td class="it">균열 벽체</td><td class="o">0.35 EcIg</td><td>0.4 EcAw</td><td>EcAg</td></tr>
+        </tbody>
+      </table>
+      <ul class="list" style="margin-top:1.4mm">
+        <li><b class="term">보-기둥 접합부</b> — 접합부 내 각 부재방향 <span class="num">절반 길이</span>는 강체로 모델링. T형 보의 Ig는 웨브 Ig의 2배 또는 유효폭 규정으로 산정</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6 20V6h9"/><path d="M15 6l4 4"/><path d="M9 6v6"/></svg></span><span class="lb"><i>4</i>지진력 저항시스템 (2.3·3.2)</span></span>
+      <ul class="list">
+        <li><b class="term">건물골조시스템</b> — 전단벽이 지진하중 <span class="num">100%</span> 지지. 다만 중간모멘트골조 이상 연성상세 사용 시 골조가 일부 분담 가능(보통모멘트골조면 100% 전단벽)</li>
+        <li><b class="term">보통 전단벽-골조 상호작용</b> — 전단벽 <span class="num">75% 이상</span> + 모멘트골조 <span class="num">25% 이상</span></li>
+        <li><b class="term">이중골조시스템</b> — 모멘트골조가 <span class="num">25% 이상</span> 저항, <span class="tl">중간모멘트골조 이상 내진철근상세</span> 만족</li>
+        <li><b class="term">일반 RC 시스템</b> — 콘크리트기준 일반규정만 만족하면 하중분담율 제한 없이 보통모멘트골조 사용 가능</li>
+        <li><b class="term">상호작용 효과</b> — 강성이 큰 조적채움벽·허리벽에 인접한 모멘트골조는 <span class="tl">건축물 내진설계기준 6.6.1</span>에 따라 설계. 역학적으로 분리 시 미고려 가능</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l9 5-9 5-9-5z"/><path d="M3 14l9 5 9-5"/></svg></span><span class="lb"><i>5</i>재료 요구사항 (3.3)</span></span>
+      <ul class="list">
+        <li><b class="term">내진용 철근</b> — 중·고연성도 구조형식의 모멘트골조 부재, 벽체 경계요소, 연결보 주철근은 <span class="tl">SD400S·SD500S·SD600S</span> 사용</li>
+        <li><b class="term">콘크리트 강도</b> — 특수모멘트골조·특수구조벽체는 fck <span class="num">21MPa 이상</span>, 경량콘크리트는 <span class="num">35MPa 초과 불가</span>(실험 검증 시 예외)</li>
+        <li><b class="term">철근 항복강도</b> — 주철근 <span class="num">600MPa</span>, 전단철근 <span class="num">500MPa</span>까지 허용</li>
+        <li><b class="term">실제 강도 제한</b> — 공장 계측 실제 항복강도가 공칭항복강도를 <span class="num">120MPa 이상</span> 초과 금지(재시험 <span class="num">20MPa</span>)</li>
+        <li><b class="term">인장/항복 비</b> — 실제 극한인장강도 ÷ 실제 항복강도 <span class="num">1.25 이상</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>기존부재 초과 허용</b> <span class="num">5%</span> 미만</span>
+        <span class="chip"><b>내진슬릿 폭</b> 벽높이 <span class="num">1/100</span> 이상</span>
+        <span class="chip"><b>보 휨강성</b> <span class="num">0.35</span>EcIg</span>
+        <span class="chip"><b>기둥·비균열벽</b> <span class="num">0.70</span>EcIg</span>
+        <span class="chip"><b>전단강성</b> <span class="num">0.4</span>EcAw</span>
+        <span class="chip"><b>전단벽-골조</b> <span class="num">75</span>:<span class="num">25</span></span>
+        <span class="chip"><b>이중골조</b> 골조 <span class="num">25%</span> 이상</span>
+        <span class="chip"><b>fck</b> <span class="num">21MPa</span> 이상</span>
+        <span class="chip"><b>경량콘크리트</b> <span class="num">35MPa</span> 이하</span>
+        <span class="chip"><b>주철근 fy</b> <span class="num">600MPa</span>까지</span>
+        <span class="chip"><b>초과강도</b> <span class="num">120MPa</span> 이내</span>
+        <span class="chip"><b>인장/항복</b> <span class="num">1.25</span> 이상</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">유효강성 기호 — Ec: 콘크리트 탄성계수, Es: 철근 탄성계수, Ig: 총단면 2차모멘트, Aw: 복부 단면적, Ag: 총단면적, As: 철근 단면적 ｜ 강구조·합성구조의 유효강성은 4.4.6, 기초·지반은 제5장에 별도 규정 ｜ 출처: 교육부고시 제2020-223호 전문</p>
+  <p class="pgno">2 / 5</p>
+
+</div>
+<div class="page haspin">
+
+  <h1 class="title">비구조요소와 내진구조성능 확인 체계</h1>
+  <div class="ubar"></div>
+  <p class="meta">제6장 비구조요소(6.2~6.5) ｜ 제1장 1.6 내진구조성능의 확인 · 1.7 책임구조기술자 · 1.8 제3자 검토 ｜ [별표 1] 설계단계 · [별표 2] 시공단계 체크리스트</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">시공자</span>는 시공상세도서를 작성해 책임구조기술자의 내진구조성능 확인을 받아야 하고, <span class="rolet">감리자</span>는 구조전문기술자가 감리원으로 배치되지 않은 경우 <b class="term">관계전문기술자의 협력</b>을 받아 내진구조성능 확보 여부를 확인하여야 한다(1.6.3). <span class="rolet">학교시설의 소유자·관리자</span>는 「건축법」 제35조에 따라 유지·관리 중 '안전한 구조' 여부를 이 기준으로 확인할 책임이 있다(1.6.4). <span class="rolet">발주자</span>는 안전상 필요하다고 인정하면 제3자 검토를 요청할 수 있다(1.8.1).</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/><path d="M9 11h4"/></svg></span><span class="lb"><i>1</i>비구조요소 적용범위·제외 (6.2)</span></span>
+      <ul class="list">
+        <li><b class="term">원칙</b> — &lt;표 6-1&gt;에 규정된 비구조요소는 제6장에 따라 내진설계 수행</li>
+        <li><b class="term">제외 ①</b> — 중요도계수 Ip <span class="num">1.0</span>이면서 바닥으로부터 설치높이 <span class="num">1.2m 이하</span>, 중량 <span class="num">1,800N 이하</span>이고 덕트·파이프 연결부가 유연한 재료인 기계·전기설비</li>
+        <li><b class="term">제외 ②</b> — 중량 <span class="num">100N 이하</span>, 단위길이당 중량 <span class="num">70N/m 이하</span></li>
+        <li><b class="term">위험물 정의</b> — 소방법·유해화학물질관리법·산업안전보건법·위험물안전관리법에 규정된 <span class="tl">저장용량 이상</span>의 물질</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a8 8 0 1116 0"/><path d="M12 18l4-5"/></svg></span><span class="lb"><i>2</i>중요도계수·설계절차 (6.3·6.4)</span></span>
+      <ul class="list">
+        <li><b class="term">Ip = 1.5 적용</b> — 소화배관·스프링클러 등 지진 후에도 기능해야 하는 요소, 피난경로상 계단·캐노피·비상유도등·중량칸막이벽, 규정량 이상 독성·폭발위험물질 지지 요소, 내진특등급 구조물의 기능유지 필수 요소</li>
+        <li><b class="term">요구성능</b> — Ip <span class="num">1.0</span>: 재현주기 <span class="num">1000년</span> 지진에 <span class="tl">인명안전</span> ／ Ip <span class="num">1.5</span>: 재현주기 <span class="num">2400년</span> <span class="tl">인명안전</span> + <span class="num">1000년</span> <span class="tl">기능수행</span></li>
+        <li><b class="term">설계 3방식</b> — ⓐ 책임구조기술자가 직접 설계 ⓑ 제조자가 정밀해석·실험으로 성능 입증한 문서를 책임구조기술자가 승인 ⓒ 공인 설계기준에 따라 설계 후 책임구조기술자가 승인</li>
+        <li><b class="term">정착부</b> — 구조체와 분리 수행 가능하나 <span class="num">정착부 설계는 반드시 내진설계 책임구조기술자가 직접 확인</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 12h16M12 4v16"/></svg></span><span class="lb"><i>3</i>내진등급별 설계대상 비구조요소 &lt;표 6-1&gt;과 내진상세 (6.5)</span></span>
+      <table class="tbl">
+        <thead><tr><th>분류</th><th class="h1">세부항목</th><th>내진특등급</th><th>내진1등급</th></tr></thead>
+        <tbody>
+          <tr><td class="it" rowspan="3">건축</td><td class="lf">파라펫, 건물외부 치장 벽돌 및 외부치장마감석재 ／ 조적·중량 칸막이벽(채움벽·허리벽) ／ 대피경로상의 계단과 캐노피</td><td class="o">O</td><td class="o">O</td></tr>
+          <tr><td class="lf">매달린 천정 ／ 무거운 조명기구 ／ 유리창</td><td class="o">O</td><td class="x">－</td></tr>
+          <tr><td class="lf">기타 대피시설로서의 기능유지에 필요한 건축비구조요소</td><td class="o">O</td><td class="x">－</td></tr>
+          <tr><td class="it" rowspan="2">기계·전기</td><td class="lf">인화성물질 등 위험물을 저장하거나 지지하는 비구조요소</td><td class="o">O</td><td class="o">O</td></tr>
+          <tr><td class="lf">비상유도등 ／ 방송통신설비 ／ 중앙냉난방설비 ／ 천정 부착 에어컨 ／ 조리실 급탕설비 ／ 기타 대피시설 기능유지 설비</td><td class="o">O</td><td class="x">－</td></tr>
+          <tr><td class="it" rowspan="2">배관</td><td class="lf">소화배관 및 스프링클러 ／ 가스관</td><td class="o">O</td><td class="o">O</td></tr>
+          <tr><td class="lf">압력배관</td><td class="o">O</td><td class="x">－</td></tr>
+        </tbody>
+      </table>
+      <ul class="nlist" style="margin-top:1.6mm">
+        <li><span class="no">1</span><b class="term">조적채움벽·비구조 콘크리트벽</b> — 구조요소로 고려하지 않았으면 <span class="tl">내진슬릿</span>으로 인접 기둥에 영향이 없게 하고, 슬릿 없이 기둥과 밀실 접촉 시 <span class="num">반드시 상호작용을 고려하여 설계</span>. 접촉 여부와 무관하게 모든 채움벽·허리벽은 <span class="tl">면외 전도 방지</span> 설계</li>
+        <li><span class="no">2</span><b class="term">초등학교·특수학교</b> — 일반교실·특별교실의 각종 <span class="tl">집기 및 교구</span>는 지진 시 전도에 의한 인명피해가 없도록 벽체 고정 또는 내진용 받침대·앵커볼트로 바닥 고정</li>
+        <li><span class="no">3</span><b class="term">요소별 상세 예시</b> — 천장재는 사선 가새·와이어 추가, 조명기구는 <span class="tl">래치가 있는 후크</span>, 물탱크·냉각탑은 스톱퍼, 지진 직후 사용해야 할 주요 배관은 <span class="tl">변위흡수 이음부(flexible connection)</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span><span class="lb"><i>4</i>내진구조성능 확인 4단계 (1.6)</span></span>
+      <ul class="list">
+        <li><b class="term">① 설계</b> — 책임구조기술자가 구조설계도서를 이 기준에 따라 작성하고 <span class="num">[별표 1] 설계단계 체크리스트</span>를 작성(1.6.1)</li>
+        <li><b class="term">② 시공상세도서</b> — 구조체 배근시공도, 제작·설치도, 내화상세도, <span class="tl">외장재 등 부구조체 시공·제작도, 건축/기계·전기 비구조요소 설치상세도, 가설구조물 구조시공상세도</span> 등 8종에 대해 책임구조기술자의 확인(1.6.2)</li>
+        <li><b class="term">③ 시공 중</b> — 규격 검토, 구조자재 적합성, 시험성적표 검토, 배근 적정성·이음·정착, <span class="tl">설계변경 구조검토</span>, 시공하자 구조내력 검토 및 보강방안, <span class="num">[별표 2] 시공단계 체크리스트</span> 작성(1.6.3)</li>
+        <li><b class="term">④ 유지관리</b> — 구조안전·내구성능 유지 확인, <span class="tl">리모델링·용도변경·증축</span>을 위한 구조검토(1.6.4)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>5</i>제3자 검토 (1.8)</span></span>
+      <ul class="list">
+        <li><b class="term">의무 대상 4가지</b> — ⓐ 비선형해석 <span class="tl">성능기반설계</span> ⓑ 내진보강설계 검증을 위한 비선형해석 ⓒ 매뉴얼이 정의한 <span class="tl">특수공법</span> 사용 ⓓ 안전상 필요하다고 <span class="rolet">발주처가 요청</span>한 경우</li>
+        <li><b class="term">생략</b> — 기존 구조물의 <span class="tl">내진성능평가만</span>을 위한 비선형해석은 제3자 전문가 검토를 생략할 수 있음</li>
+        <li><b class="term">검증위원회</b> — <span class="num">2인 이상</span> 관련 전문가(내진공학·비선형구조해석·내진설계·지반-구조물 상호작용). 내진공학 전문가 1인 + 비선형해석 지식을 갖춘 건축구조기술사 1인 이상 구성 권장</li>
+        <li><b class="term">검증 8항목</b> — 내진성능목표, 지진하중, 비선형해석방법 선정, 모델링, <span class="tl">입력 지진파 선정·조정</span>, 해석결과 분석, 평가결과, 특수공법 입증·검증보고서 검토</li>
+        <li><b class="term">운영</b> — 교육부장관은 시도교육감과 협의해 별도 검증위원회를 구성·운영할 수 있고 전문기관에 위탁 가능. 설계 <span class="tl">단계별 검토</span>가 기간 단축에 바람직</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>설비 제외</b> 높이 <span class="num">1.2m</span>·<span class="num">1,800N</span> 이하</span>
+        <span class="chip"><b>소형 제외</b> <span class="num">100N</span> / <span class="num">70N/m</span></span>
+        <span class="chip"><b>Ip 1.0</b> <span class="num">1000년</span> 인명안전</span>
+        <span class="chip"><b>Ip 1.5</b> <span class="num">2400년</span>+<span class="num">1000년</span></span>
+        <span class="chip"><b>설계 방식</b> <span class="num">3</span>가지</span>
+        <span class="chip"><b>확인 단계</b> <span class="num">4</span>단계</span>
+        <span class="chip"><b>확인 대상 도서</b> <span class="num">8</span>종</span>
+        <span class="chip"><b>제3자 검토 대상</b> <span class="num">4</span>가지</span>
+        <span class="chip"><b>검증위원</b> <span class="num">2인</span> 이상</span>
+        <span class="chip"><b>검증 항목</b> <span class="num">8</span>개</span>
+        <span class="chip"><b>체크리스트</b> 별표 <span class="num">1·2</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">&lt;표 6-1&gt;은 원문 표를 항목별 등급 표시가 동일한 것끼리 묶어 압축한 것으로, 개별 항목의 O 표시는 원문과 동일함 ｜ 건축물 내진설계기준에서 내진설계가 의무인 비구조요소는 Ip=1.5인 요소와 파라펫·외부 치장벽돌·외부치장마감석재이며 나머지는 건축주와 협의 ｜ 출처: 교육부고시 제2020-223호 전문</p>
+  <p class="pgno">3 / 5</p>
+
+</div>
+<div class="page haspin">
+
+  <h1 class="title">기존 학교시설 내진성능평가 (제7장)</h1>
+  <div class="ubar"></div>
+  <p class="meta">7.1 일반사항 · 7.2 내진성능목표와 평가지진 · 7.3 평가절차 · 7.4 평가입력자료 · 7.5 설계응답스펙트럼 · 7.6 선형구조해석평가 · 7.7 비선형구조해석평가 ｜ 세부 기술사항은 「학교시설 내진성능평가 및 보강 매뉴얼」</p>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/><path d="M9 11h4"/></svg></span><span class="lb"><i>1</i>자료수집·현장조사·입력정보 (7.1.2·7.4)</span></span>
+      <ul class="list">
+        <li><b class="term">수집 항목</b> — 위치, 준공연도, 용도, 지반정보, 주요 단면치수와 <span class="tl">배근상태</span> 등 구조체 재료·특성</li>
+        <li><b class="term">현장 검증</b> — 도서 검증을 위해 부재치수·배근상태, 접합부 상세, 평면 용도변경, <span class="tl">조적채움벽·허리벽의 유무</span>와 품질을 조사하여 평가에 반영</li>
+        <li><b class="term">도서 부재 시</b> — 체계적 현장조사와 <span class="tl">비파괴시험·철근탐사기법</span>으로 충분한 정보 취득(조사·시험방법은 KS 및 건축구조기준)</li>
+        <li><b class="term">재료강도</b> — <span class="num">현장시험 실시가 원칙</span>. 편차를 고려한 충분한 표본, 시험 결과의 통계를 고려해 설계기준강도 결정</li>
+        <li><b class="term">시험 불가 시</b> — 설계도서 명기 강도, 도서가 없으면 <span class="tl">건설 당시 통계에 따른 안전측 대표값</span>. 두 경우 모두 <span class="num">재료 상태와 사용연수를 반영</span></li>
+        <li><b class="term">지반</b> — 과거 지반조사 결과가 없으면 <span class="num">지반조사를 실시하여야 함</span>. 비선형평가에서는 <span class="tl">평균강도</span> 사용 가능</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h3l2-6 3 12 3-9 2 3h7"/></svg></span><span class="lb"><i>2</i>내진성능목표와 평가지진 (7.2)</span></span>
+      <ul class="list">
+        <li><b class="term">기본 원칙</b> — 성능목표와 평가지진은 <span class="num">신축건물과 동일</span>(1.4.1·제2장). 사용수명을 이유로 지진하중을 감소시키지 않음</li>
+        <li><b class="term">최소성능목표</b> — <span class="tl">평가방법과 무관하게</span> 건축물 내진설계기준 표 2.4-2를 적용</li>
+        <li><b class="term">보유성능 환산</b> — 최대유효지반가속도 수준을 평가하려면 &lt;표 7-1&gt; 재현주기별 위험도계수 적용. 유효지반가속도는 <span class="tl">위험도계수에 비례</span></li>
+      </ul>
+      <table class="tbl" style="margin-top:1.6mm">
+        <thead><tr><th class="h1">재현주기</th><th>50년</th><th>100년</th><th>200년</th><th>500년</th><th>1,000년</th><th>2,400년</th><th>4,800년</th></tr></thead>
+        <tbody><tr><td class="it">위험도계수</td><td>0.4</td><td>0.57</td><td>0.73</td><td class="o">1.0</td><td class="o">1.4</td><td class="o">2.0</td><td>2.6</td></tr></tbody>
+      </table>
+      <ul class="list" style="margin-top:1.4mm">
+        <li><b class="term">활용</b> — 1000년 재현주기(중요도계수 1 기준 인명안전 수준)를 만족하지 못하면 <span class="tl">500년·200년 지진</span>에 대한 평가로 보유 내진성능수준을 제시 — 보강 필요성·방법의 근거자료</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></span><span class="lb"><i>3</i>내진성능평가 10단계 절차와 선형구조해석평가 (7.3·7.5·7.6)</span></span>
+      <div class="chain">
+        <b>자료조사</b><s>›</s><b>현장조사</b><s>›</s><b>재료강도·지반분류 등 입력정보 결정</b><s>›</s><b>지진력 저항시스템·중요도계수 결정</b><s>›</s><b>설계스펙트럼가속도·지진하중 산정</b><s>›</s><b>선형구조해석 및 내진안전성 판정</b><s>›</s><b>(필요시) 비선형구조해석 판정</b><s>›</s><b>비구조요소 평가</b><s>›</s><b>(필요시) 성능향상방법 제시</b><s>›</s><b>종합결론</b>
+      </div>
+      <ul class="nlist" style="margin-top:1.6mm">
+        <li><span class="no">1</span><b class="term">강도비</b> — 각 방향 지진하중에 대해 선형해석 후 부재별 <span class="tl">강도비 = 보유내력 ÷ 요구내력</span>을 계산하고, 조기손상이 예상되는 부재의 분포와 강도비를 보고</li>
+        <li><span class="no">2</span><b class="term">층강도비·건물강도비</b> — 층마다 부재 강도비를 평균해 <span class="tl">층강도비</span>, <span class="num">층강도비의 최소값이 건물강도비</span>. 건물강도비를 목표지진에 대한 <span class="tl">보유내진성능지수</span>로 정의·보고 — 내진보강 전략 수립과 예산계획의 지표</li>
+        <li><span class="no">3</span><b class="term">취성파괴 부재</b> — 강도가 매우 작아 조기항복하거나 전단파괴 등 취성파괴가 예상되는 부재는 <span class="num">층강도비 계산 시 기여도를 제한</span></li>
+        <li><span class="no">4</span><b class="term">응답스펙트럼</b> — 지진위험도·중요도계수·반응수정계수를 고려해 산정하되, <span class="num">비선형해석용 탄성응답스펙트럼에는 반응수정계수를 쓰지 않는다</span>(7.5)</li>
+        <li><span class="no">5</span><b class="term">재평가·의무</b> — 선형평가 요구조건 미달 시 비선형정적·동적해석으로 재평가 가능. <span class="tl">감쇠장치·면진장치 등 특수공법 사용 시에는 비선형해석으로 목표 만족 여부를 검증하여야 함</span>. 단기간 다수 건물은 공인기관 승인 <span class="tl">예비평가방법</span>으로 대체 가능</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a8 8 0 1116 0"/><path d="M12 18l4-5"/></svg></span><span class="lb"><i>4</i>비선형구조해석평가 (7.7)</span></span>
+      <ul class="list">
+        <li><b class="term">중력하중</b> — 일반용도 <span class="num">고정하중 1.0배 + 활하중 25%</span>, 창고 <span class="num">고정하중 1.0배 + 활하중 50%</span></li>
+        <li><b class="term">강도저감계수</b> — 비선형해석모델에서 부재·재료의 강도저감계수는 <span class="num">1.0</span></li>
+        <li><b class="term">평가 조합</b> — 내진등급별 <span class="tl">두 가지 최소성능목표를 모두</span> 평가(특등급: 기능수행+인명안전 / 1등급: 인명안전+붕괴방지)</li>
+        <li><b class="term">다축가진</b> — 주방향 100 : 직교방향 <span class="num">30%</span> 변위 조합(100:30 규칙)</li>
+        <li><b class="term">유효변위 한계</b> — 단일 스텝에서 최대 밑면전단력의 <span class="num">20% 이상</span> 급격한 강도저하가 발생하는 지점을 초과할 수 없으며, 그 범위에서 <span class="num">성능점이 형성되지 않으면 붕괴로 판정</span></li>
+        <li><b class="term">고차모드</b> — 질량참여 90% 모델과 1차모드 모델의 층전단력이 <span class="num">130% 이상</span> 차이나면 고차모드 영향이 큰 구조물</li>
+        <li><b class="term">동적해석</b> — <span class="num">7쌍 이상</span>의 지진파(직교 2성분 1쌍) 필요, <span class="tl">3차원 모델 의무</span>, 비선형정적해석을 동시 수행해 상호 검증</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9z"/><path d="M6 7h12v14H6z"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>평가 결과보고서 11항목 (7.1.3)</span></span>
+      <ul class="list">
+        <li><b class="term">① 일반사항</b> — 준공년도·내진설계 적용 여부, 용도·기능·행정구역·지진구역·지진계수, 지반종류·중요도·내진등급·내진설계범주</li>
+        <li><b class="term">② 구조물 정보</b> — 층수·평면치수·건물높이, 총중량·단위면적당 중량, 지진력/중력하중 저항시스템, 구조물주기·층별 전단력, 주요 부재 단면·배근·접합부, <span class="tl">조적채움벽·허리벽의 위치·치수·시공상태</span>, 재료강도와 판단근거</li>
+        <li><b class="term">③~⑥</b> — 과거 구조변경·증축·보강 정보, 내진성능목표와 평가지진 크기, 평가의 종류·절차, 해석모델의 속성·가정</li>
+        <li><b class="term">⑦~⑨</b> — <span class="tl">부재별 성능평가결과와 파괴유형분류표</span>(압축·인장·전단·휨전단·휨·미끄러짐), 기초 검토 결과, 비구조요소 평가</li>
+        <li><b class="term">⑩ 최종 판정</b> — 목표 만족 여부, 시스템 파괴모드와 취약부재. 미달 시 <span class="num">목표성능 대비 보유내진성능의 비율</span></li>
+        <li><b class="term">⑪ 보강 방향</b>(필요시) — 제3자 검토 대상이면 평가결과에 대해 검토 실시(7.1.4)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>평가 절차</b> <span class="num">10</span>단계</span>
+        <span class="chip"><b>위험도계수</b> 500년 <span class="num">1.0</span> 기준</span>
+        <span class="chip"><b>1000년</b> <span class="num">1.4</span> · <b>2400년</b> <span class="num">2.0</span></span>
+        <span class="chip"><b>건물강도비</b> 층강도비 <span class="num">최소값</span></span>
+        <span class="chip"><b>비선형 활하중</b> <span class="num">25%</span>(창고 <span class="num">50%</span>)</span>
+        <span class="chip"><b>강도저감계수</b> <span class="num">1.0</span></span>
+        <span class="chip"><b>다축가진</b> <span class="num">100:30</span></span>
+        <span class="chip"><b>유효변위</b> 강도저하 <span class="num">20%</span> 이내</span>
+        <span class="chip"><b>고차모드</b> <span class="num">130%</span> 이상 차이</span>
+        <span class="chip"><b>질량참여율</b> <span class="num">90%</span> 이상</span>
+        <span class="chip"><b>지진파</b> <span class="num">7쌍</span> 이상</span>
+        <span class="chip"><b>보고서</b> <span class="num">11</span>개 항목</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">비선형평가의 보유내진성능수준은 최대강도 도달 시 지붕층 변위의 2/3를 인명보호 변형능력으로 가정하고 인명안전 평가의 최대변위와 비교하여 산정할 수 있음(7.1.3 해설) ｜ [별표 3] 기존 학교시설 내진성능평가 및 보강 체크리스트가 A~J 항목으로 위 내용을 서식화함 ｜ 출처: 교육부고시 제2020-223호 전문</p>
+  <p class="pgno">4 / 5</p>
+
+</div>
+<div class="page haspin">
+
+  <h1 class="title">내진보강설계와 특수공법 검증 (제8장)</h1>
+  <div class="ubar"></div>
+  <p class="meta">1.5 기존 구조물의 내진보강 ｜ 8.1 일반사항 · 8.2 보강 설계절차 · 8.3 목표와 성능수준 · 8.4 보강방법 분류 · 8.5 계면접합부 · 8.6 기초 · 8.7 비구조요소 · 8.8 성능확인 · 8.9 특수공법 검증</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">내진보강공사는 책임구조기술자의 감독 하에 시공</span>되어야 하며(8.2.7), <span class="rolet">시공자</span>는 시공계획서를 작성해 책임구조기술자 또는 관계전문기술자의 확인을 받아야 한다. <span class="rolet">학교시설 책임자(소유자·관리자)</span>는 정기 안전점검으로 목표성능을 유지하고, <b class="term">조적채움벽을 포함한 내진구조부재·보강부위를 변경하려면 반드시 내진보강설계자와 사전 협의</b>하여야 한다. <span class="rolet">발주자</span>는 상위 성능목표를 설정할 수 있고(8.2.2) 일반공법 보강 시 제3자 검토 여부를 판단하며(8.2.6), 관련 도서는 <span class="rolet">공무원·건축주</span>가 사용기간 동안 보관한다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></span><span class="lb"><i>1</i>보강설계 원칙과 절차 (1.5·8.2)</span></span>
+      <ul class="list">
+        <li><b class="term">원칙</b> — <span class="num">검증된 공법만</span> 사용하고, 경제성·시공성·미관보다 <span class="num">구조성능의 신뢰성과 내구성을 최우선</span>. 기존 구조와 보강요소의 <span class="tl">일체성·변형적합성</span> 확보</li>
+        <li><b class="term">절차 7단계</b> — 내진성능평가(제7장) → 성능목표 결정 → 보강방법 결정 → 구조해석·부재설계 → 성능확인 → 제3자 검토·도서 보관 → 시공·유지관리</li>
+        <li><b class="term">반응수정계수 R</b> — 시공년도·시공상태를 고려해 책임구조기술자가 결정. 서로 다른 시스템이 같은 방향으로 저항하면 <span class="num">각 시스템 R의 최소값</span></li>
+        <li><b class="term">팽창줄눈(E.J)</b> — 기존 E.J 간격은 대개 허용층간변형각 미달. <span class="tl">층높이가 다른 인접건물은 충돌 피해가 없도록</span> 보강</li>
+        <li><b class="term">검증</b> — 성능설계·감쇠·면진 등 특수공법 적용 시 <span class="num">검증위원회 제3자 검토 의무</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6 20V6h9"/><path d="M15 6l4 4"/><path d="M9 6v6"/></svg></span><span class="lb"><i>2</i>보강방법 분류 (8.4)</span></span>
+      <ul class="list">
+        <li><b class="term">시스템 ①</b> <span class="tl">RC 벽체</span> — 채움벽 신설, 전단벽 증설·신설, 기둥날개벽. 지진력이 집중되므로 벽 수를 늘려 분산하거나 <span class="num">기초를 면밀히 검토</span></li>
+        <li><b class="term">시스템 ②</b> <span class="tl">철골가새</span>(외부 부착·내부 끼움) — 접합부에 큰 응력, 끼움가새는 기존 골조 안전성 검토 필수</li>
+        <li><b class="term">시스템 ③</b> <span class="tl">모멘트골조·부축벽</span> — 외부 골조·철골 끼움골조, 외벽 직각 부축벽(buttress). 신·구 골조의 <span class="tl">일체화 거동</span>과 기초 보강 확인</li>
+        <li><b class="term">부재 강도·강성</b> — 단면증설(콘크리트 단면증대, 날개벽, 철판둘레보강), 보의 강판·섬유 보강</li>
+        <li><b class="term">부재 연성</b> — <span class="tl">횡구속 보강</span>(철판·환형고리·섬유), <span class="tl">부분 강성감소</span> — 창문 아래 조적벽에 의한 <span class="num">단주(短柱) 전단파괴</span>를 막도록 조적강성을 제거해 장주 거동 유도</li>
+        <li><b class="term">내진요구 저감</b> — 감쇠장치(감쇠 증가)·면진장치(주기 증가)·경량재 대체. 장치는 <span class="tl">구조체와 일체화·변형적합성</span> 만족</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 7a4 4 0 10-5 5l-5 5 3 3 5-5a4 4 0 002-8z"/></svg></span><span class="lb"><i>3</i>계면접합부 설계 — 보강 품질을 결정하는 지점 (8.5)</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">모재 조건과 강도</b> — 허용기준보다 큰 균열·결함·중성화가 있으면 <span class="tl">책임기술자 책임 아래 보수한 후</span> 적용. 콘크리트 압축강도는 <span class="num">15MPa 이상</span>이어야 하며, 미만이면 책임구조기술자가 보강 가능 여부를 판단하고 <span class="num">안전율 1.3</span>을 고려해 설계(건축구조기준 18MPa를 노후도를 감안해 하향)</li>
+        <li><span class="no">2</span><b class="term">안전율 확보</b> — 시공품질·시공오차·미끄러짐의 불확실성을 고려해 <span class="tl">연결부 개수 또는 근입길이를 증가</span>시키고, 기존 배근과 간섭되지 않게 설계</li>
+        <li><span class="no">3</span><b class="term">후설치 앵커</b> — 인장은 강재·콘크리트파괴·뽑힘·측면파열·부착강도를, 전단은 강재·콘크리트파괴·프라이아웃강도를 검토해 <span class="num">최소값</span> 적용</li>
+        <li><span class="no">4</span><b class="term">철근 이음</b> — 노출된 기존 철근의 이음길이가 부족하면 <span class="tl">직경·항복강도가 같거나 큰 철근에 용접</span>(응력이 큰 경우 금지). 겹침용접 길이 <span class="num">철근 직경의 15배 이상</span>, <span class="num">최소 2개소</span></li>
+        <li><span class="no">5</span><b class="term">합성수지</b> — 표면처리 후 적용, 화재 시 붕괴되지 않는 범위에서만 사용. <span class="num">후설치앵커와 병용하면 합성수지의 부착강도는 무시</span></li>
+      </ul>
+      <table class="tbl" style="margin-top:1.8mm">
+        <thead><tr><th class="h1">&lt;해표 8-1&gt; 경과년수·재료상태에 따른 콘크리트압축강도 감소계수</th><th>구분</th><th>감소계수</th><th>구분</th><th>감소계수</th></tr></thead>
+        <tbody>
+          <tr><td class="lf">경과년수</td><td>30년 이상</td><td class="o">0.8</td><td>20년 이상</td><td class="o">0.9</td></tr>
+          <tr><td class="lf">경과년수</td><td>10년 이상~20년 미만</td><td>1.0</td><td>10년 미만</td><td>1.0</td></tr>
+          <tr><td class="lf">재료상태</td><td>양호 / 보통</td><td>1.0 / <span class="o">0.9</span></td><td>불량</td><td class="o">0.8</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21V12h6v9"/></svg></span><span class="lb"><i>4</i>기초·비구조요소 보강 (8.6·8.7)</span></span>
+      <ul class="list">
+        <li><b class="term">기초 일반</b> — 지지력은 지질조사자료를 근거로 건축구조기준에 따르고, 하중조합도 건축구조기준을 적용</li>
+        <li><b class="term">상태 확인 곤란 시</b> — <span class="num">기존 기초를 무시하고 보강</span>. 다만 부등침하 등 구조적 변형이 없고 수직하중 조합응력이 지진 포함 조합응력보다 크면 책임기술자 판단으로 보강하지 않을 수 있음</li>
+        <li><b class="term">말뚝기초</b> — 기존 말뚝의 내력이 저하되지 않도록 보강말뚝 배치, 기초판은 휨·전단강도 확보. 협소한 공간에서는 <span class="tl">소구경말뚝</span>이 일반적</li>
+        <li><b class="term">지내력기초</b> — 말뚝 보강(병용기초 가능) 또는 지내력 확대기초. 확대 시 기존 기초의 요구지지력을 <span class="tl">변형과 힘의 분배</span>를 고려해 검토</li>
+        <li><b class="term">비구조요소</b> — 평가·보강설계에서 <span class="tl">구조요소로 사용된 비구조요소</span>는 요구성능 만족을 위한 보강 필수. 조적벽체 면외전도방지와 긴급대피경로 관련 요소를 제외하면 <span class="num">해당 요소의 수선·변경 시</span> 보강 수행 가능</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>5</i>성능 확인과 특수공법 검증 (8.8·8.9)</span></span>
+      <ul class="list">
+        <li><b class="term">보강 후 성능평가</b> — 보강구조물 <span class="tl">전체에 대해 제7장에 따른 내진성능평가</span>로 목표성능 만족 여부 확인. 감쇠장치 적용 시 <span class="num">시간이력해석법</span></li>
+        <li><b class="term">하중경로 변화</b> — 부재 신설·보강으로 기존 부재의 부재력이 바뀌므로 <span class="tl">보강 후 기존 부재의 안전성</span>과 접합부·하부 수직부재·기초를 확인</li>
+        <li><b class="term">성능입증보고서(공급자) <span class="num">11</span>항목</b> — 재료 조성·생산, 구조·내구·내화성능, 설계방법, 실험체 설계, 하중·환경조건, <span class="tl">실험결과(목표성능 달성·강도·변형능력·에너지소산·파괴모드)</span>, 적용스펙 범위, 품질보증, 설계·시공매뉴얼</li>
+        <li><b class="term">성능검증보고서(공인기관) <span class="num">12</span>항목</b> — 입증보고서·실험기관·재료·제품구성·실험방법의 적절성, 목표성능 달성 평가, <span class="tl">학교시설에 대한 적용성 검토</span>, 품질보증·매뉴얼 적절성. <span class="tl">공인된 기관</span>이란 정기적으로 성능실험과 서비스를 수행하는 전문 학술단체 또는 국가인정시험 검사기관을 말하며, 그 결과물은 제3자 검토에 활용된다</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>모재 강도</b> <span class="num">15MPa</span> 이상</span>
+        <span class="chip"><b>미달 시 안전율</b> <span class="num">1.3</span></span>
+        <span class="chip"><b>겹침용접</b> <span class="num">15배</span>·<span class="num">2개소</span></span>
+        <span class="chip"><b>앵커</b> 파괴유형 <span class="num">최소값</span></span>
+        <span class="chip"><b>감소계수</b> 30년·불량 <span class="num">0.8</span></span>
+        <span class="chip"><b>입증</b> <span class="num">11</span> · <b>검증</b> <span class="num">12</span>항목</span>
+        <span class="chip"><b>검증위원회</b> <span class="num">2인</span> 이상</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">학교시설은 원칙적으로 <b>내진1등급</b>, 긴급대피수용시설·<b>10,000㎡ 이상 강당·체육관</b>·<b>특수학교</b>는 내진특등급으로 설계하고, 설계·시공상세도·시공 중·유지관리 <b>4단계 모두</b>에서 건축구조기술사인 <b>책임구조기술자</b>의 확인을 받아야 한다. 기존 시설은 <b>건물강도비 = 보유내진성능지수</b>로 보강 필요성을 판단하며, 보강 시 <b>모재 15MPa</b>와 계면접합부 안전율이 품질을 좌우하고, 비선형해석·특수공법에는 <b>2인 이상 검증위원회의 제3자 검토</b>가 의무다.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">&lt;해표 8-1&gt;은 「기존 건축물 내진성능평가 및 향상요령」(한국시설안전공단, 2013)에서 인용된 해설 참고표로 본문 규정은 아님 ｜ 특수공법의 범위와 성능입증 절차는 「학교시설 내진성능평가 및 보강 매뉴얼」 18.2·18.3 ｜ 출처: 국가법령정보센터(www.law.go.kr) 교육부고시 제2020-223호 전문</p>
+  <p class="pgno">5 / 5</p>
+
+</div>
+</body></html>

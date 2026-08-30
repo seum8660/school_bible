@@ -2055,6 +2055,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
           <tr data-ax="const" data-amt="2"><td class="thr">2억원</td><td>일상감사(시설공사) · 건설사업관리 의무(전문공사)</td><td>일상감사지침 제4</td></tr>
           <tr data-ax="const" data-amt="5"><td class="thr">5억원</td><td>건설사업관리계획 수립(토목) · 감리 의무(토목)</td><td>건설기술진흥법 제39-2</td></tr>
           <tr data-ax="total" data-amt="25"><td class="thr">25억원</td><td>대규모 사업 시설 일상감사(사립 예산액)</td><td>감사관-11302</td></tr>
+          <tr data-ax="design" data-amt="2.3"><td class="thr">2억3천만원</td><td>설계용역 평가 · 건설사업관리용역 평가 (국가계약법 고시금액 = 물품·용역)</td><td>건설기술진흥법 시행령 제82조① / 기재부고시 제2024-42호</td></tr>
           <tr data-ax="total" data-amt="40"><td class="thr">40억원</td><td>자체투자심사(총사업비)</td><td>지방재정법</td></tr>
           <tr data-ax="const" data-amt="50"><td class="thr">50억원</td><td>기본·설계·공사 안전보건대장 · 기술자문위(학교)</td><td>산업안전보건법 제55·제67</td></tr>
           <tr data-ax="const" data-amt="100"><td class="thr">100억원</td><td>설계 경제성 검토(VE) · 기술자문위 · 건설사업관리(감독권한대행) · 시공 평가</td><td>건설기술진흥법 시행령 제75</td></tr>
@@ -2103,9 +2104,21 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <div class="gz-cell" data-row="3" data-stage="시공"></div>
       <div class="gz-cell" data-row="3" data-stage="준공"></div>
       <div class="gz-cell" data-row="3" data-stage="유지관리"></div>
-      <div class="gz-rh" data-row="4"><b>5억 미만</b><span>소규모 사업 구간</span></div>
+      <div class="gz-rh" data-row="9"><b>5천만원 미만</b><span>소액 공사 구간</span></div>
+      <div class="gz-cell" data-row="9" data-stage="기획"></div>
+      <div class="gz-cell" data-row="9" data-stage="설계"><div class="gz-tile" data-ax="const" data-amt="0.2"><div class="gz-t-h">산업안전보건관리비 계상</div><div class="gz-t-b">총공사금액 2천만원↑</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="9" data-stage="시공"></div>
+      <div class="gz-cell" data-row="9" data-stage="준공"></div>
+      <div class="gz-cell" data-row="9" data-stage="유지관리"></div>
+      <div class="gz-rh" data-row="10"><b>5천만원 ~ 1억</b><span>심의 진입 구간</span></div>
+      <div class="gz-cell" data-row="10" data-stage="기획"></div>
+      <div class="gz-cell" data-row="10" data-stage="설계"><div class="gz-tile" data-ax="design" data-amt="0.5"><div class="gz-t-h">공공건축심의</div><div class="gz-t-b">설계비 5천↑</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="10" data-stage="시공"></div>
+      <div class="gz-cell" data-row="10" data-stage="준공"></div>
+      <div class="gz-cell" data-row="10" data-stage="유지관리"></div>
+      <div class="gz-rh" data-row="4"><b>1억 ~ 5억</b><span>소규모 사업 구간</span></div>
       <div class="gz-cell" data-row="4" data-stage="기획"><div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">사전기획</div><div class="gz-t-b">설계비 1억↑</div><span class="gz-t-s"></span></div></div>
-      <div class="gz-cell" data-row="4" data-stage="설계"><div class="gz-tile" data-ax="const" data-amt="0.2"><div class="gz-t-h">산업안전보건관리비 계상</div><div class="gz-t-b">총공사금액 2천만원↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="design" data-amt="0.5"><div class="gz-t-h">공공건축심의</div><div class="gz-t-b">설계비 5천↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="design" data-amt="1" data-ty="new,ext,reb,rem"><div class="gz-t-h">설계공모</div><div class="gz-t-b">설계비 1억↑ 우선적용</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="design" data-amt="2"><div class="gz-t-h">일상감사(설계용역)</div><div class="gz-t-b">설계·감리·기술용역 2억↑</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="4" data-stage="설계"><div class="gz-tile" data-ax="design" data-amt="1" data-ty="new,ext,reb,rem"><div class="gz-t-h">설계공모</div><div class="gz-t-b">설계비 1억↑ 우선적용</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="design" data-amt="2"><div class="gz-t-h">일상감사(설계용역)</div><div class="gz-t-b">설계·감리·기술용역 2억↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="design" data-amt="2.3"><div class="gz-t-h">설계용역 평가</div><div class="gz-t-b">용역비 2억3천만원↑ — 기본설계는 완료일부터 1개월 내 · 실시설계는 착공된 때부터 6개월 내</div><span class="gz-t-s"></span></div></div>
       <div class="gz-cell" data-row="4" data-stage="시공"><div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">설계의도 구현 용역</div><div class="gz-t-b">설계비 1억↑ — 설계자가 시공 중 설계 의도 반영 확인</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="2"><div class="gz-t-h">일상감사(시설공사)</div><div class="gz-t-b">공사비 2억↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="1"><div class="gz-t-h">재해예방 기술지도</div><div class="gz-t-b">공사비 1억↑~120억 미만</div><span class="gz-t-s"></span></div></div>
       <div class="gz-cell" data-row="4" data-stage="준공"></div>
       <div class="gz-cell" data-row="4" data-stage="유지관리"></div>
@@ -2131,7 +2144,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <div class="gz-cell" data-row="8" data-stage="기획"><div class="gz-tile" data-ax="total" data-amt="300"><div class="gz-t-h">중앙투자심사</div><div class="gz-t-b">총사업비 300억↑</div><span class="gz-t-s"></span></div></div>
       <div class="gz-cell" data-row="8" data-stage="설계"><div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">경제성 검토(VE)</div><div class="gz-t-b">공사비 100억↑</div><span class="gz-t-s"></span></div></div>
       <div class="gz-cell" data-row="8" data-stage="시공"><div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">공사기간 적정성 심의</div><div class="gz-t-b">총공사비 100억↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">종합심사낙찰제</div><div class="gz-t-b">추정가격 100억↑(그 미만 적격심사)</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="200"><div class="gz-t-h">감독권한대행 건설사업관리</div><div class="gz-t-b">총공사비 200억↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="500"><div class="gz-t-h">품질관리계획 수립</div><div class="gz-t-b">총공사비 500억↑ 또는 연면적 3만㎡↑ 다중이용건축물</div><span class="gz-t-s"></span></div></div>
-      <div class="gz-cell" data-row="8" data-stage="준공"><div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">시공 평가</div><div class="gz-t-b">총공사비 100억↑ (단순·반복 공사 제외)</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="total" data-amt="300"><div class="gz-t-h">건설공사 사후평가</div><div class="gz-t-b">총공사비 300억↑(500억↑는 파급효과평가 추가)</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="8" data-stage="준공"><div class="gz-tile" data-ax="design" data-amt="2.3"><div class="gz-t-h">건설사업관리용역 평가</div><div class="gz-t-b">감독권한대행 CM용역 2억3천만원↑ — 공사 90% 진척 시부터 준공 후 60일까지 평가 · 완료 후 15일 내 국토부 통보(CSI)</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="100"><div class="gz-t-h">시공 평가</div><div class="gz-t-b">총공사비 100억↑ (단순·반복 공사 제외)</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="total" data-amt="300"><div class="gz-t-h">건설공사 사후평가</div><div class="gz-t-b">총공사비 300억↑(500억↑는 파급효과평가 추가)</div><span class="gz-t-s"></span></div></div>
       <div class="gz-cell" data-row="8" data-stage="유지관리"></div>
       <div class="gz-rh" data-row="0"><b>금액 무관</b><span>조건·대상으로 판정</span></div>
       <div class="gz-cell" data-row="0" data-stage="기획"></div>
@@ -3594,15 +3607,16 @@ const DATA = {
        note:"⚠ 안전보건대장은 총공사금액 50억원 이상 시 의무 · 기술지도는 착공일 전날까지 계약 필수"
      }},
     {n:"13",t:"건설엔지니어링 및 시공 평가",d:"용역·시공 성과 평가 및 제출",
-     money:["건설사업관리용역 2억2천만원↑ · 총공사비 100억원↑"],law:["건설기술진흥법 제50"],
+     money:["건설엔지니어링 용역 2억3천만원↑ · 총공사비 100억원↑"],law:["건설기술진흥법 제50"],
      detail:{
        deleg:{draft:"담당",review:"담당팀",final:"부서장",up:"평가 결과 CSI 제출은 담당팀 전결"},
        obj:[
-         "평가대상: ① 건설엔지니어링(설계·건설사업관리) 용역비 2억 2천만원 이상 ② 총공사비 100억원 이상 건설공사의 시공",
-         "【법정 기준(시행령 제82조)】 건설엔지니어링 용역 — 계약금액이 국가계약법상 고시금액 이상: 기본설계 또는 실시설계용역 2억 2천만원↑ / 공사 89억원↑ · 감독권한대행 등 건설사업관리용역",
+         "평가대상: ① 건설엔지니어링(설계·건설사업관리) 용역비 2억 3천만원 이상(2025~2026 적용 고시금액) ② 총공사비 100억원 이상 건설공사의 시공",
+         "【법정 기준(시행령 제82조)】 건설엔지니어링 용역 — 계약금액이 국가계약법상 고시금액 이상: 기본설계 또는 실시설계용역 2억 3천만원↑ / 공사 88억원↑ (기재부 고시 제2024-42호, 2025.1.1.~2026.12.31. 적용) · 감독권한대행 등 건설사업관리용역",
          "시공 평가 대상: 총공사비 100억원 이상 건설공사(단순·반복 공사 등 국토교통부령으로 정하는 공사는 제외)",
-         "【평가시기(시행령 제83조)】 기본설계: 완료일부터 1개월 이내 / 실시설계 과정: 완료 1개월 이내 · 결과: 착공 후 6개월 이내",
-         "건설사업관리: 공사 90% 이상 준공 후 60일까지 / 건설공사 시공: 공사 90% 이상 준공 후 60일까지",
+         "【평가시기(시행령 제83조①)】 ① 기본설계: 완료된 날부터 1개월 이내 ② 실시설계: 해당 건설공사가 착공된 때부터 6개월 이내 ③ 감독 권한대행 등 건설사업관리: 공사 90% 이상 진척된 때부터 준공 후 60일까지",
+         "※ 건설사업관리 용역기간이 4년을 초과하면 착수 후 3년마다 평가하고 그 결과를 준공 후 최종 용역평가에 반영할 수 있음(시행령 제83조① 단서)",
+         "평가 결과 통보: 용역평가·시공평가 완료 후 15일 이내에 국토교통부장관에게 통보(시행규칙 제58조⑥) · 총괄표(별지 제36호서식)로 기록·관리",
          "제출시기: 평가 완료 후 15일 이내 → 건설공사안전관리종합정보망(CSI, www.csi.go.kr) 제출",
          "감독 권한대행 등 건설사업관리 용역: 착공일부터 1개월 이내 / 실시설계: 착공 후 6개월 이내",
          "【평가 주체】 발주청이 지명하는 5명 이상의 관계 공무원(발주청 소속 직원 포함) 및 전문가",
@@ -4930,7 +4944,7 @@ runRatioCalc();
   var ic=document.getElementById('gz-const'), ia=document.getElementById('gz-area');
   function mark(){
     var cv=parseFloat(ic&&ic.value), av=parseFloat(ia&&ia.value);
-    var rowC = isNaN(cv)||!(ic&&ic.value.trim()) ? -1 : cv>=100?8:cv>=50?7:cv>=25?6:cv>=5?5:4;
+    var rowC = isNaN(cv)||!(ic&&ic.value.trim()) ? -1 : cv>=100?8:cv>=50?7:cv>=25?6:cv>=5?5:cv>=1?4:cv>=0.5?10:9;
     var rowA = isNaN(av)||!(ia&&ia.value.trim()) ? -1 : av>=3000?3:av>=1000?2:1;
     mx.querySelectorAll('[data-row]').forEach(function(el){
       var r=parseInt(el.dataset.row,10);
@@ -5706,6 +5720,8 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 /* 인트로(히어로 공지) 자동 업데이트 — 매뉴얼/유틸 카드 수를 DOM에서 직접 집계 */
 (function(){
   var NOTICES=[
+    {d:'2026-08-30', tx:'<b>설계용역 평가</b> 기준금액 2억2천→<b>2억3천만원</b> 갱신(2025~2026 고시금액) · 사업절차 안내에 설계용역 평가·건설사업관리용역 평가 타일 추가'},
+    {d:'2026-08-30', tx:'<b>사업절차 안내</b> 금액 구간 세분화 — 5천만원 미만 · 5천만원~1억 · 1억~5억 3구간 분리'},
     {d:'2026-08-30', tx:'<b>사업절차 안내</b> 안전보건대장 3단계 분리(기본·설계·공사) · <b>설계의도 구현 용역</b> 타일 신설'},
     {d:'2026-08-30', tx:'<b>건설공사 안전보건대장</b> 요약문서 추가 — 고용노동부고시 제2024-35호 · 기본·설계·공사 3종 대장 작성·이행 확인'},
     {d:'2026-08-30', tx:'<b>공공건축 설계의도 구현 업무수행지침</b> 요약문서 추가 — 국토부고시 제775호 · 대상 사업·업무 범위·대가 산정'},

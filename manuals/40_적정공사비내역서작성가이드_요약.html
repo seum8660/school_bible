@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>적정 공사비 내역서 작성 가이드 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:12mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-child{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.4mm; }
+  .row1{ margin-bottom:2.4mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드 ──────────────────────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.0mm 0 2.2mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 ──────────────────────── */
+  .badge{ display:block; margin-bottom:1.5mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+  .cau{ color:var(--meta); font-size:6.5pt; }
+
+  /* ── 틸 넘버서클 목록 ───────────────── */
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  /* ── 표 ─────────────────────────────── */
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl thead th.h1{ text-align:left; }
+  .tbl th.grp{
+    background:#F7FAFC; color:var(--teal); font-weight:800; text-align:left;
+    font-size:6.1pt; letter-spacing:0.04em; padding:0.35mm 0.8mm;
+  }
+  .tbl td.it{ text-align:left; color:var(--body); }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .r{ color:var(--teal); font-weight:700; }
+  .tbl .x{ color:var(--note); font-weight:400; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.6mm 2.4mm; margin:0 0 1.8mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:2.4mm 4mm; margin:0 0 2mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주·쪽번호 ────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pageno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.4mm 0 0 0; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head>
+<body>
+<style>
+  /* ── 표지 전용 ─────────────────────── */
+  .page.cover{ display:flex; flex-direction:column; padding:0; }
+  .cov-top{
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; padding:34mm 18mm 22mm 18mm;
+  }
+  .cov-eyebrow{ font-size:7.6pt; font-weight:700; letter-spacing:0.22em; opacity:.80; margin-bottom:6mm; }
+  .cov-title{ font-size:30pt; font-weight:800; letter-spacing:-0.035em; line-height:1.18; margin:0; }
+  .cov-sub{ font-size:11pt; font-weight:500; opacity:.92; margin:5mm 0 0 0; line-height:1.5; }
+  .cov-line{ height:1mm; width:34mm; background:#fff; opacity:.75; margin:8mm 0 0 0; border-radius:0.5mm; }
+  .cov-body{ padding:14mm 18mm 0 18mm; flex:1; }
+  .cov-meta{ font-size:7.4pt; line-height:1.62; color:var(--body); margin:0 0 9mm 0; }
+  .cov-meta b{ color:var(--navy); font-weight:700; display:inline-block; min-width:22mm; }
+  .cov-tochd{ font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em; margin:0 0 3mm 0; }
+  .cov-toc{ margin:0; padding:0; list-style:none; border-top:0.5mm solid var(--navy); }
+  .cov-toc li{
+    font-size:7.6pt; line-height:1.4; padding:2.3mm 0 2.3mm 9mm;
+    border-bottom:0.2mm solid var(--panel-line); position:relative; color:var(--body);
+  }
+  .cov-toc .n{
+    position:absolute; left:0; top:2.1mm; width:6mm; height:4.4mm; border-radius:0.8mm;
+    background:var(--teal); color:#fff; font-size:6pt; font-weight:800; text-align:center; line-height:4.4mm;
+  }
+  .cov-toc b{ color:var(--navy); font-weight:700; }
+  .cov-foot{ padding:0 18mm 14mm 18mm; font-size:6.2pt; color:var(--note); line-height:1.5; }
+</style>
+
+<!-- ════════════════ 표지 ════════════════ -->
+<div class="page cover">
+  <div class="cov-top">
+    <div class="cov-eyebrow">조달청 공사원가계산 노하우 · 2026</div>
+    <h1 class="cov-title">적정 공사비<br>내역서 작성 가이드</h1>
+    <p class="cov-sub">건설 품질과 안전을 위한 원가계산 실무 — 핵심 요약</p>
+    <div class="cov-line"></div>
+  </div>
+  <div class="cov-body">
+    <p class="cov-meta">
+      <b>원문</b> 2026 적정 공사비 산정을 위한 내역서 작성 가이드<br>
+      <b>발간기관</b> 조달청 건축설비과 (☎ 042-724-7109 · www.pps.go.kr)<br>
+      <b>분량·기준</b> 152쪽 ｜ 2026년 2월 현재 관련 법규 및 유권해석 기준<br>
+      <b>성격</b> 법적 효력이 없는 참고서 — 본문의 '~하여야 한다'는 의무사항이 아님<br>
+      <b>요약 분량</b> A4 7쪽 (표지 별도) ｜ 공종별 작성법 · 안전관리비 · 품질관리비 비중 확대
+    </p>
+    <p class="cov-tochd">수록 순서</p>
+    <ol class="cov-toc">
+      <li><span class="n">1</span><b>적정 공사비 산정의 원칙</b> — 원가 구성체계 · 산정기준 준수 · 가격 적용 우선순위 · 기준 변경시기</li>
+      <li><span class="n">2</span><b>간접공사비(제비율)와 비목별 계상</b> — 법정요율 · 2026 조달청 분석요율 · 적정 노무비 · 견적가격 · PS공종</li>
+      <li><span class="n">3</span><b>안전관리비</b> — 계상대상 8호 · [별표 7] 계상 및 사용기준 · 안전관리비 체크리스트 작성법</li>
+      <li><span class="n">4</span><b>품질관리비</b> — 계상대상 · 품질시험비/품질관리활동비 · [별표 5] 건설기술인 배치기준 · 인건비 산출</li>
+      <li><span class="n">5</span><b>공종별 내역서 작성방법 ①</b> — 공통 적용기준 · 가설 · 토및지정 · 철근콘크리트 · 철골공사</li>
+      <li><span class="n">6</span><b>공종별 내역서 작성방법 ②</b> — 벽돌·블록 · 타일·돌 · 목·수장 · 방수 · 금속 · 미장 · 창호 · 칠 · 기타공사</li>
+      <li><span class="n">7</span><b>Q&amp;A 16문과 조달청 업무</b> — 유권해석 쟁점 · 계약·원가사전검토·총사업비 · 계약요청 유의사항</li>
+    </ol>
+  </div>
+  <div class="cov-foot">
+    ※ 본 요약문서는 원문의 수치·기한·요율을 그대로 옮긴 것으로, 원문에 없는 수치는 기재하지 않았습니다. 2026년 2월 이후 개정된 법규·요율은 시행일 기준으로 재확인이 필요합니다.<br>
+    출처: 조달청 www.pps.go.kr ｜ 나라장터 www.g2b.go.kr ｜ 공사비정보광장 pcae.g2b.go.kr ｜ 국가법령정보센터 www.law.go.kr
+  </div>
+</div>
+
+<!-- ════════════════ 1쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">적정 공사비 산정의 원칙 — 원가 구성과 산정기준</h1>
+  <div class="ubar"></div>
+  <p class="meta">1장 ｜ 근거: 국가계약법 제8조의2② · 같은 법 시행규칙 제5조·제7조 · 건설기술 진흥법 제45조 · (계약예규) 예정가격 작성기준 제2조·제6조·제37조</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주기관·계약담당공무원 = 적정 금액 반영의 법적 의무 주체</span> — 예정가격을 작성할 때 계약수량·이행기간·수급상황·계약조건을 고려하여 <b class="term">품질·안전 등이 확보되도록 적정한 금액을 반영하여야 한다</b>(국가계약법 제8조의2②). 표준품셈 물량과 법정 기준가격을 <span class="rolet">부당하게 감액하거나 과잉 계상해서는 안 되며</span>, 불가피하게 조정한 경우 그 사유를 예정가격조서에 명시하여야 한다(예정가격 작성기준 제2조②).</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8h5v13M14 21V4h5v17"/></svg></span><span class="lb"><i>1</i>공사원가 구성체계</span></span>
+      <ul class="list">
+        <li><b class="term">순공사원가</b> = 재료비(직접·간접) + 노무비(직접·간접) + 경비</li>
+        <li><b class="term">경비 항목</b> — 전력비·수도광열비·운반비·기계경비·특허권사용료·기술료·연구개발비·<span class="tl">품질관리비</span>·가설비·지급임차료·보험료·복리후생비·외주가공비·보관비·<span class="tl">산업안전보건관리비</span>·소모품비·여비·폐기물처리비·세금과공과금·환경보전비·보상비·<span class="tl">안전관리비</span> 등</li>
+        <li><b class="term">총원가</b> = 순공사원가 + 일반관리비(순공사원가×율) + 이윤((노무비+경비+일반관리비)×율)</li>
+        <li><b class="term">예정가격</b> = 총원가 + 공사손해보험료(공사총원가×율) + 부가가치세((총원가+보험료)×율)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8l7-5 7 5"/><path d="M4 12h16"/></svg></span><span class="lb"><i>2</i>더해도, 덜해도 안 되는 공사비</span></span>
+      <ul class="list">
+        <li><b class="term">불필요한 부분은 빼고, 빠진 부분은 채워 넣고</b> — 설계서는 완벽할 수 없으므로 중복·불필요 계상과 착오 누락을 <span class="tl">양방향으로</span> 바로잡는 것이 적정공사비 산정의 출발점</li>
+        <li><b class="term">적정공사비 = 적정공기와 함께 안전·품질의 전제조건</b> — 저예산·촉박한 공기는 자재 품질 저하, 인력 축소, 안전관리 소홀로 이어져 부실시공·유지관리비 증가·사고라는 더 큰 사회적 손실로 돌아옴</li>
+        <li><b class="term">과거 관행 탈피</b> — 예산에 맞추기 위한 인위적 조정·삭감은 더 이상 통용되지 않음. 공공공사는 이미 이윤을 남기기 어려운 실정</li>
+        <li><b class="term">정답은 없으나 방법은 있음</b> — 업체·현장위치·시기에 따라 공사비는 달라지므로, 아래 ③의 산정기준 준수가 유일한 실무적 해법</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span><span class="lb"><i>3</i>적정공사비 산정을 위해 반드시 지켜야 할 5가지</span></span>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">표준품셈·표준시장단가 준수</b> — 국토교통부장관이 정한 공사비 산정기준(건설기술 진흥법 제45조). 원가계산 시 <span class="tl">가장 최근의 표준품셈</span>을 이용하여야 하며(예정가격 작성기준 제6조②), 표준시장단가는 추정가격 <span class="num">100억원 미만</span> 공사에는 적용하지 않음(제37조②)</li>
+        <li><span class="no">2</span><b class="term">품셈 물량의 임의조정 금지 + 사전고지 의무</b> — 예산 사정으로 불가피하게 조정했다면 <span class="tl">입찰공고 등을 통해 미리 고지</span>하여야 함. 고지의무 위반으로 낙찰자가 계약금액을 초과하는 공사비를 지출해 손해를 입었다면 배상책임 인정(<span class="tl">대법원 2016.11.10. 선고 2013다23617</span>)</li>
+        <li><span class="no">3</span><b class="term">조달청 간접공사비(제비율) 적용기준 준수</b> — 법정요율은 조달청 발주 여부와 무관하게 <span class="tl">그대로 반영해야 하는 의무</span>. 분석요율은 조달청에 계약요청하는 공사에 준수 (2쪽 참조)</li>
+        <li><span class="no">4</span><b class="term">비목별 구분 계상</b> — 같은 금액이라도 재료비·노무비·경비 중 어디에 계상하느냐에 따라 최종 공사비가 달라짐. 견적가격을 <span class="tl">재료비로 일괄 계상하는 것은 원가계산 방식에 맞지 않음</span>. 노무비가 과소 계상되면 사회보험료 과소 산정 → 건설근로자 권익 훼손, 직접노무비 상한 축소 → 임금체불의 요인</li>
+        <li><span class="no">5</span><b class="term">최신 단가·기준 적용</b> — 과거 단가가 아니라 <span class="tl">내역서 작성 또는 검토 시점</span>의 단가·노임·표준품셈을 적용. 설계단계에서도 최신 기준을 적용해야 조달청 원가계산 결과와의 차이가 줄어듦</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="2.5"/></svg></span><span class="lb"><i>4</i>단위당 가격의 적용 순서 (시행규칙 제7조)</span></span>
+      <ul class="list">
+        <li><b class="term">1순위</b> — <span class="tl">거래실례가격</span> 또는 통계법 제15조 통계작성기관이 조사·공표한 가격. 거래실례가격은 ① 조달청장 조사·통보가격 ② 등록 전문가격조사기관 공표가격(시중물가지) ③ 2 이상 사업자의 거래실례를 직접 조사·확인한 가격(시행규칙 제5조)</li>
+        <li><b class="term">2순위</b> — 시행규칙 제10조제1호~제3호의 가격(유사 거래실례가격, 견적가격 등)</li>
+        <li><b class="term">가장 낮은 가격 ≠ 옳은 가격</b> — 시중물가지 가격이 있으면 <span class="tl">아무리 낮은 견적가격이라도</span> 물가지 가격을 우선 적용하는 것이 맞음</li>
+        <li><b class="term">통계법 대표 가격</b> — 노임단가(시중노임)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4"/><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg></span><span class="lb"><i>5</i>가격·기준의 변경 시기 (평소 숙지 필요)</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:38%">구분</th><th class="h1" style="width:62%">변경 시기</th></tr></thead>
+        <tbody>
+          <tr><td class="it">노임(시중노임)</td><td class="lf">매년 <span class="o">1월 1일</span>, <span class="o">9월 1일</span> (대한건설협회 연 2회 공표)</td></tr>
+          <tr><td class="it">표준품셈</td><td class="lf">매년 <span class="o">1월 1일</span></td></tr>
+          <tr><td class="it">표준시장단가</td><td class="lf">매년 <span class="o">1월 1일</span>, <span class="o">5월 1일</span></td></tr>
+          <tr><td class="it">조달청 제비율</td><td class="lf">간접노무비·기타경비 매년 <span class="o">3~4월</span> / 법정 경비는 <span class="r">상시</span></td></tr>
+          <tr><td class="it">시중물가지 가격</td><td class="lf"><span class="o">매월</span></td></tr>
+          <tr><td class="it">조달청가격</td><td class="lf">매년 <span class="o">4월·10월</span> 정기 변경, 필요시 상시 변경 가능</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>표준시장단가 미적용</b> 추정가격 <span class="num">100억원</span> 미만</span>
+        <span class="chip"><b>노임 변경</b> <span class="num">1월·9월</span></span>
+        <span class="chip"><b>표준품셈</b> <span class="num">1월</span></span>
+        <span class="chip"><b>표준시장단가</b> <span class="num">1월·5월</span></span>
+        <span class="chip"><b>제비율</b> <span class="num">3~4월</span></span>
+        <span class="chip"><b>물가지</b> <span class="num">매월</span></span>
+        <span class="chip"><b>조달청가격</b> <span class="num">4월·10월</span></span>
+        <span class="chip"><b>사전고지 판례</b> 2013다23617</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">근거: 국가계약법 제8조의2② · 같은 법 시행규칙 제5조·제7조·제10조 · 건설기술 진흥법 제45조 · (계약예규) 예정가격 작성기준 제2조·제6조·제37조 ｜ 원문은 2026년 2월 현재 법규·유권해석 기준이며 법적 효력을 갖지 않는 참고서임 ｜ 출처: 조달청 www.pps.go.kr · 국가법령정보센터 www.law.go.kr</p>
+  <p class="pageno">1 / 7</p>
+
+</div>
+
+<!-- ════════════════ 2쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">간접공사비(제비율)와 비목별 계상 — 2026 적용기준</h1>
+  <div class="ubar"></div>
+  <p class="meta">1장 ｜ 2026년 건축·산업환경설비공사 원가계산 간접공사비(제비율) 적용기준 (적용시기: 2026. 3. 13. 입찰공고분부터) ｜ 조달청 홈페이지 → 조달업무 → 업무별자료 → 시설공사 → '간접공사비' 검색</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">법정요율은 발주기관의 의무 — 조달청 발주 여부와 무관</span>. 개별법에 따라 공사비에 의무적으로 반영하도록 중앙관서의 장이 고시한 요율이므로 <b class="term">규정된 요율을 그대로 반영</b>하여야 한다. 반면 <span class="rolet">조달청 분석요율(간접노무비·기타경비·일반관리비·이윤·공사이행보증수수료)</span>은 법령상 요율은 아니나 <b class="term">조달청에 계약요청하는 공사는 준수</b>하여야 한다.</span>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>1</i>법정요율 11종 — 반드시 그대로 반영</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:30%">항목</th><th class="h1" style="width:26%">관련 법령</th><th class="h1" style="width:44%">관련 고시 · 산정기준</th></tr></thead>
+        <tbody>
+          <tr><td class="it">건설기계대여대금 지급보증액 발급금액</td><td class="lf" rowspan="3">건설산업기본법</td><td class="lf">건설기계대여대금 지급보증서 발급금액 및 업종별 건설기계투입비율 산정기준(국토부)</td></tr>
+          <tr><td class="it">건설하도급대금 지급보증서 발급수수료</td><td class="lf">하도급대금 지급보증서 발급금액 기준(국토부)</td></tr>
+          <tr><td class="it">산재·고용·건강·노인장기요양·연금 보험료, 퇴직공제부금비</td><td class="lf">사회보험의 보험료 적용기준(국토부 고시 제2021-905호, 2021.7.1.)</td></tr>
+          <tr><td class="it">환경보전비</td><td class="lf">건설기술진흥법</td><td class="lf">환경관리비의 산출기준 및 관리에 관한 지침(국토부 고시 제2018-528호)</td></tr>
+          <tr><td class="it">산업안전보건관리비</td><td class="lf">산업안전보건법</td><td class="lf">건설업 산업안전보건관리비 계상 및 사용기준(고용노동부 고시 제2025-11호, 2025.2.12.)</td></tr>
+          <tr><td class="it">석면피해구제분담금</td><td class="lf">석면피해구제법</td><td class="lf">석면피해구제분담금률(환경부 고시 제2025-25호, 2025.12.22.)</td></tr>
+          <tr><td class="it">임금채권보장 사업주 부담금</td><td class="lf">임금채권보장법</td><td class="lf">사업주 부담금비율 고시(고용노동부 고시 제2026-100호, 2025.12.31.)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 3 5-7"/></svg></span><span class="lb"><i>2</i>2026 조달청 분석요율 — 주요 구간</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:42%">구분(직접공사비·추정가격)</th><th style="width:29%">건축</th><th style="width:29%">산업설비</th></tr></thead>
+        <tbody>
+          <tr><th class="grp" colspan="3">간접노무비 (직노 × 율, %) · 기타경비 ((재+노) × 율, %) — 공사규모 × 공사기간</th></tr>
+          <tr><td class="it">10억 미만 / 6개월 이하</td><td>간접노무 <span class="o">15.0</span></td><td>기타경비 <span class="o">4.6</span></td></tr>
+          <tr><td class="it">1000억 이상 / 36개월 초과</td><td>간접노무 <span class="o">15.5</span></td><td>기타경비 <span class="o">6.5</span></td></tr>
+          <tr><th class="grp" colspan="3">일반관리비 ((재+노+경) × 율) · 이윤 ((노+경+일) × 율) — 추정가격 기준, %</th></tr>
+          <tr><td class="it">5억 미만 → 1000억 이상</td><td class="lf" colspan="2">일반관리비 건축 <span class="o">8.0 → 6.5 → 5.0 → 4.5</span> ／ 이윤 <span class="o">15.0 → 12.0 → 10.0 → 9.0</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>3</i>산업안전보건관리비 요율 (2026)</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:34%">대상액</th><th class="h1" style="width:32%">공사 종류</th><th style="width:17%">요율(%)</th><th style="width:17%">기초액(천원)</th></tr></thead>
+        <tbody>
+          <tr><td class="it">5억 미만</td><td class="lf">건축 <span class="o">3.11</span> · 토목 3.15 · 중건설 3.64 · 특수 2.07</td><td class="x" colspan="2">기초액 없음</td></tr>
+          <tr><td class="it" rowspan="4">5억~50억 미만</td><td class="lf">건축공사</td><td><span class="o">2.28</span></td><td>4,325</td></tr>
+          <tr><td class="lf">토목공사</td><td>2.53</td><td>3,300</td></tr>
+          <tr><td class="lf">중건설공사</td><td>3.05</td><td>2,975</td></tr>
+          <tr><td class="lf">특수건설공사</td><td>1.59</td><td>2,450</td></tr>
+          <tr><td class="it">50억 이상 (800억 미만)</td><td class="lf">건축 <span class="o">2.37</span> · 토목 2.60 · 중건설 3.11 · 특수 1.64</td><td class="x" colspan="2">기초액 없음</td></tr>
+          <tr><td class="it">50억 이상 (800억 이상)</td><td class="lf">건축 <span class="o">2.64</span> · 토목 2.73 · 중건설 3.39 · 특수 1.78</td><td class="x" colspan="2">기초액 없음</td></tr>
+        </tbody>
+      </table>
+      <ul class="list" style="margin-top:1.4mm">
+        <li><b class="term">대상액</b> = 재료비+직접노무비(+도급자 관급). 관급 포함 시 <span class="tl">(재+직노+관급)×요율+기초액</span>과 <span class="tl">((재+직노)×요율+기초액)×1.2</span> 중 작은 금액 ／ 총공사금액 <span class="num">2천만원 이상</span> 공사에 적용</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/></svg></span><span class="lb"><i>4</i>적정 노무비 산정 가이드라인 (조달청, 2018)</span></span>
+      <ul class="list">
+        <li><b class="term">시중노임·노무수량</b> — <span class="tl">발주시기에 공표되어 시행 중인</span> 시중노임단가를 적용하고, 표준품셈 적용 시 <span class="tl">노무수량을 변경 없이</span> 작성</li>
+        <li><b class="term">비목 구분 적용</b> — 표준시장단가·조달청 시장시공가격 및 시공비 포함 견적가격 모두 비목(재료비·노무비·경비)으로 구분 적용</li>
+        <li><b class="term">금지</b> — 노무비 적용 대상 품목을 <span class="tl">재료비 또는 경비항목으로 적용 금지</span></li>
+        <li class="cau">※ 노무비 축소·누락 시 간접노무비·사회보장 보험료가 과소 계상되어 산업재해 비용·고용보험 등 건설근로자의 사회적 권익이 침해될 수 있음</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/><path d="M8.5 11h5"/></svg></span><span class="lb"><i>5</i>견적가격 적용과 이윤 하단 계상</span></span>
+      <ul class="list">
+        <li><b class="term">견적가격은 정당한 단위당 가격</b> — 검증이 어렵다는 이유로 <span class="tl">일정 비율을 삭감하는 것은 규정에 없는 잘못된 관행</span>. 복수 업체 견적 비교로 적정성 확인</li>
+        <li><b class="term">견적 요건</b> — 설계자 명의 수신, '도면 및 시방서에 의한 견적'·'직접공사비 견적'·'VAT 별도' 명기, 견적업체 직인. <span class="tl">타 공사 견적서 전용 금지</span>. 견적 단가 품명은 설계자가 <span class="tl">수량 산출 근거를 재검토</span>하고 견적 규격을 내역서에 반드시 기입(누락 시 설계변경 판단 불가)</li>
+        <li><b class="term">제요율적용제외 공종</b> — 엔지니어링대가 등 다른 방식으로 산정되어 이미 일반관리비·이윤이 포함된 금액(기계공사 TAB 등). 입찰참가자가 <span class="tl">수행 가능한 금액으로 수정 가능</span></li>
+        <li><b class="term">PS공종</b> — 사후원가검토조건부 성격(각종 본인증 비용 등). 입찰참가자는 <span class="tl">금액 수정 불가</span>, 설계 확정 후 원가계산으로 정산. 계약요청 시 ①공사개요서에 PS 반영부분·사후정산 조건 표기 ②PS 비중이 추정가격의 <span class="num">20% 이상</span>이면 수요기관 계약심의위원회 심의자료 제출 필수</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>제비율 적용시기</b> <span class="num">2026.3.13.</span> 입찰공고분</span>
+        <span class="chip"><b>법정요율</b> <span class="num">11</span>종</span>
+        <span class="chip"><b>산안보건관리비 대상</b> 총공사금액 <span class="num">2천만원</span> 이상</span>
+        <span class="chip"><b>건축 5억 미만</b> <span class="num">3.11%</span></span>
+        <span class="chip"><b>건축 5~50억</b> <span class="num">2.28%</span>+4,325천원</span>
+        <span class="chip"><b>이윤</b> <span class="num">15.0 → 9.0%</span></span>
+        <span class="chip"><b>일반관리비</b> <span class="num">8.0 → 4.5%</span> · <b>PS 심의</b> <span class="num">20%</span> 이상</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">근거: 2026년 건축·산업환경설비공사 원가계산 간접공사비(제비율) 적용기준(조달청) ｜ 요율은 원문 표에서 발췌한 주요 구간이며 실제 적용 시 <b>전체 요율표 원본으로 해당 구간을 확인</b>하여야 함 ｜ 산업안전보건관리비 요율은 고용노동부 고시 제2025-11호(2025.2.12.) 기준 ｜ 출처: 조달청 www.pps.go.kr</p>
+  <p class="pageno">2 / 7</p>
+
+</div>
+
+<!-- ════════════════ 3쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">안전관리비 — 계상대상·사용기준·체크리스트</h1>
+  <div class="ubar"></div>
+  <p class="meta">1장 ｜ 근거: 건설기술 진흥법 제63조 · 같은 법 시행령 제98조 · 건설공사 안전관리 업무수행 지침 제51조제3항제1호 및 [별표 7] ｜ 경비 비목으로 계상</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주기관 = 계상 의무 주체 · 미계상 시 2천만원 이하 과태료</span> — 안전관리비 계상이 필요한 공사임에도 해당 금액을 공사금액에 계상하지 않으면 <b class="term">발주기관에 과태료</b>가 부과된다. <span class="rolet">입찰참가자</span>는 입찰금액 산정 시 이 금액을 <b class="term">조정 없이 그대로 반영</b>하여야 한다. 산업안전보건관리비와 달리 <b class="term">요율방식이 아니라 항목별 실비 산출방식</b>이므로, 조달청 <span class="rolet">'안전관리비 체크리스트'</span>를 설계단계에서부터 활용하는 것이 실무 해법이다.</span>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>1</i>안전관리비 계상 대상 8호 (건설기술 진흥법 제63조)</span></span>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">시설물</b> — 「시설물의 안전 및 유지관리에 관한 특별법」에 따른 <span class="tl">1종·2종 시설물</span>의 건설공사</li>
+        <li><span class="no">2</span><b class="term">굴착</b> — 지하 <span class="num">10미터 이상</span> 굴착하는 건설공사 ／ <b class="term">③ 폭발물</b> — 폭발물 사용 공사로 <span class="num">20미터</span> 안에 시설물이 있거나 <span class="num">100미터</span> 안에 사육 가축이 있어 영향이 예상되는 경우</li>
+        <li><span class="no">4</span><b class="term">건축물</b> — <span class="num">10층 이상 16층 미만</span> 건축물의 건설공사 ／ <b class="term">⑤ 리모델링·해체</b> — <span class="num">10층 이상</span> 건축물의 리모델링 또는 해체공사, 주택법 제2조제25호다목의 수직증축형 리모델링</li>
+        <li><span class="no">6</span><b class="term">건설기계</b> — 천공기(높이 <span class="num">10미터 이상</span>) · 항타 및 항발기 · 타워크레인을 사용하는 건설공사</li>
+        <li><span class="no">7</span><b class="term">가설구조물</b> — 높이 <span class="num">31미터 이상</span> 비계 / 작업발판 일체형 거푸집 또는 높이 <span class="num">5미터 이상</span> 거푸집·동바리 / 터널 지보공 또는 높이 <span class="num">2미터 이상</span> 흙막이 지보공 / 동력으로 움직이는 가설구조물 / 그 밖에 발주자·인허가기관의 장이 인정하는 가설구조물</li>
+        <li><span class="no">8</span><b class="term">그 밖의 공사</b> — 발주자 또는 지자체 조례로 정하는 건설공사 중 인·허가기관의 장이 안전관리가 특히 필요하다고 인정하는 공사</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3H9z"/><path d="M15 4h3v17H6V4h3"/><path d="M9 11l2 2 4-4"/></svg></span><span class="lb"><i>2</i>안전관리비 계상 및 사용기준 [별표 7] — 항목별 세부 비용과 내역 예시</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:24%">항목</th><th class="h1" style="width:44%">계상 대상 비용</th><th class="h1" style="width:32%">내역서 반영내역 예시(품명)</th></tr></thead>
+        <tbody>
+          <tr><td class="it">1. 안전관리계획의 작성 및 검토 비용</td><td class="lf">가. <b>작성</b> — 계획서 작성비(공법 변경에 의한 재작성 포함), 안전점검 공정표, 시공상세도면, 안전성계산서(거푸집·동바리 등) 작성비<br>나. <b>검토</b> — 계획서 검토비, 대상 시설물별 세부안전관리계획서 검토비(시공상세도면·안전성계산서) <span class="x">※ 기 작성된 시공상세도면·안전성계산서 작성비는 제외</span></td><td class="lf">안전관리계획서 작성비<br>안전관리계획서 검토비</td></tr>
+          <tr><td class="it">2. 안전점검 비용<br><span class="x">(영 제100조①1호·3호)</span></td><td class="lf">가. <b>정기안전점검</b> — 건설공사별 실시시기에 발주자의 승인을 얻어 건설안전점검기관에 의뢰<br>나. <b>초기점검</b> — 영 제98조①1호 공사에 대하여 준공(임시사용 포함) 직전 실시 <span class="x">※ 초기점검 추가조사 비용은 [별표8] 요율 계상분과 별도 계상</span></td><td class="lf">안전점검비<br>초기점검비</td></tr>
+          <tr><td class="it">3. 발파·굴착 등으로 인한 주변 건축물 등의 피해방지대책 비용</td><td class="lf">가. <b>지하매설물 보호조치</b> — 관 매달기, 보호·복구, 이설·임시이전, 방안 수립 조사비 <span class="x">(기 반영 시 미계상)</span> ／ 나. <b>발파·진동·소음 대책</b> — 계측기 설치·분석·유지관리, 주변 건축물·지반 사전보강·보수·임시이전 ／ 다. <b>지하수 차단</b> ／ 라. 기타</td><td class="lf">기존관 매달기<br>암파쇄방호시설<br>지하수 차단 시설</td></tr>
+          <tr><td class="it">4. 공사장 주변 통행안전·교통소통을 위한 안전시설 설치·유지관리 비용</td><td class="lf">가. 통행 및 교통을 위한 안전시설 &nbsp;나. 기계·장비의 <b>전담유도원 배치</b> &nbsp;다. 기타 필요한 비용</td><td class="lf">PE드럼 · 교통신호수<br>교통통제 및 안전처리<br>모니터링장치 설치·운영비</td></tr>
+          <tr><td class="it">5. 공사시행 중 구조적 안전성 확보 비용</td><td class="lf">가. <b>계측장비</b> 설치 및 운영 &nbsp;나. <b>CCTV</b> 설치 및 운영 &nbsp;다. <b>가설구조물 전문가 확인</b> &nbsp;라. <b>무선통신</b> 구축·사용</td><td class="lf">계측관리비 · CCTV 설치 및 운영비<br>가설구조물 안정성 확인 · 무선통신시설</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="2.5"/></svg></span><span class="lb"><i>3</i>체크리스트 작성 방법</span></span>
+      <ul class="list">
+        <li><b class="term">근거</b> — 건설공사 안전관리 업무수행 지침 제51조제3항제1호: 안전관리비는 <span class="tl">원가계산서 상 '안전관리비'</span>로 반영</li>
+        <li><b class="term">기재 방식</b> — 항목별로 ① <span class="tl">반영위치</span>(내역서상 어느 공종·어느 위치에 들어가 있는지) ② <span class="tl">반영내역</span>(품명·규격·단위·금액)을 각각 기재</li>
+        <li><b class="term">목적</b> — 조달청 원가검토 시 당초 설계상 안전관리비가 <span class="tl">원가계산서 안전관리비 항목으로 옮겨질 수 있도록</span> 하는 것</li>
+        <li><b class="term">해당 없음 처리</b> — 계상 대상이 아닌 세부항목은 '해당없음'으로 명시</li>
+        <li><b class="term">활용 시점</b> — 계약요청 시 필수이나, <span class="tl">설계단계에서부터 활용</span>할 것을 권장</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></span><span class="lb"><i>4</i>실무 유의점</span></span>
+      <ul class="list">
+        <li><b class="term">산업안전보건관리비와 구분</b> — 산안보건관리비는 <span class="tl">요율방식</span>(대상액×요율+기초액), 안전관리비는 <span class="tl">항목별 실비</span>. 두 비용은 별개로 각각 계상</li>
+        <li><b class="term">중복 계상 주의</b> — 지하매설물 보호조치처럼 이미 공사비에 반영되어 있는 경우에는 안전관리비로 다시 계상하지 않음</li>
+        <li><b class="term">계상 대상 판단</b> — 학교공사는 제63조 8호(발주자·인허가기관의 장이 인정하는 공사)를 통해 적용 여지가 있으므로 발주청 판단이 중요</li>
+        <li><b class="term">입찰단계</b> — 계상된 안전관리비는 입찰참가자가 임의로 감액할 수 없는 <span class="tl">고정 항목</span></li>
+        <li><b class="term">가설구조물 전문가 확인</b> — 영 제101조의2 대상 가설구조물은 안전성 확인 비용이 별도 항목으로 존재</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>미계상 과태료</b> <span class="num">2천만원</span> 이하</span>
+        <span class="chip"><b>굴착</b> 지하 <span class="num">10m</span> 이상</span>
+        <span class="chip"><b>폭발물</b> <span class="num">20m</span>·<span class="num">100m</span></span>
+        <span class="chip"><b>건축물</b> <span class="num">10~16층</span> 미만</span>
+        <span class="chip"><b>리모델링·해체</b> <span class="num">10층</span> 이상</span>
+        <span class="chip"><b>천공기</b> 높이 <span class="num">10m</span> 이상</span>
+        <span class="chip"><b>비계</b> <span class="num">31m</span> 이상</span>
+        <span class="chip"><b>거푸집·동바리</b> <span class="num">5m</span> 이상</span>
+        <span class="chip"><b>흙막이 지보공</b> <span class="num">2m</span> 이상</span>
+        <span class="chip"><b>계상 항목</b> <span class="num">5</span>개 대분류</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">근거: 건설기술 진흥법 제63조 · 같은 법 시행령 제98조·제100조·제101조의2 · 건설공사 안전관리 업무수행 지침 제51조제3항제1호 및 [별표 7]·[별표 8] ｜ '안전관리비 체크리스트'는 조달청이 계약요청 시 작성하도록 운용하는 서식임 ｜ 출처: 조달청 www.pps.go.kr · 국가법령정보센터 www.law.go.kr</p>
+  <p class="pageno">3 / 7</p>
+
+</div>
+
+<!-- ════════════════ 4쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">품질관리비 — 품질시험비와 품질관리활동비</h1>
+  <div class="ubar"></div>
+  <p class="meta">1장 ｜ 근거: 건설기술 진흥법 제89조 · 같은 법 시행규칙 [별표 6] 품질관리비의 산출 및 사용기준(제53조제1항 관련, 2022.12.30. 개정) · [별표 5] 품질관리를 위한 시설 및 건설기술인 배치기준(제50조제4항 관련, 2024.7.10. 개정) ｜ 경비 비목으로 계상</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주자 = 산출·명시 의무 주체 · 미계상 시 2천만원 이하 과태료</span> — 발주자는 품질관리비를 산출하고 <b class="term">그 산출근거가 되는 구체적인 명세를 설계도서에 명시</b>하여야 하며, 입찰공고 등에 명시하여 입찰참가자가 미리 열람할 수 있도록 하여야 한다. <span class="rolet">입찰참가자</span>는 설계도서에 명시된 품질관리비를 <b class="term">조정 없이 입찰금액에 반영</b>하여야 한다. <span class="rolet">건설사업자</span>는 설계도서에 누락된 품질시험·검사의 종목·방법·횟수를 건설사업관리용역사업자 및 발주자와 협의하여 설계도서에 반영하여야 한다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 13l2 2 4-4"/></svg></span><span class="lb"><i>1</i>계상 대상과 정의</span></span>
+      <ul class="list">
+        <li><b class="term">계상 대상</b>(법 제89조) — ① 총공사비 <span class="num">5억원 이상</span>인 <span class="tl">토목공사</span> ② 연면적 <span class="num">660㎡ 이상</span>인 건축물의 <span class="tl">건축공사</span> ③ 총공사비 <span class="num">2억원 이상</span>인 <span class="tl">전문공사</span></li>
+        <li><b class="term">정의</b> — 현장에서 품질관리계획 또는 품질시험계획에 의한 품질관리 활동에 소요되는 비용</li>
+        <li><b class="term">품질관리 활동의 범위</b> — 시공 및 사용자재에 대한 품질시험·검사활동뿐 아니라 <span class="tl">설계도서와 불일치된 부적합 공사를 사전예방하기 위한 활동</span>까지 포함</li>
+        <li><b class="term">구성</b> — 품질관리비 = <span class="tl">품질시험비</span> + <span class="tl">품질관리활동비</span></li>
+        <li class="cau">※ 품질시험비는 대부분 잘 반영되나, <b>품질관리활동비는 누락되거나 과소 산정되는 경우가 많음</b> — 이 문서의 핵심 점검 포인트</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v6L4 20h16L15 9V3"/><path d="M8 3h8"/><path d="M6.5 15h11"/></svg></span><span class="lb"><i>2</i>품질시험비의 구성 [별표 6]</span></span>
+      <ul class="list">
+        <li><b class="term">인건비</b> — 국토교통부장관 고시 인건비 산출단위량 기준에, 통계법 제27조에 따라 대한건설협회·한국엔지니어링진흥협회가 조사·공표하는 임금단가 적용. <span class="tl">시험관리인의 인건비는 포함하지 않음</span>(간접노무비에 포함)</li>
+        <li><b class="term">공공요금</b> — 전기·수도·가스. 정부 고시 공공요금 적용, 산출단위량 기준은 국토부 고시</li>
+        <li><b class="term">재료비</b> — 인건비 및 공공요금의 <span class="num">100분의 1</span>. 특별한 사유가 있으면 조달청장 구매 물품가격 기준 실비 산출 가능</li>
+        <li><b class="term">장비손료</b> — (상각률+수리율)×기계가격 ÷ (연간표준가동시간×내용연수) × 장비가동시간 <span class="tl">또는 품질시험 인건비의 100분의 1</span>. 연간표준가동시간 2천시간, 내용연수 기계류·계량기 10년 / 유리·금속류 3년</li>
+        <li><b class="term">시설비·검정교정비</b> 품질시험비의 <span class="num">100분의 3</span> ／ <b class="term">차량 경비</b> 실비 ／ <b class="term">외부의뢰 시험</b>은 품질시험비 한도 내에서 건설사업관리용역사업자와 협의 결정</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/></svg></span><span class="lb"><i>3</i>품질관리를 위한 시설 및 건설기술인 배치기준 [별표 5] — 품질관리활동비 산정의 근거</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:14%">대상공사 구분</th><th class="h1" style="width:38%">공사규모</th><th style="width:12%">시험실 규모</th><th class="h1" style="width:36%">건설기술인 배치</th></tr></thead>
+        <tbody>
+          <tr><td class="it">특급 품질관리</td><td class="lf">품질관리계획 수립 대상 공사로서 총공사비 <span class="o">1,000억원 이상</span> 또는 연면적 <span class="o">5만㎡ 이상</span>인 다중이용 건축물의 건설공사</td><td><span class="o">50㎡</span> 이상</td><td class="lf">품질관리 경력 <span class="r">3년 이상 특급기술인 1명</span> 이상 + 중급기술인 이상 1명 + 초급기술인 이상 1명</td></tr>
+          <tr><td class="it">고급 품질관리</td><td class="lf">품질관리계획 수립 대상 공사로서 특급품질관리 대상이 아닌 건설공사</td><td><span class="o">50㎡</span> 이상</td><td class="lf">품질관리 경력 <span class="r">2년 이상 고급기술인 1명</span> 이상 + 중급기술인 이상 1명 + 초급기술인 이상 1명</td></tr>
+          <tr><td class="it">중급 품질관리</td><td class="lf">총공사비 <span class="o">100억원 이상</span> 또는 연면적 <span class="o">5,000㎡ 이상</span> 다중이용 건축물 공사로서 특급·고급 대상이 아닌 공사</td><td><span class="o">18㎡</span> 이상</td><td class="lf">품질관리 경력 <span class="r">1년 이상 중급기술인 1명</span> 이상 + 초급기술인 이상 1명</td></tr>
+          <tr><td class="it">초급 품질관리</td><td class="lf">품질시험계획 수립 대상 공사로서 중급품질관리 대상이 아닌 건설공사</td><td><span class="o">18㎡</span> 이상</td><td class="lf"><span class="r">초급기술인 이상 1명</span> 이상</td></tr>
+        </tbody>
+      </table>
+      <ul class="list" style="margin-top:1.4mm">
+        <li><b class="term">시험관리인</b> — 현장에 배치되는 품질관리 건설기술인 중 <span class="tl">최하위 등급자</span>로 정하며, 그 인건비는 간접노무비에 포함(품질시험비에서는 제외)</li>
+        <li><b class="term">조정 가능</b> — 발주청 또는 인·허가기관의 장이 특히 필요하다고 인정하는 경우, 공사의 종류·규모·현지 실정과 국립·공립 시험기관 또는 건설엔지니어링사업자의 시험·검사대행 정도를 고려하여 <span class="tl">시험실 규모 또는 품질관리 인력을 조정</span>할 수 있음</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 3 5-7"/></svg></span><span class="lb"><i>4</i>품질관리활동비 3대 항목</span></span>
+      <ul class="list">
+        <li><b class="term">① 품질관리 업무 수행 건설기술인 인건비</b> — <span class="tl">시험관리인을 제외한</span> [별표 5] 배치기준에 따라 현장에 배치되는 건설기술인의 인건비. 대한건설협회 또는 한국엔지니어링협회 임금단가 적용</li>
+        <li><b class="term">② 품질관련 문서 작성 및 관리 비용</b> — 품질관리계획서·품질시험계획서 작성비, 품질관리 절차서 작성비, 부적격보고서 및 그 밖의 품질 관련 문서 작성비, 계획서 개정 작성비, 품질 관련 문서관리 비용. <span class="tl">건설기술인 인건비의 100분의 1</span>을 계상</li>
+        <li><b class="term">③ 품질관련 교육·훈련비</b> — 현장 근로자의 품질 관련 교육. 품질관리계획서에 따라 실시</li>
+        <li><b class="term">④ 품질검사비 등</b> — 공사 전반의 품질관리 활동(계획수립 및 이행점검, 교육·훈련 등)에 소요되는 비용</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M6 7l-2 6a4 4 0 008 0z"/><path d="M18 7l-2 6a4 4 0 008 0z" transform="translate(-4 0)"/></svg></span><span class="lb"><i>5</i>품질관리 인건비 산출 예시 — 총공사비 100억원 · 공사기간 10개월</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:26%">산출기준</th><th class="h1" style="width:44%">산식</th><th style="width:30%">금액(경비 반영)</th></tr></thead>
+        <tbody>
+          <tr><td class="it">대한건설협회</td><td class="lf">10개월 × 4,235,506원<br>(192,523원/일 × 22일)</td><td><span class="o">42,355,050원</span></td></tr>
+          <tr><td class="it">한국엔지니어링협회</td><td class="lf">10개월 × 5,991,301원<br>(295,138원/일 × 20.3일)</td><td><span class="o">59,913,014원</span></td></tr>
+        </tbody>
+      </table>
+      <ul class="list" style="margin-top:1.4mm">
+        <li><b class="term">적용 노임</b> — 192,523원/일은 <span class="tl">2026년 상반기 시중노임</span>(중급품질관리기술인 기준)</li>
+        <li><b class="term">기본급 할증</b> — 기본급의 연 최대 <span class="num">400%</span>까지 적용 가능(예정가격 작성기준 제10조)</li>
+        <li class="cau">※ 총공사비 100억원은 [별표 5] 상 <b>중급 품질관리 대상</b>이므로 중급기술인 기준 예시임 ／ 조달청 <b>'품질관리비 체크리스트'</b>를 계약요청 시 작성(설계단계 활용 권장)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>미계상 과태료</b> <span class="num">2천만원</span> 이하</span>
+        <span class="chip"><b>토목공사</b> 총공사비 <span class="num">5억원</span> 이상</span>
+        <span class="chip"><b>건축공사</b> 연면적 <span class="num">660㎡</span> 이상</span>
+        <span class="chip"><b>전문공사</b> 총공사비 <span class="num">2억원</span> 이상</span>
+        <span class="chip"><b>재료비</b> 인건비·공공요금의 <span class="num">1/100</span></span>
+        <span class="chip"><b>시설·검정교정비</b> 품질시험비의 <span class="num">3/100</span></span>
+        <span class="chip"><b>문서 작성·관리비</b> 인건비의 <span class="num">1/100</span></span>
+        <span class="chip"><b>특급</b> <span class="num">1,000억</span>·<span class="num">5만㎡</span>·시험실 50㎡</span>
+        <span class="chip"><b>중급</b> <span class="num">100억</span>·<span class="num">5,000㎡</span>·시험실 18㎡</span>
+        <span class="chip"><b>기본급 할증</b> 연 최대 <span class="num">400%</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">근거: 건설기술 진흥법 제89조·제91조 · 같은 법 시행령 제89조·제91조 · 시행규칙 [별표 5](2024.7.10. 개정)·[별표 6](2022.12.30. 개정) · (계약예규) 예정가격 작성기준 제10조 ｜ 인건비 산출 예시의 노임단가는 2026년 상반기 기준으로, 적용 시점의 공표 단가로 재산출하여야 함 ｜ 출처: 조달청 www.pps.go.kr · 국가법령정보센터 www.law.go.kr</p>
+  <p class="pageno">4 / 7</p>
+
+</div>
+
+<!-- ════════════════ 5쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">공종별 내역서 작성방법 ① — 적용기준·구조공종</h1>
+  <div class="ubar"></div>
+  <p class="meta">2장 1~5 ｜ 공통 적용기준 · 가설공사 · 토 및 지정공사 · 철근콘크리트공사 · 철골공사</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주기관 = 분리발주 판단의 책임 주체</span> — 공사용자재 직접구매 제도를 위반하면 중소벤처기업부가 시정요구하고 기관별 구매실적을 <b class="term">국무회의에 보고</b>하여 위반기관에 강력한 행정지도를 요청한다. 건설폐기물 <b class="term">100톤 이상</b>을 분리발주하지 않으면 <span class="rolet">발주자가 과태료 처분</span>을 받을 수 있다. <span class="rolet">설계자</span>는 견적 단가를 반영한 품명의 <b class="term">수량 산출 근거를 반드시 재검토</b>하여야 한다.</span>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span><span class="lb"><i>1</i>공통 적용기준 — 수량·단위·관급·폐기물·할증</span></span>
+      <ol class="nlist">
+        <li><span class="no">1</span><b class="term">수량·금액의 단위</b> — 수량은 표준품셈 단위표준에 따라 지정 소수 자리 이하 첫째 자리까지 구하고 반올림, 설계서 수량은 <span class="tl">정수</span>(철근 가공·조립 등은 소수점 셋째 자리). 금액은 설계서 총액 <span class="tl">1,000원 이하 버림</span>, 소계·금액란과 일위대가 계금 <span class="tl">1원 미만 버림</span>, 일위대가 금액란 <span class="tl">0.1원 미만 버림</span></li>
+        <li><span class="no">3</span><b class="term">관급자재(공사용자재 직접구매)</b> — 추정가격 <span class="num">40억원 이상</span> 종합공사 또는 <span class="num">3억원 이상</span> 전문·전기·통신·소방 공사에서, 중기부 고시 대상 품목 중 <span class="tl">품목단위</span> 추정가격 <span class="num">4천만원 이상</span> 자재는 관급자재로 구분. 예: '타일 및 판석'은 자연석 판석·도기질 타일·자기질 타일을 합한 <span class="tl">한 품목</span>이며 합계 4천만원 이상이면 전부 분리. 다만 세부품목 합계액이 <span class="num">5백만원 미만</span>이면 도급금액 반영 가능 (조회: smpp.go.kr)</li>
+        <li><span class="no">4</span><b class="term">폐기물처리비</b> — 건설폐기물 총량 <span class="num">100톤 미만</span>은 도급금액 포함 발주 가능하며 <span class="tl">한국건설자원협회 공표단가</span> 적용(건설폐기물의 처리 등에 관한 업무지침). 협회 단가에 일반관리비·이윤이 포함되어 있어도 그것은 <span class="tl">폐기물 처리업체의 몫</span>이므로 이중계상이 아님 → <b class="term">경비로 계상</b>이 타당. <span class="num">100톤 이상</span>은 '건설공사'와 '건설폐기물 처리용역'을 <span class="tl">분리발주</span></li>
+        <li><span class="no">5</span><b class="term">작업부산물(고철 등)</b> — 시공 중 발생분은 <span class="tl">재료비에서 공제</span>. 다만 <b class="term">철거 작업부산물은 재료비에서 공제하면 안 됨</b>(경비·일반관리비가 과다 삭감됨). 국가계약법 적용기관은 공사와 분리하거나 이윤 하단 계상, 지방계약법 적용기관은 <span class="tl">별개의 계약 대상</span>이므로 공사와 분리가 원칙. 이윤 하단 계상 시 <span class="tl">순공사원가 98% 미만 투찰</span>로 입찰 집행이 불가능해지는지 반드시 확인</li>
+        <li><span class="no">6</span><b class="term">신기술·특허공법</b> — 설계반영 단계에서 <span class="tl">기술사용협약 체결</span> 필수, 입찰공고에 명시하고 낙찰자에게 사본 제공. 누락 시 <span class="tl">공고 취소 후 재공고</span>. 기술사용료는 <b class="term">경비</b>로 계상하며 요율은 신기술공사비 기준 <span class="num">1억원 이하 8.5% → 100억원 5.0% → 100억원 초과 3.5%</span>(건설기술진흥업무 운영규정 [별표 15])</li>
+        <li><span class="no">7</span><b class="term">적정 할증</b> — 제주도를 포함한 도서지역은 노임단가에 <span class="num">15% 이하</span> 가산 가능(시행규칙 제7조). 의무가 아니라는 이유로 누락하는 사례가 많으나 <span class="tl">적정공사비 반영 의무</span>가 있으므로 반영이 타당</li>
+        <li><span class="no">8</span><b class="term">주요 자재비와 시공비 분리 작성</b> — 일위대가에 자재+시공을 묶으면 오류가 있어도 <span class="tl">설계변경이 불가</span>(예: '석고판 2겹 붙임' 일위대가에 석고판이 1겹만 반영되어도 변경 불가). 자재와 시공을 <span class="tl">분리 계상</span>하면 공사 중에도 바로잡을 수 있음</li>
+        <li><span class="no">9</span><b class="term">공통가설 vs 직접가설</b> — 공통가설(현장사무소·가설울타리·가설도로 등, 공사 전 기간 유지)은 <span class="tl">경비</span>로 계상이 원칙. 직접가설(거푸집·동바리·비계·안전시설 등)은 해당 공종 완료 후 철거</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-4 6 4v12"/><path d="M10 21v-6h4v6"/></svg></span><span class="lb"><i>2</i>가설공사 — 누락 다발 항목</span></span>
+      <ul class="list">
+        <li><b class="term">건축물 현장정리</b> — '23년 개정 품셈(보통인부 <span class="num">0.13인</span>/㎡ 철콘계, <span class="num">0.05인</span> 목조·철골조·조적조)은 공사 중 청소 기준이며 <span class="tl">준공청소(0.02인)·입주청소(0.03인) 미포함</span> → 준공청소 별도 반영(표준시장단가에는 포함). 리모델링은 서울형 품셈 <span class="num">0.06인</span></li>
+        <li class="cau">※ 인테리어 내역 별도 작성 시 현장정리비 <b>중복계상</b> 주의 / 철콘조·철골조 혼합 건물은 각 연면적에 각 현장정리비 적용(전체연면적×0.5+0.5 방식은 부적절)</li>
+        <li><b class="term">임시소방시설</b> — '15.1.8. 의무화, 미설치 적발 시 <span class="num">300만원 이하</span> 과태료. 소화기(작업지점 <span class="num">5m</span> 이내), 간이소화장치(연면적 <span class="num">3천㎡</span> 이상 등, <span class="num">25m</span> 이내), 비상경보장치(<span class="num">400㎡</span> 이상), 가스누설경보기·간이피난유도선·비상조명등(지하층·무창층 <span class="num">150㎡</span> 이상), 방화포(용접 <span class="num">11m</span> 이내 가연물)</li>
+        <li><b class="term">가설전력·가설용수</b> — 수도광열비는 <span class="tl">가설사무소 전력비만</span> 포함하므로 공사용 전력비는 별도 반영. <b class="term">인입비는 한전 납부금이므로 이윤 하단 반영</b>이 적정. 전기요금은 서울형 품셈(3kW 주택용 / 4~300kW 일반용(갑) / 300kW↑ 일반용(을))에 <span class="tl">전력산업기반기금 2.7%</span> 별도</li>
+        <li><b class="term">환경보전비·관급자재관리비</b> — 환경보전비는 직접·간접공사비 <span class="tl">병행 계상 가능</span>(세륜기·침사지·분리수거장 누락 금지). 관급자재관리비는 예정가격 작성기준 제19조③25호 근거</li>
+        <li><b class="term">기타 누락</b> — 가설건축물·타워크레인 기초의 철근·레미콘, 가설사무소 임대료, 공사 안내도·표지판, 층고 높은 공간의 내부 시스템비계. 외부비계·가설휀스는 <span class="tl">규격란에 존치기간 표기</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M6 20V10l6-6 6 6v10"/><path d="M12 20v-6"/></svg></span><span class="lb"><i>3</i>토·지정 / 철근콘크리트 / 철골</span></span>
+      <ul class="list">
+        <li><b class="term">PHC파일</b> — 표준품셈(기성말뚝 기초) 기준이 있음에도 <span class="tl">견적이 낮다는 이유의 견적 적용은 지양</span>. 조달청은 절감 목적 견적가격을 인정하지 않음</li>
+        <li><b class="term">파일 시공비 단위</b> — 자재비(관급)는 규격(m)·수량(본), <b class="term">시공(천공)비는 '본'이 아닌 'm' 총량</b>으로 반영해야 실제 시공 차이를 <span class="tl">설계변경이 아닌 물량 정산</span>으로 마무리(예: 2,510m→2,320m). 이음파일은 단본파일과 구분해 각각 m 단위</li>
+        <li><b class="term">파일 부수 항목</b> — 굴착시간은 지반조사서 근거 지층별로, 두부 보강·해머비트 손료·그라우팅용 시멘트 별도 반영. 정재하·동재하 시험비는 <span class="tl">품질시험비</span>로 계상</li>
+        <li><b class="term">비파괴검사 선정</b> — 파일 이음부 등 <span class="tl">곡면에는 UT·RT 모두 부적정</span>, PT·MT는 표면결함용이라 보조수단으로만 제한 적용. <b class="term">철골 현장용접부는 UT(초음파 탐상)가 타당</b></li>
+        <li><b class="term">노출콘크리트</b> — 탈형 후 보수작업(발수재 도포 포함)은 <span class="tl">미장공사에 반영</span>. 원형기둥은 <span class="tl">기성 종이거푸집</span>이 타당</li>
+        <li><b class="term">철근 가공·조립</b> — 시공상세도 작성비 반영, 공장가공 시 <span class="tl">하치장→공장→현장 운반비 필수</span>. D13 이하가 전 철근중량의 <span class="num">50% 미만 Type-Ⅰ / 50% 이상 Type-Ⅱ</span>. 고임재·간격재·결속선은 KCS 14 20 11 기준 별도 반영(기초 8개/4㎡, 보·지중보 1.5m, 기둥 폭 1m 미만 2개, 슬래브 가로세로 1m 등)</li>
+        <li><b class="term">레미콘·거푸집</b> — 관급 품목은 품명에 '관급' 표기, 타설비는 <span class="tl">1회 타설량 기준 횟수별</span> 반영 원칙. 슬래브용 <span class="tl">합성수지 거푸집은 시공비를 합판거푸집 품으로</span> 적용하고 재료비에 전용률 고려</li>
+        <li><b class="term">철골</b> — H형강은 <span class="tl">납품조건('현장도착'/'점포상차')을 규격란에 표기</span>. <b class="term">철골가공조립+세우기와 부대철골 설치를 구분</b>(일괄 계상 시 과소). 데크플레이트는 품셈 시공품 준수, 탈형데크는 탈형비용 추가</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>4</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>직접구매</b> 종합 <span class="num">40억</span>·전문 <span class="num">3억</span> / 품목 <span class="num">4천만원</span>(예외 <span class="num">5백만원</span>)</span>
+        <span class="chip"><b>폐기물 분리발주</b> <span class="num">100톤</span></span>
+        <span class="chip"><b>도서 노임</b> <span class="num">15%</span> 가산</span>
+        <span class="chip"><b>기술사용료</b> <span class="num">8.5→3.5%</span></span>
+        <span class="chip"><b>임시소방 과태료</b> <span class="num">300만원</span></span>
+        <span class="chip"><b>기반기금</b> <span class="num">2.7%</span></span>
+        <span class="chip"><b>철근 type</b> D13 <span class="num">50%</span></span>
+        <span class="chip"><b>투찰 하한</b> <span class="num">98%</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">근거: 표준품셈(2-11-2·2-11-3·2-11-4) · 서울형 표준품셈 · 국가계약법 시행규칙 제7조 · (계약예규) 예정가격 작성기준 제19조 · 건설기술진흥업무 운영규정 [별표 15] · 소방시설 설치 및 관리에 관한 법률 [별표 8] · 철근공사 표준시방서 KCS 14 20 11 · 건설폐기물의 처리 등에 관한 업무지침(환경부 예규) ｜ 출처: 조달청 www.pps.go.kr · 중소기업제품 공공구매 종합정보망 smpp.go.kr</p>
+  <p class="pageno">5 / 7</p>
+
+</div>
+
+<!-- ════════════════ 6쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">공종별 내역서 작성방법 ② — 마감·기타공종</h1>
+  <div class="ubar"></div>
+  <p class="meta">2장 6~14 ｜ 벽돌·블록 / 타일·돌 / 목·수장 / 방수 / 지붕·홈통·금속 / 미장 / 창호·유리 / 칠 / 기타공사와 공통 유의사항</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">설계자 = 도면·시방서·내역서 일치의 책임 주체</span> — 도면과 시방서를 일치시키는 데 역량을 집중하여야 하며, <span class="rolet">적산업체</span>도 시방서를 함께 참고하면서 내역 작업을 해야 한다. 내역서 작성이 정석대로 이뤄지면 <b class="term">상당량의 설계오류를 바로잡을 수 있다</b>. '규격' 불분명은 설계변경의 원인이 될 뿐 아니라 <b class="term">설계변경 대상 자체를 판단할 수 없게 만들어</b> 발주기관과 시공자 간 분쟁의 원인이 된다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18M3 12h18M3 16h18"/><path d="M8 8v4M14 12v4M11 16v4M11 4v4"/></svg></span><span class="lb"><i>1</i>벽돌·블록 / 타일·돌</span></span>
+      <ul class="list">
+        <li><b class="term">벽돌 수량</b> — 단위가 천매일 경우 <span class="tl">소수 셋째 자리까지</span> 표기, 관급자재는 품명에 '관급' 표기</li>
+        <li><b class="term">소운반</b> — 시공비에 포함된 소운반은 표준품셈 기준 <span class="num">20m</span>이므로 초과분은 별도 반영(인력·리프트·기타 장비). <span class="tl">인화물용 리프트가 공사에 반영되지 않았는데 '리프트 운반'으로 작성하는 오류</span> 주의 → 인력운반 또는 양중장비 운반으로 작성(조달청 시장시공가격)</li>
+        <li><b class="term">내진보강철물</b> — 외부 마감 치장벽돌쌓기의 내진보강철물 <span class="tl">재료비·노무비를 별도 반영</span>(전문업체 견적)</li>
+        <li><b class="term">모르타르 배합품</b> — 벽돌쌓기 품셈·표준시장단가에는 <span class="tl">비빔품은 포함되나 배합품은 제외</span>. 모래+시멘트 사용 시 배합품 포함 산출 (타일·미장·돌공사도 동일)</li>
+        <li><b class="term">타일</b> — 재료비는 <span class="tl">수량 5% 할증 포함</span>하여 시공비와 구분 계상. 재질(자기질·도기질·포세린·폴리싱)과 크기 표기. 압착붙임은 고름·압착 몰탈 두께를 규격에 표기하며 <span class="tl">고름몰탈 24㎜ 초과 시 별도 가격</span>(조달청 시장시공가격). 수영장 수조타일은 <span class="tl">전문업체 견적가격 적용이 타당</span></li>
+        <li><b class="term">돌공사</b> — 자연석판석 관급 분리 시 미끄럼방지 줄눈 홈파기·물끊기 홈·마구리면 마감 <span class="tl">가공비도 관급으로 반영</span>. 종류·표면마감 형태를 규격에 표기, 시공비에는 모르타르 두께 표기. 화강석 바닥시공 조달청 시장시공가격은 <span class="tl">'23년부터 삭제</span> → 표준품셈 적용(추정가격 <span class="num">100억원 이상</span>은 표준시장단가 화강석 바닥깔기 적용 가능, 바탕몰탈·규격 일치 시). 수입석은 그 사실을 표기</li>
+        <li><b class="term">직접구매 확인</b> — 자연석판석·타일 금액을 확인해 <span class="tl">'타일 및 판석' 품목 합계</span> 기준 관급 분리발주 대상 여부 판단</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6 20V8h12v12"/><path d="M9 12h6M9 16h6"/></svg></span><span class="lb"><i>2</i>목·수장 / 방수 / 금속·미장 / 창호·칠</span></span>
+      <ul class="list">
+        <li><b class="term">목공사</b> — 목재창호는 <span class="tl">창호공사</span>에서 작성. 주재료(후로링 등)와 시공비 구분. <span class="tl">플로어링류 마루(합판·강화·온돌마루) 설치는 수장공사, 마루널(체육관 무대 등, 22×60㎜) 설치는 목공사</span>로 구분</li>
+        <li><b class="term">수장공사 — 준불연 단열재</b> — 일반형과 <span class="tl">심재준불연</span>을 구분해 규격을 명확히 표기하고 그 규격의 가격을 적용. <span class="num">3층 이상 또는 높이 9m 이상</span> 건축물 외부 단열재는 <span class="tl">심재준불연</span> 적용. 추정가격 <span class="num">100억원 이상</span> 공사의 단열재 설치는 접착제 포함 금액이므로 별도 산정하지 않음. 비닐타일 시공 조달청 시장시공가격은 '23년 삭제 → 표준품셈 적용</li>
+        <li><b class="term">방수공사</b> — 특정 방수공법 적용 시 <span class="tl">신기술·특허 여부 확인 및 기술사용협약 사전 체결</span>. 견적 적용 시 <span class="tl">바탕처리 별도 조건</span>이 일반적이므로 바탕처리 누락 주의. 보호모르타르 품은 품셈에 없으므로 <span class="tl">가급적 보호재 붙임</span>을 적용하고, 불가피하면 타일 바탕고르기 품 준용</li>
+        <li><b class="term">금속·천장</b> — <span class="tl">내진천장틀</span>은 물가지·견적가격이 재료비로 일괄 계상되어 적정 노무비가 반영되지 않는 대표 항목 → <span class="tl">비목별로 구분된 견적서를 요구</span></li>
+        <li><b class="term">미장공사</b> — 바닥 모르타르는 작업여건에 따라 바탕고르기 또는 타설+표면마무리로 반영(여건 파악이 곤란하면 <span class="tl">바탕고르기</span>). <span class="tl">수지미장</span>은 견출 노무량으로 과소 적용하지 말고 조달청 시장시공가격 참고. 미장 없이 도장할 경우 <span class="tl">콘크리트면 정리 + 부분·전면마감</span> 반영(표준시장단가 적용 시에는 부분·전면마감만)</li>
+        <li><b class="term">창호·유리</b> — 창호 <span class="tl">하드웨어 시공비 누락</span> 주의(견적 적용 시에도 동일). 알루미늄 창호 관급 발주로 유리 규격이 미확정이면 <span class="tl">설계단계 규격을 반영하고 시공단계에서 설계변경</span>하는 것이 원칙</li>
+        <li><b class="term">칠공사</b> — 표준시방서에 따라 <span class="tl">바탕만들기 필수 포함</span>(퍼티 등 재료비 누락 금지). 에폭시라이닝 일위대가에 <span class="tl">에폭시 코팅 재료비가 중복 적용</span>되지 않도록 유의</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>3</i>기타공사 — 작업부산물·가구·사인·인테리어·운반비·인증</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:16%">항목</th><th class="h1" style="width:50%">작성 원칙</th><th class="h1" style="width:34%">유의사항 · 근거</th></tr></thead>
+        <tbody>
+          <tr><td class="it">작업부산물</td><td class="lf">시공 중 발생 부산물과 <b>철거 부산물</b>을 규격에 구분 표기하고, 철거부산물은 <b>공종을 구분</b>하여 내역 작성. 발생재이므로 수량은 반드시 <span class="r">음수</span>로 적용</td><td class="lf x">강설(철근·철골·알루미늄·스테인레스) 각각 작업부산물 / 철거부산물로 분리</td></tr>
+          <tr><td class="it">가구공사</td><td class="lf">일반적인 가구는 <b>자산취득비</b>로 구입. 요구기능상 <b>현장제작(built-in)</b>으로 설계한 가구만 공사비로 반영</td><td class="lf x">제작도면(크기·재질·색채)을 면밀히 작성, 제경비가 적용되도록 <span class="r">직접공사비</span>로 반영</td></tr>
+          <tr><td class="it">사인공사</td><td class="lf">규격(크기·재질·색채) 및 개소 등 구체적 사양을 <b>도면·시방서에 명시</b>하고 그에 따른 전문견적 단가를 반영</td><td class="lf x">준공단계 설계변경이 많고 당초 사양 불분명으로 변경 단가 산정 시 분쟁 다발</td></tr>
+          <tr><td class="it">인테리어공사</td><td class="lf">인테리어 도면과 <b>건축도면을 비교·검토</b>하여 중복 물량 제거. 건축 바탕(석고보드 2겹)이 있으면 인테리어는 <b>마감재만</b> 설계·반영</td><td class="lf x">도면 작성자·물량 산출자가 달라 중복이 발생. 현장정리비 중복계상도 함께 점검</td></tr>
+          <tr><td class="it">운반비</td><td class="lf">철근·시멘트·철골·사토 등 운반비는 (계약예규)「정부 입찰·계약 집행기준」제74조 참고. <b>반드시 실제 운반로를 기준으로 단가 산출</b></td><td class="lf x">실제 운반로 기준이어야 시공단계 여건 변경 시 설계변경 가능. 자재 납품조건·운반비·하차비 간 규격 일치/중복 재확인</td></tr>
+          <tr><td class="it">각종 인증</td><td class="lf">녹색건축·BF 등 <b>본인증</b>은 취득수수료(인증기관 납부)와 용역비(대행업체 지급)를 각각 반영. 용역비는 공사비가 아니라 <b>시설부대비로 편성</b>하여 발주기관이 직접 발주·계약관리하는 것이 적정</td><td class="lf x"><span class="r">감사원 지적사항</span>. 공사비에 포함 시 본인증 취득까지 준공처리 지연. 목적물 완성 후 신청, 취득까지 약 <span class="o">2개월</span> 소요</td></tr>
+          <tr><td class="it">공통 유의사항</td><td class="lf">단위 <b>'식'</b> 작성은 공사범위 불분명으로 분쟁을 일으키므로 <b>세부내역으로 풀어서</b> 반영(불가피하면 도면에 범위 도해 + 시방서 서술). 도면·시방서와 일치하는 <b>규격을 내역서에 명시</b>하고 그 규격에 부합하는 단가 반영</td><td class="lf x">모르타르 바름 등 <b>작업 횟수로 노무비가 결정</b>되는 항목은 규격란에 횟수를 정확히 반영하고 시방서에도 동일 기술 — 시공단계 주요 시공감사 대상</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>4</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>소운반 기준</b> <span class="num">20m</span></span>
+        <span class="chip"><b>벽돌 수량</b> 천매 단위 <span class="num">소수 셋째</span> 자리</span>
+        <span class="chip"><b>타일 재료비</b> 수량 <span class="num">5%</span> 할증</span>
+        <span class="chip"><b>고름몰탈</b> <span class="num">24㎜</span> 이하</span>
+        <span class="chip"><b>심재준불연</b> <span class="num">3층</span>·높이 <span class="num">9m</span> 이상 외부</span>
+        <span class="chip"><b>표준시장단가 화강석</b> <span class="num">100억원</span> 이상</span>
+        <span class="chip"><b>마루널</b> <span class="num">22×60㎜</span></span>
+        <span class="chip"><b>본인증 취득</b> 신청 후 약 <span class="num">2개월</span></span>
+        <span class="chip"><b>작업부산물 수량</b> 반드시 <span class="num">음수</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">근거: 표준품셈 · 표준시장단가 · 조달청 시장시공가격 · 각 공종 표준시방서(KCS) · (계약예규) 정부 입찰·계약 집행기준 제74조 ｜ 조달청 시장시공가격 중 화강석 바닥시공·비닐타일 시공은 2023년부터 삭제되어 표준품셈을 적용하여야 함 ｜ 출처: 조달청 www.pps.go.kr</p>
+  <p class="pageno">6 / 7</p>
+
+</div>
+
+<!-- ════════════════ 7쪽 ════════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">Q&amp;A 16문과 조달청 업무 — 계약·검토·요청 실무</h1>
+  <div class="ubar"></div>
+  <p class="meta">3장 Q&amp;A 실무 ｜ 부록 1~5 조달청 시설 업무 · 계약 요청시 유의사항 · 공사비정보광장 · 표준공사코드 · 녹색건설자재 고시</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주기관 = 계약이행에 필요한 비용을 예정가격에 계상할 의무</span> — 예정가격에 계상하지 아니한 비용을 계약상대자가 부담하도록 하는 <b class="term">특수조건은 인정되지 않으며</b>(국가계약법 시행령 제14조), 그 비용은 <span class="rolet">발주기관이 부담하거나 설계변경으로 계약금액을 조정</span>하여야 한다(계약제도과-620·147). 반면 <span class="rolet">일위대가표·단가산출서의 오류</span>는 설계서가 아니므로 <b class="term">설계변경 사유가 되지 않는다</b> — 내역서 작성 단계에서 반드시 검증할 것.</span>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.6 2.6 0 015 .9c0 1.7-2.5 2.1-2.5 3.6"/><path d="M12 17h.01"/></svg></span><span class="lb"><i>1</i>Q&amp;A 16문 — 쟁점과 결론</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:36%">질의</th><th class="h1" style="width:64%">결론과 근거</th></tr></thead>
+        <tbody>
+          <tr><td class="it">1) 표준시장단가를 원가계산에 이용 가능?</td><td class="lf"><span class="r">가능</span> — 모든 공종이 발표되지 않은 현실을 반영해 원가계산 단가와 <b>혼합 산정</b> 인정(계약제도과-1552)</td></tr>
+          <tr><td class="it">2) 물가지 생산자공표가격도 거래실례가격?</td><td class="lf"><span class="r">인정</span> — 생산자별로 다르면 성능·수량·이행기간 등을 참작해 <b>계약담당공무원이 판단·결정</b>(회계제도과-2033)</td></tr>
+          <tr><td class="it">3) 기계경비는 경비로만 계상?</td><td class="lf"><span class="r">비목별 구분</span> — 운전재료비→간접재료비, <b>운전노무비→직접노무비</b>(회계1210-1167)</td></tr>
+          <tr><td class="it">4) 견적서의 일반관리비·이윤 제외?</td><td class="lf"><span class="r">제외 안 함</span> — 견적서의 것은 <b>견적업체의 몫</b>, 원가계산의 것은 계약상대자의 비용(회제41301-335)</td></tr>
+          <tr><td class="it">5) 거래실례가격 적용 시 일반관리비·이윤 제외?</td><td class="lf"><span class="r">원가계산 시 가산 가능</span> — '가산 금지'는 거래실례가격 자체로 예정가격을 정할 때. 단 <b>관급자재 제외</b>(회계45107-308)</td></tr>
+          <tr><td class="it">6) 단순 구입 자재를 이윤 하단에?</td><td class="lf"><span class="x">불가</span> — 목적물에 소요되는 자재는 <b>재료비</b>. 무관한 자재는 발주기관 별도 구매(회제41301-595)</td></tr>
+          <tr><td class="it">7) 계약·하자보증서 발급수수료는?</td><td class="lf"><span class="x">미반영</span> — 지급수수료는 <b>법령상 의무화된 수수료</b>에 한함. 보증서/현금 선택 가능 보증은 해당 없음(회제41301-63)</td></tr>
+          <tr><td class="it">8) 여러 공종 통합발주 시 간접비 요율은?</td><td class="lf"><span class="r">주공종 기준</span>으로 원가계산(회제41301-508)</td></tr>
+          <tr><td class="it">9) 다른 기관 계약단가를 거래실례가격으로?</td><td class="lf"><span class="x">불인정</span> — '직접 조사한 가격'은 <b>제조·생산 사업자 대상 조사가격</b>(계약제도과-105)</td></tr>
+          <tr><td class="it">10) 거래실례가격이 여러 개면?</td><td class="lf">규정 없음 — <b>적정성이 확보되면</b> 최저가 결정 가능하나 유난히 낮은 가격은 재확인(계약제도과-761)</td></tr>
+          <tr><td class="it">11) 전기요금은 수도광열비에 포함?</td><td class="lf"><span class="x">불포함</span> — 공사용 전력비는 <b>공통가설공사 경비로 별도 계상</b>, 가설사무실 광열용만 기타경비</td></tr>
+          <tr><td class="it">12) 예정가격에 없는 비용을 업체 부담?</td><td class="lf"><span class="x">부당</span> — 발주기관 부담 또는 설계변경으로 조정(계약제도과-620·147)</td></tr>
+          <tr><td class="it">13) 수입물품 포함 시 일반관리비·이윤은?</td><td class="lf"><span class="r">계상</span> — 계약상대자가 사용할 때 별도 소요되는 비용이므로 이중계상 아님(회계제도과-111)</td></tr>
+          <tr><td class="it">14) 특정회사 제품을 설계 반영 가능?</td><td class="lf"><span class="x">원칙 불가</span> — <b>계약목적 달성에 불가피한 경우</b>에만 예외적으로 가능</td></tr>
+          <tr><td class="it">15) 철거 시 발생 고재 처리(지방계약법)?</td><td class="lf"><b>별개의 계약 대상</b> — 공사금액 공제는 부적정, 발주기관이 별도 처리하며 시공업체 전가 불가(2022.4.4.)</td></tr>
+          <tr><td class="it">16) 일위대가·단가산출서 오류로 설계변경?</td><td class="lf"><span class="x">불가</span> — 일위대가표·단가산출근거·품셈적용 오류는 <b>설계서가 아니므로</b> 설계변경·계약금액 조정 사유가 아님</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3H9z"/><path d="M15 4h3v17H6V4h3"/><path d="M9 11l2 2 4-4"/></svg></span><span class="lb"><i>2</i>조달청 시설 업무 — 대상·기한·수수료</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:30%">업무</th><th class="h1" style="width:44%">대상</th><th class="h1" style="width:26%">기간·수수료</th></tr></thead>
+        <tbody>
+          <tr><td class="it">의무 계약요청</td><td class="lf">국가기관 추정가격 <span class="o">30억원</span>(전문·전기·정보통신·소방 <span class="o">3억원</span>) 이상 종합건설공사 / 지자체·공기업 자율 / 민간보조사업자 동일</td><td class="lf x">조달사업법 제11조·영 제11조</td></tr>
+          <tr><td class="it">공사원가 사전검토</td><td class="lf">지자체(지방공기업 제외) <span class="o">100억원 이상</span> 의무, 그 외 자율. 설계도서 완성 전은 대상 아님</td><td class="lf"><span class="o">10일 이내</span> / 수수료 <span class="o">0.04%</span></td></tr>
+          <tr><td class="it">총사업비 관리</td><td class="lf">2년 이상 + 토목 <span class="o">500억</span>·건축 <span class="o">200억</span> 이상. 실시설계 완료·물가변동·신규공종 시 사전검토 후 기재부 협의</td><td class="lf x">설계변경 <span class="o">50억</span> 이상 시 단가 검토</td></tr>
+          <tr><td class="it">설계적정성 / 설계변경 타당성</td><td class="lf">설계적정성: 2년 이상 <span class="o">200억</span> 이상 건축(보조사업 <span class="o">30억</span>) / 타당성: 착공 후 <span class="o">15억</span> 이상 증액(보조사업 <span class="o">10%</span> 이상)</td><td class="lf">총 <span class="o">3회</span>(보조 1회) / <span class="o">15일</span></td></tr>
+          <tr><td class="it">표준행정소요일수</td><td class="lf">PQ 이외 국내입찰 10억 미만 <span class="o">45일</span> / 10~50억 <span class="o">50일</span> / 50억 이상 <span class="o">70일</span> · PQ <span class="o">94일</span> · 종심제 <span class="o">100일</span>(고난도 120일)</td><td class="lf x">보완기간 제외 / 수수료 초과분 체감</td></tr>
+          <tr><td class="it">입찰공고 기간</td><td class="lf">10억 미만 <span class="o">7일</span> / 10~50억 <span class="o">15일</span> / 50억 이상 <span class="o">40일</span> / PQ <span class="o">30일</span> / 국제 <span class="o">40일</span></td><td class="lf x">긴급·재공고 <span class="o">5일</span> 전</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></span><span class="lb"><i>3</i>계약요청 시 유의사항과 지원 도구</span></span>
+      <ul class="list">
+        <li><b class="term">공사개요서</b> — 나라장터 신규등록 양식, 분야별 설계자·담당자 연락처 기재. <span class="tl">PS항목은 항목·금액·정산방법 필수 기입</span>(누락 시 확정내역 반영)</li>
+        <li><b class="term">내역서 제출</b> — 소액수의 외 전부 <span class="tl">엑셀 + XML</span>, 도급·관급 및 전 공종. 제출 전 엑셀·원가계산서·XML <span class="tl">금액 일치 확인 필수</span></li>
+        <li><b class="term">분리발주</b> — 전기공사(LED·태양광) / 직접구매 품목 / 건설폐기물 <span class="num">100톤</span> 이상 / <span class="tl">석면 등 지정폐기물은 발생량 무관</span>. 무관한 물품·용역은 포함 불가</li>
+        <li><b class="term">신기술·특허 제출서류</b> — 계약심의회 심의자료, 공법선정위원회 평가결과, 기술사용협약서, 신기술등록증(특허증), 특허등록원부, 사용인감계, 위임장 <span class="x">／ 요율 0% 협약 유도 지양</span></li>
+        <li><b class="term">가격 적용</b> — <span class="tl">최신 가격</span>·제비율 준수(과거 가격 적용 시 <span class="tl">입찰 불가·증액 협의로 지연</span>). 도서지역·군작전지구·열차운행선 인접 할증 누락 주의</li>
+        <li><b class="term">파일 용량·코드</b> — 나라장터 첨부 <span class="num">60MB</span>(초과 시 설계도서 별도 제출). 호환규정 인증 SW와 <span class="tl">표준공사코드</span> 준수(미준수 시 검토 지연)</li>
+        <li><b class="term">공사비정보광장</b>(pcae.g2b.go.kr) — 소요공사비 예측·유사 공사정보(’25년 <span class="num">1,166건</span>). <span class="tl">'공사비' 평균이 아닌 '예상공사비' 사용</span>, 신축만 제공</li>
+        <li><b class="term">녹색건설자재 직접구매</b>(조달청고시 제2026-24호) — 종합 <span class="num">40억</span>·전문 등 <span class="num">3억</span> 이상 공사에서 품목별 <span class="num">4천만원 이상</span>. 대상 8종(전기냉난방기·직화흡수식냉온수기·태양열·태양광·지열·멀티전기히트펌프·가스히트펌프·전기차충전기), 효율관리기자재는 <span class="tl">효율 1등급</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>4</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>의무 계약요청</b> <span class="num">30억</span>(전문 <span class="num">3억</span>)</span>
+        <span class="chip"><b>원가 사전검토</b> <span class="num">100억</span> / <span class="num">10일</span></span>
+        <span class="chip"><b>총사업비</b> 토목 <span class="num">500억</span>·건축 <span class="num">200억</span></span>
+        <span class="chip"><b>설계변경</b> 단가 <span class="num">50억</span> · 타당성 <span class="num">15억</span>·<span class="num">10%</span></span>
+        <span class="chip"><b>설계적정성</b> 총 <span class="num">3회</span></span>
+        <span class="chip"><b>첨부</b> <span class="num">60MB</span> · <b>Q&amp;A</b> <span class="num">16</span>문</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">적정 공사비는 <b>표준품셈·제비율 준수 · 비목별 구분계상 · 최신 단가 적용</b>에서 나온다. <b>안전·품질관리비는 미계상 시 발주기관에 2천만원 이하 과태료</b>가 부과되는 의무 항목이며, <b>일위대가·단가산출서 오류는 설계변경 사유가 아니므로</b> 규격과 수량 산출근거를 내역서 단계에서 확정하여야 한다.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">근거: 조달사업법 제11조·시행령 제11조·제28조 · 국가재정법 제50조·시행령 제21조 · 총사업비관리지침 제22조·제27조·제57조·제64조 · 국고보조금 통합관리지침 제22조 · 조달청 시설공사 계약업무 처리규정 [별표 1] · 조달청고시 제2026-24호 ｜ Q&amp;A의 유권해석은 원문 회신번호를 그대로 옮긴 것으로 사안별 사실관계에 따라 달리 적용될 수 있음 ｜ 출처: www.pps.go.kr · www.g2b.go.kr</p>
+  <p class="pageno">7 / 7</p>
+
+</div>
+</body></html>

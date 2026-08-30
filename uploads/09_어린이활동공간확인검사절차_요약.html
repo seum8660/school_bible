@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>어린이활동공간 확인검사 절차 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:auto; position:relative;
+  }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드 ──────────────────────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 ──────────────────────── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  /* ── 틸 넘버서클 목록 ───────────────── */
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  /* ── 순서 체인 ──────────────────────── */
+  .chain{ font-size:6.6pt; line-height:1.7; color:var(--body); }
+  .chain b{ color:var(--navy); font-weight:700; }
+  .chain s{ color:var(--teal); text-decoration:none; font-weight:800; margin:0 0.8mm; }
+
+  /* ── 표 ─────────────────────────────── */
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl thead th.h1{ text-align:left; }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .x{ color:var(--note); font-weight:400; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주 ───────────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head><body>
+
+<div class="page haspin">
+
+  <h1 class="title">어린이활동공간 확인검사 절차 — 핵심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">환경부고시 제2025-165호(2025. 10. 1. 일부개정·시행) ｜ 근거: 「환경보건법」 제23조제6항, 같은 법 시행규칙 제11조의2 ｜ 소관: 기후에너지환경부 환경보건정책과 ｜ 전문 4쪽·본문 15개 조</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">활동공간 소유자(소유자·관리자) = 확인검사 신청·수검의 책임 주체</span> — 신축·증축·수선 후 <b class="term">30일 이내</b> 신청 의무. <span class="rolet">감독기관 = 시장·군수·구청장 또는 교육감</span>으로, 미수검 시 <b class="term">확인검사 명령</b>(사전통지 필수)과 부적합 시설의 이용금지·사후관리를 담당. <span class="rolet">검사기관</span>은 보건환경연구원 및 국립환경과학원장이 지정한 비영리법인.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 4l9 6.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg></span><span class="lb"><i>1</i>확인검사 대상시설 (제3조)</span></span>
+      <ul class="list">
+        <li><b class="term">신축</b>하는 활동공간 — 규모 요건 없음</li>
+        <li><b class="term">증축</b> — 연면적 <span class="num">33㎡ 이상</span></li>
+        <li><b class="term">수선</b> — 도료·마감재료 또는 합성고무 재질 바닥재를 사용하여 <span class="num">70㎡ 이상</span> 수선</li>
+        <li><b class="term">영업소</b> — 시행령 제1조의2제6호에 따른 놀이형 유기시설 제공 영업소(<span class="tl">붕붕뜀틀·미니모험놀이·미니에어바운스</span>에 한함)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/><path d="M9 11h4"/></svg></span><span class="lb"><i>2</i>검사 2단계 구분 (제2조)</span></span>
+      <ul class="list">
+        <li><b class="term">기본검사</b> — 활동공간을 직접 방문해 <span class="tl">육안 확인</span>하거나 <span class="tl">중금속간이측정기(XRF)</span>를 활용하는 간이 방법</li>
+        <li><b class="term">정밀검사</b> — 기본검사 결과 환경기준 <span class="tl">초과 우려가 있는 경우</span> 시료를 직접 채취하여 실시</li>
+        <li><b class="term">환경기준</b> — 「환경보건법 시행령」 <span class="num">별표 2</span>의 환경안전관리기준</li>
+        <li><b class="term">시료채취</b> — 소유자에게 시료채취 확인서를 받고, 시료는 밀봉 보관(제8조)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></span><span class="lb"><i>3</i>확인검사 절차 타임라인 (제4조·제5조)</span></span>
+      <div class="chain">
+        <b>신축·증축·수선 완료</b><s>›</s><b>30일 이내 신청</b><s>›</s><b>면제요건 검토(해당 시 통보·반려)</b><s>›</s><b>신청일부터 20일 이내 검사</b><s>›</s><b>기본검사 → (초과우려) 정밀검사</b><s>›</s><b>결과증명서 통보(신청인·감독기관)</b>
+      </div>
+      <ul class="nlist" style="margin-top:1.6mm">
+        <li><span class="no">1</span><b class="term">신청</b> — 규칙 별지 제2호의2서식 <span class="tl">확인검사 신청서</span>에 검사대상 시설을 확인할 수 있는 <span class="tl">설계도면(평면도 등 공간 배치 확인 가능 도면)</span>을 첨부하여 검사기관에 제출</li>
+        <li><span class="no">2</span><b class="term">검토·반려</b> — 검사기관은 규칙 제11조의2제5항의 <span class="tl">면제 요건 해당 여부</span>를 검토하고, 해당하면 신청인에게 통보 후 신청서를 반려</li>
+        <li><span class="no">3</span><b class="term">실시·통보</b> — 신청일부터 <span class="num">20일 이내</span> 검사 실시(기본·정밀 구분), 완료 시 별지 제2호의3서식 <span class="tl">확인검사 결과증명서</span>를 신청인과 관할 감독기관에 통지</li>
+        <li><span class="no">4</span><b class="term">명령·이행</b> — 미수검 시 감독기관이 <span class="num">20일 범위</span>의 이행기간을 정해 명령(「행정절차법」 제21조제1항 <span class="tl">사전통지 필수</span>), 천재지변 등 부득이한 사유는 <span class="num">20일 범위</span> 연장 가능. 이행 시 별지 제2호의4 <span class="tl">이행보고서</span>와 결과증명서를 지체 없이 제출</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9z"/><path d="M6 7h12v14H6z"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>4</i>기본검사 방법·판정 (제6조·제7조)</span></span>
+      <ul class="list">
+        <li><b class="term">검사 항목</b> — 환경기준 제1호 / 제2호가목 1)·2) / 제3호 / 제5호가목</li>
+        <li><b class="term">제1호(육안)</b> — 시설물에 <span class="tl">녹·균열·도료 벗겨짐</span>이 있으면 부적합 판정</li>
+        <li><b class="term">중금속(제2호·제5호가목)</b> — 「환경유해인자 공정시험기준」의 시료채취지점 선정방법에 따라 지점을 정하고 XRF로 측정, 지점마다 기준의 <span class="num">70% 미만</span>이면 초과 우려 없음</li>
+        <li><b class="term">목재방부제(제3호)</b> — 크레오소트유는 흑갈색·적갈색이 아니고 나프탈렌·타르 냄새가 없으면 적합, 크로뮴·구리·비소계는 엷은 푸른색이 아니거나 3물질 농도 합 <span class="num">0.05% 미만</span>·비소 <span class="num">50mg/kg 미만</span>이면 적합</li>
+        <li><b class="term">증거 보존</b> — 기본·정밀검사 모두 <span class="tl">검사지점별 사진 촬영</span>과 결과자료 보관 의무</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>5</i>면제·판정·사후관리 (제9~12조)</span></span>
+      <ul class="list">
+        <li><b class="term">면제 ①</b> — 「어린이놀이시설 안전관리법」 제12조에 따른 <span class="tl">설치검사에 합격</span>한 어린이놀이시설</li>
+        <li><b class="term">면제 ②</b> — 환경표지 인증 도료·마감재·합성고무 바닥재로 증축 완료 후 <span class="num">30일 이내</span> 증빙서류를 시장·군수·구청장 또는 교육감에게 제출한 경우</li>
+        <li><b class="term">면제 ③</b> — 환경표지 인증 자재로 수선하고 증빙서류를 <span class="num">3년간 보관</span>하는 경우</li>
+        <li><b class="term">증빙자료</b> — 제조업체·제품명·제품번호가 기재된 <span class="tl">구매내역서</span>, 제품 견본 또는 잔여분</li>
+        <li><b class="term">판정</b> — 환경기준 항목을 <span class="num">1개 이상 초과</span>하면 해당 활동공간은 부적합</li>
+        <li><b class="term">사후관리</b> — 감독기관은 부적합 결과를 <span class="tl">인허가 부서에 통보</span>하고, 소유자로 하여금 어린이가 이용하지 못하도록 조치(법 제23조제8항). 수수료는 규칙 별표 4</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>신청기한</b> 완료 후 <span class="num">30일 이내</span></span>
+        <span class="chip"><b>검사기한</b> 신청일부터 <span class="num">20일 이내</span></span>
+        <span class="chip"><b>증축</b> <span class="num">33㎡</span> 이상</span>
+        <span class="chip"><b>수선</b> <span class="num">70㎡</span> 이상</span>
+        <span class="chip"><b>XRF 판정</b> 기준의 <span class="num">70%</span> 미만</span>
+        <span class="chip"><b>방부제</b> 농도합 <span class="num">0.05%</span> 미만</span>
+        <span class="chip"><b>비소</b> <span class="num">50mg/kg</span> 미만</span>
+        <span class="chip"><b>이행명령</b> <span class="num">20일</span> 범위</span>
+        <span class="chip"><b>기간연장</b> <span class="num">20일</span> 범위</span>
+        <span class="chip"><b>증빙 보관</b> <span class="num">3년</span></span>
+        <span class="chip"><b>부적합</b> 기준 <span class="num">1개 이상</span> 초과</span>
+        <span class="chip"><b>재검토기한</b> 매 <span class="num">3년</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">신축·<b>33㎡ 이상 증축</b>·<b>70㎡ 이상 수선</b>한 어린이활동공간은 완료 후 <b>30일 이내</b> 검사기관에 신청하여 <b>20일 이내</b> 기본검사(초과 우려 시 정밀검사)를 받아야 하며, 환경기준을 <b>1개 항목이라도 초과하면 부적합</b>으로 어린이 이용이 금지되므로, 환경표지 인증 자재를 사용한 경우 증빙서류로 면제 요건부터 확인하여야 함.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">제12조제3항의 「제6조제1항 각 호에 해당하는 경우」는 문맥상 같은 조 제1항 각 호(면제대상)를 가리키는 것으로 보이므로 신청서 생략 여부는 검사기관 확인 필요 ｜ 별지 서식(제2호의2·제2호의3·제2호의4) 및 수수료(별표 4)는 「환경보건법 시행규칙」에서 확인 ｜ 출처: 국가법령정보센터(www.law.go.kr) 환경부고시 제2025-165호 전문</p>
+
+</div>
+</body></html>

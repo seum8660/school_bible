@@ -1410,6 +1410,23 @@
   .man-card .man-badges{grid-column:3;grid-row:3;display:grid;grid-auto-flow:column;gap:5px;align-items:stretch}
   .man-card .man-badges .man-go{border-radius:0!important;font-size:11px;font-weight:800;padding:4px 10px;text-align:center}
   .man-card .man-go.g-sum{background:transparent!important;color:var(--ink)!important;border:1px solid var(--ink)!important}
+  /* 매뉴얼 목록 — 내부 스크롤 + 간략(1줄) 모드 */
+  .man-grid{max-height:min(58vh,560px);overflow-y:auto;overscroll-behavior:contain;padding-right:6px;scrollbar-width:thin}
+  .man-grid::-webkit-scrollbar{width:8px}
+  .man-grid::-webkit-scrollbar-thumb{background:var(--line);border-radius:0}
+  .man-grid.slim{grid-template-columns:1fr;gap:0}
+  .man-grid.slim .man-card{grid-template-columns:30px minmax(160px,1fr) minmax(0,1.05fr) auto auto;grid-template-rows:auto;row-gap:0;column-gap:12px;padding:9px 12px;border-bottom:0;align-items:center}
+  .man-grid.slim .man-card>*{align-self:center}
+  .man-grid.slim .man-card .man-t{display:flex;align-items:center}
+  .man-grid.slim .man-card:last-child{border-bottom:1px solid var(--line)}
+  .man-grid.slim .man-card .man-no{grid-column:1;grid-row:1;font-size:14px;color:var(--muted)}
+  .man-grid.slim .man-card .man-t{grid-column:2;grid-row:1;min-width:0}
+  .man-grid.slim .man-card .man-t b{font-size:13.5px;-webkit-line-clamp:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .man-grid.slim .man-card .man-t span{display:none}
+  .man-grid.slim .man-card .man-tagrow{display:flex;grid-column:3;grid-row:1;flex-wrap:nowrap;overflow:hidden;gap:4px;align-self:center;mask-image:linear-gradient(90deg,#000 88%,transparent)}
+  .man-grid.slim .man-card .man-tagrow .htag{font-size:10.5px;padding:2px 7px}
+  .man-grid.slim .man-card::before{grid-column:4;grid-row:1;align-self:center}
+  .man-grid.slim .man-card .man-badges{grid-column:5;grid-row:1}
   .mcard:hover,.pnode:hover,.tl-row.lk:hover{transform:none;box-shadow:var(--cardsh);}
   .cfield input,.cfield select,.search-box input,#global-q,.gz-field input,.bl-field input,.bl-field select,#qbox-input{
     border:1px solid #ddd;border-radius:4px;box-shadow:none;}
@@ -2088,7 +2105,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <div class="gz-sh"><i>05</i><b>유지관리</b><span>점검 · 하자 · 운영</span></div>
       <div class="gz-rh" data-row="1"><b>1,000㎡ 미만</b><span>소규모 건축 구간</span></div>
       <div class="gz-cell" data-row="1" data-stage="기획"></div>
-      <div class="gz-cell" data-row="1" data-stage="설계"><div class="gz-tile" data-ax="area" data-amt="500" data-ty="new,ext,reb"><div class="gz-t-h">에너지절약계획서</div><div class="gz-t-b">연면적 500㎡↑ 신축·증축·개축</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="1" data-stage="설계"><div class="gz-tile" data-ax="area" data-amt="500" data-ty="new,ext,reb"><div class="gz-t-h">에너지절약계획서</div><div class="gz-t-b">냉난방 연면적 500㎡↑ — 의무사항 전 항목 + EPI 65점(공공기관 신축 74점)↑</div><span class="gz-t-s"></span></div></div>
       <div class="gz-cell" data-row="1" data-stage="시공"><div class="gz-tile" data-ax="area" data-amt="660"><div class="gz-t-h">건설사업관리·감리(건축)</div><div class="gz-t-b">연면적 660㎡↑ 건축공사</div><span class="gz-t-s"></span></div></div>
       <div class="gz-cell" data-row="1" data-stage="준공"></div>
       <div class="gz-cell" data-row="1" data-stage="유지관리"><div class="gz-tile" data-ax="area" data-amt="200"><div class="gz-t-h">건축물 관리계획 수립</div><div class="gz-t-b">연면적 200㎡↑ 사용승인 건축물</div><span class="gz-t-s"></span></div></div>
@@ -2100,7 +2117,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <div class="gz-cell" data-row="2" data-stage="유지관리"></div>
       <div class="gz-rh" data-row="3"><b>3,000㎡ 이상</b><span>대규모 건축 구간</span></div>
       <div class="gz-cell" data-row="3" data-stage="기획"></div>
-      <div class="gz-cell" data-row="3" data-stage="설계"><div class="gz-tile" data-ax="area" data-amt="3000" data-ty="new,ext,reb"><div class="gz-t-h">녹색건축 인증</div><div class="gz-t-b">연면적 3,000㎡↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="area" data-amt="10000"><div class="gz-t-h">BEMS 설치</div><div class="gz-t-b">연면적 10,000㎡↑</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="3" data-stage="설계"><div class="gz-tile" data-ax="area" data-amt="3000" data-ty="new,ext,reb"><div class="gz-t-h">녹색건축 인증</div><div class="gz-t-b">연면적 3,000㎡↑ — 예비인증(설계)·본인증(준공 후) · 유효기간 5년</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="area" data-amt="3000" data-ty="new,ext"><div class="gz-t-h">에너지 소비 총량제</div><div class="gz-t-b">교육연구·업무시설 3,000㎡↑ 신축·별동증축 — 1차에너지소요량 200(공공 140)kWh/㎡·년 미만</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="area" data-amt="10000"><div class="gz-t-h">BEMS 설치</div><div class="gz-t-b">연면적 10,000㎡↑</div><span class="gz-t-s"></span></div></div>
       <div class="gz-cell" data-row="3" data-stage="시공"></div>
       <div class="gz-cell" data-row="3" data-stage="준공"></div>
       <div class="gz-cell" data-row="3" data-stage="유지관리"></div>
@@ -2830,7 +2847,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <button class="ov-tab" data-mk="가이드" type="button">매뉴얼 · 가이드</button>
       <button class="ov-tab" data-mk="지침" type="button">지침</button>
     </div>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0 4px"><div class="man-search" style="flex:1;min-width:220px;margin:0"><span class="man-search-ic">🔍</span><input type="text" id="manQ" placeholder="매뉴얼 검색 (예: 안전보건, 인증, 감리)" autocomplete="off"></div><button type="button" id="manSumOpen" style="flex:0 0 auto;border:1.5px solid var(--accent);background:var(--accent-soft);color:var(--accent);font:inherit;font-size:13px;font-weight:800;padding:10px 16px;border-radius:100px;cursor:pointer;white-space:nowrap">🖨 요약문서 일괄 출력</button></div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0 4px"><div class="man-search" style="flex:1;min-width:220px;margin:0"><span class="man-search-ic">🔍</span><input type="text" id="manQ" placeholder="매뉴얼 검색 (예: 안전보건, 인증, 감리)" autocomplete="off"></div><button type="button" id="manSumOpen" style="flex:0 0 auto;border:1.5px solid var(--accent);background:var(--accent-soft);color:var(--accent);font:inherit;font-size:13px;font-weight:800;padding:10px 16px;border-radius:100px;cursor:pointer;white-space:nowrap">🖨 요약문서 일괄 출력</button><button type="button" id="manViewBtn" style="flex:0 0 auto;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);font:inherit;font-size:13px;font-weight:800;padding:10px 14px;border-radius:100px;cursor:pointer;white-space:nowrap">☰ 자세히 보기</button></div>
     <div class="man-grid" id="manGrid">
       <a class="man-card" data-kind="가이드" href="manuals/07_산업안전보건_요약.html" data-inline="manuals/07_산업안전보건_요약.html" data-dl="manuals/07_건설공사발주자_산업안전보건_가이드북.pdf" data-title="건설공사발주자의 산업안전보건업무 가이드북 — 핵심 요약"><span class="man-no">1</span><div class="man-t"><b>건설공사발주자의 산업안전보건업무 가이드북</b><span>발주자 안전보건 의무·업무 안내</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="안전보건">#안전보건</span><span class="htag" data-tag="발주자">#발주자</span><span class="htag" data-tag="기술지도">#기술지도</span></div></a>
       <a class="man-card" data-kind="지침" href="manuals/08_폭염_요약.html" data-inline="manuals/08_폭염_요약.html" data-dl="manuals/08_폭염대비_온열질환_예방_대응지침.pdf" data-title="폭염대비 온열질환 예방을 위한 사업장 대응지침 — 핵심 요약"><span class="man-no">2</span><div class="man-t"><b>폭염대비 온열질환 예방을 위한 사업장 대응지침</b><span>'26년 폭염 대비 온열질환 예방</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span><span class="man-go g-pdf man-go-pdf2" title="PDF 원문 있음">PDF</span></span><div class="man-tagrow"><span class="htag" data-tag="폭염">#폭염</span><span class="htag" data-tag="온열질환">#온열질환</span><span class="htag" data-tag="안전보건">#안전보건</span></div></a>
@@ -2870,6 +2887,8 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <a class="man-card" data-kind="기준" href="manuals/42_학교시설내진설계기준_요약.html" data-inline="manuals/42_학교시설내진설계기준_요약.html" data-title="학교시설 내진설계기준 — 핵심 요약"><span class="man-no">36</span><div class="man-t"><b>학교시설 내진설계기준</b><span>내진성능 목표 · 설계지지력 · 내진보강 설계</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="내진">#내진</span><span class="htag" data-tag="설계기준">#설계기준</span><span class="htag" data-tag="구조">#구조</span><span class="htag" data-tag="내진보강">#내진보강</span><span class="htag" data-tag="설계">#설계</span></div></a>
       <a class="man-card" data-kind="고시" href="manuals/43_건설공사안전보건대장_요약.html" data-inline="manuals/43_건설공사안전보건대장_요약.html" data-title="건설공사 안전보건대장 작성·이행 — 핵심 요약"><span class="man-no">37</span><div class="man-t"><b>건설공사 안전보건대장 작성·이행</b><span>고용노동부고시 제2024-35호 · 산안법 제67조 · 기본·설계·공사 3종 대장 작성 및 이행 확인</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="안전보건대장">#안전보건대장</span><span class="htag" data-tag="산업안전보건법">#산업안전보건법</span><span class="htag" data-tag="발주자">#발주자</span><span class="htag" data-tag="위험성평가">#위험성평가</span><span class="htag" data-tag="이행확인">#이행확인</span><span class="htag" data-tag="시공">#시공</span></div></a>
       <a class="man-card" data-kind="지침" href="manuals/44_공공건축설계의도구현_요약.html" data-inline="manuals/44_공공건축설계의도구현_요약.html" data-title="공공건축 설계의도 구현 업무수행지침 — 핵심 요약"><span class="man-no">38</span><div class="man-t"><b>공공건축 설계의도 구현 업무수행지침</b><span>국토교통부고시 제775호 · 건축서비스산업 진흥법 제22조 · 대상 사업·업무 범위·대가 산정</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="설계의도구현">#설계의도구현</span><span class="htag" data-tag="공공건축">#공공건축</span><span class="htag" data-tag="건축서비스산업진흥법">#건축서비스산업진흥법</span><span class="htag" data-tag="설계자참여">#설계자참여</span><span class="htag" data-tag="대가산정">#대가산정</span><span class="htag" data-tag="설계">#설계</span></div></a>
+      <a class="man-card" data-kind="기준" href="manuals/45_건축물에너지절약설계기준_요약.html" data-inline="manuals/45_건축물에너지절약설계기준_요약.html" data-title="건축물의 에너지절약설계기준 — 핵심 요약"><span class="man-no">39</span><div class="man-t"><b>건축물의 에너지절설계기준</b><span>국토교통부고시 제2024-421호 · 에너지절계획서 500㎡↑ · EPI 65점(공공 74점) · 에너지 소비 총량제</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="에너지절약">#에너지절약</span><span class="htag" data-tag="EPI">#EPI</span><span class="htag" data-tag="소비총량제">#소비총량제</span><span class="htag" data-tag="단열">#단열</span><span class="htag" data-tag="녹색건축물">#녹색건축물</span><span class="htag" data-tag="설계">#설계</span></div></a>
+      <a class="man-card" data-kind="기준" href="manuals/46_녹색건축인증_요약.html" data-inline="manuals/46_녹색건축인증_요약.html" data-title="녹색건축인증(G-SEED) — 학교시설 중심 요약"><span class="man-no">40</span><div class="man-t"><b>녹색건축인증(G-SEED)</b><span>녹색건축물 조성 지원법 제16조 · 연면적 3,000㎡↑ 의무 · 예비인증(설계)·본인증(준공) · 유효기간 5년</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="녹색건축물">#녹색건축물</span><span class="htag" data-tag="G-SEED">#G-SEED</span><span class="htag" data-tag="예비인증">#예비인증</span><span class="htag" data-tag="인증">#인증</span><span class="htag" data-tag="설계">#설계</span><span class="htag" data-tag="준공">#준공</span></div></a>
     </div>
     <div id="man-inline" style="display:none;margin-top:16px"></div>
 
@@ -4028,6 +4047,8 @@ const CALC_RULES=[
   {ph:'const', nm:'감독권한대행 등 건설사업관리', bs:'공사비', test:v=>v.constr>=100, thr:'100억 이상'},
   {ph:'design', nm:'제로에너지건축물(ZEB) 인증', bs:'연면적', test:v=>v.area>=1000, thr:'1,000㎡ 이상'},
   {ph:'design', nm:'녹색건축 인증', bs:'연면적', test:v=>v.area>=3000, thr:'3,000㎡ 이상'},
+  {ph:'design', nm:'에너지절약계획서·설계 검토서 제출', bs:'연면적', test:v=>v.area>=500, thr:'냉난방 연면적 500㎡ 이상'},
+  {ph:'design', nm:'건축물 에너지 소비 총량제', bs:'연면적', test:v=>v.area>=3000, thr:'3,000㎡ 이상(교육연구·업무시설 신축)'},
   {ph:'const', nm:'BEMS(건축물에너지관리시스템) 설치', bs:'연면적', test:v=>v.area>=10000, thr:'10,000㎡ 이상'}
 ];
 function calcVals(){
@@ -5609,6 +5630,14 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
       c.style.display=(okText&&okKind)?'':'none';
     });
   }
+  (function(){ // 간략/자세히 보기 토글 (기본 간략)
+    var g=document.getElementById('manGrid'), b=document.getElementById('manViewBtn'); if(!g||!b) return;
+    function apply(slim){ g.classList.toggle('slim',slim); b.textContent=slim?'☰ 자세히 보기':'☰ 간략히 보기';
+      try{localStorage.setItem('manView2',slim?'slim':'full');}catch(e){} }
+    var saved='full'; try{saved=localStorage.getItem('manView2')||'full';}catch(e){}
+    apply(saved!=='full');
+    b.addEventListener('click',function(){ apply(!g.classList.contains('slim')); });
+  })();
   (function(){var tb=document.getElementById('manTabs'); if(!tb) return;
     tb.addEventListener('click',function(e){var b=e.target.closest('.ov-tab'); if(!b) return;
       tb.querySelectorAll('.ov-tab').forEach(function(x){x.classList.toggle('on',x===b);});
@@ -5720,6 +5749,9 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 /* 인트로(히어로 공지) 자동 업데이트 — 매뉴얼/유틸 카드 수를 DOM에서 직접 집계 */
 (function(){
   var NOTICES=[
+    {d:'2026-08-31', tx:'<b>녹색건축인증(G-SEED)</b> 요약문서 추가 · 사업절차 녹색건축 타일에 예비·본인증 시점 및 유효기간 보강'},
+    {d:'2026-08-31', tx:'<b>매뉴얼 및 지침</b> 목록 <b>간략(1줄) 기본 보기</b> + 섹션 내부 스크롤 적용 · 자세히 보기 토글 신설'},
+    {d:'2026-08-31', tx:'<b>건축물의 에너지절약설계기준</b> 요약문서 추가 · 사업절차 안내에 <b>에너지 소비 총량제</b> 타일 신설 · 에너지절약계획서 기준 보강'},
     {d:'2026-08-30', tx:'<b>설계용역 평가</b> 기준금액 2억2천→<b>2억3천만원</b> 갱신(2025~2026 고시금액) · 사업절차 안내에 설계용역 평가·건설사업관리용역 평가 타일 추가'},
     {d:'2026-08-30', tx:'<b>사업절차 안내</b> 금액 구간 세분화 — 5천만원 미만 · 5천만원~1억 · 1억~5억 3구간 분리'},
     {d:'2026-08-30', tx:'<b>사업절차 안내</b> 안전보건대장 3단계 분리(기본·설계·공사) · <b>설계의도 구현 용역</b> 타일 신설'},

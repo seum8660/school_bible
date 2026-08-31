@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>녹색건축인증(G-SEED) — 학교시설 중심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  .chain{ font-size:6.6pt; line-height:1.7; color:var(--body); }
+  .chain b{ color:var(--navy); font-weight:700; }
+  .chain s{ color:var(--teal); text-decoration:none; font-weight:800; margin:0 0.8mm; }
+
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl thead th.h1{ text-align:left; }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .x{ color:var(--note); font-weight:400; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+  .tbl tr.hi td{ background:#EAF4F6; }
+
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head><body>
+
+<!-- ═══════════════ 1쪽 — 의무대상 · 용도구분 · 등급기준 ═══════════════ -->
+<div class="page">
+
+  <h1 class="title">녹색건축인증(G-SEED) — 학교시설 중심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">근거: 「녹색건축물 조성 지원법」 제16조·시행령 제11조의3(대통령령 제31243호) ｜ 녹색건축 인증기준(국토교통부고시 제2021-278호·환경부고시 제2021-66호) ｜ 녹색건축 인증에 관한 규칙(국토교통부령 제831호·환경부령 제908호) ｜ 운영: 녹색건축인증 관리시스템(www.gseed.or.kr)</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">건축주(교육청·학교 = 공공 발주 주체) = 인증 신청·취득의 책임 주체</span> — 연면적 <b class="term">3,000㎡ 이상 신축 학교시설</b>은 설계에 반영된 내용을 대상으로 <b class="term">예비인증</b>을 먼저 받고, 사용승인(사용검사) 이전까지 <b class="term">본인증</b>을 받아야 한다. <span class="rolet">건축주등</span>은 자체평가서에 <span class="rolet">녹색건축 자체평가자를 명시·직인 날인</span>하여 제출하고, 인증수수료를 신청서 제출일부터 <b class="term">20일 이내 납부</b>하여야 하며, <span class="rolet">시공자·책임감리자</span>는 자재 납품·시공 확인서(EPD·저탄소·자원순환 자재 등)와 실내공기 오염물질 저방출 제품 적용 확인서를 작성한다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>1</i>인증 의무대상 4요건 — 모두 충족 (영 제11조의3)</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span>영 제9조제2항 각 호의 기관(국가·지자체·교육청 등 공공)이 <b class="term">소유 또는 관리</b>하는 건축물일 것</li>
+        <li><span class="no">2</span><b class="term">신축·재축</b> 또는 별개 대지에 별개의 건축물로 <b class="term">증축</b>하는 경우일 것</li>
+        <li><span class="no">3</span>연면적(하나의 대지에 복수 건축물이 있으면 <span class="tl">전체 합산</span>)이 <span class="num">3,000㎡ 이상</span>일 것</li>
+        <li><span class="no">4</span>법 제14조제1항에 따른 <b class="term">에너지절약계획서 제출 대상</b>일 것</li>
+      </ul>
+      <ul class="list" style="margin-top:1.4mm">
+        <li><b class="term">학교시설 적용</b> — 교육청·학교가 신축하는 <span class="num">3,000㎡ 이상</span> 학교는 위 요건을 모두 충족하므로 <span class="tl">녹색건축인증 취득 의무</span></li>
+        <li><b class="term">공동주택(관사 등)</b> — <span class="num">500세대 이상</span>은 공동주택성능등급 취득 의무(주택건설기준 등에 관한 규정 제58조)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V9l8-5 8 5v11"/><path d="M4 14h16"/><path d="M9 20v-3h6v3"/></svg></span><span class="lb"><i>2</i>학교시설의 인증용도 구분</span></span>
+      <ul class="list">
+        <li><b class="term">학교시설 = 비주거용</b> — 신축 학교는 <span class="tl">비주거용 건축물(학교시설 용도)</span>로 평가</li>
+        <li><b class="term">병설유치원</b> — 학교 내 설치되는 병설유치원은 <span class="tl">학교시설</span>로 평가</li>
+        <li><b class="term">단설유치원</b> — <span class="tl">일반건축물 또는 학교시설</span> 중 선택하여 평가 가능</li>
+        <li><b class="term">기숙사·관사·직원숙소</b> — 건축물의 평면 형태에 따라 <span class="tl">주거·비주거 용도 선택 가능</span>(사업승인 대상 기숙사는 공동주택에 포함)</li>
+        <li><b class="term">용도 선택 시 유의</b> — 신청자가 용도를 선택하는 경우 <span class="tl">2.1 에너지 성능 항목은 해당 용도와 동일하게</span> 신청하여야 함</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5M12 16V8M16 16v-8"/></svg></span><span class="lb"><i>3</i>인증등급별 점수기준 — 학교시설은 「신축 비주거용」 행 적용 (인증기준 별표9)</span></span>
+      <table class="tbl">
+        <thead><tr><th style="width:22mm">구분</th><th style="width:26mm">용도</th><th>최우수(그린1등급)</th><th>우수(그린2등급)</th><th>우량(그린3등급)</th><th>일반(그린4등급)</th></tr></thead>
+        <tbody>
+          <tr class="hi"><td class="it" rowspan="3">신축</td><td class="it">비주거용 (학교시설)</td><td class="o">80점 이상</td><td class="o">70점 이상</td><td class="o">60점 이상</td><td class="o">50점 이상</td></tr>
+          <tr><td>주거용</td><td>74점 이상</td><td>66점 이상</td><td>58점 이상</td><td>50점 이상</td></tr>
+          <tr><td>단독주택</td><td>74점 이상</td><td>66점 이상</td><td>58점 이상</td><td>50점 이상</td></tr>
+          <tr><td class="it" rowspan="2">기존</td><td>비주거용</td><td>75점 이상</td><td>65점 이상</td><td>55점 이상</td><td>45점 이상</td></tr>
+          <tr><td>주거용</td><td>69점 이상</td><td>61점 이상</td><td>53점 이상</td><td>45점 이상</td></tr>
+          <tr><td class="it" rowspan="2">그린리모델링</td><td>비주거용</td><td>75점 이상</td><td>65점 이상</td><td>55점 이상</td><td>45점 이상</td></tr>
+          <tr><td>주거용</td><td>69점 이상</td><td>61점 이상</td><td>53점 이상</td><td>45점 이상</td></tr>
+        </tbody>
+      </table>
+      <ul class="list" style="margin-top:1.6mm">
+        <li><b class="term">복합건축물</b> — 2개 이상 용도로 평가하는 기준: 작은 용도 면적이 전체의 <span class="num">10%</span> 이상이고 <span class="num">10,000㎡</span> 이상 ／ 전체의 <span class="num">20%</span> 이상 ／ 각 용도가 <span class="num">30,000㎡</span> 이상. 최종 점수는 <span class="tl">용도별 바닥면적 가중평균</span>으로 산출하며, 각 건축물은 최소등급 점수(신축 <span class="num">50점</span>) 이상을 취득해야 함</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span><span class="lb"><i>4</i>등급 의무 — 우수(그린2등급) 이상 (인증기준 제7조)</span></span>
+      <ul class="list">
+        <li><b class="term">우수등급 의무</b> — 건축법 시행령 별표1 제14호가목의 <span class="tl">공공업무시설</span> 중 영 제11조의3 해당 건축물은 <span class="num">우수(그린2등급) 이상</span> 취득 의무</li>
+        <li><b class="term">용도 판단</b> — 허가상 용도가 다르게 결정될 경우에도 인증등급은 우수 이상. 실제 인증용도를 토대로 최종 용도 결정(예: 보건소는 공공청사라도 의료시설 위주면 <span class="tl">일반건축물</span>로 평가 가능하되 등급은 우수 이상)</li>
+        <li><b class="term">일반등급 이상이면 되는 경우</b> — 해당 건축물 전체 연면적 <span class="num">3,000㎡ 미만</span> ／ 전체는 3,000㎡ 이상이나 (공공)업무시설 면적이 <span class="num">3,000㎡ 미만</span></li>
+        <li><b class="term">학교시설 유의</b> — 학교는 업무시설이 아니므로 고시상 우수등급 의무는 아니나, 시·도교육청 지침·조례로 <span class="tl">등급을 별도 지정</span>하는 경우가 있어 발주 전 확인 필요</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></span><span class="lb"><i>5</i>인증기준 적용 시점 (인증기준 부칙 제2조)</span></span>
+      <ul class="list">
+        <li><b class="term">원칙</b> — 인증 신청 시 적용되는 기준은 <span class="tl">신청 접수시점</span> 기준</li>
+        <li><b class="term">예비→본인증</b> — 예비인증을 받은 건축물의 본인증은 <span class="tl">예비인증 받은 당시의 기준</span>에 따름(종전 규정이 불리하면 건축주 요구로 현행 기준 평가 가능)</li>
+        <li><b class="term">재인증</b> — 기 허가(사업계획승인)의 취하·반려·취소 후 새로 허가받는 경우 <span class="num">다시 인증</span>을 받아야 함</li>
+        <li><b class="term">용도 변경</b> — 예비인증 시 용도가 변경된 경우 본인증서는 <span class="tl">본인증 접수 당시의 기준</span>으로 평가</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">녹색건축인증 업무 매뉴얼(신축 비주거용 건축물) 4.3~4.5 발췌 요약 ｜ 학교시설 관점으로 재구성 ｜ 출처: 녹색건축인증 관리시스템(www.gseed.or.kr)·국가법령정보센터(www.law.go.kr)</p>
+  <p class="pgno">1 / 2</p>
+
+</div>
+
+<!-- ═══════════════ 2쪽 — 평가범위 · 절차 · 유효기간 · 인센티브 ═══════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">인증 평가범위·신청 절차·유효기간·인센티브</h1>
+  <div class="ubar"></div>
+  <p class="meta">녹색건축인증 업무 매뉴얼 4.6(평가범위)·4.7(신청서·자체평가서)·4.11~4.14(점수기준·수수료·유효기간·인센티브) ｜ 예비인증(설계 반영 내용) → 본인증(준공 확인) 2단계</p>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V8l6-4 6 4v13"/><path d="M10 21v-4h4v4"/><path d="M9 11h2M13 11h2M9 15h2M13 15h2"/></svg></span><span class="lb"><i>1</i>인증 평가범위 (4.6)</span></span>
+      <ul class="list">
+        <li><b class="term">원칙</b> — 평가범위는 건축물의 <span class="tl">허가 또는 사업승인 면적</span> 기준. 가상대지경계선은 법정 용적률 범위 내에서 신청자 제시 후 인증기관 협의로 설정 가능</li>
+        <li><b class="term">경계 설정</b> — 사업경계·허가경계·실제 공사 범위, 도로가 있으면 도로 경계, 인증대상과 비대상 건물이 있으면 <span class="tl">건물 사이 대지중심</span> 등으로 확정(시설물·건축물을 임의로 관통·가로지르지 않는 범위)</li>
+        <li><b class="term">공동주택 단지 구분</b> — 철도·고속도로·자동차전용도로, 폭 <span class="num">20m</span> 이상 일반도로, 폭 <span class="num">8m</span> 이상 도시계획예정도로로 구분된 단지는 <span class="tl">각각 별도 인증</span>(관리사무소가 하나이거나 과소단지는 통합 가능)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9z"/><path d="M6 7h12v14H6z"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>2</i>신청서·자체평가서 제출 (4.7)</span></span>
+      <ul class="list">
+        <li><b class="term">자체평가서</b> — 자체평가자를 명시하고 <span class="tl">직인 날인</span>하여 원본 제출(디지털자료 가능), 작성요령은 인증기준 <span class="tl">별표11</span>. 본문·부록(예상 평점·평점산출근거·제출서류·근거자료·자체인증등급 산정표 포함) 구성</li>
+        <li><b class="term">위임장</b> — 건축주와 신청인이 다르면 <span class="tl">대리인 위임장</span> 포함</li>
+        <li><b class="term">수수료</b> — 신청서 제출일부터 <span class="num">20일 이내</span> 인증기관에 납부(산출: 인증기준 별표12, 엔지니어링기술자 노임단가 기준)</li>
+        <li><b class="term">확인서</b> — 자재 납품·시공(시공자·책임감리자·건축주): EPD(환경성선언)·저탄소·자원순환·유해물질 저감 자재, 녹색건축자재 적용 비율 ｜ 책임감리자: 실내공기 오염물질 저방출 제품 적용 등</li>
+        <li><b class="term">현장조사</b> — 인증 등급 중에도 설정 항목의 예측·분석 등 필요 시 건축주등이 현장조사 실시 후 자체평가서에 반영</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/><path d="M12 2v2M22 12h-2M12 20v2M4 12H2"/></svg></span><span class="lb"><i>3</i>유효기간과 연장 — 5년 · 180일 전 · 1회 (4.13, 규칙 제9조·제9조의2)</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">유효기간</b> — 인증서를 발급한 날부터 <span class="num">5년</span></li>
+        <li><span class="no">2</span><b class="term">연장 신청</b> — 유효기간 <span class="num">만료일 180일 전부터 만료일까지</span> 신청 가능</li>
+        <li><span class="no">3</span><b class="term">연장 한도</b> — <span class="num">5년</span> 범위 내에서 <span class="num">1회</span>에 한함(연장된 유효기간은 만료일 다음 날부터 5년)</li>
+        <li><span class="no">4</span><b class="term">연장 평가기준</b> — 인증 연장을 위한 적용기준은 <span class="tl">본인증 시 적용된 기준</span>으로 평가</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8z"/></svg></span><span class="lb"><i>4</i>인증 인센티브 — 학교시설 발주 실무 관련 (4.14)</span></span>
+      <ul class="list">
+        <li><b class="term">건축물 기준 완화(용적률·높이제한)</b> — 에너지절약설계기준 제16조·별표9: 에효 <span class="tl">1+등급</span>과 결합 시 최우수 <span class="num">9%</span>·우수 <span class="num">6%</span>, 에효 <span class="tl">1등급</span> 결합 시 최우수 <span class="num">6%</span>·우수 <span class="num">3%</span></li>
+        <li><b class="term">조달청 건설사업 PQ 가산점</b> — 입찰참가자격사전심사기준 별표3: 최우수(그린1등급) <span class="num">1.0점</span>, 우수(그린2등급) <span class="num">0.5점</span></li>
+        <li><b class="term">지방세 감면(참고)</b> — 취득세: 에효 1+등급 결합 시 최우수 <span class="num">10%</span>·우수 <span class="num">5%</span> ｜ 재산세: 인증 후 <span class="num">5년간</span> 최대 <span class="num">10%</span>(지방세특례제한법 제47조의2). 상세는 법·지자체별로 변동 가능하므로 확인 필요</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>의무대상</b> 공공 신축 <span class="num">3,000㎡</span>↑</span>
+        <span class="chip"><b>학교시설</b> 신축 비주거용 평가</span>
+        <span class="chip"><b>일반등급</b> <span class="num">50점</span>↑</span>
+        <span class="chip"><b>우량</b> <span class="num">60점</span>↑</span>
+        <span class="chip"><b>우수</b> <span class="num">70점</span>↑</span>
+        <span class="chip"><b>최우수</b> <span class="num">80점</span>↑</span>
+        <span class="chip"><b>공공업무시설</b> 우수(그린2)↑ 의무</span>
+        <span class="chip"><b>공동주택 성능등급</b> <span class="num">500세대</span>↑</span>
+        <span class="chip"><b>수수료 납부</b> <span class="num">20일</span> 이내</span>
+        <span class="chip"><b>유효기간</b> <span class="num">5년</span></span>
+        <span class="chip"><b>연장</b> 만료 <span class="num">180일</span> 전~만료일 · <span class="num">1회</span></span>
+        <span class="chip"><b>PQ 가산점</b> <span class="num">1.0</span>/<span class="num">0.5점</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">연면적 <b>3,000㎡ 이상 신축(재축·별동 증축) 학교시설</b>은 녹색건축 <b>예비인증 → 본인증</b>을 의무 취득해야 하며, <b>신축 비주거용 점수기준(일반 50 · 우량 60 · 우수 70 · 최우수 80점)</b>으로 평가된다. 인증 유효기간은 <b>5년</b>(만료 180일 전부터 1회 연장), 등급에 따라 <b>용적률·높이 완화와 조달청 PQ 가산점(최우수 1.0점)</b>을 받을 수 있다.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">인증 심사기준 세부 항목(별표11 자체평가서 작성요령·별표12 수수료 산출기준)과 인센티브 세부 요율은 개정될 수 있어 원문·해당 법령 확인 필요 ｜ 공동주택 전용 항목(기부채납 경감·가산비용)은 학교시설과 무관하여 제외 ｜ 출처: 녹색건축인증 관리시스템(www.gseed.or.kr)·국가법령정보센터(www.law.go.kr)</p>
+  <p class="pgno">2 / 2</p>
+
+</div>
+</body></html>

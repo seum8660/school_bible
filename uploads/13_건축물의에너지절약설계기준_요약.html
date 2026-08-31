@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건축물의 에너지절약설계기준 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드 ──────────────────────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 ──────────────────────── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  /* ── 틸 넘버서클 목록 ───────────────── */
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  /* ── 순서 체인 ──────────────────────── */
+  .chain{ font-size:6.6pt; line-height:1.7; color:var(--body); }
+  .chain b{ color:var(--navy); font-weight:700; }
+  .chain s{ color:var(--teal); text-decoration:none; font-weight:800; margin:0 0.8mm; }
+
+  /* ── 표 ─────────────────────────────── */
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl thead th.h1{ text-align:left; }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .x{ color:var(--note); font-weight:400; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주 ───────────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head><body>
+
+<!-- ═══════════════ 1쪽 — 총칙 · 계획서 제출과 판정 ═══════════════ -->
+<div class="page">
+
+  <h1 class="title">건축물의 에너지절약설계기준 — 핵심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">국토교통부고시 제2024-421호(2024. 8. 8. 일부개정·시행) ｜ 근거: 「녹색건축물 조성 지원법」 제14조·제14조의2·제15조, 영 제10조·제10조의2·제11조, 규칙 제7조·제7조의2 ｜ 소관: 국토교통부 녹색건축과(044-201-3771) ｜ 6개 장 27개 조 + 별표 12·별지 3</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">허가권자 = 에너지절약계획서 검토·판정과 이행 확보의 책임 주체</span> — 사전확인 신청을 받아 <b class="term">검토 결과를 통지</b>하고(제3조의2), 에너지 관련 전문기관에 검토·보완을 거치게 할 수 있으며(수수료: 규칙 별표1), 계획서·검토서 작성내용의 이행을 <b class="term">허가조건에 포함해 허가</b>한다(제24조). <span class="rolet">건축주와 설계자 등</span>은 의무사항을 <span class="rolet">설계 시 필수 적용</span>하여야 하고, <span class="rolet">작성책임자(건축주 또는 감리자)</span>는 사용승인 신청 시 <b class="term">에너지절약계획 이행 검토서(별지 제3호)</b>를 첨부하여야 한다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 4l9 6.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg></span><span class="lb"><i>1</i>열손실방지 조치 (제2조)</span></span>
+      <ul class="list">
+        <li><b class="term">대상 행위</b> — 건축·대수선·용도변경·건축물대장 기재내용 변경 시 <span class="tl">별표1 열관류율</span> 또는 <span class="tl">별표3 단열재 두께</span> 기준 준수(외벽·최상층 반자/지붕·최하층 바닥·바닥난방 층간바닥·창 및 문)</li>
+        <li><b class="term">변동 없으면 면제</b> — 열손실 변동이 없는 증축·대수선·용도변경·기재변경은 조치 생략 가능(예외대상→조치대상 변경은 조치)</li>
+        <li><b class="term">적용 제외 공간</b> — 냉난방 설비를 설치하지 않는 창고·차고·기계실 등 비거실, 내부를 외기에 개방하는 공간, 원자력안전법 허가 건축물(냉난방 설치 계획이 있으면 적용)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9z"/><path d="M6 7h12v14H6z"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>2</i>에너지절약계획서 제출 (제3조)</span></span>
+      <ul class="list">
+        <li><b class="term">제출 기준</b> — 냉난방 열원을 공급하는 연면적 합계 <span class="num">500㎡ 이상</span>(미만은 제출하지 아니함)</li>
+        <li><b class="term">연면적 계산</b> — 같은 대지 모든 바닥면적 합산, <span class="tl">주거·비주거 구분</span> 계산, 열손실방지 조치 예외 공간·<span class="tl">주차장·기계실 면적 제외</span></li>
+        <li><b class="term">제출 예외</b> — 냉난방 설비를 설치하지 않는 일부 시설(변전소 등 제1종 근생, 운동·위락·관광휴게시설), <span class="tl">에너지절약형 친환경주택 건설기준 적합</span> 사업계획승인 주택</li>
+        <li><b class="term">500㎡ 미만 변경</b> — 500㎡ 미만으로 허가·신고 후 허가·신고사항을 변경하면 <span class="tl">당초 면적 + 변경 면적을 합산</span>하여 판단</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></span><span class="lb"><i>3</i>제출부터 사용승인까지 — 절차와 판정기준 (제13조~제15조·제21조·제24조)</span></span>
+      <div class="chain">
+        <b>민원인: 건축인허가 신청(계획서·검토서 포함, 판정자료 제시)</b><s>›</s><b>인허가권자: 접수·검토 후 검토기관 협의</b><s>›</s><b>검토기관: 검토자 지정·수수료 산정/납부 확인 후 검토(부적합 시 보완)</b><s>›</s><b>검토필증 발행·협의처리</b><s>›</s><b>인허가 승인 — 이행을 허가조건에 포함</b><s>›</s><b>사용승인 신청 시 이행 검토서 첨부</b>
+      </div>
+      <ul class="list" style="margin-top:1.4mm">
+        <li><b class="term">사전확인(임의)</b> — 허가 신청 전 같은 절차로 미리 확인받을 수 있고, 적합 통지 후 <span class="num">1개월</span> 내 신청하면 본검토 생략 가능(항목별 평가결과 변동 시 제외). 검토 수수료는 <span class="tl">규칙 별표1</span>, 건축법 제32조 전자정보처리 시스템 이용 가능</li>
+      </ul>
+      <table class="tbl" style="margin-top:1.8mm">
+        <thead><tr><th style="width:40mm">판정 구분</th><th class="h1">적합 기준</th><th style="width:34mm">비고</th></tr></thead>
+        <tbody>
+          <tr><td class="it">의무사항 (제14조)</td><td class="lf"><b>전 항목 채택</b> 시 적합</td><td class="x">건축·기계·전기·신재생</td></tr>
+          <tr><td class="it">에너지성능지표 EPI (제15조)</td><td class="lf">평점 합계 <span class="o">65점</span> 이상 ｜ 공공기관 신축(별동 증축 포함) <span class="o">74점</span> 이상</td><td class="x">판정자료 없으면 미적용 간주</td></tr>
+          <tr><td class="it">에너지소요량 평가서 (제21조)</td><td class="lf">단위면적당 1차 에너지소요량 합계 <span class="o">200 kWh/㎡·년</span> 미만 ｜ 공공기관 <span class="o">140</span> 미만</td><td class="x">업무·교육연구시설 3천㎡ 이상</td></tr>
+          <tr><td class="it">검토서 작성 단위 (제23조)</td><td class="lf">비주거·주거 <b>용도별</b>, 다수 동은 <b>동별</b> 제출(공동주택 주거용도는 하나의 단지)</td><td class="x">기숙사·오피스텔은 비주거 배점</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>4</i>적용예외 — 이런 경우 완화된다 (제4조)</span></span>
+      <ul class="list">
+        <li><b class="term">에너지효율등급 인증</b> — <span class="num">1+등급</span> 이상(공공기관 <span class="num">1++등급</span> 이상) 취득 시 EPI 판정(제15조)·소비총량(제21조) 미적용 가능, <span class="tl">제로에너지건축물 인증</span> 취득 시 설계 검토서 미제출 가능</li>
+        <li><b class="term">증축·용도변경</b> — EPI 판정 미적용 가능. 단, <span class="tl">별동 증축</span>과 기존 연면적 <span class="num">50%</span> 이상·증축 합계 <span class="num">2,000㎡</span> 이상 증축은 적용</li>
+        <li><b class="term">소규모 개별동</b> — 합계 500㎡ 이상 2천㎡ 미만 중 <span class="num">500㎡ 미만 개별동</span>은 제15조·제21조 미적용 가능</li>
+        <li><b class="term">특수성 인정</b> — 지방건축위원회 심의(에너지 전문인력 <span class="num">1인</span> 이상 참여)로 해당 규정 미적용 가능</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l9 5-9 5-9-5z"/><path d="M3 14l9 5 9-5"/></svg></span><span class="lb"><i>5</i>건축기준 완화 (제16조~제20조·별표9)</span></span>
+      <ul class="list">
+        <li><b class="term">완화 방법</b> — 건축주 신청 시에 한하여 조례상 최대 <span class="tl">용적률·건축물 높이</span> × <span class="num">[1 + 완화기준]</span> 적용(세부 비율은 별표9)</li>
+        <li><b class="term">신청</b> — 건축심의·건축허가·사업계획승인 시 <span class="tl">별지 제2호 신청서</span> 제출(신청자격: 건축주 또는 사업주체), 허가권자는 지방건축위원회 심의로 검토 후 <span class="tl">허가조건에 명시</span></li>
+        <li><b class="term">인증 연계</b> — 완화를 받으려면 <span class="tl">예비인증</span>을 먼저 받고, 사용승인 신청 이전에 예비인증 등급 이상으로 <span class="tl">본인증</span> 취득·제출</li>
+        <li><b class="term">불이행 시</b> — 본인증서 미제출이면 허가권자는 <span class="num">사용승인 거부</span> 및 완화 전 기준으로 건축 명령 가능(제20조)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">「건축물의 에너지절약설계기준」(국토교통부고시 제2024-421호, 2024. 8. 8. 발령·시행) 제1장~제4장 요약 ｜ 별표1~별표9(열관류율·단열재 두께·완화기준 등)는 수치표로서 원문 참조 ｜ 출처: 국가법령정보센터(www.law.go.kr)</p>
+  <p class="pgno">1 / 2</p>
+
+</div>
+
+<!-- ═══════════════ 2쪽 — 부문별 설계기준 · 소비 총량제 ═══════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">부문별 설계기준(의무·권장)과 에너지 소비 총량제</h1>
+  <div class="ubar"></div>
+  <p class="meta">제2장 에너지절약 설계기준(제6조~제12조의2: 건축·기계·전기·신재생 4개 부문) ｜ 제5장 건축물 에너지 소비 총량제(제21조·제22조) ｜ 의무사항 = 필수 적용, 권장사항 = EPI 평점 획득을 위한 선택 적용</p>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V9l8-5 8 5v11"/><path d="M4 14h16"/><path d="M9 20v-3h6v3"/></svg></span><span class="lb"><i>1</i>건축부문 의무사항 (제6조)</span></span>
+      <ul class="list">
+        <li><b class="term">단열조치</b> — 외기에 직·간접 면하는 거실 각 부위. 예외: 지표면 아래 <span class="num">2m</span> 초과 지하(공동주택 거실 제외), 외벽 내표면까지 수평거리 <span class="num">10m</span> 초과 지면 접한 바닥, 바닥면적 <span class="num">150㎡</span> 이하 개별 점포 출입문, 소방관진입창 등</li>
+        <li><b class="term">EPI 필수 배점</b> — 건축부문 1번(단열성능) <span class="num">0.6점</span> 이상 획득</li>
+        <li><b class="term">바닥난방 단열재</b> — 온수배관(발열선) 하부~슬래브 사이 구성재료 열저항 합계가 해당 바닥 총열관류저항의 <span class="num">60%</span> 이상</li>
+        <li><b class="term">방습층</b> — 단열재 실내측에 설치(투습도 24시간당 <span class="num">30g/㎡</span> 이하), 이음부 100㎜·모서리 150㎜ 이상 중첩</li>
+        <li><b class="term">방풍구조·기밀성 창</b> — 외기 직접 면한 1층·지상 연결 출입문은 방풍구조(예외: 300㎡ 이하 개별 점포, 주택 출입문, 너비 1.2m 이하 등), 거실 창이 외기에 직접 면하면 <span class="tl">기밀성 창(KS F 2292 1~5등급)</span> 설치</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg></span><span class="lb"><i>2</i>기계·전기·신재생부문 의무사항 (제8조·제10조·제12조)</span></span>
+      <ul class="list">
+        <li><b class="term">기계: 외기조건</b> — 용량계산은 위험률 <span class="num">2.5%</span>(냉·난방기 분리) 또는 <span class="num">1%</span>(연간 총시간) 또는 별표7의 외기 온·습도</li>
+        <li><b class="term">기계: 설비</b> — 펌프는 KS 표시인증(KS B 6318 등)·KS 효율 이상, 기기배관·덕트는 표준시방서 보온두께 이상 단열(벽·바닥 매립 배관 제외)</li>
+        <li><b class="term">전기: 수변전·동력</b> — 변압기 신설·교체는 <span class="tl">고효율제품</span>, 전동기별 역률개선용 커패시터 설치(소방설비·인버터 전동기 제외), 간선 전압강하는 한국전기설비규정 준수</li>
+        <li><b class="term">전기: 조명</b> — 유도등·주차장 조명은 고효율 <span class="tl">LED</span>, 공동주택 세대현관·숙박시설 객실 입구·계단실은 인체감지 점멸형 등, 창측 전등군 부분점멸, 공동주택 세대별 <span class="tl">일괄소등스위치</span>(전용 60㎡ 이하 제외)</li>
+        <li><b class="term">신재생</b> — 설비 설치 시 산업통상자원부 「신·재생에너지 설비의 지원 등에 관한 규정」 준수</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V8l6-4 6 4v13"/><path d="M10 21v-4h4v4"/><path d="M9 11h2M13 11h2M9 15h2M13 15h2"/></svg></span><span class="lb"><i>3</i>공공건축물 강화기준 — 공공기관이 지으면 더 높다</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">EPI 판정점수 상향</b> — 공공기관 신축(별동 증축 포함)은 <span class="num">74점</span> 이상(일반 65점) ｜ 소비총량은 <span class="num">140 kWh/㎡·년</span> 미만(일반 200)</li>
+        <li><span class="no">2</span><b class="term">공공건축물(영 제10조의2) 건축·리모델링</b> — EPI 건축 7번 <span class="num">0.6점</span>↑, 기계 1·2번 <span class="num">0.9점</span>↑, 전기 8번 <span class="num">0.6점</span>↑ 필수(에효 1++ 이상·제로에너지 인증 취득 등이면 일부 제외 가능)</li>
+        <li><span class="no">3</span><b class="term">공공기관 에너지이용 합리화 추진 규정 적용 건축물</b> — EPI 기계 10번 <span class="num">0.6점</span>↑, 전기 8번 <span class="num">1점</span> 획득</li>
+        <li><span class="no">4</span><b class="term">적용예외 등급도 상향</b> — 일반 건축물은 에효 1+ 이상이면 EPI 판정 면제 가능하나 공공기관은 <span class="num">1++</span> 이상이어야 함(제4조)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5M12 16V8M16 16v-8"/></svg></span><span class="lb"><i>4</i>에너지 소비 총량제 (제21조·제22조·별표10)</span></span>
+      <ul class="list">
+        <li><b class="term">평가 대상</b> — 신축 또는 별동 증축하는 <span class="tl">업무시설</span>·<span class="tl">교육연구시설</span> 중 연면적 합계 <span class="num">3천㎡ 이상</span> → 건축물 에너지소요량 평가서 제출</li>
+        <li><b class="term">판정</b> — 단위면적당 1차 에너지소요량 합계 <span class="num">200 kWh/㎡·년</span> 미만 적합(공공기관 <span class="num">140</span> 미만). 적합하면 EPI 판정(제15조) 미적용 가능</li>
+        <li><b class="term">평가 방법</b> — <span class="tl">ISO 52016</span> 등 국제규격에 따라 난방·냉방·급탕·조명·환기를 종합 평가하는 프로그램으로 산출(별표10)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>계획서 제출</b> <span class="num">500㎡</span> 이상</span>
+        <span class="chip"><b>EPI 적합</b> <span class="num">65점</span>↑</span>
+        <span class="chip"><b>공공기관 신축</b> <span class="num">74점</span>↑</span>
+        <span class="chip"><b>사전확인 유효</b> <span class="num">1개월</span></span>
+        <span class="chip"><b>소비총량 대상</b> 업무·교육연구 <span class="num">3천㎡</span>↑</span>
+        <span class="chip"><b>1차 에너지</b> <span class="num">200</span>(공공 <span class="num">140</span>) kWh/㎡·년 미만</span>
+        <span class="chip"><b>바닥난방 단열</b> 열저항 <span class="num">60%</span>↑</span>
+        <span class="chip"><b>EPI 건축 1번</b> <span class="num">0.6점</span>↑</span>
+        <span class="chip"><b>증축 예외 한계</b> <span class="num">50%</span>·<span class="num">2,000㎡</span></span>
+        <span class="chip"><b>완화 적용</b> ×[1+완화기준]</span>
+        <span class="chip"><b>EPI 면제 등급</b> 에효 <span class="num">1+</span>(공공 <span class="num">1++</span>)↑</span>
+        <span class="chip"><b>재검토</b> 매 <span class="num">3년</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">냉난방 연면적 <b>500㎡ 이상</b>이면 에너지절약계획서·설계 검토서를 제출하여 <b>의무사항 전 항목 채택 + EPI 65점(공공기관 신축 74점)</b>을 충족해야 하고, 업무·교육연구시설 <b>3천㎡ 이상</b>은 1차 에너지소요량 <b>200(공공 140) kWh/㎡·년 미만</b>까지 만족해야 한다. 허가권자는 이행을 <b>허가조건</b>으로 걸고, 사용승인 시 <b>이행 검토서</b>로 확인한다.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">에너지성능지표(EPI) 항목별 배점·별지 제1호 설계 검토서 서식, 별표1~별표12 세부 수치는 원문 참조 ｜ 권장사항(제7조·제9조·제11조·제12조의2)은 EPI 평점 획득을 위한 선택 적용 항목임 ｜ 2026. 8. 31. 기준 제2024-421호가 현행 ｜ 출처: 국가법령정보센터(www.law.go.kr)</p>
+  <p class="pgno">2 / 2</p>
+
+</div>
+</body></html>

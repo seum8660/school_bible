@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>표준 설계공모지침서(일반 설계공모) — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  /* 여백 없이 전면 채움 — 남는 높이를 섹션 사이에 균등 배분 */
+  .page.haspin .rolebar, .page.haspin .row2, .page.haspin .row1{ margin-bottom:auto; }
+  .page.haspin .row1.recap{ margin-bottom:auto; }
+
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+  .tbl tr.hi td{ background:#EAF4F6; }
+
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+</style></head><body>
+
+<!-- ═══════════════ 1쪽 — 공모 개요·운영 체계·절차 ═══════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">공모 개요 · 운영 체계 · 절차</h1>
+  <div class="ubar"></div>
+  <p class="meta">제1장 1(공모 개요)·2(공모 일정과 방법) ｜ 일반 설계공모: 「건축서비스산업 진흥법」 제21조·시행령 제17조, 「건축 설계공모 운영지침」(국토교통부 고시 제2026-250호)에 따라 시행 ｜ 공식 언어 한국어·미터법·한국시간(GMT+9)</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주기관 = 공모 시행·관리의 책임 주체</span> — 직접 운영이 어려우면 시행령 제17조제4항에 따라 <b class="term">전문기관에 위탁</b>하거나 <b class="term">운영위원회</b>를 구성할 수 있다. <span class="rolet">운영위원·심사위원·공모참가자</span>는 모두 <b class="term">사전접촉 금지 서약서·확인서</b>를 제출하며, 공지사항 확인 책임은 <span class="rolet">공모참가자</span>에게 있다(미확인 불이익에 이의 제기 불가).</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span><span class="lb"><i>1</i>지침서 성격과 운영 기반</span></span>
+      <ul class="list">
+        <li><b class="term">목적</b> — 기관별로 다른 공모 절차·심사기준을 표준화해 발주자·설계자·심사위원이 <span class="tl">동일한 기준과 언어</span>로 소통</li>
+        <li><b class="term">전 과정 온라인</b> — 공고, 참가등록, 심사위원 교섭·선정, 공모안 제출, 질의응답, 심사·투표, 결과발표를 <span class="tl">건축HUB</span>에서 운영</li>
+        <li><b class="term">공고처 전환</b> — <span class="num">’27. 1.</span>부터 공고·결과는 세움터가 아닌 <span class="tl">건축HUB</span>에 공고(세움터 폐쇄 예정)</li>
+        <li><b class="term">기한 기준</b> — 마감기한은 건축HUB에 <span class="tl">최종 저장·등록된 시간</span> 기준, 시스템 장애 시 기한 연장 운영 가능</li>
+        <li><b class="term">사업개요 명시</b> — 예정 설계비에 각 분야 설계비·예비인증비·설계안전성검토·보험료 등 포함, <span class="tl">설계의도구현 용역비는 별도</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 20c0-3.3 2.7-5 6-5s6 1.7 6 5M14 15c3.3 0 6 1.7 6 5"/></svg></span><span class="lb"><i>2</i>운영위원회 vs 전문기관 — 목적은 같고 역할·비용이 다름</span></span>
+      <table class="tbl">
+        <thead><tr><th style="width:16mm">구분</th><th>운영위원회</th><th>전문기관</th></tr></thead>
+        <tbody>
+          <tr><td class="it">구성·근거</td><td>발주기관 <span class="o">1인</span>+외부 전문가 <span class="o">2인</span> = <span class="o">3인</span><br>(운영지침 제11조제9항)</td><td>위탁 운영<br>(시행령 제17조제4항)</td></tr>
+          <tr><td class="it">주요 업무</td><td class="lf">공모 방식·일정·지침·심사위원·지침 해석 등 주요사항 검토·<b>결정</b></td><td class="lf">같은 사항 검토 + 운영 전반을 직접 <b>시행·관리</b></td></tr>
+          <tr><td class="it">비용</td><td>위원 수당·여비(적음)</td><td>용역비(큼) — 예산 반영 필요</td></tr>
+        </tbody>
+      </table>
+      <ul class="list" style="margin-top:1.4mm">
+        <li>둘 다 <span class="tl">의무 아님</span> — 발주기관 역할 보완용. 운영위원도 사전접촉 금지 서약서·확인서 제출</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg></span><span class="lb"><i>3</i>공모 절차 타임라인 — 1안(1차 심사) / 2안(2차 발표심사) 선택</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">공고·심사위원 공개</b> → <b class="term">참가등록</b> → <b class="term">현장설명회</b> → <b class="term">질의접수·답변</b> → <b class="term">심사위원 기피 신청</b> → <b class="term">공모안 제출</b> → <b class="term">기술검토·참가자 소명</b> → <b class="term">작품심사</b>(온라인 생중계) → <b class="term">당선작 발표</b></li>
+        <li><span class="no">2</span><b class="term">1안(1차 심사)</b> — 한 번의 심사로 당선작 선정. 공모안 <span class="num">10~15건 이내</span>·소규모·예산과 시간이 제한된 사업에 적합(시간·비용 절감, 서면심사 시 이해도 한계)</li>
+        <li><span class="no">3</span><b class="term">2안(2차 발표심사)</b> — 1차 서면심사에서 <span class="num">5개</span> 작품 선정 후 2차 발표·질의응답으로 당선작 선정. <span class="num">10~15건 초과</span>·대규모·공공성이 높은 사업에 적합(신뢰성↑, 일정·비용↑)</li>
+        <li><span class="no">4</span><b class="term">기술검토 일정 필수 반영</b> — 개정 지침 제9조에 따라 기술검토와 참가자 소명 일정을 공모 일정에 반드시 포함(소명 대상은 개별 연락)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>4</i>참가자격 (제1장 2.6)</span></span>
+      <ul class="list">
+        <li><b class="term">기본 요건</b> — 공고일 현재 「건축사법」 제7조 <span class="tl">건축사 면허</span> + 제23조 <span class="tl">건축사사무소 개설신고</span> 완료, 결격사유 없을 것</li>
+        <li><b class="term">공동응모</b> — 2인 이상 가능(공동이행 방식), 구성원별 최소 지분율 설정, <span class="tl">대표자 1인</span>에게 법적 권리·책임 귀속(공동수급표준협정서 제출). 등록 후 구성원 <span class="tl">제외만 가능</span>, 변경·추가 불가</li>
+        <li><b class="term">외국 건축사</b> — 국내 개설자와 공동업무수행 협약 필수, <span class="tl">계약 대표자는 국내 건축사</span></li>
+        <li><b class="term">제한</b> — 등록취소·휴폐업·업무정지 기간 중인 자 불가 ｜ <span class="num">1인 1작품</span>(중복 시 자격 박탈) ｜ 발주기관·위원·건축기획 및 설계관리 용역 참여 연구진이 속한 사무소 등 <span class="tl">공모 관계자 참가 불가</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9z"/><path d="M6 7h12v14H6z"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>참가등록 · 질의 · 제공자료</span></span>
+      <ul class="list">
+        <li><b class="term">참가등록</b> — 건축HUB 회원가입 후 <span class="tl">기업 공동인증서</span>로 등록(사업자등록번호 일치 필수), 적격/부적격 문자 통보 — 부적격은 <span class="tl">마감 전까지 수정</span> 가능, 마감 임박 등록 지양</li>
+        <li><b class="term">참가등록번호</b> — <span class="num">알파벳 3자리-숫자 4자리</span>(예: REB-7445), 공모 마감까지 모든 제출물에 일관 사용, 확인서 발급 여부 확인 책임은 참가자</li>
+        <li><b class="term">질의</b> — 등록 완료자에 한해 <span class="num">1회</span>(기간 내 수정·취소 가능), 회신은 일괄 게시·개별 회신 없음, 답변은 <span class="tl">지침의 추가·수정</span>으로 간주</li>
+        <li><b class="term">제공자료</b> — 현황측량도·지적도(CAD)·지반조사 보고서·건축기획 보고서 등, <span class="tl">공모 외 목적 사용 금지</span>(보안각서 제출)</li>
+        <li><b class="term">현장설명회</b> — 개최·참석조건은 발주기관 선택, <span class="tl">리모델링 등 현장 확인이 필수인 사업은 개최 권장</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>고시</b> 제<span class="num">2026-250</span>호(26.5.22)</span>
+        <span class="chip"><b>건축HUB 공고 전환</b> <span class="num">’27.1.</span></span>
+        <span class="chip"><b>운영위원회</b> <span class="num">3인</span>(발주 1+외부 2)</span>
+        <span class="chip"><b>심사방식 분기</b> 공모안 <span class="num">10~15건</span></span>
+        <span class="chip"><b>2차 발표 대상</b> <span class="num">5개</span> 작품</span>
+        <span class="chip"><b>참가등록번호</b> 알파벳 <span class="num">3</span>+숫자 <span class="num">4</span></span>
+        <span class="chip"><b>질의</b> 등록자당 <span class="num">1회</span></span>
+        <span class="chip"><b>작품 제출</b> <span class="num">1인 1작품</span></span>
+        <span class="chip"><b>공동응모</b> 등록 후 제외만 가능</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">표준 설계공모지침서(일반 설계공모, 26.7 개정) 제1장 1~2 발췌 요약 ｜ ○○·00 표기 항목(지분율·용량·일시 등)은 발주기관 작성값으로 제외 ｜ 출처: 한국부동산원 공공건축지원센터(www.rebpbc.re.kr) · 건축HUB(www.hub.go.kr)</p>
+  <p class="pgno">1 / 3</p>
+
+</div>
+
+<!-- ═══════════════ 2쪽 — 심사위원회·기술검토·평가 ═══════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">심사위원회 구성 · 기술검토 · 작품심사</h1>
+  <div class="ubar"></div>
+  <p class="meta">제1장 2.10(기피 신청)·3(심사) ｜ 개정 「건축 설계공모 운영지침」: 기술검토 의무화(제9조), 심사위원 편중 제한(제11조제5항), 대상지 사전답사(제13조제2항), 심사결과·기술검토 공개(제14조)</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주기관등 = 기술검토의 의무 주체</span>(개정 지침 제9조제5·6항) — 법령·지침 위반사항을 검토하고 참가자 소명을 받아 <b class="term">심사위원회에 보고</b>하며, 결과와 의결사항을 <b class="term">심사결과 발표일에 건축HUB에 공개</b>해야 한다(직접 수행 또는 전문위원회 위임). <span class="rolet">심사위원 = 청탁금지법상 공무수행사인</span>(제11조제1항제4호) — 위반 시 벌칙·과태료 처분을 받는다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 20c0-3.3 2.7-5 6-5s6 1.7 6 5M14 15c3.3 0 6 1.7 6 5"/></svg></span><span class="lb"><i>1</i>심사위원회 구성·운영 (3.1)</span></span>
+      <ul class="list">
+        <li><b class="term">구성</b> — 위원장 포함 심사위원 + <span class="tl">예비 심사위원</span>. 건축사·교수 비율은 각 <span class="num">2/3 초과 금지</span>(예비→본위원 위촉 시에도 적용)</li>
+        <li><b class="term">위촉</b> — 건축HUB 심사위원 통합 풀 활용(’26. 6. 기준 약 <span class="num">2,100명</span>), 미등록 위원은 건축HUB 등록 후 <span class="tl">심사총량제</span> 이행 확인</li>
+        <li><b class="term">명단 공개</b> — 공고 시 공개·이후 교체 불가 원칙. 단 <span class="num">20억원 이상</span> 사업은 제출마감일 공개 가능(제12조제2항), 명단 변경 시 건축HUB 즉시 공고</li>
+        <li><b class="term">운영</b> — 위원 <span class="tl">정수의 과반수</span> 참석(최초 위촉 수 기준), 미달 시 재개최 ｜ 위원장은 <span class="tl">호선</span> ｜ 예비위원은 전 과정 참석하되 <span class="tl">평가 불참</span>, 결원 시 위촉되어 평가 참여</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span><span class="lb"><i>2</i>심사위원 제척·기피 (2.10 — 공고일 기준)</span></span>
+      <ul class="list">
+        <li><b class="term">관계</b> — 위원(배우자·전 배우자 포함)이 심사대상 업체의 당사자·공동권리자·친족·이해당사자·대리인(이었던) 경우</li>
+        <li><b class="term">재직·용역</b> — 최근 <span class="num">3년 이내</span> 해당 업체 임직원 재직 ｜ 최근 <span class="num">2년 이내</span> 자문·연구·용역(하도급 포함)·감정·조사 수행</li>
+        <li><b class="term">기타</b> — 공동응모 당선 이력(공고일부터 <span class="num">1년 이내</span> 준공·과업 완료) ｜ 같은 학교·같은 학과 <span class="tl">조교수 이상</span> 근무</li>
+        <li><b class="term">기피 신청</b> — 참가자가 건축HUB에서 신청 + 근거자료 제출, 기한 내 미제출 시 해당 없음 간주 ｜ 제척사유를 알고도 미신청한 참가자의 공모안은 <span class="tl">의결로 실격 가능</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span><span class="lb"><i>3</i>기술검토 6단계 — 익명성 유지가 핵심 (3.2)</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">취합·익명성 관리</b> — 심사번호·참가등록번호와 별개의 <span class="tl">기술검토번호</span>를 임의 부여·매칭 → <span class="no" style="position:static;display:inline-block;margin:0 1mm">2</span><b class="term">기술검토</b> — 법규·지침 적합 여부를 검토, 의견서[서식 제16-1호] 작성 → <span class="no" style="position:static;display:inline-block;margin:0 1mm">3</span><b class="term">참가자 소명</b> — 소명서 기한 내 제출(심사번호 공란)</li>
+        <li><span class="no">4</span><b class="term">결과서 작성</b> — 소명·인정 여부, 위반사항 최종 정리 → <span class="no" style="position:static;display:inline-block;margin:0 1mm">5</span><b class="term">심사위원회 상정</b> — 소명서에 심사번호 기입해 대조 확인 → <span class="no" style="position:static;display:inline-block;margin:0 1mm">6</span><b class="term">보고·의결</b> — 반영 여부는 <span class="tl">심사위원회 의결</span>로 결정</li>
+        <li><span class="no">7</span><b class="term">검토 항목</b> — 법규검토(국토계획법·건축법·주차장법·장애인등편의법 등) ｜ 지침 위반(<span class="tl">예정 공사비 초과, 제시 면적 초과·미달</span>, 작성 일반사항) ｜ 실격기준(중대 위반·규격 위반·왜곡·허위·익명성 위반·모방)</li>
+        <li><span class="no">8</span><b class="term">공개 의무</b> — 기술검토 결과 + 심사위원회 의결사항을 <span class="tl">심사결과 발표일에 건축HUB 공고</span>. 선정 후 중대 위반 발견 시 심사위원회 재개최(대면·서면)로 실격 판정 가능</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5M12 16V8M16 16v-8"/></svg></span><span class="lb"><i>4</i>평가 — 투표제 원칙 (3.3)</span></span>
+      <ul class="list">
+        <li><b class="term">투표제</b> — 토론 기반 투표: 1차 <span class="num">5개</span> → 2차 <span class="num">2개</span> → 3차 <span class="tl">당선작</span> 선정. 대상 <span class="num">6개 미만</span>이면 1차 생략 가능, 기표 수 = 단계별 선정 수, 동일 득표 시 재투표</li>
+        <li><b class="term">득표수 비공개</b> — 다음 차수 투표 영향 방지, 위원회 요청 시에만 공개 ｜ 각 투표 전 <span class="tl">충분한 토론 의무</span>(제15조제1항)</li>
+        <li><b class="term">채점제(의결 시 변경 가능)</b> — 배치 <span class="num">20</span>·공간 <span class="num">30</span>·경관 <span class="num">30</span>·기술 <span class="num">15</span>·기타 <span class="num">5점</span>, <span class="tl">최고·최저 제외 산술평균</span>, 동점 시 감점 기준으로 순위 결정</li>
+        <li><b class="term">감점(의결로 합산)</b> — 법규 위반 <span class="num">-2점/건</span>(시정 가능한 것) ｜ 공사비 초과·면적 초과/미달 <span class="num">-3점</span> ｜ 지침 위반 <span class="num">-0.5점/항목</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H4z"/><path d="M8 21h8M12 16v5"/></svg></span><span class="lb"><i>5</i>실격기준 · 심사 공개 · 발표심사</span></span>
+      <ul class="list">
+        <li><b class="term">실격</b> — 심사위원 <span class="tl">사전접촉</span>(제3자 경유 포함, 인식 여부 불문)·금품 향응·서류 위변조·익명성 위반(업체명 표시 등)·타 작품 모방·제출마감 후 부도 및 제재 등 — <span class="tl">사후 발견 시에도 수상 취소</span></li>
+        <li><b class="term">전 과정 공개</b> — 심사 과정 전체 녹화 + <span class="tl">실시간 공개</span>(디지털심사장 ’25. 7.~ 운영), 녹화·녹취 열람은 결과 공개 후 <span class="num">7일 이내</span> 신청</li>
+        <li><b class="term">평가사유서</b> — 심사위원은 <span class="tl">제출된 모든 공모안</span>에 대해 작성 ｜ 실격 작품은 사유를 심사의결서에 기록, 위원 전원 서명</li>
+        <li><b class="term">발표심사(2차)</b> — 발표자는 <span class="tl">공고일 이전부터 재직 + 계획 참여 설계자</span>(재직증명서 제출, 배석 1인), 건축HUB 무작위 심사번호 순, <span class="tl">블라인드 발표</span>(칸막이 등) 적용, 미참석 시 탈락 간주</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>건축사·교수 비율</b> 각 <span class="num">2/3</span> 초과 금지</span>
+        <span class="chip"><b>통합 풀</b> 약 <span class="num">2,100명</span>(’26.6)</span>
+        <span class="chip"><b>명단 지연 공개</b> <span class="num">20억원</span>↑ 사업</span>
+        <span class="chip"><b>정족수</b> 정수 과반수</span>
+        <span class="chip"><b>제척</b> 임직원 <span class="num">3년</span>·용역 <span class="num">2년</span>·당선 <span class="num">1년</span></span>
+        <span class="chip"><b>투표</b> <span class="num">5</span>→<span class="num">2</span>→당선(<span class="num">6개</span> 미만 1차 생략)</span>
+        <span class="chip"><b>배점</b> <span class="num">20·30·30·15·5</span></span>
+        <span class="chip"><b>감점</b> <span class="num">-2</span>/<span class="num">-3</span>/<span class="num">-0.5점</span></span>
+        <span class="chip"><b>녹화 열람</b> 공개 후 <span class="num">7일</span> 이내</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">표준 설계공모지침서(일반 설계공모, 26.7 개정) 제1장 2.10·3 발췌 요약 ｜ 심사위원 수·발표시간 등 00 표기 항목은 발주기관 작성값으로 제외 ｜ 출처: 한국부동산원 공공건축지원센터(www.rebpbc.re.kr) · 건축HUB(www.hub.go.kr)</p>
+  <p class="pgno">2 / 3</p>
+
+</div>
+
+<!-- ═══════════════ 3쪽 — 당선·계약·공정성·제출도서 ═══════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">당선작 · 계약 · 공정성 확보 · 제출도서 기준</h1>
+  <div class="ubar"></div>
+  <p class="meta">제1장 4(당선작과 입상작)·5(계약)·6(기타사항) ｜ 제2장 제출도서 작성기준 ｜ 제3장 설계지침(구성) ｜ 6.4 공정성 확보 방안(사전접촉 금지)은 26.7 개정 시 신설</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주기관 = 계약·보상·사후관리의 책임 주체</span> — 계약상대자 결정 후 <b class="term">10일 이내 계약 체결</b>, 공고에 명시한 대가를 설계비로 계약하고, 「건축서비스산업 진흥법」 제22조에 따라 설계자를 건축과정에 참여시켜 <b class="term">설계의도구현</b>을 보장한다. <span class="rolet">공모참가자·심사위원(예비 포함)</span>은 공고일부터 심사결과 발표 이전까지 <b class="term">상호 사전접촉이 일체 금지</b>된다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8z"/></svg></span><span class="lb"><i>1</i>당선작·입상작과 보상 (4.1)</span></span>
+      <ul class="list">
+        <li><b class="term">당선자</b> — <span class="tl">설계권 + 설계의도구현권</span>(설계의도구현비는 실비정액가산방식으로 협의 산정, 예정 설계비와 별도)</li>
+        <li><b class="term">기타 입상자 수</b> — 공모안 3~5개 <span class="num">1작</span>(보상예산 1/3) ｜ 6~7개 <span class="num">2작</span>(4:3/10) ｜ 8~9개 <span class="num">3작</span>(4:3:2/10) ｜ 10개 이상 <span class="num">4작</span>(4:3:2:1/10) — 보상비는 <span class="tl">예정 설계비의 10%</span> 수준 책정 예시</li>
+        <li><b class="term">계약 포기·결렬</b> — 차순위자에게 협상권 부여 가능, 기지급 보상금을 공제한 금액을 설계비로 지급</li>
+        <li><b class="term">사업 취소</b> — 계약 전 발주기관 사정으로 취소 시 당선자에게 <span class="tl">보상 예산의 1/2</span> 지급 가능</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H4z"/><path d="M4 20h16M8 16v4M16 16v4"/><path d="M8 8l3 3 5-5"/></svg></span><span class="lb"><i>2</i>결과 발표 · 저작권 (4.2~4.3)</span></span>
+      <ul class="list">
+        <li><b class="term">발표</b> — 심사일부터 <span class="num">7일 이내</span> 발주기관 홈페이지 + 건축HUB에 공고</li>
+        <li><b class="term">공개 범위</b> — 심사위원별 투표결과(또는 평가점수, <span class="tl">심사위원 실명 포함</span>), 총괄표(집계·합산표), 모든 입상작의 심사위원별 평가사유서·이미지</li>
+        <li><b class="term">저작권</b> — 제출물 저작권은 <span class="tl">참가자(설계자)</span> 소유. 발주기관의 출판·전시·매체 제공 등 <span class="tl">비영리 활용은 동의 간주</span>(명의·저작권 명확히 표기), 그 외 용도는 설계자 동의 필요</li>
+        <li><b class="term">지재권 보증</b> — 제3자 지적재산권 침해 책임은 참가자, 문제 발생 시 입상 취소 가능</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h10"/><path d="M15 8l4 4-4 4"/><path d="M12 3H5v18h7"/></svg></span><span class="lb"><i>3</i>계약에 관한 사항 (5.1)</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">체결</b> — 계약상대자 결정 후 특별한 사유가 없으면 <span class="num">10일 이내</span> 체결(여건에 따라 협의 조정), 상세 범위는 계약서·과업지시서에 따름</li>
+        <li><span class="no">2</span><b class="term">대가</b> — 공고에 명시한 대가 = 설계비로 계약(운영지침 제2조제14호), 업무 추가·제외 시 계약금 조정 ｜ 심사위원회 보완 요구에 따른 당선안 수정 시 <span class="tl">설계비·설계기간 반영</span></li>
+        <li><span class="no">3</span><b class="term">공동수급체</b> — 전기·기계·소방·정보통신 설계면허가 없는 당선자는 자격보유업체와 <span class="tl">분담이행방식 공동수급체(5인 이내)</span> 구성, 대표는 <span class="tl">건축사사무소 개설자</span></li>
+        <li><span class="no">4</span><b class="term">실격 발견 시</b> — 계약 전 당선 무효 ｜ 계약 후 계약 무효(선금·기성금 회수) + 사업 지연 민·형사 책임 ｜ 입상작은 입상 무효 + <span class="tl">보상금 회수</span> ｜ 차순위자에게 설계권 승계 가능</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M12 8v5M12 16v.5"/></svg></span><span class="lb"><i>4</i>공정성 확보 — 사전접촉 금지 (6.4, 신설)</span></span>
+      <ul class="list">
+        <li><b class="term">금지 기간</b> — 공고일부터 <span class="tl">심사결과 발표 이전까지</span>, 참가자(대표자·공동참여자)↔심사위원(예비 포함) 상호 금지</li>
+        <li><b class="term">사전접촉 정의</b> — 대면·전화·문자·이메일·SNS로 참가 사실을 의도적으로 인식시키는 행위 ｜ 금품·물품·향응(<span class="tl">공모 종료 후 자문·연구·용역 약속 포함</span>) 요구·제안(제3자 경유 포함)</li>
+        <li><b class="term">신고</b> — 인지한 참가자는 사전접촉 확인 신고서[서식 제6-5호] + 증빙(녹취·문자·캡쳐)으로 즉시 신고, 신고·조치 현황은 <span class="tl">심사결과 발표 시 건축HUB 공개</span></li>
+        <li><b class="term">제재</b> — 확인 시 즉시 배제(<span class="tl">참가자 실격·심사위원 해촉</span>), 선정 이후에도 당선·입상 취소 + <span class="tl">보상비 환수</span> + 민·형사 조치</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h12l4 4v14H4z"/><path d="M16 3v4h4"/><path d="M8 13h8M8 17h5"/></svg></span><span class="lb"><i>5</i>제출도서 작성기준 (제2장)</span></span>
+      <ul class="list">
+        <li><b class="term">4종 제출(건축HUB 온라인)</b> — ①게시용 공개이미지 JPG(<span class="num">420×297mm</span>·150dpi, 결과발표 시 공개, 평가 미반영) ②설계설명서 PDF ③설계도판 PDF(<span class="tl">2차 심사 대상자 한함</span>) ④관련서류 ZIP 1개 — 파일명은 <span class="tl">참가등록번호_명칭</span></li>
+        <li><b class="term">설계설명서</b> — A3 가로(<span class="num">420×297mm</span>), 여백 상하좌우 <span class="num">20mm</span>, 본문 폰트 <span class="num">10pt 이상</span>(도표·이미지 내 제외), 표지 서식 제7호 그대로, 쪽번호 <span class="tl">-1-</span> 형식</li>
+        <li><b class="term">설계도판</b> — <span class="num">685.8×1,219.2mm</span> 세로(300dpi), 여백 <span class="num">10mm</span></li>
+        <li><b class="term">유의</b> — 참가자 특정 표시 금지(<span class="tl">익명성, 위반 시 실격 가능</span>) ｜ 모형사진 불가(스터디 모델 이미지 가능) ｜ 3D는 비렌더링(1안)·렌더링(2안) 중 공모별 지정 ｜ 관련서류: 자격증·개설신고확인증·청렴서약서·행정처분 조회서 등(사본은 원본대조필)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V9l8-5 8 5v11"/><path d="M4 14h16"/><path d="M9 20v-3h6v3"/></svg></span><span class="lb"><i>6</i>제3장 설계지침 — 표준화보다 ‘구성’ 참고</span></span>
+      <ul class="list">
+        <li><b class="term">구성</b> — 계획 개요(대상지·계획 내용) → 설계지침(배치·평면·입면 단면·재료 마감·구조·기계 소방·전기 통신·에너지·친환경·기타) → 시설 구성(배경·목표·규모 기준·세부사항) → 운영계획·조직 → 대상지 관련법규. 건축기획 결과를 반영해 <span class="tl">구체적·특징적으로</span> 작성</li>
+        <li><b class="term">면적 관리 관행</b> — ‘면적기준 준수’ 실은 <span class="num">±10%</span> 내 조정, 전체 연면적은 <span class="num">±5%</span> 등 그 이하로 설정하는 경우가 많음 ｜ 공용면적비 <span class="num">30~35%</span> 확보 권장 ｜ 준수사항과 참가자 제안 가능 사항을 명확히 구분</li>
+        <li><b class="term">서식 16종</b> — 보안각서·공동수급협정서·대표자 선임계·청렴서약서·사전접촉 서약 및 확인·신고서(제6호)·설계설명서 표지·건축개요·면적표·법규검토서·심사위원 위촉 서약(제11호)·심사참여 현황(제12호)·기술검토 의견·소명·결과서(제16호) 등</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>7</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>결과 발표</b> 심사일부터 <span class="num">7일</span> 이내</span>
+        <span class="chip"><b>계약</b> <span class="num">10일</span> 이내 체결</span>
+        <span class="chip"><b>입상자</b> <span class="num">1~4작</span>(공모안 수 따라)</span>
+        <span class="chip"><b>보상비</b> 예정 설계비의 <span class="num">10%</span></span>
+        <span class="chip"><b>사업취소 보상</b> 예산의 <span class="num">1/2</span></span>
+        <span class="chip"><b>공동수급체</b> <span class="num">5인</span> 이내 분담이행</span>
+        <span class="chip"><b>설계설명서</b> A3·여백 <span class="num">20mm</span>·폰트 <span class="num">10pt</span>↑</span>
+        <span class="chip"><b>설계도판</b> <span class="num">685.8×1,219.2mm</span></span>
+        <span class="chip"><b>면적 관행</b> 실 <span class="num">±10%</span>·연면적 <span class="num">±5%</span></span>
+        <span class="chip"><b>공용면적비</b> <span class="num">30~35%</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">일반 설계공모는 <b>건축HUB에서 전 과정 온라인</b>으로 운영하며(’27. 1.부터 공고도 건축HUB), <b>발주기관</b>은 기술검토(6단계)·사전접촉 관리·심사 전 과정 공개를 책임진다. 심사는 <b>투표제(5→2→당선)</b>가 원칙이고, 당선자는 <b>설계권+설계의도구현권</b>을 얻어 <b>10일 이내</b> 계약하며, 실격·사전접촉이 확인되면 <b>선정 이후라도 취소·환수</b>된다.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">표준 설계공모지침서(일반 설계공모, 26.7 개정) 제1장 4~6·제2장·제3장 발췌 요약 ｜ 지침서 스스로 법령·고시 규정 외에는 의무사항이 아님을 명시 — 발주기관 여건에 맞게 조정 ｜ 출처: 한국부동산원 공공건축지원센터(www.rebpbc.re.kr) · 건축HUB(www.hub.go.kr)</p>
+  <p class="pgno">3 / 3</p>
+
+</div>
+</body></html>

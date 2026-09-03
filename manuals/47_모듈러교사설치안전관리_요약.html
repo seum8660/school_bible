@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>모듈러 교사 설치 시 안전관리 계획 및 감독 — 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans CJK KR','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  .chain{ font-size:6.6pt; line-height:1.7; color:var(--body); }
+  .chain b{ color:var(--navy); font-weight:700; }
+  .chain s{ color:var(--teal); text-decoration:none; font-weight:800; margin:0 0.8mm; }
+
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl thead th.h1{ text-align:left; }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .x{ color:var(--note); font-weight:400; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+  .tbl tr.hi td{ background:#EAF4F6; }
+
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style></head><body>
+<!-- ═══════════════ 1쪽 — 법적 지위 · 요구성능 · 검토 법령 ═══════════════ -->
+<div class="page">
+
+  <h1 class="title">모듈러 교사 설치 안전관리 — 법적 지위와 요구성능</h1>
+  <div class="ubar"></div>
+  <p class="meta">원문: 교육부·한국교육시설안전원 「모듈러 교사 설치 시 안전관리 계획 및 감독 안내서」 2024. 9. 개정(2024. 3. 제정) ｜ 48쪽 ｜ 개정사유: 조달청 카탈로그 계약 '임시학교 건물 임대서비스' 관리·감독 및 재활용 모듈러 교실 품질 확보 방안 마련 ｜ 근거: 교육시설법 제2조제11호·제10조의3·제10조의4, 건축법·소방시설법·환경보건법·학교보건법</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주기관(감독기관의 장 또는 교육시설의 장) = 안전관리계획서 접수·검토·확인서 통보·이행확인의 책임 주체</span> — <span class="rolet">업체(모듈러 교사를 설치·해체하려는 자)</span>는 설치 <b class="term">전</b>에 안전관리계획서를 제출하고 보완사항은 설치 전까지 보완 제출한다. <span class="rolet">감독관</span>은 잔토 반입·반출, 배수배관 고저차, 접합부 자재·규격을 승인하며, <span class="rolet">계약상대자</span>는 하자·유지관리와 제작·설치 하자로 인한 민·형사상 책임을 진다(귀책 없음의 입증책임도 계약상대자에게 있음).</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V9l8-5 8 5v11"/><path d="M4 14h16"/><path d="M9 20v-3h6v3"/></svg></span><span class="lb"><i>1</i>배경과 법적 지위</span></span>
+      <ul class="list">
+        <li><b class="term">배경</b> — 공장제작·현장설치로 공기가 짧으나 임시교사의 품질·안전 문제가 <span class="num">'23년 국정감사</span>에서 지적되어 대책 마련</li>
+        <li><b class="term">용도별 구분</b> — 임시교사용 = <span class="tl">가설건축물 축조 신고</span> 대상 ／ 영구 사용 = <span class="tl">건축신고 또는 승인</span> 대상. 그러나 실제 공사의 절차·내용은 용도별 차이가 없어 <span class="num">안전관리 사각지대</span> 발생</li>
+        <li><b class="term">존치기간</b> — 건축법 시행령 제15조제1항제2호: 가설건축물 존치기간 <span class="num">3년 이내</span></li>
+        <li><b class="term">법령 공백</b> — 모듈러 건축 관련 법령은 1992년 도입 PC주택의 <span class="tl">'공업화주택'</span>이 현재 전부. 학교시설은 다수 이용자·수업 소음·피난·신체활동 진동 특성상 <span class="tl">강화된 별도 기준</span> 필요</li>
+        <li><b class="term">개정 이력</b> — 2024.3 제정 → <span class="num">2024.9 개정</span>(재사용 모듈러 품질 확보 방안 보완, 단계별 발주처 제출서류 명확화, 교육시설법·소방시설법 개정 반영)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>2</i>요구성능 — '가설건축물'이 아닌 '학교'로 본다</span></span>
+      <ul class="list">
+        <li><b class="term">구조안전</b> — 「건축물의 구조기준 등에 관한 규칙」·KDS 41 00 00·학교시설 내진설계기준. <span class="tl">건축구조기술사의 구조안전 및 내진성능확인서</span> 구비 ※ 영구기초 미설치 특성상 전체 내진성능 확보에는 이견 존재</li>
+        <li><b class="term">피난·방화</b> — 건축법 제49조·제50조·제52조 및 피난·방화구조 규칙 적합</li>
+        <li><b class="term">소방</b> — 소방시설법에 따른 소방시설 확보, <span class="tl">기존 교사동과 동등</span> 설치</li>
+        <li><b class="term">환기·채광·조명·온습도·공기질</b> — 학교보건법 시행규칙 [별표2]·[별표4의2] 적합 창호·조명·기계설비</li>
+        <li><b class="term">단열</b> — 건축물의 에너지절약설계기준 [별표1] <span class="num">중부2지역 이상</span></li>
+        <li><b class="term">내구성</b> — 임대기간 종료 후 해체·이동·재설치 용이, <span class="num">재활용률 80% 이상</span></li>
+        <li><b class="term">진동·차음</b> — <span class="tl">사무실 수준</span> 확보(시험성적서 구비)</li>
+        <li><b class="term">확인 곤란 항목</b> — 업체 카탈로그·과업지시서는 요구성능을 대체로 반영하나 <span class="num">내화구조·내진성능</span>은 반영 유무 확인 불가 → 확인 가능한 <span class="tl">도면과 규격서를 발주자에게 제출</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span><span class="lb"><i>3</i>모듈러 교사 설치 시 검토 법령 — 수치 기준 (표Ⅰ-1)</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:18mm">구분</th><th class="h1" style="width:30mm">항목</th><th class="h1">주요 내용</th><th class="h1" style="width:44mm">관련 법규</th></tr></thead>
+        <tbody>
+          <tr class="hi"><td class="it" rowspan="3">피난시설</td><td class="lf">직통계단 설치</td><td class="lf">거실에서 보행거리 <span class="o">30m 이내</span> 직통계단 ／ 내화구조·불연재료는 <span class="o">50m 이내</span></td><td class="lf">건축법 시행령 제34조</td></tr>
+          <tr><td class="lf">바깥쪽 출구</td><td class="lf">출입문 유리는 <b>안전유리</b>, 피난층 바깥쪽 통로에 <b>경사로</b> 설치, 피난층 계단→바깥 출구 보행거리 <span class="o">30m 이내</span>(내화·불연 <span class="o">50m 이내</span>)</td><td class="lf">영 제39조 ／ 피난·방화규칙 제11조</td></tr>
+          <tr><td class="lf">계단·복도</td><td class="lf">초등 계단·계단참 너비 <span class="o">150㎝ 이상</span>, 단높이 <span class="o">16㎝ 이하</span>, 단너비 <span class="o">26㎝ 이상</span> ／ 중·고 단높이 <span class="o">18㎝ 이하</span> ／ 양옆 거실 복도 <span class="o">2.4m 이상</span>, 기타 복도 <span class="o">1.8m 이상</span></td><td class="lf">영 제48조 ／ 피난·방화규칙 제15조·제15조의2</td></tr>
+          <tr class="hi"><td class="it" rowspan="3">내화·마감</td><td class="lf">내화구조</td><td class="lf"><b>3층 이상·지하층 있는 건축물</b> — 기둥·보·바닥·벽 <span class="o">1시간 이상</span>, 지붕 <span class="o">0.5시간 이상</span></td><td class="lf">건축법 제50조 ／ 영 제56조</td></tr>
+          <tr><td class="lf">내부마감재료</td><td class="lf">거실 불연·준불연·난연 ／ 거실에서 지상 통하는 복도·계단 <b>불연·준불연</b> ／ 기타 불연·준불연</td><td class="lf">법 제52조 ／ 영 제61조 ／ 규칙 제24조</td></tr>
+          <tr><td class="lf">거실 채광·환기</td><td class="lf">채광창 바닥면적의 <span class="o">1/10</span> 확보, 환기창 바닥면적의 <span class="o">1/20</span> 확보</td><td class="lf">영 제51조 ／ 규칙 제17조</td></tr>
+          <tr class="hi"><td class="it">단열</td><td class="lf">교실·화장실·복도</td><td class="lf"><span class="o">중부2지역</span> 열관류율 이하</td><td class="lf">에너지절약설계기준 [별표1]</td></tr>
+          <tr><td class="it">안전</td><td class="lf">학교시설안전</td><td class="lf">교실·복도·계단·화장실에 대한 <b>안전관리기준</b></td><td class="lf">학교안전사고예방법 시행령 [별표1]</td></tr>
+          <tr><td class="it">환경</td><td class="lf">어린이활동공간</td><td class="lf">교실·도서실에 대한 <b>환경안전관리 기준</b>(5쪽 참조)</td><td class="lf">환경보건법 제23조 ／ 영 제16조</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3-1 4-1 6a3 3 0 0 0 6 0c0-1-.3-2-1-3 2 2 3 4 3 7a7 7 0 0 1-14 0c0-4 3-7 7-10z"/></svg></span><span class="lb"><i>4</i>소방시설 설치기준 — 연면적 기준</span></span>
+      <div class="chips" style="margin-bottom:1.6mm">
+        <span class="chip"><b>소화기</b> <span class="num">33㎡ 이상</span></span>
+        <span class="chip"><b>옥내소화전</b> <span class="num">3,000㎡ 이상</span></span>
+        <span class="chip"><b>간이스프링클러</b> SP 기준 이하 <span class="num">전 시설</span></span>
+        <span class="chip"><b>스프링클러</b> <span class="num">4층 이상 + 1,000㎡</span></span>
+        <span class="chip"><b>비상경보</b> <span class="num">400㎡ 이상</span></span>
+        <span class="chip"><b>자동화재탐지</b> <span class="num">2,000㎡ 이상</span></span>
+        <span class="chip"><b>비상방송</b> <span class="num">3,500㎡ 이상</span></span>
+        <span class="chip"><b>피난기구</b> <span class="num">3층 이상 층</span></span>
+      </div>
+      <ul class="list">
+        <li><b class="term">모든 층 의무</b> — 피난기구·피난안내도·유도등·휴대용 비상조명등</li>
+        <li><b class="term">강화 기준</b> — 「임시교실 소방시설 설치 및 안전관리 기준」(교육부·소방청, 2021.8)으로 기존 교사동과 동등 설치. <span class="tl">소화기·자동화재탐지설비·비상방송설비·유도등</span>은 <span class="num">바닥면적과 무관하게</span> 의무</li>
+        <li><b class="term">간이스프링클러</b> — 교육시설법 개정(2024.2.6 공포)으로 임시교사 의무화, <span class="num">2025.2.7 시행</span> → <span class="tl">현재 시행 중</span>(원문 발간 시점에는 시행 전)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span class="lb"><i>5</i>제작·설치기준과 원문 발간 이후 확인사항</span></span>
+      <ul class="list">
+        <li><b class="term">정의</b> — 공장에서 골조·마감재·기계 및 전기설비를 갖춘 유닛을 완성해 현장으로 운송, 단순조립·설치하여 완성하는 시스템(임대형). <span class="tl">기존 컨테이너 교실 제외</span></li>
+        <li><b class="term">제작·설치기준</b> — 건축 <span class="tl">KCS 41 00 00</span>, 설비 <span class="tl">KCS 31 00 00</span> ※ 원문 표기 'KSC 41 00 00'은 오기로 판단</li>
+        <li><b class="term">자재</b> — 한국산업표준(KS) 및 친환경제품. KS 인증 제품이 없으면 <span class="tl">시험성적서·구조검토서</span>로 사용 가능</li>
+        <li><b class="term">과업범위</b> — 운반·재사용·설치·해체 포함</li>
+        <li><b class="term">임시교실 정의</b> — 교실·도서실 등 교수·학습활동에 활용하기 위해 대통령령으로 정하는 건축기법에 따라 <span class="tl">현장에서 조립하여 설치하는 임시시설</span>(교육시설법 제2조제11호)</li>
+        <li><span class="num">★ 신설</span> <b class="term">교육시설법 시행규칙 제1조의2</b>(임시교실 교육시설의 안전성 확보, <span class="num">2025.2.7 시행</span>) — 법 제10조의4에 따라 <span class="tl">교육시설의 장</span>은 법 제10조제1항에 따른 교육시설의 안전 및 유지관리 등에 필요한 기준을 준수하여 임시교실의 안전성을 확보해야 함. <span class="tl">원문 발간(2024.9) 이후 신설된 조문</span>으로, 안내서에는 미반영</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">「모듈러 교사 설치 시 안전관리 계획 및 감독 안내서」(교육부·한국교육시설안전원, 2024.9) Ⅰ. 일반사항 발췌 요약 ｜ 법령 조문은 국가법령정보센터(www.law.go.kr) 대조 확인</p>
+  <p class="pgno">1 / 6</p>
+
+</div>
+
+<!-- ═══════════════ 2쪽 — 프로세스 · 사전검토 · 제출서류 ═══════════════ -->
+<div class="page">
+
+  <h1 class="title">설치 프로세스 · 사전검토와 단계별 제출서류</h1>
+  <div class="ubar"></div>
+  <p class="meta">Ⅱ. 모듈러 교사 설치 시 공정별 고려사항 1~2 ｜ Ⅰ-4 단계별 발주처 제출 서류 ｜ 프로세스 출처: 서울형 모듈러 임시교사 설치 가이드라인 개발 용역 보고서(한국교육시설안전원, 2022)</p>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></span><span class="lb"><i>1</i>설치 프로세스와 소요기간 — 총 4~5개월</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">사전검토</b> <span class="num">약 1개월</span> — 설치가능 여부 검토, 필요 실수 산정, 임대·구매방식 검토, 기본계획 및 설계</li>
+        <li><span class="no">2</span><b class="term">발주·계약</b> — 구매는 조달청 <span class="tl">혁신조달</span>, 임대는 <span class="tl">카탈로그 임대·2단계 입찰</span>. 혁신조달·카탈로그는 <span class="num">15일</span>로 단축 가능하나 2단계 입찰은 준비·공고·평가 포함 <span class="num">약 1개월</span></li>
+        <li><span class="no">3</span><b class="term">제작·운송</b> — 계약 후 <span class="num">최소 2개월</span>. 부대공사 병행(계약·발주는 모듈러 발주 시 함께 진행, 공사기간 <span class="num">1~2개월</span>)</li>
+        <li><span class="no">4</span><b class="term">공사·유지관리</b> — 실제 모듈러 설치 <span class="num">2주</span>, 마감공사 등 포함 시 <span class="num">약 1개월</span></li>
+        <li><span class="no">5</span><b class="term">해체·복원</b> <span class="num">약 1개월</span> — 임대인 경우</li>
+      </ul>
+      <ul class="list" style="margin-top:1.4mm">
+        <li><b class="term">가산 요인</b> — <span class="tl">영구용 모듈러 교사</span>는 설계기간·제작기간 추가 산정 필요. 모듈러 수량, 엘리베이터·각종 설비·장비 설치 유무에 따라 공사기간 차이 발생</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span class="lb"><i>2</i>설치 가능 여부 사전검토 체크리스트</span></span>
+      <ul class="list">
+        <li><b class="term">설치 위치</b> — 설치 가능한 위치 확인, <span class="tl">학생 학습권 침해</span> 여부, <span class="tl">학생 동선과의 중복·보차분리</span> 가능 여부, 설치 위치의 <span class="tl">지반 안전성</span></li>
+        <li><b class="term">이동 조건</b> — 모듈러가 이동 가능한 <span class="num">도로 폭 17m 이상</span>인지, 이동 차량의 <span class="tl">회전 가능</span> 여부, 이동 가능한 <span class="tl">경사도</span>인지</li>
+        <li><b class="term">장애물·민원</b> — 전신주·나무·볼라드 등 장애물 유무, 이동 시 <span class="tl">지역주민 민원</span> 발생 유무</li>
+        <li><b class="term">장비·부지</b> — <span class="tl">이동식 크레인 설치 가능</span> 여부, 공사차량 이동 시 안전상 문제 유무, <span class="tl">모듈러 임시 적재 장소</span> 확보 가능 여부</li>
+        <li><b class="term">확인 시점</b> — 이동 전 반드시 안전관리계획서의 <span class="tl">'모듈러 교사의 운송 및 하차계획'</span>과 <span class="tl">'장비운용 시 학생 안전대책'</span>을 확인</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6" cy="17.6" r="1.8"/><circle cx="17" cy="17.6" r="1.8"/></svg></span><span class="lb"><i>3</i>운반차량 제원과 통행 조건 — 사전검토의 핵심 수치</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:52mm">구분</th><th>길이</th><th>너비(폭)</th><th>높이</th><th class="h1">기타 조건</th></tr></thead>
+        <tbody>
+          <tr class="hi"><td class="it">모듈러 운반차량 전체(실제 이동)</td><td class="o">전장 17m</td><td class="o">전폭 3.6m</td><td class="o">전고 4.4m</td><td class="lf">2차선 이상 일반도로 필요, <b>코너회전 반경 17m 이상</b></td></tr>
+          <tr><td class="it">저상형 트레일러 기본 적재사양</td><td class="o">12m</td><td class="o">2.75m</td><td class="o">4.0m</td><td class="lf">도로 폭 고려 시 너비 <b>3.3m까지</b> 가능</td></tr>
+          <tr><td class="it">운반트럭(운반제한요인)</td><td>16.7m</td><td>2.5m</td><td>4.0m</td><td class="lf">중량 <b>40ton</b></td></tr>
+          <tr><td class="it">도로 조건(운반제한요인)</td><td class="x">—</td><td>2.75m</td><td>4~4.2m</td><td class="lf">톨게이트·터널 통행 허용 높이 <span class="o">4.5m</span></td></tr>
+          <tr class="hi"><td class="it">특례기준 (성능·기준규칙 별표31)</td><td class="o">19m 이내</td><td class="o">2.75m 이내</td><td class="x">—</td><td class="lf">최대안전 경사각도 <span class="o">30도</span>, 최소회전반경 <span class="o">15.5m</span>, 완충장치 제외 가능</td></tr>
+          <tr><td class="it">교차로 회전반경(양중 단계 검토)</td><td class="x">—</td><td class="x">—</td><td class="x">—</td><td class="lf">일반 트레일러 최소 <span class="o">12m</span> ／ 저상형 트레일러 <span class="o">17m</span> 확보</td></tr>
+        </tbody>
+      </table>
+      <ul class="list" style="margin-top:1.6mm">
+        <li><b class="term">허가 절차</b> — 운반은 「도로교통법」 제39조 및 시행령 제22조(운행상의 안전기준)에 따르며, 이 기준을 <span class="tl">초과하는 부재</span>는 시행령 제23조에 따라 <span class="num">출발지 관할 경찰서장의 허가</span>를 얻어 운반. 공장제작 모듈러는 「자동차 및 자동차부품의 성능과 기준에 관한 규칙」 <span class="tl">제114조(기준적용의 특례)·별표31</span> 적용 가능</li>
+        <li><b class="term">현장 조치</b> — 저상형 트레일러 최대안전 경사각도 <span class="num">30°</span>이므로 오르막길 경사는 완만해야 하며, 상황에 따라 <span class="tl">차량통제·볼라드·보도블럭·가로등·휀스·문주</span>가 철거될 수 있음</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16"/><path d="M6 21V4h12"/><path d="M18 4v5"/><path d="M18 9h-3v4"/><path d="M6 8l9-4"/></svg></span><span class="lb"><i>4</i>이동식 크레인(양중기) 검토 — KOSHA 지침</span></span>
+      <ul class="list">
+        <li><b class="term">선정 고려요소</b> — 작업장 조건, 기상(풍향·풍속·기온), 지형, 작업반경 고려 이용가능 면적, <span class="tl">지반 지지력</span>, 취급물 중량·형상·크기, 인양높이·거리, 이동속도·횟수, 작업량</li>
+        <li><b class="term">상관관계</b> — <span class="tl">작업반경 증가 시 인양하중 감소</span>, 수평면에 대한 붐 각도가 커지면 인양하중 증가</li>
+        <li><b class="term">붐 각도</b> — 일반적으로 <span class="num">55~78도</span>가 적정</li>
+        <li><b class="term">임계하중</b> — 임계하중 상태에서 좌우 회전 시 전도 우려 → 아웃리거 장착 트럭크레인은 <span class="num">임계하중의 85% 이내</span>로 산정</li>
+        <li><b class="term">지반</b> — 인양능력 검토와 지반 지지력 검토 필수. <span class="tl">연약·경사지반</span>은 부판·철판 설치로 침하 및 넘어짐 방지조치</li>
+        <li><b class="term">소요 공간</b> — <span class="num">30ton 이상</span> 크레인 사용 시 <span class="num">전장 13m·폭 6.5m</span>(아웃리거 고려) 확보 필요</li>
+        <li><b class="term">안전작업 4단계</b> — ①작업계획 수립·검토(인양작업계획서, 인양능력표, 방호장치 인증, 안전교육 이수 운전원·작업책임자·신호수, 위험성평가) ②장비 반입·설치(진입로 확보, 아웃트리거 지지력, 지반 수평도, 권과방지장치) ③작업 중(무게중심·주변장애물·슬링·해지장치·샤클 확인, <span class="tl">운전석 이탈 금지</span>) ④작업 종료</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9z"/><path d="M6 7h12v14H6z"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>단계별 발주처 제출 서류 (표Ⅰ-2)</span></span>
+      <ul class="list">
+        <li><b class="term">착수단계</b> — 설치 사전검토 체크리스트 ／ <span class="tl">안전관리계획서</span></li>
+        <li><b class="term">시공단계</b> — 제작단계 체크리스트 ／ 보수보강 단계 체크리스트 ／ <span class="tl">구조안전·피난 및 방화·단열 등 확인 가능한 도면과 규격서</span> ／ 부대공사 체크리스트 ／ 운송 및 양중 단계별 체크리스트 ／ 공정단계별 체크리스트 ／ <span class="tl">실별 설계기준 조도 확인서</span> ／ 구조체 변형·뒤틀림 등 확인서(안전진단)</li>
+        <li><b class="term">준공단계</b> — 설치 및 완료 후 체크리스트 ／ <span class="tl">실내공기질 측정확인서</span> ／ 시운전확인서</li>
+        <li><span class="num">재활용 설치 추가분</span> — 신제품 서류를 <span class="tl">기본적으로 모두 제출</span>하되, 시공단계에 <b class="term">재사용 보수보강 체크리스트·이력관리 카드</b>와 <b class="term">냉난방기·전열교환기 등 필터 교체 확인서</b>를 추가 제출</li>
+        <li><b class="term">입증자료</b> — 재활용 설치는 <span class="tl">반드시 확인이 가능한 사진자료</span>와 <span class="tl">공공기관에서 발행하는 시험성적서</span>를 함께 제출</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">Ⅱ-1 설치 프로세스 ｜ Ⅱ-2 설치 가능 여부 사전검토 단계(관련 법령·운반차량 재원·양중기 고려사항) ｜ Ⅰ-4 단계별 발주처 제출 서류 발췌</p>
+  <p class="pgno">2 / 6</p>
+
+</div>
+<!-- ═══════════════ 3쪽 — 제작(재사용) · 부대공사 · 운송양중 · 현장시공 ═══════════════ -->
+<div class="page">
+
+  <h1 class="title">제작(재사용)·부대공사·운송양중·현장시공</h1>
+  <div class="ubar"></div>
+  <p class="meta">Ⅱ-3 제작(재사용) 및 부대공사 단계 ｜ Ⅱ-4 운송 및 양중 단계 ｜ Ⅱ-5 현장 시공 단계 ｜ 각 단계 체크리스트는 제작업체·부대공사업체가 작성하여 발주처에 제출</p>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V10h6v11"/><path d="M11 14h8v7"/><path d="M8 7V3l3 2"/></svg></span><span class="lb"><i>1</i>공장제작 단계 주요 검토사항 (표Ⅱ-3)</span></span>
+      <ul class="list">
+        <li><b class="term">관리계획</b> — 제작 관리(인력·공정·안전·환경) 및 품질관리 계획, 주요자재·제조공장·장비/관리 운영계획</li>
+        <li><b class="term">검측계획</b> — <span class="tl">공장제작 단계의 검측 시점과 방법</span>을 명시</li>
+        <li><b class="term">용접·지그</b> — 용접 절차 및 사양·용접장비·용접 소모품, 구조체 <span class="tl">제작 지그의 치수 및 정확도 검사</span></li>
+        <li><b class="term">구조계산서</b> — 구조적 안전성 확인을 위해 첨부</li>
+        <li><b class="term">시공계획서</b> — <span class="tl">공장제작 계획서와 현장시공 계획서를 분리</span>하여 작성하고 계획공정표와 함께 제출. 공사관리 조직도·인력투입계획, 공정표, 양중 및 설치 계획, 주요 장비 동원계획, <span class="tl">기상악화 시 방수대책</span>, 주요·부자재 반입계획, 품질·안전·환경관리 계획 포함</li>
+        <li><b class="term">설치 정밀도</b> — <span class="tl">앵커볼트 설치계획·레벨관리 방안·수직도 관리방안</span>을 수립해 제출·승인. 시공 오차 측정계획을 수립·시행하고, 허용오차 관리방법은 기본설계에 포함 권장</li>
+        <li><b class="term">자재</b> — 표준규격·국산 KS 제품 우선. 외국산은 <span class="tl">KS규격 이상</span>이면서 사후관리·보수교체 용이함을 입증하는 자료를 발주처에 제출</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15l3 4h10l3-4"/><path d="M12 4l4 7H8z"/></svg></span><span class="lb"><i>2</i>재사용(보수보강) 단계 — 2024.9 개정 핵심</span></span>
+      <ul class="list">
+        <li><b class="term">품질 원칙</b> — 재사용 모듈러는 <span class="tl">신규 제작 모듈러와 동일한 성능·품질</span>이 유지되도록 보수보강하며, <span class="num">교체가 가능한 마감재는 신품으로 교체</span></li>
+        <li><b class="term">이력 제출</b> — <span class="tl">사용기간·사용처·사용횟수</span> 등 사용이력과 보수보강 이력을 포함한 관리운영계획을 발주처에 제출</li>
+        <li><b class="term">관리계획</b> — 보수보강 인력·공정·안전·환경 관리계획, <span class="tl">보수보강 단계의 검측 시점·방법</span>을 명시한 검측계획</li>
+        <li><b class="term">품질관리 항목</b> — 구조부재 변형, 모듈러 손상·훼손·부식 여부, 장비류 점검 상태</li>
+        <li><b class="term">점검구</b> — <span class="num">주요구조부·입상배관을 확인할 수 있는 벽체 점검구</span> 설치(필수)</li>
+        <li><b class="term">이력관리 카드</b> — 전체 모듈러수·재사용 모듈러수, 사용학교명·사용시기·모듈러수·보수보강 유무(실시/미실시)·<span class="tl">재사용 횟수</span>, 설치위치(층·실명·용도)별 보수보강 이력 기재</li>
+        <li><b class="term">혼합 설치</b> — <span class="tl">재사용 모듈러와 신규제작 모듈러 간 간섭 여부</span> 및 <span class="tl">결합 시 구조성능</span>을 확인</li>
+        <li><b class="term">사용자 권리</b> — 발주처·학교는 성능·품질이 유지되지 않으면 계약자에게 <span class="tl">보수보강 및 마감재 신품 교체</span>를 요청</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5 20V12h14v8"/><path d="M8 12V8h8v4"/><path d="M12 8V4"/></svg></span><span class="lb"><i>3</i>부대공사 체크포인트 — 지반·기초·인입·배수 (부대공사 업체)</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:26mm">구분</th><th class="h1">주요 검사·시공 항목</th></tr></thead>
+        <tbody>
+          <tr class="hi"><td class="it">지반 및 인입</td><td class="lf">설치 부위의 <b>좌표 및 레벨</b> 확인 ／ <b>지내력</b> 확인 ／ 정화조·상하수도·가스·전기 등 <b>인입공사</b> 적정성</td></tr>
+          <tr><td class="it">기초 연결</td><td class="lf">모듈러 설치를 위한 기초공사 적정성 ／ <b>앵커볼트의 위치 및 수량</b> ／ 모듈러와 기초 간 연결 위치·고정 상태 ／ 기초 상부 <b>레벨 및 평활도</b></td></tr>
+          <tr><td class="it">철근기초(필요시)</td><td class="lf">앵커볼트와 철근의 <b>간섭 여부</b> ／ 배근상태(수직·수평, 이음 및 정착 길이) ／ <b>철근 피복두께</b> ／ 거푸집 조립상태(수직·수평)와 위치 정확도(좌표·레벨) ／ 동바리 위치·수량·고정 상태 ／ 띠장·멍에 설치 ／ 콘크리트 <b>타설 마감 높이</b> 및 타설계획(설계기준강도·타설 구획 및 순서·타설량)</td></tr>
+          <tr><td class="it">잔토·집기 이사</td><td class="lf">잔토처리는 <b>발주처 및 감독관 지시</b>에 따르고 반입·반출거리는 감독관 <b>사전승인</b> 후 시행 ／ 토공 공정계획서 보고, 설계도서와 상이한 사항은 감독관 지시(임의 시공 불가) ／ 집기류 이사는 <b>학교 관계자 협의 후</b> 지정 위치에 조립설치 완료, 포장용 비닐·컨테이너 및 취급 부주의 파손 원상복구는 <b>도급자 부담</b></td></tr>
+          <tr><td class="it">배수공(우·오수)</td><td class="lf">기성품은 <b>KS 제품</b> 또는 설계도서 동등 이상 ／ 시공 전 도로부 관로(도시가스·상수도·오수) 확인 ／ 오수맨홀 내부는 오수가 고이지 않고 유출되도록, 이음부 몰탈(특히 관로 연결부)은 누수 방지 ／ PE 이중벽관은 기초모래 포설 후 매설하고 <b>균열·찍힘·이물 등 결함이 없을 것</b>, 환봉지지 결합형 연결구로 접합 후 양질토 다짐 ／ 배수배관은 <b>감독관의 고저차 확인</b> 후 다음 공사 착수, 접합부 재질·규격은 감독관 승인 후 반입 ／ 오수관 접합은 <b>수밀성</b> 고려</td></tr>
+          <tr><td class="it">인·허가</td><td class="lf">기존 관로 연결 시 도로 지장물 조사 후 <b>관계기관(지자체·도시가스·한전·통신관로) 협의</b> ／ 도로 굴착 시 도급사가 <b>사전 인·허가</b>를 득하고 굴착 방법 및 복구는 관계기관 지시에 따름</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18M18 3v18"/><path d="M12 4v3M12 11v3M12 18v3"/></svg></span><span class="lb"><i>4</i>운송 단계 (표Ⅱ-4)</span></span>
+      <ul class="list">
+        <li><b class="term">야적·보양</b> — 현장 설치순서에 따른 <span class="tl">야적순서</span>, 모듈 간 이동순서, 양중방법, 양중장비 이동경로·동선 확보. <span class="num">강우로 모듈러 내부가 젖지 않도록 철저한 보양</span>, 외부 보양은 상차·양중이 원활하도록 방법 검토, 현장반입 보양작업 병행</li>
+        <li><b class="term">운송준비</b> — 운송경로 파악·장애요인 검토, <span class="tl">무진동 트레일러</span> 확보, 날씨·거리·시간·경로 최종 검토, <span class="tl">해당 지역 경찰서 신고</span> 등 절차 수행</li>
+        <li><b class="term">상차·운송·하차</b> — 양중 시 안전성 확보, 모듈러 고정 상태 확인, <span class="tl">이동속도 제한 준수</span>, <span class="tl">좌우 식별 장치</span> 설치, 자재 탈락 여부, 현장 야적 시 <span class="tl">바닥 평활도</span> 확인</li>
+        <li><b class="term">품질 저하 예방</b> — 바람·비·눈에 의한 내·외장 파손 방지를 위한 외피 고려 또는 별도 포장계획, 노면 상태에 따른 <span class="tl">진동·충격 대비 계획</span>(가설용 패널·우드보드 활용), 차량과 모듈의 안전한 <span class="tl">결박 고정장치</span>를 설계에 반영</li>
+        <li><b class="term">경로·허가</b> — 운행 폭·<span class="tl">육교 높이</span>·U-TURN 구간 검토. 차량 운행 제한에 해당하면 사전에 <span class="num">도로관리청 및 출발지 관할 경찰서장의 운행 허가</span></li>
+        <li><b class="term">납품 연계</b> — 공장생산 이후 즉시 납품이 가능하도록 계획하고, 즉시 설치가 불가능한 경우를 대비해 <span class="tl">별도 야적공간 확보</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16"/><path d="M7 21V5h10"/><path d="M17 5v4h-4"/><path d="M13 9v4"/><path d="M10 13h6v4h-6z"/></svg></span><span class="lb"><i>5</i>양중 단계 — 계획과 책임</span></span>
+      <ul class="list">
+        <li><b class="term">양중 원칙</b> — <span class="tl">휨 발생을 최소화하고 평형을 유지</span>할 수 있도록 계획 수립</li>
+        <li><b class="term">장비계획</b> — 설치 계획과 연계해 <span class="tl">일별 설치순서</span>에 따른 공장 출하 및 <span class="tl">개별 모듈러의 하중을 반영</span>한 장비계획 수립. 크레인은 무게·설치 높이·회전 반경을 종합 고려해 선정</li>
+        <li><b class="term">크레인 안착</b> — 크레인과 모듈 적층 간 거리를 고려한 사양 선택, <span class="num">지반에 전도 우려 없이 적절히 설치</span>되었는지 확인</li>
+        <li><b class="term">현장 진입 검토</b> — 도로횡단 전선 높이, 가로수, 크레인 안착 위치, <span class="tl">트레일러 회차로</span>, 양중 시 <span class="tl">주민 차량 우회도로</span> 확보 여부</li>
+        <li><b class="term">인접대지</b> — 장비진입을 위해 학교부지·도로점용 등 인접대지 사용이 필요하면 <span class="tl">사전에 관계기관 및 대지 소유주의 동의·허가</span>를 받은 후 시공. 도로 점용·사용 비용은 <span class="num">계약자 부담</span></li>
+        <li><b class="term">접합·승인도면</b> — 개별 실 모듈이 분리되어 접합이 요구되면 상세 시공계획 제출. 보유 공법으로 시공하는 경우 <span class="num">건축구조기술사의 승인(구조안전 및 내진성능 확인서 첨부)을 받은 도면을 제작 전까지 제출</span></li>
+        <li><b class="term">시험·시운전</b> — 현장시험이 부적합한 자재는 <span class="tl">감독관 입회하에 제조공장에서 품질시험·검사</span> 시행 권장. 수압시험·시운전은 상수도를 사용하며, 난방·급탕·상수도 시운전 비용 및 인계인수 시까지 기반시설 비용은 <span class="num">계약자 부담</span></li>
+        <li><b class="term">결로</b> — 준공 후 전용·공용공간에 <span class="tl">결로가 발생하지 않도록</span> 품질·시공관리 철저, 결로방지 개선대책 제출</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">Ⅱ-3 제작(재사용) 및 부대공사 단계 ｜ Ⅱ-4 운송 및 양중 단계 발췌 ｜ 체크리스트 원본은 안내서 17~23쪽(제작·재사용 보수보강·이력관리 카드·부대공사·운송양중) 참조</p>
+  <p class="pgno">3 / 6</p>
+
+</div>
+<!-- ═══════════════ 4쪽 — 현장시공 · 유지관리 및 해체 · 발주기관 감독 ═══════════════ -->
+<div class="page">
+
+  <h1 class="title">현장시공 검수 · 유지관리 및 해체 · 발주기관 감독</h1>
+  <div class="ubar"></div>
+  <p class="meta">Ⅱ-5 현장 시공 단계 ｜ Ⅱ-6 유지관리 및 해체 단계 ｜ 모듈러 교사 공정단계별 체크리스트(발주기관용, 안내서 28쪽)</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">청소·일반관리 = 발주처 또는 학교 ／ 구조적 문제·누수·마감재 탈락 등 보수 = 계약상대자</span> — <span class="rolet">계약상대자</span>는 하자발생 조치를 위한 <b class="term">책임담당자를 지정</b>하고 <b class="term">비상연락망</b>을 운영하며, 신고 접수 후 <b class="term">근무 시간 내에 현장에 도착</b>하여 조치해야 한다. 하자는 발주처·학교의 요청에 따라 <b class="term">무상 보수</b>하되, <span class="rolet">발주처 과실</span>에 의한 손·망실은 발주처가 부담하여 원상 복구한다. 전기·설비 등 전문 공종은 <span class="rolet">해당 공종 면허 업체</span>가 보수한다.</span>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9z"/><path d="M6 7h12v14H6z"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>1</i>현장시공 공정별 검수 항목 (표Ⅱ-5 · 공정단계별 체크리스트)</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:28mm">공정</th><th class="h1">주요 검사항목</th></tr></thead>
+        <tbody>
+          <tr class="hi"><td class="it">기초 설치</td><td class="lf">기초가 <b>도면대로</b> 설치되었는가 ／ <b>앵커볼트 또는 기초 연결장치·플레이트</b>의 위치가 도면대로인가 ／ 모듈러가 설치되는 기초 상부의 <b>레벨 및 평활도</b> 확인</td></tr>
+          <tr><td class="it">모듈러 설치·고정</td><td class="lf">재사용 모듈러의 <b>보수·보강 상태</b> ／ 모듈러 간 수직·수평 ／ 기초와의 수직·수평 레벨 ／ <b>본조립 전</b> 모듈러 위치의 정확도 ／ <b>가조립 후</b> 모듈러 간 수평 상태 ／ 수직·수평 간 볼트 체결 ／ <b>우천에 의한 피해 방지 조치</b></td></tr>
+          <tr><td class="it">지붕공사</td><td class="lf">지붕프레임 고정 및 볼트접합 상태 ／ <b>퍼린(Purlins)</b> 설치 및 접합부 위치 ／ 하부 모듈러 우천 대비책 ／ <b>방수시트 마감</b> 상태 및 방수 성능</td></tr>
+          <tr><td class="it">외장공사</td><td class="lf">재사용 모듈러의 외장재 상태 ／ 하지 철물이 구조체에 적절히 설치 ／ 모듈러 <b>수직·수평 접합부 방수처리</b> ／ <b>창호 접합부 방수처리</b> ／ 지붕 드레인의 낙엽 등 막힘 우려 ／ 외장패널 이음부 마감 및 조인트 수직·수평 유지</td></tr>
+          <tr class="hi"><td class="it">철골 프레임</td><td class="lf">별도의 구조검토 없이 <b>주요 구조부에 손상(절단·변형)</b>이 발생했는지 ／ 주요구조부 철골 부재의 <b>내화피복이 도면과 동일</b>한지</td></tr>
+          <tr><td class="it">설비·전기공사</td><td class="lf">설비 연결부 <b>누수</b> 및 <b>내화 채움</b> ／ 모듈러 접합부 배선 접합상태 ／ 이중천장 내 배관(금속제 가요전선관·강제전선관) 시공 ／ 케이블 트레이의 전기적·기계적 견고성 및 <b>본딩·모선 접지</b> ／ 레이스웨이 커버 설치</td></tr>
+          <tr><td class="it">건축마감·창호</td><td class="lf">천장·벽·바닥 마감 ／ 모듈러 간 접합부 마감 ／ <b>모듈러 재사용 가능 범위</b> 확인 ／ 단열재 보관·시공 상태 ／ 창호·문틀 규격 및 설치 ／ <b>개구부 보강</b>, 전등·환기구 설치부위 보강 ／ 천장 달대볼트·지지 구조물의 구조적 견고성</td></tr>
+          <tr><td class="it">인계 전 확인</td><td class="lf">제 규격 자재 사용 여부(실별), 기준 성능 확보 여부, 재사용 모듈러 보수보강 상태, 공정별 설치 상태, 외부 마감, 유닛·모듈 간 조립 상태, 현장 주변 정리 ／ <b>발주기관 입회 하</b> 내·외부 마감 확인 및 <b>시운전</b>으로 각종 장치·기계설비 정상가동 확인 ／ 건물 내·외부 정리정돈·청소 후 인계</td></tr>
+        </tbody>
+      </table>
+      <ul class="list" style="margin-top:1.6mm">
+        <li><b class="term">학생 안전</b> — 현장 설치는 양중장비를 사용하므로 시공계획뿐 아니라 <span class="tl">안전계획을 수립</span>하여 현장을 관리하고, <span class="num">학생들의 등하교 보행 동선에 지장이 없도록</span> 발주처와 협의하여 안전조치 의무를 다한다. 현장 마감공사는 비모듈러 공사의 마감공사와 간섭이 발생할 수 있어 공종 간 원활한 의사소통이 필요</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3a5 5 0 0 0-4.6 7L3 17.4 6.6 21l7.4-7.4A5 5 0 1 0 15 3z"/></svg></span><span class="lb"><i>2</i>유지관리 및 해체·복원</span></span>
+      <ul class="list">
+        <li><b class="term">유지관리계획</b> — 각 공종별 <span class="tl">하자발생 부위 및 주요 부위</span>에 대한 하자발생 시 응급대처 및 유지관리(점검·보수, 장기수선) 지침을 <span class="num">문서화</span></li>
+        <li><b class="term">안전·환경</b> — 발주처 전문시방서에 따라 안전계획을 수립·관리하고, 환경 관련 법령·규정 준수 및 현장 여건에 적합한 <span class="tl">분진 방지 조치</span> 시행</li>
+        <li><b class="term">구조변경</b> — 발주처가 구조변경이 필요하면 <span class="tl">계약상대자와 사전 협의</span></li>
+        <li><b class="term">해체 협의</b> — 임대기간 완료 또는 이동이 필요하면 <span class="tl">설치업체를 통해 해체계획을 사전 협의</span> ※ <span class="num">발주기관은 인입배관·정화조 등 부대시설의 복원계획 수립 및 공사 발주를 진행</span></li>
+        <li><b class="term">철거</b> — 주변 정리는 계약상대자 부담, <span class="tl">철거로 수업에 지장을 초래하지 않도록</span> 발주처와 협의. 학생 등·하교 보행 안전조치 의무</li>
+        <li><b class="term">원상복구</b> — 주위 건축물·매설물·주변 환경에 변형이 예상되면 <span class="tl">착수 전 보호대책</span>을 세워 시공하고, 부득이한 변형·훼손·이전·철거는 발주처 협의 후 원상복구. 제3자 피해 시 <span class="num">즉시 응급조치 후 사후처리</span>, 비용은 계약상대자 부담</li>
+        <li><b class="term">인허가</b> — 관련 부서와의 제반 인허가 수속·민원처리는 특별한 사항을 제외하고 <span class="tl">지체 없이 이행</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>3</i>발주기관 공정단계별 감독 체크 (28쪽)</span></span>
+      <ul class="list">
+        <li><b class="term">일반사항</b> — 설치가능 유무, 설계도서 및 <span class="tl">구조계산서(기초공사)</span>, 공정관리·자재 반입 및 관리·모듈 현장 조립·시공 및 품질관리·안전 및 환경관리 계획 수립 유무, <span class="num">재사용 모듈러의 사용이력·보수보강 여부·안전관리 계획</span> 확인</li>
+        <li><b class="term">제작(공장관리)</b> — 모듈의 구조계산 적합성, 성능 및 안전성, 재사용 모듈러 보수보강·품질 적합성, <span class="tl">공장 검수 진행</span> 여부</li>
+        <li><b class="term">운송관리</b> — <span class="tl">관할 경찰서 신고 등 절차</span>, 포장·운송 계획, 하차 진입로 및 하차 구획, 하차 후 모듈 상태 점검(내·외장재 및 구조체 결함), 야적 공간</li>
+        <li><b class="term">양중관리</b> — 양중 장비 선정·위치 선정, <span class="tl">크레인 설치 구간 지반 견고성</span>, 양중 구간 반경 내 <span class="num">통제 구획 및 신호수 배치</span></li>
+        <li><b class="term">시공·품질관리</b> — 설계도서와 시공의 일치, 기초공사 견고성, <span class="tl">시공허용오차</span>(수직·수평) 내 시공, 모듈 접합부 견고성 및 마감처리(방청·방수), 모듈 규격·형상·치수, 균열·파손·흠집, 수직·수평, <span class="tl">기밀·단열·층간소음 성능검증</span>, 청소 상태</li>
+        <li><b class="term">안전관리</b> — <span class="num">통학로를 고려한 공사차량·건설장비 운영계획</span>, <span class="num">통학 집중시간을 고려한 운송계획</span>, 교육시설 이용자 안전조치, 공사현장 구획 설정 및 출입통제, 건설장비 작업 구간 내 통제구획·신호수 배치</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">Ⅱ-5 현장 시공 단계(표Ⅱ-5, 25~26쪽 공정단계별 체크리스트) ｜ Ⅱ-6 유지관리 및 해체 단계 ｜ 발주기관용 공정단계별 체크리스트 발췌</p>
+  <p class="pgno">4 / 6</p>
+
+</div>
+<!-- ═══════════════ 5쪽 — 안전관리계획 수립과 이행 ═══════════════ -->
+<div class="page">
+
+  <h1 class="title">모듈러 교사 설치 안전관리계획 수립과 이행</h1>
+  <div class="ubar"></div>
+  <p class="meta">Ⅲ-1 모듈러 교사 설치 안전관리계획(표Ⅲ-1 작성 항목, 그림Ⅲ-1 수립 절차, 3) 세부항목별 고려사항) ｜ 서식: 안전관리계획서(제작업체용)·검토확인서(발주기관용)·이행확인서(발주기관용)</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">업체(설치·해체하려는 자) = 작성·제출·준수 ／ 발주기관(감독기관의 장 또는 교육시설의 장) = 검토·통보·이행확인</span> — 업체는 설치 <b class="term">전</b>에 안전관리계획서를 제출하고(2단계 경쟁입찰은 <b class="term">제안서에 포함하여 제출·평가 반영 권장</b>), 발주기관은 적정 여부를 검토해 결과를 통보한다. 보완사항이 있으면 업체는 설치 전까지 보완 제출하고 <b class="term">보완된 계획서를 준수</b>하여 설치하며, 발주기관은 필요 시 <b class="term">이행 여부를 확인</b>할 수 있다. ※ <span class="rolet">「교육시설법」 제19조 안전성평가를 실시한 경우 안전관리계획을 수립한 것으로 본다.</span></span>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span><span class="lb"><i>1</i>안전관리계획 작성 항목 — 4대 분류 (표Ⅲ-1)</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:34mm">대분류</th><th class="h1" style="width:26mm">중분류</th><th class="h1">작성 내용</th></tr></thead>
+        <tbody>
+          <tr class="hi"><td class="it">모듈러 교사 운송</td><td class="lf">운송 및 하차</td><td class="lf">모듈러 운송차량 <b>학교 진입 계획</b> ／ 모듈러 <b>야적공간 확보 계획</b> ／ 모듈러 <b>하차 계획</b></td></tr>
+          <tr><td class="it" rowspan="2">모듈러 교사 설치</td><td class="lf">화재예방</td><td class="lf"><b>불티방지포·불티방지커버</b> 등 설치계획 ／ <b>화재감시자</b> 배치계획 ／ <b>소화기</b> 배치계획</td></tr>
+          <tr><td class="lf">장비운용</td><td class="lf">장비 운용계획과 <b>전도방지대책</b> ／ 장비 주변 <b>안전펜스</b> 설치계획 ／ 장비 주변 <b>신호수</b> 배치계획</td></tr>
+          <tr class="hi"><td class="it">모듈러 교사 해체 <span class="o">(임차인 경우만)</span></td><td class="lf">해체 및 상차</td><td class="lf">모듈러 교사 <b>해체 계획</b> ／ 모듈러 <b>상차 계획</b></td></tr>
+          <tr><td class="it" rowspan="2">통학로 안전관리</td><td class="lf">통학로 현황</td><td class="lf">학생 동선을 고려한 <b>통학로 현황도</b>(전용 보행로 유무 포함)</td></tr>
+          <tr><td class="lf">공사차량 운행</td><td class="lf">통학로를 고려한 <b>공사차량 운행계획(동선 및 시간표 포함)</b> ／ 공사차량 운행 시 <b>신호수 배치계획</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span class="lb"><i>2</i>수립·이행 절차 4단계 (그림Ⅲ-1)</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">안전관리계획서 제출</b> ｜ <span class="tl">업체</span> — 모듈러 교사 <span class="num">설치 전</span> 발주기관에 제출. 서식은 <span class="tl">수립·미수립·해당없음</span>으로 항목별 체크</li>
+        <li><span class="no">2</span><b class="term">접수·검토 및 확인서 통보</b> ｜ <span class="tl">감독기관의 장 또는 교육시설의 장</span> — 적정 여부 검토 후 결과 통보. 검토확인서 판정은 <span class="num">적합 / 조건부적합 / 부적합</span></li>
+        <li><span class="no">3</span><b class="term">공사 착공</b> ｜ <span class="tl">업체</span> — 보완사항은 <span class="num">설치 전까지</span> 보완 제출하고 보완된 계획서를 준수하여 설치</li>
+        <li><span class="no">4</span><b class="term">이행 확인</b> ｜ <span class="tl">감독기관의 장 또는 교육시설의 장</span> — 이행확인서로 점검. 결과는 <span class="num">양호(○)·보통(△)·불량(×)</span>으로 기재하고 <span class="tl">조치사항</span>을 함께 기록</li>
+      </ul>
+      <ul class="list" style="margin-top:1.4mm">
+        <li><b class="term">서식 3종</b> — 안전관리계획서(제작업체용, 학교명·공사명·공사기간·연면적·층수·제출자 날인) ／ 검토확인서(발주기관용, 착공일·준공일·검토자 날인) ／ 이행확인서(발주기관용, 점검일·점검자 날인)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3-1 4-1 6a3 3 0 0 0 6 0c0-1-.3-2-1-3 2 2 3 4 3 7a7 7 0 0 1-14 0c0-4 3-7 7-10z"/></svg></span><span class="lb"><i>3</i>화재예방 — 화기작업 시 화재안전대책</span></span>
+      <ul class="list">
+        <li><b class="term">작업내용</b> — 철제 마감재 <span class="tl">절단 및 용접</span>. 문제점은 화기작업(용단·용접)으로 인한 <span class="num">학교시설 화재 발생 우려</span></li>
+        <li><b class="term">불티 차단</b> — <span class="num">지정된 작업장</span>에서만 용단·용접 실시. 용단 작업 시 <span class="tl">불티방지커버</span>, 용접 시 <span class="tl">불티방지포</span> 설치. 안전관리계획에 <span class="tl">용단 작업장 배치도</span> 첨부</li>
+        <li><b class="term">화재감시자 배치</b> — <span class="num">작업반경 11미터 이내</span>에 가연성물질이 있는 등의 경우 용접·용단 작업 구획 주변에 배치(<span class="tl">「산업안전보건기준에 관한 규칙」 제241조의2제1항</span>) ※ 같은 항에 따라 <span class="tl">같은 장소에서 상시 반복적으로</span> 용접·용단 작업을 하고 소화기 등이 갖추어진 경우에는 <span class="num">배치하지 않을 수 있음</span></li>
+        <li><b class="term">소화기 배치</b> — 용접 및 용단 작업장 주변에 <span class="num">소화기 2개, 대형소화기 1개</span> 배치 ※ <span class="tl">「건설현장의 화재안전성능기준」 제5조</span>에 따른 최소 기준 준수</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17h18"/><path d="M5 17a7 7 0 0 1 14 0"/><path d="M10 10.6V5h4v5.6"/></svg></span><span class="lb"><i>4</i>운송·장비운용·해체·통학로 — 세부 안전대책과 적용 수치</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">운송차량 학교 진입</b> — 학교 정문 진입로 주변에 <span class="tl">신호수 배치</span> 후 진입. 좁은 골목·정문 회전반경 문제로 <span class="num">교내 화단 및 인접 주택가 담장 5m 구간 철거</span>가 필요할 수 있으며, 담장 제거는 <span class="tl">통학 시간을 피해</span> 작업하고 차량 진입 시간도 <span class="tl">등하교 시간을 제외</span>. 계획에 운송차량 <span class="tl">진입경로 현황도·진출입 현황도</span> 첨부</li>
+        <li><span class="no">2</span><b class="term">야적공간 확보</b> — 운동장·놀이터 등 야적 위치 지정. 학생 접근에 따른 안전사고 우려 → <span class="num">야적장 출입차단용 안전펜스 설치</span></li>
+        <li><span class="no">3</span><b class="term">하차</b> — 기중기 배치, 운송차량 배치, 학생 접근제한을 위한 안전펜스 설치, <span class="num">인양 작업 및 운송차량 진출 시 신호수 2명 배치</span></li>
+        <li><span class="no">4</span><b class="term">장비운용(설치)</b> — 기중기 전도 및 중량물 선회 시 교육시설·이용자 안전사고 우려 → <span class="tl">작업 장소 안전펜스(학생 접근금지)</span>, 지반 <span class="tl">지지력 확보 후 아웃트리거 설치</span>(받침목 설치방법 준수), <span class="num">인양 작업 시 신호수 2명 배치</span></li>
+        <li><span class="no">5</span><b class="term">해체·상차(임차)</b> — 해체공사는 <span class="num">설치 순서의 역순(위에서 아래로)</span>으로 인양하여 해체. 안전펜스·지반 지지력 확보·아웃트리거·<span class="num">신호수 2명</span>은 설치와 동일하게 적용하며, 상차도 기중기·운송차량 배치와 신호수 2명 배치</li>
+        <li><span class="no">6</span><b class="term">통학로 현황 파악</b> — 학생 동선을 고려한 통학로 현황도(예: 정문과 대로변 사이 <span class="num">약 150m</span> 구간이 주통학로) 및 <span class="tl">전용 보행로 유무</span>를 구간별로 표기</li>
+        <li><span class="no">7</span><b class="term">공사차량 운행계획</b> — 예시 기준 등교 <span class="num">08:00~09:00</span>, 하교 <span class="num">12:30~17:00</span>(학급·늘봄교실별 시간대가 다양하므로 고려) → 차량운행은 <span class="num">오전 09:00~12:00 · 오후 14:00~17:00</span>. 신호수는 일방통행 진입로 앞 삼거리·학교 정문·진출로 삼거리 앞 <span class="num">총 3인 배치</span>. <span class="tl">비교적 규모가 큰 장비(이동식 크레인) 및 모듈러 운송차량은 오전 운행시간대</span>에 운행하고 그 외 차량은 오후 시간대에 운행</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">Ⅲ-1 모듈러 교사 설치 안전관리계획(31~43쪽) 발췌 요약 ｜ 수치는 안내서 예시(OO초등학교)의 적용값으로, 실제 계획은 학교별 통학로·부지 여건에 따라 재산정</p>
+  <p class="pgno">5 / 6</p>
+
+</div>
+<!-- ═══════════════ 6쪽 — 공기질 · 어린이활동공간 · 핵심 수치 ═══════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">공기질 안전관리와 어린이활동공간 기준</h1>
+  <div class="ubar"></div>
+  <p class="meta">Ⅲ-2 공기질 안전관리 방안(표Ⅲ-2) ｜ Ⅲ-3 어린이활동공간 관리방안(표Ⅲ-3, 환경보건법 제23조제3항) ｜ 설치 전·완료 후 환경 체크리스트(47쪽)</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">확인검사 신청 의무자 = 어린이활동공간의 소유자·관리자(= 학교·교육청)</span> — 신축·증축(<b class="term">33㎡ 이상</b>)·수선(<b class="term">70㎡ 이상</b>) 후 <b class="term">30일 이내</b>에 시험·검사기관의 확인을 받아야 하며, 부적합 시 <span class="rolet">개선 명령 및 사용중지</span>, 미이행 시 <span class="rolet">이행 명령 및 과태료 5백만원 이하</span>가 부과된다. <span class="rolet">감독기관(시장·군수·구청장, 교육감)</span>은 관내 어린이활동공간의 기준 준수 여부를 지도·점검하며, 점검 거부 시에도 과태료 5백만원 이하가 부과된다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h15a3 3 0 1 1-3 3"/><path d="M3 16h8"/></svg></span><span class="lb"><i>1</i>공기질 안전관리 — 8개 항목 · 연 2회</span></span>
+      <ul class="list">
+        <li><b class="term">문제 사례</b> — 모듈러 교사 공기질 검사에서 <span class="num">총휘발성유기화합물(TVOC) 기준치 초과</span>로 부적합 판정을 받은 사례가 발생</li>
+        <li><b class="term">적용 기준</b> — 조달청 혁신제품·MAS 공고 성능기준은 「학교보건법 시행규칙」 <span class="tl">[별표4의2] 공기질 등의 유지·관리기준</span>(제3조제1항제3호의2)을 준용하여 <span class="tl">일반 학교와 동일한 성능</span>. 검사기준은 <span class="tl">실내공기질 측정확인서</span></li>
+        <li><b class="term">측정 8개 항목</b> — 폼알데하이드 · 총휘발성유기화합물 · 벤젠 · 톨루엔 · 에틸벤젠 · 자일렌 · 스티렌 · <span class="tl">라돈</span></li>
+        <li><b class="term">설치단계 역할분담</b> — <span class="tl">모듈러 업체</span>: 사용 전 8개 항목 초과 여부 점검, 초과 시 <span class="num">베이크아웃 → 저감 조치 → 재검사</span> ／ <span class="tl">학교</span>: 가구 등을 이전·설치한 뒤 8개 항목을 <span class="num">전문기관에 의뢰</span>하여 검사, 초과 시 동일 조치 후 <span class="tl">기준에 적합할 경우에만 사용</span></li>
+        <li><b class="term">사용 전·사용 중</b> — 수납 가구의 <span class="tl">문·서랍을 개방한 상태</span>로 충분히 환기하고 <span class="tl">베이크아웃(Bake-out)</span>을 주기적으로 실시한 후 전문기관 특별점검. 사용 중에는 학교 자체 <span class="num">매일 일상점검</span> + 상·하반기 1회씩 <span class="num">연 2회 전문기관 정기점검</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20c0-9 6-15 16-16 0 10-6 16-16 16z"/><path d="M4 20l8-8"/></svg></span><span class="lb"><i>2</i>어린이활동공간 — 대상 판단과 검사 의무</span></span>
+      <ul class="list">
+        <li><b class="term">모듈러 교사 해당 범위</b> — 어린이 = <span class="num">13세 미만</span>(법 제2조제7호). 시행령 제1조의2 각 호 중 <span class="tl">④ 초등학교의 교실 및 학교도서관</span>, <span class="tl">⑤ 특수학교의 교실(어린이가 사용하는 교실만 해당)</span>이 모듈러 교사에 해당될 수 있음 ※ 그 밖의 호: 어린이놀이시설, 어린이집 보육실, 유치원 교실, 기타유원시설업 영업소, 완구 제공 영업소</li>
+        <li><b class="term">환경안전관리기준</b> — 도료·마감재료 등에 함유된 <span class="tl">중금속</span>, <span class="tl">실내공기질</span> 등에 대한 환경안전기준으로 구성(법 제23조제4항)</li>
+        <li><b class="term">확인검사</b> — 소유자·관리자가 <span class="num">신축·증축(33㎡ 이상)·수선(70㎡ 이상) 후 30일 이내</span>에 시험·검사기관으로부터 환경적으로 안전한 자재를 사용했는지 확인(법 제23조제6항)</li>
+        <li><b class="term">위반 시</b> — 부적합 시 <span class="num">개선 명령 및 사용중지</span>(제23조제5항·제8항), 미이행 시 <span class="num">이행 명령 및 과태료 5백만원 이하</span>(제23조제9항·제33조제2항제1호)</li>
+        <li><b class="term">지도·점검</b> — 감독기관(시장·군수·구청장, <span class="tl">교육감</span>)이 관내 어린이활동공간의 기준 준수 여부 확인(제29조제1항). 부적합 시 개선 명령, <span class="num">점검 거부 시 과태료 5백만원 이하</span>(제33조제2항제2호)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>3</i>어린이활동공간 환경안전관리 기준 (표Ⅲ-3 · 환경보건법 제23조제3항)</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:16mm">구분</th><th class="h1" style="width:30mm">대상</th><th class="h1">항목별 상세 기준</th></tr></thead>
+        <tbody>
+          <tr class="hi"><td class="it">제1호</td><td class="lf">시설물</td><td class="lf">① <b>녹이 슬거나</b> ② <b>금이 가거나</b> ③ <b>페인트 등 도료가 벗겨지지</b> 않아야 함</td></tr>
+          <tr><td class="it" rowspan="2">제2호</td><td class="lf">도료·마감재 (실내·외)</td><td class="lf">납·카드뮴·수은 및 6가 크롬의 합: 총함량 <span class="o">1,000㎎/㎏ 이하</span> ／ 납: 질량분율 <span class="o">90㎎/㎏ 이하</span></td></tr>
+          <tr><td class="lf">도료·마감재 (실내)</td><td class="lf">합성수지 바닥재 표면재료 <b>프탈레이트류(DINP·DnOP 등 7종)</b> 총함량 <span class="o">0.1% 이하</span> ／ 확인검사 대상은 건축자재 오염물질 방출 기준: 폼알데하이드 <span class="o">0.002㎎/㎡·h 이하</span>, 톨루엔 <span class="o">0.08㎎/㎡·h 이하</span>, 총휘발성유기화합물 <span class="o">2.5㎎/㎡·h(페인트)</span> 또는 <span class="o">40㎎/㎡·h(벽지)</span> 이하</td></tr>
+          <tr class="hi"><td class="it">제3호</td><td class="lf">목재</td><td class="lf">① <b>크레오소트유 목재 방부제 1호·2호</b> ② <b>크롬·구리·비소 화합물계 목재 방부제 1호·2호·3호</b>를 사용한 목재 <b>사용 금지</b>(단, 기준을 충족하는 도료로 목재표면을 정기적으로 도장하는 경우 제외)</td></tr>
+          <tr><td class="it">제4호</td><td class="lf">모래 등 토양</td><td class="lf">납 <span class="o">200</span> ／ 카드뮴 <span class="o">4</span> ／ 6가 크롬 <span class="o">5</span> ／ 수은 <span class="o">4</span> ／ 비소 <span class="o">25</span> ㎎/㎏ 이하, <b>기생충란 미검출</b></td></tr>
+          <tr><td class="it">제5호</td><td class="lf">합성고무 바닥재 표면재료</td><td class="lf">납·카드뮴·수은·6가 크롬의 합 총함량 <span class="o">1,000㎎/㎏ 이하</span> ／ 폼알데하이드 방출량 <span class="o">75㎎/㎏ 이하</span> ／ 프탈레이트류 7종 총함량 <span class="o">0.1% 이하</span></td></tr>
+          <tr class="hi"><td class="it">제6호</td><td class="lf">실내공기질</td><td class="lf">폼알데하이드 농도 <span class="o">80㎍/㎥ 이하</span> ／ 총휘발성유기화합물 농도 <span class="o">400㎍/㎥ 이하</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span class="lb"><i>4</i>설치 전 체크리스트 (발주기관용)</span></span>
+      <ul class="list">
+        <li>주변 환경의 <b class="term">유해성 오염물질</b>이 모듈러 교사에 영향을 미치는 배치가 아닌지 검토</li>
+        <li>교실 저면 창호 주변에 <b class="term">녹지대</b>를 구성해 신선한 공기 유입이 가능한지</li>
+        <li>각 교사 건물의 실 배치 시 실의 특성에 맞게 <b class="term">자연 환기에 유리한 평면</b>인지</li>
+        <li>교실 내부 마감재에 대한 <b class="term">친환경자재 인증서</b> 확인</li>
+        <li>실별 환기계획 수립 및 창문이 <b class="term">일정 부분 개폐 가능한 구조</b>인지, 실의 특성상 <b class="term">자연·기계환기</b>의 필요성 검토</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9z"/><path d="M6 7h12v14H6z"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>설치 및 완료 후 체크리스트 (제작업체용)</span></span>
+      <ul class="list">
+        <li>설치되는 모듈러 자재가 <b class="term">친환경성·저오염 방출 자재</b>인지</li>
+        <li>부분공사 <b class="term">중·완료 후 적절한 환기</b> 실시 여부, <b class="term">접착제가 저오염물질 방출자재</b>인지</li>
+        <li>교실 및 가구의 도료·마감재료 중금속, 실내공기질 등이 <b class="term">환경안전기준에 적합</b>한지</li>
+        <li>실내 공사 중 먼지·오염물질 영향 최소화를 위한 <b class="term">청소·관리</b>가 적절한지</li>
+        <li>설치공사 완료 후 <b class="term">전문기관에 의한 공기질 검사</b>를 수행하였는지</li>
+        <li>건물관리자에게 실내 관리를 위한 <b class="term">유지관리 지침</b>을 작성·제시하였는지</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5M12 16V8M16 16v-8"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>설치</b> <span class="num">4~5개월</span> · <b>해체</b> <span class="num">1개월</span></span>
+        <span class="chip"><b>도로 폭·회전반경</b> <span class="num">17m 이상</span></span>
+        <span class="chip"><b>운반차량</b> 전장 <span class="num">17m</span>·전고 <span class="num">4.4m</span>·전폭 <span class="num">3.6m</span></span>
+        <span class="chip"><b>특례기준</b> 길이 <span class="num">19m</span>·너비 <span class="num">2.75m</span>·경사 <span class="num">30°</span>·회전 <span class="num">15.5m</span></span>
+        <span class="chip"><b>30ton 크레인</b> 전장 <span class="num">13m</span>·폭 <span class="num">6.5m</span></span>
+        <span class="chip"><b>화재감시자</b> 작업반경 <span class="num">11m</span></span>
+        <span class="chip"><b>소화기</b> <span class="num">2개</span> + 대형 <span class="num">1개</span></span>
+        <span class="chip"><b>신호수</b> 인양·하차 <span class="num">2명</span> · 통학로 <span class="num">3인</span></span>
+        <span class="chip"><b>소화기</b> <span class="num">33㎡</span> · <b>자탐</b> <span class="num">2,000㎡</span> · <b>재활용률</b> <span class="num">80%</span></span>
+        <span class="chip"><b>확인검사</b> 증축 <span class="num">33㎡</span>·수선 <span class="num">70㎡</span>·<span class="num">30일 이내</span></span>
+        <span class="chip"><b>과태료</b> <span class="num">5백만원 이하</span></span>
+        <span class="chip"><b>실내공기질</b> HCHO <span class="num">80㎍/㎥</span> · TVOC <span class="num">400㎍/㎥</span></span>
+        <span class="chip"><b>공기질 정기점검</b> <span class="num">연 2회</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">모듈러 교사는 가설건축물로 신고하더라도 성능은 <b>'교육연구시설 중 학교'</b> 기준으로 확보해야 한다. 업체는 설치 전 안전관리계획서를 제출하고 발주기관은 검토·확인서 통보·이행확인으로 마무리하며, 재사용 모듈러는 <b>신품과 동일한 성능·품질</b>이 기준이다. 사용 전 <b>공기질 8개 항목</b>과 <b>어린이활동공간 확인검사(30일 이내)</b>를 통과해야 학생이 들어갈 수 있다.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">Ⅲ-2 공기질 안전관리 방안 ｜ Ⅲ-3 어린이활동공간 관리방안(47쪽 설치 전·완료 후 체크리스트 포함) 발췌 요약 ｜ 출처: 한국교육시설안전원(www.koies.or.kr)·국가법령정보센터(www.law.go.kr)</p>
+  <p class="pgno">6 / 6</p>
+
+</div>
+</body></html>

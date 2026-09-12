@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건설공사 직접시공 의무제도 — 핵심 요약</title>
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .page.haspin .rolebar, .page.haspin .row2, .page.haspin .row1{ margin-bottom:auto; }
+  .page.haspin .row1.recap{ margin-bottom:auto; }
+
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  .formula{
+    background:var(--panel); border-left:1mm solid var(--teal);
+    padding:2.2mm 3mm; margin:0 0 2.4mm 0;
+    text-align:center; font-size:7.6pt; font-weight:700; line-height:1.45; color:var(--navy);
+  }
+  .formula .num{ color:var(--amber); }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1mm; text-align:left; }
+
+  .flow{ display:table; width:100%; table-layout:fixed; border-collapse:separate; border-spacing:0; margin:0 0 2.2mm 0; }
+  .flow .st, .flow .ar{ display:table-cell; vertical-align:middle; }
+  .flow .ar{ width:7mm; text-align:center; color:var(--teal); font-size:9pt; font-weight:800; }
+  .flow .st{
+    background:var(--panel); border-top:0.5mm solid var(--teal);
+    padding:1.8mm 2mm; text-align:center;
+  }
+  .flow .st b{ display:block; font-size:7.2pt; color:var(--navy); font-weight:800; line-height:1.3; }
+  .flow .st span{ display:block; font-size:6.1pt; color:var(--meta); margin-top:0.8mm; line-height:1.3; }
+  .flow .st.hot{ background:var(--amber-bg); border-top-color:var(--amber); }
+  .flow .st.hot b{ color:#8A4708; }
+
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.7mm 0.9mm; text-align:center; font-size:6.6pt; line-height:1.28;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.4pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl th.h1{ text-align:left; }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .g{ color:var(--meta); }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+  .tbl td.grp{
+    background:var(--panel); color:var(--navy); font-weight:800; font-size:6.5pt;
+    border-right:0.2mm solid var(--panel-line);
+  }
+
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+</style></head><body>
+
+<div class="page haspin">
+
+  <h1 class="title">건설공사 직접시공 의무제도</h1>
+  <div class="ubar"></div>
+  <p class="meta">근거: 「건설산업기본법」 <b class="term">제28조의2</b>(건설공사의 직접 시공) · 같은 법 시행령 <b class="term">제30조의2</b> · 같은 법 시행규칙 <b class="term">제25조의5</b>(직접시공계획통보서) 및 <b class="term">제25조의6</b>(준수 여부 확인) ｜ 제재: 법 제82조제2항제2호</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">수급인(시공자) = 직접시공·통보 의무 주체</span> ｜ <span class="rolet">발주자(발주청·학교·교육청)</span> — 미통보·미이행 시 <b class="term">도급계약 해지 가능</b>(법 ③)이고, 국가·지자체·공공기관 발주공사는 <b class="term">준수 여부를 준공일까지 확인하여 국토교통부장관에게 보고하여야 한다</b>(의무). 감리가 있으면 <span class="rolet">감리자</span>가 확인하게 할 수 있다. ｜ <span class="rolet">등록관청(지자체)</span> — 영업정지·과징금 처분청.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg></span><span class="lb"><i>1</i>도입 배경 — 왜 직접시공을 강제하는가</span></span>
+      <ul class="list">
+        <li><b class="term">문제 상황</b> — 직접시공 없이 <span class="tl">일괄하도급</span> 등으로 공사를 수행하면 <b class="term">공사비 누출 → 부실시공</b>의 원인이 된다</li>
+        <li><b class="term">일괄하도급이란</b> — 건설공사를 도급받아 <span class="tl">일정 부분 이윤만 챙기고</span> 전부 또는 대부분을 <span class="tl">도급금액 이하로 하도급</span>하는 경우</li>
+        <li><b class="term">제도 목적</b> — ① 건설공사의 <span class="tl">책임 시공의무</span> 확립 ② <span class="tl">페이퍼컴퍼니 등 부실업체 퇴출</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>2</i>의무 대상과 예외</span></span>
+      <ul class="list">
+        <li><b class="term">대상</b> — <b class="term">도급금액 <span class="num">70억원 미만</span></b>인 건설공사(법 ① · 영 ①)</li>
+        <li><b class="term">기준</b> — <span class="tl">산출내역서상 <b class="term">총 노무비</b></span> 중 아래 비율 이상을 직접 시공</li>
+        <li><b class="term">예외 ①</b> — 발주자가 공사의 품질이나 시공상 능률을 높이기 위하여 필요하다고 인정하여 <b class="term">서면으로 승낙</b>한 경우(영 ③1)</li>
+        <li><b class="term">예외 ②</b> — 도급받은 공사 중 <span class="tl">특허 또는 신기술</span>이 사용되는 부분을 그 특허·신기술을 사용할 수 있는 건설사업자에게 하도급하는 경우(영 ③2)</li>
+        <li><b class="term">통보 제외</b> — 전문공사 업종 등록 건설사업자가 <span class="tl">전문공사를 도급받은 경우</span>는 통보 의무 없음(법 ② 단서)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15v-4M12 15V8M16 15v-6"/></svg></span><span class="lb"><i>3</i>직접시공 비율 — 도급금액 구간별 (영 제30조의2제2항)</span></span>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:22%">도급금액 구간</th><th style="width:14%">3억원 미만</th><th style="width:16%">3억원 이상<br>10억원 미만</th><th style="width:16%">10억원 이상<br>30억원 미만</th><th style="width:16%">30억원 이상<br>70억원 미만</th><th class="h1" style="width:16%">70억원 이상</th></tr></thead>
+        <tbody>
+          <tr><td class="it">직접시공 비율<br><span class="g">(총 노무비 기준, 이상)</span></td><td class="o">50%<br><span class="g">100분의 50</span></td><td class="o">30%<br><span class="g">100분의 30</span></td><td class="o">20%<br><span class="g">100분의 20</span></td><td class="o">10%<br><span class="g">100분의 10</span></td><td class="lf g">의무 대상 아님</td></tr>
+        </tbody>
+      </table>
+      <ul class="list" style="margin-top:1.4mm">
+        <li><b class="term">산정 기준 주의</b> — 비율은 <b class="term">도급금액이 아니라 산출내역서상 총 노무비</b>에 곱한다. 예) 도급금액 8억원, 총 노무비 2억원 → 직접시공 대상 노무비 = 2억원 × 30% = <span class="num">6,000만원</span> 이상</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg></span><span class="lb"><i>4</i>절차 흐름 — 계약 → 통보 → 확인 → 제재</span></span>
+      <div class="flow">
+        <div class="st"><b>건설공사 도급계약 체결</b><span>발주자 ↔ 시공자</span></div>
+        <div class="ar">▶</div>
+        <div class="st"><b>직접시공계획 통보<br>(30일 이내)</b><span>시공자 → 발주자<br>직접시공계획통보서</span></div>
+        <div class="ar">▶</div>
+        <div class="st"><b>준수 여부 확인<br>(준공일까지)</b><span>발주자(또는 감리자)<br>→ 국토부 보고</span></div>
+        <div class="ar">▶</div>
+        <div class="st hot"><b>위반 시<br>영업정지 또는 과징금</b><span>처분청: 등록관청(지자체)</span></div>
+      </div>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">통보 서식·기한</b> — <span class="tl">직접시공계획통보서</span>(규칙 별지 <span class="num">제22호의6</span>서식, KISCON 통보 포함)로 <b class="term">계약일부터 30일 이내</b> ｜ <b class="term">첨부</b> ㉠직접시공·하도급할 공사량·공사단가·공사금액(노무비 포함)이 분명한 <span class="tl">공사내역서</span> ㉡<span class="tl">예정공정표</span></li>
+        <li><span class="no">2</span><b class="term">통보 생략</b> — ① 1건 공사의 도급금액 <span class="num">4천만원 미만</span> <b class="term">이고</b> ② 공사기간 <span class="num">30일 이내</span>인 경우(<b class="term">두 요건 모두 충족</b> 시에만 생략 가능, 영 ④ 단서)</li>
+        <li><span class="no">3</span><b class="term">감리자 통보 = 발주자 통보 간주</b> — 감리자가 있는 공사에서 기한 내에 감리자에게 통보하면 발주자에게 통보한 것으로 본다(영 ⑤)</li>
+        <li><span class="no">4</span><b class="term">확인 방법</b> ★ — 통보된 직접시공계획을 기준으로 <span class="tl">노무비 지급, 자재납품, 장비사용 내역, 사회보험 및 소득세 납부 내역</span> 등 증빙서류로 확인하며, <b class="term">준공일까지</b> 확인하여야 한다(규칙 제25조의6①②)</li>
+        <li><span class="no">5</span><b class="term">보고·통보</b> ★ — 확인 후 <span class="tl">건설산업종합정보망</span>으로 국토교통부장관에게 보고하고, <b class="term">위반사실 확인 시 등록관청에도 통보</b>(규칙 제25조의6③) ｜ 확인 의무 발주자: 국가·지자체·공기업·준정부기관·지방공사·공단(영 ⑥)</li>
+        <li><span class="no">6</span><b class="term">제재</b> ★ — 직접시공 미이행 시 <span class="num">1년</span> 이내 영업정지 또는 <b class="term">위반 공사 도급금액의 <span class="num">30%</span> 이하</b> 과징금(법 제82조제2항제2호) ｜ 미통보·미이행 시 발주자의 <b class="term">도급계약 해지</b> 가능(법 제28조의2③)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>의무 대상</b> 도급금액 <span class="num">70억원</span> 미만</span>
+        <span class="chip"><b>비율 기준</b> 산출내역서상 <span class="num">총 노무비</span> ｜ <b>3억 미만</b> <span class="num">50%</span></span>
+        <span class="chip"><b>3~10억</b> <span class="num">30%</span> ｜ <b>10~30억</b> <span class="num">20%</span> ｜ <b>30~70억</b> <span class="num">10%</span></span>
+        <span class="chip"><b>통보 기한</b> 계약일부터 <span class="num">30일</span></span>
+        <span class="chip"><b>서식</b> 별지 제<span class="num">22호의6</span>서식</span>
+        <span class="chip"><b>통보 생략</b> <span class="num">4천만원</span> 미만 + <span class="num">30일</span> 이내</span>
+        <span class="chip"><b>확인 시한</b> <span class="num">준공일</span>까지 ★</span>
+        <span class="chip"><b>제재</b> 영업정지 <span class="num">1년</span> 또는 과징금 <span class="num">30%</span> ★</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">도급금액 <b>70억원 미만</b> 공사는 <b>산출내역서상 총 노무비의 50·30·20·10%</b> 이상을 직접 시공하고, 계약일부터 <b>30일 이내</b>에 <b>직접시공계획통보서</b>를 통보해야 한다. 발주자는 접수에 그치지 않고 <b>준공일까지 노무비·자재·장비·보험 납부 내역으로 이행 여부를 확인해 국토부에 보고</b>할 의무가 있으며, 위반 시 등록관청이 <b>영업정지 또는 도급금액 30% 이하 과징금</b>을 처분한다.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">★ 국가법령정보센터 현행 조문으로 보완(준수 여부 확인방법·시한, 보고·통보 절차, 제재 수준) ｜ 출처: 국가법령정보센터(www.law.go.kr) · KISCON(www.kiscon.net)</p>
+  <p class="pgno">1 / 1</p>
+
+</div>
+
+</body></html>

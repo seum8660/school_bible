@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>건설사업관리용역 직접경비 정산방법 — 핵심 요약</title>
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .page.haspin .rolebar, .page.haspin .row2, .page.haspin .row1{ margin-bottom:auto; }
+  .page.haspin .row1.recap{ margin-bottom:auto; }
+
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  .formula{
+    background:var(--panel); border-left:1mm solid var(--teal);
+    padding:2.2mm 3mm; margin:0 0 2.4mm 0;
+    text-align:center; font-size:7.6pt; font-weight:700; line-height:1.45; color:var(--navy);
+  }
+  .formula .num{ color:var(--amber); }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1mm; text-align:left; }
+
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.6mm 0.9mm; text-align:center; font-size:6.4pt; line-height:1.26;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl .g{ color:var(--meta); }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+  .tbl td.grp{
+    background:var(--panel); color:var(--navy); font-weight:800; font-size:6.5pt;
+    border-right:0.2mm solid var(--panel-line);
+  }
+
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+</style></head><body>
+
+<!-- ═══════════════ 1쪽 — 정산 원칙 · 현장주재비 ═══════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">건설사업관리용역 직접경비 정산방법</h1>
+  <div class="ubar"></div>
+  <p class="meta">근거: 「건설엔지니어링 대가 등에 관한 기준」(국토교통부 고시 <b class="term">제2023-580호</b>, 2023. 10. 17. 발령·시행) <b class="term">[별표 2] 3-나. 직접경비 정산방법</b> ｜ 상위근거: 「건설기술 진흥법」 제37조제1항 · 같은 기준 제11조(직접경비) ｜ 여비 항목은 「공무원 여비 규정」(대통령령, 2026. 7. 1. 시행) 준용</p>
+
+  <div class="rolebar">
+    <span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주청 = 직접경비 인정·불인정의 결정 주체</span> — ① 공사 및 지역 특성 등을 고려하여 직접경비를 <b class="term">증·감할 수 있고</b>, ② 정산 내용에 맞게 사용된 금액은 <b class="term">별도 증빙자료를 검토하여 인정·정산할 수 있으며</b>, ③ 사용금액이 <b class="term">항목별 목적에 부합하지 아니하면 해당 금액을 불인정하여야 한다</b>(재량 아닌 <span class="rolet">의무</span>). ｜ <span class="rolet">건설엔지니어링사업자(계약상대자)</span>는 비목별 증빙자료 제출 책임을 지며, <span class="rolet">감독자·건설사업관리기술인</span>은 증빙과 실제 사용목적의 일치 여부를 1차 확인한다.</span>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span><span class="lb"><i>1</i>직접경비의 범위 — 기준 제11조</span></span>
+      <ul class="list">
+        <li><b class="term">정의</b> — 건설사업관리 업무에 필요한 <span class="tl">현장주재비·숙박비·출장여비·특수자료비·제출도서 인쇄 및 복사비·시험비 또는 조사비·현지 차량운행비·현장 운영경비·사무공간 임대비</span> 등으로서 <b class="term">그 실제 소요비용</b></li>
+        <li><b class="term">현장 운영경비</b> — 직접인건비에 포함되지 않은 <span class="tl">보조요원 급여</span>와 <span class="tl">현장사무실 운영비</span>를 말함</li>
+        <li><b class="term">계약 명시 의무</b> — 계약 시 당사자 간 <span class="tl">계약문서 및 과업지시서</span>에 직접경비를 <b class="term">추후 실제 소요비용으로 정산함을 명시하여야 한다</b>(제11조제2항)</li>
+        <li><b class="term">제경비와 구분</b> — 본사 임원·서무·경리 급여, 본사 사무실비·광열수도비 등은 직접경비가 아니라 <span class="tl">제경비(직접인건비의 110~120%)</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="lb"><i>2</i>정산의 3대 원칙</span></span>
+      <ul class="nlist">
+        <li><span class="no">1</span><b class="term">항목 간 변경 가능</b> — 직접경비의 항목별 비용은 <span class="tl">직접경비 총액 내에서</span> 변경할 수 있다(비목 간 유용은 총액 범위 내에서만 허용)</li>
+        <li><span class="no">2</span><b class="term">발주청의 증·감</b> — 공사 및 지역 특성 등을 고려하여 직접경비 자체를 증액·감액할 수 있다</li>
+        <li><span class="no">3</span><b class="term">목적 불부합 시 불인정</b> — 사용금액이 항목별 목적에 부합하지 않으면 <span class="tl">해당 금액을 불인정하여야 한다</span></li>
+        <li><span class="no">4</span><b class="term">증빙 우선</b> — 정산 내용에 맞게 사용된 금액은 <span class="tl">별도 증빙자료 검토</span>를 거쳐 인정한다. 증빙이 없으면 실비 지출이라도 정산 대상이 되지 않는다</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V10l9-6 9 6v11"/><path d="M9 21v-6h6v6"/></svg></span><span class="lb"><i>3</i>현장주재비 ① 숙식비 · 교통비 — 비목별 정산 내용 및 기준</span></span>
+      <table class="tbl">
+        <thead><tr><th style="width:9%">항목</th><th style="width:11%">세부항목</th><th style="width:17%">정산내용</th><th style="width:26%">적용기준</th><th class="h1" style="width:37%">증빙자료</th></tr></thead>
+        <tbody>
+          <tr><td class="grp" rowspan="3">숙식비</td><td class="it">임대비</td><td>월세, 전세</td><td>실비 적용</td><td class="lf">월세·전세 계약서, 입금확인증, 산출내역(전월세 전환율) <span class="g">* KB국민은행 기준금리 적용</span></td></tr>
+          <tr><td class="it">관리비</td><td>전기, 수도 등</td><td>실비 적용</td><td class="lf">관리비 계약서, 관리비 입금확인증</td></tr>
+          <tr><td class="it">식대</td><td>식대</td><td class="o">2.5만원 (1인 1일)</td><td class="lf">출근부 <span class="g">* 「공무원 여비 규정」 적용 — 별표 2 식비 25,000원/일</span></td></tr>
+          <tr><td class="grp" rowspan="2">교통비</td><td class="it">출·퇴근</td><td rowspan="2">버스, 철도, 자차</td><td rowspan="2">공무원 여비규정 적용<br><span class="g">* <b class="term">상주기술인</b>에 한해 적용</span></td><td class="lf">출근부 <span class="g">(시내버스 대중교통비 × 2)</span></td></tr>
+          <tr><td class="it">교통비</td><td class="lf">월 <span class="o">4회</span> 현장↔주거지 교통비 승차권(승차증) ｜ 자차 이용 시 통행료 등 거리·연비계산서 제출</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v13H4z"/><path d="M9 7V4h6v3"/><path d="M4 12h16"/></svg></span><span class="lb"><i>4</i>현장주재비 ② 현장운영경비 — 비목별 정산 내용 및 기준</span></span>
+      <table class="tbl">
+        <thead><tr><th style="width:20%">세부항목</th><th style="width:17%">정산내용</th><th style="width:26%">적용기준</th><th class="h1" style="width:37%">증빙자료</th></tr></thead>
+        <tbody>
+          <tr><td class="it">사무용품비</td><td>사무기기 임대료, 소모품비</td><td>실비 적용</td><td class="lf">용품구입 영수증, 세금계산서</td></tr>
+          <tr><td class="it">안전용품비</td><td>개인 안전 장구</td><td>실비 적용 <span class="g">* 안전화·안전모·안전대·각반 등</span></td><td class="lf">용품구입 영수증, 세금계산서</td></tr>
+          <tr><td class="it">통신비</td><td>인터넷, 공용전화 등 (설치비 포함)</td><td>실비 적용 <span class="g">* <b class="term">개인 휴대폰 이용료 불인정</b></span></td><td class="lf">사용 영수증, 납입확인증</td></tr>
+          <tr><td class="it">복리후생비</td><td>음료, 간식, 의복용, 회식 등</td><td class="o">5만원 / 1인 1월</td><td class="lf">비용 산출내역서 및 확인증</td></tr>
+          <tr><td class="it">사무실비</td><td>사무실 임대료, 공과금(전기·수도 등)</td><td>실비 적용</td><td class="lf">입금확인증 및 공과금 영수증</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>근거 고시</b> 제<span class="num">2023-580</span>호(’23.10.17.)</span>
+        <span class="chip"><b>식대</b> <span class="num">2.5만원</span>/1인 1일</span>
+        <span class="chip"><b>복리후생비</b> <span class="num">5만원</span>/1인 1월</span>
+        <span class="chip"><b>귀향 교통비</b> 월 <span class="num">4회</span></span>
+        <span class="chip"><b>출·퇴근 교통비</b> 시내버스 <span class="num">×2</span></span>
+        <span class="chip"><b>교통비 대상</b> <span class="num">상주기술인</span>에 한함</span>
+        <span class="chip"><b>개인 휴대폰 요금</b> <span class="num">불인정</span></span>
+        <span class="chip"><b>제경비</b> 직접인건비의 <span class="num">110~120%</span></span>
+        <span class="chip"><b>기술료</b> (직접인건비+제경비)의 <span class="num">20~40%</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">「건설엔지니어링 대가 등에 관한 기준」[별표 2] 3-나. 직접경비 정산방법 발췌 요약 ｜ 금액 기준은 발주청이 기준 제21조에 따라 세부시행기준으로 달리 정할 수 있음 ｜ 출처: 국가법령정보센터(www.law.go.kr) · 국토교통부(www.molit.go.kr)</p>
+  <p class="pgno">1 / 2</p>
+
+</div>
+
+<!-- ═══════════════ 2쪽 — 그 밖의 비목 · 세부 정산기준 ═══════════════ -->
+<div class="page haspin">
+
+  <h1 class="title">그 밖의 비목 · 세부 정산기준 (계속)</h1>
+  <div class="ubar"></div>
+  <p class="meta">차량운행비·출장비·현지사무원비·도서인쇄비 비목별 기준과, 자차 연료비·사무용품비·손해배상보험의 세부 정산기준</p>
+
+  <div class="row1">
+    <div class="card tealtop">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l2-5h14l2 5v5H3z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></span><span class="lb"><i>1</i>차량운행비 · 출장비 · 현지사무원비 · 도서인쇄비</span></span>
+      <table class="tbl">
+        <thead><tr><th style="width:13%">항목</th><th style="width:16%">세부항목</th><th style="width:15%">정산내용</th><th style="width:24%">적용기준</th><th class="h1" style="width:32%">증빙자료</th></tr></thead>
+        <tbody>
+          <tr><td class="grp">차량운행비</td><td class="it">임대비, 유류비</td><td>임대비, 유류비</td><td>실비 적용</td><td class="lf">운임·통행료·주차료 등 영수증</td></tr>
+          <tr><td class="grp">출장비</td><td class="it">숙박비 / 일비 / 식비 / 교통비</td><td>좌동</td><td>공무원 여비규정 적용</td><td class="lf">영수증 <span class="g">* <b class="term">일비는 별도 증빙 불요</b></span></td></tr>
+          <tr><td class="grp">현지사무원비</td><td class="it">현지사무원 급여</td><td>급여(입금증 등)</td><td>실비 적용 <span class="g">* 「근로기준법」 준수</span></td><td class="lf">급여지출내역, 수령확인증</td></tr>
+          <tr><td class="grp">도서인쇄비</td><td class="it">인쇄비</td><td>인쇄, 제본</td><td>실비 적용 <span class="g">* 과업지시서 등을 참고하여 부수 등 정함</span></td><td class="lf">인쇄·제본 등 비용 영수증</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row1">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17V7h8v10"/><path d="M12 11h4l4 4v2h-8"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span><span class="lb"><i>2</i>세부기준 ① 현장주재비 / 교통비 / 자차(연료비) 정산기준</span></span>
+      <div class="formula">
+        연료비 지급기준 = 출·퇴근거리(km) × 유가 ÷ 연비
+        <span class="sub">· <b>적용기준</b> — 「공무원보수 등의 업무지침」 제9장 공무원여비업무 처리기준 제9장-Ⅳ-2-라. 국내자동차운임 지급기준(「공무원 여비 규정」 제13조제1항 → 별표 2에 따라 지급) ｜ <b>정산대상</b> — <b>상주기술인 자차 이용자</b><br>· <b>유가</b> — 한국석유공사 유가정보서비스(오피넷)에 고시된 유가 적용(출장 시작일 기준), 환경부 무공해차 통합누리집 충전요금 등을 적용</span>
+      </div>
+      <table class="tbl">
+        <thead><tr><th class="h1" style="width:16%">구분(승용차 유종별)</th><th>휘발유</th><th>경유</th><th>LPG</th><th>하이브리드</th><th>플러그인<br>하이브리드</th><th>전기</th><th>수소</th></tr></thead>
+        <tbody>
+          <tr><td class="it">연비 (km/L)</td><td class="o">11.97</td><td class="o">12.52</td><td class="o">8.83</td><td class="o">15.37</td><td class="o">10.61</td><td>–</td><td>–</td></tr>
+          <tr><td class="it">전비 (km/kWh)</td><td>–</td><td>–</td><td>–</td><td>–</td><td class="o">2.84</td><td class="o">5.22</td><td>–</td></tr>
+          <tr><td class="it">연비 (km/kg)</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td class="o">94.9</td></tr>
+        </tbody>
+      </table>
+      <ul class="list" style="margin-top:1.4mm">
+        <li><span class="g">※ 2021년 한국에너지공단 통계 등 적용 — 유종별 연비(전비)는 통계 갱신 시 변동될 수 있으므로 정산 시점의 지침 수치를 재확인한다.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="1"/><path d="M8 21h8M12 17v4"/></svg></span><span class="lb"><i>3</i>세부기준 ② 사무용품비</span></span>
+      <ul class="list">
+        <li><b class="term">정산대상</b> — <span class="tl">현장사무소 운영에 한정</span>. 사무용품 임대료, 소모품비 등</li>
+        <li><b class="term">사무기기(PC·프린터 등)</b> — <span class="tl">임대차계약서(영수증 포함)</span> 제출 ｜ 구입한 경우에는 <b class="term">사용 완료 후 매각하여 정산한 차액</b>을 인정</li>
+        <li><b class="term">불인정 예</b> — 본사 사무용품, 개인 소유 물품, 현장 운영과 무관한 비품은 목적 불부합으로 불인정 대상</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M12 8v5M12 16h.01"/></svg></span><span class="lb"><i>4</i>세부기준 ③ 손해배상보험</span></span>
+      <ul class="list">
+        <li><b class="term">적용기준</b> — 「건설엔지니어링 손해배상보험 또는 공제 업무처리 요령」 <span class="tl">제9조제2항</span></li>
+        <li><b class="term">핵심</b> — <span class="rolet">발주청</span>은 입찰금액 산출내역서상의 보험료·공제료와 <span class="tl">실제 납입한 보험료·공제료 간에 차액이 발생하였다는 이유로</span> 보험·공제 가입을 <b class="term">거절하거나 그 차액의 정산을 요구하지 아니하도록 하여야 한다</b></li>
+        <li><b class="term">실무 해석</b> — 손해배상보험료는 다른 직접경비와 달리 <span class="tl">차액 환수형 실비정산 대상이 아니다</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row1 recap">
+    <div class="card">
+      <span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>5</i>핵심 수치 재확인</span></span>
+      <div class="chips">
+        <span class="chip"><b>휘발유</b> <span class="num">11.97</span> km/L</span>
+        <span class="chip"><b>경유</b> <span class="num">12.52</span> km/L</span>
+        <span class="chip"><b>LPG</b> <span class="num">8.83</span> km/L</span>
+        <span class="chip"><b>하이브리드</b> <span class="num">15.37</span> km/L</span>
+        <span class="chip"><b>PHEV</b> <span class="num">10.61</span> km/L · <span class="num">2.84</span> km/kWh</span>
+        <span class="chip"><b>전기</b> <span class="num">5.22</span> km/kWh</span>
+        <span class="chip"><b>수소</b> <span class="num">94.9</span> km/kg</span>
+        <span class="chip"><b>일비·식비</b> 각 <span class="num">25,000</span>원 ★</span>
+        <span class="chip"><b>숙박비 상한</b> 서울 <span class="num">10만</span>·광역시 <span class="num">8만</span>·그 밖 <span class="num">7만</span>원 ★</span>
+        <span class="chip"><b>일비 증빙</b> <span class="num">불요</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclude">
+    <div class="ct">한 줄 결론</div>
+    <div class="cb">직접경비는 <b>전 항목 실비정산</b>이 원칙이되, <b>식대 2.5만원(1인·1일)</b>과 <b>복리후생비 5만원(1인·1월)</b>만 정액 상한이 있고 출장비·교통비는 <b>공무원 여비 규정</b>을 따른다. 발주청은 총액 내 항목 변경과 증·감은 허용하되 <b>목적에 부합하지 않는 사용액은 반드시 불인정</b>해야 하며, 반대로 <b>손해배상보험료는 차액 정산을 요구해서는 안 된다</b> — 정산 실무의 성패는 결국 <b>비목별 증빙자료(계약서·영수증·출근부·승차권·산출내역서)의 확보</b>에 달려 있다.</div>
+  </div>
+
+  <div class="rule-gray"></div>
+  <p class="note">★ 「공무원 여비 규정」[별표 2] 국내 여비 지급표(2026. 6. 30. 개정, 2026. 7. 1. 시행) 확인값 — 원문에는 미기재. 같은 별표 비고 5에 따라 <b>통합특별시</b>의 숙박비는 종전 전라남도 관할 시·군 및 광주광역시를 기준으로 지급한다 ｜ 자가용 승용차 공무여행 운임은 원칙적으로 철도·버스운임이며, 부득이한 사유가 있는 경우에 한해 연료비·통행료를 지급(같은 별표 비고 4) ｜ 출처: 국가법령정보센터(www.law.go.kr)</p>
+  <p class="pgno">2 / 2</p>
+
+</div>
+
+</body></html>

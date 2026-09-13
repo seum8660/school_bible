@@ -1,462 +1,545 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8">
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
 <title>건설공사 품질관리 업무지침 — 핵심 요약</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
-    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
-    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+:root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
   }
   @page{ size:A4 portrait; margin:0; }
   *{ box-sizing:border-box; }
   html,body{ margin:0; padding:0; }
   body{
-    width:210mm; min-height:297mm;
-    padding:8mm 8mm 0 8mm;
     font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
     color:var(--body); background:#fff;
     -webkit-print-color-adjust:exact; print-color-adjust:exact;
   }
-  .sheet{ min-height:149mm; }
-
-  .title{ margin:0; font-size:17pt; font-weight:800; color:var(--navy); letter-spacing:-0.01em; line-height:1.25; }
-  .meta{ margin:1.8mm 0 0 0; font-size:8pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.4; }
-  .rule-navy{ height:0.7mm; background:var(--navy); margin:2.6mm 0 3.8mm 0; }
-  .rule-gray{ height:0.3mm; background:var(--line); margin:4mm 0 2.4mm 0; }
-
-  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:4.6mm; margin-bottom:3.6mm; }
-  .row1{ margin-bottom:3.6mm; }
-  .row1:last-of-type{ margin-bottom:0; }
-
-  .card{ border:0.35mm solid var(--line); border-radius:1.4mm; background:none; padding:3mm 3.8mm 3.2mm 3.8mm; }
-  .badge{
-    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
-    font-size:10.2pt; font-weight:700; letter-spacing:0; line-height:1.3;
-    padding:1.2mm 3mm; border-radius:1mm; margin-bottom:2.2mm;
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
   }
-  .badge.rust{ background:var(--rust); }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  /* 여백 없이 전면 채움 — 남는 높이를 섹션 사이에 균등 배분 */
+  .page.haspin .rolebar, .page.haspin .row2, .page.haspin .row1{ margin-bottom:auto; }
+  .page.haspin .row1.recap{ margin-bottom:auto; }
+
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
 
   .list{ margin:0; padding:0; list-style:none; }
-  .list li{ font-size:9pt; line-height:1.58; padding-left:3.2mm; text-indent:-3.2mm; margin-bottom:1.5mm; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
   .list li:last-child{ margin-bottom:0; }
-  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
-
-  .nlist{ margin:0; padding:0; list-style:none; }
-  .nlist li{ font-size:9pt; line-height:1.58; padding-left:5.2mm; text-indent:-5.2mm; margin-bottom:1.5mm; }
-  .nlist li:last-child{ margin-bottom:0; }
-  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1.2mm; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
 
   .term{ color:var(--navy); font-weight:700; }
-  .num{ color:var(--rust); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
 
-  .formula{
-    background:var(--band); border-radius:1.2mm; padding:2.8mm 3.8mm; margin:0 0 2.8mm 0;
-    text-align:center; font-size:9.3pt; font-weight:600; line-height:1.45;
-    color:var(--navy); letter-spacing:0;
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
   }
-  .formula .num{ color:var(--rust); }
-  .formula .sub{ display:block; font-size:7.6pt; font-weight:500; color:var(--meta); margin-top:1.2mm; }
 
-  .chips{ display:flex; flex-wrap:wrap; gap:2mm; }
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+  .tbl tr.hi td{ background:#EAF4F6; }
+
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
   .chip{
-    font-size:8pt; line-height:1.3; background:var(--chip-bg);
-    border:0.3mm solid var(--chip-line); border-radius:1.2mm;
-    padding:1.4mm 2.6mm; color:var(--body); white-space:nowrap;
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
   }
   .chip b{ color:var(--navy); font-weight:700; }
   .chip .num{ font-weight:700; }
 
-  .note{ text-align:center; font-size:7.2pt; line-height:1.5; color:var(--note); margin:0; }
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
 
-  @media print{ body{ width:auto; min-height:auto; } }
-.page{ width:210mm; min-height:297mm; padding:8mm; page-break-after:always; box-sizing:border-box; }
-.page:last-child{ page-break-after:auto; }
-.pageno{ text-align:center; font-size:7.2pt; color:var(--note); margin-top:2.6mm; }
-@media screen{
-  body{ background:#e5e7eb; }
-  .page{ background:#fff; margin:6mm auto; box-shadow:0 1mm 3mm rgba(0,0,0,0.15); }
-}
-</style><style id="onepaper">:root{--navy:#1B3A5B;--navy2:#16304D;--teal:#227C8E;--rust:#B45309;--line:#DCE4EC;--band:#EAF0F5;--chip-bg:#F3F7F9;--chip-line:#DCE4EC;--body:#42505F;--meta:#6B7280;--note:#8A93A0;--grad:linear-gradient(135deg,#1B3A5B,#227C8E);--shadow:0 1px 6px rgba(27,58,91,.13)}
-.rule-navy{height:1.4mm;width:46mm;border-radius:1mm;background:var(--grad)}.rule-gray{background:var(--line)}
-.card{background:#fff;border:.25mm solid var(--line);border-radius:3mm;box-shadow:var(--shadow)}
-.badge{background:none;color:var(--navy);border-radius:0;white-space:normal;border-bottom:.5mm solid var(--teal);padding:0 0 1.4mm 0}
-.badge.rust{background:none;color:#B45309;border-bottom-color:#D9730D}
-.list li::before{content:"▪ ";color:var(--teal);font-weight:400}.nlist .no{color:var(--teal)}.num,.formula .num{color:var(--teal)}
-.formula{background:var(--band);border-left:1.4mm solid var(--teal);border-radius:1.4mm 2mm 2mm 1.4mm}
-.chip{background:var(--chip-bg);border-color:var(--line);border-radius:1.6mm}
-.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1;border-left:1.4mm solid #D9730D;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0;font-size:7.6pt;line-height:1.5}
-.rolet{color:#B45309;font-weight:800}
-.conclude{background:var(--grad);border-radius:3mm;padding:3.4mm 4.2mm;margin:3.2mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
-.conclude .lab{display:inline-block;font-size:6.6pt;font-weight:800;letter-spacing:.06em;opacity:.85;margin-right:2.4mm}
-.conclude .txt{font-size:8pt;font-weight:600;line-height:1.5}</style>
-<style id="onepaper-flow">.row2,.grid{grid-template-columns:1fr!important}
-.page{min-height:0!important;height:auto!important;page-break-after:auto!important;break-after:auto!important;margin:0 auto!important;box-shadow:none!important;padding-top:0!important;padding-bottom:0!important}
-.page:first-of-type{padding-top:13mm!important}
-.card,.box,.formula,table,.chips,.stage,.flow{break-inside:avoid;page-break-inside:avoid}
-.pageno{display:none!important}
-@media screen{body{background:#fff!important}}</style>
-<style id="onepaper-ig">:root{--navy:#1B3A5B;--navy2:#16304d;--teal:#227C8E;--ink:#1B3A5B;--body:#42505F;--gray:#6B7280;--light:#8A93A0;--panel:#EAF0F5;--panel2:#F3F7F9;--line:#DCE4EC;--grad:linear-gradient(135deg,#1B3A5B 0%,#227C8E 100%);--shadow:0 .5mm 1.8mm rgba(27,58,91,.13)}
-body{color:var(--body)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.title,.hd h1{color:var(--navy)!important;font-size:18pt!important;font-weight:800!important;letter-spacing:-.02em;line-height:1.25;padding:0 0 2.4mm 0!important;border:none!important}
-.title::after,.hd h1::after{content:"";display:block;height:1.4mm;width:46mm;margin-top:2mm;border-radius:1mm;background:var(--grad)}
-.hd,.hd::after{border:none!important}
-.meta,.hd .meta,.hd p{color:var(--gray)!important;font-size:6.4pt!important;line-height:1.45}
-.rule-navy{height:0!important;border:none!important;margin:2.4mm 0 3.6mm 0!important;background:none!important}
-.rule-gray{height:0!important;border:none!important;border-top:.25mm solid var(--line)!important;margin:3.6mm 0 2mm 0!important;background:none!important}
-.card,.box{border:none!important;border-top:.3mm solid var(--line)!important;border-bottom:.3mm solid var(--line)!important;border-radius:0!important;background:#fff!important;box-shadow:none!important;padding:3.2mm 4mm 3.4mm 4mm!important}
-.badge,.box h2{display:inline-block!important;background:none!important;color:var(--navy)!important;font-size:9.2pt!important;font-weight:800!important;letter-spacing:-.01em;line-height:1.35;white-space:normal!important;padding:0 0 1.6mm 0!important;border:none!important;border-bottom:.5mm solid var(--teal)!important;border-radius:0!important;margin:0 0 2.6mm 0!important}
-.badge.emph{background:var(--navy2)!important;color:#fff!important;border-bottom:none!important;border-radius:1.6mm!important;padding:1mm 2.8mm!important}
-.list li,.box li,.nlist li{font-size:7.6pt!important;line-height:1.62!important;color:var(--body)!important;margin-bottom:1.7mm!important}
-.list li::before,.box li::before{content:"▪  "!important;color:var(--teal)!important;font-weight:700!important}
-.nlist li::before{content:none!important}
-.nlist .no,.box .num{display:inline-block!important;color:#fff!important;background:var(--teal)!important;font-weight:700!important;font-size:6.6pt!important;width:4mm;height:4mm;line-height:4mm!important;text-align:center;border-radius:50%!important;margin-right:1.4mm}
-.term,.k,.chip b{color:var(--navy)!important;font-weight:700!important}
-.num,.r{color:var(--teal)!important;font-weight:800!important}
-.formula{background:var(--panel)!important;border:none!important;border-left:1.4mm solid var(--teal)!important;border-radius:1.4mm 2mm 2mm 1.4mm!important;padding:2.8mm 3.8mm!important;margin:0 0 3mm 0!important;text-align:center;font-size:7.6pt!important;font-weight:600;line-height:1.55;color:var(--navy)!important}
-.formula .num{color:var(--teal)!important}
-.formula .sub{display:block;font-size:6.5pt;font-weight:500;color:var(--gray)!important;margin-top:1.4mm;line-height:1.45}
-.chip,.law,.tag{background:var(--panel2)!important;border:.25mm solid var(--line)!important;border-radius:1.6mm!important;font-size:6.7pt!important;line-height:1.35;padding:1.4mm 2.6mm!important;color:var(--body)!important}
-.chips{display:flex;flex-wrap:wrap;gap:2mm}
-.hl{background:#DCEBEF!important;color:#155E6E!important;font-weight:800;padding:.2mm 1mm;border-radius:.8mm}
-th{background:var(--panel)!important;color:var(--navy)!important}th,td{border-color:var(--line)!important}
-.stage div,.flow div{background:var(--panel2)!important;border-color:var(--line)!important;color:var(--body)!important}
-.stage span{color:var(--navy)!important}.arw,.ar{color:var(--teal)!important}
-.note,.ft{text-align:center;font-size:6.1pt!important;line-height:1.5;color:var(--light)!important;border-top-color:var(--line)!important}
-.conclude{background:var(--grad)!important;border-radius:3mm;padding:4mm 5mm;margin:1mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
-.conclude .lab{display:inline-block;color:#7FD4E3;font-weight:800;font-size:8.4pt;margin-right:2mm}
-.conclude .txt{font-size:9pt;font-weight:700;line-height:1.5}.conclude .txt b{color:#8FE0EE}
-.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1!important;border-left:1.4mm solid #D9730D!important;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0}
-.rolebar .t{font-size:7.3pt;line-height:1.52;color:#7C3D0A!important}.rolebar .t b{color:#B45309!important;font-weight:800}
-.rolet{color:#B45309!important;font-weight:800}
-.page{padding:13mm 10mm 8mm!important}</style>
-<link rel="stylesheet" href="onepaper-read-v2.css">
-</head><body>
-<div class="page">
-<h1 class="title">건설공사 품질관리 업무지침 ① — 총칙·품질관리계획</h1>
-<p class="meta">건설공사 품질관리 ｜ 「건설기술진흥법」 제55~61조 ｜ 국토교통부고시 제2026-360호(2026.7.8. 시행)</p>
-<div class="rule-navy"></div>
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
 
-<div class="row2">
-  <div class="card">
-    <span class="badge">1 · 목적·적용범위</span>
-    <ul class="list">
-      <li>목적 — 발주자·시공자·품질검사대행 건설엔지니어링사업자의 품질관리 업무수행 세부기준</li>
-      <li>2편1·2장 — 영 제89조 품질관리계획·품질시험계획 수립대상 공사</li>
-      <li>2편3장 — 건설엔지니어링업 등록·품질검사 대행 평가</li>
-      <li>3편(레미콘·아스콘·배치플랜트) / 4편(철강구조물 인증) / 5편(가설기자재)</li>
-    </ul>
+  /* --- 보강: 수식 밴드 (구 박스문서 변환용) --- */
+  .formula{
+    background:var(--panel); border-left:1.3mm solid var(--teal);
+    border-radius:0.8mm 1.2mm 1.2mm 0.8mm; padding:2.2mm 3mm; margin:0 0 2mm 0;
+    text-align:center; font-size:7.4pt; font-weight:700; color:var(--navy); line-height:1.45;
+  }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1.1mm; }
+  .formula:last-child{ margin-bottom:0; }
+  .hl{ background:#DCEBEF; color:#155E6E; font-weight:800; padding:0.2mm 0.8mm; border-radius:0.6mm; }
+
+  /* ===== 구(舊) BIBLE 마크업 호환 레이어 — 인포그래픽 팔레트로 재매핑 ===== */
+  .k{ color:var(--navy); font-weight:700; }
+  .r, .em{ color:var(--amber); font-weight:700; }
+  .b{ display:block; margin-left:5.2mm; font-size:6.6pt; color:var(--body); line-height:1.42; }
+  .b b{ color:var(--navy); font-weight:700; }
+
+  .pill{ display:inline-block; background:var(--navy); color:#fff; font-size:6.6pt; font-weight:700;
+         padding:0.7mm 2.2mm; border-radius:0.9mm; line-height:1.3; }
+  .pill.hi{ background:var(--amber); }
+
+  .law, .tag{ display:inline-block; background:var(--panel); border:0.25mm solid var(--panel-line);
+              border-radius:1mm; padding:0.9mm 1.8mm; font-size:6.3pt; line-height:1.3; color:var(--body); }
+  .law b, .tag b{ color:var(--navy); font-weight:700; }
+
+  /* 흐름도 · 단계 박스 */
+  .flow{ display:flex; flex-wrap:wrap; align-items:stretch; gap:1.6mm; margin-top:1.4mm; }
+  .flow .st{ flex:1; min-width:28mm; background:var(--panel); border:0.25mm solid var(--panel-line);
+             border-radius:1mm; padding:1.5mm 1.8mm; font-size:6.4pt; line-height:1.36; color:var(--body); }
+  .flow .st b{ display:block; color:var(--navy); font-size:6.6pt; margin-bottom:0.6mm; }
+  .flow .st.hi{ border-color:var(--amber); background:var(--amber-bg); }
+  .flow .ar, .arw{ align-self:center; color:var(--teal); font-weight:800; font-size:7.4pt; }
+  .stage{ display:flex; gap:1.2mm; margin:1.2mm 0 0.6mm; }
+  .stage div{ flex:1; background:var(--panel); border:0.25mm solid var(--panel-line); border-radius:1mm;
+              padding:1.1mm 1.2mm; font-size:6.2pt; text-align:center; line-height:1.3; color:var(--body); }
+  .stage span{ display:block; color:var(--navy); font-weight:700; }
+
+  /* 번호 카테고리 행 */
+  .cat{ display:flex; gap:1.6mm; align-items:flex-start; margin-bottom:1mm; }
+  .cat .n{ flex:0 0 auto; width:4.1mm; height:4.1mm; background:var(--teal); color:#fff;
+           border-radius:50%; font-size:5.6pt; font-weight:800; text-align:center; line-height:4.1mm; }
+  .cat .t{ font-size:7pt; line-height:1.44; }
+  .cat .t b{ color:var(--navy); font-weight:700; }
+
+  /* 구 표(class 없는 table) — .tbl 규격으로 통일 */
+  .card table{ width:100%; border-collapse:collapse; margin:0; }
+  .card table th, .card table td{ border-bottom:0.2mm solid var(--panel-line);
+      padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.26; }
+  .card table th{ background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+      border-bottom:0.45mm solid var(--teal); }
+  .card table tr:last-child td{ border-bottom:0; }
+  .card table td.l, .card table td.lf{ text-align:left; }
+  .card table td.h, .card table td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .card table td.s{ background:var(--panel); color:var(--navy); font-weight:700; }
+  .card table td.t, .card table td.o{ color:var(--amber); font-weight:800; white-space:nowrap; }
+  .card table tr.hi td{ background:#EAF4F6; }
+
+  /* 구 컨테이너 무력화 */
+  .sheet{ display:block; max-height:none; overflow:visible; }
+  .rule-navy{ display:none; }
+  .grid{ display:block; }
+  .box{ border:0; padding:0; background:none; }
+  ol.nlist{ list-style:none; }
+  p.sub{ font-size:6.6pt; color:var(--meta); line-height:1.42; margin:0.8mm 0 0 0; }
+
+  /* 클래스 없는 ul/ol/li — .list 규격으로 통일 */
+  .card ul, .card ol{ margin:0; padding:0; list-style:none; }
+  .card ul li, .card ol li{ font-size:7pt; line-height:1.44; padding-left:2.6mm;
+      text-indent:-2.6mm; margin-bottom:0.8mm; color:var(--body); }
+  .card ul li:last-child, .card ol li:last-child{ margin-bottom:0; }
+  .card ul li::before{ content:"· "; color:var(--teal); font-weight:800; }
+  .card ol.nlist li, .card ul.nlist li{ padding-left:5.6mm; text-indent:0; }
+  .card ol.nlist li::before, .card ul.nlist li::before{ content:none; }
+  .card > p{ font-size:6.6pt; line-height:1.44; color:var(--meta); margin:1mm 0 0 0; }
+  .card p.sub, .card .formula .sub{ color:var(--meta); }
+
+  /* 5대 수칙 등 가로 스트립(.rule) */
+  .card .rule{ display:flex; flex-wrap:nowrap; gap:1.6mm; margin:0; }
+  .card .rule > div{ flex:1; background:var(--panel); border:0.25mm solid var(--panel-line);
+      border-radius:1.2mm; padding:1.6mm 1.4mm; font-size:6.4pt; line-height:1.34;
+      text-align:center; color:var(--body); }
+  .card .rule > div b{ display:block; color:var(--navy); font-size:6.8pt; font-weight:800;
+      margin-bottom:0.7mm; }
+
+  /* 여백 균일 배치 — 자동 늘림(auto) 대신 고정 간격 */
+  .page.evengap{ display:flex; flex-direction:column; }
+  .page.evengap .rule-gray{ margin-top:auto; }
+  .page.evengap .rolebar, .page.evengap .row2, .page.evengap .row1,
+  .page.evengap .row1.recap{ margin-bottom:4.2mm !important; margin-top:0 !important; }
+  .page.evengap .conclude{ margin-top:4.2mm; }
+
+  /* 클래스 없는 텍스트 컨테이너(.ex, 일반 div/p 등) 기본 크기 — 브라우저 기본 16px 방지 */
+  .card{ font-size:7pt; line-height:1.46; }
+  .card div, .card p, .card span{ font-size:inherit; }
+  .card .ex{ font-size:7pt; line-height:1.5; }
+  .card .ex b{ color:var(--navy); font-weight:700; }
+
+  /* 표 연속 조각 — 배지 없이 이어지는 카드 */
+  .card.cont{ border-top:0.25mm solid var(--line); padding-top:1.6mm; }
+
+  /* 번호 항목 블록(.nums > .num > .n + .b) — 틸 넘버서클 인라인 배치 */
+  .card .nums{ margin:0; }
+  .card .num{ position:relative; padding-left:5.8mm; margin:0 0 1.2mm 0;
+      color:var(--body); font-weight:400; font-size:inherit; }
+  .card .num:last-child{ margin-bottom:0; }
+  .card .num > .n{ position:absolute; left:0; top:0.3mm; width:4.1mm; height:4.1mm;
+      border-radius:50%; background:var(--teal); color:#fff; font-weight:800;
+      font-size:0.8em; line-height:4.1mm; text-align:center; }
+  .card .num.r > .n{ background:var(--amber); }
+  .card .num > .b{ display:block; margin:0; font-size:inherit; line-height:1.46; color:var(--body); }
+  .card .num > .b b{ color:var(--navy); font-weight:700; }
+
+  /* 수식·강조 밴드(.band) · 보조 각주(.cap) · 구분선(.trule) */
+  .card .band{ background:var(--panel); border-left:1.3mm solid var(--teal);
+      border-radius:0.8mm 1.2mm 1.2mm 0.8mm; padding:2mm 2.8mm; margin:0 0 2mm 0;
+      text-align:center; font-weight:700; color:var(--navy); font-size:inherit; }
+  .card .cap{ margin:1.4mm 0 0 0; font-size:0.88em; line-height:1.45; color:var(--meta); }
+  .card .cap b{ color:var(--navy); font-weight:700; }
+  .trule{ display:none; }
+
+  /* 폭 넘침 방지 — 글꼴 대체(Noto Sans KR 미설치 등)로 폭이 커져도 밖으로 나가지 않는다 */
+  .page{ overflow:hidden; }
+  .title{ white-space:normal !important; overflow-wrap:break-word; }
+  .card table, .tbl{ width:100% !important; table-layout:fixed; }
+  .card table th, .card table td, .tbl th, .tbl td{ overflow-wrap:break-word; word-break:keep-all; }
+  .chips{ max-width:100%; }
+  .chip{ white-space:normal; }
+
+  /* ===== 밀도 보정(x1.286) — 남는 여백을 본문 크기로 흡수 ===== */
+  .card, .card .ex{ font-size:9.0pt !important; }
+  .list li,.card ul li,.card ol li,.nlist li{ font-size:9.0pt !important; line-height:1.46 !important; }
+  .badge .lb{ font-size:11.06pt !important; }
+  .rolebar .rtx{ font-size:8.87pt !important; }
+  .tbl th,.tbl td,.card table th,.card table td{ font-size:8.23pt !important; padding:0.77mm 1.16mm !important; }
+  .chip{ font-size:8.1pt !important; padding:1.41mm 2.57mm !important; }
+  .card .rule > div{ font-size:8.23pt !important; }
+  .card .rule > div b{ font-size:8.74pt !important; }
+  .conclude .cb{ font-size:10.29pt !important; }
+  .note{ font-size:7.59pt !important; }
+
+</style>
+</head>
+<body>
+
+<div class="page evengap">
+
+  <h1 class="title">건설공사 품질관리 업무지침 — 핵심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">건설공사 품질관리 ｜ 「건설기술진흥법」 제55~61조 ｜ 국토교통부고시 제2026-360호(2026.7.8. 시행)</p>
+  <div class="rolebar"><span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주자</span> — 품질관리계획서를 <b class="term">적정·조건부적정·부적정으로 심사하여 서면 통보</b>하고 시험빈도를 조정할 수 있는 주체이며, <span class="rolet">공사감독자·건설사업관리기술인</span>은 계획서를 검토·확인하고 <b class="term">현장 시험에 입회하여 시료채취 위치를 결정</b>한다. <span class="rolet">시공자</span>는 계획 수립과 불량자재 반품·폐기확약서 징구(3년 보관)를 이행한다.</span></div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2"/></svg></span><span class="lb"><i>1</i>목적·적용범위</span></span>
+<ul class="list">
+<li>목적 — 발주자·시공자·품질검사대행 건설엔지니어링사업자의 품질관리 업무수행 세부기준</li>
+<li>2편1·2장 — 영 제89조 품질관리계획·품질시험계획 수립대상 공사</li>
+<li>2편3장 — 건설엔지니어링업 등록·품질검사 대행 평가</li>
+<li>3편(레미콘·아스콘·배치플랜트) / 4편(철강구조물 인증) / 5편(가설기자재)</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>2</i>주요 정의</span></span>
+<ul class="list">
+<li><b class="term">품질관리</b> — 품질시험·검사활동 + 부적합공사 사전예방 활동</li>
+<li><b class="term">중점품질관리(특별프로세스)</b> — 하자빈도 높고 시정 어려운 공종 품질관리</li>
+<li><b class="term">시험인력</b> — 특급·고급·중급·초급품질관리원으로 구분</li>
+<li><b class="term">적절성 확인</b> — 발주청 등이 품질관리계획 이행여부 확인하는 것</li>
+</ul></div>
   </div>
-  <div class="card">
-    <span class="badge">2 · 주요 정의</span>
-    <ul class="list">
-      <li><b class="term">품질관리</b> — 품질시험·검사활동 + 부적합공사 사전예방 활동</li>
-      <li><b class="term">중점품질관리(특별프로세스)</b> — 하자빈도 높고 시정 어려운 공종 품질관리</li>
-      <li><b class="term">시험인력</b> — 특급·고급·중급·초급품질관리원으로 구분</li>
-      <li><b class="term">적절성 확인</b> — 발주청 등이 품질관리계획 이행여부 확인하는 것</li>
-    </ul>
-  </div>
-</div>
-
-<div class="row1">
-  <div class="card">
-    <span class="badge rust">3 · 품질관리계획 수립·승인 절차</span>
-    <div class="formula">시공자 계획수립 → 공사감독자·건설사업관리기술인 검토·확인 → 발주자 <span class="num">적정/조건부적정/부적정</span> 심사 → 서면통보
+  <div class="row1">
+    <div class="card tealtop"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M7 16l4-5 3 2 5-7"/></svg></span><span class="lb"><i>3</i>품질관리계획 수립·승인 절차</span></span>
+<div class="formula">시공자 계획수립 → 공사감독자·건설사업관리기술인 검토·확인 → 발주자 <span class="num">적정/조건부적정/부적정</span> 심사 → 서면통보
       <span class="sub">비발주청 발주자는 시공자가 제출한 계획을 인·허가행정기관에 제출해 검토받아야 함</span>
-    </div>
-    <ol class="nlist">
-      <li><span class="no">①</span>발주자 — 계획서 제출시기·수량, 검토승인시기, 하도급자 이행책임, 부적합 처리를 공사계약문서에 명시</li>
-      <li><span class="no">②</span>공사감독자 — 승인 전에는 시공자에게 해당업무 수행시키지 못함, 이행상태 확인계획 수립·이행 의무</li>
-      <li><span class="no">③</span>시공자 — 규모·활동형태, 프로세스 복잡성, 인력 수행능력 고려해 계획서 구성</li>
-      <li><span class="no">④</span>공동도급 — 통합조직시 대표사가 통합계획 수립(수급인별 동의서명), 구간분할시 수급인별 독립 수립</li>
-    </ol>
+</div>
+<ol class="nlist">
+<li><span class="no">1</span>발주자 — 계획서 제출시기·수량, 검토승인시기, 하도급자 이행책임, 부적합 처리를 공사계약문서에 명시</li>
+<li><span class="no">2</span>공사감독자 — 승인 전에는 시공자에게 해당업무 수행시키지 못함, 이행상태 확인계획 수립·이행 의무</li>
+<li><span class="no">3</span>시공자 — 규모·활동형태, 프로세스 복잡성, 인력 수행능력 고려해 계획서 구성</li>
+<li><span class="no">4</span>공동도급 — 통합조직시 대표사가 통합계획 수립(수급인별 동의서명), 구간분할시 수급인별 독립 수립</li>
+</ol></div>
   </div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><span class="lb"><i>4</i>이행상태 확인계획 포함사항</span></span>
+<ul class="list">
+<li>점검기준·범위·점검자 선정 계획, 이행확인 중점 점검표·수행방법</li>
+<li>객관적 증거 기술 포함한 이행여부 확인결과 기록방법</li>
+<li>시정·시정조치 요구 및 조치결과 검증방법</li>
+<li>품질검사 실시대장 확인, 품질검사성적서의 CSI 입력여부·내용 확인방법</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 3 4-6"/></svg></span><span class="lb"><i>5</i>계획서 작성기준·변경절차</span></span>
+<ul class="list">
+<li>품질관리계획서 작성기준 — 별표 1에 따름(영 제89조④)</li>
+<li>승인 — 별지 제1호 서식 품질관리계획서 검토·승인서에 따름</li>
+<li>계획서 변경시 — 발주자·공사감독자 모두 동일한 검토·승인 절차 재적용</li>
+<li>신공법·신기술 등 국내 시험방법 없는 경우 — 발주자·설계자 협의로 시방서 명기시 시험한 것으로 인정</li>
+</ul></div>
+  </div>
+  <div class="row1 recap">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+<div class="chips">
+<span class="chip"><b>근거법령</b> 건설기술진흥법 제55~61조</span>
+<span class="chip"><b>고시번호</b> 제2026-360호</span>
+<span class="chip"><b>시행일</b> 2026.7.8.</span>
+<span class="chip"><b>담당</b> 국토교통부 건설안전과</span>
+<span class="chip"><b>계획서 심사결과</b> 적정·조건부적정·부적정 3단계</span>
+<span class="chip"><b>작성기준</b> 별표1</span>
+<span class="chip"><b>재검토기한</b> 2020.7.1. 기준 매 3년</span>
+</div></div>
+  </div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 국토교통부고시 제2026-360호(2026.7.8. 시행) 「건설공사 품질관리 업무지침」 기준. 별표·별지 서식은 원문 참조.</p>
+  <p class="pgno">1 / 4</p>
 </div>
 
-<div class="row2">
-  <div class="card">
-    <span class="badge">4 · 이행상태 확인계획 포함사항</span>
-    <ul class="list">
-      <li>점검기준·범위·점검자 선정 계획, 이행확인 중점 점검표·수행방법</li>
-      <li>객관적 증거 기술 포함한 이행여부 확인결과 기록방법</li>
-      <li>시정·시정조치 요구 및 조치결과 검증방법</li>
-      <li>품질검사 실시대장 확인, 품질검사성적서의 CSI 입력여부·내용 확인방법</li>
-    </ul>
-  </div>
-  <div class="card">
-    <span class="badge">5 · 계획서 작성기준·변경절차</span>
-    <ul class="list">
-      <li>품질관리계획서 작성기준 — 별표 1에 따름(영 제89조④)</li>
-      <li>승인 — 별지 제1호 서식 품질관리계획서 검토·승인서에 따름</li>
-      <li>계획서 변경시 — 발주자·공사감독자 모두 동일한 검토·승인 절차 재적용</li>
-      <li>신공법·신기술 등 국내 시험방법 없는 경우 — 발주자·설계자 협의로 시방서 명기시 시험한 것으로 인정</li>
-    </ul>
-  </div>
-</div>
+<div class="page evengap">
 
-<div class="row1">
-  <div class="card">
-    <span class="badge">6 · 핵심 수치 재확인</span>
-    <div class="chips">
-      <span class="chip"><b>근거법령</b> 건설기술진흥법 제55~61조</span>
-      <span class="chip"><b>고시번호</b> 제2026-360호</span>
-      <span class="chip"><b>시행일</b> 2026.7.8.</span>
-      <span class="chip"><b>담당</b> 국토교통부 건설안전과</span>
-      <span class="chip"><b>계획서 심사결과</b> 적정·조건부적정·부적정 3단계</span>
-      <span class="chip"><b>작성기준</b> 별표1</span>
-      <span class="chip"><b>재검토기한</b> 2020.7.1. 기준 매 3년</span>
-    </div>
+  <h1 class="title">건설공사 품질관리 업무지침 — 핵심 요약 (계속)</h1>
+  <div class="ubar"></div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 3 4-6"/></svg></span><span class="lb"><i>7</i>품질시험기준·적절성확인</span></span>
+<ul class="list">
+<li>건설공사 품질시험기준(종류별·공종별 종목·방법·빈도) — 별표 2</li>
+<li>별표2 미명시 공종·자재는 시방서 등 설계도서 기준에 따름</li>
+<li>발주자는 공사 종류·규모·중요성 등 감안해 시험빈도 조정 가능</li>
+<li>적절성확인 기준·요령 — 별표 3(규칙 제52조)</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>8</i>품질시험비 산정</span></span>
+<ul class="list">
+<li>인건비·공공요금 산출 단위량 — 별표 4</li>
+<li>시험관리인력 노임단가 — 한국엔지니어링협회 공표 / 시험인력 — 대한건설협회 공표</li>
+<li>재료비·장비손료·시설비·검정교정비 — 규칙 별표6에 따라 산정</li>
+<li>단위량 미규정시 — 발주자·설계자 협의해 시장거래가·견적가 반영 가능</li>
+</ul></div>
   </div>
-</div>
-
-<div class="rule-gray"></div>
-<p class="note">본 요약은 국토교통부고시 제2026-360호(2026.7.8. 시행) 「건설공사 품질관리 업무지침」 기준. 별표·별지 서식은 원문 참조.</p>
-<p class="pageno">1 / 4</p>
-</div>
-<div class="page">
-<h1 class="title">건설공사 품질관리 업무지침 ② — 품질시험기준·엔지니어링사업자 평가</h1>
-<p class="meta">건설공사 품질관리 ｜ 제2편2·3장(제8~30조) ｜ 국토교통부고시 제2026-360호(2026.7.8. 시행)</p>
-<div class="rule-navy"></div>
-
-<div class="row2">
-  <div class="card">
-    <span class="badge">1 · 품질시험기준·적절성확인</span>
-    <ul class="list">
-      <li>건설공사 품질시험기준(종류별·공종별 종목·방법·빈도) — 별표 2</li>
-      <li>별표2 미명시 공종·자재는 시방서 등 설계도서 기준에 따름</li>
-      <li>발주자는 공사 종류·규모·중요성 등 감안해 시험빈도 조정 가능</li>
-      <li>적절성확인 기준·요령 — 별표 3(규칙 제52조)</li>
-    </ul>
-  </div>
-  <div class="card">
-    <span class="badge">2 · 품질시험비 산정</span>
-    <ul class="list">
-      <li>인건비·공공요금 산출 단위량 — 별표 4</li>
-      <li>시험관리인력 노임단가 — 한국엔지니어링협회 공표 / 시험인력 — 대한건설협회 공표</li>
-      <li>재료비·장비손료·시설비·검정교정비 — 규칙 별표6에 따라 산정</li>
-      <li>단위량 미규정시 — 발주자·설계자 협의해 시장거래가·견적가 반영 가능</li>
-    </ul>
-  </div>
-</div>
-
-<div class="row1">
-  <div class="card">
-    <span class="badge rust">3 · 품질검사대행 건설엔지니어링업 등록평가 절차</span>
-    <div class="formula">평가의뢰 → 서류검토(<span class="num">7일</span> 이내) → 평가반 구성·계획통보 → 평가 수행 → 보고서 작성(<span class="num">7일</span> 이내) → 결과통보
+  <div class="row1">
+    <div class="card tealtop"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M7 16l4-5 3 2 5-7"/></svg></span><span class="lb"><i>9</i>품질검사대행 건설엔지니어링업 등록평가 절차</span></span>
+<div class="formula">평가의뢰 → 서류검토(<span class="num">7일</span> 이내) → 평가반 구성·계획통보 → 평가 수행 → 보고서 작성(<span class="num">7일</span> 이내) → 결과통보
       <span class="sub">부적합시 1개월 조치기간 부여, 재평가는 요청 후 14일 이내 실시</span>
-    </div>
-    <ol class="nlist">
-      <li><span class="no">①</span>등록 등 업무수탁기관 — 서류 미비시 보완요구(대상자는 30일 이내 완료)</li>
-      <li><span class="no">②</span>평가기관 — 제출서류 7일 이내 검토, 미비시 보완요청 가능</li>
-      <li><span class="no">③</span>평가사 — 기술인력·시설장비 적합성, 품질관리규정 적합·이행성, 수행능력 평가</li>
-      <li><span class="no">④</span>시정조치 미이행시 — 1회 한정 1개월 이내 이행기간 연기 신청 가능</li>
-    </ol>
+</div>
+<ol class="nlist">
+<li><span class="no">1</span>등록 등 업무수탁기관 — 서류 미비시 보완요구(대상자는 30일 이내 완료)</li>
+<li><span class="no">2</span>평가기관 — 제출서류 7일 이내 검토, 미비시 보완요청 가능</li>
+<li><span class="no">3</span>평가사 — 기술인력·시설장비 적합성, 품질관리규정 적합·이행성, 수행능력 평가</li>
+<li><span class="no">4</span>시정조치 미이행시 — 1회 한정 1개월 이내 이행기간 연기 신청 가능</li>
+</ol></div>
   </div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>10</i>품질검사의 적정성 평가</span></span>
+<ul class="list">
+<li>성적서 발급일로부터 <b class="term">7일 이내</b> CSI(건설공사 안전관리 종합정보망) 입력</li>
+<li>지방국토관리청장 — 매년 <b class="term">2월 15일까지</b> 평가계획 홈페이지 공고</li>
+<li>평가 연기요청시 — 1회 한정 2개월까지 연장 가능</li>
+<li>부적합 지적시 — 시정명령 또는 등록취소 등 요청(영 제115조②4호)</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>11</i>평가기관 조직·운영</span></span>
+<ul class="list">
+<li>평가기관 — 한국건설기술연구원</li>
+<li>자문위원회 — 세부분야별 <b class="term">5인 이상 15인 이내</b> 전문가 구성 가능</li>
+<li>평가인력 — 평가사 <b class="term">5인 이상</b> 소속 직원으로 확보(자격기준 별표8)</li>
+<li>세부운영지침 — 국토교통부장관 승인 후 공고</li>
+</ul></div>
+  </div>
+  <div class="row1 recap">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg></span><span class="lb"><i>12</i>핵심 수치 재확인</span></span>
+<div class="chips">
+<span class="chip"><b>품질시험기준</b> 별표2</span>
+<span class="chip"><b>서류보완기한</b> 30일 이내</span>
+<span class="chip"><b>평가기관 서류검토</b> 7일 이내</span>
+<span class="chip"><b>평가보고서 작성</b> 7일 이내</span>
+<span class="chip"><b>부적합 조치기간</b> 1개월</span>
+<span class="chip"><b>재평가</b> 요청 후 14일 이내</span>
+<span class="chip"><b>CSI 입력기한</b> 성적서 발급 후 7일 이내</span>
+<span class="chip"><b>적정성평가계획 공고</b> 매년 2월 15일까지</span>
+</div></div>
+  </div>
+  <div class="row1">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>13</i>자재공급원 승인</span></span>
+<ul class="list">
+<li>공급원 승인권자 — 승인신청 접수 후 <b class="term">10일 이내</b> 승인여부 회신·발주청 보고</li>
+<li>승인거부·취소 사유 — 정기점검 거부, 지적사항 미시정, 배합비 조작, 물량 속임, 최근 2년내 불량자재 공급이력 등</li>
+<li>KS표시인증 관련 지적시 — 산업통상부 국가기술표준원에 통보</li>
+<li>승인내용 — 공장별 기록·정리해 사후 승인업무·지도점검에 활용</li>
+</ul></div>
+  </div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 국토교통부고시 제2026-360호(2026.7.8. 시행) 「건설공사 품질관리 업무지침」 기준. 별표·별지 서식은 원문 참조.</p>
+  <p class="pgno">2 / 4</p>
 </div>
 
-<div class="row2">
-  <div class="card">
-    <span class="badge">4 · 품질검사의 적정성 평가</span>
-    <ul class="list">
-      <li>성적서 발급일로부터 <b class="term">7일 이내</b> CSI(건설공사 안전관리 종합정보망) 입력</li>
-      <li>지방국토관리청장 — 매년 <b class="term">2월 15일까지</b> 평가계획 홈페이지 공고</li>
-      <li>평가 연기요청시 — 1회 한정 2개월까지 연장 가능</li>
-      <li>부적합 지적시 — 시정명령 또는 등록취소 등 요청(영 제115조②4호)</li>
-    </ul>
-  </div>
-  <div class="card">
-    <span class="badge">5 · 평가기관 조직·운영</span>
-    <ul class="list">
-      <li>평가기관 — 한국건설기술연구원</li>
-      <li>자문위원회 — 세부분야별 <b class="term">5인 이상 15인 이내</b> 전문가 구성 가능</li>
-      <li>평가인력 — 평가사 <b class="term">5인 이상</b> 소속 직원으로 확보(자격기준 별표8)</li>
-      <li>세부운영지침 — 국토교통부장관 승인 후 공고</li>
-    </ul>
-  </div>
-</div>
+<div class="page evengap">
 
-<div class="row1">
-  <div class="card">
-    <span class="badge">6 · 핵심 수치 재확인</span>
-    <div class="chips">
-      <span class="chip"><b>품질시험기준</b> 별표2</span>
-      <span class="chip"><b>서류보완기한</b> 30일 이내</span>
-      <span class="chip"><b>평가기관 서류검토</b> 7일 이내</span>
-      <span class="chip"><b>평가보고서 작성</b> 7일 이내</span>
-      <span class="chip"><b>부적합 조치기간</b> 1개월</span>
-      <span class="chip"><b>재평가</b> 요청 후 14일 이내</span>
-      <span class="chip"><b>CSI 입력기한</b> 성적서 발급 후 7일 이내</span>
-      <span class="chip"><b>적정성평가계획 공고</b> 매년 2월 15일까지</span>
-    </div>
+  <h1 class="title">건설공사 품질관리 업무지침 — 핵심 요약 (계속)</h1>
+  <div class="ubar"></div>
+  <div class="row1">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M10 9v11"/></svg></span><span class="lb"><i>14</i>사전·정기·특별점검</span></span>
+<ul class="list">
+<li><b class="term">사전점검</b> — 레미콘 총설계량 1천㎥ 이상 또는 아스콘 2천톤 이상시 공사감독자와 합동 실시</li>
+<li><b class="term">정기점검</b> — 레미콘 3천㎥ 이상 또는 아스콘 5천톤 이상, 반기별 1회 이상</li>
+<li>산업표준화법 정기점검 3개월 이내 수검·항목 중복시 — 점검항목 제외 가능</li>
+<li><b class="term">특별점검</b> — 불량자재 사회적 물의, 허위통보, 품질문제 판단시 등 실시</li>
+</ul></div>
   </div>
-</div>
-
-<div class="rule-gray"></div>
-<p class="note">평가서식(별지 제3~7호), 등록요건(영 별표5)은 원문 참조. 자문위원 수당은 예산범위내 지급 가능.</p>
-<p class="pageno">2 / 4</p>
-</div>
-<div class="page">
-<h1 class="title">건설공사 품질관리 업무지침 ③ — 레미콘·아스콘 품질관리</h1>
-<p class="meta">건설공사 품질관리 ｜ 제3편1·2장(제31~45조) ｜ 국토교통부고시 제2026-360호(2026.7.8. 시행)</p>
-<div class="rule-navy"></div>
-
-<div class="row2">
-  <div class="card">
-    <span class="badge">1 · 자재공급원 승인</span>
-    <ul class="list">
-      <li>공급원 승인권자 — 승인신청 접수 후 <b class="term">10일 이내</b> 승인여부 회신·발주청 보고</li>
-      <li>승인거부·취소 사유 — 정기점검 거부, 지적사항 미시정, 배합비 조작, 물량 속임, 최근 2년내 불량자재 공급이력 등</li>
-      <li>KS표시인증 관련 지적시 — 산업통상부 국가기술표준원에 통보</li>
-      <li>승인내용 — 공장별 기록·정리해 사후 승인업무·지도점검에 활용</li>
-    </ul>
-  </div>
-  <div class="card">
-    <span class="badge">2 · 사전·정기·특별점검</span>
-    <ul class="list">
-      <li><b class="term">사전점검</b> — 레미콘 총설계량 1천㎥ 이상 또는 아스콘 2천톤 이상시 공사감독자와 합동 실시</li>
-      <li><b class="term">정기점검</b> — 레미콘 3천㎥ 이상 또는 아스콘 5천톤 이상, 반기별 1회 이상</li>
-      <li>산업표준화법 정기점검 3개월 이내 수검·항목 중복시 — 점검항목 제외 가능</li>
-      <li><b class="term">특별점검</b> — 불량자재 사회적 물의, 허위통보, 품질문제 판단시 등 실시</li>
-    </ul>
-  </div>
-</div>
-
-<div class="row1">
-  <div class="card">
-    <span class="badge rust">3 · 시공 품질관리·불량자재 처리 절차</span>
-    <div class="formula">현장반입 자재 확인 → 시험·검사(수요자 직접 또는 국립·공립기관·엔지니어링사업자 의뢰) → 불량 판정시 <span class="num">즉시 반품</span> → 폐기확약서 징구·3년 보관
+  <div class="row1">
+    <div class="card tealtop"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M7 16l4-5 3 2 5-7"/></svg></span><span class="lb"><i>15</i>시공 품질관리·불량자재 처리 절차</span></span>
+<div class="formula">현장반입 자재 확인 → 시험·검사(수요자 직접 또는 국립·공립기관·엔지니어링사업자 의뢰) → 불량 판정시 <span class="num">즉시 반품</span> → 폐기확약서 징구·3년 보관
       <span class="sub">현장 시험과정에는 공사감독자가 입회하여 시료채취 위치 결정·시험방법 적절성 확인</span>
-    </div>
-    <ol class="nlist">
-      <li><span class="no">①</span>레미콘 확인항목 — 슬럼프·공기량·염화물이온량(Cl⁻)·강도 등, 아스콘 — 온도·마샬안정도·흐름값·역청함유량 등</li>
-      <li><span class="no">②</span>혼화재(고로슬래그·플라이애시) 단위결합재량 대비 <span class="num">10%</span> 초과 사용시 별표9 품질관리 적용</li>
-      <li><span class="no">③</span>불량자재 즉시반품 사유 — 슬럼프·공기량·염화물이온량 기준초과, 생산 후 시방기준 시간경과, 재료분리 등</li>
-      <li><span class="no">④</span>불량 시공부위는 재시공 원칙(발주청 승인하 안전진단으로 대체 가능)</li>
-    </ol>
+</div>
+<ol class="nlist">
+<li><span class="no">1</span>레미콘 확인항목 — 슬럼프·공기량·염화물이온량(Cl⁻)·강도 등, 아스콘 — 온도·마샬안정도·흐름값·역청함유량 등</li>
+<li><span class="no">2</span>혼화재(고로슬래그·플라이애시) 단위결합재량 대비 <span class="num">10%</span> 초과 사용시 별표9 품질관리 적용</li>
+<li><span class="no">3</span>불량자재 즉시반품 사유 — 슬럼프·공기량·염화물이온량 기준초과, 생산 후 시방기준 시간경과, 재료분리 등</li>
+<li><span class="no">4</span>불량 시공부위는 재시공 원칙(발주청 승인하 안전진단으로 대체 가능)</li>
+</ol></div>
   </div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>16</i>현장배치플랜트 설치조건</span></span>
+<ul class="list">
+<li>전량공급 설치사유 — 90분 이내 운반불가, 압축강도 40MPa 이상 또는 슬럼프 50mm 이하, 특수콘크리트 등</li>
+<li>일부공급 사유 — 레미콘 수요성수기, 대규모 구조물공사로 수요급증시(일반레미콘 소요량 1/2까지 주변업체 협조)</li>
+<li>원칙 — 현장배치플랜트 생산 레미콘은 해당 현장 외 반출 금지</li>
+<li>예외적 인근현장 반출 허용 — 공공주택지구(200만㎡ 이상), 고속국도(총공사비 1,000억원 이상), 신공항 건설사업</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>17</i>기록물 보관·관급자재 관리</span></span>
+<ul class="list">
+<li>비치서류 — 자재공급원 승인서류, 시공품질관리 점검표, 품질시험·검사대장</li>
+<li>준공시 — 감리전문회사 및 시공사가 보관, 서류중복시 별도작성 불요</li>
+<li>관급자재도 이 지침 준용 — 사전·정기점검 등 품질관리 가능</li>
+<li>생산자 변경요청 사유 — 승인취소 해당, 하자관계 불분명 우려, 불필요한 장거리 공급 등</li>
+</ul></div>
+  </div>
+  <div class="row1 recap">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg></span><span class="lb"><i>18</i>핵심 수치 재확인</span></span>
+<div class="chips">
+<span class="chip"><b>공급원 승인회신</b> 10일 이내</span>
+<span class="chip"><b>사전점검 대상</b> 레미콘 1천㎥·아스콘 2천톤 이상</span>
+<span class="chip"><b>정기점검 대상</b> 레미콘 3천㎥·아스콘 5천톤 이상</span>
+<span class="chip"><b>정기점검 주기</b> 반기별 1회 이상</span>
+<span class="chip"><b>혼화재 기준</b> 단위결합재량 10% 초과시 별표9</span>
+<span class="chip"><b>배치플랜트 운반기준</b> 90분 이내</span>
+<span class="chip"><b>불량자재폐기확약서</b> 3년 비치</span>
+</div></div>
+  </div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>19</i>철강자재 현장 품질관리</span></span>
+<ul class="list">
+<li>반입 확인사항 — 송장, 반입일자, 종별·규격·수량, 품질확인서류(Mill Sheets, C of C 등)</li>
+<li>반입 금지사유 — 품질확인서 없음, 시방서 요구사항 미충족, 품질기준 미충족</li>
+<li>KS인증 미획득 제품 — 시험종류·빈도·방법, 시험성적서 적합여부 확인(별지 제13호의2 점검표)</li>
+<li>시험 — 수요자 직접 또는 국립·공립기관·엔지니어링사업자 의뢰, 공사감독자 입회</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>20</i>철강자재 기록물 보관</span></span>
+<ul class="list">
+<li>비치서류 — 자재공급원 승인서류, 자재 품질관리·품질확인 관련서류</li>
+<li>준공까지 현장 비치, 발주청·관계기관 요구시 제출</li>
+<li>사업관리방식 지침 서류와 중복시 별도작성 불요</li>
+<li>발주청 인계 문서목록 포함여부 — 발주청과 협의</li>
+</ul></div>
+  </div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 국토교통부고시 제2026-360호(2026.7.8. 시행) 「건설공사 품질관리 업무지침」 기준. 별표·별지 서식은 원문 참조.</p>
+  <p class="pgno">3 / 4</p>
 </div>
 
-<div class="row2">
-  <div class="card">
-    <span class="badge">4 · 현장배치플랜트 설치조건</span>
-    <ul class="list">
-      <li>전량공급 설치사유 — 90분 이내 운반불가, 압축강도 40MPa 이상 또는 슬럼프 50mm 이하, 특수콘크리트 등</li>
-      <li>일부공급 사유 — 레미콘 수요성수기, 대규모 구조물공사로 수요급증시(일반레미콘 소요량 1/2까지 주변업체 협조)</li>
-      <li>원칙 — 현장배치플랜트 생산 레미콘은 해당 현장 외 반출 금지</li>
-      <li>예외적 인근현장 반출 허용 — 공공주택지구(200만㎡ 이상), 고속국도(총공사비 1,000억원 이상), 신공항 건설사업</li>
-    </ul>
-  </div>
-  <div class="card">
-    <span class="badge">5 · 기록물 보관·관급자재 관리</span>
-    <ul class="list">
-      <li>비치서류 — 자재공급원 승인서류, 시공품질관리 점검표, 품질시험·검사대장</li>
-      <li>준공시 — 감리전문회사 및 시공사가 보관, 서류중복시 별도작성 불요</li>
-      <li>관급자재도 이 지침 준용 — 사전·정기점검 등 품질관리 가능</li>
-      <li>생산자 변경요청 사유 — 승인취소 해당, 하자관계 불분명 우려, 불필요한 장거리 공급 등</li>
-    </ul>
-  </div>
-</div>
+<div class="page evengap">
 
-<div class="row1">
-  <div class="card">
-    <span class="badge">6 · 핵심 수치 재확인</span>
-    <div class="chips">
-      <span class="chip"><b>공급원 승인회신</b> 10일 이내</span>
-      <span class="chip"><b>사전점검 대상</b> 레미콘 1천㎥·아스콘 2천톤 이상</span>
-      <span class="chip"><b>정기점검 대상</b> 레미콘 3천㎥·아스콘 5천톤 이상</span>
-      <span class="chip"><b>정기점검 주기</b> 반기별 1회 이상</span>
-      <span class="chip"><b>혼화재 기준</b> 단위결합재량 10% 초과시 별표9</span>
-      <span class="chip"><b>배치플랜트 운반기준</b> 90분 이내</span>
-      <span class="chip"><b>불량자재폐기확약서</b> 3년 비치</span>
-    </div>
-  </div>
-</div>
-
-<div class="rule-gray"></div>
-<p class="note">품질확인 세부항목(밀도·흡수율·입도 등)은 원문 제32조 참조. 철강자재 품질관리는 별도 쪽 참조.</p>
-<p class="pageno">3 / 4</p>
-</div>
-<div class="page">
-<h1 class="title">건설공사 품질관리 업무지침 ④ — 철강자재·구조물 인증·가설기자재</h1>
-<p class="meta">건설공사 품질관리 ｜ 제3편3장·제4편·제5편(제45조의2~55조) ｜ 국토교통부고시 제2026-360호(2026.7.8. 시행)</p>
-<div class="rule-navy"></div>
-
-<div class="row2">
-  <div class="card">
-    <span class="badge">1 · 철강자재 현장 품질관리</span>
-    <ul class="list">
-      <li>반입 확인사항 — 송장, 반입일자, 종별·규격·수량, 품질확인서류(Mill Sheets, C of C 등)</li>
-      <li>반입 금지사유 — 품질확인서 없음, 시방서 요구사항 미충족, 품질기준 미충족</li>
-      <li>KS인증 미획득 제품 — 시험종류·빈도·방법, 시험성적서 적합여부 확인(별지 제13호의2 점검표)</li>
-      <li>시험 — 수요자 직접 또는 국립·공립기관·엔지니어링사업자 의뢰, 공사감독자 입회</li>
-    </ul>
-  </div>
-  <div class="card">
-    <span class="badge">2 · 철강자재 기록물 보관</span>
-    <ul class="list">
-      <li>비치서류 — 자재공급원 승인서류, 자재 품질관리·품질확인 관련서류</li>
-      <li>준공까지 현장 비치, 발주청·관계기관 요구시 제출</li>
-      <li>사업관리방식 지침 서류와 중복시 별도작성 불요</li>
-      <li>발주청 인계 문서목록 포함여부 — 발주청과 협의</li>
-    </ul>
-  </div>
-</div>
-
-<div class="row1">
-  <div class="card">
-    <span class="badge rust">3 · 철강구조물 제작공장 인증·재심사·실태조사 절차</span>
-    <div class="formula">공장인증 신청 → 심사 → 부적합시 재심사(신청일로부터 <span class="num">14일</span> 이내) → 인증 후 실태조사 → 부적합시 보완요청(<span class="num">1개월</span> 이내)
+  <h1 class="title">건설공사 품질관리 업무지침 — 핵심 요약 (계속)</h1>
+  <div class="ubar"></div>
+  <div class="row1">
+    <div class="card tealtop"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M7 16l4-5 3 2 5-7"/></svg></span><span class="lb"><i>21</i>철강구조물 제작공장 인증·재심사·실태조사 절차</span></span>
+<div class="formula">공장인증 신청 → 심사 → 부적합시 재심사(신청일로부터 <span class="num">14일</span> 이내) → 인증 후 실태조사 → 부적합시 보완요청(<span class="num">1개월</span> 이내)
       <span class="sub">이의제기는 결과통지일로부터 14일 이내 제출, 심사기관은 접수일로부터 20일 이내 처리</span>
-    </div>
-    <ol class="nlist">
-      <li><span class="no">①</span>재심사 미신청시 — 심사결과 통지 후 60일 이내 미신청하면 신청서 반려</li>
-      <li><span class="no">②</span>실태조사 부적합시 — 확인조사 14일 이내 실시, 재차 부적합이면 재보완 요청</li>
-      <li><span class="no">③</span>2회 보완 결과도 부적합 또는 보완거부시 — 국토교통부장관이 시정조치 명령(법 제58조②)</li>
-      <li><span class="no">④</span>적합판정 기준 — 신청 분야·등급의 판정기준점과 항목별 필수점 동시 만족</li>
-    </ol>
+</div>
+<ol class="nlist">
+<li><span class="no">1</span>재심사 미신청시 — 심사결과 통지 후 60일 이내 미신청하면 신청서 반려</li>
+<li><span class="no">2</span>실태조사 부적합시 — 확인조사 14일 이내 실시, 재차 부적합이면 재보완 요청</li>
+<li><span class="no">3</span>2회 보완 결과도 부적합 또는 보완거부시 — 국토교통부장관이 시정조치 명령(법 제58조②)</li>
+<li><span class="no">4</span>적합판정 기준 — 신청 분야·등급의 판정기준점과 항목별 필수점 동시 만족</li>
+</ol></div>
   </div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M12 4v10"/><path d="M6 9l6-5 6 5"/><path d="M6 9v5M18 9v5"/></svg></span><span class="lb"><i>22</i>공장인증 운영·인력편성</span></span>
+<ul class="list">
+<li>교량·건축분야 동시신청시 — 공장개요·기술인력·설비 등 중복부문 심사 생략 가능</li>
+<li>인력편성 — 별표12에 따라 심사기관이 편성·운영</li>
+<li>교육훈련 — 심사기관장이 공장 소속 건설기술인 대상 프로그램 제공 가능</li>
+<li>세부운영지침 — 국토교통부장관 승인 후 공고(수수료·납부절차 포함)</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>23</i>가설기자재 품질관리</span></span>
+<ul class="list">
+<li>시공자·공급원승인권자·공사감독자 — 불량자재 반입 차단 등 성실의무</li>
+<li>가설기자재 자재별·시험종목·방법·빈도 — 별표2에 따름</li>
+<li>별표2 미명시 자재는 시방서 등 설계도서 기준 적용</li>
+<li>발주자는 공사 특성 감안해 시험빈도 조정 가능</li>
+</ul></div>
+  </div>
+  <div class="row1 recap">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg></span><span class="lb"><i>24</i>핵심 수치 재확인</span></span>
+<div class="chips">
+<span class="chip"><b>재심사 처리</b> 신청일로부터 14일 이내</span>
+<span class="chip"><b>재심사 미신청 반려</b> 통지 후 60일 경과시</span>
+<span class="chip"><b>실태조사 보완</b> 1개월 이내</span>
+<span class="chip"><b>확인조사</b> 14일 이내</span>
+<span class="chip"><b>이의제기 기한</b> 통지일로부터 14일 이내</span>
+<span class="chip"><b>이의제기 처리</b> 접수일로부터 20일 이내</span>
+<span class="chip"><b>재검토기한</b> 2020.7.1. 기준 매 3년(6.30까지)</span>
+</div></div>
+  </div>
+  <div class="conclude"><div class="ct">CORE</div><div class="cb">품질관리는 <b>계획 승인 → 시험 실시 → 이행상태 확인</b>의 순환구조다. 자재공급원 승인은 <b>신청 접수 후 10일 이내 회신</b>하고, 사전점검은 <b>레미콘 1천㎥·아스콘 2천톤 이상</b>, 정기점검은 <b>레미콘 3천㎥·아스콘 5천톤 이상에 반기별 1회 이상</b> 실시한다. 품질검사 성적서는 <b>발급일부터 7일 이내 CSI에 입력</b>하여야 한다.</div></div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 국토교통부고시 제2026-360호(2026.7.8. 시행) 「건설공사 품질관리 업무지침」 기준. 별표·별지 서식은 원문 참조.</p>
+  <p class="pgno">4 / 4</p>
 </div>
 
-<div class="row2">
-  <div class="card">
-    <span class="badge">4 · 공장인증 운영·인력편성</span>
-    <ul class="list">
-      <li>교량·건축분야 동시신청시 — 공장개요·기술인력·설비 등 중복부문 심사 생략 가능</li>
-      <li>인력편성 — 별표12에 따라 심사기관이 편성·운영</li>
-      <li>교육훈련 — 심사기관장이 공장 소속 건설기술인 대상 프로그램 제공 가능</li>
-      <li>세부운영지침 — 국토교통부장관 승인 후 공고(수수료·납부절차 포함)</li>
-    </ul>
-  </div>
-  <div class="card">
-    <span class="badge">5 · 가설기자재 품질관리</span>
-    <ul class="list">
-      <li>시공자·공급원승인권자·공사감독자 — 불량자재 반입 차단 등 성실의무</li>
-      <li>가설기자재 자재별·시험종목·방법·빈도 — 별표2에 따름</li>
-      <li>별표2 미명시 자재는 시방서 등 설계도서 기준 적용</li>
-      <li>발주자는 공사 특성 감안해 시험빈도 조정 가능</li>
-    </ul>
-  </div>
-</div>
-
-<div class="row1">
-  <div class="card">
-    <span class="badge">6 · 핵심 수치 재확인</span>
-    <div class="chips">
-      <span class="chip"><b>재심사 처리</b> 신청일로부터 14일 이내</span>
-      <span class="chip"><b>재심사 미신청 반려</b> 통지 후 60일 경과시</span>
-      <span class="chip"><b>실태조사 보완</b> 1개월 이내</span>
-      <span class="chip"><b>확인조사</b> 14일 이내</span>
-      <span class="chip"><b>이의제기 기한</b> 통지일로부터 14일 이내</span>
-      <span class="chip"><b>이의제기 처리</b> 접수일로부터 20일 이내</span>
-      <span class="chip"><b>재검토기한</b> 2020.7.1. 기준 매 3년(6.30까지)</span>
-    </div>
-  </div>
-</div>
-
-<div class="rule-gray"></div>
-<p class="note">철강구조물 공장인증 세부기준(별표10), 실태조사 세부기준(별표11)은 원문 참조. 부칙: 2026.7.8. 발령일부터 시행.</p>
-<p class="pageno">4 / 4</p>
-</div>
-</body></html>
+</body>
+</html>

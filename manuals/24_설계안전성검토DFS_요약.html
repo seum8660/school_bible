@@ -1,361 +1,431 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8">
-<title>설계의 안전성 검토(DFS) — 핵심 요약</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>설계의 안전성 검토(DFS) ① — 제도개요·대상</title>
 <style>
-  :root{
-    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
-    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
-    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+:root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
   }
-  @page{ size:A4 portrait; margin:12mm; }
-  .card,.row1,.row2,li,.chips{ break-inside:avoid; page-break-inside:avoid; }
+  @page{ size:A4 portrait; margin:0; }
   *{ box-sizing:border-box; }
-  html,body{ margin:0; padding:0; background:#fff; }
+  html,body{ margin:0; padding:0; }
   body{
     font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
-    color:var(--body);
+    color:var(--body); background:#fff;
     -webkit-print-color-adjust:exact; print-color-adjust:exact;
   }
   .page{
-    width:100%; max-width:1180px; min-height:auto;
-    padding:26px 30px 22px;
-    position:relative;
-    page-break-after:always;
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
   }
-  .page:last-child{ page-break-after:auto; }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
 
-  .title{ margin:0; font-size:26px; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
-  .meta{ margin:1.4mm 0 0 0; font-size:12px; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
-  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
-  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
-
-  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
-  .row1{ margin-bottom:2.6mm; }
-
-  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
-  .badge{
-    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
-    font-size:14.5px; font-weight:700; line-height:1.25;
-    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
   }
-  .badge.rust{ background:var(--rust); }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  /* 여백 없이 전면 채움 — 남는 높이를 섹션 사이에 균등 배분 */
+  .page.haspin .rolebar, .page.haspin .row2, .page.haspin .row1{ margin-bottom:auto; }
+  .page.haspin .row1.recap{ margin-bottom:auto; }
+
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
 
   .list{ margin:0; padding:0; list-style:none; }
-  .list li{ font-size:12px; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
   .list li:last-child{ margin-bottom:0; }
-  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
-
-  .nlist{ margin:0; padding:0; list-style:none; }
-  .nlist li{ font-size:12px; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
-  .nlist li:last-child{ margin-bottom:0; }
-  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
 
   .term{ color:var(--navy); font-weight:700; }
-  .num{ color:var(--rust); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
 
-  .formula{
-    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
-    text-align:center; font-size:14.5px; font-weight:600; line-height:1.45;
-    color:var(--navy);
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
   }
-  .formula .num{ color:var(--rust); }
-  .formula .sub{ display:block; font-size:12px; font-weight:500; color:var(--meta); margin-top:0.8mm; }
 
-  .note-grn{
-    background:#e8f4ec; border-left:1.2mm solid #2e7d52; border-radius:1mm;
-    padding:2mm 3mm; margin:0 0 2.2mm 0; font-size:12px; line-height:1.5; color:#1E4B34;
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
   }
-  .note-grn b{ color:#2E7D52; font-weight:700; }
-  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+  .tbl tr.hi td{ background:#EAF4F6; }
+
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
   .chip{
-    font-size:12px; line-height:1.25; background:var(--chip-bg);
-    border:0.25mm solid var(--chip-line); border-radius:1mm;
-    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
   }
   .chip b{ color:var(--navy); font-weight:700; }
   .chip .num{ font-weight:700; }
 
-  .note{ text-align:center; font-size:10px; line-height:1.4; color:var(--note); margin:0; }
-  .pageno{ text-align:center; font-size:10px; color:var(--note); margin:1.2mm 0 0 0; }
-
-  @media screen{
-    body{ background:#E5E7EB; }
-    .page{ background:#fff; margin:0 auto 6mm auto; box-shadow:0 1px 4px rgba(0,0,0,.15); }
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
   }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+  /* --- 보강: 수식 밴드 (구 박스문서 변환용) --- */
+  .formula{
+    background:var(--panel); border-left:1.3mm solid var(--teal);
+    border-radius:0.8mm 1.2mm 1.2mm 0.8mm; padding:2.2mm 3mm; margin:0 0 2mm 0;
+    text-align:center; font-size:7.4pt; font-weight:700; color:var(--navy); line-height:1.45;
+  }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1.1mm; }
+  .formula:last-child{ margin-bottom:0; }
+  .hl{ background:#DCEBEF; color:#155E6E; font-weight:800; padding:0.2mm 0.8mm; border-radius:0.6mm; }
+
+  /* ===== 구(舊) BIBLE 마크업 호환 레이어 — 인포그래픽 팔레트로 재매핑 ===== */
+  .k{ color:var(--navy); font-weight:700; }
+  .r, .em{ color:var(--amber); font-weight:700; }
+  .b{ display:block; margin-left:5.2mm; font-size:6.6pt; color:var(--body); line-height:1.42; }
+  .b b{ color:var(--navy); font-weight:700; }
+
+  .pill{ display:inline-block; background:var(--navy); color:#fff; font-size:6.6pt; font-weight:700;
+         padding:0.7mm 2.2mm; border-radius:0.9mm; line-height:1.3; }
+  .pill.hi{ background:var(--amber); }
+
+  .law, .tag{ display:inline-block; background:var(--panel); border:0.25mm solid var(--panel-line);
+              border-radius:1mm; padding:0.9mm 1.8mm; font-size:6.3pt; line-height:1.3; color:var(--body); }
+  .law b, .tag b{ color:var(--navy); font-weight:700; }
+
+  /* 흐름도 · 단계 박스 */
+  .flow{ display:flex; flex-wrap:wrap; align-items:stretch; gap:1.6mm; margin-top:1.4mm; }
+  .flow .st{ flex:1; min-width:28mm; background:var(--panel); border:0.25mm solid var(--panel-line);
+             border-radius:1mm; padding:1.5mm 1.8mm; font-size:6.4pt; line-height:1.36; color:var(--body); }
+  .flow .st b{ display:block; color:var(--navy); font-size:6.6pt; margin-bottom:0.6mm; }
+  .flow .st.hi{ border-color:var(--amber); background:var(--amber-bg); }
+  .flow .ar, .arw{ align-self:center; color:var(--teal); font-weight:800; font-size:7.4pt; }
+  .stage{ display:flex; gap:1.2mm; margin:1.2mm 0 0.6mm; }
+  .stage div{ flex:1; background:var(--panel); border:0.25mm solid var(--panel-line); border-radius:1mm;
+              padding:1.1mm 1.2mm; font-size:6.2pt; text-align:center; line-height:1.3; color:var(--body); }
+  .stage span{ display:block; color:var(--navy); font-weight:700; }
+
+  /* 번호 카테고리 행 */
+  .cat{ display:flex; gap:1.6mm; align-items:flex-start; margin-bottom:1mm; }
+  .cat .n{ flex:0 0 auto; width:4.1mm; height:4.1mm; background:var(--teal); color:#fff;
+           border-radius:50%; font-size:5.6pt; font-weight:800; text-align:center; line-height:4.1mm; }
+  .cat .t{ font-size:7pt; line-height:1.44; }
+  .cat .t b{ color:var(--navy); font-weight:700; }
+
+  /* 구 표(class 없는 table) — .tbl 규격으로 통일 */
+  .card table{ width:100%; border-collapse:collapse; margin:0; }
+  .card table th, .card table td{ border-bottom:0.2mm solid var(--panel-line);
+      padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.26; }
+  .card table th{ background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+      border-bottom:0.45mm solid var(--teal); }
+  .card table tr:last-child td{ border-bottom:0; }
+  .card table td.l, .card table td.lf{ text-align:left; }
+  .card table td.h, .card table td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .card table td.s{ background:var(--panel); color:var(--navy); font-weight:700; }
+  .card table td.t, .card table td.o{ color:var(--amber); font-weight:800; white-space:nowrap; }
+  .card table tr.hi td{ background:#EAF4F6; }
+
+  /* 구 컨테이너 무력화 */
+  .sheet{ display:block; max-height:none; overflow:visible; }
+  .rule-navy{ display:none; }
+  .grid{ display:block; }
+  .box{ border:0; padding:0; background:none; }
+  ol.nlist{ list-style:none; }
+  p.sub{ font-size:6.6pt; color:var(--meta); line-height:1.42; margin:0.8mm 0 0 0; }
+
+  /* 클래스 없는 ul/ol/li — .list 규격으로 통일 */
+  .card ul, .card ol{ margin:0; padding:0; list-style:none; }
+  .card ul li, .card ol li{ font-size:7pt; line-height:1.44; padding-left:2.6mm;
+      text-indent:-2.6mm; margin-bottom:0.8mm; color:var(--body); }
+  .card ul li:last-child, .card ol li:last-child{ margin-bottom:0; }
+  .card ul li::before{ content:"· "; color:var(--teal); font-weight:800; }
+  .card ol.nlist li, .card ul.nlist li{ padding-left:5.6mm; text-indent:0; }
+  .card ol.nlist li::before, .card ul.nlist li::before{ content:none; }
+  .card > p{ font-size:6.6pt; line-height:1.44; color:var(--meta); margin:1mm 0 0 0; }
+  .card p.sub, .card .formula .sub{ color:var(--meta); }
+
+  /* 5대 수칙 등 가로 스트립(.rule) */
+  .card .rule{ display:flex; flex-wrap:nowrap; gap:1.6mm; margin:0; }
+  .card .rule > div{ flex:1; background:var(--panel); border:0.25mm solid var(--panel-line);
+      border-radius:1.2mm; padding:1.6mm 1.4mm; font-size:6.4pt; line-height:1.34;
+      text-align:center; color:var(--body); }
+  .card .rule > div b{ display:block; color:var(--navy); font-size:6.8pt; font-weight:800;
+      margin-bottom:0.7mm; }
+
+  /* 여백 균일 배치 — 자동 늘림(auto) 대신 고정 간격 */
+  .page.evengap{ display:flex; flex-direction:column; }
+  .page.evengap .rule-gray{ margin-top:auto; }
+  .page.evengap .rolebar, .page.evengap .row2, .page.evengap .row1,
+  .page.evengap .row1.recap{ margin-bottom:4.2mm !important; margin-top:0 !important; }
+  .page.evengap .conclude{ margin-top:4.2mm; }
+
+  /* 클래스 없는 텍스트 컨테이너(.ex, 일반 div/p 등) 기본 크기 — 브라우저 기본 16px 방지 */
+  .card{ font-size:7pt; line-height:1.46; }
+  .card div, .card p, .card span{ font-size:inherit; }
+  .card .ex{ font-size:7pt; line-height:1.5; }
+  .card .ex b{ color:var(--navy); font-weight:700; }
+
+  /* 표 연속 조각 — 배지 없이 이어지는 카드 */
+  .card.cont{ border-top:0.25mm solid var(--line); padding-top:1.6mm; }
+
+  /* 번호 항목 블록(.nums > .num > .n + .b) — 틸 넘버서클 인라인 배치 */
+  .card .nums{ margin:0; }
+  .card .num{ position:relative; padding-left:5.8mm; margin:0 0 1.2mm 0;
+      color:var(--body); font-weight:400; font-size:inherit; }
+  .card .num:last-child{ margin-bottom:0; }
+  .card .num > .n{ position:absolute; left:0; top:0.3mm; width:4.1mm; height:4.1mm;
+      border-radius:50%; background:var(--teal); color:#fff; font-weight:800;
+      font-size:0.8em; line-height:4.1mm; text-align:center; }
+  .card .num.r > .n{ background:var(--amber); }
+  .card .num > .b{ display:block; margin:0; font-size:inherit; line-height:1.46; color:var(--body); }
+  .card .num > .b b{ color:var(--navy); font-weight:700; }
+
+  /* 수식·강조 밴드(.band) · 보조 각주(.cap) · 구분선(.trule) */
+  .card .band{ background:var(--panel); border-left:1.3mm solid var(--teal);
+      border-radius:0.8mm 1.2mm 1.2mm 0.8mm; padding:2mm 2.8mm; margin:0 0 2mm 0;
+      text-align:center; font-weight:700; color:var(--navy); font-size:inherit; }
+  .card .cap{ margin:1.4mm 0 0 0; font-size:0.88em; line-height:1.45; color:var(--meta); }
+  .card .cap b{ color:var(--navy); font-weight:700; }
+  .trule{ display:none; }
+
+  /* 폭 넘침 방지 — 글꼴 대체(Noto Sans KR 미설치 등)로 폭이 커져도 밖으로 나가지 않는다 */
+  .page{ overflow:hidden; }
+  .title{ white-space:normal !important; overflow-wrap:break-word; }
+  .card table, .tbl{ width:100% !important; table-layout:fixed; }
+  .card table th, .card table td, .tbl th, .tbl td{ overflow-wrap:break-word; word-break:keep-all; }
+  .chips{ max-width:100%; }
+  .chip{ white-space:normal; }
+
+  /* ===== 밀도 보정(x1.286) — 남는 여백을 본문 크기로 흡수 ===== */
+  .card, .card .ex{ font-size:9.0pt !important; }
+  .list li,.card ul li,.card ol li,.nlist li{ font-size:9.0pt !important; line-height:1.46 !important; }
+  .badge .lb{ font-size:11.06pt !important; }
+  .rolebar .rtx{ font-size:8.87pt !important; }
+  .tbl th,.tbl td,.card table th,.card table td{ font-size:8.23pt !important; padding:0.77mm 1.16mm !important; }
+  .chip{ font-size:8.1pt !important; padding:1.41mm 2.57mm !important; }
+  .card .rule > div{ font-size:8.23pt !important; }
+  .card .rule > div b{ font-size:8.74pt !important; }
+  .conclude .cb{ font-size:10.29pt !important; }
+  .note{ font-size:7.59pt !important; }
+
 </style>
-<style>
-  /* 표준 요약문서 레이아웃(16번 규격) 통일 */
-  html,body{ font-family:'Noto Sans CJK KR','Noto Sans KR','Malgun Gothic',sans-serif; color:#1f2937; }
-  .page{ width:100%; max-width:1180px; min-height:auto; margin:0 auto; padding:26px 30px 22px; display:flex; flex-direction:column; }
-  .page + .page{ padding-top:10px; }
-  .title{ font-size:26px; color:#1e3a5f; letter-spacing:-0.4px; line-height:1.2; }
-  .meta{ font-size:13px; color:#6b7280; margin:3px 0 0 0; line-height:1.5; }
-  .rule-navy{ height:0; border-bottom:2.5px solid #1e3a5f; background:none; margin:5px 0 8px 0; }
-  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:16px 18px; align-content:start; margin-bottom:16px; }
-  .row1{ margin-bottom:16px; }
-  .card{ border:1px solid #d1d5db; border-radius:10px; padding:16px 18px; }
-  .badge{ font-size:14.5px; color:#fff; background:#1e3a5f; display:inline-block; padding:4px 12px; border-radius:3px; margin-bottom:6px; letter-spacing:-0.3px; font-weight:700; }
-  .badge.rust{ background:#b45309; }
-  .list li,.nlist li{ font-size:14px; line-height:1.7; color:#374151; margin-bottom:5px; }
-  .list li{ padding-left:14px; text-indent:-14px; }
-  .nlist li{ padding-left:20px; text-indent:-20px; }
-  .term{ color:#1e3a5f; font-weight:700; }
-  .num{ color:#b45309; font-weight:700; }
-  .nlist .no{ color:#1e3a5f; font-weight:700; margin-right:4px; }
-  .formula{ background:#eef2f7; border-left:3px solid #1e3a5f; border-radius:3px; padding:12px 14px; margin:4px 0 10px 0; font-size:14.5px; text-align:center; font-weight:700; color:#1e3a5f; letter-spacing:-0.2px; }
-  .formula .sub{ display:block; font-size:12px; font-weight:500; color:#6b7280; margin-top:5px; letter-spacing:0; }
-  .note-grn{ background:#e8f4ec; border-left:3px solid #2e7d52; border-radius:3px; padding:12px 14px; margin:4px 0 10px 0; font-size:13px; line-height:1.65; color:#1e4b34; }
-  .chips{ display:flex; flex-wrap:wrap; gap:4px; }
-  .chip{ display:inline-block; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:3px; padding:3px 9px; font-size:12px; color:#334155; line-height:1.5; }
-  .chip b{ color:#1e3a5f; font-weight:700; }
-  .note{ border-top:1px solid #d1d5db; margin-top:10px; padding-top:5px; font-size:11.5px; color:#9ca3af; text-align:center; }
-  .pageno{ text-align:center; font-size:11.5px; color:#9ca3af; margin-top:6px; }
-  @media screen{ body{ background:#fff; } .page{ box-shadow:none; margin:0 auto; } }
-</style><style id="onepaper">:root{--navy:#1B3A5B;--navy2:#16304D;--teal:#227C8E;--rust:#B45309;--line:#DCE4EC;--band:#EAF0F5;--chip-bg:#F3F7F9;--chip-line:#DCE4EC;--body:#42505F;--meta:#6B7280;--note:#8A93A0;--grad:linear-gradient(135deg,#1B3A5B,#227C8E);--shadow:0 1px 6px rgba(27,58,91,.13)}
-.rule-navy{height:1.4mm;width:46mm;border-radius:1mm;background:var(--grad)}.rule-gray{background:var(--line)}
-.card{background:#fff;border:.25mm solid var(--line);border-radius:3mm;box-shadow:var(--shadow)}
-.badge{background:none;color:var(--navy);border-radius:0;white-space:normal;border-bottom:.5mm solid var(--teal);padding:0 0 1.4mm 0}
-.badge.rust{background:none;color:#B45309;border-bottom-color:#D9730D}
-.list li::before{content:"▪ ";color:var(--teal);font-weight:400}.nlist .no{color:var(--teal)}.num,.formula .num{color:var(--teal)}
-.formula{background:var(--band);border-left:1.4mm solid var(--teal);border-radius:1.4mm 2mm 2mm 1.4mm}
-.chip{background:var(--chip-bg);border-color:var(--line);border-radius:1.6mm}
-.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1;border-left:1.4mm solid #D9730D;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0;font-size:7.6pt;line-height:1.5}
-.rolet{color:#B45309;font-weight:800}
-.conclude{background:var(--grad);border-radius:3mm;padding:3.4mm 4.2mm;margin:3.2mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
-.conclude .lab{display:inline-block;font-size:6.6pt;font-weight:800;letter-spacing:.06em;opacity:.85;margin-right:2.4mm}
-.conclude .txt{font-size:8pt;font-weight:600;line-height:1.5}
-.hd{border-bottom:none!important;padding-bottom:0}.hd h1{color:#1B3A5B!important}
-.hd::after{content:"";display:block;height:1.4mm;width:46mm;border-radius:1mm;background:var(--grad);margin-top:2mm}
-.box{background:#fff;border:1px solid #DCE4EC!important;border-radius:10px;box-shadow:var(--shadow)}
-.box h2{background:none!important;color:#1B3A5B!important;border-bottom:2px solid #227C8E;border-radius:0!important;padding:0 0 4px 0!important;margin-bottom:8px!important}
-.box h2.accent{color:#B45309!important;border-bottom-color:#D9730D}
-.box li::before{content:'▪'!important;color:#227C8E!important;font-weight:400!important}
-.box p,.box li{color:#42505F}.k{color:#1B3A5B!important}.r{color:#B45309!important}
-.law,.tag{background:#F3F7F9!important;color:#1B3A5B!important;border-color:#DCE4EC!important}
-.box th{background:#EAF0F5!important;color:#1B3A5B!important}.box th,.box td{border-color:#DCE4EC!important}
-.stage div,.flow div{background:#F3F7F9!important;border-color:#DCE4EC!important;color:#42505F!important}
-.stage span{color:#1B3A5B!important}.arw,.ar{color:#227C8E!important}
-.box .num{background:#227C8E!important;color:#fff!important}
-.ft{color:#8A93A0!important;border-top-color:#DCE4EC!important}
-.box .formula{background:#EAF0F5!important;border-left:1.4mm solid #227C8E;border-radius:1.4mm 2mm 2mm 1.4mm;color:#1B3A5B!important}</style>
-<style id="onepaper-flow">.row2,.grid{grid-template-columns:1fr!important}
-.page{min-height:0!important;height:auto!important;page-break-after:auto!important;break-after:auto!important;margin:0 auto!important;box-shadow:none!important;padding-top:0!important;padding-bottom:0!important}
-.page:first-of-type{padding-top:13mm!important}
-.card,.box,.formula,table,.chips,.stage,.flow{break-inside:avoid;page-break-inside:avoid}
-.pageno{display:none!important}
-@media screen{body{background:#fff!important}}</style>
-<style id="onepaper-ig">:root{--navy:#1B3A5B;--navy2:#16304d;--teal:#227C8E;--ink:#1B3A5B;--body:#42505F;--gray:#6B7280;--light:#8A93A0;--panel:#EAF0F5;--panel2:#F3F7F9;--line:#DCE4EC;--grad:linear-gradient(135deg,#1B3A5B 0%,#227C8E 100%);--shadow:0 .5mm 1.8mm rgba(27,58,91,.13)}
-body{color:var(--body)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.title,.hd h1{color:var(--navy)!important;font-size:18pt!important;font-weight:800!important;letter-spacing:-.02em;line-height:1.25;padding:0 0 2.4mm 0!important;border:none!important}
-.title::after,.hd h1::after{content:"";display:block;height:1.4mm;width:46mm;margin-top:2mm;border-radius:1mm;background:var(--grad)}
-.hd,.hd::after{border:none!important}
-.meta,.hd .meta,.hd p{color:var(--gray)!important;font-size:6.4pt!important;line-height:1.45}
-.rule-navy{height:0!important;border:none!important;margin:2.4mm 0 3.6mm 0!important;background:none!important}
-.rule-gray{height:0!important;border:none!important;border-top:.25mm solid var(--line)!important;margin:3.6mm 0 2mm 0!important;background:none!important}
-.card,.box{border:none!important;border-top:.3mm solid var(--line)!important;border-bottom:.3mm solid var(--line)!important;border-radius:0!important;background:#fff!important;box-shadow:none!important;padding:3.2mm 4mm 3.4mm 4mm!important}
-.badge,.box h2{display:inline-block!important;background:none!important;color:var(--navy)!important;font-size:9.2pt!important;font-weight:800!important;letter-spacing:-.01em;line-height:1.35;white-space:normal!important;padding:0 0 1.6mm 0!important;border:none!important;border-bottom:.5mm solid var(--teal)!important;border-radius:0!important;margin:0 0 2.6mm 0!important}
-.badge.emph{background:var(--navy2)!important;color:#fff!important;border-bottom:none!important;border-radius:1.6mm!important;padding:1mm 2.8mm!important}
-.list li,.box li,.nlist li{font-size:7.6pt!important;line-height:1.62!important;color:var(--body)!important;margin-bottom:1.7mm!important}
-.list li::before,.box li::before{content:"▪  "!important;color:var(--teal)!important;font-weight:700!important}
-.nlist li::before{content:none!important}
-.nlist .no,.box .num{display:inline-block!important;color:#fff!important;background:var(--teal)!important;font-weight:700!important;font-size:6.6pt!important;width:4mm;height:4mm;line-height:4mm!important;text-align:center;border-radius:50%!important;margin-right:1.4mm}
-.term,.k,.chip b{color:var(--navy)!important;font-weight:700!important}
-.num,.r{color:var(--teal)!important;font-weight:800!important}
-.formula{background:var(--panel)!important;border:none!important;border-left:1.4mm solid var(--teal)!important;border-radius:1.4mm 2mm 2mm 1.4mm!important;padding:2.8mm 3.8mm!important;margin:0 0 3mm 0!important;text-align:center;font-size:7.6pt!important;font-weight:600;line-height:1.55;color:var(--navy)!important}
-.formula .num{color:var(--teal)!important}
-.formula .sub{display:block;font-size:6.5pt;font-weight:500;color:var(--gray)!important;margin-top:1.4mm;line-height:1.45}
-.chip,.law,.tag{background:var(--panel2)!important;border:.25mm solid var(--line)!important;border-radius:1.6mm!important;font-size:6.7pt!important;line-height:1.35;padding:1.4mm 2.6mm!important;color:var(--body)!important}
-.chips{display:flex;flex-wrap:wrap;gap:2mm}
-.hl{background:#DCEBEF!important;color:#155E6E!important;font-weight:800;padding:.2mm 1mm;border-radius:.8mm}
-th{background:var(--panel)!important;color:var(--navy)!important}th,td{border-color:var(--line)!important}
-.stage div,.flow div{background:var(--panel2)!important;border-color:var(--line)!important;color:var(--body)!important}
-.stage span{color:var(--navy)!important}.arw,.ar{color:var(--teal)!important}
-.note,.ft{text-align:center;font-size:6.1pt!important;line-height:1.5;color:var(--light)!important;border-top-color:var(--line)!important}
-.conclude{background:var(--grad)!important;border-radius:3mm;padding:4mm 5mm;margin:1mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
-.conclude .lab{display:inline-block;color:#7FD4E3;font-weight:800;font-size:8.4pt;margin-right:2mm}
-.conclude .txt{font-size:9pt;font-weight:700;line-height:1.5}.conclude .txt b{color:#8FE0EE}
-.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1!important;border-left:1.4mm solid #D9730D!important;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0}
-.rolebar .t{font-size:7.3pt;line-height:1.52;color:#7C3D0A!important}.rolebar .t b{color:#B45309!important;font-weight:800}
-.rolet{color:#B45309!important;font-weight:800}
-.page{padding:13mm 10mm 8mm!important}</style>
-<link rel="stylesheet" href="onepaper-read-v2.css">
-</head><body>
-<div class="page">
-<h1 class="title">설계의 안전성 검토(DFS) ① — 제도개요·대상</h1>
-<p class="meta">건설안전관리 ｜ 「건설기술진흥법」 제62조⑱·시행령 제75조의2 ｜ 건설공사 안전관리 종합정보망(국토안전관리원)</p>
-<div class="rule-navy"></div>
+</head>
+<body>
 
-<div class="row2">
-  <div class="card">
-    <span class="badge">1 · 제도 개요</span>
-    <ul class="list">
-      <li><b class="term">설계의 안전성 검토(DFS)</b> — 시공 중 위험요소를 설계단계에서 사전 발굴·평가</li>
-      <li>위험성평가 실시 및 저감대책 수립 후 설계에 반영</li>
-      <li>목적 — 기획·설계·시공·유지관리 전 과정 안전관리체계 구축</li>
-      <li>시공 전 설계단계부터 건설안전 선제적 관리 지향</li>
-    </ul>
-  </div>
-  <div class="card">
-    <span class="badge">2 · 법적 근거</span>
-    <ul class="list">
-      <li><b class="term">법 제62조⑱</b> — 발주청은 설계 안전성 검토 후 결과를 국토교통부장관에 제출</li>
-      <li><b class="term">시행령 제75조의2①</b> — 안전관리계획 수립대상 실시설계시 검토 의뢰 의무</li>
-      <li>동조② — 위험요소·저감대책·시공법 등 포함한 보고서 제출 의무</li>
-      <li>검토시기 — 설계도면·시방서·구조계산서 완료시점 원칙</li>
-    </ul>
-  </div>
-</div>
+<div class="page evengap">
 
-<div class="row1">
-  <div class="card">
-    <span class="badge rust">3 · 검토대상 판단기준</span>
-    <div class="formula">안전관리계획 수립대상(시행령 제98조①) 중 <span class="num">발주청 발주</span> 실시설계 → 아래 요건 해당시 검토대상
+  <h1 class="title">설계의 안전성 검토(DFS) ① — 제도개요·대상</h1>
+  <div class="ubar"></div>
+  <p class="meta">건설안전관리 ｜ 「건설기술진흥법」 제62조⑱·시행령 제75조의2 ｜ 건설공사 안전관리 종합정보망(국토안전관리원)</p>
+  <div class="rolebar"><span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주청 = 교육청·학교</span> — 실시설계 시 <b class="term">검토를 의뢰하고 승인 후 착공 전까지 국토교통부에 제출</b>할 의무를 지며, <span class="rolet">설계자</span>는 검토팀 구성·위험성평가·저감대책 설계 반영과 보고서 제출을, <span class="rolet">건설사업관리기술인·시공자</span>는 최종보고서의 안전관리문서 반영과 잔존위험요소 대책 이행을 담당한다.</span></div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>1</i>제도 개요</span></span>
+<ul class="list">
+<li><b class="term">설계의 안전성 검토(DFS)</b> — 시공 중 위험요소를 설계단계에서 사전 발굴·평가</li>
+<li>위험성평가 실시 및 저감대책 수립 후 설계에 반영</li>
+<li>목적 — 기획·설계·시공·유지관리 전 과정 안전관리체계 구축</li>
+<li>시공 전 설계단계부터 건설안전 선제적 관리 지향</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 3 4-6"/></svg></span><span class="lb"><i>2</i>법적 근거</span></span>
+<ul class="list">
+<li><b class="term">법 제62조⑱</b> — 발주청은 설계 안전성 검토 후 결과를 국토교통부장관에 제출</li>
+<li><b class="term">시행령 제75조의2①</b> — 안전관리계획 수립대상 실시설계시 검토 의뢰 의무</li>
+<li>동조② — 위험요소·저감대책·시공법 등 포함한 보고서 제출 의무</li>
+<li>검토시기 — 설계도면·시방서·구조계산서 완료시점 원칙</li>
+</ul></div>
+  </div>
+  <div class="row1">
+    <div class="card tealtop"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2"/></svg></span><span class="lb"><i>3</i>검토대상 판단기준</span></span>
+<div class="formula">안전관리계획 수립대상(시행령 제98조①) 중 <span class="num">발주청 발주</span> 실시설계 → 아래 요건 해당시 검토대상
       <span class="sub">건설기계 사용 공사(시행령 제98조①5호)는 제외(2019.7.1. 시행)</span>
-    </div>
-    <div class="note-grn"><b>총사업비·공사비·설계비로는 대상 여부를 판정할 수 없음</b> — DFS 대상은 금액이 아니라 <b>공사 규모·공법</b>(굴착깊이, 층수, 가설구조물 종류·높이 등)으로 판정한다. 사업비가 소액이어도 지하 10m 이상 굴착, 높이 5m 이상 거푸집·동바리, 2m 이상 흙막이 지보공 등에 해당하면 대상이고, 반대로 사업비가 크더라도 해당 요건이 없으면 대상이 아니다. 금액으로 판단이 서지 않을 때는 실시설계도서의 <b>굴착계획·가설계획</b>을 확인할 것.</div>
-    <ol class="nlist">
-      <li><span class="no">①</span>1·2종 시설물 건설공사(「시설물안전법」 제2조2·3호), 지하 10m 이상 굴착공사</li>
-      <li><span class="no">②</span>폭발물 사용으로 주변(20m 내 시설물, 100m 내 가축사육) 영향 예상 공사</li>
-      <li><span class="no">③</span>10층 이상 16층 미만 건축물 건설공사, 10층 이상 건축물 리모델링·해체공사</li>
-      <li><span class="no">④</span>수직증축형 리모델링(「주택법」 제2조25호다목), 가설구조물 사용 공사, 기타 발주자·조례 지정 공사</li>
-    </ol>
+</div>
+<div class="note-grn"><b>총사업비·공사비·설계비로는 대상 여부를 판정할 수 없음</b> — DFS 대상은 금액이 아니라 <b>공사 규모·공법</b>(굴착깊이, 층수, 가설구조물 종류·높이 등)으로 판정한다. 사업비가 소액이어도 지하 10m 이상 굴착, 높이 5m 이상 거푸집·동바리, 2m 이상 흙막이 지보공 등에 해당하면 대상이고, 반대로 사업비가 크더라도 해당 요건이 없으면 대상이 아니다. 금액으로 판단이 서지 않을 때는 실시설계도서의 <b>굴착계획·가설계획</b>을 확인할 것.</div>
+<ol class="nlist">
+<li><span class="no">1</span>1·2종 시설물 건설공사(「시설물안전법」 제2조2·3호), 지하 10m 이상 굴착공사</li>
+<li><span class="no">2</span>폭발물 사용으로 주변(20m 내 시설물, 100m 내 가축사육) 영향 예상 공사</li>
+<li><span class="no">3</span>10층 이상 16층 미만 건축물 건설공사, 10층 이상 건축물 리모델링·해체공사</li>
+<li><span class="no">4</span>수직증축형 리모델링(「주택법」 제2조25호다목), 가설구조물 사용 공사, 기타 발주자·조례 지정 공사</li>
+</ol></div>
   </div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2"/></svg></span><span class="lb"><i>4</i>가설구조물 대상 ①</span></span>
+<ul class="list">
+<li><b class="term">비계</b> — 높이 31m 이상 비계, 브라켓(bracket) 비계</li>
+<li><b class="term">거푸집·동바리</b> — 작업발판 일체형(갱폼 등), 높이 5m 이상</li>
+<li><b class="term">지보공</b> — 터널 지보공, 높이 2m 이상 흙막이 지보공</li>
+<li>동력이용 이동식 가설구조물(FCM F/T, ILM 노즈 등)</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2"/></svg></span><span class="lb"><i>5</i>가설구조물 대상 ②</span></span>
+<ul class="list">
+<li>높이 10m 이상 외부작업용 작업발판·안전시설 일체형(SWC, ACS, RCS 등)</li>
+<li>현장 제작·조립 복합형 가설구조물(가설벤트, 작업대차, 라이닝폼 등)</li>
+<li>발주자 또는 인·허가기관의 장이 필요 인정 가설구조물</li>
+<li>상기 가설구조물 대상기준은 2020.5.27.부터 시행</li>
+</ul></div>
+  </div>
+  <div class="row1 recap">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span>
+<div class="chips">
+<span class="chip"><b>검토의뢰 대상 근거</b> 시행령 제98조제1항</span>
+<span class="chip"><b>지하굴착 기준</b> 10m 이상</span>
+<span class="chip"><b>폭발물 영향범위</b> 시설물 20m·가축 100m</span>
+<span class="chip"><b>건축물 신축 규모</b> 10층 이상 16층 미만</span>
+<span class="chip"><b>가설구조물 기준</b> 2020.5.27. 시행</span>
+<span class="chip"><b>건설기계 제외</b> 2019.7.1. 시행</span>
+<span class="chip"><b>근거법령</b> 법 제62조⑱·시행령 제75조의2</span>
+</div></div>
+  </div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 건설공사 안전관리 종합정보망(CSI) 게재자료 및 「시설물안전법」 제7조 기준. 세부 대상판단은 발주청·국토안전관리원 문의 요함.</p>
+  <p class="pgno">1 / 3</p>
 </div>
 
-<div class="row2">
-  <div class="card">
-    <span class="badge">4 · 가설구조물 대상 ①</span>
-    <ul class="list">
-      <li><b class="term">비계</b> — 높이 31m 이상 비계, 브라켓(bracket) 비계</li>
-      <li><b class="term">거푸집·동바리</b> — 작업발판 일체형(갱폼 등), 높이 5m 이상</li>
-      <li><b class="term">지보공</b> — 터널 지보공, 높이 2m 이상 흙막이 지보공</li>
-      <li>동력이용 이동식 가설구조물(FCM F/T, ILM 노즈 등)</li>
-    </ul>
-  </div>
-  <div class="card">
-    <span class="badge">5 · 가설구조물 대상 ②</span>
-    <ul class="list">
-      <li>높이 10m 이상 외부작업용 작업발판·안전시설 일체형(SWC, ACS, RCS 등)</li>
-      <li>현장 제작·조립 복합형 가설구조물(가설벤트, 작업대차, 라이닝폼 등)</li>
-      <li>발주자 또는 인·허가기관의 장이 필요 인정 가설구조물</li>
-      <li>상기 가설구조물 대상기준은 2020.5.27.부터 시행</li>
-    </ul>
-  </div>
-</div>
+<div class="page evengap">
 
-<div class="row1">
-  <div class="card">
-    <span class="badge">6 · 핵심 수치 재확인</span>
-    <div class="chips">
-      <span class="chip"><b>검토의뢰 대상 근거</b> 시행령 제98조제1항</span>
-      <span class="chip"><b>지하굴착 기준</b> 10m 이상</span>
-      <span class="chip"><b>폭발물 영향범위</b> 시설물 20m·가축 100m</span>
-      <span class="chip"><b>건축물 신축 규모</b> 10층 이상 16층 미만</span>
-      <span class="chip"><b>가설구조물 기준</b> 2020.5.27. 시행</span>
-      <span class="chip"><b>건설기계 제외</b> 2019.7.1. 시행</span>
-      <span class="chip"><b>근거법령</b> 법 제62조⑱·시행령 제75조의2</span>
-    </div>
+  <h1 class="title">설계의 안전성 검토(DFS) ① — 제도개요·대상 (계속)</h1>
+  <div class="ubar"></div>
+  <div class="row1">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>7</i>1종·2종·3종 시설물 정의(「시설물안전법」 제7조)</span></span>
+<ol class="nlist">
+<li><span class="no">1</span><b class="term">1종시설물</b> — 연장 500m 이상 도로·철도 교량, 연장 1,000m 이상 도로·철도 터널, 21층 이상 또는 연면적 5만㎡ 이상 건축물, 다목적댐·발전용댐 등 고도의 기술관리가 필요한 대규모 시설물</li>
+<li><span class="no">2</span><b class="term">2종시설물</b> — 연장 100m 이상 도로·철도 교량, 고속·일반국도 등 도로터널, 16층 이상 또는 연면적 3만㎡ 이상 건축물, 방파제(연장 500m 이상) 등 계속적 관리가 필요한 시설물</li>
+<li><span class="no">3</span><b class="term">3종시설물</b> — 1·2종 외 안전관리가 필요한 소규모 시설물로서 지정·고시된 시설물(법 제8조)</li>
+<li><span class="no">4</span>구분기준 — 공중이용 편의·안전, 재난위험도, 관리 필요성 등을 종합고려하여 대통령령(시행령 별표1)으로 세부 지정</li>
+</ol></div>
   </div>
-</div>
-
-<div class="row1">
-  <div class="card">
-    <span class="badge">7 · 1종·2종·3종 시설물 정의(「시설물안전법」 제7조)</span>
-    <ol class="nlist">
-      <li><span class="no">①</span><b class="term">1종시설물</b> — 연장 500m 이상 도로·철도 교량, 연장 1,000m 이상 도로·철도 터널, 21층 이상 또는 연면적 5만㎡ 이상 건축물, 다목적댐·발전용댐 등 고도의 기술관리가 필요한 대규모 시설물</li>
-      <li><span class="no">②</span><b class="term">2종시설물</b> — 연장 100m 이상 도로·철도 교량, 고속·일반국도 등 도로터널, 16층 이상 또는 연면적 3만㎡ 이상 건축물, 방파제(연장 500m 이상) 등 계속적 관리가 필요한 시설물</li>
-      <li><span class="no">③</span><b class="term">3종시설물</b> — 1·2종 외 안전관리가 필요한 소규모 시설물로서 지정·고시된 시설물(법 제8조)</li>
-      <li><span class="no">④</span>구분기준 — 공중이용 편의·안전, 재난위험도, 관리 필요성 등을 종합고려하여 대통령령(시행령 별표1)으로 세부 지정</li>
-    </ol>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/><path d="M8 3v18"/></svg></span><span class="lb"><i>8</i>참여자별 업무 — 발주자</span></span>
+<ul class="list">
+<li>사업단계 — 대상공사 확인, 위험요소·저감대책 발굴</li>
+<li>설계발주단계 — 설계조건 작성, 검토 목표 수립</li>
+<li>설계시행단계 — 검토시기·일정 협의, 워크숍 참여, 설계도서 확인</li>
+<li>승인 후 국토교통부 제출·보관, 이행결과 확인</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/><path d="M17 3l3 3-3 3"/></svg></span><span class="lb"><i>9</i>참여자별 업무 — 설계자 등</span></span>
+<ul class="list">
+<li><b class="term">설계자</b> — 검토팀 구성, 위험요소 인식·평가, 저감대책 설계 반영</li>
+<li><b class="term">설계자</b> — 결과 기록, 보고서 제출·보완, 최종보고서 제출</li>
+<li><b class="term">건설사업관리기술자</b> — 최종보고서 안전관리문서 반영·이행 확인</li>
+<li><b class="term">시공자</b> — 안전관리문서 작성·제출, 잔존위험요소 대책 이행</li>
+</ul></div>
   </div>
-</div>
-
-<div class="rule-gray"></div>
-<p class="note">본 요약은 건설공사 안전관리 종합정보망(CSI) 게재자료 및 「시설물안전법」 제7조 기준. 세부 대상판단은 발주청·국토안전관리원 문의 요함.</p>
-<p class="pageno">1 / 2</p>
-</div>
-<div class="page">
-<h1 class="title">설계의 안전성 검토(DFS) ② — 처리절차·비용·벌칙</h1>
-<p class="meta">건설안전관리 ｜ 「건설공사 안전관리 업무수행지침」 제6조 등 ｜ 건설공사 안전관리 종합정보망(국토안전관리원)</p>
-<div class="rule-navy"></div>
-
-<div class="row2">
-  <div class="card">
-    <span class="badge">1 · 참여자별 업무 — 발주자</span>
-    <ul class="list">
-      <li>사업단계 — 대상공사 확인, 위험요소·저감대책 발굴</li>
-      <li>설계발주단계 — 설계조건 작성, 검토 목표 수립</li>
-      <li>설계시행단계 — 검토시기·일정 협의, 워크숍 참여, 설계도서 확인</li>
-      <li>승인 후 국토교통부 제출·보관, 이행결과 확인</li>
-    </ul>
-  </div>
-  <div class="card">
-    <span class="badge">2 · 참여자별 업무 — 설계자 등</span>
-    <ul class="list">
-      <li><b class="term">설계자</b> — 검토팀 구성, 위험요소 인식·평가, 저감대책 설계 반영</li>
-      <li><b class="term">설계자</b> — 결과 기록, 보고서 제출·보완, 최종보고서 제출</li>
-      <li><b class="term">건설사업관리기술자</b> — 최종보고서 안전관리문서 반영·이행 확인</li>
-      <li><b class="term">시공자</b> — 안전관리문서 작성·제출, 잔존위험요소 대책 이행</li>
-    </ul>
-  </div>
-</div>
-
-<div class="row1">
-  <div class="card">
-    <span class="badge rust">3 · 검토처리절차</span>
-    <div class="formula">설계자 작성·제출 → 발주청 → 국토안전관리원 검토 → <span class="num">20일</span> 이내 통보 → 승인/보완 → <span class="num">착공 전</span> 국토교통부 제출
+  <div class="row1">
+    <div class="card tealtop"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M7 16l4-5 3 2 5-7"/></svg></span><span class="lb"><i>10</i>검토처리절차</span></span>
+<div class="formula">설계자 작성·제출 → 발주청 → 국토안전관리원 검토 → <span class="num">20일</span> 이내 통보 → 승인/보완 → <span class="num">착공 전</span> 국토교통부 제출
       <span class="sub">부적정·조건부적정시 설계자 보완 요청, 승인시 보고서 제출·정보망 기록</span>
-    </div>
-    <ol class="nlist">
-      <li><span class="no">①</span>국토안전관리원 — 의뢰받은 날부터 20일 이내 검토, 결과를 발주청에 통보(시행령 제75조의2③)</li>
-      <li><span class="no">②</span>발주청 — 개선 필요시 설계도서 보완·변경 등 조치(동조④)</li>
-      <li><span class="no">③</span>발주청 — 검토 결과를 착공 전 국토교통부장관에게 제출(동조⑤)</li>
-      <li><span class="no">④</span>검토비용 — 발주청이 부담(「건설공사 안전관리 업무수행지침」 제6조)</li>
-    </ol>
+</div>
+<ol class="nlist">
+<li><span class="no">1</span>국토안전관리원 — 의뢰받은 날부터 20일 이내 검토, 결과를 발주청에 통보(시행령 제75조의2③)</li>
+<li><span class="no">2</span>발주청 — 개선 필요시 설계도서 보완·변경 등 조치(동조④)</li>
+<li><span class="no">3</span>발주청 — 검토 결과를 착공 전 국토교통부장관에게 제출(동조⑤)</li>
+<li><span class="no">4</span>검토비용 — 발주청이 부담(「건설공사 안전관리 업무수행지침」 제6조)</li>
+</ol></div>
   </div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M7 16l4-5 3 2 5-7"/></svg></span><span class="lb"><i>11</i>신규·재검토의뢰 절차</span></span>
+<ul class="list">
+<li><b class="term">신규검토의뢰</b> — 정보망에 보고서 업로드·검토비용 납부</li>
+<li>작성적정성·HRA 선정적정성 검토 후 공문·검토의견서 회신</li>
+<li><b class="term">재검토의뢰</b> — 보완자료·조치결과서 업로드</li>
+<li>보완자료 검토 후 공문·검토의견서 회신</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span><span class="lb"><i>12</i>검토비용·벌칙</span></span>
+<ul class="list">
+<li><b class="term">검토비용</b>(VAT별도) — 300억 미만 200만원/건</li>
+<li>300억~500억 330만원/건, 500억 초과 470만원/건</li>
+<li><b class="term">미실시</b> — 1천만원 이하 과태료(법 제91조②3의3)</li>
+<li><b class="term">미제출·거짓제출</b> — 300만원 이하 과태료(법 제91조③15)</li>
+</ul></div>
+  </div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 건설공사 안전관리 종합정보망(CSI) 게재자료 및 「시설물안전법」 제7조 기준. 세부 대상판단은 발주청·국토안전관리원 문의 요함.</p>
+  <p class="pgno">2 / 3</p>
 </div>
 
-<div class="row2">
-  <div class="card">
-    <span class="badge">4 · 신규·재검토의뢰 절차</span>
-    <ul class="list">
-      <li><b class="term">신규검토의뢰</b> — 정보망에 보고서 업로드·검토비용 납부</li>
-      <li>작성적정성·HRA 선정적정성 검토 후 공문·검토의견서 회신</li>
-      <li><b class="term">재검토의뢰</b> — 보완자료·조치결과서 업로드</li>
-      <li>보완자료 검토 후 공문·검토의견서 회신</li>
-    </ul>
+<div class="page evengap">
+
+  <h1 class="title">설계의 안전성 검토(DFS) ① — 제도개요·대상 (계속)</h1>
+  <div class="ubar"></div>
+  <div class="row1 recap">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg></span><span class="lb"><i>13</i>핵심 수치 재확인</span></span>
+<div class="chips">
+<span class="chip"><b>검토기한</b> 의뢰일로부터 20일 이내</span>
+<span class="chip"><b>검토비용</b> 300억 미만 200만원</span>
+<span class="chip"><b>검토비용</b> 300~500억 330만원</span>
+<span class="chip"><b>검토비용</b> 500억 초과 470만원</span>
+<span class="chip"><b>결과제출</b> 착공 전 국토교통부</span>
+<span class="chip"><b>미실시 과태료</b> 1천만원 이하</span>
+<span class="chip"><b>미제출·거짓제출</b> 300만원 이하</span>
+</div></div>
   </div>
-  <div class="card">
-    <span class="badge">5 · 검토비용·벌칙</span>
-    <ul class="list">
-      <li><b class="term">검토비용</b>(VAT별도) — 300억 미만 200만원/건</li>
-      <li>300억~500억 330만원/건, 500억 초과 470만원/건</li>
-      <li><b class="term">미실시</b> — 1천만원 이하 과태료(법 제91조②3의3)</li>
-      <li><b class="term">미제출·거짓제출</b> — 300만원 이하 과태료(법 제91조③15)</li>
-    </ul>
-  </div>
+  <div class="conclude"><div class="ct">CORE</div><div class="cb">DFS 대상은 <b>금액이 아니라 공사 규모·가설구조물 요건</b>으로 판정한다 — 총사업비·공사비·설계비로는 판단할 수 없다. 검토는 <b>의뢰일로부터 20일 이내</b>에 통보되며, <b>미실시는 1천만원 이하, 미제출·거짓제출은 300만원 이하 과태료</b> 대상이다. <b>건설기계 사용 공사는 2019. 7. 1.부터 제외</b>된다.</div></div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 건설공사 안전관리 종합정보망(CSI) 게재자료 및 「시설물안전법」 제7조 기준. 세부 대상판단은 발주청·국토안전관리원 문의 요함.</p>
+  <p class="pgno">3 / 3</p>
 </div>
 
-<div class="row1">
-  <div class="card">
-    <span class="badge">6 · 핵심 수치 재확인</span>
-    <div class="chips">
-      <span class="chip"><b>검토기한</b> 의뢰일로부터 20일 이내</span>
-      <span class="chip"><b>검토비용</b> 300억 미만 200만원</span>
-      <span class="chip"><b>검토비용</b> 300~500억 330만원</span>
-      <span class="chip"><b>검토비용</b> 500억 초과 470만원</span>
-      <span class="chip"><b>결과제출</b> 착공 전 국토교통부</span>
-      <span class="chip"><b>미실시 과태료</b> 1천만원 이하</span>
-      <span class="chip"><b>미제출·거짓제출</b> 300만원 이하</span>
-    </div>
-  </div>
-</div>
-
-<div class="rule-gray"></div>
-<p class="note">제도시행 — '16.5.19. 시행령 신설 → '16.10. 업무수행지침 고시 → '18.12. 법 제62조⑱ 신설. 세부 서식·절차는 국토안전관리원 지침을 따름.</p>
-<p class="pageno">2 / 2</p>
-</div>
-</body></html>
+</body>
+</html>

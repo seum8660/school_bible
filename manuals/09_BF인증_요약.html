@@ -2,187 +2,310 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<title>장애물 없는 생활환경(BF) 인증 기준 해설서 — 핵심 요약</title>
 <style>
-  @page { size: A4 portrait; margin: 0; }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { font-family:'Pretendard','Noto Sans KR','Noto Sans CJK KR',sans-serif; color:#1f2937; }
-  .page { width: 100%; max-width: 1180px; min-height:auto; margin: 0 auto; padding:26px 30px 22px; display: flex; flex-direction: column; }
-  .hd { border-bottom: 2.5px solid #0f766e; padding-bottom: 5px; margin-bottom: 8px; }
-  .hd h1 { font-size:26px; color: #0f766e; letter-spacing: -0.4px; }
-  .hd .sub { font-size:13px; color: #6b7280; margin-top: 3px; line-height:1.4; }
-  .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px 18px; align-content:start; }
-  .page > .grid { flex: 1; align-content: start; }
-  .box { border:1px solid #d1d5db; border-radius:10px; padding:16px 18px; }
-  .box.full { grid-column: 1 / -1; }
-  .box h2 { font-size:14.5px; color: #fff; background: #0f766e; display: inline-block;
-            padding:4px 12px; border-radius: 3px; margin-bottom: 5px; letter-spacing: -0.3px; }
-  .box h2.accent { background: #b45309; }
-  p, li { font-size:14px; line-height:1.7; color:#374151; }
-  ul { list-style: none; }
-  li { padding-left:14px; position: relative; margin-bottom:5px; }
-  li::before { content: '·'; position: absolute; left: 2px; color: #0f766e; font-weight: 700; }
-  .k { color: #0f766e; font-weight: 700; }
-  .r { color: #b45309; font-weight: 700; }
-  table { width: 100%; border-collapse: collapse; margin-top: 3px; }
-  th, td { border:1px solid #cbd5e1; padding:7px 9px; font-size:12.5px; text-align:center; vertical-align:middle; }
-  th { background: #f0fdfa; color: #0f766e; font-weight: 700; }
-  td.l { text-align: left; }
-  .cat { display:flex; gap:5px; align-items:flex-start; margin-bottom:3px; }
-  .cat .n { flex:0 0 auto; width:15px; height:15px; background:#0f766e; color:#fff; border-radius:4px;
-            font-size:8.5px; font-weight:700; text-align:center; line-height:15px; margin-top:1px; }
-  .cat .t { font-size:8.7px; line-height:1.4; }
-  .cat .t b { color:#0f766e; font-size:13px; }
-  .ft { border-top:1px solid #d1d5db; margin-top:8px; padding-top:6px; font-size:11.5px; color:#9ca3af; text-align:center; }
+:root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  /* 여백 없이 전면 채움 — 남는 높이를 섹션 사이에 균등 배분 */
+  .page.haspin .rolebar, .page.haspin .row2, .page.haspin .row1{ margin-bottom:auto; }
+  .page.haspin .row1.recap{ margin-bottom:auto; }
+
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+  .tbl tr.hi td{ background:#EAF4F6; }
+
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+  /* --- 보강: 수식 밴드 (구 박스문서 변환용) --- */
+  .formula{
+    background:var(--panel); border-left:1.3mm solid var(--teal);
+    border-radius:0.8mm 1.2mm 1.2mm 0.8mm; padding:2.2mm 3mm; margin:0 0 2mm 0;
+    text-align:center; font-size:7.4pt; font-weight:700; color:var(--navy); line-height:1.45;
+  }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1.1mm; }
+  .formula:last-child{ margin-bottom:0; }
+  .hl{ background:#DCEBEF; color:#155E6E; font-weight:800; padding:0.2mm 0.8mm; border-radius:0.6mm; }
+
+  /* ===== 구(舊) BIBLE 마크업 호환 레이어 — 인포그래픽 팔레트로 재매핑 ===== */
+  .k{ color:var(--navy); font-weight:700; }
+  .r, .em{ color:var(--amber); font-weight:700; }
+  .b{ display:block; margin-left:5.2mm; font-size:6.6pt; color:var(--body); line-height:1.42; }
+  .b b{ color:var(--navy); font-weight:700; }
+
+  .pill{ display:inline-block; background:var(--navy); color:#fff; font-size:6.6pt; font-weight:700;
+         padding:0.7mm 2.2mm; border-radius:0.9mm; line-height:1.3; }
+  .pill.hi{ background:var(--amber); }
+
+  .law, .tag{ display:inline-block; background:var(--panel); border:0.25mm solid var(--panel-line);
+              border-radius:1mm; padding:0.9mm 1.8mm; font-size:6.3pt; line-height:1.3; color:var(--body); }
+  .law b, .tag b{ color:var(--navy); font-weight:700; }
+
+  /* 흐름도 · 단계 박스 */
+  .flow{ display:flex; flex-wrap:wrap; align-items:stretch; gap:1.6mm; margin-top:1.4mm; }
+  .flow .st{ flex:1; min-width:28mm; background:var(--panel); border:0.25mm solid var(--panel-line);
+             border-radius:1mm; padding:1.5mm 1.8mm; font-size:6.4pt; line-height:1.36; color:var(--body); }
+  .flow .st b{ display:block; color:var(--navy); font-size:6.6pt; margin-bottom:0.6mm; }
+  .flow .st.hi{ border-color:var(--amber); background:var(--amber-bg); }
+  .flow .ar, .arw{ align-self:center; color:var(--teal); font-weight:800; font-size:7.4pt; }
+  .stage{ display:flex; gap:1.2mm; margin:1.2mm 0 0.6mm; }
+  .stage div{ flex:1; background:var(--panel); border:0.25mm solid var(--panel-line); border-radius:1mm;
+              padding:1.1mm 1.2mm; font-size:6.2pt; text-align:center; line-height:1.3; color:var(--body); }
+  .stage span{ display:block; color:var(--navy); font-weight:700; }
+
+  /* 번호 카테고리 행 */
+  .cat{ display:flex; gap:1.6mm; align-items:flex-start; margin-bottom:1mm; }
+  .cat .n{ flex:0 0 auto; width:4.1mm; height:4.1mm; background:var(--teal); color:#fff;
+           border-radius:50%; font-size:5.6pt; font-weight:800; text-align:center; line-height:4.1mm; }
+  .cat .t{ font-size:7pt; line-height:1.44; }
+  .cat .t b{ color:var(--navy); font-weight:700; }
+
+  /* 구 표(class 없는 table) — .tbl 규격으로 통일 */
+  .card table{ width:100%; border-collapse:collapse; margin:0; }
+  .card table th, .card table td{ border-bottom:0.2mm solid var(--panel-line);
+      padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.26; }
+  .card table th{ background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+      border-bottom:0.45mm solid var(--teal); }
+  .card table tr:last-child td{ border-bottom:0; }
+  .card table td.l, .card table td.lf{ text-align:left; }
+  .card table td.h, .card table td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .card table td.s{ background:var(--panel); color:var(--navy); font-weight:700; }
+  .card table td.t, .card table td.o{ color:var(--amber); font-weight:800; white-space:nowrap; }
+  .card table tr.hi td{ background:#EAF4F6; }
+
+  /* 구 컨테이너 무력화 */
+  .sheet{ display:block; max-height:none; overflow:visible; }
+  .rule-navy{ display:none; }
+  .grid{ display:block; }
+  .box{ border:0; padding:0; background:none; }
+  ol.nlist{ list-style:none; }
+  p.sub{ font-size:6.6pt; color:var(--meta); line-height:1.42; margin:0.8mm 0 0 0; }
+
+  /* 클래스 없는 ul/ol/li — .list 규격으로 통일 */
+  .card ul, .card ol{ margin:0; padding:0; list-style:none; }
+  .card ul li, .card ol li{ font-size:7pt; line-height:1.44; padding-left:2.6mm;
+      text-indent:-2.6mm; margin-bottom:0.8mm; color:var(--body); }
+  .card ul li:last-child, .card ol li:last-child{ margin-bottom:0; }
+  .card ul li::before{ content:"· "; color:var(--teal); font-weight:800; }
+  .card ol.nlist li, .card ul.nlist li{ padding-left:5.6mm; text-indent:0; }
+  .card ol.nlist li::before, .card ul.nlist li::before{ content:none; }
+  .card > p{ font-size:6.6pt; line-height:1.44; color:var(--meta); margin:1mm 0 0 0; }
+  .card p.sub, .card .formula .sub{ color:var(--meta); }
+
+  /* 5대 수칙 등 가로 스트립(.rule) */
+  .card .rule{ display:flex; flex-wrap:nowrap; gap:1.6mm; margin:0; }
+  .card .rule > div{ flex:1; background:var(--panel); border:0.25mm solid var(--panel-line);
+      border-radius:1.2mm; padding:1.6mm 1.4mm; font-size:6.4pt; line-height:1.34;
+      text-align:center; color:var(--body); }
+  .card .rule > div b{ display:block; color:var(--navy); font-size:6.8pt; font-weight:800;
+      margin-bottom:0.7mm; }
+
+  /* 여백 균일 배치 — 자동 늘림(auto) 대신 고정 간격 */
+  .page.evengap{ display:flex; flex-direction:column; }
+  .page.evengap .rule-gray{ margin-top:auto; }
+  .page.evengap .rolebar, .page.evengap .row2, .page.evengap .row1,
+  .page.evengap .row1.recap{ margin-bottom:6.5mm !important; margin-top:0 !important; }
+  .page.evengap .conclude{ margin-top:6.5mm; }
+
+  /* ===== 밀도 보정(x1.120) — 남는 여백을 본문 크기로 흡수 ===== */
+  .list li,.card ul li,.card ol li,.nlist li{ font-size:7.84pt !important; line-height:1.46 !important; }
+  .badge .lb{ font-size:9.63pt !important; }
+  .rolebar .rtx{ font-size:7.73pt !important; }
+  .tbl th,.tbl td,.card table th,.card table td{ font-size:7.17pt !important; padding:0.67mm 1.01mm !important; }
+  .chip{ font-size:7.06pt !important; padding:1.23mm 2.24mm !important; }
+  .card .rule > div{ font-size:7.17pt !important; }
+  .card .rule > div b{ font-size:7.62pt !important; }
+  .conclude .cb{ font-size:8.96pt !important; }
+  .note{ font-size:6.61pt !important; }
+
 </style>
-<style id="onepaper">:root{--navy:#1B3A5B;--navy2:#16304D;--teal:#227C8E;--rust:#B45309;--line:#DCE4EC;--band:#EAF0F5;--chip-bg:#F3F7F9;--chip-line:#DCE4EC;--body:#42505F;--meta:#6B7280;--note:#8A93A0;--grad:linear-gradient(135deg,#1B3A5B,#227C8E);--shadow:0 1px 6px rgba(27,58,91,.13)}
-.rule-navy{height:1.4mm;width:46mm;border-radius:1mm;background:var(--grad)}.rule-gray{background:var(--line)}
-.card{background:#fff;border:.25mm solid var(--line);border-radius:3mm;box-shadow:var(--shadow)}
-.badge{background:none;color:var(--navy);border-radius:0;white-space:normal;border-bottom:.5mm solid var(--teal);padding:0 0 1.4mm 0}
-.badge.rust{background:none;color:#B45309;border-bottom-color:#D9730D}
-.list li::before{content:"▪ ";color:var(--teal);font-weight:400}.nlist .no{color:var(--teal)}.num,.formula .num{color:var(--teal)}
-.formula{background:var(--band);border-left:1.4mm solid var(--teal);border-radius:1.4mm 2mm 2mm 1.4mm}
-.chip{background:var(--chip-bg);border-color:var(--line);border-radius:1.6mm}
-.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1;border-left:1.4mm solid #D9730D;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0;font-size:7.6pt;line-height:1.5}
-.rolet{color:#B45309;font-weight:800}
-.conclude{background:var(--grad);border-radius:3mm;padding:3.4mm 4.2mm;margin:3.2mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
-.conclude .lab{display:inline-block;font-size:6.6pt;font-weight:800;letter-spacing:.06em;opacity:.85;margin-right:2.4mm}
-.conclude .txt{font-size:8pt;font-weight:600;line-height:1.5}
-.hd{border-bottom:none!important;padding-bottom:0}.hd h1{color:#1B3A5B!important}
-.hd::after{content:"";display:block;height:1.4mm;width:46mm;border-radius:1mm;background:var(--grad);margin-top:2mm}
-.box{background:#fff;border:1px solid #DCE4EC!important;border-radius:10px;box-shadow:var(--shadow)}
-.box h2{background:none!important;color:#1B3A5B!important;border-bottom:2px solid #227C8E;border-radius:0!important;padding:0 0 4px 0!important;margin-bottom:8px!important}
-.box h2.accent{color:#B45309!important;border-bottom-color:#D9730D}
-.box li::before{content:'▪'!important;color:#227C8E!important;font-weight:400!important}
-.box p,.box li{color:#42505F}.k{color:#1B3A5B!important}.r{color:#B45309!important}
-.law,.tag{background:#F3F7F9!important;color:#1B3A5B!important;border-color:#DCE4EC!important}
-.box th{background:#EAF0F5!important;color:#1B3A5B!important}.box th,.box td{border-color:#DCE4EC!important}
-.stage div,.flow div{background:#F3F7F9!important;border-color:#DCE4EC!important;color:#42505F!important}
-.stage span{color:#1B3A5B!important}.arw,.ar{color:#227C8E!important}
-.box .num{background:#227C8E!important;color:#fff!important}
-.ft{color:#8A93A0!important;border-top-color:#DCE4EC!important}
-.box .formula{background:#EAF0F5!important;border-left:1.4mm solid #227C8E;border-radius:1.4mm 2mm 2mm 1.4mm;color:#1B3A5B!important}</style>
-<style id="onepaper-flow">.row2,.grid{grid-template-columns:1fr!important}
-.page{min-height:0!important;height:auto!important;page-break-after:auto!important;break-after:auto!important;margin:0 auto!important;box-shadow:none!important;padding-top:0!important;padding-bottom:0!important}
-.page:first-of-type{padding-top:13mm!important}
-.card,.box,.formula,table,.chips,.stage,.flow{break-inside:avoid;page-break-inside:avoid}
-.pageno{display:none!important}
-@media screen{body{background:#fff!important}}</style>
-<style id="onepaper-ig">:root{--navy:#1B3A5B;--navy2:#16304d;--teal:#227C8E;--ink:#1B3A5B;--body:#42505F;--gray:#6B7280;--light:#8A93A0;--panel:#EAF0F5;--panel2:#F3F7F9;--line:#DCE4EC;--grad:linear-gradient(135deg,#1B3A5B 0%,#227C8E 100%);--shadow:0 .5mm 1.8mm rgba(27,58,91,.13)}
-body{color:var(--body)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.title,.hd h1{color:var(--navy)!important;font-size:18pt!important;font-weight:800!important;letter-spacing:-.02em;line-height:1.25;padding:0 0 2.4mm 0!important;border:none!important}
-.title::after,.hd h1::after{content:"";display:block;height:1.4mm;width:46mm;margin-top:2mm;border-radius:1mm;background:var(--grad)}
-.hd,.hd::after{border:none!important}
-.meta,.hd .meta,.hd p{color:var(--gray)!important;font-size:6.4pt!important;line-height:1.45}
-.rule-navy{height:0!important;border:none!important;margin:2.4mm 0 3.6mm 0!important;background:none!important}
-.rule-gray{height:0!important;border:none!important;border-top:.25mm solid var(--line)!important;margin:3.6mm 0 2mm 0!important;background:none!important}
-.card,.box{border:none!important;border-top:.3mm solid var(--line)!important;border-bottom:.3mm solid var(--line)!important;border-radius:0!important;background:#fff!important;box-shadow:none!important;padding:3.2mm 4mm 3.4mm 4mm!important}
-.badge,.box h2{display:inline-block!important;background:none!important;color:var(--navy)!important;font-size:9.2pt!important;font-weight:800!important;letter-spacing:-.01em;line-height:1.35;white-space:normal!important;padding:0 0 1.6mm 0!important;border:none!important;border-bottom:.5mm solid var(--teal)!important;border-radius:0!important;margin:0 0 2.6mm 0!important}
-.badge.emph{background:var(--navy2)!important;color:#fff!important;border-bottom:none!important;border-radius:1.6mm!important;padding:1mm 2.8mm!important}
-.list li,.box li,.nlist li{font-size:7.6pt!important;line-height:1.62!important;color:var(--body)!important;margin-bottom:1.7mm!important}
-.list li::before,.box li::before{content:"▪  "!important;color:var(--teal)!important;font-weight:700!important}
-.nlist li::before{content:none!important}
-.nlist .no,.box .num{display:inline-block!important;color:#fff!important;background:var(--teal)!important;font-weight:700!important;font-size:6.6pt!important;width:4mm;height:4mm;line-height:4mm!important;text-align:center;border-radius:50%!important;margin-right:1.4mm}
-.term,.k,.chip b{color:var(--navy)!important;font-weight:700!important}
-.num,.r{color:var(--teal)!important;font-weight:800!important}
-.formula{background:var(--panel)!important;border:none!important;border-left:1.4mm solid var(--teal)!important;border-radius:1.4mm 2mm 2mm 1.4mm!important;padding:2.8mm 3.8mm!important;margin:0 0 3mm 0!important;text-align:center;font-size:7.6pt!important;font-weight:600;line-height:1.55;color:var(--navy)!important}
-.formula .num{color:var(--teal)!important}
-.formula .sub{display:block;font-size:6.5pt;font-weight:500;color:var(--gray)!important;margin-top:1.4mm;line-height:1.45}
-.chip,.law,.tag{background:var(--panel2)!important;border:.25mm solid var(--line)!important;border-radius:1.6mm!important;font-size:6.7pt!important;line-height:1.35;padding:1.4mm 2.6mm!important;color:var(--body)!important}
-.chips{display:flex;flex-wrap:wrap;gap:2mm}
-.hl{background:#DCEBEF!important;color:#155E6E!important;font-weight:800;padding:.2mm 1mm;border-radius:.8mm}
-th{background:var(--panel)!important;color:var(--navy)!important}th,td{border-color:var(--line)!important}
-.stage div,.flow div{background:var(--panel2)!important;border-color:var(--line)!important;color:var(--body)!important}
-.stage span{color:var(--navy)!important}.arw,.ar{color:var(--teal)!important}
-.note,.ft{text-align:center;font-size:6.1pt!important;line-height:1.5;color:var(--light)!important;border-top-color:var(--line)!important}
-.conclude{background:var(--grad)!important;border-radius:3mm;padding:4mm 5mm;margin:1mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
-.conclude .lab{display:inline-block;color:#7FD4E3;font-weight:800;font-size:8.4pt;margin-right:2mm}
-.conclude .txt{font-size:9pt;font-weight:700;line-height:1.5}.conclude .txt b{color:#8FE0EE}
-.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1!important;border-left:1.4mm solid #D9730D!important;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0}
-.rolebar .t{font-size:7.3pt;line-height:1.52;color:#7C3D0A!important}.rolebar .t b{color:#B45309!important;font-weight:800}
-.rolet{color:#B45309!important;font-weight:800}
-.page{padding:13mm 10mm 8mm!important}</style>
-<link rel="stylesheet" href="onepaper-read-v2.css">
 </head>
 <body>
-<div class="page">
-  <div class="hd">
-    <h1>장애물 없는 생활환경(BF) 인증 기준 해설서 — 핵심 요약</h1>
-    <div class="sub">한국장애인개발원 · 2025.12. (자료 25-04) · 원문 459면 &nbsp;|&nbsp; 근거: 「장애인·노인·임산부 등의 편의증진 보장에 관한 법률」 &nbsp;|&nbsp; 대상: 건축물</div>
+
+<div class="page haspin">
+
+  <h1 class="title">장애물 없는 생활환경(BF) 인증 기준 해설서 — 핵심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">한국장애인개발원 · 2025.12. (자료 25-04) · 원문 459면 | 근거: 「장애인·노인·임산부 등의 편의증진 보장에 관한 법률」 | 대상: 건축물</p>
+  <div class="rolebar"><span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">발주청 = 학교·교육청</span> — <b class="term">설계단계에 예비인증, 준공 후 본인증</b>을 취득·관리할 책임 주체이며, <span class="rolet">설계자</span>는 부문별 평가항목의 산출기준을 도면에 반영하고 <span class="rolet">시공자</span>는 본인증 심사에 대비해 준공 사진 등 증빙을 확보한다.</span></div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>1</i>제도 개요</span></span>
+<ul>
+<li><span class="k">BF(Barrier Free)</span> 장애인·노인·임산부 등이 안전하고 편리하게 시설을 이용하도록 조성된 생활환경을 심사·인증하는 제도</li>
+<li><span class="k">목적</span> 이동·접근·시설 이용의 불편과 제약 최소화, 모두를 위한 포용적 환경 조성</li>
+<li><span class="k">해설서 역할</span> 인증지표·심사기준 해석 차이와 설계·시공 단계 현장 혼선 해소, 일관된 적용기준 제시</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>2</i>인증 구분 및 평가 등급</span></span>
+<ul>
+<li><span class="k">예비인증</span> 설계 단계 심사   <span class="k">본인증</span> 준공 후 심사</li>
+<li>각 평가항목을 <span class="k">등급별 점수(평점)</span>로 평가</li>
+</ul>
+<table>
+<tr><th>등급</th><th>최우수</th><th>우수</th><th>일반</th></tr>
+<tr><td>배점 예시<br/><span>(6점 항목)</span></td><td>6.0</td><td>4.8</td><td>4.2</td></tr>
+</table></div>
   </div>
-
-  <div class="grid">
-    <!-- 개요 -->
-    <div class="box">
-      <h2>1. 제도 개요</h2>
-      <ul>
-        <li><span class="k">BF(Barrier Free)</span> 장애인·노인·임산부 등이 안전하고 편리하게 시설을 이용하도록 조성된 생활환경을 심사·인증하는 제도</li>
-        <li><span class="k">목적</span> 이동·접근·시설 이용의 불편과 제약 최소화, 모두를 위한 포용적 환경 조성</li>
-        <li><span class="k">해설서 역할</span> 인증지표·심사기준 해석 차이와 설계·시공 단계 현장 혼선 해소, 일관된 적용기준 제시</li>
-      </ul>
-    </div>
-
-    <!-- 인증구분 및 등급 -->
-    <div class="box">
-      <h2>2. 인증 구분 및 평가 등급</h2>
-      <ul>
-        <li><span class="k">예비인증</span> 설계 단계 심사 &nbsp; <span class="k">본인증</span> 준공 후 심사</li>
-        <li>각 평가항목을 <span class="k">등급별 점수(평점)</span>로 평가</li>
-      </ul>
-      <table>
-        <tr><th>등급</th><th>최우수</th><th>우수</th><th>일반</th></tr>
-        <tr><td>배점 예시<br><span style="font-size:7px;color:#6b7280;">(6점 항목)</span></td><td>6.0</td><td>4.8</td><td>4.2</td></tr>
-      </table>
-    </div>
-
-    <!-- 평가부문 체계 -->
-    <div class="box full">
-      <h2 class="accent">3. 평가부문 체계 (7개 부문 · 건축물 기준)</h2>
-      <div class="grid" style="gap:2px 14px; margin-top:3px;">
-        <div>
-          <div class="cat"><span class="n">1</span><span class="t"><b>매개시설</b> 접근로 · 장애인전용주차구역 · 출입구(문)</span></div>
-          <div class="cat"><span class="n">2</span><span class="t"><b>내부시설</b> 일반출입문 · 복도 · 계단 · 경사로 · 승강기</span></div>
-          <div class="cat"><span class="n">3</span><span class="t"><b>위생시설</b> 화장실 접근 · 대변기 · 소변기 · 세면대 · 욕실 · 샤워실·탈의실</span></div>
-          <div class="cat"><span class="n">4</span><span class="t"><b>안내시설</b> 안내설비 · 경보 및 피난설비</span></div>
-        </div>
-        <div>
-          <div class="cat"><span class="n">5</span><span class="t"><b>기타시설</b> 객실·침실 · 관람석·열람석 · 접수대·안내데스크 · 매표소·판매기·음수대 · 피난구 · 임산부 휴게시설</span></div>
-          <div class="cat"><span class="n">6</span><span class="t"><b>비치용품</b> 점자안내책자·확대경·보청기기·휠체어 등 의무/권장 비치용품</span></div>
-          <div class="cat"><span class="n">7</span><span class="t"><b>종합평가</b> 부문별 평가 결과의 종합</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 인증기준 용어 -->
-    <div class="box">
-      <h2>4. 인증기준 용어</h2>
-      <ul>
-        <li><span class="r">반드시</span> 법정의무 또는 인증의무 대상 — 평가 시 반드시 준수</li>
-        <li><span class="k">가급적</span> 의무는 아니나 이동·접근·이용에 큰 영향을 미쳐 설계·시공으로 개선을 권장하는 사항</li>
-      </ul>
-    </div>
-
-    <!-- 평가항목 해설 구성 -->
-    <div class="box">
-      <h2>5. 각 평가항목 해설 구성</h2>
-      <ul>
-        <li>① 산출기준 기본사항 &nbsp; ② 용어 해설</li>
-        <li>③ 산출 순서 및 방법 &nbsp; ④ 산출기준 해설</li>
-        <li>⑤ 제출서류(예비/본인증) &nbsp; ⑥ 참고자료(국내법률)</li>
-      </ul>
-    </div>
-
-    <!-- 실무 유의사항 -->
-    <div class="box full">
-      <h2>6. 실무 유의사항</h2>
-      <ul>
-        <li><span class="k">평가항목 구성</span> 부문 → 범주 → 항목 순으로 세분되며, 각 항목마다 평가목적·평가방법·배점·등급별 산출기준·제출서류를 규정</li>
-        <li><span class="k">제출서류</span> 예비인증은 배치도·동선계획·상세도 등 도서 중심, 본인증은 예비인증과 동일하되 일부 상세도는 준공 사진으로 대체 가능</li>
-        <li><span class="k">증축공사</span> 별동 증축 시 접근로 최소 1개소가 매개시설 기준에 모두 적합해야 인증 취득 가능하며, 기존 접근로 등은 편의증진법 제9조의2 <span class="r">편의시설 설치기준 적합성 확인</span>을 BF인증과 별도로 득해야 함</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="ft">본 요약은 「장애물 없는 생활환경(BF) 인증 기준 해설서」(한국장애인개발원, 2025.12.)의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 관계 법령·고시의 최신 내용을 확인하시기 바랍니다.</div>
+  <div class="row1">
+    <div class="card tealtop"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 3 4-6"/></svg></span><span class="lb"><i>3</i>평가부문 체계 (7개 부문 · 건축물 기준)</span></span>
+<div class="grid">
+<div>
+<div class="cat"><span class="n">1</span><span class="t"><b>매개시설</b> 접근로 · 장애인전용주차구역 · 출입구(문)</span></div>
+<div class="cat"><span class="n">2</span><span class="t"><b>내부시설</b> 일반출입문 · 복도 · 계단 · 경사로 · 승강기</span></div>
+<div class="cat"><span class="n">3</span><span class="t"><b>위생시설</b> 화장실 접근 · 대변기 · 소변기 · 세면대 · 욕실 · 샤워실·탈의실</span></div>
+<div class="cat"><span class="n">4</span><span class="t"><b>안내시설</b> 안내설비 · 경보 및 피난설비</span></div>
 </div>
+<div>
+<div class="cat"><span class="n">5</span><span class="t"><b>기타시설</b> 객실·침실 · 관람석·열람석 · 접수대·안내데스크 · 매표소·판매기·음수대 · 피난구 · 임산부 휴게시설</span></div>
+<div class="cat"><span class="n">6</span><span class="t"><b>비치용품</b> 점자안내책자·확대경·보청기기·휠체어 등 의무/권장 비치용품</span></div>
+<div class="cat"><span class="n">7</span><span class="t"><b>종합평가</b> 부문별 평가 결과의 종합</span></div>
+</div>
+</div></div>
+  </div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>4</i>인증기준 용어</span></span>
+<ul>
+<li><span class="r">반드시</span> 법정의무 또는 인증의무 대상 — 평가 시 반드시 준수</li>
+<li><span class="k">가급적</span> 의무는 아니나 이동·접근·이용에 큰 영향을 미쳐 설계·시공으로 개선을 권장하는 사항</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>5</i>각 평가항목 해설 구성</span></span>
+<ul>
+<li>① 산출기준 기본사항   ② 용어 해설</li>
+<li>③ 산출 순서 및 방법   ④ 산출기준 해설</li>
+<li>⑤ 제출서류(예비/본인증)   ⑥ 참고자료(국내법률)</li>
+</ul></div>
+  </div>
+  <div class="row1">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M7 15h3v4H7zM12 10h3v9h-3zM17 13h3v6h-3z"/></svg></span><span class="lb"><i>6</i>실무 유의사항</span></span>
+<ul>
+<li><span class="k">평가항목 구성</span> 부문 → 범주 → 항목 순으로 세분되며, 각 항목마다 평가목적·평가방법·배점·등급별 산출기준·제출서류를 규정</li>
+<li><span class="k">제출서류</span> 예비인증은 배치도·동선계획·상세도 등 도서 중심, 본인증은 예비인증과 동일하되 일부 상세도는 준공 사진으로 대체 가능</li>
+<li><span class="k">증축공사</span> 별동 증축 시 접근로 최소 1개소가 매개시설 기준에 모두 적합해야 인증 취득 가능하며, 기존 접근로 등은 편의증진법 제9조의2 <span class="r">편의시설 설치기준 적합성 확인</span>을 BF인증과 별도로 득해야 함</li>
+</ul></div>
+  </div>
+  <div class="row1 recap">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg></span><span class="lb"><i>7</i>핵심 수치 재확인</span></span>
+<div class="chips"><span class="chip"><b>근거</b> 장애인등편의법</span><span class="chip"><b>예비인증</b> 설계 단계 심사</span><span class="chip"><b>본인증</b> 준공 후 심사</span><span class="chip"><b>평가부문</b> <span class="num">7개</span>(건축물)</span><span class="chip"><b>등급</b> 최우수·우수·일반</span><span class="chip"><b>배점 예시</b> 6.0 / 4.8 / 4.2</span><span class="chip"><b>해설서</b> 원문 <span class="num">459면</span></span><span class="chip"><b>기준 구분</b> 반드시 / 가급적</span><span class="chip"><b>항목 구성</b> 부문 → 범주 → 항목</span></div></div>
+  </div>
+  <div class="conclude"><div class="ct">CORE</div><div class="cb">BF 인증은 <b>7개 부문 · 항목별 등급 배점</b> 구조이며, 기준은 <b>“반드시”(법정·인증 의무)와 “가급적”(권장)</b>으로 나뉜다. 설계 단계에 <b>예비인증 산출기준을 도면에 확정</b>해 두지 않으면 준공 후 본인증에서 되돌릴 수 없으므로, <b>매개·내부·위생시설의 치수 기준을 실시설계 도면에 직접 명기</b>한다.</div></div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 「장애물 없는 생활환경(BF) 인증 기준 해설서」(한국장애인개발원, 2025.12.)의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 관계 법령·고시의 최신 내용을 확인하시기 바랍니다.</p>
+  <p class="pgno">1 / 1</p>
+</div>
+
 </body>
 </html>

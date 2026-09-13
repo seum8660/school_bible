@@ -2,182 +2,307 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<title>폭염 대비 온열질환 예방을 위한 사업장 대응지침 — 핵심 요약</title>
 <style>
-  @page { size: A4 portrait; margin: 0; }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { font-family:'Pretendard','Noto Sans KR','Noto Sans CJK KR',sans-serif; color:#1f2937; }
-  .page { width: 100%; max-width: 1180px; min-height:auto; margin: 0 auto; padding:26px 30px 22px; display: flex; flex-direction: column; }
-  .hd { border-bottom: 2.5px solid #c2410c; padding-bottom: 5px; margin-bottom: 7px; }
-  .hd h1 { font-size:26px; color: #c2410c; letter-spacing: -0.4px; }
-  .hd .sub { font-size:13px; color: #6b7280; margin-top: 3px; line-height:1.4; }
-  .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px 18px; align-content:start; }
-  .page > .grid { flex: 1; align-content: start; }
-  .box { border:1px solid #d1d5db; border-radius:10px; padding:16px 18px; }
-  .box.full { grid-column: 1 / -1; }
-  .box h2 { font-size:14.5px; color: #fff; background: #c2410c; display: inline-block;
-            padding:4px 12px; border-radius: 3px; margin-bottom: 5px; letter-spacing: -0.3px; }
-  .box h2.accent { background: #b45309; }
-  p, li { font-size:14px; line-height:1.7; color:#374151; }
-  ul { list-style: none; }
-  li { padding-left:14px; position: relative; margin-bottom:5px; }
-  li::before { content: '·'; position: absolute; left: 2px; color: #c2410c; font-weight: 700; }
-  .k { color: #c2410c; font-weight: 700; }
-  .r { color: #b91c1c; font-weight: 700; }
-  table { width: 100%; border-collapse: collapse; margin-top: 3px; }
-  th, td { border:1px solid #cbd5e1; padding:7px 9px; font-size:12.5px; text-align:center; vertical-align:middle; }
-  th { background: #fff7ed; color: #c2410c; font-weight: 700; text-align:center; }
-  td.t { background:#fff7ed; color:#c2410c; font-weight:700; text-align:center; white-space:nowrap; }
-  .rule { display:flex; gap:8px; margin-top:6px; }
-  .rule div { flex:1; background:#fff7ed; border:1px solid #fed7aa; border-radius:6px; padding:8px 6px; text-align:center; font-size:12.5px; color:#9a3412; line-height:1.45; }
-  .rule div b { display:block; font-size:18px; color:#c2410c; }
-  .ft { border-top:1px solid #d1d5db; margin-top:8px; padding-top:6px; font-size:11.5px; color:#9ca3af; text-align:center; }
+:root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  /* 여백 없이 전면 채움 — 남는 높이를 섹션 사이에 균등 배분 */
+  .page.haspin .rolebar, .page.haspin .row2, .page.haspin .row1{ margin-bottom:auto; }
+  .page.haspin .row1.recap{ margin-bottom:auto; }
+
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+  .tbl tr.hi td{ background:#EAF4F6; }
+
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+  /* --- 보강: 수식 밴드 (구 박스문서 변환용) --- */
+  .formula{
+    background:var(--panel); border-left:1.3mm solid var(--teal);
+    border-radius:0.8mm 1.2mm 1.2mm 0.8mm; padding:2.2mm 3mm; margin:0 0 2mm 0;
+    text-align:center; font-size:7.4pt; font-weight:700; color:var(--navy); line-height:1.45;
+  }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1.1mm; }
+  .formula:last-child{ margin-bottom:0; }
+  .hl{ background:#DCEBEF; color:#155E6E; font-weight:800; padding:0.2mm 0.8mm; border-radius:0.6mm; }
+
+  /* ===== 구(舊) BIBLE 마크업 호환 레이어 — 인포그래픽 팔레트로 재매핑 ===== */
+  .k{ color:var(--navy); font-weight:700; }
+  .r, .em{ color:var(--amber); font-weight:700; }
+  .b{ display:block; margin-left:5.2mm; font-size:6.6pt; color:var(--body); line-height:1.42; }
+  .b b{ color:var(--navy); font-weight:700; }
+
+  .pill{ display:inline-block; background:var(--navy); color:#fff; font-size:6.6pt; font-weight:700;
+         padding:0.7mm 2.2mm; border-radius:0.9mm; line-height:1.3; }
+  .pill.hi{ background:var(--amber); }
+
+  .law, .tag{ display:inline-block; background:var(--panel); border:0.25mm solid var(--panel-line);
+              border-radius:1mm; padding:0.9mm 1.8mm; font-size:6.3pt; line-height:1.3; color:var(--body); }
+  .law b, .tag b{ color:var(--navy); font-weight:700; }
+
+  /* 흐름도 · 단계 박스 */
+  .flow{ display:flex; flex-wrap:wrap; align-items:stretch; gap:1.6mm; margin-top:1.4mm; }
+  .flow .st{ flex:1; min-width:28mm; background:var(--panel); border:0.25mm solid var(--panel-line);
+             border-radius:1mm; padding:1.5mm 1.8mm; font-size:6.4pt; line-height:1.36; color:var(--body); }
+  .flow .st b{ display:block; color:var(--navy); font-size:6.6pt; margin-bottom:0.6mm; }
+  .flow .st.hi{ border-color:var(--amber); background:var(--amber-bg); }
+  .flow .ar, .arw{ align-self:center; color:var(--teal); font-weight:800; font-size:7.4pt; }
+  .stage{ display:flex; gap:1.2mm; margin:1.2mm 0 0.6mm; }
+  .stage div{ flex:1; background:var(--panel); border:0.25mm solid var(--panel-line); border-radius:1mm;
+              padding:1.1mm 1.2mm; font-size:6.2pt; text-align:center; line-height:1.3; color:var(--body); }
+  .stage span{ display:block; color:var(--navy); font-weight:700; }
+
+  /* 번호 카테고리 행 */
+  .cat{ display:flex; gap:1.6mm; align-items:flex-start; margin-bottom:1mm; }
+  .cat .n{ flex:0 0 auto; width:4.1mm; height:4.1mm; background:var(--teal); color:#fff;
+           border-radius:50%; font-size:5.6pt; font-weight:800; text-align:center; line-height:4.1mm; }
+  .cat .t{ font-size:7pt; line-height:1.44; }
+  .cat .t b{ color:var(--navy); font-weight:700; }
+
+  /* 구 표(class 없는 table) — .tbl 규격으로 통일 */
+  .card table{ width:100%; border-collapse:collapse; margin:0; }
+  .card table th, .card table td{ border-bottom:0.2mm solid var(--panel-line);
+      padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.26; }
+  .card table th{ background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+      border-bottom:0.45mm solid var(--teal); }
+  .card table tr:last-child td{ border-bottom:0; }
+  .card table td.l, .card table td.lf{ text-align:left; }
+  .card table td.h, .card table td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .card table td.s{ background:var(--panel); color:var(--navy); font-weight:700; }
+  .card table td.t, .card table td.o{ color:var(--amber); font-weight:800; white-space:nowrap; }
+  .card table tr.hi td{ background:#EAF4F6; }
+
+  /* 구 컨테이너 무력화 */
+  .sheet{ display:block; max-height:none; overflow:visible; }
+  .rule-navy{ display:none; }
+  .grid{ display:block; }
+  .box{ border:0; padding:0; background:none; }
+  ol.nlist{ list-style:none; }
+  p.sub{ font-size:6.6pt; color:var(--meta); line-height:1.42; margin:0.8mm 0 0 0; }
+
+  /* 클래스 없는 ul/ol/li — .list 규격으로 통일 */
+  .card ul, .card ol{ margin:0; padding:0; list-style:none; }
+  .card ul li, .card ol li{ font-size:7pt; line-height:1.44; padding-left:2.6mm;
+      text-indent:-2.6mm; margin-bottom:0.8mm; color:var(--body); }
+  .card ul li:last-child, .card ol li:last-child{ margin-bottom:0; }
+  .card ul li::before{ content:"· "; color:var(--teal); font-weight:800; }
+  .card ol.nlist li, .card ul.nlist li{ padding-left:5.6mm; text-indent:0; }
+  .card ol.nlist li::before, .card ul.nlist li::before{ content:none; }
+  .card > p{ font-size:6.6pt; line-height:1.44; color:var(--meta); margin:1mm 0 0 0; }
+  .card p.sub, .card .formula .sub{ color:var(--meta); }
+
+  /* 5대 수칙 등 가로 스트립(.rule) */
+  .card .rule{ display:flex; flex-wrap:nowrap; gap:1.6mm; margin:0; }
+  .card .rule > div{ flex:1; background:var(--panel); border:0.25mm solid var(--panel-line);
+      border-radius:1.2mm; padding:1.6mm 1.4mm; font-size:6.4pt; line-height:1.34;
+      text-align:center; color:var(--body); }
+  .card .rule > div b{ display:block; color:var(--navy); font-size:6.8pt; font-weight:800;
+      margin-bottom:0.7mm; }
+
+  /* 여백 균일 배치 — 자동 늘림(auto) 대신 고정 간격 */
+  .page.evengap{ display:flex; flex-direction:column; }
+  .page.evengap .rule-gray{ margin-top:auto; }
+  .page.evengap .rolebar, .page.evengap .row2, .page.evengap .row1,
+  .page.evengap .row1.recap{ margin-bottom:6.5mm !important; margin-top:0 !important; }
+  .page.evengap .conclude{ margin-top:6.5mm; }
+
+  /* ===== 밀도 보정 — 남는 여백을 본문 크기로 흡수 ===== */
+  .list li, .card ul li, .card ol li, .nlist li{ font-size:7.4pt !important; line-height:1.46 !important; }
+  .badge .lb{ font-size:9pt !important; }
+  .rolebar .rtx{ font-size:7.3pt !important; }
+  .tbl th, .tbl td, .card table th, .card table td{ font-size:6.8pt !important; padding:0.8mm 1mm !important; }
+  .chip{ font-size:6.7pt !important; padding:1.2mm 2.1mm !important; }
+  .card .rule > div{ font-size:6.7pt !important; }
+  .card .rule > div b{ font-size:7.1pt !important; }
+  .conclude .cb{ font-size:8.4pt !important; }
+  .note{ font-size:6.2pt !important; }
+
 </style>
-<style id="onepaper">:root{--navy:#1B3A5B;--navy2:#16304D;--teal:#227C8E;--rust:#B45309;--line:#DCE4EC;--band:#EAF0F5;--chip-bg:#F3F7F9;--chip-line:#DCE4EC;--body:#42505F;--meta:#6B7280;--note:#8A93A0;--grad:linear-gradient(135deg,#1B3A5B,#227C8E);--shadow:0 1px 6px rgba(27,58,91,.13)}
-.rule-navy{height:1.4mm;width:46mm;border-radius:1mm;background:var(--grad)}.rule-gray{background:var(--line)}
-.card{background:#fff;border:.25mm solid var(--line);border-radius:3mm;box-shadow:var(--shadow)}
-.badge{background:none;color:var(--navy);border-radius:0;white-space:normal;border-bottom:.5mm solid var(--teal);padding:0 0 1.4mm 0}
-.badge.rust{background:none;color:#B45309;border-bottom-color:#D9730D}
-.list li::before{content:"▪ ";color:var(--teal);font-weight:400}.nlist .no{color:var(--teal)}.num,.formula .num{color:var(--teal)}
-.formula{background:var(--band);border-left:1.4mm solid var(--teal);border-radius:1.4mm 2mm 2mm 1.4mm}
-.chip{background:var(--chip-bg);border-color:var(--line);border-radius:1.6mm}
-.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1;border-left:1.4mm solid #D9730D;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0;font-size:7.6pt;line-height:1.5}
-.rolet{color:#B45309;font-weight:800}
-.conclude{background:var(--grad);border-radius:3mm;padding:3.4mm 4.2mm;margin:3.2mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
-.conclude .lab{display:inline-block;font-size:6.6pt;font-weight:800;letter-spacing:.06em;opacity:.85;margin-right:2.4mm}
-.conclude .txt{font-size:8pt;font-weight:600;line-height:1.5}
-.hd{border-bottom:none!important;padding-bottom:0}.hd h1{color:#1B3A5B!important}
-.hd::after{content:"";display:block;height:1.4mm;width:46mm;border-radius:1mm;background:var(--grad);margin-top:2mm}
-.box{background:#fff;border:1px solid #DCE4EC!important;border-radius:10px;box-shadow:var(--shadow)}
-.box h2{background:none!important;color:#1B3A5B!important;border-bottom:2px solid #227C8E;border-radius:0!important;padding:0 0 4px 0!important;margin-bottom:8px!important}
-.box h2.accent{color:#B45309!important;border-bottom-color:#D9730D}
-.box li::before{content:'▪'!important;color:#227C8E!important;font-weight:400!important}
-.box p,.box li{color:#42505F}.k{color:#1B3A5B!important}.r{color:#B45309!important}
-.law,.tag{background:#F3F7F9!important;color:#1B3A5B!important;border-color:#DCE4EC!important}
-.box th{background:#EAF0F5!important;color:#1B3A5B!important}.box th,.box td{border-color:#DCE4EC!important}
-.stage div,.flow div{background:#F3F7F9!important;border-color:#DCE4EC!important;color:#42505F!important}
-.stage span{color:#1B3A5B!important}.arw,.ar{color:#227C8E!important}
-.box .num{background:#227C8E!important;color:#fff!important}
-.ft{color:#8A93A0!important;border-top-color:#DCE4EC!important}
-.box .formula{background:#EAF0F5!important;border-left:1.4mm solid #227C8E;border-radius:1.4mm 2mm 2mm 1.4mm;color:#1B3A5B!important}</style>
-<style id="onepaper-flow">.row2,.grid{grid-template-columns:1fr!important}
-.page{min-height:0!important;height:auto!important;page-break-after:auto!important;break-after:auto!important;margin:0 auto!important;box-shadow:none!important;padding-top:0!important;padding-bottom:0!important}
-.page:first-of-type{padding-top:13mm!important}
-.card,.box,.formula,table,.chips,.stage,.flow{break-inside:avoid;page-break-inside:avoid}
-.pageno{display:none!important}
-@media screen{body{background:#fff!important}}</style>
-<style id="onepaper-ig">:root{--navy:#1B3A5B;--navy2:#16304d;--teal:#227C8E;--ink:#1B3A5B;--body:#42505F;--gray:#6B7280;--light:#8A93A0;--panel:#EAF0F5;--panel2:#F3F7F9;--line:#DCE4EC;--grad:linear-gradient(135deg,#1B3A5B 0%,#227C8E 100%);--shadow:0 .5mm 1.8mm rgba(27,58,91,.13)}
-body{color:var(--body)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.title,.hd h1{color:var(--navy)!important;font-size:18pt!important;font-weight:800!important;letter-spacing:-.02em;line-height:1.25;padding:0 0 2.4mm 0!important;border:none!important}
-.title::after,.hd h1::after{content:"";display:block;height:1.4mm;width:46mm;margin-top:2mm;border-radius:1mm;background:var(--grad)}
-.hd,.hd::after{border:none!important}
-.meta,.hd .meta,.hd p{color:var(--gray)!important;font-size:6.4pt!important;line-height:1.45}
-.rule-navy{height:0!important;border:none!important;margin:2.4mm 0 3.6mm 0!important;background:none!important}
-.rule-gray{height:0!important;border:none!important;border-top:.25mm solid var(--line)!important;margin:3.6mm 0 2mm 0!important;background:none!important}
-.card,.box{border:none!important;border-top:.3mm solid var(--line)!important;border-bottom:.3mm solid var(--line)!important;border-radius:0!important;background:#fff!important;box-shadow:none!important;padding:3.2mm 4mm 3.4mm 4mm!important}
-.badge,.box h2{display:inline-block!important;background:none!important;color:var(--navy)!important;font-size:9.2pt!important;font-weight:800!important;letter-spacing:-.01em;line-height:1.35;white-space:normal!important;padding:0 0 1.6mm 0!important;border:none!important;border-bottom:.5mm solid var(--teal)!important;border-radius:0!important;margin:0 0 2.6mm 0!important}
-.badge.emph{background:var(--navy2)!important;color:#fff!important;border-bottom:none!important;border-radius:1.6mm!important;padding:1mm 2.8mm!important}
-.list li,.box li,.nlist li{font-size:7.6pt!important;line-height:1.62!important;color:var(--body)!important;margin-bottom:1.7mm!important}
-.list li::before,.box li::before{content:"▪  "!important;color:var(--teal)!important;font-weight:700!important}
-.nlist li::before{content:none!important}
-.nlist .no,.box .num{display:inline-block!important;color:#fff!important;background:var(--teal)!important;font-weight:700!important;font-size:6.6pt!important;width:4mm;height:4mm;line-height:4mm!important;text-align:center;border-radius:50%!important;margin-right:1.4mm}
-.term,.k,.chip b{color:var(--navy)!important;font-weight:700!important}
-.num,.r{color:var(--teal)!important;font-weight:800!important}
-.formula{background:var(--panel)!important;border:none!important;border-left:1.4mm solid var(--teal)!important;border-radius:1.4mm 2mm 2mm 1.4mm!important;padding:2.8mm 3.8mm!important;margin:0 0 3mm 0!important;text-align:center;font-size:7.6pt!important;font-weight:600;line-height:1.55;color:var(--navy)!important}
-.formula .num{color:var(--teal)!important}
-.formula .sub{display:block;font-size:6.5pt;font-weight:500;color:var(--gray)!important;margin-top:1.4mm;line-height:1.45}
-.chip,.law,.tag{background:var(--panel2)!important;border:.25mm solid var(--line)!important;border-radius:1.6mm!important;font-size:6.7pt!important;line-height:1.35;padding:1.4mm 2.6mm!important;color:var(--body)!important}
-.chips{display:flex;flex-wrap:wrap;gap:2mm}
-.hl{background:#DCEBEF!important;color:#155E6E!important;font-weight:800;padding:.2mm 1mm;border-radius:.8mm}
-th{background:var(--panel)!important;color:var(--navy)!important}th,td{border-color:var(--line)!important}
-.stage div,.flow div{background:var(--panel2)!important;border-color:var(--line)!important;color:var(--body)!important}
-.stage span{color:var(--navy)!important}.arw,.ar{color:var(--teal)!important}
-.note,.ft{text-align:center;font-size:6.1pt!important;line-height:1.5;color:var(--light)!important;border-top-color:var(--line)!important}
-.conclude{background:var(--grad)!important;border-radius:3mm;padding:4mm 5mm;margin:1mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
-.conclude .lab{display:inline-block;color:#7FD4E3;font-weight:800;font-size:8.4pt;margin-right:2mm}
-.conclude .txt{font-size:9pt;font-weight:700;line-height:1.5}.conclude .txt b{color:#8FE0EE}
-.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1!important;border-left:1.4mm solid #D9730D!important;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0}
-.rolebar .t{font-size:7.3pt;line-height:1.52;color:#7C3D0A!important}.rolebar .t b{color:#B45309!important;font-weight:800}
-.rolet{color:#B45309!important;font-weight:800}
-.page{padding:13mm 10mm 8mm!important}</style>
-<link rel="stylesheet" href="onepaper-read-v2.css">
 </head>
 <body>
-<div class="page">
-  <div class="hd">
-    <h1>폭염 대비 온열질환 예방을 위한 사업장 대응지침 — 핵심 요약</h1>
-    <div class="sub">고용노동부 · 2026.5. &nbsp;|&nbsp; 근거: 「산업안전보건법」 제39조, 「산업안전보건기준에 관한 규칙」 제558~562조(’25.7.17. 시행) &nbsp;|&nbsp; 폭염대책기간 ’26.5.15.~9.30.</div>
+
+<div class="page haspin">
+
+  <h1 class="title">폭염 대비 온열질환 예방을 위한 사업장 대응지침 — 핵심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">고용노동부 · 2026.5. | 근거: 「산업안전보건법」 제39조, 「산업안전보건기준에 관한 규칙」 제558~562조(’25.7.17. 시행) | 폭염대책기간 ’26.5.15.~9.30.</p>
+  <div class="rolebar"><span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">사업주(발주청·시공사)</span> — 근로자를 사용하는 <b class="term">모든 사업장</b>에 보건조치 의무가 적용되며, 위반 시 <b class="term">5년 이하 징역 또는 5천만원 이하 벌금</b>이다. <span class="rolet">공사감독자</span>는 폭염대책기간 중 현장의 체감온도 측정·기록과 5대 기본수칙 이행을 확인한다.</span></div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>1</i>개요 및 법적 근거</span></span>
+<ul>
+<li><span class="k">배경</span> ’25년 여름 역대 최고 기온, 폭염을 건강위험 요인으로 명확화한 산안법 개정(’24.10.22.) 및 안전보건규칙 시행(’25.7.17.)</li>
+<li><span class="k">적용</span> 근로자를 사용하는 <span class="k">모든 사업장</span> (실내·외 폭염작업 모두)</li>
+<li><span class="r">벌칙</span> 보건조치 위반 5년 이하 징역·5천만원 이하 벌금 / 위반으로 사망 시 7년 이하·1억원 이하</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>2</i>폭염·폭염작업 정의</span></span>
+<ul>
+<li><span class="k">폭염</span> 열경련·열탈진·열사병 등 건강장해를 유발할 수 있는 더운 기상현상</li>
+<li><span class="k">폭염작업</span> 체감온도 <span class="r">31℃ 이상</span> 작업장소에서 장시간(연속 2시간 이상) 작업</li>
+<li><span class="k">체감온도</span> 바닥 1.2~1.5m 높이에서 측정, 실제 작업동선 중 가장 높은 값 기준(곤란 시 기상청 발표값)</li>
+</ul></div>
   </div>
-
-  <div class="grid">
-    <!-- 1. 개요·법적근거 -->
-    <div class="box">
-      <h2>1. 개요 및 법적 근거</h2>
-      <ul>
-        <li><span class="k">배경</span> ’25년 여름 역대 최고 기온, 폭염을 건강위험 요인으로 명확화한 산안법 개정(’24.10.22.) 및 안전보건규칙 시행(’25.7.17.)</li>
-        <li><span class="k">적용</span> 근로자를 사용하는 <span class="k">모든 사업장</span> (실내·외 폭염작업 모두)</li>
-        <li><span class="r">벌칙</span> 보건조치 위반 5년 이하 징역·5천만원 이하 벌금 / 위반으로 사망 시 7년 이하·1억원 이하</li>
-      </ul>
-    </div>
-
-    <!-- 2. 정의 -->
-    <div class="box">
-      <h2>2. 폭염·폭염작업 정의</h2>
-      <ul>
-        <li><span class="k">폭염</span> 열경련·열탈진·열사병 등 건강장해를 유발할 수 있는 더운 기상현상</li>
-        <li><span class="k">폭염작업</span> 체감온도 <span class="r">31℃ 이상</span> 작업장소에서 장시간(연속 2시간 이상) 작업</li>
-        <li><span class="k">체감온도</span> 바닥 1.2~1.5m 높이에서 측정, 실제 작업동선 중 가장 높은 값 기준(곤란 시 기상청 발표값)</li>
-      </ul>
-    </div>
-
-    <!-- 3. 체감온도별 보건조치 -->
-    <div class="box full">
-      <h2 class="accent">3. 체감온도 단계별 보건조치</h2>
-      <table>
-        <tr><th style="width:15%">구분</th><th>조치 사항</th></tr>
-        <tr><td class="t">31℃ 이상<br>(의무·§560②)</td><td>①냉방·통풍 온습도 조절장치 설치·가동(에어컨·산업용 선풍기·그늘막) &nbsp;②작업시간대 조정 등 폭염 노출 저감(예: 조기출근) &nbsp;③적절한 휴식 부여 &nbsp;→ <b>셋 중 하나 이상</b> 선택, ①②에도 계속 31℃↑이면 <b>③휴식 반드시 부여</b></td></tr>
-        <tr><td class="t">33℃ 이상<br>(의무·§560③)</td><td><b>매 2시간 이내 20분 이상 휴식</b>(현장 여건상 1시간 10분도 가능). 작업 성질상 휴식이 매우 곤란하면 개인용 냉방·통풍장치 또는 보냉장구 지급·착용으로 체온상승 저감</td></tr>
-        <tr><td class="t">35℃ 이상<br>(권고)</td><td><b>매시간 15분</b> 그늘 휴식(민감군·고강도 작업자 추가 배정), <b>무더위 시간대(14~17시) 옥외작업 중지</b>, 담당자 지정 건강상태 확인</td></tr>
-        <tr><td class="t">38℃ 이상<br>(권고)</td><td>긴급조치 작업 외 <b>옥외작업 중지</b>, 온열질환 민감군 옥외작업 제한, 담당자 지정 건강상태 확인</td></tr>
-      </table>
-      <p style="margin-top:3px;font-size:8.3px;"><span class="k">휴식 원칙</span> 폭염 휴식은 근로기준법 휴게시간과 별도 부여가 원칙(중복 시 근로기준법 휴게시간으로 갈음), 냉방 휴게시설에서 시원한 물 섭취 등 자유로운 이용 보장</p>
-    </div>
-
-    <!-- 4. 5대 수칙 -->
-    <div class="box full">
-      <h2>4. 폭염안전 5대 기본수칙</h2>
-      <div class="rule">
-        <div><b>❶ 물</b>시원한 물 자주 마시기</div>
-        <div><b>❷ 냉방장치</b>작업장 온도 낮추기</div>
-        <div><b>❸ 휴식</b>2시간마다 20분</div>
-        <div><b>❹ 보냉장구</b>냉각의류 등 지급</div>
-        <div><b>❺ 119신고</b>응급조치 및 신고</div>
-      </div>
-    </div>
-
-    <!-- 5. 예방체계 -->
-    <div class="box">
-      <h2>5. 사업장 예방체계 (권고)</h2>
-      <ul>
-        <li>① <span class="k">담당자 지정·사전점검</span> (5대 수칙 점검표)</li>
-        <li>② <span class="k">자각증상 자가진단</span> 증상 2개 이상 시 알림·조치</li>
-        <li>③ <span class="k">민감군 관리</span> 만성질환·기왕력·고령·약물복용·고강도·신규배치자 등</li>
-        <li>④ <span class="k">열순응 조치</span> 신규자 단계적 적응</li>
-        <li><span class="k">§562</span> 온·습도계 상시 비치, 체감온도·조치 기록(당해 12.31.까지 보관), 작업 전 증상·응급조치 교육, 휴게시설 설치</li>
-      </ul>
-    </div>
-
-    <!-- 6. 온열질환 응급조치 -->
-    <div class="box">
-      <h2>6. 온열질환 종류 및 응급조치</h2>
-      <ul>
-        <li><span class="r">열사병</span> 의식장애·40℃↑ 뜨거운 피부 → <b>즉시 119</b>, 시원한 곳 이동·냉각 (의식 없으면 음료 금지)</li>
-        <li><span class="k">열탈진</span> 과도한 발한·창백·무력감 → 시원한 곳 휴식, 수분 보충</li>
-        <li><span class="k">열경련</span> 근육경련 → 휴식·수분 보충·경련 부위 마사지</li>
-      </ul>
-    </div>
+  <div class="row1">
+    <div class="card tealtop"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M10 9v11"/></svg></span><span class="lb"><i>3</i>체감온도 단계별 보건조치</span></span>
+<table>
+<tr><th style="width:15%">구분</th><th>조치 사항</th></tr>
+<tr><td class="t">31℃ 이상<br/>(의무·§560②)</td><td>①냉방·통풍 온습도 조절장치 설치·가동(에어컨·산업용 선풍기·그늘막)  ②작업시간대 조정 등 폭염 노출 저감(예: 조기출근)  ③적절한 휴식 부여  → <b>셋 중 하나 이상</b> 선택, ①②에도 계속 31℃↑이면 <b>③휴식 반드시 부여</b></td></tr>
+<tr><td class="t">33℃ 이상<br/>(의무·§560③)</td><td><b>매 2시간 이내 20분 이상 휴식</b>(현장 여건상 1시간 10분도 가능). 작업 성질상 휴식이 매우 곤란하면 개인용 냉방·통풍장치 또는 보냉장구 지급·착용으로 체온상승 저감</td></tr>
+<tr><td class="t">35℃ 이상<br/>(권고)</td><td><b>매시간 15분</b> 그늘 휴식(민감군·고강도 작업자 추가 배정), <b>무더위 시간대(14~17시) 옥외작업 중지</b>, 담당자 지정 건강상태 확인</td></tr>
+<tr><td class="t">38℃ 이상<br/>(권고)</td><td>긴급조치 작업 외 <b>옥외작업 중지</b>, 온열질환 민감군 옥외작업 제한, 담당자 지정 건강상태 확인</td></tr>
+</table>
+<p><span class="k">휴식 원칙</span> 폭염 휴식은 근로기준법 휴게시간과 별도 부여가 원칙(중복 시 근로기준법 휴게시간으로 갈음), 냉방 휴게시설에서 시원한 물 섭취 등 자유로운 이용 보장</p></div>
   </div>
-
-  <div class="ft">본 요약은 「폭염 대비 온열질환 예방을 위한 사업장 대응지침」(고용노동부, 2026.5.)의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 관계 법령의 최신 내용을 확인하시기 바랍니다.</div>
+  <div class="row1">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M10 9v11"/></svg></span><span class="lb"><i>4</i>폭염안전 5대 기본수칙</span></span>
+<div class="rule">
+<div><b>❶ 물</b>시원한 물 자주 마시기</div>
+<div><b>❷ 냉방장치</b>작업장 온도 낮추기</div>
+<div><b>❸ 휴식</b>2시간마다 20분</div>
+<div><b>❹ 보냉장구</b>냉각의류 등 지급</div>
+<div><b>❺ 119신고</b>응급조치 및 신고</div>
+</div></div>
+  </div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>5</i>사업장 예방체계 (권고)</span></span>
+<ul>
+<li>① <span class="k">담당자 지정·사전점검</span> (5대 수칙 점검표)</li>
+<li>② <span class="k">자각증상 자가진단</span> 증상 2개 이상 시 알림·조치</li>
+<li>③ <span class="k">민감군 관리</span> 만성질환·기왕력·고령·약물복용·고강도·신규배치자 등</li>
+<li>④ <span class="k">열순응 조치</span> 신규자 단계적 적응</li>
+<li><span class="k">§562</span> 온·습도계 상시 비치, 체감온도·조치 기록(당해 12.31.까지 보관), 작업 전 증상·응급조치 교육, 휴게시설 설치</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="lb"><i>6</i>온열질환 종류 및 응급조치</span></span>
+<ul>
+<li><span class="r">열사병</span> 의식장애·40℃↑ 뜨거운 피부 → <b>즉시 119</b>, 시원한 곳 이동·냉각 (의식 없으면 음료 금지)</li>
+<li><span class="k">열탈진</span> 과도한 발한·창백·무력감 → 시원한 곳 휴식, 수분 보충</li>
+<li><span class="k">열경련</span> 근육경련 → 휴식·수분 보충·경련 부위 마사지</li>
+</ul></div>
+  </div>
+  <div class="row1 recap">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg></span><span class="lb"><i>7</i>핵심 수치 재확인</span></span>
+<div class="chips"><span class="chip"><b>폭염대책기간</b> ’26.5.15.~9.30.</span><span class="chip"><b>폭염작업</b> 체감온도 <span class="num">31℃</span> 이상</span><span class="chip"><b>장시간</b> 연속 <span class="num">2시간</span> 이상</span><span class="chip"><b>측정 높이</b> 바닥 <span class="num">1.2~1.5m</span></span><span class="chip"><b>휴식</b> 2시간마다 <span class="num">20분</span></span><span class="chip"><b>열사병</b> <span class="num">40℃</span>↑ · 즉시 119</span><span class="chip"><b>규칙 시행</b> ’25.7.17.</span><span class="chip"><b>기록 보존</b> 당해연도 12.31.</span><span class="chip"><b>벌칙</b> 5년 이하 · 5천만원 이하</span></div></div>
+  </div>
+  <div class="conclude"><div class="ct">CORE</div><div class="cb">폭염은 이제 <b>권고가 아니라 법적 보건조치</b>다 — 체감온도 <b>31℃ 이상이면 냉방·시간조정·휴식 중 하나 이상이 의무</b>이고, 그럼에도 31℃를 넘으면 <b>휴식을 반드시 부여</b>하여야 한다. 현장에는 <b>온·습도계를 상시 비치</b>하고 체감온도와 조치 내용을 기록·보존한다.</div></div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 「폭염 대비 온열질환 예방을 위한 사업장 대응지침」(고용노동부, 2026.5.)의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 관계 법령의 최신 내용을 확인하시기 바랍니다.</p>
+  <p class="pgno">1 / 1</p>
 </div>
+
 </body>
 </html>

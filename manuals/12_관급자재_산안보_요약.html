@@ -2,281 +2,391 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<title>MAS 물품 산업안전보건관리비 계상방안 — 핵심 요약</title>
 <style>
-  @page { size: A4 portrait; margin: 0; }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { font-family:'Pretendard','Noto Sans KR','Noto Sans CJK KR',sans-serif; color:#1f2937; }
-  .page { width: 100%; max-width: 1180px; min-height:auto; margin: 0 auto; padding:26px 30px 22px; display: flex; flex-direction: column; }
-  .hd { border-bottom: 2.5px solid #3730a3; padding-bottom: 5px; margin-bottom: 8px; }
-  .hd h1 { font-size:26px; color: #3730a3; letter-spacing: -0.4px; }
-  .hd .sub { font-size:13px; color: #6b7280; margin-top: 3px; line-height:1.4; }
-  .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px 18px; align-content:start; }
-  .page > .grid { flex: 1; align-content: start; }
-  .box { border:1px solid #d1d5db; border-radius:10px; padding:16px 18px; }
-  .box.full { grid-column: 1 / -1; }
-  .box h2 { font-size:14.5px; color: #fff; background: #3730a3; display: inline-block;
-            padding:4px 12px; border-radius: 3px; margin-bottom: 5px; letter-spacing: -0.3px; }
-  .box h2.accent { background: #b45309; }
-  p, li { font-size:14px; line-height:1.7; color:#374151; }
-  ul { list-style: none; }
-  li { padding-left:14px; position: relative; margin-bottom:5px; }
-  li::before { content: '·'; position: absolute; left: 2px; color: #3730a3; font-weight: 700; }
-  .k { color: #3730a3; font-weight: 700; }
-  .r { color: #b45309; font-weight: 700; }
-  .formula { background: #eef2ff; border-left: 3px solid #3730a3; border-radius: 3px;
-             padding: 5px 8px; margin: 4px 0; font-size:13px; text-align: center;
-             font-weight: 700; color: #3730a3; letter-spacing: -0.2px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 3px; }
-  th, td { border:1px solid #cbd5e1; padding:7px 9px; font-size:12.5px; text-align:center; vertical-align:middle; }
-  th { background: #eef2ff; color: #3730a3; font-weight: 700; }
-  td.l { text-align: left; }
-  .ex { background:#f8fafc; border:1px solid #e2e8f0; border-radius:4px; padding:5px 8px; margin-top:3px; font-size:8.4px; line-height:1.5; }
-  .ex b { color:#3730a3; }
-  .ft { border-top:1px solid #d1d5db; margin-top:8px; padding-top:6px; font-size:11.5px; color:#9ca3af; text-align:center; }
+:root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  /* 여백 없이 전면 채움 — 남는 높이를 섹션 사이에 균등 배분 */
+  .page.haspin .rolebar, .page.haspin .row2, .page.haspin .row1{ margin-bottom:auto; }
+  .page.haspin .row1.recap{ margin-bottom:auto; }
+
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+  .tbl tr.hi td{ background:#EAF4F6; }
+
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+  /* --- 보강: 수식 밴드 (구 박스문서 변환용) --- */
+  .formula{
+    background:var(--panel); border-left:1.3mm solid var(--teal);
+    border-radius:0.8mm 1.2mm 1.2mm 0.8mm; padding:2.2mm 3mm; margin:0 0 2mm 0;
+    text-align:center; font-size:7.4pt; font-weight:700; color:var(--navy); line-height:1.45;
+  }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1.1mm; }
+  .formula:last-child{ margin-bottom:0; }
+  .hl{ background:#DCEBEF; color:#155E6E; font-weight:800; padding:0.2mm 0.8mm; border-radius:0.6mm; }
+
+  /* ===== 구(舊) BIBLE 마크업 호환 레이어 — 인포그래픽 팔레트로 재매핑 ===== */
+  .k{ color:var(--navy); font-weight:700; }
+  .r, .em{ color:var(--amber); font-weight:700; }
+  .b{ display:block; margin-left:5.2mm; font-size:6.6pt; color:var(--body); line-height:1.42; }
+  .b b{ color:var(--navy); font-weight:700; }
+
+  .pill{ display:inline-block; background:var(--navy); color:#fff; font-size:6.6pt; font-weight:700;
+         padding:0.7mm 2.2mm; border-radius:0.9mm; line-height:1.3; }
+  .pill.hi{ background:var(--amber); }
+
+  .law, .tag{ display:inline-block; background:var(--panel); border:0.25mm solid var(--panel-line);
+              border-radius:1mm; padding:0.9mm 1.8mm; font-size:6.3pt; line-height:1.3; color:var(--body); }
+  .law b, .tag b{ color:var(--navy); font-weight:700; }
+
+  /* 흐름도 · 단계 박스 */
+  .flow{ display:flex; flex-wrap:wrap; align-items:stretch; gap:1.6mm; margin-top:1.4mm; }
+  .flow .st{ flex:1; min-width:28mm; background:var(--panel); border:0.25mm solid var(--panel-line);
+             border-radius:1mm; padding:1.5mm 1.8mm; font-size:6.4pt; line-height:1.36; color:var(--body); }
+  .flow .st b{ display:block; color:var(--navy); font-size:6.6pt; margin-bottom:0.6mm; }
+  .flow .st.hi{ border-color:var(--amber); background:var(--amber-bg); }
+  .flow .ar, .arw{ align-self:center; color:var(--teal); font-weight:800; font-size:7.4pt; }
+  .stage{ display:flex; gap:1.2mm; margin:1.2mm 0 0.6mm; }
+  .stage div{ flex:1; background:var(--panel); border:0.25mm solid var(--panel-line); border-radius:1mm;
+              padding:1.1mm 1.2mm; font-size:6.2pt; text-align:center; line-height:1.3; color:var(--body); }
+  .stage span{ display:block; color:var(--navy); font-weight:700; }
+
+  /* 번호 카테고리 행 */
+  .cat{ display:flex; gap:1.6mm; align-items:flex-start; margin-bottom:1mm; }
+  .cat .n{ flex:0 0 auto; width:4.1mm; height:4.1mm; background:var(--teal); color:#fff;
+           border-radius:50%; font-size:5.6pt; font-weight:800; text-align:center; line-height:4.1mm; }
+  .cat .t{ font-size:7pt; line-height:1.44; }
+  .cat .t b{ color:var(--navy); font-weight:700; }
+
+  /* 구 표(class 없는 table) — .tbl 규격으로 통일 */
+  .card table{ width:100%; border-collapse:collapse; margin:0; }
+  .card table th, .card table td{ border-bottom:0.2mm solid var(--panel-line);
+      padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.26; }
+  .card table th{ background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+      border-bottom:0.45mm solid var(--teal); }
+  .card table tr:last-child td{ border-bottom:0; }
+  .card table td.l, .card table td.lf{ text-align:left; }
+  .card table td.h, .card table td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .card table td.s{ background:var(--panel); color:var(--navy); font-weight:700; }
+  .card table td.t, .card table td.o{ color:var(--amber); font-weight:800; white-space:nowrap; }
+  .card table tr.hi td{ background:#EAF4F6; }
+
+  /* 구 컨테이너 무력화 */
+  .sheet{ display:block; max-height:none; overflow:visible; }
+  .rule-navy{ display:none; }
+  .grid{ display:block; }
+  .box{ border:0; padding:0; background:none; }
+  ol.nlist{ list-style:none; }
+  p.sub{ font-size:6.6pt; color:var(--meta); line-height:1.42; margin:0.8mm 0 0 0; }
+
+  /* 클래스 없는 ul/ol/li — .list 규격으로 통일 */
+  .card ul, .card ol{ margin:0; padding:0; list-style:none; }
+  .card ul li, .card ol li{ font-size:7pt; line-height:1.44; padding-left:2.6mm;
+      text-indent:-2.6mm; margin-bottom:0.8mm; color:var(--body); }
+  .card ul li:last-child, .card ol li:last-child{ margin-bottom:0; }
+  .card ul li::before{ content:"· "; color:var(--teal); font-weight:800; }
+  .card ol.nlist li, .card ul.nlist li{ padding-left:5.6mm; text-indent:0; }
+  .card ol.nlist li::before, .card ul.nlist li::before{ content:none; }
+  .card > p{ font-size:6.6pt; line-height:1.44; color:var(--meta); margin:1mm 0 0 0; }
+  .card p.sub, .card .formula .sub{ color:var(--meta); }
+
+  /* 5대 수칙 등 가로 스트립(.rule) */
+  .card .rule{ display:flex; flex-wrap:nowrap; gap:1.6mm; margin:0; }
+  .card .rule > div{ flex:1; background:var(--panel); border:0.25mm solid var(--panel-line);
+      border-radius:1.2mm; padding:1.6mm 1.4mm; font-size:6.4pt; line-height:1.34;
+      text-align:center; color:var(--body); }
+  .card .rule > div b{ display:block; color:var(--navy); font-size:6.8pt; font-weight:800;
+      margin-bottom:0.7mm; }
+
+  /* 여백 균일 배치 — 자동 늘림(auto) 대신 고정 간격 */
+  .page.evengap{ display:flex; flex-direction:column; }
+  .page.evengap .rule-gray{ margin-top:auto; }
+  .page.evengap .rolebar, .page.evengap .row2, .page.evengap .row1,
+  .page.evengap .row1.recap{ margin-bottom:4.2mm !important; margin-top:0 !important; }
+  .page.evengap .conclude{ margin-top:4.2mm; }
+
+  /* 클래스 없는 텍스트 컨테이너(.ex, 일반 div/p 등) 기본 크기 — 브라우저 기본 16px 방지 */
+  .card{ font-size:7pt; line-height:1.46; }
+  .card div, .card p, .card span{ font-size:inherit; }
+  .card .ex{ font-size:7pt; line-height:1.5; }
+  .card .ex b{ color:var(--navy); font-weight:700; }
+
+  /* 표 연속 조각 — 배지 없이 이어지는 카드 */
+  .card.cont{ border-top:0.25mm solid var(--line); padding-top:1.6mm; }
+
+
 </style>
-<style id="onepaper">:root{--navy:#1B3A5B;--navy2:#16304D;--teal:#227C8E;--rust:#B45309;--line:#DCE4EC;--band:#EAF0F5;--chip-bg:#F3F7F9;--chip-line:#DCE4EC;--body:#42505F;--meta:#6B7280;--note:#8A93A0;--grad:linear-gradient(135deg,#1B3A5B,#227C8E);--shadow:0 1px 6px rgba(27,58,91,.13)}
-.rule-navy{height:1.4mm;width:46mm;border-radius:1mm;background:var(--grad)}.rule-gray{background:var(--line)}
-.card{background:#fff;border:.25mm solid var(--line);border-radius:3mm;box-shadow:var(--shadow)}
-.badge{background:none;color:var(--navy);border-radius:0;white-space:normal;border-bottom:.5mm solid var(--teal);padding:0 0 1.4mm 0}
-.badge.rust{background:none;color:#B45309;border-bottom-color:#D9730D}
-.list li::before{content:"▪ ";color:var(--teal);font-weight:400}.nlist .no{color:var(--teal)}.num,.formula .num{color:var(--teal)}
-.formula{background:var(--band);border-left:1.4mm solid var(--teal);border-radius:1.4mm 2mm 2mm 1.4mm}
-.chip{background:var(--chip-bg);border-color:var(--line);border-radius:1.6mm}
-.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1;border-left:1.4mm solid #D9730D;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0;font-size:7.6pt;line-height:1.5}
-.rolet{color:#B45309;font-weight:800}
-.conclude{background:var(--grad);border-radius:3mm;padding:3.4mm 4.2mm;margin:3.2mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
-.conclude .lab{display:inline-block;font-size:6.6pt;font-weight:800;letter-spacing:.06em;opacity:.85;margin-right:2.4mm}
-.conclude .txt{font-size:8pt;font-weight:600;line-height:1.5}
-.hd{border-bottom:none!important;padding-bottom:0}.hd h1{color:#1B3A5B!important}
-.hd::after{content:"";display:block;height:1.4mm;width:46mm;border-radius:1mm;background:var(--grad);margin-top:2mm}
-.box{background:#fff;border:1px solid #DCE4EC!important;border-radius:10px;box-shadow:var(--shadow)}
-.box h2{background:none!important;color:#1B3A5B!important;border-bottom:2px solid #227C8E;border-radius:0!important;padding:0 0 4px 0!important;margin-bottom:8px!important}
-.box h2.accent{color:#B45309!important;border-bottom-color:#D9730D}
-.box li::before{content:'▪'!important;color:#227C8E!important;font-weight:400!important}
-.box p,.box li{color:#42505F}.k{color:#1B3A5B!important}.r{color:#B45309!important}
-.law,.tag{background:#F3F7F9!important;color:#1B3A5B!important;border-color:#DCE4EC!important}
-.box th{background:#EAF0F5!important;color:#1B3A5B!important}.box th,.box td{border-color:#DCE4EC!important}
-.stage div,.flow div{background:#F3F7F9!important;border-color:#DCE4EC!important;color:#42505F!important}
-.stage span{color:#1B3A5B!important}.arw,.ar{color:#227C8E!important}
-.box .num{background:#227C8E!important;color:#fff!important}
-.ft{color:#8A93A0!important;border-top-color:#DCE4EC!important}
-.box .formula{background:#EAF0F5!important;border-left:1.4mm solid #227C8E;border-radius:1.4mm 2mm 2mm 1.4mm;color:#1B3A5B!important}</style>
-<style id="onepaper-flow">.row2,.grid{grid-template-columns:1fr!important}
-.page{min-height:0!important;height:auto!important;page-break-after:auto!important;break-after:auto!important;margin:0 auto!important;box-shadow:none!important;padding-top:0!important;padding-bottom:0!important}
-.page:first-of-type{padding-top:13mm!important}
-.card,.box,.formula,table,.chips,.stage,.flow{break-inside:avoid;page-break-inside:avoid}
-.pageno{display:none!important}
-@media screen{body{background:#fff!important}}</style>
-<style id="onepaper-ig">:root{--navy:#1B3A5B;--navy2:#16304d;--teal:#227C8E;--ink:#1B3A5B;--body:#42505F;--gray:#6B7280;--light:#8A93A0;--panel:#EAF0F5;--panel2:#F3F7F9;--line:#DCE4EC;--grad:linear-gradient(135deg,#1B3A5B 0%,#227C8E 100%);--shadow:0 .5mm 1.8mm rgba(27,58,91,.13)}
-body{color:var(--body)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.title,.hd h1{color:var(--navy)!important;font-size:18pt!important;font-weight:800!important;letter-spacing:-.02em;line-height:1.25;padding:0 0 2.4mm 0!important;border:none!important}
-.title::after,.hd h1::after{content:"";display:block;height:1.4mm;width:46mm;margin-top:2mm;border-radius:1mm;background:var(--grad)}
-.hd,.hd::after{border:none!important}
-.meta,.hd .meta,.hd p{color:var(--gray)!important;font-size:6.4pt!important;line-height:1.45}
-.rule-navy{height:0!important;border:none!important;margin:2.4mm 0 3.6mm 0!important;background:none!important}
-.rule-gray{height:0!important;border:none!important;border-top:.25mm solid var(--line)!important;margin:3.6mm 0 2mm 0!important;background:none!important}
-.card,.box{border:none!important;border-top:.3mm solid var(--line)!important;border-bottom:.3mm solid var(--line)!important;border-radius:0!important;background:#fff!important;box-shadow:none!important;padding:3.2mm 4mm 3.4mm 4mm!important}
-.badge,.box h2{display:inline-block!important;background:none!important;color:var(--navy)!important;font-size:9.2pt!important;font-weight:800!important;letter-spacing:-.01em;line-height:1.35;white-space:normal!important;padding:0 0 1.6mm 0!important;border:none!important;border-bottom:.5mm solid var(--teal)!important;border-radius:0!important;margin:0 0 2.6mm 0!important}
-.badge.emph{background:var(--navy2)!important;color:#fff!important;border-bottom:none!important;border-radius:1.6mm!important;padding:1mm 2.8mm!important}
-.list li,.box li,.nlist li{font-size:7.6pt!important;line-height:1.62!important;color:var(--body)!important;margin-bottom:1.7mm!important}
-.list li::before,.box li::before{content:"▪  "!important;color:var(--teal)!important;font-weight:700!important}
-.nlist li::before{content:none!important}
-.nlist .no,.box .num{display:inline-block!important;color:#fff!important;background:var(--teal)!important;font-weight:700!important;font-size:6.6pt!important;width:4mm;height:4mm;line-height:4mm!important;text-align:center;border-radius:50%!important;margin-right:1.4mm}
-.term,.k,.chip b{color:var(--navy)!important;font-weight:700!important}
-.num,.r{color:var(--teal)!important;font-weight:800!important}
-.formula{background:var(--panel)!important;border:none!important;border-left:1.4mm solid var(--teal)!important;border-radius:1.4mm 2mm 2mm 1.4mm!important;padding:2.8mm 3.8mm!important;margin:0 0 3mm 0!important;text-align:center;font-size:7.6pt!important;font-weight:600;line-height:1.55;color:var(--navy)!important}
-.formula .num{color:var(--teal)!important}
-.formula .sub{display:block;font-size:6.5pt;font-weight:500;color:var(--gray)!important;margin-top:1.4mm;line-height:1.45}
-.chip,.law,.tag{background:var(--panel2)!important;border:.25mm solid var(--line)!important;border-radius:1.6mm!important;font-size:6.7pt!important;line-height:1.35;padding:1.4mm 2.6mm!important;color:var(--body)!important}
-.chips{display:flex;flex-wrap:wrap;gap:2mm}
-.hl{background:#DCEBEF!important;color:#155E6E!important;font-weight:800;padding:.2mm 1mm;border-radius:.8mm}
-th{background:var(--panel)!important;color:var(--navy)!important}th,td{border-color:var(--line)!important}
-.stage div,.flow div{background:var(--panel2)!important;border-color:var(--line)!important;color:var(--body)!important}
-.stage span{color:var(--navy)!important}.arw,.ar{color:var(--teal)!important}
-.note,.ft{text-align:center;font-size:6.1pt!important;line-height:1.5;color:var(--light)!important;border-top-color:var(--line)!important}
-.conclude{background:var(--grad)!important;border-radius:3mm;padding:4mm 5mm;margin:1mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
-.conclude .lab{display:inline-block;color:#7FD4E3;font-weight:800;font-size:8.4pt;margin-right:2mm}
-.conclude .txt{font-size:9pt;font-weight:700;line-height:1.5}.conclude .txt b{color:#8FE0EE}
-.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1!important;border-left:1.4mm solid #D9730D!important;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0}
-.rolebar .t{font-size:7.3pt;line-height:1.52;color:#7C3D0A!important}.rolebar .t b{color:#B45309!important;font-weight:800}
-.rolet{color:#B45309!important;font-weight:800}
-.page{padding:13mm 10mm 8mm!important}</style>
-<link rel="stylesheet" href="onepaper-read-v2.css">
 </head>
 <body>
-<div class="page">
-  <div class="hd">
-    <h1>다수공급자계약(MAS) 물품 산업안전보건관리비 계상방안 안내 — 요약</h1>
-    <div class="sub">MAS 물품 계약금액에는 산업안전보건관리비가 별도 계상되어 있지 않으므로, 수요기관이 대상 물품에 대해 직접 산정·명시 후 납품요구하고 사후 실비정산 (설계내역으로 미리 계상한 경우는 그에 따름) &nbsp;|&nbsp; 문의: 구매총괄과 042-724-7293·7273</div>
+
+<div class="page evengap">
+
+  <h1 class="title">MAS 물품 산업안전보건관리비 계상방안 — 핵심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">MAS 물품 계약금액에는 산업안전보건관리비가 별도 계상되어 있지 않으므로, 수요기관이 대상 물품에 대해 직접 산정·명시 후 납품요구하고 사후 실비정산 (설계내역으로 미리 계상한 경우는 그에 따름) | 문의: 구매총괄과 042-724-7293·7273</p>
+  <div class="rolebar"><span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">수요기관 = 학교·교육청</span> — MAS 물품 계약금액에는 산업안전보건관리비가 <b class="term">포함되어 있지 않으므로</b>, 수요기관이 직접 산정하여 <b class="term">납품요구서에 금액과 사후정산 가능 여부를 명시</b>한 뒤 납품요구하여야 한다. 설계내역으로 미리 계상한 경우에는 그에 따른다.</span></div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2"/></svg></span><span class="lb"><i>1</i>적용범위</span></span>
+<ul>
+<li>MAS 계약서상 인도조건이 <span class="k">현장설치도</span>이거나 설치비를 옵션으로 계약한 건</li>
+<li>물품설치가 <span class="k">산업안전보건법 제2조제11호 건설공사</span>에 해당</li>
+<li>입찰공고문상 건설산업기본법·전기공사업법·정보통신공사업법·소방시설공사업법·국가유산수리법에 따른 <span class="k">공사면허 반영</span> (붙임 대상물품 참조)</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 3 4-6"/></svg></span><span class="lb"><i>2</i>적용기준</span></span>
+<ul>
+<li>세부품명별·업체별 수요기관 <span class="k">납품요구금액(제품비＋설치비)</span></li>
+<li><span class="r">2천만원 이상</span>인 경우 계상 대상</li>
+</ul></div>
   </div>
-
-  <div class="grid">
-    <!-- 적용범위 -->
-    <div class="box">
-      <h2>1. 적용범위</h2>
-      <ul>
-        <li>MAS 계약서상 인도조건이 <span class="k">현장설치도</span>이거나 설치비를 옵션으로 계약한 건</li>
-        <li>물품설치가 <span class="k">산업안전보건법 제2조제11호 건설공사</span>에 해당</li>
-        <li>입찰공고문상 건설산업기본법·전기공사업법·정보통신공사업법·소방시설공사업법·국가유산수리법에 따른 <span class="k">공사면허 반영</span> (붙임 대상물품 참조)</li>
-      </ul>
-    </div>
-
-    <!-- 적용기준 -->
-    <div class="box">
-      <h2>2. 적용기준</h2>
-      <ul>
-        <li>세부품명별·업체별 수요기관 <span class="k">납품요구금액(제품비＋설치비)</span></li>
-        <li><span class="r">2천만원 이상</span>인 경우 계상 대상</li>
-      </ul>
-    </div>
-
-    <!-- 계상방법 -->
-    <div class="box full">
-      <h2 class="accent">3. 계상방법</h2>
-      <div class="formula">산업안전보건관리비 = 대상액(납품요구금액 × 70%) × [별표1] 공사종류·규모별 적용비율 (＋기초액)</div>
-      <table>
-        <tr><th rowspan="2">공사종류</th><th colspan="4">대상액 기준 적용비율</th><th colspan="2">보건관리자 선임대상</th></tr>
-        <tr><th>5억 미만</th><th>5억~50억<br>(요율)</th><th>5억~50억<br>기초액</th><th>50억 이상</th><th>적용비율</th><th>적용비율</th></tr>
-        <tr><td class="l">건축공사</td><td>3.11%</td><td>2.28%</td><td>4,325천원</td><td>2.37%</td><td colspan="2">2.64%</td></tr>
-        <tr><td class="l">토목공사</td><td>3.15%</td><td>2.53%</td><td>3,300천원</td><td>2.60%</td><td colspan="2">2.73%</td></tr>
-        <tr><td class="l">중건설공사</td><td>3.64%</td><td>3.05%</td><td>2,975천원</td><td>3.11%</td><td colspan="2">3.39%</td></tr>
-        <tr><td class="l">특수건설공사</td><td>2.07%</td><td>1.59%</td><td>2,450천원</td><td>1.64%</td><td colspan="2">1.78%</td></tr>
-      </table>
-      <ul style="margin-top:4px;">
-        <li><span class="k">완제품 형태로 제작·납품되는 경우</span> ① 완제품 가액 포함 산정액과, ② 완제품 가액 제외 산정액 × 1.2 중 <span class="r">작은 값 이상</span>으로 계상 (완제품 가액은 견적서·산출내역서로 확인)</li>
-      </ul>
-    </div>
-
-    <!-- 사후정산 -->
-    <div class="box full">
-      <h2>4. 사후정산 방식</h2>
-      <ul>
-        <li><span class="k">산정 안내</span> 납품요구서(기타사항)에 산업안전보건관리비 금액과 사후정산 가능 여부를 명시 후 업체 송신</li>
-        <li><span class="k">종결 시 지급</span> 명시한 금액 이내로 실제 사용액을 추가 지급 (부가가치세 별도 지급)</li>
-        <li><span class="k">정산 기준</span> 고용부 고시「건설업 산업안전보건관리비 계상 및 사용기준」제7조 사용기준에 따른 사용내역 확인 후, 부가세 제외 금액으로 정산 (해설집 p.40 참조)</li>
-      </ul>
-    </div>
-
-    <!-- 예시 -->
-    <div class="box full">
-      <h2>5. 계상 예시</h2>
-      <div class="ex">
-        <b>① 대상액 5억 미만·비완제품</b> — 미끄럼방지포장재(현장설치도), 납품 5,000만원 → (5,000만×70%)×3.11% = <b>1,088,500원</b><br>
-        <b>② 대상액 5억 미만·완제품</b> — 항온항습기, 총 4억(완제품비 3억) → ⓐ (4억×70%)×3.11%=8,708,000 / ⓑ [(4억−3억)×70%×3.11%]×1.2=2,612,400 → 작은 값 <b>2,612,400원</b><br>
-        <b>③ 대상액 5억 이상·비완제품</b> — 미끄럼방지포장재, 납품 8억 → (8억×70%)×2.28% + 4,325,000 = <b>17,093,000원</b><br>
-        <b>④ 대상액 5억 이상·완제품</b> — 항온항습기, 총 20억(완제품비 12억) → ⓐ 36,245,000 / ⓑ 20,511,600 → 작은 값 <b>20,511,600원</b>
-      </div>
-    </div>
-
-    <!-- 계상 대상 세부품명 목록 -->
-    <div class="box full">
-      <h2>6. 계상 대상 세부품명 (96종)</h2>
-      <ul style="margin-bottom:6px">
-        <li>조달청 공지 「(공지용) 산업안전보건관리비 계상 대상 세부품명」 기준 — 아래 품명을 MAS로 납품요구(현장설치도·설치비 옵션)하는 경우 계상 대상 여부를 확인합니다.</li>
-      </ul>
-      <table style="font-size:11.5px">
-        <tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br>포함</th><th style="width:44px">옵션<br>계약</th><th style="width:44px">완제품<br>설치</th></tr>
-        <tr><td>1</td><td class="l">구조물용충격완충장치<span style="display:block;font-size:10px;color:#9ca3af">4616159602</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사'</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>2</td><td class="l">단부처리용충격완충장치<span style="display:block;font-size:10px;color:#9ca3af">4616159603</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사'</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>3</td><td class="l">낙석방지책<span style="display:block;font-size:10px;color:#9ca3af">3012178801</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사'</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>4</td><td class="l">차선분리대<span style="display:block;font-size:10px;color:#9ca3af">4616157501</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>5</td><td class="l">도로표지병<span style="display:block;font-size:10px;color:#9ca3af">4616158501</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사'</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>6</td><td class="l">폴리우레아수지도막방수재<span style="display:block;font-size:10px;color:#9ca3af">3012999201</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 '습식·방수공사')</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>7</td><td class="l">금속기둥<span style="display:block;font-size:10px;color:#9ca3af">3010290301</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>8</td><td class="l">반사형방음벽및방음판<span style="display:block;font-size:10px;color:#9ca3af">3012178701</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>9</td><td class="l">흡음형방음벽및방음판<span style="display:block;font-size:10px;color:#9ca3af">3012178702</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>10</td><td class="l">목재방음벽및방음판<span style="display:block;font-size:10px;color:#9ca3af">3012178704</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>11</td><td class="l">혼합형방음벽및방음판<span style="display:block;font-size:10px;color:#9ca3af">3012178705</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>12</td><td class="l">방음벽소음저감장치<span style="display:block;font-size:10px;color:#9ca3af">3012178706</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>13</td><td class="l">차양<span style="display:block;font-size:10px;color:#9ca3af">3015190101</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>14</td><td class="l">PVDF막구조물<span style="display:block;font-size:10px;color:#9ca3af">3023170101</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치공사업 또는 금속구조물·창호·온실공사업 또는 지붕판금·건축물조립공사업</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>15</td><td class="l">PVF막구조물<span style="display:block;font-size:10px;color:#9ca3af">3023170102</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치공사업 또는 금속구조물·창호·온실공사업 또는 지붕판금·건축물조립공사업</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>16</td><td class="l">PTFE막구조물<span style="display:block;font-size:10px;color:#9ca3af">3023170103</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치공사업 또는 금속구조물·창호·온실공사업 또는 지붕판금·건축물조립공사업</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>17</td><td class="l">기타막구조물<span style="display:block;font-size:10px;color:#9ca3af">3023170104</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치공사업 또는 금속구조물·창호·온실공사업 또는 지붕판금·건축물조립공사업</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>18</td><td class="l">ETFE막구조물 <span style="display:block;font-size:10px;color:#9ca3af">3023170105</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치공사업 또는 금속구조물·창호·온실공사업 또는 지붕판금·건축물조립공사업</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>19</td><td class="l">시선유도봉<span style="display:block;font-size:10px;color:#9ca3af">4616159701</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>20</td><td class="l">흙콘크리트<span style="display:block;font-size:10px;color:#9ca3af">3011159501</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">지반조성·포장공사업(주력분야 '포장공사', '토공사'), 철근·콘크리트공사업, 조경식재·시설물공사업(주력분야 '조경시설물설치공사')</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>21</td><td class="l">차열도색재<span style="display:block;font-size:10px;color:#9ca3af">3012998901</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>22</td><td class="l">체육시설코르크바닥포장재<span style="display:block;font-size:10px;color:#9ca3af">3012999101</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>23</td><td class="l">어린이놀이시설코르크바닥포장재<span style="display:block;font-size:10px;color:#9ca3af">3012999102</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>24</td><td class="l">도막형바닥재<span style="display:block;font-size:10px;color:#9ca3af">3012999701</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>25</td><td class="l">미끄럼방지포장재<span style="display:block;font-size:10px;color:#9ca3af">3012999801</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>26</td><td class="l">체육시설탄성포장재<span style="display:block;font-size:10px;color:#9ca3af">3012999901</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>27</td><td class="l">어린이놀이시설탄성포장재<span style="display:block;font-size:10px;color:#9ca3af">3012999902</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>28</td><td class="l">오버헤드도어<span style="display:block;font-size:10px;color:#9ca3af">3017150301</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">금속구조물·창호·온실공사</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>29</td><td class="l">투수골재포장재<span style="display:block;font-size:10px;color:#9ca3af">3012999401</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">지반조성·포장공사업(주력분야 ‘포장공사’)</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>30</td><td class="l">버스승강장<span style="display:block;font-size:10px;color:#9ca3af">3022200301</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>31</td><td class="l">인조잔디<span style="display:block;font-size:10px;color:#9ca3af">3012189701</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">조경식재·시설물공사업</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>32</td><td class="l">이중바닥마루틀<span style="display:block;font-size:10px;color:#9ca3af">3016179701</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">실내건축공사업</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>33</td><td class="l">목제문<span style="display:block;font-size:10px;color:#9ca3af">3017150401</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">실내건축공사업</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>34</td><td class="l">목제창<span style="display:block;font-size:10px;color:#9ca3af">3017169601</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">실내건축공사업</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>35</td><td class="l">알루미늄제교량난간<span style="display:block;font-size:10px;color:#9ca3af">3012170301</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>36</td><td class="l">철제교량난간<span style="display:block;font-size:10px;color:#9ca3af">3012170302</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>37</td><td class="l">철제도로중앙분리대<span style="display:block;font-size:10px;color:#9ca3af">3012178901</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>38</td><td class="l">알루미늄제도로중앙분리대<span style="display:block;font-size:10px;color:#9ca3af">3012178902</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>39</td><td class="l">철제가드레일<span style="display:block;font-size:10px;color:#9ca3af">3012179301</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>40</td><td class="l">디자인형울타리<span style="display:block;font-size:10px;color:#9ca3af">3015200101</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>41</td><td class="l">메시형울타리<span style="display:block;font-size:10px;color:#9ca3af">3015200102</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>42</td><td class="l">YL형울타리<span style="display:block;font-size:10px;color:#9ca3af">3015200103</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>43</td><td class="l">창살형울타리<span style="display:block;font-size:10px;color:#9ca3af">3015200104</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>44</td><td class="l">금속제기타울타리<span style="display:block;font-size:10px;color:#9ca3af">3015200105</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>45</td><td class="l">가설재울타리<span style="display:block;font-size:10px;color:#9ca3af">3015200106</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>46</td><td class="l">금속제창<span style="display:block;font-size:10px;color:#9ca3af">3017169801</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>47</td><td class="l">합성수지제창<span style="display:block;font-size:10px;color:#9ca3af">3017169501</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>48</td><td class="l">금속문세트<span style="display:block;font-size:10px;color:#9ca3af">3017989801</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>49</td><td class="l">스피커<span style="display:block;font-size:10px;color:#9ca3af">5216151201</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>50</td><td class="l">호온스피커<span style="display:block;font-size:10px;color:#9ca3af">5216151203</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>51</td><td class="l">PA용스피커<span style="display:block;font-size:10px;color:#9ca3af">5216151202</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>52</td><td class="l">오디오앰프<span style="display:block;font-size:10px;color:#9ca3af">5216154701</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>53</td><td class="l">오디오믹서<span style="display:block;font-size:10px;color:#9ca3af">4511170601</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>54</td><td class="l">이퀄라이저<span style="display:block;font-size:10px;color:#9ca3af">5216151701</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>55</td><td class="l">라디오튜너<span style="display:block;font-size:10px;color:#9ca3af">5216156801</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>56</td><td class="l">오디오모니터<span style="display:block;font-size:10px;color:#9ca3af">4511178401</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>57</td><td class="l">방송수신기<span style="display:block;font-size:10px;color:#9ca3af">5216152101</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>58</td><td class="l">전원공급장치<span style="display:block;font-size:10px;color:#9ca3af">3912100402</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>59</td><td class="l">스피커선택유닛<span style="display:block;font-size:10px;color:#9ca3af">4511176501</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>60</td><td class="l">매트릭스로직유닛<span style="display:block;font-size:10px;color:#9ca3af">4511176502</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>61</td><td class="l">비상유닛<span style="display:block;font-size:10px;color:#9ca3af">4619150501</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>62</td><td class="l">릴레이유닛<span style="display:block;font-size:10px;color:#9ca3af">3912233401</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>63</td><td class="l">네트워크시스템장비용랙<span style="display:block;font-size:10px;color:#9ca3af">4322330801</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>64</td><td class="l">통신용변조기<span style="display:block;font-size:10px;color:#9ca3af">3210152801</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>65</td><td class="l">CD녹음및플레이어<span style="display:block;font-size:10px;color:#9ca3af">5216151501</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>66</td><td class="l">결선보드유닛<span style="display:block;font-size:10px;color:#9ca3af">4511170701</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>67</td><td class="l">리모트앰프<span style="display:block;font-size:10px;color:#9ca3af">4511176701</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>68</td><td class="l">AV스위쳐<span style="display:block;font-size:10px;color:#9ca3af">5216154001</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>69</td><td class="l">랙캐비닛용패널<span style="display:block;font-size:10px;color:#9ca3af">4511179801</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>70</td><td class="l">공기조화기<span style="display:block;font-size:10px;color:#9ca3af">4010170901</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">기계설비공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>71</td><td class="l">항온항습기<span style="display:block;font-size:10px;color:#9ca3af">4010171501</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">기계설비공사업 및 냉동기제조등록(허가)증</td><td>포함</td><td>Y</td><td>Y</td></tr>
-        <tr><td>72</td><td class="l">공기순환기<span style="display:block;font-size:10px;color:#9ca3af">4010160201</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">기계설비공사업</td><td>미포함</td><td>Y</td><td>Y</td></tr>
-        <tr><td>73</td><td class="l">일반용전기설비원격점검장치<span style="display:block;font-size:10px;color:#9ca3af">3912110607</span></td><td>전기전자구매과</td><td class="l">납품장소도 또는 현장설치도</td><td class="l">전기공사업</td><td>미포함</td><td>Y</td><td>Y</td></tr>
-        <tr><td>74</td><td class="l">광고물부착방지물(도료형)<span style="display:block;font-size:10px;color:#9ca3af">5512199901</span></td><td>보건의료구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 '도장공사')</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>75</td><td class="l">자전거보관대<span style="display:block;font-size:10px;color:#9ca3af">3022206401</span></td><td>보건의료구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>76</td><td class="l">도로안전표지판지주<span style="display:block;font-size:10px;color:#9ca3af">4616157001</span></td><td>보건의료구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>77</td><td class="l">퍼걸러<span style="display:block;font-size:10px;color:#9ca3af">4924151101</span></td><td>보건의료구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>78</td><td class="l">트렐리스<span style="display:block;font-size:10px;color:#9ca3af">4924159201</span></td><td>보건의료구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>79</td><td class="l">대형냉장고<span style="display:block;font-size:10px;color:#9ca3af">2413150301</span></td><td>첨단융복합구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">건축공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>80</td><td class="l">융복합탈취기<span style="display:block;font-size:10px;color:#9ca3af">9940161602</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">기계설비공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>81</td><td class="l">융복합덱<span style="display:block;font-size:10px;color:#9ca3af">9930152201</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업</td><td>포함</td><td>N</td><td>N</td></tr>
-        <tr><td>82</td><td class="l">무정전전원장치<span style="display:block;font-size:10px;color:#9ca3af">3912101101</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">전기공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>83</td><td class="l">태양광발전장치<span style="display:block;font-size:10px;color:#9ca3af">2611160701</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">전기공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>84</td><td class="l">건물일체형태양광발전장치<span style="display:block;font-size:10px;color:#9ca3af">2611160702</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">전기공사업, 금속·창호·지붕·건축물조립공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>85</td><td class="l">바닥형보행신호등<span style="display:block;font-size:10px;color:#9ca3af">4616150407</span></td><td>첨단융복합구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">전기공사업, 정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>86</td><td class="l">보행신호음성안내보조장치<span style="display:block;font-size:10px;color:#9ca3af">4616152604</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>87</td><td class="l">보행자작동신호기<span style="display:block;font-size:10px;color:#9ca3af">4616152602</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>88</td><td class="l">일반용음식물쓰레기처리기<span style="display:block;font-size:10px;color:#9ca3af">2318199802</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>89</td><td class="l">영상감시장치<span style="display:block;font-size:10px;color:#9ca3af">4617162201</span></td><td>첨단융복합구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>Y</td><td>Y</td></tr>
-        <tr><td>90</td><td class="l">보안용카메라<span style="display:block;font-size:10px;color:#9ca3af">4617161002</span></td><td>첨단융복합구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>Y</td><td>Y</td></tr>
-        <tr><td>91</td><td class="l">주차주제어장치<span style="display:block;font-size:10px;color:#9ca3af">2410168901</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>92</td><td class="l">차량인식기<span style="display:block;font-size:10px;color:#9ca3af">2410168903</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>93</td><td class="l">주차안내판<span style="display:block;font-size:10px;color:#9ca3af">2410168906</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>94</td><td class="l">주차요금계산기<span style="display:block;font-size:10px;color:#9ca3af">2410168907</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td>95</td><td class="l">차량차단기<span style="display:block;font-size:10px;color:#9ca3af">2410168909</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr>
-        <tr><td></td><td class="l"><span style="display:block;font-size:10px;color:#9ca3af"></span></td><td></td><td class="l"></td><td class="l"></td><td></td><td></td><td></td></tr>
-      </table>
-    </div>
+  <div class="row1">
+    <div class="card tealtop"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span><span class="lb"><i>3</i>계상방법</span></span>
+<div class="formula">산업안전보건관리비 = 대상액(납품요구금액 × 70%) × [별표1] 공사종류·규모별 적용비율 (＋기초액)</div>
+<table>
+<tr><th rowspan="2">공사종류</th><th colspan="4">대상액 기준 적용비율</th><th colspan="2">보건관리자 선임대상</th></tr>
+<tr><th>5억 미만</th><th>5억~50억<br/>(요율)</th><th>5억~50억<br/>기초액</th><th>50억 이상</th><th>적용비율</th><th>적용비율</th></tr>
+<tr><td class="l">건축공사</td><td>3.11%</td><td>2.28%</td><td>4,325천원</td><td>2.37%</td><td colspan="2">2.64%</td></tr>
+<tr><td class="l">토목공사</td><td>3.15%</td><td>2.53%</td><td>3,300천원</td><td>2.60%</td><td colspan="2">2.73%</td></tr>
+<tr><td class="l">중건설공사</td><td>3.64%</td><td>3.05%</td><td>2,975천원</td><td>3.11%</td><td colspan="2">3.39%</td></tr>
+<tr><td class="l">특수건설공사</td><td>2.07%</td><td>1.59%</td><td>2,450천원</td><td>1.64%</td><td colspan="2">1.78%</td></tr>
+</table>
+<ul>
+<li><span class="k">완제품 형태로 제작·납품되는 경우</span> ① 완제품 가액 포함 산정액과, ② 완제품 가액 제외 산정액 × 1.2 중 <span class="r">작은 값 이상</span>으로 계상 (완제품 가액은 견적서·산출내역서로 확인)</li>
+</ul></div>
   </div>
-
-  <div class="ft">본 요약은 「다수공급자계약(MAS) 물품 산업안전보건관리비 계상방안 안내」 문서의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 고용노동부 고시의 최신 내용을 확인하시기 바랍니다.</div>
+  <div class="row1">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v13H4z"/><path d="M8 7V4h8v3"/><path d="M8 13h8"/></svg></span><span class="lb"><i>4</i>사후정산 방식</span></span>
+<ul>
+<li><span class="k">산정 안내</span> 납품요구서(기타사항)에 산업안전보건관리비 금액과 사후정산 가능 여부를 명시 후 업체 송신</li>
+<li><span class="k">종결 시 지급</span> 명시한 금액 이내로 실제 사용액을 추가 지급 (부가가치세 별도 지급)</li>
+<li><span class="k">정산 기준</span> 고용부 고시「건설업 산업안전보건관리비 계상 및 사용기준」제7조 사용기준에 따른 사용내역 확인 후, 부가세 제외 금액으로 정산 (해설집 p.40 참조)</li>
+</ul></div>
+  </div>
+  <div class="row1">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span><span class="lb"><i>5</i>계상 예시</span></span>
+<div class="ex">
+<b>① 대상액 5억 미만·비완제품</b> — 미끄럼방지포장재(현장설치도), 납품 5,000만원 → (5,000만×70%)×3.11% = <b>1,088,500원</b><br/>
+<b>② 대상액 5억 미만·완제품</b> — 항온항습기, 총 4억(완제품비 3억) → ⓐ (4억×70%)×3.11%=8,708,000 / ⓑ [(4억−3억)×70%×3.11%]×1.2=2,612,400 → 작은 값 <b>2,612,400원</b><br/>
+<b>③ 대상액 5억 이상·비완제품</b> — 미끄럼방지포장재, 납품 8억 → (8억×70%)×2.28% + 4,325,000 = <b>17,093,000원</b><br/>
+<b>④ 대상액 5억 이상·완제품</b> — 항온항습기, 총 20억(완제품비 12억) → ⓐ 36,245,000 / ⓑ 20,511,600 → 작은 값 <b>20,511,600원</b>
+</div></div>
+  </div>
+  <div class="row1">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span><span class="lb"><i>6</i>계상 대상 세부품명 (96종)</span></span>
+<ul>
+<li>조달청 공지 「(공지용) 산업안전보건관리비 계상 대상 세부품명」 기준 — 아래 품명을 MAS로 납품요구(현장설치도·설치비 옵션)하는 경우 계상 대상 여부를 확인합니다.</li>
+</ul>
+<table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>1</td><td class="l">구조물용충격완충장치<span>4616159602</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사'</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>2</td><td class="l">단부처리용충격완충장치<span>4616159603</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사'</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>3</td><td class="l">낙석방지책<span>3012178801</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사'</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>4</td><td class="l">차선분리대<span>4616157501</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>5</td><td class="l">도로표지병<span>4616158501</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사'</td><td>포함</td><td>N</td><td>Y</td></tr></table></div>
+  </div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 「다수공급자계약(MAS) 물품 산업안전보건관리비 계상방안 안내」 문서의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 고용노동부 고시의 최신 내용을 확인하시기 바랍니다.</p>
+  <p class="pgno">1 / 5</p>
 </div>
+
+<div class="page evengap">
+
+  <h1 class="title">MAS 물품 산업안전보건관리비 계상방안 — 핵심 요약 (계속)</h1>
+  <div class="ubar"></div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>6</td><td class="l">폴리우레아수지도막방수재<span>3012999201</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 '습식·방수공사')</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>7</td><td class="l">금속기둥<span>3010290301</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>8</td><td class="l">반사형방음벽및방음판<span>3012178701</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>9</td><td class="l">흡음형방음벽및방음판<span>3012178702</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>10</td><td class="l">목재방음벽및방음판<span>3012178704</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>11</td><td class="l">혼합형방음벽및방음판<span>3012178705</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>Y</td></tr></table></div>
+  </div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>12</td><td class="l">방음벽소음저감장치<span>3012178706</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>13</td><td class="l">차양<span>3015190101</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">금속구조물·창호공사업</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>14</td><td class="l">PVDF막구조물<span>3023170101</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치공사업 또는 금속구조물·창호·온실공사업 또는 지붕판금·건축물조립공사업</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>15</td><td class="l">PVF막구조물<span>3023170102</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치공사업 또는 금속구조물·창호·온실공사업 또는 지붕판금·건축물조립공사업</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>16</td><td class="l">PTFE막구조물<span>3023170103</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치공사업 또는 금속구조물·창호·온실공사업 또는 지붕판금·건축물조립공사업</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>17</td><td class="l">기타막구조물<span>3023170104</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치공사업 또는 금속구조물·창호·온실공사업 또는 지붕판금·건축물조립공사업</td><td>포함</td><td>N</td><td>N</td></tr></table></div>
+  </div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>18</td><td class="l">ETFE막구조물 <span>3023170105</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치공사업 또는 금속구조물·창호·온실공사업 또는 지붕판금·건축물조립공사업</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>19</td><td class="l">시선유도봉<span>4616159701</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>20</td><td class="l">흙콘크리트<span>3011159501</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">지반조성·포장공사업(주력분야 '포장공사', '토공사'), 철근·콘크리트공사업, 조경식재·시설물공사업(주력분야 '조경시설물설치공사')</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>21</td><td class="l">차열도색재<span>3012998901</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr><tr><td>22</td><td class="l">체육시설코르크바닥포장재<span>3012999101</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr><tr><td>23</td><td class="l">어린이놀이시설코르크바닥포장재<span>3012999102</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr></table></div>
+  </div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>24</td><td class="l">도막형바닥재<span>3012999701</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr><tr><td>25</td><td class="l">미끄럼방지포장재<span>3012999801</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr><tr><td>26</td><td class="l">체육시설탄성포장재<span>3012999901</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr><tr><td>27</td><td class="l">어린이놀이시설탄성포장재<span>3012999902</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 ‘도장공사’) 또는 ‘지반조성·포장공사업’(주력분야 ‘포장공사’) </td><td>포함</td><td>N</td><td>N</td></tr><tr><td>28</td><td class="l">오버헤드도어<span>3017150301</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">금속구조물·창호·온실공사</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>29</td><td class="l">투수골재포장재<span>3012999401</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">지반조성·포장공사업(주력분야 ‘포장공사’)</td><td>포함</td><td>N</td><td>N</td></tr></table></div>
+  </div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 「다수공급자계약(MAS) 물품 산업안전보건관리비 계상방안 안내」 문서의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 고용노동부 고시의 최신 내용을 확인하시기 바랍니다.</p>
+  <p class="pgno">2 / 5</p>
+</div>
+
+<div class="page evengap">
+
+  <h1 class="title">MAS 물품 산업안전보건관리비 계상방안 — 핵심 요약 (계속)</h1>
+  <div class="ubar"></div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>30</td><td class="l">버스승강장<span>3022200301</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>31</td><td class="l">인조잔디<span>3012189701</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">조경식재·시설물공사업</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>32</td><td class="l">이중바닥마루틀<span>3016179701</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">실내건축공사업</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>33</td><td class="l">목제문<span>3017150401</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">실내건축공사업</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>34</td><td class="l">목제창<span>3017169601</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">실내건축공사업</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>35</td><td class="l">알루미늄제교량난간<span>3012170301</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr></table></div>
+  </div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>36</td><td class="l">철제교량난간<span>3012170302</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>37</td><td class="l">철제도로중앙분리대<span>3012178901</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>38</td><td class="l">알루미늄제도로중앙분리대<span>3012178902</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>39</td><td class="l">철제가드레일<span>3012179301</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>40</td><td class="l">디자인형울타리<span>3015200101</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>41</td><td class="l">메시형울타리<span>3015200102</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr></table></div>
+  </div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>42</td><td class="l">YL형울타리<span>3015200103</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>43</td><td class="l">창살형울타리<span>3015200104</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>44</td><td class="l">금속제기타울타리<span>3015200105</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>45</td><td class="l">가설재울타리<span>3015200106</span></td><td>건설환경구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>46</td><td class="l">금속제창<span>3017169801</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>47</td><td class="l">합성수지제창<span>3017169501</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>N</td></tr></table></div>
+  </div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>48</td><td class="l">금속문세트<span>3017989801</span></td><td>건설환경구매과</td><td class="l">현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업(주력분야 '금속구조물·창호·온실공사')</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>49</td><td class="l">스피커<span>5216151201</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>50</td><td class="l">호온스피커<span>5216151203</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>51</td><td class="l">PA용스피커<span>5216151202</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>52</td><td class="l">오디오앰프<span>5216154701</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>53</td><td class="l">오디오믹서<span>4511170601</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr></table></div>
+  </div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 「다수공급자계약(MAS) 물품 산업안전보건관리비 계상방안 안내」 문서의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 고용노동부 고시의 최신 내용을 확인하시기 바랍니다.</p>
+  <p class="pgno">3 / 5</p>
+</div>
+
+<div class="page evengap">
+
+  <h1 class="title">MAS 물품 산업안전보건관리비 계상방안 — 핵심 요약 (계속)</h1>
+  <div class="ubar"></div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>54</td><td class="l">이퀄라이저<span>5216151701</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>55</td><td class="l">라디오튜너<span>5216156801</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>56</td><td class="l">오디오모니터<span>4511178401</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>57</td><td class="l">방송수신기<span>5216152101</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>58</td><td class="l">전원공급장치<span>3912100402</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>59</td><td class="l">스피커선택유닛<span>4511176501</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr></table></div>
+  </div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>60</td><td class="l">매트릭스로직유닛<span>4511176502</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>61</td><td class="l">비상유닛<span>4619150501</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>62</td><td class="l">릴레이유닛<span>3912233401</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>63</td><td class="l">네트워크시스템장비용랙<span>4322330801</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>64</td><td class="l">통신용변조기<span>3210152801</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>65</td><td class="l">CD녹음및플레이어<span>5216151501</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr></table></div>
+  </div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>66</td><td class="l">결선보드유닛<span>4511170701</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>67</td><td class="l">리모트앰프<span>4511176701</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>68</td><td class="l">AV스위쳐<span>5216154001</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>69</td><td class="l">랙캐비닛용패널<span>4511179801</span></td><td>전기전자구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>70</td><td class="l">공기조화기<span>4010170901</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">기계설비공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>71</td><td class="l">항온항습기<span>4010171501</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">기계설비공사업 및 냉동기제조등록(허가)증</td><td>포함</td><td>Y</td><td>Y</td></tr></table></div>
+  </div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>72</td><td class="l">공기순환기<span>4010160201</span></td><td>전기전자구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">기계설비공사업</td><td>미포함</td><td>Y</td><td>Y</td></tr><tr><td>73</td><td class="l">일반용전기설비원격점검장치<span>3912110607</span></td><td>전기전자구매과</td><td class="l">납품장소도 또는 현장설치도</td><td class="l">전기공사업</td><td>미포함</td><td>Y</td><td>Y</td></tr><tr><td>74</td><td class="l">광고물부착방지물(도료형)<span>5512199901</span></td><td>보건의료구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">도장·습식·방수·석공사업(주력분야 '도장공사')</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>75</td><td class="l">자전거보관대<span>3022206401</span></td><td>보건의료구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>76</td><td class="l">도로안전표지판지주<span>4616157001</span></td><td>보건의료구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>77</td><td class="l">퍼걸러<span>4924151101</span></td><td>보건의료구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치업</td><td>포함</td><td>N</td><td>Y</td></tr></table></div>
+  </div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 「다수공급자계약(MAS) 물품 산업안전보건관리비 계상방안 안내」 문서의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 고용노동부 고시의 최신 내용을 확인하시기 바랍니다.</p>
+  <p class="pgno">4 / 5</p>
+</div>
+
+<div class="page evengap">
+
+  <h1 class="title">MAS 물품 산업안전보건관리비 계상방안 — 핵심 요약 (계속)</h1>
+  <div class="ubar"></div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>78</td><td class="l">트렐리스<span>4924159201</span></td><td>보건의료구매과</td><td class="l">현장설치도</td><td class="l">조경시설물설치업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>79</td><td class="l">대형냉장고<span>2413150301</span></td><td>첨단융복합구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">건축공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>80</td><td class="l">융복합탈취기<span>9940161602</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">기계설비공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>81</td><td class="l">융복합덱<span>9930152201</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">금속·창호·지붕·건축물조립공사업</td><td>포함</td><td>N</td><td>N</td></tr><tr><td>82</td><td class="l">무정전전원장치<span>3912101101</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">전기공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>83</td><td class="l">태양광발전장치<span>2611160701</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">전기공사업</td><td>포함</td><td>N</td><td>Y</td></tr></table></div>
+  </div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>84</td><td class="l">건물일체형태양광발전장치<span>2611160702</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">전기공사업, 금속·창호·지붕·건축물조립공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>85</td><td class="l">바닥형보행신호등<span>4616150407</span></td><td>첨단융복합구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">전기공사업, 정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>86</td><td class="l">보행신호음성안내보조장치<span>4616152604</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>87</td><td class="l">보행자작동신호기<span>4616152602</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>88</td><td class="l">일반용음식물쓰레기처리기<span>2318199802</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>89</td><td class="l">영상감시장치<span>4617162201</span></td><td>첨단융복합구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>Y</td><td>Y</td></tr></table></div>
+  </div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td>90</td><td class="l">보안용카메라<span>4617161002</span></td><td>첨단융복합구매과</td><td class="l">납품장소하차도 또는 현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>Y</td><td>Y</td></tr><tr><td>91</td><td class="l">주차주제어장치<span>2410168901</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>92</td><td class="l">차량인식기<span>2410168903</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>93</td><td class="l">주차안내판<span>2410168906</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>94</td><td class="l">주차요금계산기<span>2410168907</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr><tr><td>95</td><td class="l">차량차단기<span>2410168909</span></td><td>첨단융복합구매과</td><td class="l">현장설치도</td><td class="l">정보통신공사업</td><td>포함</td><td>N</td><td>Y</td></tr></table></div>
+  </div>
+  <div class="row1">
+    <div class="card cont"><table><tr><th style="width:34px">연번</th><th>세부품명 · 품명번호</th><th style="width:96px">공고담당부서</th><th style="width:130px">인도조건</th><th>현장설치 시 공사업 면허</th><th style="width:52px">설치비<br/>포함</th><th style="width:44px">옵션<br/>계약</th><th style="width:44px">완제품<br/>설치</th></tr><tr><td></td><td class="l"><span></span></td><td></td><td class="l"></td><td class="l"></td><td></td><td></td><td></td></tr></table></div>
+  </div>
+  <div class="row1 recap">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg></span><span class="lb"><i>7</i>핵심 수치 재확인</span></span>
+<div class="chips"><span class="chip"><b>대상</b> 현장설치도 · 설치비 옵션</span><span class="chip"><b>기준금액</b> <span class="num">2천만 원</span> 이상</span><span class="chip"><b>대상액</b> 납품요구금액 × <span class="num">70%</span></span><span class="chip"><b>건축 5억 미만</b> <span class="num">3.11%</span></span><span class="chip"><b>건축 5~50억</b> 2.28% + 4,325천원</span><span class="chip"><b>건축 50억 이상</b> <span class="num">2.37%</span></span><span class="chip"><b>정산</b> 명시금액 이내 실사용액</span><span class="chip"><b>부가세</b> 별도 지급</span><span class="chip"><b>대상 품명</b> <span class="num">96종</span></span><span class="chip"><b>근거</b> 고시 제7조 사용기준</span></div></div>
+  </div>
+  <div class="conclude"><div class="ct">CORE</div><div class="cb">MAS 물품이라도 <b>현장설치도·설치비 옵션이면 건설공사</b>에 해당한다. <b>세부품명별·업체별 납품요구금액 2천만원 이상</b>이면 계상 대상이며, 대상액은 <b>납품요구금액의 70%</b>로 본다. 납품요구서에 금액을 명시하지 않으면 <b>사후정산 자체가 불가</b>하므로 송신 전에 반드시 기재한다.</div></div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 「다수공급자계약(MAS) 물품 산업안전보건관리비 계상방안 안내」 문서의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 고용노동부 고시의 최신 내용을 확인하시기 바랍니다.</p>
+  <p class="pgno">5 / 5</p>
+</div>
+
 </body>
 </html>

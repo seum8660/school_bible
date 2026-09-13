@@ -2,211 +2,321 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<title>건설공사발주자의 산업안전보건업무 가이드북 — 핵심 요약</title>
 <style>
-  @page{ size:A4 portrait; margin:12mm; }
-  .card,.row,.row1,.row2,.doc>div,li,.num,.chips,table,tr{break-inside:avoid;page-break-inside:avoid} /* print-safe */
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { font-family:'Pretendard','Noto Sans KR','Noto Sans CJK KR',sans-serif; color:#1f2937; }
-  .page {
-    width: 100%; max-width: 1180px; min-height:auto; margin: 0 auto; padding:26px 30px 22px;
-    display: flex; flex-direction: column;
+:root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
   }
-  .hd { border-bottom: 2.5px solid #14532d; padding-bottom: 5px; margin-bottom: 8px; }
-  .hd h1 { font-size:26px; color: #14532d; letter-spacing: -0.4px; }
-  .hd .sub { font-size:13px; color: #6b7280; margin-top: 3px; }
-  .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px 18px; align-content:start; }
-  .page > .grid { flex: 1; align-content: start; }
-  .box { border:1px solid #d1d5db; border-radius:10px; padding:16px 18px; }
-  .box.full { grid-column: 1 / -1; }
-  .box h2 { font-size:14.5px; color: #fff; background: #14532d; display: inline-block;
-            padding:4px 12px; border-radius: 3px; margin-bottom: 5px; letter-spacing: -0.3px; }
-  .box h2.accent { background: #b45309; }
-  p, li { font-size:14px; line-height:1.7; color:#374151; }
-  ul { list-style: none; }
-  li { padding-left:14px; position: relative; margin-bottom:5px; }
-  li::before { content: '·'; position: absolute; left: 2px; color: #14532d; font-weight: 700; }
-  .k { color: #14532d; font-weight: 700; }
-  .r { color: #b45309; font-weight: 700; }
-  .law { display:inline-block; background:#dcfce7; color:#14532d; font-size:7.7px; font-weight:700;
-         border-radius:3px; padding:0.5px 4px; margin-left:2px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 4px; }
-  th, td { border:1px solid #cbd5e1; padding:7px 9px; font-size:12.5px; text-align:center; vertical-align:middle; }
-  th { background: #f0fdf4; color: #14532d; font-weight: 700; }
-  .stage { display:flex; gap:4px; margin:4px 0 2px; }
-  .stage div { flex:1; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:4px;
-               padding:3px 4px; font-size:7.9px; text-align:center; color:#166534; }
-  .stage span { display:block; font-weight:700; font-size:8.4px; color:#14532d; }
-  .arw { align-self:center; color:#14532d; font-weight:700; font-size:13px; }
-  .ft { border-top:1px solid #d1d5db; margin-top:8px; padding-top:6px; font-size:11.5px; color:#9ca3af; text-align:center; }
-  .num { display:inline-block; width:19px;height:19px; background:#14532d; color:#fff;
-         border-radius:50%; font-size:12px; text-align:center; line-height:19px; font-weight:700; margin-right:2px;}
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-of-type{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  /* 여백 없이 전면 채움 — 남는 높이를 섹션 사이에 균등 배분 */
+  .page.haspin .rolebar, .page.haspin .row2, .page.haspin .row1{ margin-bottom:auto; }
+  .page.haspin .row1.recap{ margin-bottom:auto; }
+
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.44; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:0.8mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:7pt; line-height:1.44; padding-left:5.6mm; margin-bottom:1.1mm; position:relative; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    position:absolute; left:0; top:0.1mm;
+    display:inline-block; width:4.1mm; height:4.1mm; border-radius:50%;
+    background:var(--teal); color:#fff; font-size:5.6pt; font-weight:800;
+    text-align:center; line-height:4.1mm;
+  }
+
+  .tbl{ width:100%; border-collapse:collapse; margin:0; }
+  .tbl th, .tbl td{
+    border-bottom:0.2mm solid var(--panel-line);
+    padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.24;
+  }
+  .tbl thead th{
+    background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+    border-bottom:0.45mm solid var(--teal);
+  }
+  .tbl td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .tbl td.lf{ text-align:left; }
+  .tbl .o{ color:var(--amber); font-weight:800; }
+  .tbl tbody tr:last-child td{ border-bottom:0; }
+  .tbl tr.hi td{ background:#EAF4F6; }
+
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pgno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; font-weight:700; letter-spacing:0.06em; }
+
+  /* --- 보강: 수식 밴드 (구 박스문서 변환용) --- */
+  .formula{
+    background:var(--panel); border-left:1.3mm solid var(--teal);
+    border-radius:0.8mm 1.2mm 1.2mm 0.8mm; padding:2.2mm 3mm; margin:0 0 2mm 0;
+    text-align:center; font-size:7.4pt; font-weight:700; color:var(--navy); line-height:1.45;
+  }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1.1mm; }
+  .formula:last-child{ margin-bottom:0; }
+  .hl{ background:#DCEBEF; color:#155E6E; font-weight:800; padding:0.2mm 0.8mm; border-radius:0.6mm; }
+
+  /* ===== 구(舊) BIBLE 마크업 호환 레이어 — 인포그래픽 팔레트로 재매핑 ===== */
+  .k{ color:var(--navy); font-weight:700; }
+  .r, .em{ color:var(--amber); font-weight:700; }
+  .b{ display:block; margin-left:5.2mm; font-size:6.6pt; color:var(--body); line-height:1.42; }
+  .b b{ color:var(--navy); font-weight:700; }
+
+  .pill{ display:inline-block; background:var(--navy); color:#fff; font-size:6.6pt; font-weight:700;
+         padding:0.7mm 2.2mm; border-radius:0.9mm; line-height:1.3; }
+  .pill.hi{ background:var(--amber); }
+
+  .law, .tag{ display:inline-block; background:var(--panel); border:0.25mm solid var(--panel-line);
+              border-radius:1mm; padding:0.9mm 1.8mm; font-size:6.3pt; line-height:1.3; color:var(--body); }
+  .law b, .tag b{ color:var(--navy); font-weight:700; }
+
+  /* 흐름도 · 단계 박스 */
+  .flow{ display:flex; flex-wrap:wrap; align-items:stretch; gap:1.6mm; margin-top:1.4mm; }
+  .flow .st{ flex:1; min-width:28mm; background:var(--panel); border:0.25mm solid var(--panel-line);
+             border-radius:1mm; padding:1.5mm 1.8mm; font-size:6.4pt; line-height:1.36; color:var(--body); }
+  .flow .st b{ display:block; color:var(--navy); font-size:6.6pt; margin-bottom:0.6mm; }
+  .flow .st.hi{ border-color:var(--amber); background:var(--amber-bg); }
+  .flow .ar, .arw{ align-self:center; color:var(--teal); font-weight:800; font-size:7.4pt; }
+  .stage{ display:flex; gap:1.2mm; margin:1.2mm 0 0.6mm; }
+  .stage div{ flex:1; background:var(--panel); border:0.25mm solid var(--panel-line); border-radius:1mm;
+              padding:1.1mm 1.2mm; font-size:6.2pt; text-align:center; line-height:1.3; color:var(--body); }
+  .stage span{ display:block; color:var(--navy); font-weight:700; }
+
+  /* 번호 카테고리 행 */
+  .cat{ display:flex; gap:1.6mm; align-items:flex-start; margin-bottom:1mm; }
+  .cat .n{ flex:0 0 auto; width:4.1mm; height:4.1mm; background:var(--teal); color:#fff;
+           border-radius:50%; font-size:5.6pt; font-weight:800; text-align:center; line-height:4.1mm; }
+  .cat .t{ font-size:7pt; line-height:1.44; }
+  .cat .t b{ color:var(--navy); font-weight:700; }
+
+  /* 구 표(class 없는 table) — .tbl 규격으로 통일 */
+  .card table{ width:100%; border-collapse:collapse; margin:0; }
+  .card table th, .card table td{ border-bottom:0.2mm solid var(--panel-line);
+      padding:0.5mm 0.8mm; text-align:center; font-size:6.4pt; line-height:1.26; }
+  .card table th{ background:var(--panel); color:var(--navy); font-weight:700; font-size:6.3pt;
+      border-bottom:0.45mm solid var(--teal); }
+  .card table tr:last-child td{ border-bottom:0; }
+  .card table td.l, .card table td.lf{ text-align:left; }
+  .card table td.h, .card table td.it{ text-align:left; color:var(--navy); font-weight:700; }
+  .card table td.s{ background:var(--panel); color:var(--navy); font-weight:700; }
+  .card table td.t, .card table td.o{ color:var(--amber); font-weight:800; white-space:nowrap; }
+  .card table tr.hi td{ background:#EAF4F6; }
+
+  /* 구 컨테이너 무력화 */
+  .sheet{ display:block; max-height:none; overflow:visible; }
+  .rule-navy{ display:none; }
+  .grid{ display:block; }
+  .box{ border:0; padding:0; background:none; }
+  ol.nlist{ list-style:none; }
+  p.sub{ font-size:6.6pt; color:var(--meta); line-height:1.42; margin:0.8mm 0 0 0; }
+
+  /* 클래스 없는 ul/ol/li — .list 규격으로 통일 */
+  .card ul, .card ol{ margin:0; padding:0; list-style:none; }
+  .card ul li, .card ol li{ font-size:7pt; line-height:1.44; padding-left:2.6mm;
+      text-indent:-2.6mm; margin-bottom:0.8mm; color:var(--body); }
+  .card ul li:last-child, .card ol li:last-child{ margin-bottom:0; }
+  .card ul li::before{ content:"· "; color:var(--teal); font-weight:800; }
+  .card ol.nlist li, .card ul.nlist li{ padding-left:5.6mm; text-indent:0; }
+  .card ol.nlist li::before, .card ul.nlist li::before{ content:none; }
+  .card > p{ font-size:6.6pt; line-height:1.44; color:var(--meta); margin:1mm 0 0 0; }
+  .card p.sub, .card .formula .sub{ color:var(--meta); }
+
+  /* 5대 수칙 등 가로 스트립(.rule) */
+  .card .rule{ display:flex; flex-wrap:nowrap; gap:1.6mm; margin:0; }
+  .card .rule > div{ flex:1; background:var(--panel); border:0.25mm solid var(--panel-line);
+      border-radius:1.2mm; padding:1.6mm 1.4mm; font-size:6.4pt; line-height:1.34;
+      text-align:center; color:var(--body); }
+  .card .rule > div b{ display:block; color:var(--navy); font-size:6.8pt; font-weight:800;
+      margin-bottom:0.7mm; }
+
+  /* 여백 균일 배치 — 자동 늘림(auto) 대신 고정 간격 */
+  .page.evengap{ display:flex; flex-direction:column; }
+  .page.evengap .rule-gray{ margin-top:auto; }
+  .page.evengap .rolebar, .page.evengap .row2, .page.evengap .row1,
+  .page.evengap .row1.recap{ margin-bottom:6.5mm !important; margin-top:0 !important; }
+  .page.evengap .conclude{ margin-top:6.5mm; }
+
+  /* ===== 밀도 보정(x0.900) — 남는 여백을 본문 크기로 흡수 ===== */
+  .list li,.card ul li,.card ol li,.nlist li{ font-size:6.3pt !important; line-height:1.46 !important; }
+  .badge .lb{ font-size:7.74pt !important; }
+  .rolebar .rtx{ font-size:6.21pt !important; }
+  .tbl th,.tbl td,.card table th,.card table td{ font-size:5.76pt !important; padding:0.54mm 0.81mm !important; }
+  .chip{ font-size:5.67pt !important; padding:0.99mm 1.8mm !important; }
+  .card .rule > div{ font-size:5.76pt !important; }
+  .card .rule > div b{ font-size:6.12pt !important; }
+  .conclude .cb{ font-size:7.2pt !important; }
+  .note{ font-size:5.31pt !important; }
+
 </style>
-<style id="onepaper">:root{--navy:#1B3A5B;--navy2:#16304D;--teal:#227C8E;--rust:#B45309;--line:#DCE4EC;--band:#EAF0F5;--chip-bg:#F3F7F9;--chip-line:#DCE4EC;--body:#42505F;--meta:#6B7280;--note:#8A93A0;--grad:linear-gradient(135deg,#1B3A5B,#227C8E);--shadow:0 1px 6px rgba(27,58,91,.13)}
-.rule-navy{height:1.4mm;width:46mm;border-radius:1mm;background:var(--grad)}.rule-gray{background:var(--line)}
-.card{background:#fff;border:.25mm solid var(--line);border-radius:3mm;box-shadow:var(--shadow)}
-.badge{background:none;color:var(--navy);border-radius:0;white-space:normal;border-bottom:.5mm solid var(--teal);padding:0 0 1.4mm 0}
-.badge.rust{background:none;color:#B45309;border-bottom-color:#D9730D}
-.list li::before{content:"▪ ";color:var(--teal);font-weight:400}.nlist .no{color:var(--teal)}.num,.formula .num{color:var(--teal)}
-.formula{background:var(--band);border-left:1.4mm solid var(--teal);border-radius:1.4mm 2mm 2mm 1.4mm}
-.chip{background:var(--chip-bg);border-color:var(--line);border-radius:1.6mm}
-.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1;border-left:1.4mm solid #D9730D;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0;font-size:7.6pt;line-height:1.5}
-.rolet{color:#B45309;font-weight:800}
-.conclude{background:var(--grad);border-radius:3mm;padding:3.4mm 4.2mm;margin:3.2mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
-.conclude .lab{display:inline-block;font-size:6.6pt;font-weight:800;letter-spacing:.06em;opacity:.85;margin-right:2.4mm}
-.conclude .txt{font-size:8pt;font-weight:600;line-height:1.5}
-.hd{border-bottom:none!important;padding-bottom:0}.hd h1{color:#1B3A5B!important}
-.hd::after{content:"";display:block;height:1.4mm;width:46mm;border-radius:1mm;background:var(--grad);margin-top:2mm}
-.box{background:#fff;border:1px solid #DCE4EC!important;border-radius:10px;box-shadow:var(--shadow)}
-.box h2{background:none!important;color:#1B3A5B!important;border-bottom:2px solid #227C8E;border-radius:0!important;padding:0 0 4px 0!important;margin-bottom:8px!important}
-.box h2.accent{color:#B45309!important;border-bottom-color:#D9730D}
-.box li::before{content:'▪'!important;color:#227C8E!important;font-weight:400!important}
-.box p,.box li{color:#42505F}.k{color:#1B3A5B!important}.r{color:#B45309!important}
-.law,.tag{background:#F3F7F9!important;color:#1B3A5B!important;border-color:#DCE4EC!important}
-.box th{background:#EAF0F5!important;color:#1B3A5B!important}.box th,.box td{border-color:#DCE4EC!important}
-.stage div,.flow div{background:#F3F7F9!important;border-color:#DCE4EC!important;color:#42505F!important}
-.stage span{color:#1B3A5B!important}.arw,.ar{color:#227C8E!important}
-.box .num{background:#227C8E!important;color:#fff!important}
-.ft{color:#8A93A0!important;border-top-color:#DCE4EC!important}
-.box .formula{background:#EAF0F5!important;border-left:1.4mm solid #227C8E;border-radius:1.4mm 2mm 2mm 1.4mm;color:#1B3A5B!important}</style>
-<style id="onepaper-flow">.row2,.grid{grid-template-columns:1fr!important}
-.page{min-height:0!important;height:auto!important;page-break-after:auto!important;break-after:auto!important;margin:0 auto!important;box-shadow:none!important;padding-top:0!important;padding-bottom:0!important}
-.page:first-of-type{padding-top:13mm!important}
-.card,.box,.formula,table,.chips,.stage,.flow{break-inside:avoid;page-break-inside:avoid}
-.pageno{display:none!important}
-@media screen{body{background:#fff!important}}</style>
-<style id="onepaper-ig">:root{--navy:#1B3A5B;--navy2:#16304d;--teal:#227C8E;--ink:#1B3A5B;--body:#42505F;--gray:#6B7280;--light:#8A93A0;--panel:#EAF0F5;--panel2:#F3F7F9;--line:#DCE4EC;--grad:linear-gradient(135deg,#1B3A5B 0%,#227C8E 100%);--shadow:0 .5mm 1.8mm rgba(27,58,91,.13)}
-body{color:var(--body)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.title,.hd h1{color:var(--navy)!important;font-size:18pt!important;font-weight:800!important;letter-spacing:-.02em;line-height:1.25;padding:0 0 2.4mm 0!important;border:none!important}
-.title::after,.hd h1::after{content:"";display:block;height:1.4mm;width:46mm;margin-top:2mm;border-radius:1mm;background:var(--grad)}
-.hd,.hd::after{border:none!important}
-.meta,.hd .meta,.hd p{color:var(--gray)!important;font-size:6.4pt!important;line-height:1.45}
-.rule-navy{height:0!important;border:none!important;margin:2.4mm 0 3.6mm 0!important;background:none!important}
-.rule-gray{height:0!important;border:none!important;border-top:.25mm solid var(--line)!important;margin:3.6mm 0 2mm 0!important;background:none!important}
-.card,.box{border:none!important;border-top:.3mm solid var(--line)!important;border-bottom:.3mm solid var(--line)!important;border-radius:0!important;background:#fff!important;box-shadow:none!important;padding:3.2mm 4mm 3.4mm 4mm!important}
-.badge,.box h2{display:inline-block!important;background:none!important;color:var(--navy)!important;font-size:9.2pt!important;font-weight:800!important;letter-spacing:-.01em;line-height:1.35;white-space:normal!important;padding:0 0 1.6mm 0!important;border:none!important;border-bottom:.5mm solid var(--teal)!important;border-radius:0!important;margin:0 0 2.6mm 0!important}
-.badge.emph{background:var(--navy2)!important;color:#fff!important;border-bottom:none!important;border-radius:1.6mm!important;padding:1mm 2.8mm!important}
-.list li,.box li,.nlist li{font-size:7.6pt!important;line-height:1.62!important;color:var(--body)!important;margin-bottom:1.7mm!important}
-.list li::before,.box li::before{content:"▪  "!important;color:var(--teal)!important;font-weight:700!important}
-.nlist li::before{content:none!important}
-.nlist .no,.box .num{display:inline-block!important;color:#fff!important;background:var(--teal)!important;font-weight:700!important;font-size:6.6pt!important;width:4mm;height:4mm;line-height:4mm!important;text-align:center;border-radius:50%!important;margin-right:1.4mm}
-.term,.k,.chip b{color:var(--navy)!important;font-weight:700!important}
-.num,.r{color:var(--teal)!important;font-weight:800!important}
-.formula{background:var(--panel)!important;border:none!important;border-left:1.4mm solid var(--teal)!important;border-radius:1.4mm 2mm 2mm 1.4mm!important;padding:2.8mm 3.8mm!important;margin:0 0 3mm 0!important;text-align:center;font-size:7.6pt!important;font-weight:600;line-height:1.55;color:var(--navy)!important}
-.formula .num{color:var(--teal)!important}
-.formula .sub{display:block;font-size:6.5pt;font-weight:500;color:var(--gray)!important;margin-top:1.4mm;line-height:1.45}
-.chip,.law,.tag{background:var(--panel2)!important;border:.25mm solid var(--line)!important;border-radius:1.6mm!important;font-size:6.7pt!important;line-height:1.35;padding:1.4mm 2.6mm!important;color:var(--body)!important}
-.chips{display:flex;flex-wrap:wrap;gap:2mm}
-.hl{background:#DCEBEF!important;color:#155E6E!important;font-weight:800;padding:.2mm 1mm;border-radius:.8mm}
-th{background:var(--panel)!important;color:var(--navy)!important}th,td{border-color:var(--line)!important}
-.stage div,.flow div{background:var(--panel2)!important;border-color:var(--line)!important;color:var(--body)!important}
-.stage span{color:var(--navy)!important}.arw,.ar{color:var(--teal)!important}
-.note,.ft{text-align:center;font-size:6.1pt!important;line-height:1.5;color:var(--light)!important;border-top-color:var(--line)!important}
-.conclude{background:var(--grad)!important;border-radius:3mm;padding:4mm 5mm;margin:1mm 0 0 0;color:#fff;box-shadow:var(--shadow)}
-.conclude .lab{display:inline-block;color:#7FD4E3;font-weight:800;font-size:8.4pt;margin-right:2mm}
-.conclude .txt{font-size:9pt;font-weight:700;line-height:1.5}.conclude .txt b{color:#8FE0EE}
-.rolebar{display:flex;align-items:flex-start;gap:2.2mm;background:#FDF0E1!important;border-left:1.4mm solid #D9730D!important;border-radius:0 1.6mm 1.6mm 0;padding:2mm 3mm;margin:0 0 2.8mm 0}
-.rolebar .t{font-size:7.3pt;line-height:1.52;color:#7C3D0A!important}.rolebar .t b{color:#B45309!important;font-weight:800}
-.rolet{color:#B45309!important;font-weight:800}
-.page{padding:13mm 10mm 8mm!important}</style>
-<link rel="stylesheet" href="onepaper-read-v2.css">
 </head>
 <body>
-<div class="page">
-  <div class="hd">
-    <h1>건설공사발주자의 산업안전보건업무 가이드북 — 핵심 요약</h1>
-    <div class="sub">고용노동부 산업안전보건본부 · 2024.10. · 원문 126면 &nbsp;|&nbsp; 근거: 「산업안전보건법」 제67조 ~ 제73조 (건설공사발주자의 산업재해 예방 조치)</div>
+
+<div class="page haspin">
+
+  <h1 class="title">건설공사발주자의 산업안전보건업무 가이드북 — 핵심 요약</h1>
+  <div class="ubar"></div>
+  <p class="meta">고용노동부 산업안전보건본부 · 2024.10. · 원문 126면 | 근거: 「산업안전보건법」 제67조 ~ 제73조 (건설공사발주자의 산업재해 예방 조치)</p>
+  <div class="rolebar"><span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">건설공사발주자 = 학교·교육청</span> — 산업안전보건법 제67조~제73조의 <b class="term">6대 책무</b>를 직접 지는 주체로, 안전보건대장 작성·안전보건조정자 선임·공사기간 임의단축 금지·기술지도 계약·산업안전보건관리비 계상이 모두 발주자 의무이다. <span class="rolet">자기공사자</span>도 동일한 의무를 진다.</span></div>
+  <div class="row1">
+    <div class="card tealtop"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/><path d="M8 3v18"/></svg></span><span class="lb"><i>1</i>건설공사발주자의 6대 산업안전보건 책무</span></span>
+<div class="grid">
+<ul>
+<li><span class="k">① 단계별 안전보건대장 작성</span><span class="law">법 §67</span> 계획·설계·시공 단계부터 위험요인 발굴 및 위험성 감소조치 마련</li>
+<li><span class="k">② 안전보건조정자 선임</span><span class="law">법 §68</span> 같은 장소 복수공사의 혼재작업 재해 예방</li>
+<li><span class="k">③ 공사기간 단축·공법변경 금지</span><span class="law">법 §69</span> 위험공법 사용, 정당한 사유 없는 공법 변경 금지</li>
+</ul>
+<ul>
+<li><span class="k">④ 공사기간 연장</span><span class="law">법 §70</span> 지연 시 특별한 사유 없으면 연장 수용</li>
+<li><span class="k">⑤ 설계변경 수용</span><span class="law">법 §71</span> 전문가 의견 통한 설계변경 요청 시 수용</li>
+<li><span class="k">⑥ 관리비 계상·기술지도</span><span class="law">법 §72·73</span> 산업안전보건관리비 계상 및 중소현장 재해예방 기술지도 계약</li>
+</ul>
+</div></div>
   </div>
-
-  <div class="grid">
-    <!-- 1. 발주자 6대 책무 -->
-    <div class="box full">
-      <h2 class="accent">1. 건설공사발주자의 6대 산업안전보건 책무</h2>
-      <div class="grid" style="gap:2px 14px; margin-top:3px;">
-        <ul>
-          <li><span class="k">① 단계별 안전보건대장 작성</span><span class="law">법 §67</span> 계획·설계·시공 단계부터 위험요인 발굴 및 위험성 감소조치 마련</li>
-          <li><span class="k">② 안전보건조정자 선임</span><span class="law">법 §68</span> 같은 장소 복수공사의 혼재작업 재해 예방</li>
-          <li><span class="k">③ 공사기간 단축·공법변경 금지</span><span class="law">법 §69</span> 위험공법 사용, 정당한 사유 없는 공법 변경 금지</li>
-        </ul>
-        <ul>
-          <li><span class="k">④ 공사기간 연장</span><span class="law">법 §70</span> 지연 시 특별한 사유 없으면 연장 수용</li>
-          <li><span class="k">⑤ 설계변경 수용</span><span class="law">법 §71</span> 전문가 의견 통한 설계변경 요청 시 수용</li>
-          <li><span class="k">⑥ 관리비 계상·기술지도</span><span class="law">법 §72·73</span> 산업안전보건관리비 계상 및 중소현장 재해예방 기술지도 계약</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- 2. 안전보건대장 -->
-    <div class="box">
-      <h2>2. 건설공사 안전보건대장 <span style="font-weight:400;font-size:12px;">(법 §67)</span></h2>
-      <ul>
-        <li><span class="k">작성 대상</span> 총공사금액 <span class="r">50억 원 이상</span> 건설공사 (설계비용은 미포함)</li>
-        <li><span class="k">전문가 확인</span> 산업안전지도사·건설안전기술사 등이 대장의 적정성 확인 (’21.11.19. 이후 설계계약분)</li>
-        <li><span class="k">서식 변경</span> ’24.7.1. 이후 설계계약분부터 개정 서식 적용</li>
-      </ul>
-      <div class="stage">
-        <div><span>기본대장</span>발주자 작성<br>설계계약 前</div>
-        <div class="arw">›</div>
-        <div><span>설계대장</span>설계자 작성<br>시공사 선정 前</div>
-        <div class="arw">›</div>
-        <div><span>공사대장</span>시공사 작성<br>착공일 前日</div>
-      </div>
-      <p style="margin-top:2px;"><span class="r">벌칙</span> 미작성·이행확인 누락·전문가 미확인 시 과태료 1천만 원 이하</p>
-    </div>
-
-    <!-- 3. 안전보건조정자 -->
-    <div class="box">
-      <h2>3. 안전보건조정자 <span style="font-weight:400;font-size:12px;">(법 §68)</span></h2>
-      <ul>
-        <li><span class="k">선임 사유</span> 2개 이상 건설공사가 같은 장소에서 시행되는 등 작업 혼재로 재해 우려가 있는 경우</li>
-        <li><span class="k">업무</span> 공사별 시공사의 작업시기·내용 조정, 안전보건조치 개선 등으로 혼재작업 재해 예방</li>
-        <li>조정자 업무 수행만으로 발주자가 도급인 안전보건 책임을 지는 것은 아님</li>
-        <li><span class="r">벌칙</span> 미선임 시 과태료 500만 원</li>
-      </ul>
-    </div>
-
-    <!-- 4. 공사기간 연장 및 설계변경 -->
-    <div class="box">
-      <h2>4. 공사기간 연장 및 설계변경 <span style="font-weight:400;font-size:12px;">(법 §69~71)</span></h2>
-      <ul>
-        <li><span class="k">금지</span> 산정된 공사기간 임의 단축, 공사비 절감 목적 위험공법 사용·무단 공법변경 (노무·경비 절감 위한 단축 포함)</li>
-        <li><span class="k">적정 공기</span> 「공사기간 산정기준」·「적정 공사기간 확보 가이드라인」 참조하여 산정</li>
-        <li><span class="k">연장 절차</span> 불가항력·발주자 귀책 시, 사유 종료 후 <span class="r">10일 내</span> 요청 → 원청은 30일 내 조치·연장요청</li>
-        <li><span class="k">설계변경</span> 가설구조물 붕괴 등 위험 시 전문가 의견 들어 요청 → 기술적 불가 아니면 반영</li>
-      </ul>
-    </div>
-
-    <!-- 5. 기술지도 -->
-    <div class="box">
-      <h2>5. 산업재해 예방 기술지도 <span style="font-weight:400;font-size:12px;">(법 §73)</span></h2>
-      <ul>
-        <li><span class="k">대상</span> 공사금액 <span class="r">1억 원 이상 ~ 120억 원 미만</span> + 「건축법」상 건축허가 대상 공사</li>
-        <li><span class="k">계약 주체</span> ’22.8.18.부터 발주자(자기공사자 포함)가 착공일 전날까지 지도기관과 계약</li>
-        <li>전담 안전관리자 선임 의무 없는 중·소 현장 대상, 정기 지도 실시</li>
-        <li>1억 원 미만 공사는 무료 기술지도 지원</li>
-      </ul>
-    </div>
-
-    <!-- 6. 산업안전보건관리비 -->
-    <div class="box">
-      <h2>6. 산업안전보건관리비 계상 <span style="font-weight:400;font-size:12px;">(법 §72)</span></h2>
-      <ul>
-        <li>공사종류 4종 개편(’24.1) — 건축·토목·중건설·특수건설</li>
-        <li><span class="k">조정</span> 설계변경·물가변동 시 재계상 &nbsp; <span class="k">확인</span> 6개월마다 사용내역 확인, 목적 외 사용 금지</li>
-      </ul>
-      <table>
-        <tr><th>공사종류</th><th>건축</th><th>토목</th><th>중건설</th><th>특수건설</th></tr>
-        <tr><td>기초액(천원)<br><span style="font-size:7px;color:#6b7280;">’25.1.1~</span></td><td>4,325</td><td>3,300</td><td>2,975</td><td>2,450</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="ft">본 요약은 「건설공사발주자의 산업안전보건업무 가이드북」(고용노동부, 2024.10.)의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 관계 법령·고시의 최신 개정 내용을 확인하시기 바랍니다.</div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M10 9v11"/></svg></span><span class="lb"><i>2</i>건설공사 안전보건대장 (법 §67)</span></span>
+<ul>
+<li><span class="k">작성 대상</span> 총공사금액 <span class="r">50억 원 이상</span> 건설공사 (설계비용은 미포함)</li>
+<li><span class="k">전문가 확인</span> 산업안전지도사·건설안전기술사 등이 대장의 적정성 확인 (’21.11.19. 이후 설계계약분)</li>
+<li><span class="k">서식 변경</span> ’24.7.1. 이후 설계계약분부터 개정 서식 적용</li>
+</ul>
+<div class="stage">
+<div><span>기본대장</span>발주자 작성<br/>설계계약 前</div>
+<div class="arw">›</div>
+<div><span>설계대장</span>설계자 작성<br/>시공사 선정 前</div>
+<div class="arw">›</div>
+<div><span>공사대장</span>시공사 작성<br/>착공일 前日</div>
 </div>
+<p><span class="r">벌칙</span> 미작성·이행확인 누락·전문가 미확인 시 과태료 1천만 원 이하</p></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M15 20c0-2.6 1.5-4.2 4-4.2s2 1 2 1"/></svg></span><span class="lb"><i>3</i>안전보건조정자 (법 §68)</span></span>
+<ul>
+<li><span class="k">선임 사유</span> 2개 이상 건설공사가 같은 장소에서 시행되는 등 작업 혼재로 재해 우려가 있는 경우</li>
+<li><span class="k">업무</span> 공사별 시공사의 작업시기·내용 조정, 안전보건조치 개선 등으로 혼재작업 재해 예방</li>
+<li>조정자 업무 수행만으로 발주자가 도급인 안전보건 책임을 지는 것은 아님</li>
+<li><span class="r">벌칙</span> 미선임 시 과태료 500만 원</li>
+</ul></div>
+  </div>
+  <div class="row2">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3H8z"/><path d="M16 5h3v16H5V5h3"/><path d="M9 12h6M9 16h4"/></svg></span><span class="lb"><i>4</i>공사기간 연장 및 설계변경 (법 §69~71)</span></span>
+<ul>
+<li><span class="k">금지</span> 산정된 공사기간 임의 단축, 공사비 절감 목적 위험공법 사용·무단 공법변경 (노무·경비 절감 위한 단축 포함)</li>
+<li><span class="k">적정 공기</span> 「공사기간 산정기준」·「적정 공사기간 확보 가이드라인」 참조하여 산정</li>
+<li><span class="k">연장 절차</span> 불가항력·발주자 귀책 시, 사유 종료 후 <span class="r">10일 내</span> 요청 → 원청은 30일 내 조치·연장요청</li>
+<li><span class="k">설계변경</span> 가설구조물 붕괴 등 위험 시 전문가 의견 들어 요청 → 기술적 불가 아니면 반영</li>
+</ul></div>
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M10 9v11"/></svg></span><span class="lb"><i>5</i>산업재해 예방 기술지도 (법 §73)</span></span>
+<ul>
+<li><span class="k">대상</span> 공사금액 <span class="r">1억 원 이상 ~ 120억 원 미만</span> + 「건축법」상 건축허가 대상 공사</li>
+<li><span class="k">계약 주체</span> ’22.8.18.부터 발주자(자기공사자 포함)가 착공일 전날까지 지도기관과 계약</li>
+<li>전담 안전관리자 선임 의무 없는 중·소 현장 대상, 정기 지도 실시</li>
+<li>1억 원 미만 공사는 무료 기술지도 지원</li>
+</ul></div>
+  </div>
+  <div class="row1">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span><span class="lb"><i>6</i>산업안전보건관리비 계상 (법 §72)</span></span>
+<ul>
+<li>공사종류 4종 개편(’24.1) — 건축·토목·중건설·특수건설</li>
+<li><span class="k">조정</span> 설계변경·물가변동 시 재계상   <span class="k">확인</span> 6개월마다 사용내역 확인, 목적 외 사용 금지</li>
+</ul>
+<table>
+<tr><th>공사종류</th><th>건축</th><th>토목</th><th>중건설</th><th>특수건설</th></tr>
+<tr><td>기초액(천원)<br/><span>’25.1.1~</span></td><td>4,325</td><td>3,300</td><td>2,975</td><td>2,450</td></tr>
+</table></div>
+  </div>
+  <div class="row1 recap">
+    <div class="card"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg></span><span class="lb"><i>7</i>핵심 수치 재확인</span></span>
+<div class="chips"><span class="chip"><b>안전보건대장</b> <span class="num">50억 원</span> 이상</span><span class="chip"><b>서식 개정</b> ’24.7.1. 이후 설계계약분</span><span class="chip"><b>전문가 확인</b> ’21.11.19. 이후 설계계약분</span><span class="chip"><b>기술지도</b> <span class="num">1억~120억 원</span> 미만</span><span class="chip"><b>지도 계약</b> 착공일 전날까지</span><span class="chip"><b>관리비 계상</b> <span class="num">2천만 원</span> 이상</span><span class="chip"><b>사용내역 확인</b> <span class="num">6개월</span>마다</span><span class="chip"><b>공사종류</b> 4종(건축·토목·중건설·특수)</span><span class="chip"><b>공기연장 요청</b> 사유 종료 후 <span class="num">10일</span> 내</span><span class="chip"><b>근거</b> 산안법 §67~§73</span></div></div>
+  </div>
+  <div class="conclude"><div class="ct">CORE</div><div class="cb">발주자 의무는 <b>금액 기준으로 갈린다</b> — 안전보건대장 50억 이상, 기술지도 1억~120억 미만, 산업안전보건관리비 2천만원 이상. 특히 <b>기술지도는 2022. 8. 18.부터 발주자가 착공일 전날까지 직접 계약</b>하여야 하며, <b>정당한 사유 없는 공사기간 단축·공법 변경은 그 자체가 위법</b>이다.</div></div>
+  <div class="rule-gray"></div>
+  <p class="note">본 요약은 「건설공사발주자의 산업안전보건업무 가이드북」(고용노동부, 2024.10.)의 핵심을 A4 1면으로 정리한 참고자료입니다. 실제 적용 시 원문 및 관계 법령·고시의 최신 개정 내용을 확인하시기 바랍니다.</p>
+  <p class="pgno">1 / 1</p>
+</div>
+
 </body>
 </html>
-
-<style>@media screen{body{width:auto;background:#fff}.doc,.page{margin:0 auto;box-shadow:none;max-width:1180px}}
-.row,.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
-.row .card,.grid .card{width:auto}
-.full,.box.full{grid-column:1/-1}
-@media(max-width:820px){.row,.grid{grid-template-columns:1fr}}</style>

@@ -5783,6 +5783,7 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
       e.preventDefault();
       var st=e.target.closest('.man-go.g-site');
       if(st){ window.open(st.getAttribute('data-site'),'_blank','noopener'); return; }
+      if(e.target.closest('.man-go.g-pdf')){ var p=c.getAttribute('data-dl'); if(p) window.open(encodeURI(p),'_blank','noopener'); return; }
       if(!e.target.closest('.man-go.g-sum')) return;
       var src=c.getAttribute('data-inline'), title=c.getAttribute('data-title')||'', dl=c.getAttribute('data-dl')||src;
       if(box.getAttribute('data-open')===src){ box.style.display='none'; box.removeAttribute('data-open'); box.innerHTML=''; return; }

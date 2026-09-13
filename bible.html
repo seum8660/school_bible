@@ -209,11 +209,11 @@
   .tab.active[data-p="comp"]{background:var(--p-comp);}
   .tab.active[data-p="manual"]{background:var(--p-comp);color:#fff;}
   .tab.active[data-p="safety"]{background:var(--ink);color:#fff;}
-  .tab.active[data-p="cert"]{background:#6d28d9;color:#fff;}
-  .tab.active[data-p="calc"]{background:#6d28d9;color:#fff;}
-  .tab.active[data-p="bom"]{background:#6d28d9;color:#fff;}
-  .tab.active[data-p="wx"]{background:#6d28d9;color:#fff;}
-  .tab[data-p="calc"]:not(.active),.tab[data-p="cert"]:not(.active),.tab[data-p="bom"]:not(.active),.tab[data-p="wx"]:not(.active){border-color:#7c3aed;color:#7c3aed;}
+  .tab.active[data-p="cert"]{background:#1b64da;color:#fff;}
+  .tab.active[data-p="calc"]{background:#1b64da;color:#fff;}
+  .tab.active[data-p="bom"]{background:#1b64da;color:#fff;}
+  .tab.active[data-p="wx"]{background:#1b64da;color:#fff;}
+  .tab[data-p="calc"]:not(.active),.tab[data-p="cert"]:not(.active),.tab[data-p="bom"]:not(.active),.tab[data-p="wx"]:not(.active){border-color:#1b64da;color:#1b64da;}
   @media(max-width:860px){
     .layout{flex-direction:column;gap:0;padding:0;max-width:none;}
     .sidebar{position:sticky;top:0;z-index:50;flex:none;width:100%;
@@ -753,7 +753,7 @@
   .tab:hover,.extlink:hover,.fchip:hover,.subbtn:hover,.calc-reset:hover,.expand-btns button:hover{transform:none;box-shadow:var(--inset);}
   .tab.active{box-shadow:var(--cardsh-sm);border:var(--glassbd);}
   .tab.active[data-p="overview"]{background:var(--accent);color:var(--accent-ink);}
-  .tab[data-p="calc"]:not(.active),.tab[data-p="cert"]:not(.active),.tab[data-p="bom"]:not(.active),.tab[data-p="wx"]:not(.active){border:1px solid #7c3aed;color:#7c3aed;}
+  .tab[data-p="calc"]:not(.active),.tab[data-p="cert"]:not(.active),.tab[data-p="bom"]:not(.active),.tab[data-p="wx"]:not(.active){border:1px solid #1b64da;color:#1b64da;}
   [data-theme="dark"] .tab[data-p="calc"]:not(.active),[data-theme="dark"] .tab[data-p="cert"]:not(.active),[data-theme="dark"] .tab[data-p="bom"]:not(.active),[data-theme="dark"] .tab[data-p="wx"]:not(.active){border-color:#b794f6;color:#c4a8ff;background:rgba(124,58,237,.16);}
   .cfield input:focus,.cfield select:focus,.search-box input:focus,#global-q:focus{box-shadow:var(--inset),0 0 0 3px var(--accent-soft);}
 
@@ -1015,19 +1015,19 @@
     border:1px solid var(--border);padding:11px 48px 11px 14px;width:100%;outline:none;box-shadow:none;transition:background .12s}
   #gz-q:hover,#gz-q:focus{border-color:var(--ink);background:var(--surface);box-shadow:none}
   /* 입력 패널 — 카드 문법 통일 */
-  .gz-panel{gap:16px;border:1px solid var(--line);border-radius:0;box-shadow:none;padding:18px 20px;margin-bottom:0;
-    background:var(--surface);grid-template-columns:repeat(5,minmax(110px,1fr)) auto}
+  .gz-panel{gap:16px;border:1.5px solid #1b64da;border-radius:0;box-shadow:none;padding:18px 20px;margin-bottom:0;
+    background:#eaf2ff;grid-template-columns:repeat(5,minmax(110px,1fr)) auto}
   .gz-field{align-items:stretch;gap:0;padding:0;border-left:0}
-  .gz-field label{font-size:13.5px;font-weight:700;color:var(--ink-2);text-align:left;letter-spacing:0;
+  .gz-field label{font-size:16px;font-weight:800;color:var(--ink);text-align:left;letter-spacing:0;
     text-transform:none;margin-bottom:8px;white-space:nowrap}
-  .gz-field label span{color:var(--muted);font-weight:600;font-size:12.5px}
+  .gz-field label span{color:var(--ink-2);font-weight:600;font-size:14px;margin-left:2px}
   .gz-field input,.gz-field select{width:100%;border:1.5px solid var(--ink)!important;
-    border-radius:4px!important;box-shadow:none!important;padding:11px 12px;font-size:16px;font-weight:800;
-    color:var(--ink);background:var(--surface-2);text-align:left;transition:border-color .12s}
-  .gz-field input::placeholder{color:var(--faint);font-weight:600;font-size:14px}
+    border-radius:4px!important;box-shadow:none!important;padding:12px 14px;font-size:17px;font-weight:800;
+    color:var(--ink);background:var(--surface);text-align:left;transition:border-color .12s}
+  .gz-field input::placeholder{color:var(--ink-2);font-weight:700;font-size:16px;opacity:1}
   .gz-field input:hover,.gz-field select:hover,.gz-field input:focus,.gz-field select:focus{
     border-color:var(--ink)!important;background:var(--surface);box-shadow:none!important}
-  .gz-count{font-size:13.5px;font-weight:700;color:var(--ink-2);align-items:baseline;gap:6px;
+  .gz-count{font-size:15px;font-weight:800;color:var(--ink);align-items:baseline;gap:6px;
     padding:0 0 10px 20px;border-left:1px solid var(--line);background:transparent;align-self:end}
   .gz-count b{font-size:32px;font-weight:900;color:var(--ink);margin:0;letter-spacing:-.03em}
   /* 건축법령 체크 도구 (bl) */
@@ -1124,7 +1124,7 @@
   .side-nav .extlink:hover .lb,.side-nav .extlink:hover .ext{color:#fff!important}
   .side-nav .extlink:hover .dot{background:#fff!important}
   .side-nav .tab[data-p="calc"]:not(.active):hover,.side-nav .tab[data-p="cert"]:not(.active):hover,
-  .side-nav .tab[data-p="bom"]:not(.active):hover,.side-nav .tab[data-p="wx"]:not(.active):hover{background:#6d28d9!important;border-color:#6d28d9!important}
+  .side-nav .tab[data-p="bom"]:not(.active):hover,.side-nav .tab[data-p="wx"]:not(.active):hover{background:#1b64da!important;border-color:#1b64da!important}
 
   .side-nav .tab:not(.active):hover,.side-nav .extlink:hover{
     background:var(--accent)!important;background-image:none!important;
@@ -1133,7 +1133,7 @@
   .side-nav .tab:not(.active):hover .dot,.side-nav .extlink:hover .dot{background:#fff!important;border-color:#fff!important}
   .side-nav .tab[data-p="calc"]:not(.active):hover,.side-nav .tab[data-p="cert"]:not(.active):hover,
   .side-nav .tab[data-p="bom"]:not(.active):hover,.side-nav .tab[data-p="wx"]:not(.active):hover{
-    background:#6d28d9!important;border-color:#6d28d9!important;color:#fff!important}
+    background:#1b64da!important;border-color:#1b64da!important;color:#fff!important}
 
   .side-nav .tab:not(.active):hover,.side-nav .extlink:hover{
     background:#3182f6!important;background-image:none!important;
@@ -1643,7 +1643,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <button class="tab ch" data-p="comp" style="width:204px"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>제5장 준공</button>
       <button class="tab" data-p="safety"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.4-2.9 7.6-7 9-4.1-1.4-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span>교육시설안전</button>
       <button class="tab" data-p="manual"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h6v18H6a2 2 0 0 1-2-2z"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg></span>매뉴얼 및 지침</button>
-      <button type="button" class="nav-grp nav-fold" id="foldOps" aria-expanded="false">실무 운영<span class="fold-i">＋</span></button>
+      <button type="button" class="nav-grp nav-fold" id="foldOps" aria-expanded="true">실무 운영<span class="fold-i">＋</span></button>
       <button class="tab ops" data-p="proc"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h13"/><circle cx="19" cy="12" r="1.6"/></svg></span>실무 절차 타임라인</button>
       <button class="tab ops" data-p="check"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 9l2 2 4-4M8 16h8"/></svg></span>단계별 체크리스트</button>
       <button class="tab" data-p="check-owner" data-sub="check" data-ops="1" style="display:none"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c1.5-3.4 4-5 7-5s5.5 1.6 7 5"/></svg></span>발주자 의무</button>
@@ -2924,6 +2924,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
       <a class="man-card" data-kind="법령" href="manuals/52_건설공사직접시공의무제도_요약.html" data-inline="manuals/52_건설공사직접시공의무제도_요약.html" data-title="건설공사 직접시공 의무제도 — 핵심 요약"><span class="man-no">45</span><div class="man-t"><b>건설공사 직접시공 의무제도</b><span>건설산업기본법 제28조의2 · 70억 미만 도급공사 직접시공 비율 · 직접시공계획 통보 · 위반 시 제재</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="직접시공">#직접시공</span><span class="htag" data-tag="건설산업기본법">#건설산업기본법</span><span class="htag" data-tag="하도급">#하도급</span><span class="htag" data-tag="시공">#시공</span></div></a>
       <a class="man-card" data-kind="가이드" href="manuals/53_건축물해체계획서검토_요약.html" data-inline="manuals/53_건축물해체계획서검토_요약.html" data-title="건축물 해체계획서 검토 사례집 — 핵심 요약"><span class="man-no">46</span><div class="man-t"><b>건축물 해체계획서 검토 사례집</b><span>건축물관리법 제30~34조·국토교통부고시 제2022-446호 · 허가·신고 대상 · 사전조사·해체공법·구조안전계획 · 해체감리</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="해체계획서">#해체계획서</span><span class="htag" data-tag="건축물관리법">#건축물관리법</span><span class="htag" data-tag="해체감리">#해체감리</span><span class="htag" data-tag="구조안전">#구조안전</span><span class="htag" data-tag="철거">#철거</span></div></a>
       <a class="man-card" data-kind="지침" href="manuals/54_소규모건설공사설계적용_요약.html" data-inline="manuals/54_소규모건설공사설계적용_요약.html" data-title="소규모 건설공사 설계 시 유의사항 — 요약"><span class="man-no">47</span><div class="man-t"><b>소규모 건설공사 설계 적용</b><span>전남교육청 계약업무 안내 12항 · 소규모 할증·가산 적용 예시 · 표준품셈 근거 · 설계 검토 체크리스트</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="소규모공사">#소규모공사</span><span class="htag" data-tag="할증">#할증</span><span class="htag" data-tag="표준품셈">#표준품셈</span><span class="htag" data-tag="설계내역">#설계내역</span><span class="htag" data-tag="설계">#설계</span></div></a>
+      <a class="man-card" data-kind="가이드" href="manuals/55_공기연장간접공사비가이드라인_요약.html" data-inline="manuals/55_공기연장간접공사비가이드라인_요약.html" data-title="공기연장에 따른 간접공사비 실무 가이드라인 — 요약"><span class="man-no">48</span><div class="man-t"><b>공기연장 간접공사비 실무 가이드라인</b><span>서울시 Ver.1.1 · 간접비 정의·구성·근거 · 설계변경 간접비와 구분 · 실정보고~반영 업무절차 · 항목별 산식·증빙</span></div><span class="man-badges"><span class="man-go g-sum">요약 ▾</span></span><div class="man-tagrow"><span class="htag" data-tag="공기연장">#공기연장</span><span class="htag" data-tag="간접공사비">#간접공사비</span><span class="htag" data-tag="계약금액조정">#계약금액조정</span><span class="htag" data-tag="실정보고">#실정보고</span><span class="htag" data-tag="시공">#시공</span></div></a>
     </div>
     <div id="man-inline" style="display:none;margin-top:16px"></div>
 
@@ -3014,7 +3015,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
   <!-- ============ 일위대가 검색 ============ -->
   <section class="panel" id="ilwidan">
     <div class="sec-head">
-      <span class="chip" style="background:#6d28d9">단가</span>
+      <span class="chip" style="background:#1b64da">단가</span>
       <div><h2>2026년 상반기 일위대가(건축) 단가 검색</h2><p>공종별 단가 · 자재단가 · 호표 내역 (4,465건)</p></div>
     </div>
     <iframe id="ilwidan-frame" data-src="일위대가_검색_대시보드.html?v=20260731" title="일위대가 검색" style="width:100%;height:80vh;min-height:600px;border:1px solid var(--line);border-radius:var(--rad);background:var(--surface);box-shadow:none;"></iframe>
@@ -3023,7 +3024,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
   <!-- ============ 표준품셈 체크 ============ -->
   <section class="panel" id="bom">
     <div class="sec-head">
-      <span class="chip" style="background:#6d28d9">체크</span>
+      <span class="chip" style="background:#1b64da">체크</span>
       <div><h2>2026 건설공사 표준품셈 검색</h2></div>
     </div>
     <iframe src="표준품셈_검색_대시보드.html" title="표준품셈 검색" loading="lazy" style="width:100%;height:78vh;min-height:560px;border:1.5px solid var(--border);border-radius:var(--radsm);background:var(--surface);box-shadow:var(--shadow-sm);"></iframe>
@@ -3032,7 +3033,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
   <!-- ============ 기상데이터 체크 ============ -->
   <section class="panel" id="wx">
     <div class="sec-head">
-      <span class="chip" style="background:#6d28d9">체크</span>
+      <span class="chip" style="background:#1b64da">체크</span>
       <div><h2>기상데이터 체크</h2></div>
     </div>
     <iframe src="기상데이터.html" title="기상데이터 체크" loading="lazy" style="width:100%;height:78vh;min-height:560px;border:1.5px solid var(--border);border-radius:var(--radsm);background:var(--surface);box-shadow:var(--shadow-sm);"></iframe>
@@ -6354,9 +6355,9 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 </script>
 <style id="sbSimplify">
 .side-right .extlink.tab{width:100%;text-align:left;cursor:pointer;font-family:inherit;font-weight:700}
-.side-right .extlink.chk,.side-right .extlink.chk .lb{color:#6d28d9}
-.side-right .extlink.chk{border-color:#6d28d9!important}
-.side-right .extlink.chk.active{background:#6d28d9!important;border-color:#6d28d9!important}
+.side-right .extlink.chk,.side-right .extlink.chk .lb{color:#1b64da}
+.side-right .extlink.chk{border-color:#1b64da!important}
+.side-right .extlink.chk.active{background:#1b64da!important;border-color:#1b64da!important}
 .side-right .extlink.chk.active .lb{color:#fff!important}
 .side-nav .tab.ch{margin-left:14px;font-size:14px;min-height:34px;padding:8px 12px;border-radius:6px;position:relative}
 .side-nav .tab.ch::before{content:"";position:absolute;left:-8px;top:0;bottom:0;width:1px;background:var(--line)}
@@ -6368,7 +6369,7 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 .sidebar[data-ch="0"] .ch-i{transform:rotate(-90deg)}
 .sidebar[data-ch="0"] .tab.ch{display:none!important}
 .side-nav .nav-grp{font-size:13.5px;letter-spacing:.2px;font-weight:700;color:var(--muted);background:none!important;padding:14px 12px 6px;border:0;text-transform:none;box-shadow:none}
-.side-right .nav-grp:last-of-type{color:#6d28d9!important}
+.side-right .nav-grp:last-of-type{color:#1b64da!important}
 .side-nav .nav-fold{display:flex;align-items:center;width:100%;background:none;border:0;cursor:pointer;text-align:left}
 .side-nav .nav-fold .fold-i{margin-left:auto;font-size:19px;line-height:1;opacity:.85;width:32px;height:32px;display:grid;place-items:center;border-radius:8px;transition:transform .15s,background .12s}
 .side-nav .nav-fold:hover .fold-i{background:var(--surface-2);opacity:1}
@@ -6386,9 +6387,9 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
   var sb=document.querySelector('aside.sidebar:not(.side-right)');
   var f=document.getElementById('foldOps');
   if(sb&&f){
-    var open=localStorage.getItem('sbOps')==='1';
+    var open=sessionStorage.getItem('sbOps')!=='0';
     function set(v){ open=v; sb.setAttribute('data-ops',v?'1':'0');
-      f.setAttribute('aria-expanded',v?'true':'false'); localStorage.setItem('sbOps',v?'1':'0'); }
+      f.setAttribute('aria-expanded',v?'true':'false'); sessionStorage.setItem('sbOps',v?'1':'0'); }
     set(open);
     f.addEventListener('click',function(){ set(!open); });
     sb.addEventListener('click',function(e){ var t=e.target.closest('.tab.ops'); if(t&&!open) set(true); },true);

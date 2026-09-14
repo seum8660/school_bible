@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>질의회신 검색 · 국토교통부 자주찾는민원</title>
+<meta name="description" content="국토교통부 자주찾는민원 질의회신 11,821건을 검색하고 원문을 확인합니다.">
+<link rel="stylesheet" as="style" crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --nav:#1C3454; --nav2:#24456C; --nav3:#325A88;
+  --rust:#B45309; --rust-bg:#FFFBF4;
+  --paper:#F4F6F9; --card:#FFFFFF; --line:#DFE4EB;
+  --muted:#6B7480; --ink:#1E232A;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:'Pretendard Variable',Pretendard,system-ui,-apple-system,sans-serif;
+  font-size:15px; line-height:1.7; color:var(--ink); background:var(--paper);
+  display:flex; height:100vh; overflow:hidden;
+}
+button{font-family:inherit}
+button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--rust); outline-offset:2px}
+
+/* ── 좌측 ── */
+#side{width:236px;flex-shrink:0;background:var(--nav);color:#DCE4EE;display:flex;flex-direction:column;transition:transform .18s}
+.brand{padding:20px 18px 16px}
+.brand b{display:block;font-size:16px;color:#fff;font-weight:700;letter-spacing:-.3px}
+.brand span{font-size:11.5px;color:#8CA3C0}
+.newbtn{display:flex;align-items:center;gap:9px;width:calc(100% - 28px);margin:4px 14px 6px;padding:10px 12px;
+  background:#2A4F79;color:#fff;border:1px solid #3D6796;border-radius:6px;font-size:13.5px;cursor:pointer;text-align:left}
+.newbtn:hover{background:#33608F}
+.dot{width:14px;height:14px;border-radius:50%;background:var(--rust);flex-shrink:0}
+.histlabel{padding:14px 18px 6px;font-size:11.5px;color:#7B92AF}
+#hist{flex:1;overflow-y:auto;padding:0 8px 12px}
+.hitem{display:flex;align-items:center;gap:6px;width:100%;background:none;border:none;color:#C3D0E1;text-align:left;
+  padding:8px 10px;border-radius:5px;font-size:13px;cursor:pointer;line-height:1.45}
+.hitem:hover{background:#2A4F79;color:#fff}
+.hitem.on{background:#33608F;color:#fff}
+.htxt{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hdel{background:none;border:none;color:#7B92AF;cursor:pointer;font-size:15px;line-height:1;padding:2px 5px;border-radius:3px}
+.hdel:hover{color:#fff;background:#3D6796}
+.hempty{padding:8px 10px;font-size:12.5px;color:#6C84A2}
+.sidefoot{padding:12px 18px 16px;border-top:1px solid #2E5079;font-size:12px;color:#8CA3C0;line-height:1.6}
+.srcnote{margin-top:8px;padding-top:8px;border-top:1px solid #2E5079;font-size:11px;color:#7B92AF}
+
+/* ── 중앙 ── */
+#main{flex:1;min-width:0;display:flex;flex-direction:column}
+#bar{display:flex;align-items:center;gap:10px;padding:11px 22px;background:var(--card);border-bottom:1px solid var(--line)}
+#bar h1{margin:0;font-size:14.5px;font-weight:700;color:var(--nav);letter-spacing:-.2px}
+.meta{font-size:12px;color:var(--muted);margin-left:auto}
+.toggle{display:none;background:none;border:1px solid var(--line);border-radius:4px;padding:5px 9px;font-size:12.5px;color:var(--nav);cursor:pointer}
+#scroll{flex:1;overflow-y:auto}
+.inner{max-width:790px;margin:0 auto;padding:24px 24px 30px}
+
+.intro h2{font-size:21px;font-weight:700;color:var(--nav);margin:0 0 10px;letter-spacing:-.3px}
+.intro p{margin:0 0 18px;color:var(--muted);max-width:62ch}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.tag{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:7px 15px;font-size:13.5px;color:var(--nav);cursor:pointer}
+.tag:hover{border-color:var(--nav2);background:#EFF3F8}
+
+#filter{padding:0 2px 10px}
+.frow{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.flabel{font-size:12px;font-weight:600;color:var(--nav);flex-shrink:0}
+.fstate{font-size:11.5px;color:var(--muted)}
+.fclear{margin-left:auto;background:none;border:none;font-size:11.5px;color:var(--nav2);
+  cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0 2px;flex-shrink:0}
+.fclear:hover{color:var(--rust)}
+.fchips{display:flex;flex-wrap:wrap;gap:5px}
+.fchip{display:inline-flex;align-items:center;gap:5px;background:var(--card);border:1px solid var(--line);
+  border-radius:6px;padding:5px 10px;font-size:13px;color:#39424E;cursor:pointer;line-height:1.4}
+.fchip:hover{border-color:var(--nav2);color:var(--nav)}
+.fchip.on{background:var(--nav);border-color:var(--nav);color:#fff;font-weight:600}
+.fchip .fn{font-size:11px;color:#98A2AE;font-variant-numeric:tabular-nums}
+.fchip.on .fn{color:#C2D2E6}
+.fmore{background:none;border:1px dashed var(--line);border-radius:6px;padding:5px 10px;
+  font-size:12.5px;color:var(--muted);cursor:pointer}
+.fmore:hover{border-color:var(--nav2);color:var(--nav)}
+.chiprow{display:flex;justify-content:flex-end;margin-bottom:18px}
+.chip{background:#DCE6F2;color:#1B3A5E;border-radius:18px;padding:8px 16px;max-width:80%;font-size:13.5px;white-space:pre-wrap}
+.count{font-size:13px;color:var(--muted);margin:0 0 12px}
+.note{background:var(--rust-bg);border:1px solid #EBD8BC;border-radius:7px;padding:11px 14px;font-size:13.5px;color:#6B4A17;margin-bottom:14px;line-height:1.65}
+
+.results{display:grid;gap:12px}
+.rescard{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 17px}
+.rescard.on{border-color:var(--nav2);box-shadow:0 0 0 1px var(--nav2) inset}
+.resline{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.badge{background:var(--nav);color:#fff;border-radius:4px;padding:3px 9px;font-size:11.5px;font-weight:500;flex-shrink:0}
+.restitle{background:none;border:none;padding:0;font-size:14.5px;font-weight:700;color:var(--nav2);cursor:pointer;text-align:left;line-height:1.5}
+.restitle:hover{text-decoration:underline;text-underline-offset:3px}
+.orig{margin-top:12px}
+.orig h4{margin:0 0 5px;font-size:11.5px;color:var(--muted);font-weight:500}
+.raw{font-size:13.5px;line-height:1.8;color:#2C333C;white-space:pre-wrap;word-break:break-word;
+  background:#FAFBFC;border:1px solid #EDF0F4;border-radius:6px;padding:11px 13px}
+.field{margin-top:9px;font-size:13.5px;line-height:1.75;color:#333A44}
+.field b{color:var(--nav);font-weight:700}
+.more{margin-top:11px;background:none;border:1px solid var(--line);border-radius:5px;padding:5px 11px;font-size:12.5px;color:var(--nav);cursor:pointer}
+.more:hover{border-color:var(--nav)}
+
+/* 의견 */
+.op{margin-top:22px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--rust);
+  border-radius:0 9px 9px 0;padding:16px 18px 14px}
+.ophead{font-size:12.5px;font-weight:700;color:var(--rust);margin-bottom:8px}
+.optitle{font-size:15px;font-weight:700;color:var(--nav);margin-bottom:8px}
+.optext{font-size:14.5px;line-height:1.8;white-space:pre-wrap;color:#242A32}
+.cite{color:var(--nav2);font-weight:600;background:none;border:none;padding:0;font-size:inherit;cursor:pointer;
+  text-decoration:underline;text-underline-offset:3px}
+.cite:hover{color:var(--rust)}
+.refs{margin-top:14px;display:grid;gap:5px}
+.refslabel{font-size:11.5px;color:var(--muted);margin-bottom:2px}
+.ref{display:flex;align-items:baseline;gap:8px;width:100%;text-align:left;background:#F7F9FC;border:1px solid #E3E8EF;
+  border-radius:6px;padding:7px 11px;font-size:12.5px;color:var(--ink);cursor:pointer;line-height:1.55}
+.ref:hover{background:#EDF2F8;border-color:var(--nav2)}
+.refno{color:var(--nav2);font-weight:700;flex-shrink:0}
+.reftitle{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.refmeta{color:var(--muted);font-size:11.5px;flex-shrink:0}
+.opfoot{margin-top:11px;padding-top:10px;border-top:1px solid #F0F1F3;font-size:11.5px;color:var(--muted);line-height:1.6}
+.nothem{margin-top:22px;background:#F7F8FA;border:1px solid var(--line);border-radius:8px;padding:14px 16px;
+  font-size:13.5px;color:var(--muted);line-height:1.7}
+
+/* 입력 */
+#foot{padding:6px 24px 18px}
+.footin{max-width:790px;margin:0 auto}
+.inputwrap{display:flex;align-items:flex-end;gap:10px;background:var(--card);border:1px solid var(--line);
+  border-radius:26px;padding:7px 8px 7px 20px}
+.inputwrap:focus-within{border-color:var(--nav2);box-shadow:0 0 0 3px rgba(36,69,108,.12)}
+#q{flex:1;resize:none;border:none;background:none;padding:8px 0;font-family:inherit;font-size:14.5px;
+  line-height:1.6;color:var(--ink);max-height:120px}
+#q:focus{outline:none}
+#send{width:38px;height:38px;border-radius:50%;border:none;background:var(--nav2);color:#fff;font-size:17px;
+  cursor:pointer;flex-shrink:0;line-height:1}
+#send:hover{background:var(--nav3)}
+#send:disabled{background:#B6C0CC;cursor:default}
+.disc{font-size:11.5px;color:var(--muted);margin:9px 4px 0;line-height:1.6}
+
+/* 우측 */
+#panel{width:348px;flex-shrink:0;padding:16px 16px 16px 4px;display:flex;transition:transform .18s}
+.pcard{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;overflow:hidden}
+.phead{padding:14px 18px 11px;display:flex;align-items:baseline;gap:8px;font-size:14.5px;font-weight:700;
+  color:var(--nav);border-bottom:1px solid #EDF0F4}
+.phead span{margin-left:auto;font-weight:400;font-size:11px;color:var(--muted)}
+.pclose{display:none;background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;line-height:1}
+.pbody{flex:1;overflow-y:auto;padding:15px 18px 22px}
+.pempty{color:var(--muted);font-size:13px;line-height:1.7}
+.pno{font-size:11.5px;color:var(--nav2);font-weight:700}
+.ptitle{font-size:14px;font-weight:700;color:var(--nav);margin-top:3px;line-height:1.55}
+.pmeta{font-size:12px;color:var(--muted);margin-top:6px;padding-bottom:12px;border-bottom:1px solid #EDF0F4}
+.psec{margin-top:14px}
+.psec h4{margin:0 0 5px;font-size:11.5px;color:var(--muted);font-weight:500}
+.psec div{font-size:13px;color:#3B4149;line-height:1.75;white-space:pre-wrap;word-break:break-word}
+.copy{margin-top:16px;background:none;border:1px solid var(--line);border-radius:5px;padding:6px 12px;
+  font-size:12.5px;color:var(--nav);cursor:pointer}
+.copy:hover{border-color:var(--nav)}
+
+#boot{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;
+  background:var(--paper);z-index:60;color:var(--muted);font-size:14px;text-align:center;padding:24px}
+#boot b{color:var(--nav);font-size:16px}
+#scrim{display:none;position:fixed;inset:0;background:rgba(15,25,40,.4);z-index:28}
+
+@media (max-width:1120px){
+  #panel{position:fixed;top:0;right:0;height:100%;width:348px;z-index:30;padding:12px;transform:translateX(105%)}
+  #panel.open{transform:translateX(0)}
+  .pcard{box-shadow:-6px 0 24px rgba(20,30,45,.16)}
+  .pclose{display:block}
+  .toggle{display:inline-block}
+}
+@media (max-width:820px){
+  #side{position:fixed;top:0;left:0;height:100%;z-index:32;transform:translateX(-100%)}
+  #side.open{transform:translateX(0)}
+  #scrim.open{display:block}
+  .inner,#foot{padding-left:16px;padding-right:16px}
+  #bar{padding-left:16px;padding-right:16px}
+  .ref{flex-wrap:wrap}
+  .reftitle{white-space:normal;flex-basis:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div id="boot"><b>회신 자료를 여는 중입니다</b><span id="bootmsg">1만여 건을 불러옵니다. 잠시만 기다려 주십시오.</span></div>
+
+<aside id="side">
+  <div class="brand"><b>질의회신 검색</b><span id="brandsub"></span></div>
+  <button class="newbtn" id="newbtn"><span class="dot"></span>새 검색</button>
+  <div class="histlabel">질의이력</div>
+  <div id="hist"></div>
+  <div class="sidefoot" id="sidefoot"></div>
+</aside>
+<div id="scrim"></div>
+
+<main id="main">
+  <div id="bar">
+    <button class="toggle" id="tside">이력</button>
+    <h1>질의회신 검색</h1>
+    <span class="meta" id="barmeta"></span>
+    <button class="toggle" id="tpanel">원문</button>
+  </div>
+  <div id="scroll"><div class="inner" id="content"></div></div>
+  <div id="foot"><div class="footin">
+    <div id="filter"></div>
+    <div class="inputwrap">
+      <textarea id="q" rows="1" placeholder="찾으시는 내용을 입력해 주십시오 (예) '설계변경 단가 적용', '안전관리계획 대상'"></textarea>
+      <button id="send" aria-label="검색" disabled>↑</button>
+    </div>
+    <p class="disc" id="disc"></p>
+  </div></div>
+</main>
+
+<aside id="panel"><div class="pcard">
+  <div class="phead">회신 원문 <span id="psrc"></span><button class="pclose" id="pclose" aria-label="닫기">×</button></div>
+  <div class="pbody" id="pbody"><div class="pempty">검색 결과의 제목이나 의견 속 번호를 누르시면 그 회신의 질의·회신 전문이 여기에 표시됩니다.</div></div>
+</div></aside>
+
+<script>
+const SOURCE_NAME = "국토교통부 자주찾는민원";
+const FETCHED_AT  = "2026. 9. 14.";
+const HISTORY_KEY = "molitqa:history";
+const TOP_K = 8;
+
+let DOCS = [], BYNO = new Map(), OPINIONS = [], history = [], current = null, openDoc = null;
+let CATS = [], selected = new Set(), fmore = false;   // selected 가 비어 있으면 전체
+
+/* ───────── 자료 읽기 ───────── */
+async function boot(){
+  try{
+    const [buf, ops] = await Promise.all([
+      (async()=>{ for(const n of ["data.bin","data.json.gz","data.gz"]){ try{ const r=await fetch(n); if(r.ok) return r.arrayBuffer(); }catch(e){} }
+        throw new Error("data.bin 을 찾지 못했습니다. 같은 폴더에 있는지 확인해 주십시오."); })(),
+      fetch("opinions.json").then(r=>r.ok ? r.json() : [])
+    ]);
+
+    const bytes = new Uint8Array(buf);
+    const isGzip = bytes.length>2 && bytes[0]===0x1f && bytes[1]===0x8b;
+    let text;
+    if (isGzip){
+      // 서버가 그대로 보낸 경우 직접 해제한다
+      if (typeof DecompressionStream === "undefined")
+        throw new Error("이 브라우저에서는 자료를 풀 수 없습니다. 크롬이나 엣지 최신 버전으로 열어 주십시오.");
+      const st = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+      text = await new Response(st).text();
+    } else {
+      // 서버가 이미 풀어 보낸 경우 그대로 읽는다
+      text = new TextDecoder("utf-8").decode(bytes);
+    }
+
+    DOCS = JSON.parse(text).map(r=>({no:r[0],title:r[1],cat:r[2],org:r[3],dept:r[4],date:r[5],q:r[6],a:r[7]}));
+    DOCS.forEach(d=>{ if(!BYNO.has(d.no)) BYNO.set(d.no,d); });
+    OPINIONS = ops;
+    const cnt = new Map();
+    for(const d of DOCS){ const c=d.cat||"미분류"; cnt.set(c,(cnt.get(c)||0)+1); }
+    CATS = [...cnt.entries()].sort((a,b)=>b[1]-a[1]);
+    try{ const sv=JSON.parse(localStorage.getItem("molitqa:cats")); if(Array.isArray(sv)) selected=new Set(sv); }catch(e){}
+    history = loadHistory();
+    document.getElementById("boot").style.display="none";
+    render();
+  }catch(e){
+    document.getElementById("boot").innerHTML =
+      "<b>자료를 열지 못했습니다</b><span>"+e.message+"</span>";
+  }
+}
+
+/* ───────── 검색 ───────── */
+const tokenize = t => String(t||"").toLowerCase().replace(/[^0-9a-z가-힣]+/g," ").split(" ").filter(x=>x.length>=2);
+const variants = t => /[가-힣]/.test(t)&&t.length>=3 ? [t,t.slice(0,-1)] : [t];
+
+function searchDocs(query){
+  const tokens=[...new Set(tokenize(query))];
+  if(!tokens.length) return [];
+  const out=[];
+  for(const d of DOCS){
+    if(selected.size && !selected.has(d.cat||"미분류")) continue;
+    const title=d.title.toLowerCase();
+    const body=(d.q+" "+d.a+" "+d.cat).toLowerCase();
+    let score=0, hit=0;
+    for(const t of tokens){
+      let m=false;
+      for(const v of variants(t)) if(title.includes(v)){score+=6;m=true;break;}
+      if(!m) for(const v of variants(t)) if(body.includes(v)){score+=2;m=true;break;}
+      if(m) hit++;
+    }
+    if(score>0) out.push({d,s:score*Math.pow(hit/tokens.length,1.5)});
+  }
+  out.sort((a,b)=>b.s-a.s);
+  return out.slice(0,TOP_K).map(x=>x.d);
+}
+
+function matchTheme(query){
+  const q=String(query||"").toLowerCase().replace(/\s+/g,"");
+  let best=null,bs=0;
+  for(const t of OPINIONS){
+    let s=0;
+    for(const k of t.keywords){
+      const kk=k.toLowerCase().replace(/\s+/g,"");
+      if(kk.length>=2 && q.includes(kk)) s+=kk.length;
+    }
+    if(s>bs){bs=s;best=t;}
+  }
+  return bs>=2?best:null;
+}
+
+/* ───────── 이력 ───────── */
+function loadHistory(){ try{ return JSON.parse(localStorage.getItem(HISTORY_KEY))||[] }catch{ return [] } }
+function saveHistory(){ try{ localStorage.setItem(HISTORY_KEY,JSON.stringify(history.slice(0,80))) }catch(e){} }
+
+/* ───────── 실행 ───────── */
+function run(text){
+  const query=(text ?? document.getElementById("q").value).trim();
+  if(!query) return;
+  document.getElementById("q").value="";
+  document.getElementById("send").disabled=true;
+  openDoc=null; closePanel(); closeSide();
+
+  const hits=searchDocs(query);
+  const theme=matchTheme(query);
+  current={
+    id:"q"+Date.now()+Math.random().toString(36).slice(2,6),
+    query, at:Date.now(),
+    hits:hits.map(d=>d.no),
+    themeId:theme?theme.id:null,
+    cats:[...selected],
+    note:hits.length?"":(selected.size
+      ? "선택하신 "+[...selected].join("·")+" 분야에서는 맞는 회신을 찾지 못했습니다. 분야를 넓히거나 용어를 바꿔 보십시오."
+      : "검색어와 겹치는 낱말이 회신에 없습니다. 법령명이나 용어를 바꿔 다시 찾아 보십시오.")
+  };
+  history.unshift(current); saveHistory();
+  render();
+  document.getElementById("scroll").scrollTop=0;
+}
+
+const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const source = d => [d.org,d.dept].filter(Boolean).join(" ") || "담당부서 미기재";
+
+function withCites(text){
+  return esc(text).split(/(\[#\d+\])/g).map(p=>{
+    const m=/^\[#(\d+)\]$/.exec(p);
+    return m ? '<button class="cite" data-no="'+m[1]+'">'+p+'</button>' : p;
+  }).join("");
+}
+
+/* ───────── 그리기 ───────── */
+function renderFilter(){
+  const f=document.getElementById("filter");
+  const all = !selected.size;
+  const n = all ? DOCS.length : DOCS.filter(d=>selected.has(d.cat||"미분류")).length;
+
+  const shown = fmore ? CATS : CATS.filter(([c],i)=> i<7 || selected.has(c));
+  const hidden = CATS.length - shown.length;
+
+  f.innerHTML =
+    '<div class="frow"><span class="flabel">찾을 분야</span>'+
+      '<span class="fstate">'+
+        (all ? "전체에서 찾습니다" : [...selected].join(", ")+" 에서만 찾습니다")+
+        " · "+n.toLocaleString()+"건</span>"+
+      (all ? "" : '<button class="fclear" data-cat="__all">전체로 되돌리기</button>')+
+    "</div>"+
+    '<div class="fchips">'+
+      '<button class="fchip'+(all?" on":"")+'" data-cat="__all">전체'+
+        '<span class="fn">'+DOCS.length.toLocaleString()+"</span></button>"+
+      shown.map(([c,cn])=>'<button class="fchip'+(selected.has(c)?" on":"")+'" data-cat="'+esc(c)+'">'+
+        esc(c)+'<span class="fn">'+cn.toLocaleString()+"</span></button>").join("")+
+      (hidden>0 ? '<button class="fmore" data-more="1">그 밖의 분야 '+hidden+"개</button>"
+                : (fmore ? '<button class="fmore" data-more="0">접기</button>' : ""))+
+    "</div>";
+}
+
+function render(){
+  renderFilter();
+  document.getElementById("brandsub").textContent=SOURCE_NAME;
+  const scope = selected.size
+    ? [...selected].join("·")+" 분야 "+DOCS.filter(d=>selected.has(d.cat||"미분류")).length.toLocaleString()+"건"
+    : DOCS.length.toLocaleString()+"건";
+  document.getElementById("barmeta").textContent=
+    SOURCE_NAME+" "+scope+"에서 검색 · 조회일자 "+FETCHED_AT;
+  document.getElementById("psrc").textContent=SOURCE_NAME;
+  document.getElementById("sidefoot").innerHTML=
+    "회신 "+DOCS.length.toLocaleString()+"건 · 정리된 주제 "+OPINIONS.length+"개"+
+    '<div class="srcnote">자료 출처 '+SOURCE_NAME+"<br>조회일자 "+FETCHED_AT+"</div>";
+  document.getElementById("disc").textContent=
+    SOURCE_NAME+"에 공개된 회신을 "+FETCHED_AT+" 기준으로 내려받아 원문 그대로 수록한 것입니다. "+
+    "질의회신은 개별 사안에 대한 행정 회신으로 법적 구속력이 있는 유권해석이 아니며, 조회일자 이후 변경된 "+
+    "내용은 반영되어 있지 않습니다. 최종 판단은 원문과 소관 부서 확인을 거쳐 주십시오.";
+
+  // 이력
+  const h=document.getElementById("hist");
+  h.innerHTML = history.length ? history.map(x=>
+    '<div class="hitem'+(current&&current.id===x.id?" on":"")+'" data-id="'+x.id+'" role="button" tabindex="0">'+
+      '<span class="htxt">'+esc(x.query)+'</span>'+
+      '<button class="hdel" data-del="'+x.id+'" aria-label="기록 삭제">×</button></div>').join("")
+    : '<div class="hempty">아직 검색 기록이 없습니다.</div>';
+
+  const c=document.getElementById("content");
+
+  if(!current){
+    c.innerHTML='<div class="intro"><h2>어떤 회신을 찾으십니까</h2><p>'+
+      SOURCE_NAME+"에 공개된 회신 "+DOCS.length.toLocaleString()+"건을 "+FETCHED_AT+
+      " 기준으로 수록했습니다. 찾으시는 내용을 적으시면 제목과 본문에서 회신을 찾아 원문 그대로 보여 드립니다. "+
+      "아래 주제에 해당하면 미리 정리해 둔 질의답변 의견이 함께 붙습니다.</p><div class=\"tags\">"+
+      OPINIONS.map(t=>'<button class="tag" data-run="'+esc(t.keywords[0])+'">'+esc(t.title)+"</button>").join("")+
+      "</div></div>";
+    return;
+  }
+
+  const hits=(current.hits||[]).map(n=>BYNO.get(n)).filter(Boolean);
+  const theme=current.themeId?OPINIONS.find(t=>t.id===current.themeId):null;
+  const refs=theme?(theme.refs||[]).map(n=>BYNO.get(n)).filter(Boolean):[];
+
+  let html='<div class="chiprow"><div class="chip">'+esc(current.query)+"</div></div>";
+  if(current.note) html+='<div class="note">'+esc(current.note)+"</div>";
+
+  if(hits.length){
+    html+='<p class="count">검색어와 맞는 회신 '+hits.length+"건입니다.</p><div class=\"results\">";
+    for(const d of hits){
+      html+='<div class="rescard'+(openDoc===d.no?" on":"")+'">'+
+        '<div class="resline"><span class="badge">질의회신 #'+esc(d.no)+'</span>'+
+        '<button class="restitle" data-no="'+esc(d.no)+'">'+esc(d.title)+"</button></div>"+
+        (d.q?'<div class="orig"><h4>질의 원문</h4><div class="raw">'+esc(d.q)+"</div></div>":"")+
+        '<div class="orig"><h4>회신 원문</h4><div class="raw">'+esc(d.a)+"</div></div>"+
+        '<div class="field"><b>(출처)</b> '+esc(source(d))+" · 회신일자 "+esc(d.date||"미기재")+
+          (d.cat?" · "+esc(d.cat):"")+"</div>"+
+        '<button class="more" data-no="'+esc(d.no)+'">옆에서 크게 보기</button></div>';
+    }
+    html+="</div>";
+  }
+
+  if(theme){
+    html+='<div class="op"><div class="ophead">AI 도우미 · 질의답변 의견</div>'+
+      '<div class="optitle">'+esc(theme.title)+"</div>"+
+      '<div class="optext">'+withCites(theme.opinion)+"</div>";
+    if(refs.length){
+      html+='<div class="refs"><div class="refslabel">근거 회신 '+refs.length+"건</div>"+
+        refs.map(d=>'<button class="ref" data-no="'+esc(d.no)+'">'+
+          '<span class="refno">#'+esc(d.no)+'</span><span class="reftitle">'+esc(d.title)+"</span>"+
+          '<span class="refmeta">'+esc(source(d))+" · "+esc(d.date||"일자 미기재")+"</span></button>").join("")+
+        "</div>";
+    }
+    html+='<div class="opfoot">위에 표시된 회신만을 근거로 미리 정리해 둔 참고 의견입니다. 근거 자료는 '+
+      SOURCE_NAME+" "+FETCHED_AT+" 조회본입니다. 법령 해석이나 유권해석이 아니므로 적용 전 원문과 회신일자, "+
+      "조문 개정 여부를 확인하십시오.</div></div>";
+  } else if(hits.length){
+    html+='<div class="nothem">이 검색어에 해당하는 정리된 의견은 아직 없습니다. 왼쪽 첫 화면의 주제 목록에서 '+
+      "가까운 주제를 골라 보시거나, 위 회신 원문을 직접 확인하시기 바랍니다.</div>";
+  }
+
+  c.innerHTML=html;
+}
+
+function showDoc(no){
+  openDoc=no;
+  const d=BYNO.get(no);
+  const b=document.getElementById("pbody");
+  if(!d){ b.innerHTML='<div class="pempty">해당 회신을 찾지 못했습니다.</div>'; return; }
+  b.innerHTML='<div class="pno">#'+esc(d.no)+'</div><div class="ptitle">'+esc(d.title)+"</div>"+
+    '<div class="pmeta">'+esc(source(d))+" · 회신일자 "+esc(d.date||"미기재")+(d.cat?" · "+esc(d.cat):"")+"</div>"+
+    (d.q?'<div class="psec"><h4>질의</h4><div>'+esc(d.q)+"</div></div>":"")+
+    '<div class="psec"><h4>회신</h4><div>'+esc(d.a)+"</div></div>"+
+    '<button class="copy" id="copybtn">출처와 함께 복사</button>';
+  document.getElementById("copybtn").onclick=()=>{
+    const t=d.title+"\n\n[질의]\n"+d.q+"\n\n[회신]\n"+d.a+
+      "\n\n출처: "+SOURCE_NAME+" 질의회신 제"+d.no+"호 ("+source(d)+", "+(d.date||"일자 미기재")+
+      ") · 조회일자 "+FETCHED_AT;
+    navigator.clipboard?.writeText(t);
+    const btn=document.getElementById("copybtn");
+    btn.textContent="복사했습니다";
+    setTimeout(()=>{ btn.textContent="출처와 함께 복사" },1600);
+  };
+  openPanel();
+  render();
+}
+
+/* ───────── 화면 열고 닫기 ───────── */
+const panel=document.getElementById("panel"), side=document.getElementById("side"), scrim=document.getElementById("scrim");
+const openPanel =()=>panel.classList.add("open");
+const closePanel=()=>panel.classList.remove("open");
+const closeSide =()=>{ side.classList.remove("open"); scrim.classList.remove("open"); };
+
+document.getElementById("tpanel").onclick=()=>panel.classList.toggle("open");
+document.getElementById("pclose").onclick=closePanel;
+document.getElementById("tside").onclick=()=>{ side.classList.toggle("open"); scrim.classList.toggle("open"); };
+scrim.onclick=closeSide;
+document.getElementById("newbtn").onclick=()=>{ current=null; openDoc=null; closeSide(); render(); };
+
+const q=document.getElementById("q"), send=document.getElementById("send");
+q.addEventListener("input",()=>{ send.disabled=!q.value.trim(); });
+q.addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){ e.preventDefault(); run(); } });
+send.onclick=()=>run();
+
+document.addEventListener("click",e=>{
+  const del=e.target.closest("[data-del]");
+  if(del){ e.stopPropagation();
+    history=history.filter(x=>x.id!==del.dataset.del); saveHistory();
+    if(current&&current.id===del.dataset.del) current=null;
+    render(); return; }
+  const hi=e.target.closest(".hitem");
+  if(hi){ current=history.find(x=>x.id===hi.dataset.id)||null; openDoc=null;
+    if(current&&Array.isArray(current.cats)) selected=new Set(current.cats);
+    closeSide(); render(); return; }
+  const fm=e.target.closest("[data-more]");
+  if(fm){ fmore = fm.dataset.more==="1"; renderFilter(); return; }
+  const fc=e.target.closest("[data-cat]");
+  if(fc){
+    const c=fc.dataset.cat;
+    if(c==="__all") selected.clear();
+    else { selected.has(c) ? selected.delete(c) : selected.add(c); }
+    try{ localStorage.setItem("molitqa:cats",JSON.stringify([...selected])) }catch(e){}
+    if(current) run(current.query);   // 선택을 바꾸면 같은 검색어로 다시 찾는다
+    else render();
+    return;
+  }
+  const rn=e.target.closest("[data-run]");
+  if(rn){ run(rn.dataset.run); return; }
+  const no=e.target.closest("[data-no]");
+  if(no){ showDoc(no.dataset.no); }
+});
+
+boot();
+</script>
+</body>
+</html>

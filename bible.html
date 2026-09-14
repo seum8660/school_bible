@@ -4000,6 +4000,7 @@ Object.keys(DATA).forEach(pk=>{
 // ================= 인터랙션 =================
 // 탭 전환
 function activate(p){
+  if(!p) return;
   document.querySelectorAll('.tab').forEach(t=>{
     const on=(t.dataset.p===p);
     t.classList.toggle('active',on);
@@ -4021,7 +4022,7 @@ function activate(p){
     window.scrollTo({top:0,behavior:'smooth'});
   }
 }
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>activate(t.dataset.p)));
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{ if(t.dataset.p) activate(t.dataset.p); }));
 // 일위대가 iframe 지연 주입
 (function(){
   var f=document.getElementById('ilwidan-frame');

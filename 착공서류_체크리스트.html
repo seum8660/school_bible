@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>공사 계약·착공·준공·청구 제출서류 — 체크리스트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1E3A5F;--rust:#B45309;--line:#D1D5DB;--band:#EEF2F7;--chip:#F1F5F9;--chipline:#CBD5E1;--text:#37414F;--meta:#6B7280;--foot:#9CA3AF;--bg:#FAFAF8;--card:#FFFFFF;--ok:#15803D;--okbg:#ECFDF3;--na:#B8BEC7;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--navy:#8DB4E2;--rust:#F59E0B;--line:#374151;--band:#1B2533;--chip:#1F2937;--chipline:#374151;--text:#D6DCE4;--meta:#9CA3AF;--foot:#6B7280;--bg:#0F141B;--card:#161D27;--ok:#4ADE80;--okbg:#12291D;--na:#4B5563}}
+:root[data-theme="dark"]{--navy:#8DB4E2;--rust:#F59E0B;--line:#374151;--band:#1B2533;--chip:#1F2937;--chipline:#374151;--text:#D6DCE4;--meta:#9CA3AF;--foot:#6B7280;--bg:#0F141B;--card:#161D27;--ok:#4ADE80;--okbg:#12291D;--na:#4B5563}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:14px;line-height:1.55}
+.wrap{max-width:1240px;margin:0 auto;padding:22px 20px 60px}
+header{border-bottom:2px solid var(--navy);padding-bottom:12px;margin-bottom:18px;display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;justify-content:space-between}
+h1{margin:0;font-size:22px;font-weight:900;color:var(--navy);letter-spacing:-.5px}
+.meta{color:var(--meta);font-size:12px;margin-top:4px}
+.tools{display:flex;gap:6px;flex-wrap:wrap}
+button,.btn{font:inherit;font-size:12.5px;border:1px solid var(--chipline);background:var(--card);color:var(--text);padding:6px 11px;border-radius:6px;cursor:pointer}
+button:hover{border-color:var(--navy)}
+button.pri{background:var(--navy);color:#fff;border-color:var(--navy)}
+:root[data-theme="dark"] button.pri{color:#0F141B}
+.grid{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px}
+aside .card+.card{margin-top:14px}
+aside{position:sticky;top:12px}
+@media(max-width:900px){aside{position:static}}
+.ttl{font-size:13px;font-weight:700;color:var(--navy);margin:0 0 10px;display:flex;align-items:center;gap:6px}
+.ttl .dot{width:6px;height:6px;background:var(--rust);border-radius:1px}
+label.f{display:block;font-size:12px;color:var(--meta);margin-top:8px}
+input[type=text],input[type=number],select,textarea{width:100%;font:inherit;font-size:13px;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:6px 8px;margin-top:3px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tg{display:flex;align-items:center;gap:7px;font-size:12.5px;margin-top:8px;cursor:pointer}
+.tg input{accent-color:var(--navy)}
+.hint{font-size:11.5px;color:var(--meta);margin-top:4px}
+.amt{font-size:11.5px;color:var(--rust);margin-top:3px;min-height:1em}
+/* overall */
+.overall{display:flex;align-items:center;gap:14px}
+.ring{--p:0;width:78px;height:78px;border-radius:50%;background:conic-gradient(var(--rust) calc(var(--p)*1%),var(--band) 0);display:grid;place-items:center;flex:none}
+.ring b{width:60px;height:60px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:17px;font-weight:900;color:var(--navy)}
+.stg{font-size:12px}
+.stg div{display:flex;justify-content:space-between;gap:6px;padding:2px 0;cursor:pointer}
+.stg div:hover{color:var(--navy)}
+.stg .done{color:var(--ok);font-weight:700}
+/* numbers */
+.nums{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.num{background:var(--chip);border:1px solid var(--chipline);border-radius:5px;padding:5px 7px}
+.num small{display:block;font-size:10.5px;color:var(--meta)}
+.num b{font-size:13px;color:var(--navy)}
+/* main */
+.lead{background:var(--band);border-left:3px solid var(--navy);padding:10px 14px;border-radius:0 6px 6px 0;font-size:13px;margin-bottom:14px}
+.lead b{color:var(--navy)}
+.filters{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.filters button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+:root[data-theme="dark"] .filters button.on{color:#0F141B}
+.filters .sp{flex:1}
+section.stage{background:var(--card);border:1px solid var(--line);border-radius:8px;margin-bottom:16px;overflow:hidden}
+.sh{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer;user-select:none}
+.badge{background:var(--navy);color:#fff;font-weight:900;font-size:13px;width:26px;height:26px;border-radius:5px;display:grid;place-items:center;flex:none}
+:root[data-theme="dark"] .badge{color:#0F141B}
+.sh h2{margin:0;font-size:15.5px;color:var(--navy);font-weight:700}
+.sh .who{font-size:11.5px;color:var(--meta)}
+.sh .bar{flex:1;min-width:60px;max-width:220px;height:6px;background:var(--band);border-radius:3px;overflow:hidden;margin-left:auto}
+.sh .bar i{display:block;height:100%;background:var(--rust);transition:width .25s}
+.sh .cnt{font-size:12.5px;font-weight:700;color:var(--navy);min-width:48px;text-align:right}
+.sh .car{color:var(--meta);transition:transform .2s}
+section.closed .car{transform:rotate(-90deg)}
+section.closed .body{display:none}
+.stage.allna{opacity:.55}
+.body{padding:4px 0}
+.it{display:grid;grid-template-columns:28px 22px 1fr;gap:4px 8px;padding:9px 14px;border-bottom:1px dashed var(--line);align-items:start}
+.it:last-child{border-bottom:0}
+.it .no{font-size:12px;color:var(--meta);font-weight:700;padding-top:2px;text-align:right}
+.it input.ck{width:18px;height:18px;margin:2px 0 0;accent-color:var(--ok);cursor:pointer}
+.it .nm{font-weight:500}
+.it .nm b{color:var(--navy)}
+.it .ds{font-size:12.5px;color:var(--meta);margin-top:1px}
+.it .ds em{font-style:normal;color:var(--rust);font-weight:700}
+.tag{display:inline-block;font-size:10.5px;padding:1px 6px;border-radius:3px;margin-left:5px;vertical-align:1px;border:1px solid}
+.tag.req{color:var(--rust);border-color:var(--rust)}
+.tag.na{color:var(--meta);border-color:var(--chipline);background:var(--chip)}
+.tag.cond{color:var(--navy);border-color:var(--chipline);background:var(--band)}
+.tag.law{color:var(--rust);border-color:transparent;background:transparent;padding:0}
+.it.checked .nm{color:var(--ok)}
+.it.checked{background:var(--okbg)}
+.it.na .nm,.it.na .ds{color:var(--na);text-decoration:line-through}
+.it.na input.ck{opacity:.35;pointer-events:none}
+.subs{grid-column:3;margin:6px 0 0;padding:0;list-style:none;border-left:2px solid var(--band);padding-left:10px}
+.subs li{display:flex;gap:7px;font-size:12.5px;padding:2px 0;align-items:flex-start}
+.subs li input{margin-top:3px;accent-color:var(--ok)}
+.subs li.hl span{color:var(--navy);font-weight:500}
+.subs li.dim span{color:var(--na)}
+.subs li.na span{color:var(--na);text-decoration:line-through}
+.subs li.na input{opacity:.35;pointer-events:none}
+.note{grid-column:3;margin-top:5px}
+.note input{font-size:12px;padding:4px 7px;background:transparent;border-style:dashed}
+.memo{display:none}
+body.shownote .memo{display:block}
+.hide{display:none!important}
+.concl{border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--card);font-size:13px}
+.concl b{color:var(--rust)}
+footer{margin-top:18px;border-top:1px solid var(--line);padding-top:8px;text-align:center;font-size:11.5px;color:var(--foot)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+@media print{
+ :root{--bg:#fff}
+ .tools,.filters,aside .card.opt,.note,.toast{display:none!important}
+ .grid{grid-template-columns:1fr}
+ aside{position:static;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+ aside .card+.card{margin-top:0}
+ section.stage{break-inside:auto}
+ section.closed .body{display:block}
+ .it{break-inside:avoid}
+ body{font-size:11px}
+ .wrap{padding:0}
+ @page{size:A4 portrait;margin:15mm 12mm}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div>
+  <h1>공사 계약·착공·준공·청구 제출서류 — 체크리스트</h1>
+  <div class="meta">전라남도교육청 교육시설과 시설공사 제출서류 안내 기준 ｜ 계약 → 착공 → 준공 → 대가 청구 ｜ ★ 근거 법령 개정 여부 확인 권장</div>
+ </div>
+</header>
+
+<div class="grid">
+<aside>
+ <div class="card">
+  <p class="ttl"><span class="dot"></span>공사 정보 · 적용 조건</p>
+  <label class="f">공사명<input type="text" id="p_name" placeholder="예) ○○초 외벽 개선공사"></label>
+  <label class="f">시공사(계약상대자)<input type="text" id="p_corp"></label>
+  <label class="f">계약금액(원)<input type="number" id="p_amt" min="0" step="1000000" placeholder="예) 350000000"></label>
+  <div class="amt" id="amtTxt"></div>
+  <div class="row2">
+   <label class="f">공종<select id="p_type"><option value="build">건축</option><option value="civil">토목</option><option value="spec">전문</option><option value="etc">기타(설비·전기 등)</option></select></label>
+   <label class="f">공사기간(일)<input type="number" id="p_days" min="0"></label>
+  </div>
+  <div class="row2">
+   <label class="f">연면적(㎡)<input type="number" id="p_area" min="0"></label>
+   <label class="f">폐기물량(t)<input type="number" id="p_waste" min="0" step="0.1"></label>
+  </div>
+  <label class="tg"><input type="checkbox" id="p_sui">수의계약 또는 견적입찰</label>
+  <label class="tg"><input type="checkbox" id="p_new">신·증축 공사</label>
+  <label class="tg"><input type="checkbox" id="p_adv">노무비 선지급</label>
+  <label class="tg"><input type="checkbox" id="p_sub">하도급대금 직불</label>
+  <label class="tg"><input type="checkbox" id="p_tax">G2B 조회 결과 국세·지방세 체납 있음</label>
+  <div class="hint">입력값에 따라 해당 없는 서류는 자동으로 제외되어 진행률 계산에서 빠집니다. 1억원 기준은 추정가격 기준이므로 계약금액으로 근사 판정합니다.</div>
+ </div>
+ <div class="card">
+  <p class="ttl"><span class="dot"></span>진행 현황</p>
+  <div class="overall"><div class="ring" id="ring"><b id="ringTxt">0%</b></div><div class="stg" id="stgList" style="flex:1"></div></div>
+ </div>
+ <div class="card opt">
+  <p class="ttl"><span class="dot"></span>핵심 수치</p>
+  <div class="nums">
+   <div class="num"><small>현장대리인 경계</small><b>30억원</b></div>
+   <div class="num"><small>기사 경력 / 산업기사(30억↑)</small><b>3년 / 5년</b></div>
+   <div class="num"><small>품질계획 토목 / 전문</small><b>5억 / 2억</b></div>
+   <div class="num"><small>품질계획 건축 연면적</small><b>660㎡</b></div>
+   <div class="num"><small>기술지도·퇴직공제·공사대장</small><b>1억원</b></div>
+   <div class="num"><small>직접시공 생략</small><b>4천만·30일↓</b></div>
+   <div class="num"><small>폐기물 신고·실적 생략</small><b>5t 미만</b></div>
+   <div class="num"><small>수도광열비</small><b>0.14%</b></div>
+  </div>
+ </div>
+</aside>
+
+<main>
+ <div class="lead"><b>계약상대자(시공사)</b>가 서류 작성·제출의 책임 주체입니다. 착공계는 <b>공사감독관 경유</b> 후 교육시설과로, 준공계는 교육시설과로 제출하고, 준공금·기성금은 <b>G2B 전자청구</b>로 청구합니다.</div>
+ <div class="filters">
+  <button data-f="all" class="on">전체</button>
+  <button data-f="todo">미완료</button>
+  <button data-f="done">완료</button>
+  <span class="sp"></span>
+  <button id="bOpen">모두 펼치기</button>
+  <button id="bClose">모두 접기</button>
+ </div>
+ <div id="stages"></div>
+ <div class="concl">한 줄 결론 — 계약 <b>4종</b> → 착공 <b>15종</b> → 준공 <b>15종</b> → 청구 <b>5종</b>(하도급 직불 시 4종 추가)을 단계별로 갖추고, 착공 때 세운 안전·환경·노무비·폐기물 계획은 준공 때 사용내역과 증빙으로 정산합니다.</div>
+ <footer>출처: 전라남도교육청 교육시설과 시설공사 제출서류 안내 ｜ 관계 근거: 건설산업기본법·건설기술 진흥법·산업안전보건법·건설근로자법·건설폐기물법·지방계약법령 ｜ 폐기물 처리: 올바로시스템 www.allbaro.or.kr<br>원문의 착공서류 번호 중복(12·13번 2회)은 순서대로 12~15번으로 재부여함</footer>
+</main>
+</div>
+</div>
+
+<script>
+const EOK=100000000;
+// 조건 함수: p=공사정보 → {st:'req'|'na'|'cond', why}
+const C={
+ sui:p=>p.sui?{st:'req',why:'수의·견적'}:{st:'na',why:'수의·견적 아님'},
+ qc:p=>{if(!p.amt&&!p.area)return{st:'cond',why:'토목 5억·전문 2억·건축 660㎡↑'};
+   if(p.type==='civil')return p.amt>=5*EOK?{st:'req',why:'토목 5억↑'}:{st:'na',why:'토목 5억 미만'};
+   if(p.type==='spec')return p.amt>=2*EOK?{st:'req',why:'전문 2억↑'}:{st:'na',why:'전문 2억 미만'};
+   if(p.type==='build')return p.area>=660?{st:'req',why:'건축 660㎡↑'}:(p.area?{st:'na',why:'연면적 660㎡ 미만'}:{st:'cond',why:'연면적 입력 필요'});
+   return{st:'cond',why:'공종별 기준 확인'}},
+ direct:p=>(p.amt&&p.days&&p.amt<4e7&&p.days<30)?{st:'na',why:'4천만·30일 미만 생략'}:{st:'req',why:''},
+ eok1:p=>!p.amt?{st:'cond',why:'1억 이상'}:(p.amt>=EOK?{st:'req',why:'1억↑'}:{st:'na',why:'1억 미만'}),
+ newb:p=>p.nw?{st:'req',why:'신·증축'}:{st:'na',why:'신·증축 아님'},
+ w5:p=>(p.waste!==''&&p.waste!=null&&+p.waste<5)?{st:'na',why:'5t 미만 생략'}:{st:'cond',why:'5t 미만 생략'},
+ adv:p=>p.adv?{st:'req',why:'선지급'}:{st:'na',why:'선지급 아님'},
+ tax:p=>p.tax?{st:'req',why:'체납 있음'}:{st:'na',why:'체납 없으면 생략'},
+ sub:p=>p.sub?{st:'req',why:'직불'}:{st:'na',why:'직불 아님'}
+};
+const S=[
+{id:'c',t:'계약 구비서류',who:'계약상대자 → 교육시설과',items:[
+ {n:'<b>건설업 등록증</b> 및 <b>건설업 면허수첩</b> 사본',d:'각 1부'},
+ {n:'<b>인감증명서</b>, <b>사용인감계</b>',d:'각 1부'},
+ {n:'<b>청렴계약이행서약서</b>',d:'공통 — 전자계약 초안에 양식 첨부'},
+ {n:'<b>각서</b>',d:'수의계약 및 견적입찰 시 — 전자계약 초안에 양식 첨부',c:'sui'}]},
+{id:'s',t:'착공 시 제출서류',who:'공사감독관 경유 → 교육시설과',lead:'감독관 확인: 현장대리인 자격, 공정표 형식, 안전관리비·환경보전비 책정액 이상 계획 여부',items:[
+ {n:'<b>착공계 제출 공문</b>'},
+ {n:'<b>착공계</b>',d:'감독관 경유'},
+ {n:'<b>계약내역서</b>',d:'사용인감 <em>간인</em>'},
+ {n:'<b>현장대리인계</b>',d:'현장소장 및 직원 — 주민등록번호 대신 <em>생년월일</em>로 기재',sub:[
+   {n:'재직증명서, 건강보험 자격득실 확인서'},
+   {n:'건설기술자 경력증명서(건설기술인협회)',k:'ca'},
+   {n:'국가기술자격증 사본'},
+   {n:'현장조직도'}]},
+ {n:'<b>공사 예정공정표</b>',d:'<em>네트워크 공정표 및 보할 형식</em>, 바차트 지양'},
+ {n:'<b>고용·산재보험 가입증명원</b>'},
+ {n:'<b>안전관리계획서</b>',d:'안전관리비 사용계획서 포함 — 책정된 안전관리비 <em>이상</em>'},
+ {n:'<b>환경관리계획서</b>',d:'환경보전비 사용계획서 포함 — 책정된 환경보전비 <em>이상</em>'},
+ {n:'<b>품질관리계획서</b> <span class="tag law">★</span>',d:'현장업무분장·공정관리계획 포함 — 토목 <em>5억</em>↑, 전문 <em>2억</em>↑, 건축 연면적 <em>660㎡</em>↑',c:'qc'},
+ {n:'<b>공정별 장비 및 인력투입계획서</b>'},
+ {n:'<b>착공 전 현장 사진</b>'},
+ {n:'<b>직접시공계획서</b>',d:'직접시공·하도급 내역서 및 예정공정표 포함 — 도급 <em>4천만원</em> 미만이고 공기 <em>30일</em> 미만이면 생략 가능',c:'direct'},
+ {n:'<b>노무비 구분관리 및 지급확인 합의서</b> 2부 또는 <b>적용제외 신고서</b> 1부',d:'적용제외는 직접노무비 지급대상 <em>전원이 상용근로자</em>인 경우에만'},
+ {n:'<b>노무비 전용통장 사본</b>',d:'노무비 외 공사비 관리통장과 <em>반드시 구분</em>'},
+ {n:'<b>그 외 제출서류 및 검토사항</b>',sub:[
+   {n:'기술지도계약서 사본(1억↑) — 산업안전보건법 시행규칙 ★ 현행 조문 확인',c:'eok1'},
+   {n:'퇴직공제부금 가입증명서(추정가격 1억↑)',c:'eok1'},
+   {n:'건설공사대장 통보(1억↑ 일반공사)',c:'eok1'}]}]},
+{id:'j',t:'준공 시 제출서류',who:'교육시설과 제출 · 정산',lead:'준공내역서는 준공정산동의서로 교육시설팀과 확정하고, 준공도면에는 정산·설계변경 내용을 모두 반영',items:[
+ {n:'<b>준공계 제출 공문</b>'},
+ {n:'<b>공사 준공계</b>'},
+ {n:'<b>준공검사원</b>'},
+ {n:'<b>공사 준공 사진첩</b>',d:'공정별 <em>착공 전 · 공사 중 · 준공 후</em> 사진 포함'},
+ {n:'<b>준공내역서</b>',d:'준공정산동의서 — 교육시설팀'},
+ {n:'<b>준공도면</b>',d:'정산 및 설계변경 내용 포함'},
+ {n:'<b>4대보험 관련 증명</b>',sub:[
+   {n:'고용·산재보험 가입/완납증명원'},{n:'건강보험 납부확인서'},{n:'국민연금 납부증명서'}]},
+ {n:'<b>안전관리비 사용내역서</b>',sub:[
+   {n:'거래명세서, 전자세금계산서'},{n:'안전관리 사진, 안전구 지급대장'},
+   {n:'일용노무비 지급명세서 / 입금내역서'},
+   {n:'기술지도계약서·완료증명서·결과보고서(1억↑)',c:'eok1'}]},
+ {n:'<b>환경보전비 사용내역서</b>',sub:[{n:'거래명세서, 전자세금계산서'},{n:'환경보전 사진'}]},
+ {n:'<b>주요자재 품질인증서</b> 및 <b>시험성적서</b>'},
+ {n:'<b>공사작업일보</b> 사본'},
+ {n:'<b>유지관리지침</b>',d:'신·증축 공사',c:'newb'},
+ {n:'<b>폐기물 관련서류</b>',d:'<em>올바로시스템(www.allbaro.or.kr)</em>으로 처리',sub:[
+   {n:'폐기물처리계획 신고필증(중간처리업·수집운반 허가증 포함) — 5t 미만 생략',c:'w5'},
+   {n:'폐기물 간이인계서, 계량증명서'},
+   {n:'중간처리확인서, 목록형 대장'},
+   {n:'폐기물처리 실적보고 — 5t 미만 생략',c:'w5'},
+   {n:'세금계산서'}]},
+ {n:'<b>수도광열비</b> 납부서류',d:'공사금액의 <em>0.14%</em>',k:'util'},
+ {n:'<b>노무비 지급내역서</b>',d:'노무비 선지급 시',c:'adv'}]},
+{id:'g',t:'청구 시 제출서류',who:'G2B 전자청구',items:[
+ {n:'<b>준공금(기성금) 청구서</b>'},
+ {n:'<b>전자세금계산서</b>'},
+ {n:'<b>국세 및 지방세 완납증명서</b>',d:'G2B 조회 시 <em>체납분이 있는 경우에만</em> 제출',c:'tax'},
+ {n:'<b>국민연금 납부(완납)증명서</b> 또는 <b>4대보험 납부(완납)증명서</b>'},
+ {n:'<b>하자보증보험증권</b>',d:'<em>준공검사일부터</em> — 하자분류 공사원가계산서(공종별·기간별) 포함'}]},
+{id:'h',t:'하도급대금 직불 시',who:'직불 해당 공사만',c:'sub',items:[
+ {n:'<b>청구서</b>',c:'sub'},
+ {n:'<b>통장 사본</b>',d:'인감 또는 사용인감으로 <em>원본대조필</em>',c:'sub'},
+ {n:'<b>세금계산서</b>',d:'인감 또는 사용인감으로 날인',c:'sub'},
+ {n:'<b>국세 및 지방세 완납증명서</b>',d:'납세증명서·지방세 납세증명서 — 유효기간이 <em>대금지급 예정일 이후</em>가 되도록 발급',c:'sub'}]}
+];
+// 키 부여
+S.forEach(s=>s.items.forEach((it,i)=>{it.key=s.id+(i+1);(it.sub||[]).forEach((u,j)=>u.key=it.key+'_'+(j+1))}));
+
+const KEY='chk57_v1';
+let st={p:{},ck:{},nt:{},closed:{}};
+try{const r=localStorage.getItem(KEY);if(r)st=Object.assign(st,JSON.parse(r))}catch(e){}
+const $=id=>document.getElementById(id);
+const PF=['name','corp','amt','type','days','area','waste','sui','new','adv','sub','tax'];
+function getP(){const p={};PF.forEach(f=>{const el=$('p_'+f);p[f]=el.type==='checkbox'?el.checked:el.value});return p}
+function setP(){PF.forEach(f=>{const el=$('p_'+f);if(st.p[f]===undefined)return;el.type==='checkbox'?el.checked=!!st.p[f]:el.value=st.p[f]})}
+function P(){const p=st.p;return{amt:+p.amt||0,days:+p.days||0,area:+p.area||0,waste:p.waste,type:p.type||'build',sui:p.sui,nw:p.new,adv:p.adv,sub:p.sub,tax:p.tax}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+const won=n=>Math.round(n).toLocaleString('ko-KR')+'원';
+function eokTxt(n){if(!n)return'';const e=n/EOK;return e>=1?(Math.round(e*100)/100)+'억원':(Math.round(n/1e4)).toLocaleString('ko-KR')+'만원'}
+let filter='all';
+
+function render(){
+ const p=P();$('amtTxt').textContent=p.amt?('= '+eokTxt(p.amt)+' ｜ 수도광열비 '+won(p.amt*0.0014)):'';
+ const box=$('stages');box.innerHTML='';
+ let TT=0,TD=0;const sums=[];
+ S.forEach((s,si)=>{
+  let tot=0,done=0;
+  const sec=document.createElement('section');sec.className='stage'+(st.closed[s.id]?' closed':'');sec.id='st_'+s.id;
+  const body=document.createElement('div');body.className='body';
+  if(s.lead){const l=document.createElement('div');l.className='ds';l.style.cssText='padding:8px 14px;background:var(--band);font-size:12.5px';l.textContent='· '+s.lead;body.appendChild(l)}
+  s.items.forEach((it,i)=>{
+   const cd=it.c?C[it.c](p):{st:'base'};
+   const na=cd.st==='na';
+   const subs=it.sub||[];
+   let subAct=subs.filter(u=>!(u.c&&C[u.c](p).st==='na'));
+   let isDone;
+   if(subs.length&&subAct.length){isDone=subAct.every(u=>st.ck[u.key])}else isDone=!!st.ck[it.key];
+   if(subs.length&&!subAct.length&&!na){isDone=!!st.ck[it.key]}
+   const allSubNa=subs.length&&!subAct.length;
+   const itemNa=na||(allSubNa&&it.sub.every(u=>u.c));
+   if(!itemNa){tot++;if(isDone)done++}
+   const row=document.createElement('div');row.className='it'+(itemNa?' na':'')+(isDone&&!itemNa?' checked':'');
+   row.dataset.done=(isDone&&!itemNa)?1:0;row.dataset.na=itemNa?1:0;
+   let tag='';
+   if(it.c){tag=cd.st==='na'?`<span class="tag na">해당없음 · ${cd.why}</span>`:cd.st==='req'?(cd.why?`<span class="tag req">해당 · ${cd.why}</span>`:''):`<span class="tag cond">조건부 · ${cd.why}</span>`}
+   let ds=it.d||'';
+   if(it.k==='util'&&p.amt)ds+=` → <em>${won(p.amt*0.0014)}</em>`;
+   row.innerHTML=`<div class="no">${i+1}</div><input type="checkbox" class="ck" ${isDone?'checked':''} ${subs.length&&subAct.length?'title="하위 서류를 모두 체크하면 자동 완료"':''}><div><div class="nm">${it.n}${tag}</div>${ds?`<div class="ds">${ds}</div>`:''}</div>`;
+   const ck=row.querySelector('.ck');
+   ck.onchange=()=>{if(subs.length&&subAct.length){subAct.forEach(u=>st.ck[u.key]=ck.checked)}else st.ck[it.key]=ck.checked;save();render()};
+   if(subs.length){
+    const ul=document.createElement('ul');ul.className='subs';
+    subs.forEach((u,j)=>{
+     const uc=u.c?C[u.c](p):null;const una=uc&&uc.st==='na';
+     const li=document.createElement('li');
+     let txt=u.n;
+     if(u.k==='ca'){
+      const big=p.amt>=30*EOK;
+      txt+= !p.amt?' — 30억↑: 기사+해당분야 3년 또는 산업기사+5년 ｜ 30억↓: 산업기사↑+3년'
+        : big?' — <b>30억↑</b>: 기사 취득 후 해당 직무분야 3년↑, 또는 산업기사 취득 후 5년↑'
+        :' — <b>30억 미만</b>: 산업기사 이상 취득 후 해당 직무분야 3년↑';
+      if(p.amt)li.className='hl';
+     }
+     if(una)li.className='na';
+     li.innerHTML=`<input type="checkbox" ${st.ck[u.key]?'checked':''}><span>${j+1}) ${txt}${uc?(una?` <span class="tag na">${uc.why}</span>`:uc.st==='req'?` <span class="tag req">${uc.why}</span>`:` <span class="tag cond">${uc.why}</span>`):''}</span>`;
+     li.querySelector('input').onchange=e=>{st.ck[u.key]=e.target.checked;save();render()};
+     ul.appendChild(li)});
+    row.appendChild(ul)}
+   if(filter==='todo'&&(isDone||itemNa))row.classList.add('hide');
+   if(filter==='done'&&!(isDone&&!itemNa))row.classList.add('hide');
+   body.appendChild(row)});
+  const pct=tot?Math.round(done/tot*100):0;
+  if(!tot)sec.classList.add('allna');
+  sec.innerHTML=`<div class="sh"><span class="badge">${si+1}</span><div><h2>${s.t}</h2><div class="who">${s.who}</div></div><div class="bar"><i style="width:${pct}%"></i></div><span class="cnt">${tot?done+' / '+tot:'해당없음'}</span><span class="car">▾</span></div>`;
+  sec.appendChild(body);
+  sec.querySelector('.sh').onclick=()=>{st.closed[s.id]=!st.closed[s.id];save();sec.classList.toggle('closed')};
+  box.appendChild(sec);
+  TT+=tot;TD+=done;sums.push({t:s.t,id:s.id,tot,done});
+ });
+ const P0=TT?Math.round(TD/TT*100):0;
+ $('ring').style.setProperty('--p',P0);$('ringTxt').textContent=P0+'%';
+ $('stgList').innerHTML=sums.map((x,i)=>`<div data-go="${x.id}" class="${x.tot&&x.done===x.tot?'done':''}"><span>${i+1}. ${x.t}</span><span>${x.tot?x.done+'/'+x.tot:'—'}</span></div>`).join('')+`<div style="border-top:1px solid var(--line);margin-top:4px;padding-top:4px;font-weight:700"><span>합계</span><span>${TD}/${TT}</span></div>`;
+ $('stgList').querySelectorAll('[data-go]').forEach(d=>d.onclick=()=>{const id=d.dataset.go;st.closed[id]=false;save();render();$('st_'+id).scrollIntoView({behavior:'smooth',block:'start'})});
+}
+
+setP();
+PF.forEach(f=>{const el=$('p_'+f);el.addEventListener(el.type==='checkbox'||el.tagName==='SELECT'?'change':'input',()=>{st.p=getP();save();render()})});
+document.querySelectorAll('.filters [data-f]').forEach(b=>b.onclick=()=>{filter=b.dataset.f;document.querySelectorAll('.filters [data-f]').forEach(x=>x.classList.toggle('on',x===b));render()});
+$('bOpen').onclick=()=>{st.closed={};save();render()};
+$('bClose').onclick=()=>{S.forEach(s=>st.closed[s.id]=true);save();render()};
+if(!st.p.type)$('p_type').value='build';
+render();
+</script>
+</body>
+</html>

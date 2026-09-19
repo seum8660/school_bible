@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>공사 계약·착공·준공·청구 제출서류 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B3A5B; --teal:#227C8E; --deep:#14293F;
+    --amber-bg:#FDF0E1; --amber:#D9730D;
+    --panel:#EEF3F7; --panel-line:#D8E2EA;
+    --line:#C9D6E0; --body:#33414F; --meta:#6B7A88; --note:#98A5B1;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Noto Sans CJK KR','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 12mm;
+    background:#fff; page-break-after:always; position:relative;
+  }
+  .page:last-child{ page-break-after:auto; }
+  .page.haspin{ display:flex; flex-direction:column; }
+  @media screen{ body{ background:#E9ECEF; } .page{ margin:0 auto 6mm auto; box-shadow:0 1mm 4mm rgba(0,0,0,.18); } }
+
+  /* ── 제목 ───────────────────────────── */
+  .title{
+    margin:0; font-size:18pt; font-weight:800; color:var(--navy);
+    letter-spacing:-0.03em; line-height:1.15; white-space:nowrap;
+  }
+  .ubar{
+    height:1.3mm; width:100%; margin:1.6mm 0 2.2mm 0; border-radius:0.8mm;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  .meta{ margin:0 0 3.4mm 0; font-size:6.4pt; font-weight:400; color:var(--meta); line-height:1.4; }
+
+  /* ── 레이아웃 ───────────────────────── */
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.6mm; margin-bottom:3.2mm; }
+  .row1{ margin-bottom:3.2mm; }
+  .row1.recap{ margin-top:auto; }
+
+  /* ── 열린 카드: 상하 가로 라인만 ─────── */
+  .card{
+    border-top:0.55mm solid var(--navy);
+    border-bottom:0.25mm solid var(--line);
+    border-left:0; border-right:0; border-radius:0;
+    background:none; padding:2.4mm 0 2.6mm 0;
+  }
+  .card.tealtop{ border-top-color:var(--teal); }
+
+  /* ── 섹션 배지 (그라데이션 아이콘 타일 + 라벨) ── */
+  .badge{ display:block; margin-bottom:1.8mm; line-height:1; white-space:nowrap; }
+  .badge .ico{
+    display:inline-block; vertical-align:middle; width:5.4mm; height:5.4mm;
+    border-radius:1.1mm; margin-right:1.6mm;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+    text-align:center;
+  }
+  .badge .ico svg{ width:3.4mm; height:3.4mm; margin-top:1mm; }
+  .badge .lb{
+    display:inline-block; vertical-align:middle;
+    font-size:8.6pt; font-weight:800; color:var(--navy); letter-spacing:-0.02em;
+  }
+  .badge .lb i{ font-style:normal; color:var(--teal); font-weight:800; margin-right:1.2mm; }
+
+  /* ── 본문 ───────────────────────────── */
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:7pt; line-height:1.46; padding-left:2.6mm; text-indent:-2.6mm; margin-bottom:1mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--teal); font-weight:800; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{
+    font-size:7pt; line-height:1.5; padding-left:5.2mm; text-indent:-5.2mm; margin-bottom:1.1mm;
+  }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{
+    display:inline-block; width:3.8mm; height:3.8mm; line-height:3.8mm;
+    border-radius:50%; background:var(--teal); color:#fff;
+    font-size:5.6pt; font-weight:700; text-align:center;
+    text-indent:0; margin-right:1.4mm; vertical-align:middle;
+  }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--amber); font-weight:700; }
+  .tl{ color:var(--teal); font-weight:700; }
+
+  /* ── 패널(수식·타임라인 밴드) ─────────── */
+  .formula{
+    background:var(--panel); border-left:1mm solid var(--teal);
+    padding:2.2mm 3mm; margin:0 0 2.4mm 0;
+    text-align:center; font-size:7.6pt; font-weight:700; line-height:1.45; color:var(--navy);
+  }
+  .formula .num{ color:var(--amber); }
+  .formula .sub{ display:block; font-size:6.2pt; font-weight:500; color:var(--meta); margin-top:1mm; }
+
+  /* ── 역할(책임 주체) 강조 ────────────── */
+  .rolebar{
+    background:var(--amber-bg); padding:1.8mm 2.4mm; margin:0 0 2.2mm 0; border-radius:0.8mm;
+  }
+  .rolebar .rico{
+    display:inline-block; vertical-align:middle; width:5mm; height:5mm;
+    border-radius:1mm; background:var(--amber); text-align:center; margin-right:1.6mm;
+  }
+  .rolebar .rico svg{ width:3.2mm; height:3.2mm; margin-top:0.9mm; }
+  .rolebar .rtx{
+    display:inline-block; vertical-align:middle; width:calc(100% - 7mm);
+    font-size:6.9pt; line-height:1.42; color:#5A3410;
+  }
+  .rolet{ color:var(--amber); font-weight:800; }
+
+  /* ── 칩 ─────────────────────────────── */
+  .chips{ display:flex; flex-wrap:wrap; gap:1.5mm; }
+  .chip{
+    font-size:6.3pt; line-height:1.3; background:var(--panel);
+    border:0.25mm solid var(--panel-line); border-radius:1mm;
+    padding:1mm 1.9mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  /* ── 결론 밴드 ──────────────────────── */
+  .conclude{
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+    color:#fff; border-radius:1.2mm; padding:3mm 4mm; margin:0 0 2.6mm 0;
+  }
+  .conclude .ct{ font-size:6.2pt; font-weight:700; letter-spacing:0.08em; opacity:.82; margin-bottom:1mm; }
+  .conclude .cb{ font-size:8pt; font-weight:700; line-height:1.45; }
+
+  /* ── 각주 ───────────────────────────── */
+  .rule-gray{ height:0.25mm; background:var(--line); margin:0 0 1.6mm 0; }
+  .note{ text-align:center; font-size:5.9pt; line-height:1.42; color:var(--note); margin:0; }
+  .pageno{ text-align:center; font-size:5.9pt; color:var(--note); margin:1.2mm 0 0 0; }
+
+  @media print{ body{ background:#fff; } .page{ box-shadow:none; margin:0; } }
+</style>
+<style>
+.subl{display:block;margin:0.6mm 0 0 0}
+.subl .si{display:block;font-size:6.6pt;line-height:1.42;color:var(--body);padding-left:3.2mm;text-indent:-3.2mm;margin-top:0.4mm}
+.subl .si .num,.subl .si .term{font-size:6.6pt}
+.page.cover{display:flex;flex-direction:column;padding:22mm 18mm 16mm}
+.cv-top{display:flex;justify-content:space-between;font-size:8pt;color:var(--meta);border-bottom:0.3mm solid var(--line);padding-bottom:2.5mm}
+.cv-no{font-weight:800;color:var(--teal);letter-spacing:.06em}
+.cv-band{margin-top:34mm;background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);color:#fff;border-radius:2mm;padding:14mm 12mm}
+.cv-ico{width:14mm;height:14mm;border-radius:2.5mm;background:rgba(255,255,255,.16);text-align:center;margin-bottom:6mm}
+.cv-ico svg{width:9mm;height:9mm;margin-top:2.5mm}
+.cv-kicker{font-size:9pt;font-weight:700;letter-spacing:.1em;opacity:.85;margin-bottom:3mm}
+.cv-title{margin:0;font-size:25pt;font-weight:800;line-height:1.3;letter-spacing:-.03em}
+.cv-sub{margin-top:5mm;font-size:9.5pt;opacity:.9;line-height:1.5}
+.cv-steps{display:flex;gap:3mm;margin-top:12mm}
+.cv-st{flex:1;border-top:0.6mm solid var(--teal);padding-top:3mm}
+.cv-st b{display:block;font-size:11pt;color:var(--navy);margin-top:1.5mm}
+.cv-st em{display:block;font-style:normal;font-size:7.4pt;color:var(--meta);margin-top:1mm}
+.cv-n{display:inline-block;width:6mm;height:6mm;line-height:6mm;border-radius:50%;background:var(--teal);color:#fff;text-align:center;font-size:8pt;font-weight:700}
+.cv-toc{margin-top:12mm;background:var(--panel);border-left:1mm solid var(--teal);padding:5mm 6mm}
+.cv-tt{font-size:9pt;font-weight:800;color:var(--navy);margin-bottom:2.5mm}
+.cv-toc p{margin:0 0 1.6mm;font-size:8pt;line-height:1.5}
+.cv-toc p span{display:inline-block;width:11mm;color:var(--teal);font-weight:800}
+.cv-foot{margin-top:auto;text-align:center;font-size:8.5pt;color:var(--meta);border-top:0.3mm solid var(--line);padding-top:3mm}
+</style></head><body>
+<div class="page"><h1 class="title">공사 계약·착공·준공·청구 제출서류 — 핵심 요약</h1><div class="ubar"></div><p class="meta">업무 체크리스트 ｜ 전라남도교육청 교육시설과 시설공사 제출서류 안내(내부 자료) ｜ 단계: 계약 → 착공 → 준공 → 대가 청구 ｜ ★ 표시는 근거 법령 개정 여부 확인 권장 사항</p><div class="rolebar"><span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">계약상대자(시공사) = 서류 작성·제출의 책임 주체</span> — 착공계는 <span class="rolet">공사감독관 경유</span> 후 교육시설과로, 준공계는 교육시설과로 제출하고, 준공금·기성금은 <span class="rolet">G2B 전자청구</span>로 청구함.</span></div><div class="row1 "><div class="card "><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg></span><span class="lb"><i>1</i>계약 구비서류</span></span><ol class="nlist"><li><span class="no">1</span><b class="term">건설업 등록증</b> 및 <b class="term">건설업 면허수첩</b> 사본 각 <span class="num">1부</span></li><li><span class="no">2</span><b class="term">인감증명서</b>, <b class="term">사용인감계</b> 각 <span class="num">1부</span></li><li><span class="no">3</span><b class="term">청렴계약이행서약서</b>(공통) — 전자계약 초안에 양식 첨부</li><li><span class="no">4</span><b class="term">각서</b>(<span class="tl">수의계약 및 견적입찰 시</span>) — 전자계약 초안에 양식 첨부</li></ol></div></div><div class="row1 "><div class="card tealtop"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16"/><path d="M7 21V4h2l9 4H9"/><path d="M16 8v5"/><path d="M14 13h4v3h-4z"/></svg></span><span class="lb"><i>2</i>착공 시 제출서류 (교육시설과 경유)</span></span><div class="rolebar"><span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">공사감독관 = 착공계 경유·검토</span> — 현장대리인 자격, 공정표 형식, 안전관리비·환경보전비 <span class="rolet">책정액 이상</span> 계획 여부를 확인함.</span></div><ol class="nlist"><li><span class="no">1</span><b class="term">착공계 제출 공문</b></li><li><span class="no">2</span><b class="term">착공계</b>(감독관 경유)</li><li><span class="no">3</span><b class="term">계약내역서</b>(사용인감 <span class="tl">간인</span>)</li><li><span class="no">4</span><b class="term">현장대리인계</b>(현장소장 및 직원) — 주민등록번호 대신 <span class="tl">생년월일</span>로 기재<span class="subl"><span class="si">1) 재직증명서, 건강보험 자격득실 확인서</span><span class="si">2) 건설기술자 경력증명서(건설기술인협회) — <b class="term">30억 이상</b>: 기사 이상 취득 후 해당 직무분야 <span class="num">3년</span> 이상 실무, 또는 산업기사 취득 후 <span class="num">5년</span> 이상 종사 ｜ <b class="term">30억 미만</b>: 산업기사 이상 취득 후 해당 직무분야 <span class="num">3년</span> 이상 종사</span><span class="si">3) 국가기술자격증 사본</span><span class="si">4) 현장조직도</span></span></li><li><span class="no">5</span><b class="term">공사 예정공정표</b> — <span class="tl">네트워크 공정표 및 보할 형식</span>, 바차트 지양</li><li><span class="no">6</span><b class="term">고용·산재보험 가입증명원</b></li><li><span class="no">7</span><b class="term">안전관리계획서</b> — 안전관리비 사용계획서 포함, 책정된 안전관리비 <span class="num">이상</span></li><li><span class="no">8</span><b class="term">환경관리계획서</b> — 환경보전비 사용계획서 포함, 책정된 환경보전비 <span class="num">이상</span></li><li><span class="no">9</span><b class="term">품질관리계획서</b>(현장업무분장 및 공정관리계획 포함) — 총공사비 <span class="num">5억원</span> 이상 토목, <span class="num">2억원</span> 이상 전문공사, 연면적 <span class="num">660㎡</span> 이상 건축공사 ★</li><li><span class="no">10</span><b class="term">공정별 장비 및 인력투입계획서</b></li><li><span class="no">11</span><b class="term">착공 전 현장 사진</b></li><li><span class="no">12</span><b class="term">직접시공계획서</b>(직접시공·하도급 내역서 및 예정공정표 포함) — 도급금액 <span class="num">4천만원</span> 미만이고 공사기간 <span class="num">30일</span> 미만이면 생략 가능</li><li><span class="no">13</span><b class="term">노무비 구분관리 및 지급확인 합의서</b> <span class="num">2부</span> 또는 <b class="term">적용제외 신고서</b> <span class="num">1부</span> — 적용제외는 직접노무비 지급대상 <span class="tl">전원이 계약상대자의 상용근로자</span>인 경우에만</li><li><span class="no">14</span><b class="term">노무비 전용통장 사본</b> — 전용통장은 노무비 외 공사비 관리통장과 <span class="tl">반드시 구분</span></li><li><span class="no">15</span><b class="term">그 외 제출서류 및 검토사항</b><span class="subl"><span class="si">1) 기술지도계약서 사본(<span class="num">1억 이상</span>) — 원문 근거: 산업안전보건법 시행규칙 제32조 ★</span><span class="si">2) 퇴직공제부금 가입증명서(추정가격 <span class="num">1억 이상</span>)</span><span class="si">3) 건설공사대장 통보(<span class="num">1억 이상</span> 일반공사)</span></span></li></ol></div></div><div class="rule-gray"></div><p class="note">원문의 착공서류 번호 중복(12·13번 2회)은 순서대로 12~15번으로 재부여함 ｜ ★ 품질관리계획서 대상 금액·면적은 건설기술 진흥법 시행령상 품질시험계획 대상 기준과 같은 값이며, 기술지도 근거 조문은 산업안전보건법 2019년 전부개정으로 체계가 바뀌었으므로 현행 조문 확인 권장</p><p class="pageno">1 / 2</p></div>
+<div class="page haspin"><h1 class="title">공사 계약·착공·준공·청구 제출서류 — 핵심 요약</h1><div class="ubar"></div><p class="meta">업무 체크리스트 ｜ 전라남도교육청 교육시설과 시설공사 제출서류 안내(내부 자료) ｜ 단계: 계약 → 착공 → 준공 → 대가 청구 ｜ ★ 표시는 근거 법령 개정 여부 확인 권장 사항</p><div class="rolebar"><span class="rico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span><span class="rtx"><span class="rolet">교육시설과(발주청) = 준공서류 접수·정산 주체</span> — 준공내역서는 <span class="rolet">준공정산동의서</span>로 교육시설팀과 확정하고, 준공도면에는 정산·설계변경 내용을 모두 반영함.</span></div><div class="row1 "><div class="card tealtop"><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M10 21v-5h4v5"/></svg></span><span class="lb"><i>3</i>준공 시 제출서류 (교육시설과 제출)</span></span><ol class="nlist"><li><span class="no">1</span><b class="term">준공계 제출 공문</b></li><li><span class="no">2</span><b class="term">공사 준공계</b></li><li><span class="no">3</span><b class="term">준공검사원</b></li><li><span class="no">4</span><b class="term">공사 준공 사진첩</b> — 공정별 <span class="tl">착공 전 · 공사 중 · 준공 후</span> 사진 포함</li><li><span class="no">5</span><b class="term">준공내역서</b>(준공정산동의서 — 교육시설팀)</li><li><span class="no">6</span><b class="term">준공도면</b>(정산 및 설계변경 내용 포함)</li><li><span class="no">7</span><b class="term">고용·산재보험 가입/완납증명원</b>, <b class="term">건강보험 납부확인서</b>, <b class="term">국민연금 납부증명서</b></li><li><span class="no">8</span><b class="term">안전관리비 사용내역서</b> — 거래명세서, 전자세금계산서, 안전관리 사진, 안전구 지급대장, 일용노무비 지급명세서/일용노무비 입금내역서, 기술지도계약서/완료증명서/결과보고서(<span class="num">1억 이상</span>)</li><li><span class="no">9</span><b class="term">환경보전비 사용내역서</b> — 거래명세서, 전자세금계산서, 환경보전 사진</li><li><span class="no">10</span><b class="term">주요자재 품질인증서</b> 및 <b class="term">시험성적서</b></li><li><span class="no">11</span><b class="term">공사작업일보</b> 사본</li><li><span class="no">12</span><b class="term">유지관리지침</b>(<span class="tl">신·증축</span>)</li><li><span class="no">13</span><b class="term">폐기물 관련서류</b> — <span class="tl">올바로시스템(www.allbaro.or.kr)</span>으로 처리<span class="subl"><span class="si">1) 폐기물처리계획 신고필증(중간처리업 허가증, 수집·운반 허가증 포함) — <span class="num">5t</span> 미만 생략</span><span class="si">2) 폐기물 간이인계서, 계량증명서</span><span class="si">3) 중간처리확인서, 목록형 대장</span><span class="si">4) 폐기물처리 실적보고 — <span class="num">5t</span> 미만 생략</span><span class="si">5) 세금계산서</span></span></li><li><span class="no">14</span><b class="term">수도광열비</b>(공사금액의 <span class="num">0.14%</span>) 납부서류</li><li><span class="no">15</span><b class="term">노무비 지급내역서</b>(노무비 선지급 시)</li></ol></div></div><div class="row2"><div class="card "><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg></span><span class="lb"><i>4</i>청구 시 제출서류 (G2B 전자청구)</span></span><ol class="nlist"><li><span class="no">1</span><b class="term">준공금(기성금) 청구서</b></li><li><span class="no">2</span><b class="term">전자세금계산서</b></li><li><span class="no">3</span><b class="term">국세 및 지방세 완납증명서</b> — G2B 조회 시 <span class="tl">체납분이 있는 경우에만</span> 제출</li><li><span class="no">4</span><b class="term">국민연금 납부(완납)증명서</b> 또는 <b class="term">4대보험 납부(완납)증명서</b></li><li><span class="no">5</span><b class="term">하자보증보험증권</b> — <span class="tl">준공검사일부터</span>, 하자분류 공사원가계산서(공종별·기간별 분류) 포함</li></ol></div><div class="card "><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4-4 5 3 5-3 4 4"/><path d="M7 8l5 7 5-7"/><path d="M5 14l4 4M19 14l-4 4"/></svg></span><span class="lb"><i>5</i>하도급대금 직불 시</span></span><ol class="nlist"><li><span class="no">1</span><b class="term">청구서</b></li><li><span class="no">2</span><b class="term">통장 사본</b> — 인감 또는 사용인감으로 <span class="tl">원본대조필</span></li><li><span class="no">3</span><b class="term">세금계산서</b> — 인감 또는 사용인감으로 날인</li><li><span class="no">4</span><b class="term">국세 및 지방세 완납증명서</b>(납세증명서, 지방세 납세증명서) — 유효기간이 <span class="tl">대금지급 예정일 이후</span>가 되도록 발급·제출</li></ol></div></div><div class="row1 recap"><div class="card "><span class="badge"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span class="lb"><i>6</i>핵심 수치 재확인</span></span><div class="chips"><span class="chip"><b>현장대리인 경계</b> <span class="num">30억원</span></span><span class="chip"><b>기사 경력</b> <span class="num">3년</span></span><span class="chip"><b>산업기사 경력(30억↑)</b> <span class="num">5년</span></span><span class="chip"><b>품질계획 토목</b> <span class="num">5억원</span></span><span class="chip"><b>품질계획 전문</b> <span class="num">2억원</span></span><span class="chip"><b>품질계획 건축</b> <span class="num">660㎡</span></span><span class="chip"><b>기술지도·퇴직공제·공사대장</b> <span class="num">1억원</span></span><span class="chip"><b>직접시공 생략</b> <span class="num">4천만원·30일 미만</span></span><span class="chip"><b>폐기물 신고·실적 생략</b> <span class="num">5t 미만</span></span><span class="chip"><b>수도광열비</b> <span class="num">공사금액 0.14%</span></span><span class="chip"><b>노무비 합의서</b> <span class="num">2부</span></span><span class="chip"><b>적용제외 신고서</b> <span class="num">1부</span></span></div></div></div><div class="conclude"><div class="ct">한 줄 결론</div><div class="cb">계약 4종 → 착공 15종 → 준공 15종 → 청구 5종(하도급 직불 시 4종 추가)을 단계별로 빠짐없이 갖추고, 착공 때 세운 안전·환경·노무비·폐기물 계획은 준공 때 사용내역과 증빙으로 정산됨.</div></div><div class="rule-gray"></div><p class="note">출처: 전라남도교육청 교육시설과 시설공사 제출서류 안내 ｜ 관계 근거: 건설산업기본법·건설기술 진흥법·산업안전보건법·건설근로자법·건설폐기물법·지방계약법령 ｜ 폐기물 처리: 올바로시스템 www.allbaro.or.kr</p><p class="pageno">2 / 2</p></div>
+</body></html>

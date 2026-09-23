@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inject secrets
+        env:
+          KMA_KEY: ${{ secrets.KMA_KEY }}
+          ADMIN_PW_HASH: ${{ secrets.ADMIN_PW_HASH }}
+          SITE_PW_SUP_HASH: ${{ secrets.SITE_PW_SUP_HASH }}
+          SITE_PW_REP_HASH: ${{ secrets.SITE_PW_REP_HASH }}
+        run: |
+          sed -i "s|__KMA_KEY__|${KMA_KEY}|g" 기상데이터.html
+          sed -i "s|__ADMIN_PW_HASH__|${ADMIN_PW_HASH}|g" bible.html
+          for f in 공사현장_관리.html 공사현장_현장이.html; do
+            sed -i "s|__SITE_PW_SUP_HASH__|${SITE_PW_SUP_HASH}|g; s|__SITE_PW_REP_HASH__|${SITE_PW_REP_HASH}|g" "$f"
+          done
+          rm -rf .github templates tools
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4

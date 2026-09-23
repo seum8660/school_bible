@@ -529,7 +529,7 @@
         <div class="c"><div class="nm">기상 비작업일수</div><div class="vl">${rd(tw)}<span>일</span></div></div>
         <div class="c"><div class="nm">법정공휴일</div><div class="vl">${rd(th)}<span>일</span></div></div>
       </div>
-      <div class="note" style="margin:0 0 14px">본 결과는 <b>평년값 기반 추정치</b>입니다. 공사기간 산정 · 공기연장 등 공식 자료로 활용할 때는 반드시 <b>기상청 기상자료개방포털(data.kma.go.kr)</b>에서 원본 관측자료를 직접 확인하십시오.</div>
+      <div class="note" style="margin:0 0 14px">본 결과는 <b>지역별 평년 기상경향을 반영한 추정치</b>이며, 작업제한 기준값 변경은 반영되지 않습니다. 공사기간 산정 · 공기연장 등 공식 자료로 활용할 때는 반드시 <b>기상청 기상자료개방포털(data.kma.go.kr)</b>에서 원본 관측자료를 직접 확인하십시오.</div>
       <div style="display:flex;justify-content:flex-end;margin:0 0 6px"><button class="btn" type="button" onclick="copyTbl('wx-tbl-norm',this)">표 복사</button></div>
       <div class="tw"><table id="wx-tbl-norm"><thead><tr><th style="text-align:left">연·월</th><th>기상</th><th>공휴일</th><th>중복</th><th>적용</th><th style="text-align:left">비고</th></tr></thead><tbody>${rows}</tbody></table></div>`;
   }

@@ -319,7 +319,7 @@ window.dispatchEvent(new Event('fb-ready'));
         <button class="btn primary" style="flex:1" onclick="submitIntroPw()">확인</button>
       </div>
     </div>
-    <div class="intro-note">역할을 선택하고 비밀번호를 입력하세요<br>기본 비밀번호 — 감독자 <b>1234</b> · 현장대리인 <b>5678</b></div>
+    <div class="intro-note">역할을 선택하고 비밀번호를 입력하세요</div>
   </div>
 </div>
 
@@ -461,7 +461,7 @@ window.dispatchEvent(new Event('fb-ready'));
     </div>
     <input class="field" type="text" id="roleName" placeholder="이름 (선택)" style="margin-bottom:8px">
     <input class="field" type="password" id="rolePw" placeholder="비밀번호">
-    <div class="hint" style="font-size:11px;color:var(--muted);margin:6px 0 14px">기본 비밀번호 — 감독자 <b>1234</b> · 현장대리인 <b>5678</b> (아래에서 변경 가능)</div>
+    <div class="hint" style="font-size:11px;color:var(--muted);margin:6px 0 14px">비밀번호는 관리자에게 문의하세요 (아래에서 변경 가능)</div>
     <div class="actions">
       <button class="btn btn-g" style="flex:1" onclick="confirmRole()">확인</button>
       <button class="btn btn-o" onclick="closeRole()">닫기</button>
@@ -485,7 +485,9 @@ window.dispatchEvent(new Event('fb-ready'));
 <script>
 /* ================= 저장소 ================= */
 const LS='site-mgr-v1';
-let DB={sites:[],cur:null,grants:[],pw:{'감독자':'0000','현장대리인':'0000'}};
+async function __sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(String(s)));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+async function __pwOk(i,st){ if(i==null||!st) return false; if(i===st) return true; return (await __sha(i))===st; }
+let DB={sites:[],cur:null,grants:[],pw:{'감독자':'1234','현장대리인':'5678'}};
 let ROLE=null, RNAME='';
 let pendPhotos=[], pendFiles=[];
 
@@ -594,7 +596,7 @@ function pickIntroSite(id){
 }
 let pendingRole=null;
 function cancelIntroPw(){ pendingRole=null; const b=document.getElementById('introPw'); if(b)b.style.display='none'; }
-function submitIntroPw(){
+async function submitIntroPw(){
   const codeEl=document.getElementById('introCodeIn');
   const code=(codeEl.value||'').trim();
   if(pendingRole==='현장대리인'){
@@ -615,7 +617,7 @@ function submitIntroPw(){
     DB.cur=site.id; syncWatch(site.code);
   } else {
     const pw=document.getElementById('introPwIn').value;
-    if(pw!==DB.pw[pendingRole]){ toast('비밀번호가 올바르지 않습니다.'); return; }
+    if(!(await __pwOk(pw,DB.pw[pendingRole]))){ toast('비밀번호가 올바르지 않습니다.'); return; }
     const name=(document.getElementById('introSiteIn').value||'').trim();
     if(name){
       const c = code || autoCode();
@@ -652,12 +654,12 @@ function openRole(){ toast('상단에서 감독자 또는 현장대리인을 선
 function closeRole(){}
 function pickRole(){}
 function confirmRole(){}
-function changePw(){
+async function changePw(){
   if(!ROLE){ toast('먼저 역할을 선택하세요.'); return; }
   const cur=prompt('현재 비밀번호'); if(cur===null)return;
-  if(cur!==DB.pw[ROLE]){ toast('현재 비밀번호가 다릅니다.'); return; }
+  if(!(await __pwOk(cur,DB.pw[ROLE]))){ toast('현재 비밀번호가 다릅니다.'); return; }
   const nw=prompt('새 비밀번호'); if(!nw)return;
-  DB.pw[ROLE]=nw; save(); toast('비밀번호가 변경되었습니다.');
+  DB.pw[ROLE]=await __sha(nw); save(); toast('비밀번호가 변경되었습니다.');
 }
 
 /* ================= 공사(현장) ================= */

@@ -5159,7 +5159,7 @@ runRatioCalc();
 (function(){
   const list=document.getElementById('qbox-list'),input=document.getElementById('qbox-input'),send=document.getElementById('qbox-send');
   if(!list||!send) return;
-  const KEY='bible-qa', ADMIN_HASH='__ADMIN_PW_HASH__'; // GitHub secret(ADMIN_PW_HASH, SHA-256)
+  const KEY='bible-qa', ADMIN_PW='2026';
   async function __sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(String(s)));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
   let CLOUD=null;
   let admin=false;
@@ -5205,7 +5205,7 @@ runRatioCalc();
   if(adBtn) adBtn.addEventListener('click',async ()=>{
     if(admin){ admin=false; adBtn.style.color='var(--muted)'; adBtn.textContent='관리자'; render(); return; }
     const p=prompt('관리자 비밀번호를 입력하세요',''); 
-    if(p!==null && (await __sha(p))===ADMIN_HASH){ admin=true; adBtn.style.color='var(--accent)'; adBtn.textContent='관리자 ✓'; render(); }
+    if(p!==null && p===ADMIN_PW){ admin=true; adBtn.style.color='var(--accent)'; adBtn.textContent='관리자 ✓'; render(); }
     else if(p!==null){ alert('비밀번호가 올바르지 않습니다.'); }
   });
   render();

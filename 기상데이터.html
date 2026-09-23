@@ -251,22 +251,46 @@
   };
   const HOLI=new Set(['0101','0301','0505','0606','0815','1003','1009','1225']);
   const CRIT={rain:5,wind:10,hot:33,cold:-5};
-  const KMA_KEY='018f33af076c5608e045f3388a7a6f85e3cacdaeead009c71d7f67595ff053da';
+  const KMA_KEY='__KMA_KEY__'; // GitHub Actions secret(KMA_KEY)로 배포 시 치환
   const STN={'광주':156,'목포':165,'여수':168,'순천':174,'장흥':260,'해남':261,'고흥':262,'완도':170,'진도':175,'흑산도':169};
   const ymd=d=>d.toISOString().slice(0,10).replace(/-/g,'');
+  // 기상청 API허브: 지상관측 > 종관기상관측(ASOS) > 지상 관측자료 조회 (/url/kma_sfcdd.php, 일자료)
+  const KMA_BASE='https://apihub.kma.go.kr/api/typ01/url/kma_sfcdd.php';
+  const COLS=['TM','STN','WS_AVG','WR_DAY','WD_MAX','WS_MAX','WS_MAX_TM','WD_INS','WS_INS','WS_INS_TM','TA_AVG','TA_MAX','TA_MAX_TM','TA_MIN','TA_MIN_TM','TD_AVG','TS_AVG','TG_MIN','HM_AVG','HM_MIN','HM_MIN_TM','PV_AVG','EV_S','EV_L','FG_DUR','PA_AVG','PS_AVG','PS_MAX','PS_MAX_TM','PS_MIN','PS_MIN_TM','CA_TOT','SS_DAY','SS_DUR','SS_CMB','SI_DAY','SI_60M_MAX','SI_60M_MAX_TM','RN_DAY'];
+  function parseSfcdd(txt){
+    const lines=txt.split(/\r?\n/);
+    let idx=null;
+    for(const l of lines){ if(l.startsWith('#')&&/\bSTN\b/.test(l)&&/TA_MAX|RN_DAY/.test(l)){ idx=l.replace(/^#\s*/,'').trim().split(/\s+/); break; } }
+    if(!idx) idx=COLS;
+    const at=(a,k)=>{const i=idx.indexOf(k);return i<0?null:a[i];};
+    const num=v=>{const n=parseFloat(v);return (v==null||isNaN(n)||n<=-9)?null:n;};
+    const out=[];
+    for(const l of lines){
+      if(!l.trim()||l.startsWith('#')) continue;
+      const a=l.trim().split(/[\s,]+/); const t=at(a,'TM')||a[0];
+      if(!/^\d{8}/.test(t)) continue;
+      const tmax=parseFloat(at(a,'TA_MAX')), tmin=parseFloat(at(a,'TA_MIN'));
+      out.push({
+        tm:`${t.slice(0,4)}-${t.slice(4,6)}-${t.slice(6,8)}`,
+        sumRn:num(at(a,'RN_DAY'))??0,
+        maxWs:num(at(a,'WS_MAX'))??0,
+        maxTa:(isNaN(tmax)||tmax<=-50)?'':tmax,
+        minTa:(isNaN(tmin)||tmin<=-50)?'':tmin
+      });
+    }
+    return out;
+  }
   async function fetchKMA(stn,s,e){
-    const base='https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList';
-    const rows=[]; let page=1;
-    while(page<=12){
-      const url=`${base}?serviceKey=${KMA_KEY}&pageNo=${page}&numOfRows=999&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${ymd(s)}&endDt=${ymd(e)}&stnIds=${stn}`;
-      const r=await fetch(url); if(!r.ok) throw new Error('HTTP '+r.status);
-      const j=await r.json();
-      const body=j?.response?.body; const item=body?.items?.item;
-      if(!item) break;
-      const arr=Array.isArray(item)?item:[item];
-      rows.push(...arr);
-      if(rows.length>=(body.totalCount||0)) break;
-      page++;
+    if(KMA_KEY.startsWith('__')) throw new Error('API 키 미설정 (배포본에서만 동작)');
+    const days=[]; for(let d=new Date(s); d<=e; d.setDate(d.getDate()+1)) days.push(ymd(new Date(d.getTime()-d.getTimezoneOffset()*60000)));
+    const rows=[];
+    for(let i=0;i<days.length;i+=8){
+      const part=await Promise.all(days.slice(i,i+8).map(async tm=>{
+        const r=await fetch(`${KMA_BASE}?tm=${tm}&stn=${stn}&disp=0&help=0&authKey=${KMA_KEY}`);
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        return parseSfcdd(await r.text());
+      }));
+      part.forEach(p=>rows.push(...p));
     }
     return rows;
   }

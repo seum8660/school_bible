@@ -2,14 +2,20 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '0 1 * * *'   # 매일 10:00(KST) 전일 일자료 갱신
   workflow_dispatch:
+    inputs:
+      days:
+        description: '일자료 받을 기간(일) — 처음 1회는 1095(3년) 권장'
+        default: '3'
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -18,12 +24,38 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Inject secrets
+      - name: Fetch KMA data
+        timeout-minutes: 40
         env:
           KMA_KEY: ${{ secrets.KMA_KEY }}
+          DAYS: ${{ github.event.inputs.days || '3' }}
         run: |
-          sed -i "s|__KMA_KEY__|${KMA_KEY}|g" 기상데이터.html
-          rm -rf .github templates tools
+          set +e
+          export STN='^(156|165|168|169|170|174|175|260|261|262)$'
+          export BASE='https://apihub.kma.go.kr/api/typ01/url'
+          mkdir -p wx_data/daily
+          # 일자료 — 8개 동시 요청, 50일마다 진행 표시
+          fetch(){
+            i=$1; tm=$(TZ=Asia/Seoul date -d "-$i day" +%Y%m%d); f="wx_data/daily/$tm.txt"
+            if [ "$i" -le 3 ] || [ ! -s "$f" ]; then
+              curl -sf --retry 2 --connect-timeout 5 --max-time 15 "$BASE/kma_sfcdd.php?tm=$tm&stn=0&disp=0&help=1&authKey=$KMA_KEY" \
+                | iconv -f euc-kr -t utf-8 -c | awk -v re="$STN" '/^#/ || ($2 ~ re)' > "$f.tmp"
+              if grep -qvE '^#|^\s*$' "$f.tmp"; then mv "$f.tmp" "$f"; else rm -f "$f.tmp"; fi
+            fi
+            [ $((i % 50)) -eq 0 ] && echo "진행 $i / $DAYS일 (저장 $(ls wx_data/daily | wc -l)개)"
+            return 0
+          }
+          export -f fetch; export KMA_KEY DAYS
+          seq 1 "$DAYS" | xargs -P 8 -I{} bash -c 'fetch {}'
+          echo "일자료 저장: $(ls wx_data/daily | wc -l)개"
+          ls wx_data/daily | sed 's/\.txt$//' | sort > wx_data/index.txt
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add wx_data
+          git diff --cached --quiet || (git commit -m "기상자료 갱신 $(TZ=Asia/Seoul date +%F\ %H:%M)" && git pull --rebase -q && git push -q)
+          exit 0
+      - name: Clean
+        run: rm -rf .github templates tools
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

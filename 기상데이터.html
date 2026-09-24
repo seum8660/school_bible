@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>기상데이터 체크 — 공사기간 산정용</title>
+<title>기상데이터 체크</title>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
   :root{
@@ -175,18 +175,24 @@
   <div class="hd">
     <div style="flex:1;min-width:0">
       <h1>기상데이터 체크</h1>
-      <p class="lead">기상청 ASOS 일자료 기반 비작업일수 산정 — 공사기간 산출·계약기간 연장 검토용</p>
+      <p class="lead">기상청 종관기상관측(ASOS) 실시간 자료 — 지역별 현재 기상 · 일별 실측값 조회</p>
     </div>
     <button class="iconbtn" id="themeBtn" title="라이트 / 다크">☾</button>
   </div>
 </header>
 <div class="pmeta">
-  <div><span class="lb">자료</span><span class="vl">기상청 ASOS 일자료</span></div>
+  <div><span class="lb">자료</span><span class="vl">기상청 API허브 ASOS (시간·일자료)</span></div>
   <div><span class="lb">대상</span><span class="vl">전남·광주 관측지점</span></div>
   <div><span class="lb">기준값</span><span class="vl" id="wx-crit-txt" title="눌러서 기준값 조정" style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px" onclick="document.getElementById('cr-rain').focus()">강수 5mm · 강풍 10m/s · 혹서 33℃ · 혹한 −5℃</span></div>
 </div>
 
 <div class="wrap">
+  <div class="panel" id="wx-now">
+    <div class="sec-h" style="justify-content:space-between"><div><h2>현재 기상 (실시간)</h2><p id="wx-now-t">기상청 ASOS 시간자료 · 30분마다 갱신</p></div>
+      <button class="btn" type="button" onclick="wxNow()">↻ 새로고침</button></div>
+    <div class="tw"><table><thead><tr><th style="text-align:left">지역</th><th>기온 ℃</th><th>습도 %</th><th>풍속 m/s</th><th>돌풍 m/s</th><th>오늘 강수 mm</th><th>상태</th></tr></thead>
+      <tbody id="wx-now-body"><tr><td colspan="7" style="color:var(--sub)">불러오는 중…</td></tr></tbody></table></div>
+  </div>
   <div class="panel">
     <div class="form">
       <div class="fld"><label>지역</label>
@@ -315,7 +321,7 @@
       try{localStorage.setItem('wx-crit-val',JSON.stringify(CRIT));}catch(e){} txt(); window.__wxRun&&window.__wxRun(); });
     txt();
   })();
-  const KMA_KEY='__KMA_KEY__'; // GitHub Actions secret(KMA_KEY)로 배포 시 치환
+  // 기상청 자료는 GitHub Actions(Secret KMA_KEY)가 30분마다 wx_data/에 저장 — 페이지는 같은 사이트 파일만 읽음 (키 미노출)
   const STN={'광주':156,'목포':165,'여수':168,'순천':174,'장흥':260,'해남':261,'고흥':262,'완도':170,'진도':175,'흑산도':169};
   const ymd=d=>d.toISOString().slice(0,10).replace(/-/g,'');
   // 기상청 API허브: 지상관측 > 종관기상관측(ASOS) > 지상 관측자료 조회 (/url/kma_sfcdd.php, 일자료)
@@ -335,6 +341,7 @@
       if(!/^\d{8}/.test(t)) continue;
       const tmax=parseFloat(at(a,'TA_MAX')), tmin=parseFloat(at(a,'TA_MIN'));
       out.push({
+        stn:String(at(a,'STN')||a[1]),
         tm:`${t.slice(0,4)}-${t.slice(4,6)}-${t.slice(6,8)}`,
         sumRn:num(at(a,'RN_DAY'))??0,
         maxWs:num(at(a,'WS_MAX'))??0,
@@ -347,17 +354,17 @@
   const KCACHE={};
   async function fetchKMA(stn,s,e){
     const ck=stn+'|'+ymd(s)+'|'+ymd(e); if(KCACHE[ck]) return KCACHE[ck];
-    if(KMA_KEY.startsWith('__')) throw new Error('API 키 미설정 (배포본에서만 동작)');
     const days=[]; for(let d=new Date(s); d<=e; d.setDate(d.getDate()+1)) days.push(ymd(new Date(d.getTime()-d.getTimezoneOffset()*60000)));
-    const rows=[];
-    for(let i=0;i<days.length;i+=8){
-      const part=await Promise.all(days.slice(i,i+8).map(async tm=>{
-        const r=await fetch(`${KMA_BASE}?tm=${tm}&stn=${stn}&disp=0&help=0&authKey=${KMA_KEY}`);
-        if(!r.ok) throw new Error('HTTP '+r.status);
-        return parseSfcdd(await r.text());
+    const rows=[]; let got=0;
+    for(let i=0;i<days.length;i+=10){
+      const part=await Promise.all(days.slice(i,i+10).map(async tm=>{
+        const r=await fetch(`wx_data/daily/${tm}.txt`,{cache:'no-cache'});
+        if(!r.ok) return [];
+        got++; return parseSfcdd(await r.text()).filter(o=>o.stn===String(stn));
       }));
       part.forEach(p=>rows.push(...p));
     }
+    if(!got) throw new Error('해당 기간 저장 자료 없음 · Actions에서 과거 자료 받기 필요');
     KCACHE[ck]=rows;
     return rows;
   }
@@ -540,6 +547,35 @@
     syncText();run();};
     e2.addEventListener('input',h);e2.addEventListener('change',h);});
   run();
+  const NOWC=['TM','STN','WD','WS','GST_WD','GST_WS','GST_TM','PA','PS','PT','PR','TA','TD','HM','PV','RN','RN_DAY'];
+  window.wxNow=async function(){
+    const tb=$('wx-now-body'), tt=$('wx-now-t');
+    const fail=m=>{ tb.innerHTML=`<tr><td colspan="7" style="color:#d92c20;font-weight:700">실시간 자료 조회 실패 (${m})</td></tr>`; };
+    try{
+      const r=await fetch('wx_data/now.txt',{cache:'no-cache'}); if(!r.ok) throw new Error(r.status===404?'자료 파일 없음 · Actions 실행 후 표시':'HTTP '+r.status);
+      const lines=(await r.text()).split(/\r?\n/);
+      let idx=null;
+      for(const l of lines){ if(l.startsWith('#')&&/\bSTN\b/.test(l)&&/\bTA\b/.test(l)){ idx=l.replace(/^#\s*/,'').trim().split(/\s+/); idx[0]='TM'; break; } }
+      if(!idx) idx=NOWC;
+      const g=(a,k)=>{ const i=idx.indexOf(k); if(i<0) return null; const n=parseFloat(a[i]); return (isNaN(n)||n<=-9)?null:n; };
+      const byStn={}; let tmx='';
+      lines.forEach(l=>{ if(!l.trim()||l.startsWith('#')) return; const a=l.trim().split(/[\s,]+/); byStn[a[1]]=a; if(a[0]>tmx) tmx=a[0]; });
+      const f=(v,d=1)=>v==null?'-':v.toFixed(d);
+      tb.innerHTML=Object.entries(STN).map(([nm,id])=>{ const a=byStn[String(id)];
+        if(!a) return `<tr><td style="text-align:left;font-weight:700">${nm}</td><td colspan="6" style="color:var(--sub)">자료 없음</td></tr>`;
+        const ta=g(a,'TA'), hm=g(a,'HM'), ws=g(a,'WS'), gs=g(a,'GST_WS'), rn=g(a,'RN_DAY');
+        const warn=[rn!=null&&rn>=CRIT.rain?'강우':'', ws!=null&&ws>=CRIT.wind?'강풍':'', ta!=null&&ta>=CRIT.hot?'혹서':'', ta!=null&&ta<=CRIT.cold?'혹한':''].filter(Boolean);
+        const hi='color:#d92c20;font-weight:800';
+        return `<tr${nm===sel.value?' style="background:var(--accent-soft)"':''}><td style="text-align:left;font-weight:700">${nm}</td>`
+          +`<td style="font-weight:700;${ta!=null&&(ta>=CRIT.hot||ta<=CRIT.cold)?hi:''}">${f(ta)}</td><td>${f(hm,0)}</td>`
+          +`<td${ws!=null&&ws>=CRIT.wind?' style="'+hi+'"':''}>${f(ws)}</td><td>${f(gs)}</td>`
+          +`<td${rn!=null&&rn>=CRIT.rain?' style="'+hi+'"':''}>${rn==null?'0.0':rn.toFixed(1)}</td>`
+          +`<td style="font-weight:700;color:${warn.length?'#d92c20':'var(--sub)'}">${warn.length?warn.join(' · '):'양호'}</td></tr>`; }).join('');
+      if(tmx.length>=12) tt.textContent=`관측시각 ${tmx.slice(0,4)}-${tmx.slice(4,6)}-${tmx.slice(6,8)} ${tmx.slice(8,10)}:${tmx.slice(10,12)} · 30분마다 갱신 · 상태는 작업제한 기준값 기준`;
+    }catch(err){ fail(err.message); }
+  };
+  wxNow(); setInterval(wxNow,300000);
+  sel.addEventListener('change',()=>wxNow());
 })();
 window.wxPreviewClose=function(){ const p=document.getElementById('wx-pv'); if(p){p.style.display='none';} document.body.style.overflow=''; };
 window.wxPreview=function(){

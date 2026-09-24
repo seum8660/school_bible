@@ -25,25 +25,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Fetch KMA data
+        timeout-minutes: 40
         env:
           KMA_KEY: ${{ secrets.KMA_KEY }}
           DAYS: ${{ github.event.inputs.days || '3' }}
         run: |
           set +e
-          STN='^(156|165|168|169|170|174|175|260|261|262)$'
-          BASE='https://apihub.kma.go.kr/api/typ01/url'
-          filt(){ awk -v re="$STN" '/^#/ || ($2 ~ re)'; }
+          export STN='^(156|165|168|169|170|174|175|260|261|262)$'
+          export BASE='https://apihub.kma.go.kr/api/typ01/url'
           mkdir -p wx_data/daily
-          curl -sf --max-time 30 "$BASE/kma_sfctm2.php?stn=0&disp=0&help=1&authKey=$KMA_KEY" | iconv -f euc-kr -t utf-8 -c | filt > wx_data/now.tmp \
-            && [ -s wx_data/now.tmp ] && mv wx_data/now.tmp wx_data/now.txt
-          for i in $(seq 1 "$DAYS"); do
-            tm=$(TZ=Asia/Seoul date -d "-$i day" +%Y%m%d)
-            f="wx_data/daily/$tm.txt"
+          # 1) 연결 테스트 — 결과를 로그에 표시
+          code=$(curl -s -o wx_data/now.raw -w '%{http_code}' --max-time 20 "$BASE/kma_sfctm2.php?stn=0&disp=0&help=1&authKey=$KMA_KEY")
+          echo "실시간 자료 응답: HTTP $code / $(wc -c < wx_data/now.raw) bytes"
+          head -c 300 wx_data/now.raw | iconv -f euc-kr -t utf-8 -c; echo
+          iconv -f euc-kr -t utf-8 -c wx_data/now.raw | awk -v re="$STN" '/^#/ || ($2 ~ re)' > wx_data/now.tmp
+          rm -f wx_data/now.raw
+          if grep -qvE '^#|^\s*$' wx_data/now.tmp; then mv wx_data/now.tmp wx_data/now.txt; echo "now.txt 저장"; else rm -f wx_data/now.tmp; echo "실시간 자료 없음 — 키/API 확인"; fi
+          # 2) 일자료 — 8개 동시 요청, 50일마다 진행 표시
+          fetch(){
+            i=$1; tm=$(TZ=Asia/Seoul date -d "-$i day" +%Y%m%d); f="wx_data/daily/$tm.txt"
             if [ "$i" -le 3 ] || [ ! -s "$f" ]; then
-              curl -sf --max-time 30 "$BASE/kma_sfcdd.php?tm=$tm&stn=0&disp=0&help=1&authKey=$KMA_KEY" | iconv -f euc-kr -t utf-8 -c | filt > "$f.tmp"
+              curl -sf --retry 2 --connect-timeout 5 --max-time 15 "$BASE/kma_sfcdd.php?tm=$tm&stn=0&disp=0&help=1&authKey=$KMA_KEY" \
+                | iconv -f euc-kr -t utf-8 -c | awk -v re="$STN" '/^#/ || ($2 ~ re)' > "$f.tmp"
               if grep -qvE '^#|^\s*$' "$f.tmp"; then mv "$f.tmp" "$f"; else rm -f "$f.tmp"; fi
             fi
-          done
+            [ $((i % 50)) -eq 0 ] && echo "진행 $i / $DAYS일 (저장 $(ls wx_data/daily | wc -l)개)"
+            return 0
+          }
+          export -f fetch; export KMA_KEY DAYS
+          seq 1 "$DAYS" | xargs -P 8 -I{} bash -c 'fetch {}'
+          echo "일자료 저장: $(ls wx_data/daily | wc -l)개"
           ls wx_data/daily | sed 's/\.txt$//' | sort > wx_data/index.txt
           git config user.name "github-actions"
           git config user.email "actions@github.com"

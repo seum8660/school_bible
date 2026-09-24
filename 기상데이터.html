@@ -175,7 +175,7 @@
   <div class="hd">
     <div style="flex:1;min-width:0">
       <h1>기상데이터 체크</h1>
-      <p class="lead">기상청 종관기상관측(ASOS) 실시간 자료 — 지역별 현재 기상 · 일별 실측값 조회</p>
+      <p class="lead">기상청 종관기상관측(ASOS) — 지역별 기간 · 일자별 실측값 조회</p>
     </div>
     <button class="iconbtn" id="themeBtn" title="라이트 / 다크">☾</button>
   </div>
@@ -187,7 +187,7 @@
 </div>
 
 <div class="wrap">
-  <div class="panel" id="wx-now">
+  <div class="panel" id="wx-now" style="display:none">
     <div class="sec-h" style="justify-content:space-between"><div><h2>현재 기상 (실시간)</h2><p id="wx-now-t">기상청 ASOS 시간자료 · 30분마다 갱신</p></div>
       <button class="btn" type="button" onclick="wxNow()">↻ 새로고침</button></div>
     <div class="tw"><table><thead><tr><th style="text-align:left">지역</th><th>기온 ℃</th><th>습도 %</th><th>풍속 m/s</th><th>돌풍 m/s</th><th>오늘 강수 mm</th><th>상태</th></tr></thead>
@@ -574,8 +574,7 @@
       if(tmx.length>=12) tt.textContent=`관측시각 ${tmx.slice(0,4)}-${tmx.slice(4,6)}-${tmx.slice(6,8)} ${tmx.slice(8,10)}:${tmx.slice(10,12)} · 30분마다 갱신 · 상태는 작업제한 기준값 기준`;
     }catch(err){ fail(err.message); }
   };
-  wxNow(); setInterval(wxNow,300000);
-  sel.addEventListener('change',()=>wxNow());
+
 })();
 window.wxPreviewClose=function(){ const p=document.getElementById('wx-pv'); if(p){p.style.display='none';} document.body.style.overflow=''; };
 window.wxPreview=function(){

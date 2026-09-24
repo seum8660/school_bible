@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: '*/30 * * * *'   # 30분마다 기상청 실시간 자료 갱신
+    - cron: '0 1 * * *'   # 매일 10:00(KST) 전일 일자료 갱신
   workflow_dispatch:
     inputs:
       days:
@@ -34,14 +34,7 @@ jobs:
           export STN='^(156|165|168|169|170|174|175|260|261|262)$'
           export BASE='https://apihub.kma.go.kr/api/typ01/url'
           mkdir -p wx_data/daily
-          # 1) 연결 테스트 — 결과를 로그에 표시
-          code=$(curl -s -o wx_data/now.raw -w '%{http_code}' --max-time 20 "$BASE/kma_sfctm2.php?stn=0&disp=0&help=1&authKey=$KMA_KEY")
-          echo "실시간 자료 응답: HTTP $code / $(wc -c < wx_data/now.raw) bytes"
-          head -c 300 wx_data/now.raw | iconv -f euc-kr -t utf-8 -c; echo
-          iconv -f euc-kr -t utf-8 -c wx_data/now.raw | awk -v re="$STN" '/^#/ || ($2 ~ re)' > wx_data/now.tmp
-          rm -f wx_data/now.raw
-          if grep -qvE '^#|^\s*$' wx_data/now.tmp; then mv wx_data/now.tmp wx_data/now.txt; echo "now.txt 저장"; else rm -f wx_data/now.tmp; echo "실시간 자료 없음 — 키/API 확인"; fi
-          # 2) 일자료 — 8개 동시 요청, 50일마다 진행 표시
+          # 일자료 — 8개 동시 요청, 50일마다 진행 표시
           fetch(){
             i=$1; tm=$(TZ=Asia/Seoul date -d "-$i day" +%Y%m%d); f="wx_data/daily/$tm.txt"
             if [ "$i" -le 3 ] || [ ! -s "$f" ]; then

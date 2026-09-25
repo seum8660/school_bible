@@ -3265,7 +3265,7 @@ window.dispatchEvent(new Event('qa-fb-ready'));
 <footer class="wrap" style="margin-top:0;padding-top:24px;border-top:1px solid var(--line)">
   <b><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;flex:0 0 auto" aria-hidden="true"><path d="M3 21h18M5 21V10l7-5 7 5v11"/><path d="M10 21v-5h4v5M12 10h.01"/></svg> 학교시설업무 치트키 <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;flex:0 0 auto" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3M15 8l2 2"/></svg> SCHOOL BIBLE</b> — 가이드라인부터 자가테스트까지<br>
   참조용 문서입니다. 실제 적용 시 최신 법령·지침을 반드시 확인하시기 바랍니다.<br>
-  <span style="display:inline-block;margin-top:10px;color:var(--muted);font-size:12px">작성자 <b style="color:var(--navy)">claude_min</b> · 작성일 2026-07-24 · <b style="color:#3182F6">ver 4.0</b></b> · <span><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;flex:0 0 auto" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9 17h6"/></svg> Claude와 함께 제작했습니다</span></span>
+  <span style="display:inline-block;margin-top:10px;color:var(--muted);font-size:12px">작성자 <b id="eggAuthor" style="color:var(--navy);cursor:default">claude_min</b> · 작성일 2026-07-24 · <b style="color:#3182F6">ver 4.0</b></b> · <span><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em;flex:0 0 auto" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9 17h6"/></svg> Claude와 함께 제작했습니다</span></span>
 </footer>
 
 <script>
@@ -5872,7 +5872,7 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
     {d:'2026-08-01', tx:'교육시설 <b>안전성평가</b> 매뉴얼 항목 추가 · 관련 사이트 개편'},
     {d:'2026-07-24', tx:'초간단 수선견적서 <b>견적이</b> 공개 · 현장사진관리 <b>현장이</b> 개발 중'},
     {d:'2026-07-18', tx:'<b>간단내역서 만들기</b> 추가 — 일위대가 자동참조 내역서·원가계산서·단가조사'}
-  ];
+  ]; window.__NOTICES=NOTICES;
   var VER='5.3';
   function fmt(iso){var p=iso.split('-');return (+p[1])+'월 '+(+p[2])+'일';}
   function render(){
@@ -6459,5 +6459,44 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 @keyframes fabBounce{0%,100%{opacity:.7;transform:scale(.94)}50%{opacity:1;transform:scale(1.12)}}
 @media (prefers-reduced-motion:reduce){#aiFab,#aiFab .fab-ring,#aiFab .fab-txt{animation:none}}
 </style>
+
+<div id="eggOv" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,12,16,.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px">
+ <div role="dialog" aria-label="작성자 소개" style="position:relative;width:min(560px,100%);max-height:90vh;overflow:auto;background:var(--surface);color:var(--ink);border:1px solid var(--border);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.25);padding:28px">
+  <button id="eggX" aria-label="닫기" style="position:absolute;top:14px;right:14px;width:32px;height:32px;border:0;border-radius:8px;background:var(--surface-2);color:var(--ink);font-size:18px;cursor:pointer">×</button>
+  <div style="display:inline-block;font:700 11px/1 monospace;letter-spacing:.12em;color:var(--accent);background:var(--accent-soft);padding:6px 8px;border-radius:6px">HIDDEN PAGE UNLOCKED</div>
+  <div style="margin-top:16px;display:flex;align-items:center;gap:14px">
+   <div style="width:56px;height:56px;border-radius:14px;background:var(--ink);color:var(--surface);display:grid;place-items:center;font:800 22px/1 monospace">cm</div>
+   <div><div style="font-size:22px;font-weight:800">claude_min</div><div style="font-size:13px;color:var(--muted);margin-top:4px">학교시설업무 치트키 SCHOOL BIBLE 작성자</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:22px">
+   <div style="background:var(--surface-2);border-radius:12px;padding:14px"><div style="font-size:12px;color:var(--muted)">운영</div><div id="eggDays" style="font-size:22px;font-weight:800;margin-top:6px">D+0</div></div>
+   <div style="background:var(--surface-2);border-radius:12px;padding:14px"><div style="font-size:12px;color:var(--muted)">버전</div><div style="font-size:22px;font-weight:800;margin-top:6px">4.0</div></div>
+   <div style="background:var(--surface-2);border-radius:12px;padding:14px"><div style="font-size:12px;color:var(--muted)">업데이트</div><div id="eggNotes" style="font-size:22px;font-weight:800;margin-top:6px">0회</div></div>
+  </div>
+  <div style="margin-top:22px;font-size:13px;font-weight:700;color:var(--muted)">연혁</div>
+  <div id="eggLog" style="margin-top:8px;display:flex;flex-direction:column;gap:8px;font-size:13px;line-height:1.5"></div>
+  <div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><span>2026-07-24 첫 작성 · Claude와 함께 제작</span><span>Esc로 닫기</span></div>
+ </div>
+</div>
+<script>
+(function(){
+  var a=document.getElementById('eggAuthor'),ov=document.getElementById('eggOv');if(!a||!ov)return;
+  function open(){
+    var d=Math.floor((Date.now()-new Date('2026-07-24T00:00:00+09:00'))/864e5);
+    document.getElementById('eggDays').textContent='D+'+d;
+    var items=window.__NOTICES||[];
+    document.getElementById('eggNotes').textContent=(items.length||0)+'회';
+    var log=document.getElementById('eggLog');log.innerHTML='';
+    items.slice(0,5).forEach(function(el){var r=document.createElement('div');r.style.cssText='padding:10px 12px;background:var(--surface-2);border-radius:10px';var p=String(el.d).split('-');r.innerHTML='<b style="color:var(--muted);margin-right:8px">'+(+p[1])+'월 '+(+p[2])+'일</b>'+el.tx;log.appendChild(r);});
+    if(!items.length)log.innerHTML='<div style="color:var(--muted)">기록 없음</div>';
+    ov.style.display='flex';
+  }
+  function close(){ov.style.display='none';}
+  a.addEventListener('click',function(){window.open('Tools%20Motion.html','_blank','noopener');});
+  document.getElementById('eggX').addEventListener('click',close);
+  ov.addEventListener('click',function(e){if(e.target===ov)close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
 </body>
 </html>

@@ -178,92 +178,142 @@ tfoot td{border-bottom:.2px solid var(--bd);padding-top:11px;font-weight:800;col
 @media print{html,body{background:#fff;padding:0;margin:0;display:block}.page{box-shadow:none;margin:0;break-after:page}.page:last-child{break-after:auto}}
 @media screen and (max-width:820px){body{padding:0}.page{width:100%;height:auto;min-height:0;padding:18px;gap:14px}.kpi,.three,.two,.notes,.sch{grid-template-columns:1fr 1fr}.si{border-left:0;padding:0}.cv-title{font-size:44px}.cover{min-height:80vh}.wrap{overflow-x:auto}}
 </style>
-<style>/* 작성기 화면 — 상단 도구줄 + 왼쪽 입력 + 오른쪽 미리보기 (인쇄 시 미리보기만 출력) */
-body{display:block;background:var(--desk);padding:0;gap:0}
+<style>/* 작성기 화면 — Toss Light 디자인 적용 (인쇄 시 보고서만 출력) */
+:root{
+  --t-blue:#0057E5;--t-blue-600:#0046BC;--t-blue-700:#003494;--t-blue-50:#E2EDFF;
+  --t-bg:#FFFFFF;--t-surface:#EDF0F4;--t-border:#C9D0D8;--t-border-strong:#9AA4B0;
+  --t-fg:#0F1419;--t-fg2:#3A4351;--t-fg3:#5A6472;--t-red:#D01414;
+  --t-r-sm:8px;--t-r-md:12px;--t-r-lg:14px;--t-r-xl:20px;--t-r-full:9999px;
+  --t-sh-sm:0 1px 2px rgba(0,0,0,.04);--t-sh-md:0 4px 12px rgba(0,0,0,.06);
+  --t-ease:cubic-bezier(.22,1,.36,1);
+}
+body{display:block;background:var(--t-surface);padding:0;gap:0;color:var(--t-fg);letter-spacing:-.012em}
 
+/* 상단 도구줄 */
 .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;
-  background:#fff;border-bottom:.75px solid var(--bd);padding:10px 18px;flex-wrap:wrap}
+  background:var(--t-bg);border-bottom:1px solid var(--t-border);padding:11px 20px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
-.brand .mark{width:34px;height:34px;display:grid;place-items:center;background:var(--blue);color:#fff;font-size:12px;font-weight:800;flex:0 0 auto}
-.brand b{display:block;font-size:15px;font-weight:800;letter-spacing:-.02em}
-.brand em{display:block;font-style:normal;font-size:11.5px;font-weight:600;color:var(--sub);margin-top:2px}
-.tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.brand .mark{width:34px;height:34px;display:grid;place-items:center;background:var(--t-blue);color:#fff;
+  font-size:12px;font-weight:800;flex:0 0 auto;border-radius:58% 42% 62% 38%;
+  box-shadow:inset -5px -5px 0 rgba(0,0,0,.08)}
+.brand b{display:block;font-size:16px;font-weight:800;letter-spacing:-.03em;color:var(--t-fg)}
+.brand em{display:block;font-style:normal;font-size:11.5px;font-weight:650;color:var(--t-fg2);margin-top:2px}
+.tools{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 
-button.b{font-family:inherit;font-size:13px;font-weight:700;color:#fff;background:var(--blue);border:0;padding:9px 14px;cursor:pointer;white-space:nowrap}
-button.b:hover{background:#0047BE}
-button.b[disabled]{background:var(--ter);cursor:default}
-button.b.g{background:var(--soft);color:var(--ink)}
-button.b.g:hover{background:#E1E6EC}
-.filebtn{position:relative;overflow:hidden;display:inline-flex}
+button.b{font-family:inherit;font-size:13.5px;font-weight:700;letter-spacing:-.01em;color:#fff;background:var(--t-blue);
+  border:0;border-radius:var(--t-r-md);padding:11px 16px;cursor:pointer;white-space:nowrap;transition:background 100ms var(--t-ease)}
+button.b:hover{background:var(--t-blue-600)}
+button.b:active{background:var(--t-blue-700)}
+button.b[disabled]{background:var(--t-surface);color:#B0B8C1;cursor:default}
+button.b.g{background:var(--t-surface);color:var(--t-fg);box-shadow:inset 0 0 0 1px var(--t-border)}
+button.b.g:hover{background:var(--t-border)}
+button.b.sm{font-size:12px;padding:7px 11px;border-radius:var(--t-r-sm)}
+.filebtn{position:relative;overflow:hidden;display:inline-flex;border-radius:var(--t-r-md)}
 .filebtn input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+.thsel{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:800;color:var(--t-fg2)}
+.fontsel{font-family:inherit;font-size:13px;font-weight:700;color:var(--t-fg);border:1px solid var(--t-border);background:var(--t-bg);
+  padding:11px 12px;border-radius:var(--t-r-md);cursor:pointer}
+.fontsel:focus{outline:2px solid var(--t-blue);outline-offset:-2px}
 
-.layout{display:grid;grid-template-columns:300px minmax(0,1fr);align-items:start;gap:0;min-height:calc(100vh - 56px)}
-.side{position:sticky;top:56px;max-height:calc(100vh - 56px);overflow:auto;background:#fff;border-right:.75px solid var(--bd);padding:16px 16px 40px;display:flex;flex-direction:column;gap:10px}
-.drop{display:flex;flex-direction:column;align-items:center;gap:4px;border:1px dashed var(--bd);background:var(--soft);padding:18px 12px;cursor:pointer;text-align:center;position:relative}
-.drop:hover{border-color:var(--blue);background:var(--blue50)}
-.drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
-.drop .dicon{font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#fff;background:var(--blue);padding:3px 8px}
-.drop b{font-size:13px;font-weight:800;color:var(--ink);margin-top:4px}
-.drop em{font-style:normal;font-size:11px;font-weight:600;color:var(--sub)}
-button.b.sm{font-size:11.5px;padding:6px 10px}
-body.drag .drop{border-color:var(--blue);background:var(--blue50)}
-.sbox{border-bottom:.75px solid var(--line);padding-bottom:14px}
-.sbox:last-child{border-bottom:0}
-.sbox h3{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:9px}
-.sbox h3 em{font-style:normal;font-size:11px;font-weight:600;color:var(--ter);margin-left:6px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 10px}
-.grid.g3{grid-template-columns:1fr 1fr 1fr}
-.f{display:flex;flex-direction:column;gap:4px;min-width:0}
-.f label{font-size:11px;font-weight:700;color:var(--sub)}
-.f input,.f select,.sbox>input{font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink);border:.75px solid var(--bd);background:#fff;padding:7px 9px;border-radius:0;min-width:0;width:100%}
-.f input:focus,.f select:focus,.sbox>input:focus{outline:2px solid var(--blue50);border-color:var(--blue)}
-.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.fname{font-size:11.5px;color:var(--ter);font-weight:600;margin-top:6px;word-break:break-all}
-.sumline{font-size:13.5px;font-weight:800;color:var(--ink)}
-.note{font-size:11.5px;color:var(--sub);font-weight:600;line-height:1.6;background:var(--soft);padding:10px 12px}
+/* 레이아웃 */
+.layout{display:grid;grid-template-columns:33.333% minmax(0,1fr);align-items:start;gap:0;min-height:calc(100vh - 58px)}
+.side{position:sticky;top:58px;height:calc(100vh - 58px);overflow:auto;background:var(--t-bg);
+  border-right:1px solid var(--t-border);padding:18px 20px 22px;display:flex;flex-direction:column;gap:10px}
 
-table.gin{border-collapse:collapse;width:100%}
-table.gin th{font-size:10.5px;font-weight:700;color:var(--sub);background:var(--soft);padding:4px 2px;white-space:nowrap}
-table.gin td{padding:2px;text-align:center}
-table.gin td.rl{font-size:11px;font-weight:700;color:var(--sub);background:var(--soft);white-space:nowrap;padding:2px 6px}
-table.gin input{width:100%;min-width:0;font-family:inherit;font-size:12px;font-weight:700;text-align:center;color:var(--ink);border:.75px solid var(--bd);padding:5px 1px}
-table.gin input:focus{outline:2px solid var(--blue50);border-color:var(--blue)}
-table.gin td.tot{font-size:12px;font-weight:800;color:var(--blue);background:var(--blue50);padding:2px 6px}
+/* 단계 머리말 */
+.step{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:800;color:var(--t-fg2);margin-top:4px}
+.step:first-child{margin-top:0}
+.step span{width:17px;height:17px;display:grid;place-items:center;background:var(--t-blue);color:#fff;
+  font-size:10px;font-weight:800;border-radius:var(--t-r-full)}
+.step:after{content:"";flex:1;height:1px;background:var(--t-border)}
 
-.view{display:flex;flex-direction:column;align-items:center;gap:20px;padding:22px 16px 48px;min-width:0}
-.empty{margin-top:12vh;text-align:center;color:var(--ter)}
-.empty b{display:block;font-size:16px;font-weight:800;color:var(--sub)}
-.empty span{display:block;font-size:12.5px;font-weight:600;margin-top:6px}
+/* 파일 넣는 칸 */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px;align-items:stretch}
+.grid2.grow{flex:1;min-height:0}
+.fbox{position:relative;display:flex;flex-direction:column;gap:7px}
+.fbox.main .fr{padding:15px 14px;border-radius:var(--t-r-xl)}
+.fr{flex:1;min-width:0;display:flex;align-items:center;gap:10px;border:1px solid var(--t-border);
+  background:var(--t-surface);padding:12px;cursor:pointer;position:relative;border-radius:var(--t-r-lg);
+  transition:background 100ms var(--t-ease),border-color 100ms var(--t-ease)}
+.fr:hover{border-color:var(--t-blue);background:var(--t-blue-50)}
+.fr input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+.fi{flex:0 0 auto;font-size:9.5px;font-weight:800;letter-spacing:.03em;color:var(--t-blue-700);background:var(--t-blue-50);
+  padding:5px 7px;border-radius:var(--t-r-sm)}
+.fbox.main .fi{color:#fff;background:var(--t-blue)}
+.ft{min-width:0;display:flex;flex-direction:column;gap:2px}
+.ft b{font-size:13px;font-weight:750;color:var(--t-fg);line-height:1.3;letter-spacing:-.015em}
+.ft em{font-style:normal;font-size:11px;font-weight:650;color:var(--t-fg2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.x{position:absolute;top:6px;right:6px;z-index:2;width:22px;height:22px;display:grid;place-items:center;border:0;
+  border-radius:var(--t-r-full);background:transparent;color:var(--t-fg2);font-size:11px;font-weight:800;cursor:pointer;
+  line-height:1;transition:background 100ms var(--t-ease)}
+.x:hover{background:var(--t-blue);color:#fff}
+body.drag .fr{border-color:var(--t-blue);background:var(--t-blue-50)}
+.sumline{font-size:14px;font-weight:800;color:var(--t-fg);letter-spacing:-.02em;padding-left:2px}
+
+/* 접이식 안내 */
+.help{border:1px solid var(--t-border);background:var(--t-bg);padding:0 13px;overflow:auto;border-radius:var(--t-r-lg)}
+.help summary{cursor:pointer;font-size:11.5px;font-weight:750;color:var(--t-fg2);padding:11px 0;list-style:none}
+.help summary::-webkit-details-marker{display:none}
+.help summary:before{content:"＋ ";color:var(--t-blue-600);font-weight:800}
+.help[open] summary:before{content:"－ "}
+.help p{font-size:11px;font-weight:600;color:var(--t-fg2);line-height:1.65;padding-bottom:10px}
+.help p b{font-weight:750;color:var(--t-fg)}
+
+/* 카드 */
+.sc{border:1px solid var(--t-border);background:var(--t-bg);padding:14px;display:flex;flex-direction:column;
+  border-radius:var(--t-r-lg);box-shadow:var(--t-sh-sm)}
+.sc.bare{border:0;padding:0;box-shadow:none}
+.sc h4{font-size:12px;font-weight:800;color:var(--t-fg);margin-bottom:10px;letter-spacing:-.02em}
+.scg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--t-border);border:1px solid var(--t-border);
+  border-radius:var(--t-r-lg);overflow:hidden}
+.scg div{background:var(--t-bg);padding:10px 11px}
+.scg p{font-size:10.5px;font-weight:700;color:var(--t-fg2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scg b{display:block;font-size:16px;font-weight:800;color:var(--t-fg);margin-top:2px;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.scg b u{text-decoration:none;font-size:10.5px;font-weight:700;color:var(--t-fg2);margin-left:2px;letter-spacing:0}
+.scg div.w b{color:var(--t-red)}
+.scl,.scu{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+.scl li,.scu li{font-size:11px;font-weight:600;color:var(--t-fg2);line-height:1.55;padding-left:17px;position:relative}
+.scl li b,.scu li b{font-weight:750;color:var(--t-fg)}
+.scl{counter-reset:pg}
+.scl li:before{counter-increment:pg;content:counter(pg);position:absolute;left:0;top:1px;font-size:9px;font-weight:800;
+  color:var(--t-blue-700);background:var(--t-blue-50);width:13px;height:13px;display:grid;place-items:center;border-radius:var(--t-r-full)}
+.scu li:before{content:"";position:absolute;left:4px;top:7px;width:4px;height:4px;background:var(--t-border-strong);border-radius:var(--t-r-full)}
+.scf{margin-top:auto;padding-top:10px;font-size:10.5px;font-weight:700;color:var(--t-fg2);border-top:1px solid var(--t-border)}
+
+/* 미리보기 영역 */
+.view{display:flex;flex-direction:column;align-items:center;gap:22px;padding:24px 18px 52px;min-width:0}
+.view .page{border-radius:var(--t-r-md);box-shadow:var(--t-sh-md)}
+.empty{margin-top:12vh;text-align:center;color:var(--t-fg2)}
+.empty b{display:block;font-size:17px;font-weight:800;color:var(--t-fg2);letter-spacing:-.02em}
+.empty span{display:block;font-size:13px;font-weight:650;margin-top:7px}
 body.hasdata .empty{display:none}
 
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:12px 18px;opacity:0;pointer-events:none;transition:.2s;z-index:99;max-width:80vw}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--t-fg);color:#fff;
+  font-size:13.5px;font-weight:650;padding:13px 18px;border-radius:var(--t-r-md);box-shadow:var(--t-sh-md);
+  opacity:0;pointer-events:none;transition:.25s var(--t-ease);z-index:99;max-width:80vw}
 .toast.show{opacity:1;transform:translateX(-50%)}
-.toast.bad{background:var(--red)}
+.toast.bad{background:var(--t-red)}
 
 @media print{
   .topbar,.side,.toast,.empty{display:none!important}
   .layout{display:block}
   .view{display:block;padding:0}
+  .view .page{border-radius:0;box-shadow:none}
   body{background:#fff}
 }
 @media screen and (max-width:1100px){
   .layout{grid-template-columns:1fr}
-  .side{position:static;max-height:none;border-right:0;border-bottom:.75px solid var(--bd)}
+  .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--t-border)}
 }
 
 /* 보고서에서 직접 고치는 값 */
-.page [data-f],.page [data-g]{font-style:normal;border-bottom:1px dashed #9AA5B1;cursor:text}
-.page [data-f]:hover,.page [data-g]:hover{background:var(--blue50);border-bottom-color:var(--blue)}
-.page [data-f]:focus,.page [data-g]:focus{outline:2px solid var(--blue);background:#fff}
+.page [data-f],.page [data-g]{font-style:normal;border-bottom:1px dashed #6E7885;cursor:text}
+.page [data-f]:hover,.page [data-g]:hover{background:var(--t-blue-50);border-bottom-color:var(--t-blue)}
+.page [data-f]:focus,.page [data-g]:focus{outline:2px solid var(--t-blue);background:#fff}
 .nt.m p[contenteditable]{border-bottom:0}
 @media print{
   .page [data-f],.page [data-g],.nt.m p{border-bottom:0!important;background:none!important;outline:0!important}
 }
-.fontsel{font-family:inherit;font-size:12.5px;font-weight:700;color:var(--ink);border:.75px solid var(--bd);background:#fff;padding:8px 8px}
-
-.thsel{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--sub)}
-.guide{font-size:11.5px;font-weight:600;color:var(--sub);line-height:1.6;background:var(--blue50);border-left:2px solid var(--blue);padding:9px 11px}
-.guide b{font-weight:800;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -289,53 +339,68 @@ body.hasdata .empty{display:none}
 
 <div class="layout">
   <aside class="side">
-    <label class="drop" for="xlsx">
-      <span class="dicon">XLS</span>
-      <b>건물정보 엑셀</b>
-      <em>클릭하거나 파일을 끌어다 놓으십시오</em>
-      <input type="file" id="xlsx" accept=".xlsx,.xls">
-    </label>
-    <p class="sumline" id="schName">아직 불러온 자료가 없습니다</p>
-    <p class="fname" id="fileInfo">교육시설통합정보망(KEIIS) 건물정보_YYYYMMDD_HHMMSS.xlsx</p>
-    <p class="guide">교육시설통합정보망(KEIIS) <b>work.keiis.kr</b> 에 로그인하신 뒤 <b>시설현황 → 건물정보</b> 에서 학교를 조회하고 <b>엑셀 내려받기</b> 한 파일을 그대로 넣으십시오.</p>
+    <div class="step"><span>1</span>자료 넣기</div>
 
-    <label class="drop" for="alimi">
-      <span class="dicon">IMG</span>
-      <b>학교알리미 캡처</b>
-      <em>학년별 학급수·학생수 화면 (선택)</em>
-      <input type="file" id="alimi" accept="image/png,image/jpeg">
-    </label>
-    <div class="row">
-      <span class="fname" id="alimiName">선택된 파일 없음</span>
-      <button class="b g sm" id="btnAlimiClear">빼기</button>
-    </div>
-    <p class="guide">학교알리미 <b>www.schoolinfo.go.kr</b> → <b>학교별 공시정보</b> 에서 학교를 검색하고 <b>학생현황(학년별 학급수·학생수)</b> 표를 화면 캡처해 넣으십시오. 숫자는 따로 입력하지 않으며 캡처 화면이 그대로 보고서에 들어갑니다.</p>
-
-    <label class="drop" for="sat">
-      <span class="dicon">IMG</span>
-      <b>표지 위성사진</b>
-      <em>PNG · JPG (선택)</em>
-      <input type="file" id="sat" accept="image/png,image/jpeg">
-    </label>
-    <div class="row">
-      <span class="fname" id="satName">선택된 파일 없음</span>
-      <button class="b g sm" id="btnSatClear">빼기</button>
+    <div class="fbox main">
+      <label class="fr" for="xlsx"><span class="fi">XLS</span>
+        <span class="ft"><b>건물정보 엑셀</b><em id="fileInfo">건물정보_YYYYMMDD_HHMMSS.xlsx</em></span>
+        <input type="file" id="xlsx" accept=".xlsx,.xls"></label>
+      <p class="sumline" id="schName">아직 불러온 자료가 없습니다</p>
     </div>
 
-    <label class="drop" for="logo">
-      <span class="dicon">LOGO</span>
-      <b>기관 로고 바꾸기</b>
-      <em>PNG · JPG (기본값 신안교육지원청)</em>
-      <input type="file" id="logo" accept="image/png,image/jpeg">
-    </label>
-    <div class="row">
-      <span class="fname" id="logoName">기본 로고 (신안교육지원청)</span>
-      <button class="b g sm" id="btnLogoClear">기본값</button>
+    <div class="grid2">
+      <div class="fbox">
+        <label class="fr" for="alimi"><span class="fi">IMG</span>
+          <span class="ft"><b>학교알리미 캡처</b><em id="alimiName">선택 없음</em></span>
+          <input type="file" id="alimi" accept="image/png,image/jpeg"></label>
+        <button class="x" id="btnAlimiClear" title="빼기" aria-label="학교알리미 캡처 빼기">✕</button>
+      </div>
+      <div class="fbox">
+        <label class="fr" for="sat"><span class="fi">IMG</span>
+          <span class="ft"><b>표지 위성사진</b><em id="satName">선택 없음</em></span>
+          <input type="file" id="sat" accept="image/png,image/jpeg"></label>
+        <button class="x" id="btnSatClear" title="빼기" aria-label="위성사진 빼기">✕</button>
+      </div>
+      <div class="fbox">
+        <label class="fr" for="logo"><span class="fi">LOGO</span>
+          <span class="ft"><b>기관 로고</b><em id="logoName">신안교육지원청</em></span>
+          <input type="file" id="logo" accept="image/png,image/jpeg"></label>
+        <button class="x" id="btnLogoClear" title="기본 로고로" aria-label="기본 로고로">↺</button>
+      </div>
+      <details class="help">
+        <summary>자료 받는 곳 · 사용 안내</summary>
+        <p><b>건물정보 엑셀</b> — 교육시설통합정보망(KEIIS) <b>work.keiis.kr</b> → 시설현황 → 건물정보에서 학교를 조회하고 엑셀로 내려받으십시오.</p>
+        <p><b>학교알리미 캡처</b> — <b>www.schoolinfo.go.kr</b> → 학교별 공시정보 → 학생현황의 학년별 학급수·학생수 표를 캡처하십시오. 넣지 않으시면 직접 적는 표가 나옵니다.</p>
+        <p><b>값 고치기</b> — 보고서의 파란 밑줄 글자를 눌러 고치시면 학교명별로 이 컴퓨터에 저장됩니다.</p>
+        <p><b>인쇄</b> — 대상 “PDF로 저장”, 용지 A4, 여백 “없음”, 배경 그래픽 켜기. 책자 PDF는 그렇게 저장한 4쪽 PDF를 넣으시면 A3 펼침면 2장이 됩니다.</p>
+      </details>
     </div>
 
-    <p class="note">보고서의 <b>파란 밑줄 글자</b>를 눌러 학교급·설립구분·설립일·비고·기타의견을 바로 고치실 수 있습니다. 고친 값은 학교명별로 이 컴퓨터에 저장됩니다.</p>
-    <p class="note">인쇄 창에서 대상 “PDF로 저장”, 용지 A4, 여백 “없음”, 배경 그래픽 켜기로 설정하십시오. 책자 PDF는 그렇게 저장한 4쪽 PDF를 선택하시면 A3 펼침면 2장으로 만들어 드립니다.</p>
-    <button class="b g" id="btnRender">미리보기 새로고침</button>
+    <div class="step" id="stSum" hidden><span>2</span>불러온 건물정보</div>
+    <section class="sc bare" id="scSum" hidden><div class="scg" id="sumGrid"></div></section>
+
+    <div class="step"><span>3</span>참고</div>
+    <div class="grid2 grow">
+      <section class="sc">
+        <h4>보고서 구성 · A4 세로 4쪽</h4>
+        <ol class="scl">
+          <li><b>표지</b> 학교명 · 기준일 · 위성사진 · 로고</li>
+          <li><b>현황</b> 기본정보 · 학년별 학급수·학생수 · 핵심지표 · 연면적·연대·구조·경과연수·안전등급</li>
+          <li><b>건물현황</b> 건물대장 · 학교시설물 주요내용</li>
+          <li><b>뒷표지</b> 기관 로고</li>
+        </ol>
+      </section>
+      <section class="sc">
+        <h4>집계 기준</h4>
+        <ul class="scu">
+          <li><b>관리주체</b> 행만 집계 · <b>공동사용</b> 중복 제외</li>
+          <li>경과연수 = 기준연도 − 사용승인연도</li>
+          <li>학급수·학생수는 입력값 그대로</li>
+          <li>주요내용은 현장 점검 결과와 대조 필요</li>
+        </ul>
+        <p class="scf">엑셀·사진은 이 컴퓨터 안에서만 열립니다.</p>
+      </section>
+    </div>
   </aside>
 
   <main class="view">
@@ -833,8 +898,8 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     STATE.satUrl = ''; STATE.satImg = null; STATE.alimiUrl = '';
     if ($('sat')) $('sat').value = '';
     if ($('alimi')) $('alimi').value = '';
-    if ($('satName')) $('satName').textContent = '선택된 파일 없음';
-    if ($('alimiName')) $('alimiName').textContent = '선택된 파일 없음';
+    if ($('satName')) $('satName').textContent = '선택 없음';
+    if ($('alimiName')) $('alimiName').textContent = '선택 없음';
   }
 
   function onFile(file) {
@@ -852,11 +917,30 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       if (!$('lvl').value) $('lvl').value = d.LVL0 || '';
       if (!$('fond').value) $('fond').value = d.FOND0 || '';
       buildGradeGrid(R.parseGrades($('grades').value));
+      sideSummary(d);
       document.body.classList.add('hasdata');
       render();
     }).catch(function (e) {
       toast(e.message || '엑셀을 읽지 못했습니다.', true);
     });
+  }
+
+  /* 사이드바 요약 카드 */
+  function sideSummary(d) {
+    var old30 = d.old.length, cg = d.cg.length, eq = d.eq.length;
+    var cells = [
+      ['동수', d.N, '동', 0],
+      ['연면적', R.fmt(d.T, 0), '㎡', 0],
+      ['30년 이상', old30, '동', 0],
+      ['내진설계', eq + '/' + d.N, '동', 0],
+      ['안전등급 C 이하', cg, '동', cg ? 1 : 0],
+      ['평균 경과연수', d.avg_age.toFixed(1), '년', 0]
+    ];
+    $('sumGrid').innerHTML = cells.map(function (c) {
+      return '<div' + (c[3] ? ' class="w"' : '') + '><p>' + c[0] + '</p><b>' + c[1] + '<u>' + c[2] + '</u></b></div>';
+    }).join('');
+    $('scSum').hidden = false;
+    if ($('stSum')) $('stSum').hidden = false;
   }
 
   /* ---------- 렌더 ---------- */
@@ -950,7 +1034,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     H.imgSize(u).then(function (sz) {
       STATE.logoImg = { bytes: H.dataUrlBytes(u), ext: /^data:image\/jpe?g/.test(u) ? 'jpg' : 'png', w: sz.w, h: sz.h };
     });
-    if ($('logoName')) $('logoName').textContent = url ? name : '기본 로고 (신안교육지원청)';
+    if ($('logoName')) $('logoName').textContent = url ? name : '신안교육지원청 (기본)';
     render();
   }
 
@@ -1036,7 +1120,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     $('sat').addEventListener('change', function (e) { if (e.target.files[0]) onSat(e.target.files[0]); });
     $('alimi').addEventListener('change', function (e) { if (e.target.files[0]) onAlimi(e.target.files[0]); });
     $('btnAlimiClear').addEventListener('click', function () {
-      STATE.alimiUrl = ''; $('alimi').value = ''; $('alimiName').textContent = '선택된 파일 없음'; render();
+      STATE.alimiUrl = ''; $('alimi').value = ''; $('alimiName').textContent = '선택 없음'; render();
     });
     var th = '';
     try { th = localStorage.getItem('hb:theme') || ''; } catch (e) { }
@@ -1058,11 +1142,10 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       e.addEventListener('change', render);
     });
     $('lvl').addEventListener('change', function () { buildGradeGrid(R.parseGrades($('grades').value)); render(); });
-    $('btnRender').addEventListener('click', render);
     $('btnPrint').addEventListener('click', function () { window.print(); });
     $('btnHtml').addEventListener('click', saveHtml);
     $('btnSatClear').addEventListener('click', function () {
-      STATE.satUrl = ''; STATE.satImg = null; $('sat').value = ''; $('satName').textContent = '선택된 파일 없음'; render();
+      STATE.satUrl = ''; STATE.satImg = null; $('sat').value = ''; $('satName').textContent = '선택 없음'; render();
     });
     document.body.addEventListener('dragenter', function () { document.body.classList.add('drag'); });
     document.body.addEventListener('dragleave', function (e) { if (!e.relatedTarget) document.body.classList.remove('drag'); });

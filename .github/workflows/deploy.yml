@@ -8,7 +8,7 @@ on:
     inputs:
       days:
         description: '일자료 받을 기간(일) — 처음 1회는 1095(3년) 권장'
-        default: '3'
+        default: '1095'
 permissions:
   contents: write
   pages: write
@@ -25,10 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Fetch KMA data
-        timeout-minutes: 40
         env:
           KMA_KEY: ${{ secrets.KMA_KEY }}
-          DAYS: ${{ github.event.inputs.days || '3' }}
+          DAYS: ${{ github.event.inputs.days || '1095' }}
         run: |
           set +e
           export STN='^(156|165|168|169|170|174|175|260|261|262)$'
@@ -46,7 +45,8 @@ jobs:
             return 0
           }
           export -f fetch; export KMA_KEY DAYS
-          seq 1 "$DAYS" | xargs -P 8 -I{} bash -c 'fetch {}'
+          timeout 35m bash -c 'seq 1 "$DAYS" | xargs -P 8 -I{} bash -c "fetch {}"' || echo "35분 경과 — 받은 만큼 저장합니다. 같은 방법으로 한 번 더 실행하면 나머지를 이어받습니다."
+          rm -f wx_data/daily/*.tmp
           echo "일자료 저장: $(ls wx_data/daily | wc -l)개"
           ls wx_data/daily | sed 's/\.txt$//' | sort > wx_data/index.txt
           git config user.name "github-actions"

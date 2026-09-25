@@ -352,19 +352,33 @@
     return out;
   }
   const KCACHE={};
+  // 자료 위치: 같은 사이트(wx_data/) → 없으면 GitHub 저장소 원본에서 직접 읽음
+  const WX_SRCS=['wx_data/','https://raw.githubusercontent.com/seum8660/school_bible/main/wx_data/'];
+  let WX_IDX=null, WX_BASE=null;
+  async function loadIndex(){
+    if(WX_IDX) return WX_IDX;
+    for(const b of WX_SRCS){
+      try{ const r=await fetch(b+'index.txt',{cache:'no-cache'}); if(!r.ok) continue;
+        const list=(await r.text()).split(/\s+/).filter(x=>/^\d{8}$/.test(x));
+        if(list.length){ WX_IDX=new Set(list); WX_IDX.first=list[0]; WX_IDX.last=list[list.length-1]; WX_BASE=b; return WX_IDX; } }catch(_){}
+    }
+    throw new Error('저장된 기상자료 목록을 찾을 수 없음 · Actions 실행 필요');
+  }
+  const fmtD=x=>x.slice(0,4)+'.'+x.slice(4,6)+'.'+x.slice(6,8);
   async function fetchKMA(stn,s,e){
     const ck=stn+'|'+ymd(s)+'|'+ymd(e); if(KCACHE[ck]) return KCACHE[ck];
-    const days=[]; for(let d=new Date(s); d<=e; d.setDate(d.getDate()+1)) days.push(ymd(new Date(d.getTime()-d.getTimezoneOffset()*60000)));
-    const rows=[]; let got=0;
+    const idx=await loadIndex();
+    const days=[]; for(let d=new Date(s); d<=e; d.setDate(d.getDate()+1)){ const k=ymd(new Date(d.getTime()-d.getTimezoneOffset()*60000)); if(idx.has(k)) days.push(k); }
+    if(!days.length) throw new Error('해당 기간 저장 자료 없음 · 현재 저장 범위 '+fmtD(idx.first)+' ~ '+fmtD(idx.last)+' ('+idx.size+'일)');
+    const rows=[];
     for(let i=0;i<days.length;i+=10){
       const part=await Promise.all(days.slice(i,i+10).map(async tm=>{
-        const r=await fetch(`wx_data/daily/${tm}.txt`,{cache:'no-cache'});
+        const r=await fetch(WX_BASE+`daily/${tm}.txt`,{cache:'no-cache'});
         if(!r.ok) return [];
-        got++; return parseSfcdd(await r.text()).filter(o=>o.stn===String(stn));
+        return parseSfcdd(await r.text()).filter(o=>o.stn===String(stn));
       }));
       part.forEach(p=>rows.push(...p));
     }
-    if(!got) throw new Error('해당 기간 저장 자료 없음 · Actions에서 과거 자료 받기 필요');
     KCACHE[ck]=rows;
     return rows;
   }
@@ -409,7 +423,7 @@
         const rows=await fetchKMA(STN[r]||165, s, end);
         renderApi(r,s,end,rows);
       }catch(err){
-        const msg='<div class="note" style="margin:0 0 14px;border-left-color:#d92c20">기상청 API 호출 실패 ('+err.message+') — 아래는 <b>평년값</b>입니다. 월별 → 일별 펼치기는 실측 자료가 조회될 때만 표시됩니다.</div>';
+        const msg='<div class="note" style="margin:0 0 14px;border-left-color:#d92c20">실측 자료 없음 ('+err.message+') — 아래는 <b>평년값</b>입니다. 월별 → 일별 펼치기는 실측 자료가 조회될 때만 표시됩니다.</div>';
         renderNormals(r,s,e); out.insertAdjacentHTML('afterbegin',msg);
       }
       return;

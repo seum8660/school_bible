@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>파일공사 정산 검토</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<style>
+body{margin:0}
+/* KRDS / 정부24 계열 토큰 — 라이트 단일 테마 */
+:root{
+  color-scheme:light;
+  --p50:#ECF2FE; --p100:#D8E5FD; --p200:#B1CEFB; --p500:#256EF4; --p600:#0B50D0; --p700:#083891; --p900:#03163A;
+  --info-bg:#E7F4FE; --sec50:#EEF2F7;
+  --g0:#FFFFFF; --g50:#F4F5F6; --g100:#E6E8EA; --g200:#CDD1D5; --g300:#B1B8BE; --g500:#6D7882; --g600:#58616A; --g700:#464C53; --g900:#1E2124;
+  --ok-bg:#EAF6EC; --ok:#267337; --warn-bg:#FFF3DB; --warn:#8A5C00; --err-bg:#FDEFEC; --err:#BD2C0F;
+  /* 페이지에서 쓰는 역할 토큰 */
+  --bg:var(--g0); --surface:var(--g0); --surface-2:var(--g50); --subtle:var(--g50); --line:var(--g200); --line-2:var(--g300);
+  --ink:var(--g900); --ink-2:var(--g700); --ink-3:var(--g500);
+  --accent:var(--p500); --accent-hover:var(--p600); --accent-ink:#FFFFFF; --accent-soft:var(--p50); --accent-deep:var(--p600);
+  --up:var(--ok); --up-soft:var(--ok-bg); --down:var(--warn); --down-soft:var(--warn-bg); --bad:var(--err); --bad-soft:var(--err-bg);
+  --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:16px;
+  --sans:"Pretendard GOV","Pretendard","Pretendard Variable","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+.eyebrow.test{background:var(--warn-bg);color:var(--warn);border:1px solid #F2C94C}
+.test-note{font-size:15px;color:var(--g900);background:var(--warn-bg);border:1px solid #F2C94C;border-radius:var(--r-lg);padding:12px 18px}
+.test-note strong{color:var(--warn);margin-right:8px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;font-weight:400;line-height:1.5;letter-spacing:-.01em;padding-inline:24px;padding-block:0 56px}
+.wrap{max-width:1248px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+
+/* 머리 영역 */
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;padding-block:28px 20px;border-bottom:1px solid var(--g100)}
+.eyebrow{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:var(--r-sm);background:var(--sec50);color:#052B57;font-size:13px;font-weight:700}
+h1{margin:8px 0 0;font-size:28px;font-weight:700;line-height:1.4;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--ink-2);font-size:15px;margin-top:2px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* 버튼 (KRDS primary / secondary / tertiary) */
+button{font-family:inherit;font-size:15px;font-weight:700;line-height:1.5;cursor:pointer;height:44px;padding:0 18px;border-radius:var(--r-md);border:1px solid var(--g600);background:var(--g0);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:4px;transition:background-color .15s ease}
+button:hover{background:var(--g50)}
+button:active{background:var(--g100)}
+button:disabled{color:#8A949E;border-color:var(--g200);cursor:not-allowed}
+button:focus-visible{outline:2px solid #FFFFFF;box-shadow:0 0 0 4px var(--p500)}
+button.primary{background:var(--p500);border-color:var(--p500);color:#FFFFFF}
+button.primary:hover{background:var(--p600);border-color:var(--p600)}
+button.primary:active{background:var(--p700)}
+button.ghost{background:var(--g0)}
+button.danger{border-color:var(--err);color:var(--err);background:var(--g0)}
+button.danger:hover{background:var(--err-bg)}
+.rowbtn{height:32px;padding:0 10px;font-size:13px;border-radius:var(--r-sm)}
+
+.msg{font-size:15px;font-weight:700;color:var(--p600)}
+.msg:empty{display:none}
+.msg.err{color:var(--err)}
+.note-ex{font-size:15px;color:var(--ink-2);background:var(--info-bg);border:1px solid var(--p100);border-radius:var(--r-lg);padding:14px 18px}
+
+/* 요약 카드 — 연청색 패널 */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.kpis{grid-template-columns:1fr}}
+.kpi{background:var(--info-bg);border:1px solid var(--p100);border-radius:var(--r-lg);padding:18px 20px;display:flex;flex-direction:column;gap:4px;box-shadow:0 2px 8px 0 rgba(0,0,0,.04)}
+.kpi .l{font-size:15px;font-weight:700;color:var(--ink)}
+.kpi .v{font-size:28px;font-weight:700;line-height:1.3;color:var(--p600);font-variant-numeric:tabular-nums}
+.kpi .v small{font-size:15px;font-weight:700;color:var(--ink-2)}
+.kpi .v .neg{color:var(--err)}
+.kpi .v .pos{color:var(--p600)}
+.kpi .d{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.pos{color:var(--p600)} .neg{color:var(--err)}
+
+/* 탭 — 네모, 선택 시 청색 */
+nav.tabs{display:flex;gap:0;overflow-x:auto;border-bottom:2px solid var(--p500)}
+nav.tabs button{height:48px;border:1px solid var(--g200);border-bottom:0;margin-right:-1px;border-radius:0;background:var(--g50);color:var(--ink-2);font-size:16px;padding:0 20px;white-space:nowrap}
+nav.tabs button:hover{background:var(--g0);color:var(--p600)}
+nav.tabs button[aria-selected="true"],nav.tabs button[aria-selected="true"]:hover{background:var(--p500);border-color:var(--p500);color:#FFFFFF;position:relative;z-index:1}
+
+/* 카드·폼 */
+section.panel{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--g0);border:1px solid var(--g200);border-radius:var(--r-lg);padding:20px 24px}
+.card h2{margin:0 0 4px;font-size:19px;font-weight:700;line-height:1.5}
+.card .lead{margin:0 0 16px;color:var(--ink-2);font-size:15px}
+.grid-form{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:15px;font-weight:700;color:var(--ink)}
+input,select,textarea{font-family:inherit;font-size:15px;font-weight:400;color:var(--ink);background:var(--g0);border:1px solid var(--g300);border-radius:var(--r-md);padding:8px 10px;min-width:0}
+label.f input,label.f select,label.f textarea{height:48px;padding:0 14px;font-size:16px}
+label.f textarea{height:auto;padding:12px 14px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--p500);box-shadow:0 0 0 4px var(--p100)}
+input[type=number]{text-align:right;font-variant-numeric:tabular-nums}
+input[type=checkbox]{accent-color:var(--p500);width:20px;height:20px}
+textarea{resize:vertical;min-height:48px}
+.hint{font-size:14px;color:var(--ink-2)}
+
+/* 표 — 윗선 2px, 머리 회색 면 */
+.tbl-wrap{overflow-x:auto;border-top:2px solid var(--g900)}
+table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid var(--g100);padding:10px 12px;text-align:left;vertical-align:middle}
+thead th{background:var(--g50);font-size:15px;font-weight:700;color:var(--ink);white-space:nowrap;border-bottom:1px solid var(--g300)}
+thead th,thead th.n{text-align:center}
+thead tr.grp th{border-bottom:1px solid var(--g200)}
+td.n{text-align:right}
+td.calc{background:var(--g50);color:var(--ink);font-weight:700;text-align:right}
+tbody tr:hover td{background:var(--p50)}
+tfoot td{background:var(--p50);color:var(--p700);font-weight:700;border-top:1px solid var(--p200);border-bottom:1px solid var(--p200)}
+td input[type=number]{width:84px;height:36px;padding:0 8px}
+td input[type=text]{width:100%;min-width:100px;height:36px;padding:0 8px}
+td select{height:36px;padding:0 8px}
+
+/* 배지 */
+.pill{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:var(--r-sm);font-size:13px;font-weight:700;white-space:nowrap}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+.pill.info{background:var(--p50);color:var(--p600)}
+.pill.bad{background:var(--err-bg);color:var(--err)}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:0 24px;border-top:2px solid var(--g900)}
+.checks label{display:flex;gap:10px;align-items:center;font-size:15px;padding:12px 4px;border-bottom:1px solid var(--g100);cursor:pointer}
+.progress{height:8px;background:var(--g100);border-radius:999px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--p500);border-radius:inherit;transition:width .3s ease-in-out}
+.sumbox{display:grid;grid-template-columns:auto 1fr;gap:0;font-size:15px;margin:0;border-top:2px solid var(--g900)}
+.sumbox dt,.sumbox dd{padding:10px 4px;border-bottom:1px solid var(--g100)}
+.sumbox dt{color:var(--ink-2)}
+.sumbox dd{margin:0;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.sumbox dd.total{font-size:22px;color:var(--p600)}
+.sumbox dd.total.neg{color:var(--err)}
+ul{color:var(--ink-2)}
+
+/* 가이드라인 */
+.guide-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:900px){.guide-steps{grid-template-columns:1fr}}
+.step{background:var(--g50);border:1px solid var(--g200);border-radius:var(--r-lg);padding:18px 20px}
+.step-h{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;margin-bottom:10px}
+.step-n{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:999px;background:var(--p500);color:#FFFFFF;font-size:14px;font-weight:700}
+.step ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:15px;color:var(--ink-2)}
+.guide-list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:15px;color:var(--ink-2)}
+[data-panel="guide"] td{vertical-align:top}
+[data-panel="guide"] td:first-child{font-weight:700;white-space:nowrap}
+
+@media (max-width:680px){body{padding-inline:16px}.card{padding:16px}h1{font-size:24px}nav.tabs button{padding:0 14px;font-size:15px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <span class="eyebrow">발주청·감독자용</span> <span class="eyebrow test">테스트용</span>
+      <h1>파일(말뚝)공사 정산 검토</h1>
+      <div class="sub" id="hdrSub"></div>
+    </div>
+    <div class="actions">
+      <button class="ghost" id="btnReset" type="button">빈 양식으로 초기화</button>
+      <button class="ghost" id="btnSample" type="button">예시 불러오기</button>
+      <button class="primary" id="btnExport" type="button">엑셀로 내보내기</button>
+    </div>
+  </header>
+  <div class="test-note" role="note"><strong>테스트용 주기</strong> 이 대시보드는 시험 운영 중인 테스트용입니다. 계산 결과와 가이드라인은 참고용이며, 실제 정산에 쓰기 전에 설계서·계약조건·실정보고와 대조하여 검토하십시오.</div>
+  <div class="msg" id="msg" role="status"></div>
+  <div class="note-ex" id="exNote">현재 화면의 수치는 사용법을 보여 주는 예시입니다. 실제 현장 자료로 바꾸어 입력하십시오. 입력 내용은 이 브라우저에 임시 저장됩니다.</div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-tab="info" aria-selected="true" type="button">1. 개요·정산기준</button>
+    <button role="tab" data-tab="piles" aria-selected="false" type="button">2. 본별 항타기록</button>
+    <button role="tab" data-tab="qty" aria-selected="false" type="button">3. 수량·금액 정산</button>
+    <button role="tab" data-tab="gov" aria-selected="false" type="button">4. 관급자재</button>
+    <button role="tab" data-tab="review" aria-selected="false" type="button">5. 증빙·검토의견</button>
+    <button role="tab" data-tab="guide" aria-selected="false" type="button">6. 파일정산 가이드라인</button>
+  </nav>
+
+  <!-- 1 -->
+  <section class="panel" data-panel="info">
+    <div class="card">
+      <h2>공사 개요</h2>
+      <p class="lead">표지와 엑셀 첫 시트에 들어가는 기본 정보입니다.</p>
+      <div class="grid-form" id="infoForm"></div>
+    </div>
+    <div class="card">
+      <h2>정산 기준</h2>
+      <p class="lead">시공비는 실제 천공·근입 깊이로, 자재비는 근입깊이에 두부정리 여유를 더한 길이까지만 인정합니다.</p>
+      <div class="grid-form" id="ruleForm"></div>
+      <div class="tbl-wrap" style="margin-top:14px">
+        <table>
+          <thead><tr><th>구분</th><th>정산 기준</th><th>근거 자료</th></tr></thead>
+          <tbody>
+            <tr><td>천공비</td><td>지층별(토사·풍화암·연암) 실제 굴착연장</td><td>항타기록부 천공깊이</td></tr>
+            <tr><td>근입비</td><td>기초저면~말뚝 선단 근입깊이</td><td>항타기록부, 최종관입량</td></tr>
+            <tr><td>파일 자재</td><td>min(반입길이, 근입깊이 + 두부정리 여유)</td><td>반입검수부, 두부정리 측량</td></tr>
+            <tr><td>두부정리</td><td>시공 본수(개소)</td><td>두부정리 측량 기록</td></tr>
+            <tr><td>이음</td><td>실제 이음 개소</td><td>용접 검사 기록</td></tr>
+            <tr><td>단가</td><td>기존 비목 계약단가, 신규 비목 협의단가</td><td>산출내역서, 공사계약 일반조건</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="panel" data-panel="piles" hidden>
+    <div class="card">
+      <div class="toolbar">
+        <div>
+          <h2>본별 항타기록 집계</h2>
+          <p class="lead" style="margin:0">회색 칸은 자동 계산됩니다. 절단길이 = 반입길이 − 근입깊이, 자재 공제 = 절단길이 − 두부정리 여유.</p>
+        </div>
+        <div class="actions">
+          <button type="button" id="btnAddPile">말뚝 추가</button>
+          <button type="button" id="btnAdd5">5본 추가</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table id="pileTbl">
+          <thead>
+            <tr class="grp"><th rowspan="2">말뚝번호</th><th rowspan="2" class="n">설계길이<br>(m)</th><th colspan="4">천공깊이 (m)</th><th rowspan="2" class="n">근입깊이<br>(m)</th><th rowspan="2" class="n">반입길이<br>(m)</th><th rowspan="2" class="n">절단길이<br>(m)</th><th rowspan="2" class="n">자재인정<br>(m)</th><th rowspan="2" class="n">자재공제<br>(m)</th><th rowspan="2">이음</th><th rowspan="2" class="n">최종관입량<br>(mm)</th><th rowspan="2">판정</th><th rowspan="2"></th></tr>
+            <tr><th class="n">토사</th><th class="n">풍화암</th><th class="n">연암↑</th><th class="n">계</th></tr>
+          </thead>
+          <tbody id="pileBody"></tbody>
+          <tfoot id="pileFoot"></tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="panel" data-panel="qty" hidden>
+    <div class="card">
+      <h2>항목별 수량 대비 및 금액 정산</h2>
+      <p class="lead">실시공 수량은 본별 기록에서 자동 집계됩니다(보강말뚝·동재하시험은 직접 입력). 단가를 넣으면 증감 금액이 계산됩니다.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>항목</th><th>단위</th><th class="n">설계 수량</th><th class="n">실시공 수량</th><th class="n">증감</th><th class="n">적용 단가(원)</th><th>단가 구분</th><th class="n">증감 금액(원)</th><th>증감 사유</th></tr></thead>
+          <tbody id="qtyBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="two">
+      <div class="card">
+        <h2>정산 금액 요약</h2>
+        <p class="lead">제경비는 원가계산서의 간접비·이윤 등을 합한 요율을 넣으십시오.</p>
+        <div class="grid-form" style="margin-bottom:12px">
+          <label class="f">제경비 합산 요율(%)<input type="number" step="0.01" id="overhead"></label>
+          <label class="f">부가가치세율(%)<input type="number" step="0.1" id="vat"></label>
+        </div>
+        <dl class="sumbox" id="sumBox"></dl>
+      </div>
+      <div class="card">
+        <h2>단가 적용 원칙</h2>
+        <ul style="margin:0;padding-left:18px;color:var(--ink-2);font-size:13px;display:flex;flex-direction:column;gap:6px">
+          <li>기존 비목의 수량 증감은 산출내역서의 계약단가를 적용합니다.</li>
+          <li>설계에 없던 비목(예: 연암 천공)은 설계변경 당시 산정단가에 낙찰률을 곱한 금액 범위에서 협의합니다.</li>
+          <li>감액 정산은 계약단가를 그대로 적용합니다.</li>
+          <li>관급 파일 자재비는 금액 정산에서 빼고 4번 탭에서 수불로 정산합니다.</li>
+          <li>천공길이 20m 전후로 파일천공 전용장비 규격이 달라집니다(표준품셈 공통 5-3-1).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="panel" data-panel="gov" hidden>
+    <div class="two">
+      <div class="card">
+        <h2>관급 PHC 파일 수불</h2>
+        <p class="lead">납품량과 인정 사용량의 차이가 잔량이며, 반납 또는 기성 공제 대상입니다.</p>
+        <div class="grid-form" id="govForm"></div>
+      </div>
+      <div class="card">
+        <h2>수불 대사 결과</h2>
+        <dl class="sumbox" id="govBox"></dl>
+      </div>
+    </div>
+    <div class="card">
+      <h2>유의사항</h2>
+      <ul style="margin:0;padding-left:18px;color:var(--ink-2);font-size:13px;display:flex;flex-direction:column;gap:6px">
+        <li>납품 수량은 납품검사조서로, 사용 수량은 반입검수부·항타기록부로 대사합니다.</li>
+        <li>절단손실은 정산 기준의 두부정리 여유 안에서만 인정합니다.</li>
+        <li>계약상대자 귀책으로 파손된 파일은 변상 또는 공제 대상입니다.</li>
+        <li>추가 관급 발주 전에 잔량을 전용할 수 있는지 먼저 확인합니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="panel" data-panel="review" hidden>
+    <div class="card">
+      <div class="toolbar"><h2 style="margin:0">증빙서류 확인</h2><span class="hint" id="chkCount"></span></div>
+      <div class="progress" style="margin-bottom:12px"><i id="chkBar" style="width:0"></i></div>
+      <div class="checks" id="checks"></div>
+    </div>
+    <div class="card">
+      <h2>검토 의견</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>번호</th><th>검토 항목</th><th>검토 결과</th><th>판정</th></tr></thead>
+          <tbody id="opBody"></tbody>
+        </table>
+      </div>
+      <label class="f" style="margin-top:12px">종합 의견 및 조치사항<textarea id="conclusion" rows="4"></textarea></label>
+    </div>
+    <div class="card">
+      <h2>확인</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>구분</th><th>소속</th><th>직급</th><th>성명</th></tr></thead>
+          <tbody id="signBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <!-- 6 -->
+  <section class="panel" data-panel="guide" hidden>
+    <div class="card">
+      <h2>파일정산 가이드라인</h2>
+      <p class="lead">정산 분쟁은 대부분 "무엇을 몇 m로 인정할지"를 시공 전에 정하지 않아 생깁니다. 본항타 전에 정산 기준을 실정보고로 확정하는 것이 가장 중요합니다.</p>
+      <div class="guide-steps">
+        <div class="step">
+          <div class="step-h"><span class="step-n">1</span>착공 전 · 시항타</div>
+          <ol>
+            <li>지반조사 보고서(주상도)와 설계 말뚝 길이를 대조하여 변동 가능 구간을 파악합니다.</li>
+            <li>시항타·재하시험 결과로 구역별 말뚝 길이와 관입 관리 기준을 정합니다.</li>
+            <li>정산 기준(천공·근입·자재 인정 길이, 두부정리 여유, 할증)을 실정보고로 승인하여 문서로 남깁니다.</li>
+            <li>관급자재라면 발주 수량을 시항타 결과로 다시 검토한 뒤 요청합니다.</li>
+          </ol>
+        </div>
+        <div class="step">
+          <div class="step-h"><span class="step-n">2</span>시공 중</div>
+          <ol>
+            <li>본별 항타기록부(천공깊이, 근입깊이, 최종관입량, 리바운드)를 매일 확인하고 서명합니다.</li>
+            <li>반입 파일은 규격·길이·본수를 검수부에 기록하고 관급 수불부와 대사합니다.</li>
+            <li>설계와 다른 지층(연암 출현, 전석층 등)은 발견 즉시 사진과 기록으로 남깁니다.</li>
+            <li>위치 이탈·경사·파손 말뚝은 원인과 귀책을 그때 확정하고 보강 방법을 승인합니다.</li>
+            <li>두부정리 전후 레벨을 측량하여 절단 길이를 본별로 기록합니다.</li>
+          </ol>
+        </div>
+        <div class="step">
+          <div class="step-h"><span class="step-n">3</span>정산 시</div>
+          <ol>
+            <li>본별 기록을 합산하여 설계 수량과 대비하고, 증감 사유를 항목마다 적습니다.</li>
+            <li>시공비와 자재비를 나누어 정산합니다. 시공비는 실제 깊이, 자재비는 인정 길이 기준입니다.</li>
+            <li>기존 비목은 계약단가, 신규 비목은 협의단가로 구분하여 적용합니다.</li>
+            <li>관급 잔량은 반납 또는 기성 공제를 확정한 뒤 변경계약을 진행합니다.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>주요 쟁점별 감독자 판단 기준</h2>
+      <p class="lead">계약상대자와 의견이 갈리기 쉬운 항목입니다. 판단 근거를 검토서에 함께 적어 두십시오.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>쟁점</th><th>감독자 판단 기준</th><th>확인 자료</th></tr></thead>
+          <tbody>
+            <tr><td>설계보다 덜 들어간 경우 자재비</td><td>근입깊이 + 두부정리 여유까지만 인정합니다. 남은 길이는 관급이면 반납·공제, 사급이면 감액합니다.</td><td>항타기록부, 두부정리 측량</td></tr>
+            <tr><td>설계보다 더 들어간 경우</td><td>시항타 기준 관입량을 만족하기 위해 더 박았는지 확인한 뒤 증가분을 인정합니다. 이음이 새로 생기면 이음비도 반영합니다.</td><td>최종관입량, 재하시험 결과</td></tr>
+            <tr><td>천공 구간 지층 변경</td><td>주상도와 다른 지층은 굴착 시 기록된 경우에만 지층별 단가로 정산합니다. 사후 주장은 인정하기 어렵습니다.</td><td>천공 기록, 배토 사진</td></tr>
+            <tr><td>공타(빈 천공) 구간</td><td>작업면~기초저면 사이 빈 천공은 천공비로만 인정하고 근입비에는 넣지 않습니다.</td><td>레벨 측량</td></tr>
+            <tr><td>보강말뚝</td><td>위치 이탈·경사·파손 등 시공 불량이면 계약상대자 부담, 지반 조건 변경 등이면 발주청 부담입니다.</td><td>위치 측량 성과, 사유서</td></tr>
+            <tr><td>할증</td><td>설계 할증률 범위 안에서만 인정하고, 할증분과 절단 손실을 이중으로 인정하지 않습니다.</td><td>설계내역서</td></tr>
+            <tr><td>재하시험 추가</td><td>설계 회수를 넘는 시험은 발주청이 사유를 승인한 경우만 정산합니다.</td><td>시험 요청·승인 문서</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="card">
+        <h2>자주 지적되는 정산 오류</h2>
+        <ul class="guide-list">
+          <li>실제 기록 없이 설계 길이로 일괄 정산</li>
+          <li>두부정리로 잘라 낸 잔재 길이를 자재비로 모두 인정</li>
+          <li>시공 불량으로 생긴 보강말뚝을 발주청 부담으로 처리</li>
+          <li>관급 파일 잔량을 회수·공제하지 않고 준공</li>
+          <li>신규 비목(연암 천공 등)에 산정 근거 없이 단가 적용</li>
+          <li>시공이 끝난 뒤 실정보고를 사후 승인</li>
+          <li>항타기록부에 감독자 확인 서명 누락</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>참고 기준</h2>
+        <ul class="guide-list">
+          <li>「지방자치단체 입찰 및 계약 집행기준」 공사계약 일반조건 중 설계변경 조항</li>
+          <li>건설공사 표준품셈 공통부문 5-3-1 기성말뚝 기초, 5-3-2 말뚝박기용 천공</li>
+          <li>공사시방서·특기시방서의 말뚝공사 조항(정산 기준, 관입 관리)</li>
+          <li>승인된 실정보고(시항타 결과 및 정산 기준)</li>
+        </ul>
+        <p class="hint" style="margin:12px 0 0">두부정리 여유 인정 길이는 법정 기준이 없으므로 현장 여건에 맞게 정하고 실정보고로 확정합니다. 이 대시보드의 기본값은 0.5m입니다.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const KEY='pile-settlement-v1';
+const $=s=>document.querySelector(s);
+/*CORE-START*/
+const num=v=>{const n=parseFloat(v);return isFinite(n)?n:0};
+const r2=v=>Math.round(v*100)/100;
+const fm=(v,d=2)=>(Math.round(v*10**d)/10**d).toLocaleString('ko-KR',{minimumFractionDigits:0,maximumFractionDigits:d});
+const won=v=>Math.round(v).toLocaleString('ko-KR');
+const sg=(v,d=2)=>(v>0?'+':'')+fm(v,d);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const INFO=[['name','공사명'],['org','발주기관'],['contractor','계약상대자'],['sub','파일 시공업체'],['spec','파일 규격'],['method','공법'],['date','검토 일자'],['writer','작성자(감독)']];
+const ITEMS=[
+ {k:'soil',name:'천공(토사)',unit:'m'},{k:'weath',name:'천공(풍화암)',unit:'m'},{k:'rock',name:'천공(연암 이상)',unit:'m'},
+ {k:'embed',name:'파일 근입',unit:'m'},{k:'mat',name:'PHC 파일 자재',unit:'m'},{k:'head',name:'두부정리',unit:'개소'},
+ {k:'joint',name:'말뚝 이음',unit:'개소'},{k:'extra',name:'보강말뚝',unit:'본',manual:true},{k:'pda',name:'동재하시험',unit:'회',manual:true}];
+const CHECKS=['시항타 결과 보고서 및 실정보고 승인 공문','지반조사 보고서(주상도)와 실제 굴착 지층 비교','본별 항타기록부(감독자 확인 서명)','자재 반입검수부 및 품질시험성적서','관급자재 납품검사조서 및 수불부','두부정리 측량 기록(절단 전후 레벨)','용접 이음 검사 기록','동재하·정재하 시험성적서','시공 사진(천공깊이, 근입, 두부정리 전후)','말뚝 위치 측량 성과 및 보강말뚝 발생 사유서','절단 잔재 폐기물 처리 확인서','설계변경 수량산출서·내역서'];
+const OPS=['정산 기준의 사전 확정 여부','천공·근입 수량의 근거','자재 인정 길이(여유 초과분 공제)','단가 적용(계약단가·협의단가 구분)','관급자재 잔량 처리','보강말뚝 귀책 판단'];
+const SIGNS=['작성(감독)','검토','확인','계약상대자 현장대리인'];
+
+function blank(){
+  return {example:false,
+    info:{name:'',org:'',contractor:'',sub:'',spec:'PHC φ500 A종',method:'SIP(매입말뚝)',date:'',writer:''},
+    rule:{allow:0.5,gov:true},
+    piles:[],
+    items:Object.fromEntries(ITEMS.map(i=>[i.k,{design:0,actual:0,price:0,ptype:'계약단가',reason:''}])),
+    overhead:0,vat:10,
+    govIn:{count:0,len:0,handle:'반납'},
+    checks:CHECKS.map(()=>false),
+    ops:OPS.map(()=>({result:'',verdict:''})),
+    conclusion:'',
+    signs:SIGNS.map(()=>({dept:'',rank:'',name:''}))};
+}
+function sample(){
+  const s=blank(); s.example=true;
+  s.info={name:'○○초등학교 다목적강당 증축공사(예시)',org:'전라남도교육청 ○○교육지원청',contractor:'(주)○○건설',sub:'(주)○○기초',spec:'PHC φ500 A종',method:'SIP(매입말뚝)',date:'2026-09-26',writer:''};
+  const data=[[12,6.2,4.1,0,10.6,12],[12,6.0,4.6,0,10.9,12],[12,6.4,5.2,0.4,12.0,12],[12,5.8,3.9,0,9.9,12],[12,6.1,4.4,0,10.7,12],[12,6.3,4.9,0.3,11.5,12],[12,6.0,4.0,0,10.2,12],[12,6.5,5.4,0.6,12.3,13],[12,6.2,4.5,0,10.9,12],[12,5.9,4.2,0,10.3,12],[12,6.1,4.8,0.2,11.3,12],[12,6.0,4.3,0,10.5,12]];
+  s.piles=data.map((d,i)=>({id:'P-'+(i+1),design:d[0],soil:d[1],weath:d[2],rock:d[3],embed:d[4],supply:d[5],joint:false,set:[3,4,2,4,3,3,4,2,3,4,3,3][i]}));
+  const it=s.items;
+  it.soil={design:72,actual:0,price:18500,ptype:'계약단가',reason:'주상도 대비 토사층 두께 증가'};
+  it.weath={design:54,actual:0,price:42800,ptype:'계약단가',reason:'지지층 심도 변화'};
+  it.rock={design:0,actual:0,price:96300,ptype:'신규/협의',reason:'일부 구간 연암 출현(신규 비목)'};
+  it.embed={design:132,actual:0,price:9700,ptype:'계약단가',reason:'시항타 결과 근입깊이 조정'};
+  it.mat={design:144,actual:0,price:43500,ptype:'계약단가',reason:'관급자재(금액 정산 제외)'};
+  it.head={design:12,actual:0,price:31200,ptype:'계약단가',reason:''};
+  it.joint={design:0,actual:0,price:58000,ptype:'계약단가',reason:''};
+  it.extra={design:0,actual:0,price:0,ptype:'계약단가',reason:''};
+  it.pda={design:2,actual:2,price:1250000,ptype:'계약단가',reason:''};
+  s.overhead=38.5;
+  s.govIn={count:12,len:12,handle:'반납'};
+  s.ops[0].result='실정보고 승인일 2026. ○. ○.';
+  return s;
+}
+let S;
+try{S=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){S=null}
+if(!S||!S.items)S=sample();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+/* ---------- calculations ---------- */
+function pileCalc(p){
+  const drill=num(p.soil)+num(p.weath)+num(p.rock);
+  const cut=Math.max(0,num(p.supply)-num(p.embed));
+  const allowM=num(S.rule.allow);
+  const matOk=Math.min(num(p.supply),num(p.embed)+allowM);
+  const deduct=Math.max(0,num(p.supply)-matOk);
+  let st=['정상','ok'];
+  if(num(p.embed)===0) st=['미입력','info'];
+  else if(num(p.supply)<num(p.embed)) st=['반입<근입','bad'];
+  else if(deduct>0.001) st=['여유 초과','warn'];
+  else if(num(p.embed)>num(p.design)&&num(p.design)>0) st=['설계 초과','info'];
+  return {drill,cut,matOk,deduct,st};
+}
+function totals(){
+  const t={n:S.piles.length,design:0,soil:0,weath:0,rock:0,drill:0,embed:0,supply:0,cut:0,matOk:0,deduct:0,joint:0};
+  S.piles.forEach(p=>{const c=pileCalc(p);t.design+=num(p.design);t.soil+=num(p.soil);t.weath+=num(p.weath);t.rock+=num(p.rock);t.drill+=c.drill;t.embed+=num(p.embed);t.supply+=num(p.supply);t.cut+=c.cut;t.matOk+=c.matOk;t.deduct+=c.deduct;if(p.joint)t.joint++;});
+  return t;
+}
+function actualOf(k,t){
+  if(ITEMS.find(i=>i.k===k).manual) return num(S.items[k].actual);
+  return {soil:t.soil,weath:t.weath,rock:t.rock,embed:t.embed,mat:t.matOk,head:t.n,joint:t.joint}[k];
+}
+function money(t){
+  const rows=ITEMS.map(i=>{const it=S.items[i.k];const a=actualOf(i.k,t);const diff=r2(a-num(it.design));const excl=(i.k==='mat'&&S.rule.gov);const amt=excl?0:Math.round(diff*num(it.price));return {i,it,a,diff,amt,excl};});
+  const direct=rows.reduce((s,r)=>s+r.amt,0);
+  const oh=Math.round(direct*num(S.overhead)/100);
+  const vat=Math.round((direct+oh)*num(S.vat)/100);
+  return {rows,direct,oh,vat,total:direct+oh+vat};
+}
+function gov(t){
+  const inM=num(S.govIn.count)*num(S.govIn.len);
+  const used=t.supply, ok=t.matOk;
+  const unusedPieces=Math.max(0,num(S.govIn.count)-t.n);
+  return {inM,used,ok,remainM:r2(inM-ok),unusedPieces,deduct:t.deduct};
+}
+
+/* ---------- 엑셀보고서 서식 (웜 그레이 + #D9730D, 맑은 고딕, A4 세로) ---------- */
+async function buildWorkbook(ExcelJS){
+  const t=totals(),m=money(t),g=gov(t),I=S.info,n=S.piles.length;
+  const C={ink:'FF37352F',sub:'FF787774',foot:'FF9B9A97',warn:'FFD44C47',acc:'FFD9730D',sec:'FFF1F0ED',head:'FFF7F6F3',input:'FFFBF3DB',inInk:'FF337EA9',line:'FFE3E2DE',strong:'FFC7C5C0',white:'FFFFFFFF'};
+  const FONT='맑은 고딕';
+  const fill=c=>({type:'pattern',pattern:'solid',fgColor:{argb:c}});
+  const ln=c=>({style:'thin',color:{argb:c}});
+  const FMT={m:'#,##0.00',won:'#,##0;-#,##0;0',cnt:'#,##0',pct:'0.00',mm:'0.0'};
+  const wb=new ExcelJS.Workbook();wb.creator='파일공사 정산 검토';wb.created=new Date();
+  const PS="'본별 항타기록'",QS="'수량·금액 정산'",OV="'개요'";
+  const P0=5,PL=P0+n-1,PT=P0+n;
+  const has=n>0;
+  const fx=(formula,result)=>has?{formula,result}:result;
+  const colL=i=>String.fromCharCode(64+i);
+  const today=new Date();const ds=`${today.getFullYear()}. ${today.getMonth()+1}. ${today.getDate()}.`;
+
+  function sheet(name,widths,title,tabAcc){
+    const ws=wb.addWorksheet(name,{views:[{showGridLines:false}],properties:{tabColor:{argb:tabAcc?C.acc:C.sub}}});
+    ws.columns=widths.map(w=>({width:w}));
+    const last=colL(widths.length);
+    ws.mergeCells(`A1:${last}1`);
+    const c1=ws.getCell('A1');c1.value=title;c1.font={name:FONT,size:14,bold:true,color:{argb:C.white}};c1.fill=fill(C.ink);c1.alignment={vertical:'middle',indent:1};
+    ws.getRow(1).height=30;
+    ws.mergeCells(`A2:${last}2`);
+    const c2=ws.getCell('A2');c2.value=['[테스트용]',I.name,I.spec,'작성 '+ds].filter(Boolean).join('  ·  ');c2.font={name:FONT,size:9,color:{argb:C.sub}};c2.alignment={vertical:'middle',indent:1};
+    ws.getRow(2).height=18;
+    ws._last=last;ws._w=widths;
+    return ws;
+  }
+  function style(c,role,fmt,align){
+    const base={name:FONT,size:10,color:{argb:C.ink}};
+    c.border={top:ln(C.line),left:ln(C.line),bottom:ln(C.line),right:ln(C.line)};
+    c.alignment={vertical:'middle',wrapText:true,...(align?{horizontal:align}:{})};
+    if(fmt)c.numFmt=fmt;
+    if(role==='label'){c.fill=fill(C.head);c.font=base;}
+    else if(role==='input'){c.fill=fill(C.input);c.font={...base,color:{argb:C.inInk}};}
+    else if(role==='total'){c.fill=fill(C.head);c.font={...base,bold:true,color:{argb:C.acc}};c.border={top:ln(C.strong),left:ln(C.line),bottom:ln(C.strong),right:ln(C.line)};}
+    else if(role==='totalLabel'){c.fill=fill(C.head);c.font={...base,bold:true};c.border={top:ln(C.strong),left:ln(C.line),bottom:ln(C.strong),right:ln(C.line)};}
+    else if(role==='warn'){c.font={...base,bold:true,color:{argb:C.warn}};}
+    else c.font=base;
+  }
+  function put(ws,addr,value,role,fmt,align){const c=ws.getCell(addr);c.value=value;style(c,role,fmt,align);return c;}
+  function merge(ws,from,to,value,role,fmt,align){ws.mergeCells(`${from}:${to}`);const c=put(ws,from,value,role,fmt,align);
+    const [c1,r]=[from.match(/[A-Z]+/)[0].charCodeAt(0),+from.match(/\d+/)[0]];const c2=to.match(/[A-Z]+/)[0].charCodeAt(0);
+    for(let k=c1+1;k<=c2;k++)style(ws.getCell(String.fromCharCode(k)+r),role,fmt,align);return c;}
+  function section(ws,r,text){ws.mergeCells(`A${r}:${ws._last}${r}`);const c=ws.getCell(`A${r}`);c.value=text;c.font={name:FONT,size:10,bold:true,color:{argb:C.ink}};c.fill=fill(C.sec);c.alignment={vertical:'middle',indent:1};c.border={left:{style:'medium',color:{argb:C.acc}}};ws.getRow(r).height=22;}
+  function header(ws,r,labels,h){labels.forEach((l,i)=>{if(l===null)return;const c=ws.getCell(colL(i+1)+r);c.value=l;c.font={name:FONT,size:10,bold:true,color:{argb:C.ink}};c.fill=fill(C.head);c.alignment={vertical:'middle',horizontal:'center',wrapText:true};c.border={top:ln(C.strong),bottom:ln(C.strong),left:ln(C.line),right:ln(C.line)};});ws.getRow(r).height=h||22;}
+  function note(ws,r,text,warn){ws.mergeCells(`A${r}:${ws._last}${r}`);const c=ws.getCell(`A${r}`);c.value=text;c.font={name:FONT,size:8,color:{argb:warn?C.warn:C.foot}};c.alignment={vertical:'middle',wrapText:true};}
+  function print(ws,lastRow,titleRows){
+    ws.pageSetup={paperSize:9,orientation:'portrait',fitToPage:true,fitToWidth:1,fitToHeight:0,horizontalCentered:true,
+      margins:{left:0.39,right:0.39,top:0.51,bottom:0.51,header:0.24,footer:0.24},printArea:`A1:${ws._last}${lastRow}`};
+    if(titleRows)ws.pageSetup.printTitlesRow=titleRows;
+    ws.headerFooter={oddFooter:`&L&"맑은 고딕"&8${ws.name}&R&"맑은 고딕"&8&P / &N`};
+  }
+
+  /* 1. 개요 */
+  const s1=sheet('개요',[28,46],'파일(말뚝)공사 정산 검토서',true);
+  section(s1,4,'1. 공사 개요');
+  INFO.forEach(([k,l],i)=>{put(s1,`A${5+i}`,l,'label');put(s1,`B${5+i}`,I[k]||'','input');});
+  section(s1,14,'2. 정산 기준');
+  put(s1,'A15','두부정리 여유 인정 길이(m)','label');put(s1,'B15',num(S.rule.allow),'input',FMT.m,'right');
+  put(s1,'A16','파일 자재 조달 구분(관급/사급)','label');put(s1,'B16',S.rule.gov?'관급':'사급','input');
+  note(s1,17,'자재 인정 길이 = MIN(반입길이, 근입깊이 + 두부정리 여유). 노란 칸은 입력값, 흰 칸은 자동 계산입니다.');
+  section(s1,19,'3. 정산 요약');
+  const sumRows=[
+    ['시공 본수(본)',fx(`COUNTA(${PS}!A${P0}:A${PL})`,n),FMT.cnt],
+    ['근입 길이 계(m)',fx(`${PS}!G${PT}`,r2(t.embed)),FMT.m],
+    ['설계 근입 길이(m)',{formula:`${QS}!C8`,result:num(S.items.embed.design)},FMT.m],
+    ['자재 공제 대상(m)',fx(`${PS}!K${PT}`,r2(t.deduct)),FMT.m],
+    ['직접공사비 증감(원)',{formula:`${QS}!H14`,result:m.direct},FMT.won],
+    ['제경비(원)',{formula:`${QS}!H15`,result:m.oh},FMT.won],
+    ['부가가치세(원)',{formula:`${QS}!H16`,result:m.vat},FMT.won]];
+  sumRows.forEach((r,i)=>{put(s1,`A${20+i}`,r[0],'label');put(s1,`B${20+i}`,r[1],'data',r[2],'right');});
+  put(s1,'A27','정산 증감 합계(원)','totalLabel');put(s1,'B27',{formula:`${QS}!H17`,result:m.total},'total',FMT.won,'right');
+  note(s1,29,'※ 테스트용 자료입니다. 계산 결과는 참고용이며, 실제 정산에 쓰기 전에 설계서·계약조건·실정보고와 대조하여 검토하십시오.',true);
+  print(s1,29);
+
+  /* 2. 본별 항타기록 */
+  const s2=sheet('본별 항타기록',[8,8,8,8,8,8,8,8,8,8,8,6,9,10],'본별 항타기록 집계');
+  section(s2,3,`두부정리 여유 ${fm(num(S.rule.allow))} m 기준 · 단위 m (최종관입량 mm)`);
+  header(s2,4,['말뚝번호','설계길이','천공\n토사','천공\n풍화암','천공\n연암↑','천공 계','근입깊이','반입길이','절단길이','자재인정','자재공제','이음','최종\n관입량','판정'],34);
+  S.piles.forEach((p,i)=>{const r=P0+i,c=pileCalc(p);
+    put(s2,`A${r}`,p.id,'input',null,'center');
+    ['B','C','D','E'].forEach((L,j)=>put(s2,`${L}${r}`,num(p[['design','soil','weath','rock'][j]]),'input',FMT.m,'right'));
+    put(s2,`F${r}`,{formula:`SUM(C${r}:E${r})`,result:r2(c.drill)},'data',FMT.m,'right');
+    put(s2,`G${r}`,num(p.embed),'input',FMT.m,'right');put(s2,`H${r}`,num(p.supply),'input',FMT.m,'right');
+    put(s2,`I${r}`,{formula:`MAX(0,H${r}-G${r})`,result:r2(c.cut)},'data',FMT.m,'right');
+    put(s2,`J${r}`,{formula:`MIN(H${r},G${r}+${OV}!$B$15)`,result:r2(c.matOk)},'data',FMT.m,'right');
+    put(s2,`K${r}`,{formula:`MAX(0,H${r}-J${r})`,result:r2(c.deduct)},c.deduct>0.001?'warn':'data',FMT.m,'right');
+    s2.getCell(`K${r}`).numFmt=FMT.m;
+    put(s2,`L${r}`,p.joint?'Y':'N','input',null,'center');
+    put(s2,`M${r}`,num(p.set),'input',FMT.mm,'right');
+    put(s2,`N${r}`,{formula:`IF(G${r}=0,"미입력",IF(H${r}<G${r},"반입<근입",IF(ROUND(K${r},3)>0,"여유 초과",IF(AND(B${r}>0,G${r}>B${r}),"설계 초과","정상"))))`,result:c.st[0]},(c.st[1]==='warn'||c.st[1]==='bad')?'warn':'data',null,'center');
+  });
+  put(s2,`A${PT}`,has?'계':'계 (입력 없음)','totalLabel',null,'center');
+  ['B','C','D','E','F','G','H','I','J','K'].forEach(L=>{const key={B:'design',C:'soil',D:'weath',E:'rock',F:'drill',G:'embed',H:'supply',I:'cut',J:'matOk',K:'deduct'}[L];put(s2,`${L}${PT}`,fx(`SUM(${L}${P0}:${L}${PL})`,r2(t[key])),'total',FMT.m,'right');});
+  put(s2,`L${PT}`,fx(`COUNTIF(L${P0}:L${PL},"Y")`,t.joint),'total',FMT.cnt,'center');
+  put(s2,`M${PT}`,'','totalLabel');put(s2,`N${PT}`,'','totalLabel');
+  note(s2,PT+2,'절단길이 = 반입길이 − 근입깊이 · 자재인정 = MIN(반입길이, 근입깊이 + 두부정리 여유) · 자재공제 = 반입길이 − 자재인정');
+  note(s2,PT+3,'판정: 여유 초과·반입<근입은 붉은 글씨로 표시됩니다. 노란 칸은 입력값, 흰 칸은 자동 계산입니다.');
+  print(s2,PT+3,'4:4');
+
+  /* 3. 수량·금액 정산 */
+  const s3=sheet('수량·금액 정산',[16,6,10,10,10,12,10,14,22],'항목별 수량 대비 및 금액 정산',true);
+  section(s3,3,`파일 자재 ${S.rule.gov?'관급(금액 정산 제외)':'사급(금액 정산 포함)'} · 금액 단위 원`);
+  header(s3,4,['항목','단위','설계 수량','실시공 수량','증감','적용 단가','단가 구분','증감 금액','증감 사유'],24);
+  const link={soil:`${PS}!C${PT}`,weath:`${PS}!D${PT}`,rock:`${PS}!E${PT}`,embed:`${PS}!G${PT}`,mat:`${PS}!J${PT}`,head:`COUNTA(${PS}!A${P0}:A${PL})`,joint:`${PS}!L${PT}`};
+  m.rows.forEach((row,j)=>{const r=5+j,k=row.i.k,it=row.it;
+    put(s3,`A${r}`,row.i.name,'label');put(s3,`B${r}`,row.i.unit,'data',null,'center');
+    put(s3,`C${r}`,num(it.design),'input',FMT.m,'right');
+    if(row.i.manual)put(s3,`D${r}`,num(it.actual),'input',FMT.m,'right');
+    else put(s3,`D${r}`,fx(link[k],r2(row.a)),'data',FMT.m,'right');
+    put(s3,`E${r}`,{formula:`ROUND(D${r}-C${r},2)`,result:row.diff},'data','+#,##0.00;-#,##0.00;0.00','right');
+    put(s3,`F${r}`,num(it.price),'input',FMT.won,'right');
+    put(s3,`G${r}`,it.ptype,'input',null,'center');
+    const f=k==='mat'?`IF(${OV}!$B$16="관급","관급 제외",ROUND(E${r}*F${r},0))`:`ROUND(E${r}*F${r},0)`;
+    put(s3,`H${r}`,{formula:f,result:row.excl?'관급 제외':row.amt},'data','+#,##0;-#,##0;0',row.excl?'center':'right');
+    put(s3,`I${r}`,it.reason||'','input');
+  });
+  const cols9=['A','B','C','D','E','F','G','H','I'];
+  cols9.forEach(L=>put(s3,`${L}14`,L==='A'?'직접공사비 소계':'',L==='H'?'total':'totalLabel'));
+  s3.getCell('H14').value={formula:'SUM(H5:H13)',result:m.direct};s3.getCell('H14').numFmt='+#,##0;-#,##0;0';s3.getCell('H14').alignment={vertical:'middle',horizontal:'right'};
+  [['제경비',15,num(S.overhead),'ROUND(H14*C15/100,0)',m.oh],['부가가치세',16,num(S.vat),'ROUND((H14+H15)*C16/100,0)',m.vat]].forEach(([l,r,rate,f,res])=>{
+    put(s3,`A${r}`,l,'label');put(s3,`B${r}`,'%','data',null,'center');put(s3,`C${r}`,rate,'input',FMT.pct,'right');
+    ['D','E','F','G','I'].forEach(L=>put(s3,`${L}${r}`,'','data'));
+    put(s3,`H${r}`,{formula:f,result:res},'data','+#,##0;-#,##0;0','right');});
+  cols9.forEach(L=>put(s3,`${L}17`,L==='A'?'정산 증감 합계':'',L==='H'?'total':'totalLabel'));
+  s3.getCell('H17').value={formula:'H14+H15+H16',result:m.total};s3.getCell('H17').numFmt='+#,##0;-#,##0;0';s3.getCell('H17').alignment={vertical:'middle',horizontal:'right'};
+  note(s3,19,'기존 비목의 수량 증감은 계약단가, 설계에 없던 비목은 설계변경 당시 산정단가 × 낙찰률 범위에서 협의단가를 적용합니다.');
+  note(s3,20,'실시공 수량(흰 칸)은 본별 항타기록 시트에서 자동 집계됩니다. 보강말뚝·동재하시험은 직접 입력합니다.');
+  print(s3,20);
+
+  /* 4. 관급자재 */
+  const s4=sheet('관급자재',[30,16,8],'관급 PHC 파일 수불 대사');
+  header(s4,4,['구분','값','단위']);
+  const g4=[
+    ['규격',I.spec||'','','data',null],
+    ['납품 본수',num(S.govIn.count),'본','input',FMT.cnt],
+    ['본당 길이',num(S.govIn.len),'m','input',FMT.m],
+    ['납품 길이',{formula:'B6*B7',result:r2(g.inM)},'m','data',FMT.m],
+    ['현장 반입(사용) 길이',fx(`${PS}!H${PT}`,r2(g.used)),'m','data',FMT.m],
+    ['인정 사용 길이',fx(`${PS}!J${PT}`,r2(g.ok)),'m','data',FMT.m],
+    ['여유 초과 절단(공제 대상)',fx(`${PS}!K${PT}`,r2(g.deduct)),'m',g.deduct>0?'warn':'data',FMT.m],
+    ['미사용 본수',{formula:`MAX(0,B6-${OV}!B20)`,result:g.unusedPieces},'본','data',FMT.cnt]];
+  g4.forEach((r,i)=>{const R=5+i;put(s4,`A${R}`,r[0],'label');put(s4,`B${R}`,r[1],r[3],r[4],'right');s4.getCell(`B${R}`).numFmt=r[4]||'General';put(s4,`C${R}`,r[2],'data',null,'center');});
+  put(s4,'A13','정산 잔량','totalLabel');put(s4,'B13',{formula:'ROUND(B8-B10,2)',result:g.remainM},'total',FMT.m,'right');put(s4,'C13','m','totalLabel',null,'center');
+  put(s4,'A14','잔량 처리 방법','label');put(s4,'B14',S.govIn.handle,'input',null,'center');put(s4,'C14','','data');
+  note(s4,16,'납품 수량은 납품검사조서, 사용 수량은 반입검수부·항타기록부와 대사합니다. 계약상대자 귀책 파손분은 변상 또는 공제 대상입니다.');
+  print(s4,16);
+
+  /* 5. 증빙·검토의견 */
+  const s5=sheet('증빙·검토의견',[6,34,22,14,12],'증빙서류 확인 및 검토 의견');
+  let r=4;section(s5,r,'1. 증빙서류 확인');r++;
+  header(s5,r,['번호','증빙서류',null,null,'확인']);s5.mergeCells(`B${r}:D${r}`);r++;
+  CHECKS.forEach((c,i)=>{put(s5,`A${r}`,i+1,'data',null,'center');merge(s5,`B${r}`,`D${r}`,c,'data');put(s5,`E${r}`,S.checks[i]?'확인':'미확인',S.checks[i]?'input':'input',null,'center');if(!S.checks[i])s5.getCell(`E${r}`).font={name:FONT,size:10,color:{argb:C.warn}};r++;});
+  r++;section(s5,r,'2. 검토 의견');r++;
+  header(s5,r,['번호','검토 항목','검토 결과',null,'판정']);s5.mergeCells(`C${r}:D${r}`);r++;
+  OPS.forEach((o,i)=>{put(s5,`A${r}`,i+1,'data',null,'center');put(s5,`B${r}`,o,'label');merge(s5,`C${r}`,`D${r}`,S.ops[i].result||'','input');put(s5,`E${r}`,S.ops[i].verdict||'','input',null,'center');r++;});
+  r++;section(s5,r,'3. 종합 의견 및 조치사항');r++;
+  merge(s5,`A${r}`,`E${r}`,S.conclusion||'','input');s5.getCell(`A${r}`).alignment={vertical:'top',wrapText:true};s5.getRow(r).height=72;r++;
+  r++;section(s5,r,'4. 확인');r++;
+  header(s5,r,[null,'구분','소속','직급','성명(서명)']);s5.getCell(`A${r}`).value='';
+  header(s5,r,['','구분','소속','직급','성명(서명)']);r++;
+  SIGNS.forEach((sg,i)=>{put(s5,`A${r}`,i+1,'data',null,'center');put(s5,`B${r}`,sg,'label');put(s5,`C${r}`,S.signs[i].dept,'input');put(s5,`D${r}`,S.signs[i].rank,'input');put(s5,`E${r}`,S.signs[i].name,'input');s5.getRow(r).height=26;r++;});
+  print(s5,r-1);
+
+  return wb;
+}
+/*CORE-END*/
+
+/* ---------- render ---------- */
+function field(obj,key,label,type='text',extra=''){
+  return `<label class="f">${label}<input id="${obj}-${key}" data-bind="${obj}.${key}" type="${type}" value="${esc(S[obj][key])}" ${extra}></label>`;
+}
+const OPTS={
+  spec:['PHC φ400 A종','PHC φ450 A종','PHC φ500 A종','PHC φ500 B종','PHC φ600 A종','PHC φ600 B종','강관 φ508.0','강관 φ609.6'],
+  method:['SIP(매입말뚝)','PRD(강관 매입)','SDA(매입말뚝)','중굴공법','타격공법(항타)','현장타설(RCD)']};
+function selField(k,l,opts){const v=S.info[k]||'';const known=opts.includes(v);
+  return `<label class="f">${l}<select id="info-${k}-sel" data-sel="${k}">${v?'':'<option value="" selected>선택</option>'}${opts.map(o=>`<option ${o===v?'selected':''}>${o}</option>`).join('')}<option value="__custom" ${!known&&v?'selected':''}>직접 입력</option></select><input id="info-${k}" data-bind="info.${k}" type="text" value="${esc(v)}" placeholder="규격·공법 직접 입력" ${known||!v?'hidden':''}></label>`;}
+function renderStatic(){
+  $('#infoForm').innerHTML=INFO.map(([k,l])=>OPTS[k]?selField(k,l,OPTS[k]):field('info',k,l,k==='date'?'date':'text')).join('');
+  $('#ruleForm').innerHTML=field('rule','allow','두부정리 여유 인정 길이(m)','number','step="0.05" min="0"')+
+    `<label class="f">파일 자재 조달 구분<select id="rule-gov" data-bind="rule.gov" data-bool="1"><option value="1" ${S.rule.gov?'selected':''}>관급(금액 정산 제외)</option><option value="0" ${!S.rule.gov?'selected':''}>사급(금액 정산 포함)</option></select></label>`;
+  $('#govForm').innerHTML=field('govIn','count','납품 본수(본)','number','step="1" min="0"')+field('govIn','len','본당 길이(m)','number','step="0.5" min="0"')+
+    `<label class="f">잔량 처리 방법<select id="govIn-handle" data-bind="govIn.handle">${['반납','기성 공제','타 현장 전용','추후 결정'].map(o=>`<option ${S.govIn.handle===o?'selected':''}>${o}</option>`).join('')}</select></label>`;
+  $('#overhead').value=S.overhead;$('#vat').value=S.vat;
+  $('#checks').innerHTML=CHECKS.map((c,i)=>`<label><input type="checkbox" id="chk-${i}" data-chk="${i}" ${S.checks[i]?'checked':''}><span>${c}</span></label>`).join('');
+  $('#opBody').innerHTML=OPS.map((o,i)=>`<tr><td>${i+1}</td><td>${o}</td><td><input type="text" id="op-r-${i}" data-op="${i}" data-f="result" value="${esc(S.ops[i].result)}"></td><td><select id="op-v-${i}" data-op="${i}" data-f="verdict"><option value="">선택</option>${['적정','보완'].map(v=>`<option ${S.ops[i].verdict===v?'selected':''}>${v}</option>`).join('')}</select></td></tr>`).join('');
+  $('#conclusion').value=S.conclusion;
+  $('#signBody').innerHTML=SIGNS.map((g,i)=>`<tr><td>${g}</td>${['dept','rank','name'].map(f=>`<td><input type="text" id="sg-${f}-${i}" data-sign="${i}" data-f="${f}" value="${esc(S.signs[i][f])}"></td>`).join('')}</tr>`).join('');
+  renderPiles();renderQty();
+}
+function renderPiles(){
+  $('#pileBody').innerHTML=S.piles.map((p,i)=>`<tr data-i="${i}">
+    <td><input type="text" id="p-id-${i}" data-p="${i}" data-f="id" value="${esc(p.id)}" style="width:72px;min-width:72px"></td>
+    ${['design','soil','weath','rock'].map(f=>`<td class="n"><input type="number" step="0.1" min="0" id="p-${f}-${i}" data-p="${i}" data-f="${f}" value="${p[f]}"></td>`).join('')}
+    <td class="calc" data-c="drill"></td>
+    ${['embed','supply'].map(f=>`<td class="n"><input type="number" step="0.1" min="0" id="p-${f}-${i}" data-p="${i}" data-f="${f}" value="${p[f]}"></td>`).join('')}
+    <td class="calc" data-c="cut"></td><td class="calc" data-c="matOk"></td><td class="calc" data-c="deduct"></td>
+    <td style="text-align:center"><input type="checkbox" id="p-joint-${i}" data-p="${i}" data-f="joint" ${p.joint?'checked':''} aria-label="이음 여부"></td>
+    <td class="n"><input type="number" step="0.5" min="0" id="p-set-${i}" data-p="${i}" data-f="set" value="${p.set}" style="width:64px"></td>
+    <td data-c="st"></td>
+    <td><button type="button" class="rowbtn danger" data-del="${i}" aria-label="${esc(p.id)} 삭제">삭제</button></td></tr>`).join('')
+    || `<tr><td colspan="15" style="text-align:center;color:var(--ink-3);padding:20px">말뚝을 추가하여 항타기록을 입력하십시오.</td></tr>`;
+}
+function renderQty(){
+  $('#qtyBody').innerHTML=ITEMS.map(i=>{const it=S.items[i.k];return `<tr data-k="${i.k}">
+    <td>${i.name}</td><td>${i.unit}</td>
+    <td class="n"><input type="number" step="0.1" id="q-d-${i.k}" data-q="${i.k}" data-f="design" value="${it.design}"></td>
+    ${i.manual?`<td class="n"><input type="number" step="1" id="q-a-${i.k}" data-q="${i.k}" data-f="actual" value="${it.actual}"></td>`:`<td class="calc" data-c="a"></td>`}
+    <td class="calc" data-c="diff"></td>
+    <td class="n"><input type="number" step="100" id="q-p-${i.k}" data-q="${i.k}" data-f="price" value="${it.price}" style="width:104px"></td>
+    <td><select id="q-t-${i.k}" data-q="${i.k}" data-f="ptype">${['계약단가','신규/협의'].map(o=>`<option ${it.ptype===o?'selected':''}>${o}</option>`).join('')}</select></td>
+    <td class="calc" data-c="amt"></td>
+    <td><input type="text" id="q-r-${i.k}" data-q="${i.k}" data-f="reason" value="${esc(it.reason)}"></td></tr>`}).join('');
+}
+function update(){
+  const t=totals(), m=money(t), g=gov(t);
+  // piles
+  document.querySelectorAll('#pileBody tr[data-i]').forEach(tr=>{const p=S.piles[+tr.dataset.i];const c=pileCalc(p);
+    tr.querySelector('[data-c=drill]').textContent=fm(c.drill);tr.querySelector('[data-c=cut]').textContent=fm(c.cut);
+    tr.querySelector('[data-c=matOk]').textContent=fm(c.matOk);const d=tr.querySelector('[data-c=deduct]');d.textContent=fm(c.deduct);d.style.color=c.deduct>0.001?'var(--bad)':'';
+    tr.querySelector('[data-c=st]').innerHTML=`<span class="pill ${c.st[1]}">${c.st[0]}</span>`;});
+  $('#pileFoot').innerHTML=S.piles.length?`<tr><td>계 (${t.n}본)</td><td class="n">${fm(t.design)}</td><td class="n">${fm(t.soil)}</td><td class="n">${fm(t.weath)}</td><td class="n">${fm(t.rock)}</td><td class="n">${fm(t.drill)}</td><td class="n">${fm(t.embed)}</td><td class="n">${fm(t.supply)}</td><td class="n">${fm(t.cut)}</td><td class="n">${fm(t.matOk)}</td><td class="n">${fm(t.deduct)}</td><td style="text-align:center">${t.joint}</td><td></td><td></td><td></td></tr>`:'';
+  // qty
+  m.rows.forEach(r=>{const tr=document.querySelector(`#qtyBody tr[data-k="${r.i.k}"]`);if(!tr)return;
+    const a=tr.querySelector('[data-c=a]');if(a)a.textContent=fm(r.a);
+    const d=tr.querySelector('[data-c=diff]');d.textContent=sg(r.diff);d.className='calc '+(r.diff>0?'pos':r.diff<0?'neg':'');
+    tr.querySelector('[data-c=amt]').textContent=r.excl?'관급 제외':(r.amt>0?'+':'')+won(r.amt);});
+  $('#sumBox').innerHTML=`<dt>직접공사비 증감</dt><dd>${(m.direct>0?'+':'')+won(m.direct)}</dd><dt>제경비 (${fm(num(S.overhead))}%)</dt><dd>${(m.oh>0?'+':'')+won(m.oh)}</dd><dt>부가가치세 (${fm(num(S.vat),1)}%)</dt><dd>${(m.vat>0?'+':'')+won(m.vat)}</dd><dt style="font-weight:600;color:var(--ink)">정산 증감 합계</dt><dd class="total ${m.total>0?'pos':m.total<0?'neg':''}">${(m.total>0?'+':'')+won(m.total)} 원</dd>`;
+  // gov
+  $('#govBox').innerHTML=`<dt>납품 길이</dt><dd>${fm(g.inM)} m</dd><dt>현장 반입(사용) 길이</dt><dd>${fm(g.used)} m</dd><dt>인정 사용 길이</dt><dd>${fm(g.ok)} m</dd><dt>여유 초과 절단(공제 대상)</dt><dd class="${g.deduct>0?'neg':''}">${fm(g.deduct)} m</dd><dt>미사용 본수</dt><dd>${g.unusedPieces} 본</dd><dt style="font-weight:600;color:var(--ink)">정산 잔량 (${esc(S.govIn.handle)})</dt><dd class="total ${g.remainM>0?'neg':''}">${fm(g.remainM)} m</dd>`;
+  // checks
+  const done=S.checks.filter(Boolean).length;$('#chkCount').textContent=`${done} / ${CHECKS.length} 확인`;$('#chkBar').style.width=(done/CHECKS.length*100)+'%';
+  // kpi
+  const dEmbed=t.embed-num(S.items.embed.design);
+  const warnN=S.piles.filter(p=>pileCalc(p).deduct>0.001).length;
+  $('#kpis').innerHTML=
+    kpi('시공 본수',`${t.n}<small style="font-size:13px"> 본</small>`,`이음 ${t.joint}개소 · 천공 계 ${fm(t.drill)} m`)+
+    kpi('근입 길이 (설계 대비)',`${fm(t.embed)}<small style="font-size:13px"> m</small>`,`<span class="${dEmbed>0?'pos':dEmbed<0?'neg':''}">${sg(dEmbed)} m</span> · 설계 ${fm(num(S.items.embed.design))} m`)+
+    kpi('자재 공제 대상',`<span class="${t.deduct>0?'neg':''}">${fm(t.deduct)}</span><small style="font-size:13px"> m</small>`,`여유 초과 ${warnN}본 · 여유 ${fm(num(S.rule.allow))} m/본`)+
+    kpi('정산 증감액 (VAT 포함)',`<span class="${m.total>0?'pos':m.total<0?'neg':''}">${(m.total>0?'+':'')+won(m.total)}</span>`,`직접공사비 ${(m.direct>0?'+':'')+won(m.direct)}원`);
+  $('#hdrSub').textContent=[S.info.name,S.info.spec,S.info.method].filter(Boolean).join(' · ')||'공사 개요를 입력하십시오';
+  $('#exNote').hidden=!S.example;
+  save();
+}
+function kpi(l,v,d){return `<div class="kpi"><span class="l">${l}</span><span class="v">${v}</span><span class="d">${d}</span></div>`}
+
+/* ---------- events ---------- */
+document.addEventListener('input',onEdit);document.addEventListener('change',onEdit);
+function onEdit(e){
+  const el=e.target;let hit=true;
+  if(el.dataset.sel){const k=el.dataset.sel,inp=document.getElementById('info-'+k);
+    if(el.value==='__custom'){inp.hidden=false;if(e.type==='change')inp.focus();S.info[k]=inp.value;}
+    else{inp.hidden=true;inp.value=el.value;S.info[k]=el.value;}}
+  else if(el.dataset.bind){const [o,k]=el.dataset.bind.split('.');S[o][k]=el.dataset.bool?el.value==='1':(el.type==='number'?num(el.value):el.value);}
+  else if(el.dataset.p!==undefined){const p=S.piles[+el.dataset.p];const f=el.dataset.f;p[f]=el.type==='checkbox'?el.checked:(el.type==='number'?num(el.value):el.value);}
+  else if(el.dataset.q){const it=S.items[el.dataset.q];const f=el.dataset.f;it[f]=el.type==='number'?num(el.value):el.value;}
+  else if(el.dataset.chk!==undefined){S.checks[+el.dataset.chk]=el.checked;}
+  else if(el.dataset.op!==undefined){S.ops[+el.dataset.op][el.dataset.f]=el.value;}
+  else if(el.dataset.sign!==undefined){S.signs[+el.dataset.sign][el.dataset.f]=el.value;}
+  else if(el.id==='overhead'){S.overhead=num(el.value)}
+  else if(el.id==='vat'){S.vat=num(el.value)}
+  else if(el.id==='conclusion'){S.conclusion=el.value}
+  else hit=false;
+  if(hit)update();
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.tab){document.querySelectorAll('#tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));document.querySelectorAll('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==b.dataset.tab);try{localStorage.setItem(KEY+'-tab',b.dataset.tab)}catch(err){}return;}
+  if(b.dataset.del!==undefined){S.piles.splice(+b.dataset.del,1);renderPiles();update();return;}
+  if(b.id==='btnAddPile'||b.id==='btnAdd5'){const n=b.id==='btnAdd5'?5:1;const last=S.piles[S.piles.length-1];for(let k=0;k<n;k++){S.piles.push({id:'P-'+(S.piles.length+1),design:last?last.design:0,soil:0,weath:0,rock:0,embed:0,supply:last?last.supply:0,joint:false,set:0});}renderPiles();update();return;}
+  if(b.id==='btnReset'){if(b.dataset.armed){delete b.dataset.armed;b.textContent='빈 양식으로 초기화';S=blank();renderStatic();update();flash('빈 양식으로 초기화했습니다.');}else{b.dataset.armed='1';b.textContent='한 번 더 누르면 초기화';setTimeout(()=>{if(b.dataset.armed){delete b.dataset.armed;b.textContent='빈 양식으로 초기화'}},3000);}return;}
+  if(b.id==='btnSample'){S=sample();renderStatic();update();flash('예시 자료를 불러왔습니다.');return;}
+  if(b.id==='btnExport'){exportXlsx();return;}
+});
+function flash(t,err){const m=$('#msg');m.textContent=t;m.className='msg'+(err?' err':'');clearTimeout(flash._t);flash._t=setTimeout(()=>{m.textContent=''},5000)}
+
+/* ---------- export ---------- */
+let downloads=null;
+if(window.claude&&window.claude.use){window.claude.use('downloads').then(d=>{downloads=d;}).catch(()=>{});}
+async function exportXlsx(){
+  if(typeof ExcelJS==='undefined'){flash('엑셀 모듈을 불러오지 못했습니다. 페이지를 새로 고친 뒤 다시 시도하십시오.',1);return}
+
+  const b=$('#btnExport');b.disabled=true;b.textContent='만드는 중…';
+  try{
+    const wb=await buildWorkbook(ExcelJS);
+    const buf=await wb.xlsx.writeBuffer();
+    const nm=(S.info.name||'파일공사').replace(/[\\/:*?"<>|]/g,'').slice(0,60);
+    const d=new Date();const ds=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+    const fname=`[테스트용]${nm}_파일정산검토_${ds}.xlsx`;
+    if(downloads){const r=await downloads.save({filename:fname,data:new Uint8Array(buf)});flash(r.status==='saved'?'엑셀 파일을 저장했습니다.':'엑셀 파일을 보냈습니다.');}
+    else{const url=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));const a=document.createElement('a');a.href=url;a.download=fname;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);flash('엑셀 파일을 저장했습니다.');}
+  }catch(err){const c=err&&err.code;flash(c==='declined'?'저장을 취소했습니다.':c==='rate_limited'?'이미 저장 확인 창이 열려 있습니다. 잠시 후 다시 시도하십시오.':'엑셀 파일을 저장하지 못했습니다('+(c||err&&err.message||'오류')+').',c!=='declined');}
+  finally{b.disabled=false;b.textContent='엑셀로 내보내기';}
+}
+
+renderStatic();update();
+try{const tb=localStorage.getItem(KEY+'-tab');if(tb){const b=document.querySelector(`#tabs [data-tab="${tb}"]`);if(b)b.click();}}catch(e){}
+})();
+</script>
+
+</body>
+</html>

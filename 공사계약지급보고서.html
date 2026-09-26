@@ -22,10 +22,10 @@ button{font:inherit;cursor:pointer}
 button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid #fff;box-shadow:0 0 0 4px var(--p50)}
 
 /* 상단 안내줄 + 헤더 */
-.strip{background:var(--sec5);color:var(--g70);font-size:13px;line-height:32px;padding-inline:16px}
-.strip .in{max-width:1248px;margin:0 auto;padding-inline:8px;display:flex;gap:8px;align-items:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-header.top{border-bottom:1px solid var(--g10);background:var(--g0);padding-inline:16px}
-header.top .in{max-width:1248px;margin:0 auto;padding:16px 8px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+.strip{background:var(--sec5);color:var(--g70);font-size:13px;line-height:32px;padding-inline:0}
+.strip .in{max-width:1248px;margin:0 auto;padding-inline:24px;display:flex;gap:8px;align-items:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header.top{border-bottom:1px solid var(--g10);background:var(--g0);padding-inline:0}
+header.top .in{max-width:1248px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:12px;min-width:0}
 .brand .mark{flex:none;width:40px;height:40px;border-radius:50%;padding:2px;background:var(--gradient-ai)}
 .brand .mark span{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:#fff;color:var(--p50)}
@@ -164,7 +164,7 @@ tr.key td{background:var(--p5);color:var(--p60);font-weight:700}
   .kpi:nth-child(-n+3){border-bottom:1px solid var(--g10)}
 }
 @media (max-width:640px){
-  .wrap{padding-inline:16px}
+  .wrap,header.top .in,.strip .in{padding-inline:16px}
   .rail{grid-template-columns:repeat(2,minmax(0,1fr))}
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
   .kpi{border-right:1px solid var(--g10)!important;border-bottom:1px solid var(--g10)}

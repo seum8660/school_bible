@@ -1,3 +1,5 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>공사계약지급 보고서</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -10,7 +12,7 @@
   --g0:#FFFFFF; --g5:#F4F5F6; --g10:#E6E8EA; --g20:#CDD1D5; --g30:#B1B8BE; --g40:#8A949E; --g50:#6D7882; --g60:#58616A; --g70:#464C53; --g90:#1E2124;
   --ok-bg:#EAF6EC; --ok:#267337; --warn-bg:#FFF3DB; --warn:#8A5C00; --err-bg:#FDEFEC; --err:#BD2C0F; --err50:#DE3412; --info-bg:#E7F4FE; --info:#096AB3;
   /* 지급 구성 막대 */
-  --adv:#E09A00; --lab:#346FB2; --prog:#256EF4; --remain:#E6E8EA;
+  --adv:#E09A00; --lab:#346FB2; --prog:#256EF4; --subp:#0FB87D; --remain:#E6E8EA;
   --shadow-sm:0 2px 8px 0 rgba(0,0,0,.04); --shadow-md:0 6px 8px 0 rgba(37,110,244,.10);
   --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:16px;
   --font:"Pretendard GOV","Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",sans-serif;
@@ -22,10 +24,10 @@ button{font:inherit;cursor:pointer}
 button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid #fff;box-shadow:0 0 0 4px var(--p50)}
 
 /* 상단 안내줄 + 헤더 */
-.strip{background:var(--sec5);color:var(--g70);font-size:13px;line-height:32px;padding-inline:0}
-.strip .in{max-width:1248px;margin:0 auto;padding-inline:24px;display:flex;gap:8px;align-items:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-header.top{border-bottom:1px solid var(--g10);background:var(--g0);padding-inline:0}
-header.top .in{max-width:1248px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+.strip{background:var(--sec5);color:var(--g70);font-size:13px;line-height:32px;padding-inline:16px}
+.strip .in{max-width:1248px;margin:0 auto;padding-inline:8px;display:flex;gap:8px;align-items:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header.top{border-bottom:1px solid var(--g10);background:var(--g0);padding-inline:16px}
+header.top .in{max-width:1248px;margin:0 auto;padding:16px 8px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:12px;min-width:0}
 .brand .mark{flex:none;width:40px;height:40px;border-radius:50%;padding:2px;background:var(--gradient-ai)}
 .brand .mark span{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:#fff;color:var(--p50)}
@@ -58,7 +60,7 @@ select#proj{min-width:0;max-width:100%;font-weight:700;height:44px;padding-right
 .btn.sm{height:32px;padding:0 10px;font-size:13px}
 
 /* 단계 탭 — 폴더 탭 패널 */
-.rail{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px}
+.rail{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
 .stage{display:flex;flex-direction:column;gap:2px;text-align:left;padding:12px 14px;border:1px solid var(--g20);border-radius:var(--r-lg);background:#fff;color:inherit;transition:border-color .15s}
 .stage:hover{border-color:var(--p50)}
 .stage .k{font-size:13px;color:var(--g50)}
@@ -157,6 +159,19 @@ tr.key td{background:var(--p5);color:var(--p60);font-weight:700}
 .ex-body li .lb{display:block;font-size:13px;font-weight:700;color:var(--g70)}
 .ex-body mark{background:none;color:var(--p60);font-weight:700;font-size:16px;border-bottom:2px solid var(--p30);padding:0 2px}
 .ex-body .tip{font-size:13px;color:var(--g70)}
+.sub-tag{display:inline-flex;align-items:center;height:22px;padding:0 7px;border-radius:4px;font-size:12px;font-weight:700;background:var(--sec5);color:var(--sec70)}
+td.gap-warn{color:var(--warn);font-weight:700} td.gap-bad{color:var(--err);font-weight:700}
+.revsel{display:flex;flex-wrap:wrap;gap:6px}
+.revsel button{height:36px;padding:0 14px;border-radius:var(--r-md);border:1px solid var(--g30);background:#fff;font-weight:700;color:var(--g70)}
+.revsel button.on{background:var(--p50);border-color:var(--p50);color:#fff}
+.revgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+@media (max-width:900px){.revgrid{grid-template-columns:minmax(0,1fr)}}
+.report{margin:0;white-space:pre-wrap;word-break:keep-all;font-family:var(--font);font-size:13.5px;line-height:1.75;color:var(--g70);background:var(--g5);border-radius:var(--r-md);padding:14px 16px;max-height:460px;overflow:auto}
+.rv-dl{margin:0;display:grid;grid-template-columns:auto 1fr;border-top:2px solid var(--g90)}
+.rv-dl dt,.rv-dl dd{padding:9px 4px;border-bottom:1px solid var(--g10);margin:0;font-size:15px}
+.rv-dl dt{color:var(--g70)} .rv-dl dd{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.rv-dl dd.key{color:var(--p60);font-size:17px}
+td input.pct{min-width:70px;text-align:right}
 /* 원가계산서 표 */
 .cost td{padding:6px 10px}
 .cost td.g{font-size:13px;color:var(--g50);white-space:nowrap}
@@ -199,7 +214,7 @@ tr.key td{background:var(--p5);color:var(--p60);font-weight:700}
   .kpi:nth-child(-n+3){border-bottom:1px solid var(--g10)}
 }
 @media (max-width:640px){
-  .wrap,header.top .in,.strip .in{padding-inline:16px}
+  .wrap{padding-inline:16px}
   .rail{grid-template-columns:repeat(2,minmax(0,1fr))}
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
   .kpi{border-right:1px solid var(--g10)!important;border-bottom:1px solid var(--g10)}
@@ -209,15 +224,16 @@ tr.key td{background:var(--p5);color:var(--p60);font-weight:700}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+</head><body style="margin:0">
 
 <div class="strip"><div class="in">
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="#346FB2" stroke-width="1.5"/><path d="M8 7v4M8 4.6v.1" stroke="#346FB2" stroke-width="1.6" stroke-linecap="round"/></svg>
-  <span><b style="color:var(--err)">테스트용</b> · 학교시설 공사 계약관리 도구 · 금액은 입력값 기준 자동 계산이며 지급 전 계약서·관련 규정으로 확인하세요</span>
+  <span>학교시설 공사 계약관리 도구 · 금액은 입력값 기준 자동 계산이며 지급 전 계약서·관련 규정으로 확인하세요</span>
 </div></div>
 <header class="top"><div class="in">
   <div class="brand">
     <span class="mark"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span></span>
-    <div><h1>공사계약지급 보고서 <span class="pill warn" style="vertical-align:4px">테스트용</span></h1><p>내역서부터 준공 정산까지 한 곳에서 관리할 수 있어요</p></div>
+    <div><h1>공사계약지급 보고서</h1><p>내역서부터 준공 정산까지 한 곳에서 관리할 수 있어요</p></div>
   </div>
   <div class="proj-bar">
     <select id="proj" aria-label="공사 선택"></select>
@@ -227,7 +243,7 @@ tr.key td{background:var(--p5);color:var(--p60);font-weight:700}
     <button class="btn" id="fileOpen" title="저장한 파일(.json) 불러오기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h6l2 2h10v10H3z"/><path d="M12 17v-5M9.5 14.5 12 12l2.5 2.5"/></svg>불러오기</button>
     <input type="file" id="fileIn" accept=".json,application/json" hidden>
     <button class="btn" id="xlsxBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v3h16v-3"/></svg>엑셀 내보내기</button>
-    <button class="btn" id="guideBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h6v18H6a2 2 0 0 1-2-2z"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg>사용 설명서</button>
+<button class="btn" id="guideBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h6v18H6a2 2 0 0 1-2-2z"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg>사용 설명서</button>
     <button class="btn danger" id="delProj">공사 삭제</button>
     <span class="save" id="saveState"></span>
   </div>
@@ -249,9 +265,10 @@ tr.key td{background:var(--p5);color:var(--p60);font-weight:700}
         <tr><th>공사내역서</th><td>설계금액(원가계산서)과 계약금액(착공내역서)을 비목별로 입력합니다. <b>낙찰률</b>과 비목별 비율이 자동 계산됩니다.</td></tr>
         <tr><th>선급금</th><td>선금률을 넣으면 선금액이 천원 미만 절사로 계산됩니다. 지급 여부를 「지급 완료」로 바꿔야 이후 기성·준공에서 <b>선금 정산</b>이 시작됩니다.</td></tr>
         <tr><th>노무비</th><td>월별 청구액·지급액을 입력합니다. 지급한 노무비는 다음 기성 회차의 <b>노무비 공제</b> 칸에 넣어 이중 지급을 막습니다(새 회차 추가 시 미공제분이 자동 입력).</td></tr>
-        <tr><th>기성금</th><td>회차별 청구일·기성액을 입력하면 선금 정산액과 <b>실지급액</b>이 계산됩니다.</td></tr>
+        <tr><th>기성금</th><td>회차별 청구일·검사완료일·기성액을 입력하면 선금 정산액, <b>실지급액</b>, 지급기한(영업일 기준)이 계산됩니다. 선금 정산 누계가 100%가 되는 회차는 선금 잔액 전액을 정산합니다.</td></tr>
         <tr><th>설계변경</th><td>회차별 증감액(감액은 −)과 공기 증감일수를 입력합니다. 변경계약금액과 변경 준공예정일에 반영됩니다.</td></tr>
-        <tr><th>물가변동</th><td>조정기준일·방식·등락률을 입력합니다. 적용대가를 비우면 조정기준일 이전 기성을 뺀 금액으로 자동 계산하고, <b>90일 경과·등락률 3% 이상</b> 요건을 판정합니다.</td></tr>
+        <tr><th>하도급 직불</th><td>하수급인과 하도급 금액을 등록하면 기성 회차마다 직불액을 입력할 수 있습니다. 직불액은 계약상대자 실지급액에서 빠지고, 하도급 금액을 넘으면 점검 사항에 표시됩니다.</td></tr>
+        <tr style="display:none"><th>물가변동</th><td>조정기준일·방식·등락률을 입력합니다. 적용대가를 비우면 조정기준일 이전 기성을 뺀 금액으로 자동 계산하고, <b>90일 경과·등락률 3% 이상</b> 요건을 판정합니다.</td></tr>
         <tr><th>정산(준공금)</th><td>준공일·지체일수·지체상금률을 입력합니다. 준공 기성액에서 <b>선금 잔액·미공제 노무비·지체상금</b>을 뺀 준공 지급액이 계산됩니다.</td></tr>
       </tbody></table>
     </section>
@@ -355,13 +372,31 @@ function costCalc(o,items){
   v._auto=auto;v._base=base;return v;
 }
 const uid=()=>"p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const HOL=new Set(["2026-01-01","2026-02-16","2026-02-17","2026-02-18","2026-03-02","2026-05-01","2026-05-05","2026-05-25","2026-06-03","2026-07-17","2026-08-17","2026-09-24","2026-09-25","2026-09-26","2026-10-05","2026-10-09","2026-12-25","2027-01-01","2027-02-08","2027-02-09","2027-03-01","2027-05-01","2027-05-05","2027-05-13","2027-08-16","2027-09-14","2027-09-15","2027-09-16","2027-10-04","2027-10-11","2027-12-27"]);
+function isOff(s){const d=new Date(s+"T00:00:00Z");const w=d.getUTCDay();return w===0||w===6||HOL.has(s)}
+function addBiz(s,n){if(!s)return "";let d=new Date(s+"T00:00:00Z");if(isNaN(d))return "";let c=0;while(c<n){d.setUTCDate(d.getUTCDate()+1);if(!isOff(d.toISOString().slice(0,10)))c++}return d.toISOString().slice(0,10)}
+function dayDiff(a,b){return Math.round((new Date(b+"T00:00:00Z")-new Date(a+"T00:00:00Z"))/86400000)}
+function normalize(p){
+  if(!p)return p;
+  if(!Array.isArray(p.subs))p.subs=[];
+  if(p.gapTol==null)p.gapTol=5;
+  (p.progress||[]).forEach(x=>{
+    if(x.inspectDate==null)x.inspectDate="";
+    if(x.progRate==null)x.progRate="";
+    if(!Array.isArray(x.sub))x.sub=[];
+    while(x.sub.length<p.subs.length)x.sub.push(0);
+    if(x.sub.length>p.subs.length)x.sub.length=p.subs.length;
+    if(x.subDirect==null)x.subDirect=0;
+  });
+  return p;
+}
 
 function blank(name){
   return {name:name||"새 공사",site:"",contractor:"",contractDate:"",startDate:"",endDate:"",
     design:{amt:{},rate:{vat:10},man:{}},
     contract:{amt:{},rate:{vat:10},man:{}},
     advance:{rate:30,amount:0,date:"",paid:false,guarantee:""},
-    labor:[],progress:[],changes:[],escal:[],costCustom:[],costHidden:[],
+    labor:[],progress:[],changes:[],subs:[],costCustom:[],costHidden:[],gapTol:5,
     settle:{completionDate:"",inspectDate:"",laborDeduct:0,delayDays:0,delayRate:0.5,note:""},
     updatedAt:Date.now()};
 }
@@ -371,6 +406,7 @@ function sample(){
   const RT={labI:12.3,ins1:3.56,ins2:1.01,hlth:3.595,care:13.14,pens:4.5,retire:2.3,safety:2.07,env:0.3,subG:0.081,machG:0.07,etcR:4.6,gen:5.5,profit:15,vat:10};
   p.design={amt:{matD:1050000000,matI:21000000,scrap:3000000,labD:620000000,mach:45000000,quality:8000000,govMat:180000000},rate:{...RT},man:{}};
   p.contract={amt:{matD:935000000,matI:18700000,scrap:2700000,labD:571000000,mach:40000000,quality:7000000,govMat:180000000},rate:{...RT,gen:5,profit:12},man:{}};
+  
   p.advance={rate:30,amount:0,date:"2026-03-20",paid:true,guarantee:"건설공제조합 선금보증서"};
   p.labor=[
     {month:"2026-04",workers:38,claimed:61500000,paid:61500000,date:"2026-05-10"},
@@ -379,55 +415,53 @@ function sample(){
     {month:"2026-07",workers:45,claimed:74100000,paid:74100000,date:"2026-08-10"},
     {month:"2026-08",workers:41,claimed:69000000,paid:0,date:""}];
   p.progress=[
-    {date:"2026-05-29",amount:420000000,laborDeduct:133800000,note:"기초·골조 1차"},
-    {date:"2026-07-31",amount:610000000,laborDeduct:152900000,note:"골조 완료, 조적"}];
+    {date:"2026-05-29",inspectDate:"2026-06-03",amount:420000000,progRate:18.0,laborDeduct:133800000,sub:[21000000,0],note:"기초·골조 1차"},
+    {date:"2026-07-31",inspectDate:"2026-08-06",amount:610000000,progRate:44.0,laborDeduct:152900000,sub:[34500000,6200000],note:"골조 완료, 조적"}];
+  p.subs=[{name:"(주)예시철근",work:"철근콘크리트",amount:520000000},{name:"○○창호(주)",work:"창호",amount:180000000}];
   p.changes=[
     {date:"2026-06-18",delta:48500000,days:0,reason:"지반 불량 구간 치환 물량 증가",kind:"물량증감"},
     {date:"2026-08-22",delta:-12300000,days:14,reason:"외부 창호 사양 변경(발주기관 요구)",kind:"발주기관 요구"}];
-  p.escal=[{date:"2026-09-01",method:"지수조정률",rate:3.42,base:0,note:"철근·레미콘 가격 상승"}];
   return p;
 }
 
 /* ---- derived numbers ---- */
 function calc(p){
+  normalize(p);
   p.design=ensureCost(p.design); p.contract=ensureCost(p.contract);
+  p.costCustom=p.costCustom||[]; p.costHidden=p.costHidden||[];
   const items=costItems(p);
   const cd=costCalc(p.design,items), cc=costCalc(p.contract,items);
   const design=cd.dogeup, c0=cc.dogeup;
   const changeSum=p.changes.reduce((a,x)=>a+num(x.delta),0);
   const daysSum=p.changes.reduce((a,x)=>a+num(x.days),0);
-  const escList=p.escal||[];
-  const onOrBefore=(d,ref)=>!d||!ref||d<=ref;
-  const changeAt=ref=>c0+p.changes.filter(x=>onOrBefore(x.date,ref)).reduce((a,x)=>a+num(x.delta),0);
-  let escAcc=0, escPrev=p.contractDate||"";
-  const esc=escList.map((x,i)=>{
-    const done=p.progress.filter(g=>g.date&&x.date&&g.date<x.date).reduce((a,g)=>a+num(g.amount),0);
-    const escRun=changeAt(x.date)+escAcc;
-    const autoBase=Math.max(escRun-done,0);
-    const base=num(x.base)||autoBase;
-    const advR=p.advance.paid?num(p.advance.rate)/100:0;
-    const gross=Math.trunc(base*num(x.rate)/100);
-    const advDed=Math.trunc(gross*advR);
-    const amt=gross-advDed;
-    const days=escPrev&&x.date?Math.round((new Date(x.date)-new Date(escPrev))/864e5):null;
-    const ok90=days===null?null:days>=90, ok3=Math.abs(num(x.rate))>=3;
-    escAcc+=amt; escPrev=x.date||escPrev;
-    return {i,done,autoBase,base,advR,gross,advDed,amt,days,ok90,ok3,noDate:!x.date,before:escRun,after:escRun+amt};
-  });
-  const escSum=esc.reduce((a,x)=>a+x.amt,0);
-  const cur=c0+changeSum+escSum;
-  const curAt=ref=>changeAt(ref)+esc.filter((e,j)=>onOrBefore(escList[j].date,ref)).reduce((a,e)=>a+e.amt,0);
+  const cur=c0+changeSum;
   const adv=num(p.advance.amount)||floor1000(c0*num(p.advance.rate)/100);
   const advPaid=p.advance.paid?adv:0;
-  let advCum=0;
+  // 기성 당시 계약금액: 최초 계약금액 + 해당 기성 청구일까지 확정된 설계변경
+  const amtAt=d=>d?c0+p.changes.reduce((a,x)=>a+(x.date&&x.date<=d?num(x.delta):0),0):cur;
+  let advCum=0, cumAmt=0;
+  const tol=(p.gapTol===""||p.gapTol==null?5:num(p.gapTol))/100;
   const prog=p.progress.map((x,i)=>{
-    const amt=num(x.amount);
-    const base=curAt(x.date);
-    let ded=base>0?Math.floor(advPaid*amt/base):0;
-    ded=Math.max(Math.min(ded,advPaid-advCum),0); advCum+=ded;
-    const net=amt-ded-num(x.laborDeduct);
-    return {i,amt,ded,base,lab:num(x.laborDeduct),net};
+    const amt=num(x.amount); cumAmt+=amt;
+    const base=amtAt(x.date);
+    const last=cur>0&&cumAmt>=cur-0.5;
+    const raw=last?advPaid-advCum:(base>0?Math.floor(advPaid*amt/base):0);
+    let ded=Math.max(0,Math.min(raw,advPaid-advCum)); const capped=!last&&ded<raw; advCum+=ded;
+    const sub=p.subs.length?x.sub.reduce((a,v)=>a+num(v),0):num(x.subDirect);
+    const lab=num(x.laborDeduct);
+    const net=amt-ded-lab-sub;
+    const rate=base>0?cumAmt/base:0;
+    const hasProg=x.progRate!==""&&x.progRate!=null;
+    const prate=num(x.progRate)/100;
+    const gap=hasProg?rate-prate:null;
+    const flag=hasProg&&amt>0&&Math.abs(gap)>tol+1e-9;
+    const payBase=x.date&&x.inspectDate?(x.date>x.inspectDate?x.date:x.inspectDate):(x.inspectDate||"");
+    const due=payBase?addBiz(payBase,5):"";
+    const prevDate=i>0?p.progress[i-1].date:"";
+    const interval=prevDate&&x.date?dayDiff(prevDate,x.date):null;
+    return {i,amt,ded,capped,lab,sub,net,base,cum:cumAmt,rate,hasProg,prate,gap,flag,due,interval,last,advLeft:advPaid-advCum};
   });
+  const progSub=prog.reduce((a,x)=>a+x.sub,0);
   const progSum=prog.reduce((a,x)=>a+x.amt,0);
   const progNet=prog.reduce((a,x)=>a+x.net,0);
   const progLab=prog.reduce((a,x)=>a+x.lab,0);
@@ -441,18 +475,18 @@ function calc(p){
   const delayCap=Math.floor(cur*0.3);
   const delay=Math.min(delayRaw,delayCap);
   const finalNet=finalGross-advRemain-setLab-delay;
-  const paidTotal=advPaid+labPaid+progNet;
+  const paidTotal=advPaid+labPaid+progNet+progSub;
   const labC=cc.labSum, laborRatio=c0>0?labC/c0:0;
   const endChanged=p.endDate&&daysSum?addDays(p.endDate,daysSum):p.endDate;
-  return {items,cd,cc,labC,design,c0,changeSum,escSum,esc,daysSum,cur,adv,advPaid,advCum,advRemain,prog,progSum,progNet,progLab,
-    labClaimed,labPaid,labUnded,setLab,delay,delayRaw,delayCap,finalGross,finalNet,paidTotal,laborRatio,endChanged,
+  return {items,cd,cc,labC,design,c0,changeSum,daysSum,cur,adv,advPaid,advCum,advRemain,prog,progSum,progNet,progLab,
+    labClaimed,labPaid,labUnded,setLab,delay,delayRaw,delayCap,finalGross,finalNet,paidTotal,laborRatio,endChanged,progSub,tol,amtAt,
     bid:design>0?c0/design:0,progRate:cur>0?progSum/cur:0};
 }
 const ymd=t=>t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")+"-"+String(t.getDate()).padStart(2,"0");
 function addDays(d,n){const t=new Date(d+"T00:00:00");if(isNaN(t))return d;t.setDate(t.getDate()+n);return ymd(t)}
 
 /* ---- state & storage ---- */
-let db=null, projects={}, order=[], curId=null, tab="overview", readOnly=false, pendingRender=false;
+let db=null, projects={}, order=[], curId=null, tab="overview", readOnly=false, pendingRender=false, revIdx=-1;
 const saveTimers={};
 try{curId=localStorage.getItem("cl.cur");tab=localStorage.getItem("cl.tab")||"overview"}catch(e){}
 
@@ -497,7 +531,6 @@ const STAGES=[
   ["labor","노무비","구분지급"],
   ["progress","기성금","회차별 청구"],
   ["change","설계변경","증감·공기"],
-  ["escal","물가변동","계약금액 조정"],
   ["settle","정산","준공금"]];
 
 function stageState(p,k){
@@ -508,7 +541,6 @@ function stageState(p,k){
     case "labor":return p.labor.length?[p.labor.some(x=>num(x.claimed)>num(x.paid))?"doing":"done",`${p.labor.length}개월 · ${won(c.labPaid)}`]:["","기록 없음"];
     case "progress":return p.progress.length?["doing",`${p.progress.length}회 · ${pct(c.progRate,1)}`]:["","청구 없음"];
     case "change":return p.changes.length?["done",`${p.changes.length}회 · ${c.changeSum>=0?"+":""}${won(c.changeSum)}`]:["","변경 없음"];
-    case "escal":return (p.escal||[]).length?[c.esc.every(x=>!x.noDate&&x.ok3&&x.ok90!==false)?"done":"doing",`${p.escal.length}회 · ${c.escSum>=0?"+":""}${won(c.escSum)}`]:["","조정 없음"];
     case "settle":return p.settle.completionDate?["done","준공 "+p.settle.completionDate]:["",`잔여 ${won(c.finalGross)}`];
   }
 }
@@ -535,9 +567,9 @@ function render(){
   const kpis=`<section class="kpis">
     <div class="kpi"><div class="l">설계금액</div><div class="v">${won(c.design)}</div><div class="u">원 (부가세 포함)</div></div>
     <div class="kpi"><div class="l">최초 계약금액</div><div class="v">${won(c.c0)}</div><div class="u">낙찰률 ${pct(c.bid,3)}</div></div>
-    <div class="kpi"><div class="l">변경 계약금액</div><div class="v">${won(c.cur)}</div><div class="u">${(c.changeSum||c.escSum)?(c.cur-c.c0>0?"+":"")+won(c.cur-c.c0)+" ("+pct(c.c0?(c.cur-c.c0)/c.c0:0)+")"+(c.escSum?" · 물가 "+(c.escSum>0?"+":"")+won(c.escSum):""):"변경 없음"}</div></div>
+    <div class="kpi"><div class="l">변경 계약금액</div><div class="v">${won(c.cur)}</div><div class="u">${c.changeSum?(c.changeSum>0?"+":"")+won(c.changeSum)+" ("+pct(c.c0?c.changeSum/c.c0:0)+")":"변경 없음"}</div></div>
     <div class="kpi"><div class="l">누계 기성</div><div class="v">${won(c.progSum)}</div><div class="u">기성률 ${pct(c.progRate,1)}</div></div>
-    <div class="kpi"><div class="l">누계 지급액</div><div class="v">${won(c.paidTotal)}</div><div class="u">선금+노무비+기성 실지급</div></div>
+    <div class="kpi"><div class="l">누계 지급액</div><div class="v">${won(c.paidTotal)}</div><div class="u">선금+노무비+기성 실지급+하도급 직불</div></div>
     <div class="kpi hl"><div class="l">미지급 잔액</div><div class="v">${won(c.cur-c.paidTotal)}</div><div class="u">변경계약 대비 ${pct(c.cur?(c.cur-c.paidTotal)/c.cur:0,1)}</div></div>
   </section>`;
 
@@ -548,19 +580,18 @@ function render(){
   else if(tab==="labor")body=vLabor(p,c);
   else if(tab==="progress")body=vProgress(p,c);
   else if(tab==="change")body=vChange(p,c);
-  else if(tab==="escal")body=vEscal(p,c);
   else body=vSettle(p,c);
 
   app.innerHTML=`<div style="display:flex;flex-direction:column;gap:24px">${rail}${kpis}${body}
-  <p class="foot">선금정산액 = 선금 × (해당 기성액 ÷ 청구일 당시 계약금액), 원 미만 절사 · 선금은 계약금액 × 선금률, 천원 미만 절사(직접 입력 시 우선) · 물가변동 조정금액 = 적용대가 × 등락률 − 선금 공제(적용대가 × 등락률 × 선금률) · 지체상금 = 변경계약금액 × 요율(‰) × 지체일수 (계약금액 30% 한도). 금액은 입력값 기준 자동 계산이며 실제 지급 전 계약서·관련 규정으로 확인하십시오.</p></div>`;
+  <p class="foot">선금정산액 = 선금 × (해당 기성액 ÷ 기성 청구일 당시 계약금액), 원 미만 절사, 누계 100% 회차는 잔액 전액 · 선금은 계약금액 × 선금률, 천원 미만 절사(직접 입력 시 우선) · 지체상금 = 변경계약금액 × 요율(‰) × 지체일수. 금액은 입력값 기준 자동 계산이며 실제 지급 전 계약서·관련 규정으로 확인하십시오.</p></div>`;
 }
 
 function ledgerBar(c){
   const T=c.cur||1, seg=(v,col)=>v>0?`<span style="width:${Math.min(v/T*100,100)}%;background:${col}"></span>`:"";
   const rest=Math.max(c.cur-c.paidTotal,0);
   return `<section class="ledger"><h3>변경계약금액 ${won(c.cur)}원 지급 구성</h3>
-  <div class="lbar" role="img" aria-label="지급 구성">${seg(c.advPaid,"var(--adv)")}${seg(c.labPaid,"var(--lab)")}${seg(c.progNet,"var(--prog)")}</div>
-  <div class="legend"><span><i style="background:var(--adv)"></i>선급금<b>${won(c.advPaid)}</b></span><span><i style="background:var(--lab)"></i>노무비 구분지급<b>${won(c.labPaid)}</b></span><span><i style="background:var(--prog)"></i>기성 실지급<b>${won(c.progNet)}</b></span><span><i style="background:var(--remain)"></i>미지급<b>${won(rest)}</b></span></div></section>`;
+  <div class="lbar" role="img" aria-label="지급 구성">${seg(c.advPaid,"var(--adv)")}${seg(c.labPaid,"var(--lab)")}${seg(c.progNet,"var(--prog)")}${seg(c.progSub,"var(--subp)")}</div>
+  <div class="legend"><span><i style="background:var(--adv)"></i>선급금<b>${won(c.advPaid)}</b></span><span><i style="background:var(--lab)"></i>노무비 구분지급<b>${won(c.labPaid)}</b></span><span><i style="background:var(--prog)"></i>기성 실지급<b>${won(c.progNet)}</b></span><span><i style="background:var(--subp)"></i>하도급 직불<b>${won(c.progSub)}</b></span><span><i style="background:var(--remain)"></i>미지급<b>${won(rest)}</b></span></div></section>`;
 }
 
 function getChecks(p,c){
@@ -570,19 +601,23 @@ function getChecks(p,c){
   else chk("warn","설계금액 또는 착공(계약)내역 금액이 비어 있습니다");
   const chRate=c.c0?Math.abs(c.changeSum)/c.c0:0;
   if(p.changes.length)chk(chRate>=0.1?"warn":"good",`설계변경 누계 증감률 ${pct(c.c0?c.changeSum/c.c0:0)}${chRate>=0.1?" — 10% 이상, 계약심의 등 절차 확인":""}`);
-  c.esc.forEach((x,i)=>{const e=p.escal[i];
-    if(x.noDate)chk("warn",`물가변동 ${i+1}회 조정기준일이 비어 있습니다`);
-    else if(!x.ok3)chk("bad",`물가변동 ${i+1}회 등락률 ${num(e.rate)}% — 3% 미만, 조정 요건 미충족`);
-    else if(x.ok90===false)chk("bad",`물가변동 ${i+1}회 — 계약일(직전 조정기준일)부터 ${x.days}일, 90일 미경과`);
-    else chk("good",`물가변동 ${i+1}회 조정금액 ${x.amt>=0?"+":""}${won(x.amt)}원 (등락률 ${num(e.rate)}%${x.days!==null?", "+x.days+"일 경과":""})`);});
   if(p.advance.paid)chk(c.advRemain>0?"neutral":"good",`선금 잔액 ${won(c.advRemain)}원${c.advRemain>0?" — 이후 기성·준공 시 정산":""}`);
   const unpaid=p.labor.filter(x=>num(x.claimed)>num(x.paid));
   if(unpaid.length)chk("bad",`노무비 미지급 ${unpaid.length}건 (${unpaid.map(x=>x.month).join(", ")}) — 청구 후 5일 이내 지급 여부 확인`);
   else if(p.labor.length)chk("good","노무비 청구분 전액 지급");
   if(c.labUnded>0)chk("neutral",`기지급 노무비 중 기성 미공제분 ${won(c.labUnded)}원 — 다음 기성 또는 준공 시 공제`);
   if(c.labUnded<0)chk("bad",`기성 공제 노무비가 실제 지급액보다 ${won(-c.labUnded)}원 많습니다`);
-  const tot=c.advPaid+c.labPaid+c.progNet+c.finalNet+c.delay;
-  if(c.cur)chk(Math.abs(tot-c.cur)<1?"good":"warn",`검산: 선금+노무비+기성실지급+준공지급+지체상금 = ${won(tot)}원 ${Math.abs(tot-c.cur)<1?"(변경계약금액과 일치)":"(변경계약금액과 "+won(tot-c.cur)+"원 차이)"}`);
+  const lp=c.prog[c.prog.length-1];
+  if(lp&&lp.hasProg)chk(lp.flag?"warn":"good",`${c.prog.length}회 기성률 ${pct(lp.rate,1)} · 공정률 ${pct(lp.prate,1)} — 차이 ${(lp.gap>0?"+":"")+(lp.gap*100).toFixed(1)}%p${lp.flag?` (허용 ±${(c.tol*100).toFixed(1)}%p 초과)`:""}`);
+  const undated=p.changes.filter(x=>!x.date&&num(x.delta));
+  if(undated.length&&p.progress.length)chk("warn",`변경일이 없는 설계변경 ${undated.length}건 — 선금 정산의 적용 계약금액에 반영되지 않으니 변경일을 입력하세요`);
+  const longGap=c.prog.filter(x=>x.interval!=null&&x.interval>30);
+  if(longGap.length)chk("warn",`기성 청구 간격 30일 초과 ${longGap.length}회 (${longGap.map(x=>(x.i+1)+"회 "+x.interval+"일").join(", ")}) — 30일마다 지급 원칙 확인`);
+  const negPay=c.prog.filter(x=>x.net<0);
+  if(negPay.length)chk("bad",`실지급액이 음수인 회차 ${negPay.map(x=>(x.i+1)+"회").join(", ")} — 공제액 확인`);
+  p.subs.forEach((s,j)=>{const paid=c.prog.reduce((a,x)=>a+num(p.progress[x.i].sub[j]),0);if(num(s.amount)>0&&paid>num(s.amount))chk("bad",`${s.name||"하수급인 "+(j+1)} 직불 누계가 하도급 계약금액을 넘었습니다`)});
+  const tot=c.advPaid+c.labPaid+c.progNet+c.progSub+c.finalNet+c.delay;
+  if(c.cur)chk(Math.abs(tot-c.cur)<1?"good":"warn",`검산: 선금+노무비+기성실지급+하도급직불+준공지급+지체상금 = ${won(tot)}원 ${Math.abs(tot-c.cur)<1?"(변경계약금액과 일치)":"(변경계약금액과 "+won(tot-c.cur)+"원 차이)"}`);
 
   return checks;
 }
@@ -650,16 +685,16 @@ function vAdvance(p,c){
     ${fld("지급 여부",`<select data-p="advance.paid" data-t="b" id="f-adv-paid"><option value="0"${a.paid?"":" selected"}>미지급</option><option value="1"${a.paid?" selected":""}>지급 완료</option></select>`)}
   </div>
   <div class="grid2">${calcKey("적용 선금액",won(c.adv)+"원")}${calcKey("선금 정산 누계",won(c.advCum)+"원")}${calcKey("선금 잔액",won(c.advRemain)+"원",c.advPaid?pct(c.advRemain/c.advPaid,1)+" 남음":"")}</div>
-  ${(()=>{const x=c.prog[0];const amt=x?x.amt:Math.round(c.cur*0.2/1e6)*1e6;const ded=x?x.ded:(c.cur?Math.floor(c.adv*amt/c.cur):0);
+  ${(()=>{const x=c.prog[0];const amt=x?x.amt:Math.round(c.cur*0.2/1e6)*1e6;const base=x?x.base:c.cur;const ded=x?x.ded:(c.cur?Math.floor(c.adv*amt/c.cur):0);
     return example("선금액과 선금 정산액 계산",[
       ["① 선금액",`계약금액 ${won(c.c0)}원 × 선금률 ${num(p.advance.rate)}% = ${won(c.c0*num(p.advance.rate)/100)}원 → 천원 미만 절사`,won(floor1000(c.c0*num(p.advance.rate)/100))+"원"],
-      [`② ${x?"1회":"기성(가정)"} 선금 정산액`,`선금 ${won(c.adv)}원 × (기성액 ${won(amt)}원 ÷ 청구일 당시 계약금액 ${won(x?x.base:c.cur)}원)`,won(ded)+"원"],
+      [`② ${x?"1회":"기성(가정)"} 선금 정산액`,`선금 ${won(c.adv)}원 × (기성액 ${won(amt)}원 ÷ 기성 당시 계약금액 ${won(base)}원)`,won(ded)+"원"],
       ["③ 선금 잔액",`선금 ${won(c.advPaid)}원 − 정산 누계 ${won(c.advCum)}원`,won(c.advRemain)+"원"]],
-      "선금 정산액은 기성 청구 때마다 <b>기성액 비율만큼</b> 공제하고, 남은 잔액은 준공금에서 모두 정산합니다. 설계변경으로 계약금액이 바뀌면 이후 회차 비율도 바뀝니다.")})()}
-  <div class="tbl-wrap"><table><thead><tr><th>회차</th><th class="n">기성액</th><th class="n key">선금 정산액</th><th class="n">정산 후 잔액</th></tr></thead><tbody>
-  ${(()=>{let r=c.advPaid;return c.prog.map((x,i)=>{r-=x.ded;return `<tr><td>${i+1}회 기성</td><td class="n">${won(x.amt)}</td><td class="n key">${won(x.ded)}</td><td class="n">${won(r)}</td></tr>`}).join("")||`<tr><td colspan="4" class="empty">기성 기록이 없습니다</td></tr>`})()}
-  <tr><td>준공(정산)</td><td class="n">${won(c.finalGross)}</td><td class="n key">${won(c.advRemain)}</td><td class="n">0</td></tr></tbody></table></div>
-  <p class="note">선금은 <b>계약 목적 외 사용 금지</b>이며 노무비 등은 선금 사용계획서에 따라 집행합니다. 설계변경으로 계약금액이 바뀌면 이후 회차의 정산 비율이 자동으로 달라집니다.</p></div></section>`;
+      "선금 정산액은 기성 청구 때마다 <b>기성액 비율만큼</b> 공제하고, 남은 잔액은 준공금에서 모두 정산합니다. 설계변경이 있으면 <b>그 뒤에 청구한 회차부터</b> 바뀐 계약금액을 적용하고, 이미 정산한 회차는 그대로 둡니다.")})()}
+  <div class="tbl-wrap"><table><thead><tr><th>회차</th><th class="n">기성액</th><th class="n">적용 계약금액</th><th class="n key">선금 정산액</th><th class="n">정산 후 잔액</th></tr></thead><tbody>
+  ${(()=>{let r=c.advPaid;return c.prog.map((x,i)=>{r-=x.ded;return `<tr><td>${i+1}회 기성${x.last?' <span class="sub-tag">잔액 전액</span>':x.capped?' <span class="sub-tag">잔액 한도</span>':''}</td><td class="n">${won(x.amt)}</td><td class="n">${won(x.base)}</td><td class="n key">${won(x.ded)}</td><td class="n">${won(r)}</td></tr>`}).join("")||`<tr><td colspan="5" class="empty">기성 기록이 없습니다</td></tr>`})()}
+  <tr><td>준공(정산)</td><td class="n">${won(c.finalGross)}</td><td class="n">${won(c.cur)}</td><td class="n key">${won(c.advRemain)}</td><td class="n">0</td></tr></tbody></table></div>
+  <p class="note">선금은 <b>계약 목적 외 사용 금지</b>이며 노무비 등은 선금 사용계획서에 따라 집행합니다. 정산 비율은 <b>기성 청구일 당시 계약금액</b>(최초 계약금액 + 그날까지 변경된 금액)으로 계산합니다. 누계 기성이 100%가 되는 회차에서는 남은 선금을 모두 정산합니다.</p></div></section>`;
 }
 
 function vLabor(p,c){
@@ -667,7 +702,7 @@ function vLabor(p,c){
     const st=num(x.claimed)===0?["neutral","-"]:num(x.paid)>=num(x.claimed)?["good","지급"]:["bad","미지급"];
     return `<tr><td>${inTxt(`labor.${i}.month`,x.month,"month","short")}</td><td>${inNum(`labor.${i}.workers`,num(x.workers),"short")}</td><td>${inNum(`labor.${i}.claimed`,num(x.claimed))}</td><td>${inNum(`labor.${i}.paid`,num(x.paid))}</td><td>${inTxt(`labor.${i}.date`,x.date,"date")}</td><td><span class="pill ${st[0]}">${st[1]}</span></td><td><button class="btn sm danger" data-del="labor.${i}">삭제</button></td></tr>`}).join("");
   return `<section class="panel"><div class="panel-h"><div><h2>노무비 구분지급</h2><p>월별 노무비 청구·지급 (전용계좌 지급분)</p></div><button class="btn secondary" data-add="labor">+ 월 추가</button></div>
-  <div class="panel-b"><div class="grid2">${calcBox("계약 노무비",won(c.labC)+"원",`계약금액의 ${pct(c.laborRatio)}`)}${calcBox("청구 누계",won(c.labClaimed)+"원")}${calcBox("지급 누계",won(c.labPaid)+"원",num(p.contract.labor)?`계약 노무비의 ${pct(c.labPaid/num(p.contract.labor),1)}`:"")}${calcKey("기성 미공제 노무비",won(c.labUnded)+"원")}</div>
+  <div class="panel-b"><div class="grid2">${calcBox("계약 노무비",won(c.labC)+"원",`계약금액의 ${pct(c.laborRatio)}`)}${calcBox("청구 누계",won(c.labClaimed)+"원")}${calcBox("지급 누계",won(c.labPaid)+"원",c.labC?`계약 노무비의 ${pct(c.labPaid/c.labC,1)}`:"")}${calcKey("기성 미공제 노무비",won(c.labUnded)+"원")}</div>
   ${example("노무비 공제 흐름",[
     ["계약 노무비 비율",`계약 노무비 ${won(c.labC)}원 ÷ 계약금액 ${won(c.c0)}원`,pct(c.laborRatio)],
     ["기성 미공제 노무비",`노무비 지급 누계 ${won(c.labPaid)}원 − 기성에서 공제한 누계 ${won(c.progLab)}원`,won(c.labUnded)+"원"]],
@@ -679,21 +714,72 @@ function vLabor(p,c){
 }
 
 function vProgress(p,c){
-  let cum=0;
-  const rows=p.progress.map((x,i)=>{const d=c.prog[i];cum+=d.amt;
-    return `<tr><td>${i+1}회</td><td>${inTxt(`progress.${i}.date`,x.date,"date")}</td><td>${inNum(`progress.${i}.amount`,d.amt)}</td><td class="n key">${won(d.ded)}</td><td>${inNum(`progress.${i}.laborDeduct`,d.lab)}</td><td class="n key">${won(d.net)}</td><td class="n">${won(cum)}<br><span style="color:var(--g50);font-size:12px">${pct(c.cur?cum/c.cur:0,1)}</span></td><td>${inTxt(`progress.${i}.note`,x.note)}</td><td><button class="btn sm danger" data-del="progress.${i}">삭제</button></td></tr>`}).join("");
-  return `<section class="panel"><div class="panel-h"><div><h2>기성금</h2><p>기성액 − 선금 정산액 − 기지급 노무비 공제 = 실지급액</p></div><button class="btn secondary" data-add="progress">+ 기성 회차 추가</button></div>
-  <div class="panel-b"><div class="tbl-wrap"><table style="min-width:980px"><thead><tr><th>회차</th><th>청구일</th><th class="n">기성액</th><th class="n key">선금 정산</th><th class="n">노무비 공제</th><th class="n key">실지급액</th><th class="n">누계(기성률)</th><th>비고</th><th></th></tr></thead>
-  <tbody>${rows||`<tr><td colspan="9" class="empty">「+ 기성 회차 추가」로 기성 청구를 입력하세요</td></tr>`}</tbody>
-  <tfoot><tr><td colspan="2">합계</td><td class="n">${won(c.progSum)}</td><td class="n key">${won(c.advCum)}</td><td class="n">${won(c.progLab)}</td><td class="n key">${won(c.progNet)}</td><td class="n">${pct(c.progRate,1)}</td><td colspan="2"></td></tr></tfoot></table></div>
-  <div class="grid2">${calcKey("실지급 누계",won(c.progNet)+"원")}${calcBox("잔여 공사금액",won(c.cur-c.progSum)+"원")}${calcBox("기성 미공제 노무비",won(c.labUnded)+"원","다음 회차 공제 권장")}</div>
-  ${(()=>{const i=c.prog.length-1;const x=c.prog[i]||{amt:Math.round(c.cur*0.2/1e6)*1e6,lab:0};const ded=x.ded??(c.cur?Math.floor(c.advPaid*x.amt/c.cur):0);const lb=i>=0?(i+1)+"회":"기성(가정)";
-    return example(lb+" 기성 실지급액 계산",[
-      ["① 선금 정산액",`선금 ${won(c.advPaid)}원 × (기성액 ${won(x.amt)}원 ÷ 청구일 당시 계약금액 ${won(x.base??c.cur)}원)`,won(ded)+"원"],
-      ["② 실지급액",`기성액 ${won(x.amt)}원 − 선금 정산 ${won(ded)}원 − 노무비 공제 ${won(x.lab)}원`,won(x.amt-ded-x.lab)+"원"],
-      ["③ 기성률",`기성 누계 ${won(c.progSum)}원 ÷ 변경계약금액 ${won(c.cur)}원`,pct(c.progRate,1)]],
-      "청구서의 기성액과 실제 입금액이 다른 이유는 <b>선금 정산과 노무비 공제</b> 때문입니다. 지급 결의 때 두 금액을 함께 적으세요.")})()}
-  <p class="note">기성 검사 요청 후 <b>7일 이내 검사</b>, 청구 후 <b>5일 이내 지급</b>이 원칙입니다. 노무비 공제 칸에는 직전 기성 이후 구분지급한 노무비를 입력하십시오.</p></div></section>`;
+  const hasSubs=p.subs.length>0;
+  const rows=p.progress.map((x,i)=>{const d=c.prog[i];
+    const gapCls=d.flag?(Math.abs(d.gap)>c.tol*2?"gap-bad":"gap-warn"):"";
+    const subCell=hasSubs?`<td class="n">${won(d.sub)}</td>`:`<td>${inNum(`progress.${i}.subDirect`,num(x.subDirect))}</td>`;
+    return `<tr><td>${i+1}회</td><td>${inTxt(`progress.${i}.date`,x.date,"date")}</td><td>${inTxt(`progress.${i}.inspectDate`,x.inspectDate,"date")}</td><td>${inNum(`progress.${i}.amount`,d.amt)}</td><td><input class="pct" inputmode="decimal" data-p="progress.${i}.progRate" data-t="s" value="${esc(x.progRate)}" id="f-progress-${i}-progRate" aria-label="${i+1}회 누계 공정률"></td><td class="n">${won(d.base)}</td><td class="n key">${won(d.ded)}</td><td>${inNum(`progress.${i}.laborDeduct`,d.lab)}</td>${subCell}<td class="n key">${won(d.net)}</td><td class="n">${won(d.cum)}<br><span style="color:var(--g50);font-size:12px">${pct(d.rate,1)}</span></td><td class="n ${gapCls}">${d.hasProg?(d.gap>0?"+":"")+(d.gap*100).toFixed(1)+"%p":"-"}</td><td>${d.due||"-"}</td><td>${inTxt(`progress.${i}.note`,x.note)}</td><td><button class="btn sm danger" data-del="progress.${i}">삭제</button></td></tr>`}).join("");
+  // 하도급 직불
+  const subCum=p.subs.map((_,j)=>p.progress.reduce((a,x)=>a+num(x.sub[j]),0));
+  const subRows=p.subs.map((s,j)=>`<tr><td>${inTxt(`subs.${j}.name`,s.name)}</td><td>${inTxt(`subs.${j}.work`,s.work)}</td><td>${inNum(`subs.${j}.amount`,num(s.amount))}</td><td class="n">${won(subCum[j])}</td><td class="n">${num(s.amount)?pct(subCum[j]/num(s.amount),1):"-"}</td><td class="n">${num(s.amount)?won(num(s.amount)-subCum[j]):"-"}</td><td><button class="btn sm danger" data-del="subs.${j}">삭제</button></td></tr>`).join("");
+  const matHead=`<tr><th>회차</th>${p.subs.map((s,j)=>`<th class="n">${esc(s.name||"하수급인 "+(j+1))}</th>`).join("")}<th class="n">합계</th></tr>`;
+  const matRows=p.progress.map((x,i)=>`<tr><td>${i+1}회</td>${p.subs.map((_,j)=>`<td>${inNum(`progress.${i}.sub.${j}`,num(x.sub[j]))}</td>`).join("")}<td class="n">${won(c.prog[i].sub)}</td></tr>`).join("");
+  // 회차 검토
+  const n=c.prog.length; const ri=n?(revIdx<0||revIdx>=n?n-1:revIdx):-1; const r=ri>=0?c.prog[ri]:null;
+  const rv=r?reviewOf(p,c,ri):null;
+  const revPanel=`<section class="panel"><div class="panel-h"><div><h2>회차 검토</h2><p>회차를 고르면 점검 결과와 공문에 붙일 검토의견이 만들어져요</p></div>
+    <div style="display:flex;gap:8px;align-items:center"><label for="f-gapTol" style="font-size:13px;color:var(--g70)">기성률·공정률 허용 차이(%p)</label><input class="num" style="width:80px" inputmode="decimal" data-p="gapTol" data-t="n" value="${esc(p.gapTol)}" id="f-gapTol"></div></div>
+    <div class="panel-b">${n?`<div class="revsel">${c.prog.map((x,i)=>`<button type="button" data-rev="${i}" class="${i===ri?"on":""}">${i+1}회${x.flag||x.net<0?" ·점검":""}</button>`).join("")}</div>
+    <div class="revgrid"><div style="display:flex;flex-direction:column;gap:16px">
+      <dl class="rv-dl"><dt>당회 기성액</dt><dd>${won(r.amt)}원</dd><dt>(−) 선금 정산${r.last?" (잔액 전액)":r.capped?" (잔액 한도)":""}</dt><dd>${won(r.ded)}원</dd><dt>(−) 노무비 공제</dt><dd>${won(r.lab)}원</dd><dt>(−) 하도급 직불</dt><dd>${won(r.sub)}원</dd><dt>실지급액</dt><dd class="key">${won(r.net)}원</dd><dt>지급기한</dt><dd>${r.due||"청구일·검사완료일 입력 필요"}</dd></dl>
+      <ul class="checks">${rv.checks.map(([st,t])=>`<li><span class="pill ${st}">${CK_LABEL[st]}</span><span>${esc(t)}</span></li>`).join("")}</ul>
+    </div><div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b>${ri+1}회 검토의견</b><button type="button" class="btn primary sm" id="copyRev">검토의견 복사</button></div>
+      <pre class="report" id="revText">${esc(rv.text)}</pre><span class="save" id="copyMsg" role="status"></span>
+    </div></div>`:`<p class="note">기성 회차를 추가하면 검토 결과가 나와요.</p>`}</div></section>`;
+  return `<section class="panel"><div class="panel-h"><div><h2>기성금</h2><p>기성액 − 선금 정산액 − 노무비 공제 − 하도급 직불 = 실지급액</p></div><button class="btn secondary" data-add="progress">+ 기성 회차 추가</button></div>
+  <div class="panel-b"><div class="tbl-wrap"><table style="min-width:1560px"><thead><tr><th>회차</th><th>청구일</th><th>검사완료일</th><th class="n">기성액</th><th class="n">누계 공정률(%)</th><th class="n">적용 계약금액</th><th class="n key">선금 정산</th><th class="n">노무비 공제</th><th class="n">하도급 직불</th><th class="n key">실지급액</th><th class="n">누계(기성률)</th><th class="n">공정률 차이</th><th>지급기한</th><th>비고</th><th></th></tr></thead>
+  <tbody>${rows||`<tr><td colspan="15" class="empty">「+ 기성 회차 추가」로 기성 청구를 입력하세요</td></tr>`}</tbody>
+  <tfoot><tr><td colspan="3">합계</td><td class="n">${won(c.progSum)}</td><td></td><td></td><td class="n key">${won(c.advCum)}</td><td class="n">${won(c.progLab)}</td><td class="n">${won(c.progSub)}</td><td class="n key">${won(c.progNet)}</td><td class="n">${pct(c.progRate,1)}</td><td colspan="4"></td></tr></tfoot></table></div>
+  <div class="grid2">${calcKey("실지급 누계",won(c.progNet)+"원")}${calcBox("하도급 직불 누계",won(c.progSub)+"원")}${calcBox("잔여 공사금액",won(c.cur-c.progSum)+"원")}${calcBox("기성 미공제 노무비",won(c.labUnded)+"원","다음 회차 공제 권장")}</div>
+  <p class="note"><b>적용 계약금액</b>은 최초 계약금액에 그 회차 청구일까지 변경된 금액을 더한 값으로, 선금 정산 비율에 쓰여요. <b>지급기한</b>은 검사완료일(검사 뒤 청구했으면 청구일)부터 토요일·공휴일을 빼고 5일째 날이에요(지방계약법 시행령 제67조). 공정률 차이는 누계 기성률 − 감독자 확인 누계 공정률이에요.</p></div></section>
+  <section class="panel"><div class="panel-h"><div><h2>하도급대금 직접지급</h2><p>하수급인별 회차 직불액 — 합계가 기성금 표의 하도급 직불로 들어가요</p></div><button class="btn secondary" data-add="subs">+ 하수급인 추가</button></div>
+  <div class="panel-b">${hasSubs?`<div class="tbl-wrap"><table><thead><tr><th>하수급인</th><th>공종</th><th class="n">하도급 계약금액</th><th class="n">직불 누계</th><th class="n">직불률</th><th class="n">미지급 잔액</th><th></th></tr></thead><tbody>${subRows}</tbody></table></div>
+  ${n?`<div class="tbl-wrap"><table><thead>${matHead}</thead><tbody>${matRows}</tbody></table></div>`:""}`:`<p class="note">직불 대상 하수급인이 없어요. 하수급인을 추가하지 않으면 기성금 표에서 회차별 하도급 직불액을 직접 입력할 수 있어요.</p>`}
+  <p class="note">직불 사유와 요건은 하도급법 제14조, 건설산업기본법과 계약서를 확인하세요. 하도급지킴이 지급 내역과 대사해 두면 좋아요.</p></div></section>
+  ${revPanel}`;
+}
+
+function reviewOf(p,c,i){
+  const r=c.prog[i], x=p.progress[i], prev=c.prog[i-1];
+  const checks=[]; const chk=(st,t)=>checks.push([st,t]);
+  if(r.hasProg)chk(r.flag?"warn":"good",`기성률 ${pct(r.rate,1)} / 공정률 ${pct(r.prate,1)} — 차이 ${(r.gap>0?"+":"")+(r.gap*100).toFixed(1)}%p${r.flag?(r.gap>0?" · 과다 기성 여부 확인":" · 청구 누락·과소 기성 여부 확인"):" (허용 이내)"}`);
+  else chk("neutral","누계 공정률을 입력하면 기성률과 비교해요");
+  chk(r.cum<=c.cur+0.5?"good":"bad",`누계 기성 ${won(r.cum)}원 ${r.cum<=c.cur+0.5?"≤":">"} 변경계약금액 ${won(c.cur)}원`);
+  chk(r.net>=0?"good":"bad",r.net>=0?`실지급액 ${won(r.net)}원`:`공제액이 기성액보다 ${won(-r.net)}원 많습니다`);
+  if(r.interval!=null)chk(r.interval<=30?"good":"warn",`직전 청구 후 ${r.interval}일${r.interval>30?" — 30일마다 지급 원칙 확인":""}`);
+  if(r.last)chk(r.advLeft<=0.5?"good":"bad",`선금 잔액 ${won(r.advLeft)}원 (누계 100% 회차)`);
+  if(!r.due)chk("neutral","청구일·검사완료일을 넣으면 지급기한을 계산해요");
+  const L=[];
+  L.push(`[${i+1}회 기성금 청구 검토의견] ※ 테스트용 산출 결과(검증 전, 참고용)`);
+  L.push(`○ 공사명: ${p.name}`);
+  L.push(`○ 계약상대자: ${p.contractor||"-"} / 변경계약금액 ${won(c.cur)}원 (최초 ${won(c.c0)}원)`);
+  L.push(`○ 기성 현황`);
+  L.push(`  - 청구일 ${x.date||"-"} / 검사완료일 ${x.inspectDate||"-"}`);
+  L.push(`  - 당회 기성액 ${won(r.amt)}원 / 누계 ${won(r.cum)}원 (기성률 ${pct(r.rate,2)})`);
+  if(r.hasProg)L.push(`  - 누계 공정률 ${pct(r.prate,1)} → 차이 ${(r.gap>0?"+":"")+(r.gap*100).toFixed(1)}%p (허용 ±${(c.tol*100).toFixed(1)}%p${r.flag?", 초과":", 이내"})`);
+  L.push(`○ 지급액 산출`);
+  L.push(r.last?`  - 선금 정산: 누계 100% 회차로 잔액 전액 ${won(r.ded)}원`:`  - 선금 정산: 선금 ${won(c.advPaid)}원 × ${won(r.amt)} ÷ 기성 당시 계약금액 ${won(r.base)}${r.capped?` = ${won(Math.floor(c.advPaid*r.amt/r.base))}원 → 선금 잔액 한도 ${won(r.ded)}원`:` = ${won(r.ded)}원`}`);
+  L.push(`  - 노무비 공제(기지급 구분지급분): ${won(r.lab)}원`);
+  L.push(`  - 하도급대금 직불: ${won(r.sub)}원`);
+  p.subs.forEach((s,j)=>{const v=num(x.sub[j]);if(v)L.push(`    · ${s.name||"하수급인 "+(j+1)}${s.work?"("+s.work+")":""}: ${won(v)}원`)});
+  L.push(`  - 실지급액: ${won(r.amt)} − ${won(r.ded)} − ${won(r.lab)} − ${won(r.sub)} = ${won(r.net)}원`);
+  L.push(`  - 선금 정산 누계 ${won(c.advPaid-r.advLeft)}원 / 잔액 ${won(r.advLeft)}원`);
+  if(r.due)L.push(`○ 지급기한: ${r.due} (검사완료일 또는 청구일 중 늦은 날부터 5일, 토·공휴일 제외, 영 제67조)`);
+  L.push(`○ 점검 결과`);
+  checks.forEach(([st,t])=>L.push(`  - [${CK_LABEL[st]}] ${t}`));
+  L.push(`○ 근거: 지방계약법 시행령 제64조·제67조, 지방회계법 시행령 제44조, 지방자치단체 입찰 및 계약 집행기준`);
+  return {checks,text:L.join("\n")};
 }
 
 function vChange(p,c){
@@ -712,26 +798,6 @@ function vChange(p,c){
   <p class="note">신규 비목 단가는 설계변경 당시 산정단가에 <b>낙찰률(${pct(c.bid,3)})</b>을 곱해 적용합니다(발주기관 요구 변경은 협의 단가). 계약금액 증감은 선금 정산 비율에도 반영됩니다.</p></div></section>`;
 }
 
-function vEscal(p,c){
-  const L=p.escal||[];
-  const rows=L.map((x,i)=>{const d=c.esc[i];
-    const st=d.noDate?["warn","기준일 미입력"]:!d.ok3?["bad","등락률 3% 미만"]:d.ok90===false?["bad","90일 미경과"]:["good","요건 충족"];
-    return `<tr><td>${i+1}회</td><td>${inTxt(`escal.${i}.date`,x.date,"date")}</td><td><select data-p="escal.${i}.method" id="f-es-${i}-m">${["품목조정률","지수조정률"].map(o=>`<option${x.method===o?" selected":""}>${o}</option>`).join("")}</select></td><td><input class="num short" inputmode="decimal" data-p="escal.${i}.rate" data-t="n" value="${esc(x.rate)}" id="f-es-${i}-rate"></td><td>${inNum(`escal.${i}.base`,num(x.base))}<span style="display:block;color:var(--g50);font-size:12px;text-align:right">자동 ${won(d.autoBase)}</span></td><td class="n">${won(d.advDed)}</td><td class="n key">${d.amt>=0?"+":""}${won(d.amt)}</td><td class="n">${won(d.after)}</td><td><span class="pill ${st[0]}">${st[1]}</span>${d.days!==null?`<br><span style="color:var(--g50);font-size:12px">${d.days}일 경과</span>`:""}</td><td>${inTxt(`escal.${i}.note`,x.note)}</td><td><button class="btn sm danger" data-del="escal.${i}">삭제</button></td></tr>`}).join("");
-  const x=c.esc[c.esc.length-1], e=L[L.length-1];
-  return `<section class="panel"><div class="panel-h"><div><h2>물가변동 (Escalation)</h2><p>조정기준일 이후 잔여 공사대가 × 등락률 − 선금 공제 → 변경계약금액 자동 반영 (하락은 − 입력)</p></div><button class="btn secondary" data-add="escal">+ 조정 회차 추가</button></div>
-  <div class="panel-b"><div class="tbl-wrap"><table style="min-width:1180px"><thead><tr><th>회차</th><th>조정기준일</th><th>방식</th><th class="n">등락률(%)</th><th class="n">적용대가 (비우면 자동)</th><th class="n">선금 공제</th><th class="n key">조정금액</th><th class="n">조정 후 계약금액</th><th>요건</th><th>비고</th><th></th></tr></thead>
-  <tbody>${rows||`<tr><td colspan="11" class="empty">「+ 조정 회차 추가」로 물가변동 조정을 입력하세요</td></tr>`}</tbody>
-  <tfoot><tr><td colspan="6">누계</td><td class="n key">${c.escSum>=0?"+":""}${won(c.escSum)}</td><td class="n">${won(c.cur)}</td><td colspan="3"></td></tr></tfoot></table></div>
-  <div class="grid2">${calcKey("물가변동 조정 누계",(c.escSum>=0?"+":"")+won(c.escSum)+"원",c.c0?pct(c.escSum/c.c0)+" (최초 계약 대비)":"")}${calcBox("설계변경 증감 누계",(c.changeSum>=0?"+":"")+won(c.changeSum)+"원")}${calcBox("변경 계약금액",won(c.cur)+"원")}</div>
-  ${x?example(L.length+"회 조정금액 계산",[
-    ["① 적용대가",num(e.base)?"직접 입력":`조정기준일 당시 계약금액 ${won(x.before)}원 − 조정기준일 전 기성 ${won(x.done)}원`,won(x.base)+"원"],
-    ["② 조정 전 금액",`적용대가 ${won(x.base)}원 × 등락률 ${num(e.rate)}%`,won(x.gross)+"원"],
-    ["③ 선금 공제",`② ${won(x.gross)}원 × 선금률 ${pct(x.advR,0)}`,won(x.advDed)+"원"],
-    ["④ 조정금액","② − ③",won(x.amt)+"원"]],
-    "조정 요건: 계약일(직전 조정기준일)부터 <b>90일 이상 경과</b> + 등락률 <b>±3% 이상</b>. 조정기준일 전 이행분(기성)과 지체 중 이행분은 적용대가에서 제외합니다."):""}
-  <p class="note">적용대가를 비우면 <b>조정 전 계약금액 − 조정기준일 이전 청구일의 기성 누계</b>로 자동 계산합니다. 지체된 공정, 계약상대자 사유로 늦어진 부분은 제외하고 직접 입력하십시오. 조정금액은 선금 정산 비율과 준공금에도 반영됩니다.</p></div></section>`;
-}
-
 function vSettle(p,c){
   const s=p.settle;
   return `<section class="panel"><div class="panel-h"><div><h2>정산 (준공금)</h2><p>변경계약금액 − 기성 누계 − 선금 잔액 − 미공제 노무비 − 지체상금</p></div></div>
@@ -741,7 +807,7 @@ function vSettle(p,c){
     ${fld("노무비 공제액 (비우면 미공제분 자동)",inNum("settle.laborDeduct",num(s.laborDeduct)))}${fld("비고",inTxt("settle.note",s.note))}
   </div>
   <div class="tbl-wrap"><table><thead><tr><th>구분</th><th class="n">금액(원)</th><th>근거</th></tr></thead><tbody>
-    <tr><td>변경 계약금액</td><td class="n">${won(c.cur)}</td><td>최초 ${won(c.c0)} · 설계변경 ${c.changeSum>=0?"+":"−"}${won(Math.abs(c.changeSum))}${c.escSum?" · 물가변동 "+(c.escSum>=0?"+":"−")+won(Math.abs(c.escSum)):""}</td></tr>
+    <tr><td>변경 계약금액</td><td class="n">${won(c.cur)}</td><td>최초 ${won(c.c0)} ${c.changeSum>=0?"+":"−"} ${won(Math.abs(c.changeSum))}</td></tr>
     <tr><td>(−) 기성 누계</td><td class="n">${won(c.progSum)}</td><td>${p.progress.length}회</td></tr>
     <tr class="key"><td>준공 기성액</td><td class="n">${won(c.finalGross)}</td><td>변경계약 − 기성 누계</td></tr>
     <tr class="key"><td>(−) 선금 잔액 정산</td><td class="n">${won(c.advRemain)}</td><td>선금 ${won(c.advPaid)} − 정산 ${won(c.advCum)}</td></tr>
@@ -754,12 +820,16 @@ function vSettle(p,c){
     ["③ 준공 지급액","① − ②",won(c.finalNet)+"원"],
     ["지체상금(예: 10일 지체 시)",`${won(c.cur)}원 × ${num(p.settle.delayRate)||0.5}/1,000 × 10일`,won(Math.floor(c.cur*(num(p.settle.delayRate)||0.5)/1000*10))+"원"]],
     "<b>선금 잔액은 준공금에서 전액 정산</b>해야 합니다. 준공 지급액이 음수이면 과지급이므로 환수를 검토하세요.")}
-  <div class="grid2">${calcKey("총 지급 예정액",won(c.advPaid+c.labPaid+c.progNet+c.finalNet)+"원","지체상금 제외")}${calcBox("정산 후 계약 대비 검산",won(c.advPaid+c.labPaid+c.progNet+c.finalNet+c.delay-c.cur)+"원","0이면 일치")}</div>
+  <div class="grid2">${calcKey("총 지급 예정액",won(c.advPaid+c.labPaid+c.progNet+c.progSub+c.finalNet)+"원","지체상금 제외, 하도급 직불 포함")}${calcBox("정산 후 계약 대비 검산",won(c.advPaid+c.labPaid+c.progNet+c.progSub+c.finalNet+c.delay-c.cur)+"원","0이면 일치")}</div>
   <p class="note">준공검사는 준공신고 후 <b>14일 이내</b>, 준공금은 청구 후 <b>5일 이내</b> 지급이 원칙입니다. 하자보수보증금 납부와 노무비·자재대금 지급 확인 후 지급하십시오.</p></div></section>`;
 }
 
 /* ---- events ---- */
 app.addEventListener("click",e=>{
+  const rv=e.target.closest("[data-rev]"); if(rv){revIdx=+rv.dataset.rev;render();return}
+  if(e.target.closest("#copyRev")){const txt=($("#revText")||{}).textContent||"";const ok=()=>{const m=$("#copyMsg");if(m)m.textContent="검토의견을 복사했습니다"};
+    const fb=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok()}catch(_){const m=$("#copyMsg");if(m)m.textContent="복사하지 못했습니다. 글을 직접 선택해 복사해 주세요"}ta.remove()};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(ok,fb);else fb();return}
   const t=e.target.closest("[data-tab],[data-add],[data-del],[data-cadd],[data-cdel],[data-crestore],[data-cauto]"); if(!t)return;
   if(t.dataset.cauto){const p=projects[curId];if(!p)return;const [sd,k]=t.dataset.cauto.split(".");const o=p[sd];if(o.man)delete o.man[k];delete o.amt[k];persist(curId);render();return}
   if(t.dataset.cadd||t.dataset.cdel||t.dataset.crestore){
@@ -776,25 +846,27 @@ app.addEventListener("click",e=>{
     persist(curId);render();return;
   }
   if(t.dataset.tab){tab=t.dataset.tab;try{localStorage.setItem("cl.tab",tab)}catch(_){}render();return}
+  if(t.dataset.tab){tab=t.dataset.tab;try{localStorage.setItem("cl.tab",tab)}catch(_){}render();return}
   const p=projects[curId]; if(!p)return;
   if(t.dataset.add){
     const k=t.dataset.add;
     if(k==="labor"){const last=p.labor[p.labor.length-1];let m="";if(last&&last.month){const d=new Date(last.month+"-01T00:00:00");d.setMonth(d.getMonth()+1);m=ymd(d).slice(0,7)}p.labor.push({month:m,workers:0,claimed:0,paid:0,date:""})}
-    if(k==="progress")p.progress.push({date:"",amount:0,laborDeduct:Math.max(calc(p).labUnded,0),note:""});
+    if(k==="progress"){p.progress.push({date:"",inspectDate:"",amount:0,progRate:"",laborDeduct:Math.max(calc(p).labUnded,0),sub:p.subs.map(()=>0),subDirect:0,note:""});revIdx=p.progress.length-1}
+    if(k==="subs"){normalize(p);p.subs.push({name:"",work:"",amount:0});p.progress.forEach(x=>x.sub.push(0))}
     if(k==="changes")p.changes.push({date:"",delta:0,days:0,reason:"",kind:"물량증감"});
-    if(k==="escal"){p.escal=p.escal||[];p.escal.push({date:"",method:"지수조정률",rate:0,base:0,note:""})}
     persist(curId);render();return;
   }
   if(t.dataset.del){
     if(!t.classList.contains("armed")){t.classList.add("armed");t.textContent="확인";setTimeout(()=>{t.classList.remove("armed");t.textContent="삭제"},2500);return}
-    const [k,i]=t.dataset.del.split(".");p[k].splice(+i,1);persist(curId);render();
+    const [k,i]=t.dataset.del.split(".");p[k].splice(+i,1);if(k==="subs")p.progress.forEach(x=>Array.isArray(x.sub)&&x.sub.splice(+i,1));if(k==="progress")revIdx=-1;persist(curId);render();
   }
 });
 app.addEventListener("change",e=>{
   const el=e.target; if(!el.dataset||!el.dataset.p)return;
   const p=projects[curId]; if(!p)return;
   let v=el.value;
-  if(el.dataset.t==="n")v=num(v); else if(el.dataset.t==="b")v=v==="1";
+  if(el.dataset.t==="n")v=num(v); else if(el.dataset.t==="b")v=v==="1"; else if(el.dataset.t==="s")v=String(v).replace(/[^\d.]/g,"");
+  normalize(p);
   setPath(p,el.dataset.p,v);
   let m=el.dataset.p.match(/^(design|contract)\.(rate|amt)\.(\w+)$/);
   if(m){const o=p[m[1]];o.man=o.man||{};const it=calc(p).items.find(x=>x.k===m[3]);
@@ -915,6 +987,7 @@ function buildWorkbook(ExcelJS,p,c){
     r.height=Math.max(16,Math.ceil(text.length/ (ws._n*9))*13);
   }
   const sumF=(ws,col,r1,r2,res)=>r2>=r1?{formula:`SUM(${col}${r1}:${col}${r2})`,result:res}:0;
+  const FX=(formula,result)=>({formula,result});
   function finish(ws){
     const last=colL(ws._n)+ws._r;
     ws.pageSetup={paperSize:9,orientation:"portrait",fitToPage:true,fitToWidth:1,fitToHeight:0,horizontalCentered:true,
@@ -929,13 +1002,15 @@ function buildWorkbook(ExcelJS,p,c){
   section(ws,"공사 개요");
   kv(ws,[["공사명",p.name],["계약상대자",d(p.contractor)],["현장 위치",d(p.site)],["계약일",d(p.contractDate)],["착공일",d(p.startDate)],["준공예정일(최초)",d(p.endDate)],["변경 준공예정일",d(c.endChanged)+(c.daysSum?` (공기 ${c.daysSum>0?"+":""}${c.daysSum}일)`:"")],["준공일(실제)",d(p.settle.completionDate)]]);
   section(ws,"금액 현황");
-  kv(ws,[["설계금액",c.design,NUM],["최초 계약금액",c.c0,NUM],["낙찰률",c.bid,PCT3],["설계변경 증감",c.changeSum,NUM],["물가변동 조정",c.escSum,NUM],["변경 계약금액",c.cur,NUM,1],["누계 기성",c.progSum,NUM],["기성률",c.progRate,PCT],["누계 지급액",c.paidTotal,NUM],["미지급 잔액",c.cur-c.paidTotal,NUM,1],["선금 잔액",c.advRemain,NUM,1]]);
+  const kr=ws._r+1;
+  kv(ws,[["설계금액",c.design,NUM],["최초 계약금액",c.c0,NUM],["낙찰률",FX(`IFERROR(D${kr}/B${kr},0)`,c.bid),PCT3],["설계변경 증감",c.changeSum,NUM],["변경 계약금액",FX(`D${kr}+D${kr+1}`,c.cur),NUM,1],["누계 기성",c.progSum,NUM],["기성률",FX(`IFERROR(D${kr+2}/B${kr+2},0)`,c.progRate),PCT],["누계 지급액",c.paidTotal,NUM],["미지급 잔액",FX(`B${kr+2}-D${kr+3}`,c.cur-c.paidTotal),NUM,1],["선금 잔액",c.advRemain,NUM,1]]);
   section(ws,"지급 구성 (변경계약금액 기준)");
   header(ws,["구분","금액","비율","비고"],[1,2]);
-  const comp=[["선급금",c.advPaid,"기성·준공 시 비율 정산"],["노무비 구분지급",c.labPaid,`${p.labor.length}개월`],["기성 실지급",c.progNet,`${p.progress.length}회`],["준공 지급 예정",c.finalNet,"선금 잔액·노무비·지체상금 공제 후"],["지체상금",c.delay,c.delay?"":"해당 없음"]];
+  const comp=[["선급금",c.advPaid,"기성·준공 시 비율 정산"],["노무비 구분지급",c.labPaid,`${p.labor.length}개월`],["기성 실지급",c.progNet,`${p.progress.length}회`],["하도급 직불",c.progSub,p.subs.length?`${p.subs.length}개 업체`:"직접 입력분"],["준공 지급 예정",c.finalNet,"선금 잔액·노무비·지체상금 공제 후"],["지체상금",c.delay,c.delay?"":"해당 없음"]];
   const cs=ws._r+1;
-  comp.forEach(x=>row(ws,[x[0],x[1],c.cur?x[1]/c.cur:0,x[2]],[null,NUM,PCT]));
-  total(ws,"합계",[sumF(ws,"B",cs,ws._r,comp.reduce((a,x)=>a+x[1],0)),sumF(ws,"C",cs,ws._r,c.cur?comp.reduce((a,x)=>a+x[1],0)/c.cur:0),""],[null,NUM,PCT,null]);
+  comp.forEach(x=>row(ws,[x[0],x[1],FX(`IFERROR(B${ws._r+1}/B${kr+2},0)`,c.cur?x[1]/c.cur:0),x[2]],[null,NUM,PCT]));
+  const compE=ws._r;
+  total(ws,"합계",[sumF(ws,"B",cs,compE,comp.reduce((a,x)=>a+x[1],0)),sumF(ws,"C",cs,compE,c.cur?comp.reduce((a,x)=>a+x[1],0)/c.cur:0),""],[null,NUM,PCT,null]);
   section(ws,"점검 사항");
   header(ws,["판정","내용","",""]); ws.mergeCells(ws._r,2,ws._r,4);
   getChecks(p,c).forEach(([st,t])=>{const r=row(ws,[CK_LABEL[st],t,"",""]);ws.mergeCells(r.number,2,r.number,4);
@@ -950,13 +1025,39 @@ function buildWorkbook(ExcelJS,p,c){
   title(ws,"공사 원가계산서 · 설계 대비 계약");
   section(ws,"원가계산서");
   header(ws,["항목","산정기준","설계\n요율","설계금액\n(공사내역서)","계약\n요율","계약금액\n(착공내역서)","비율"],[2,3,4,5,6]); ws.getRow(ws._r).height=32;
+  const RW={}, grpRows={};
+  const ref=(k,col)=>RW[k]?col+RW[k]:"0";
+  const add=(col,...ks)=>ks.map(k=>ref(k,col)).join("+");
+  const BF={labI:c=>add(c,"labD"),ins1:c=>add(c,"labSum"),ins2:c=>add(c,"labSum"),hlth:c=>add(c,"labD"),care:c=>add(c,"hlth"),pens:c=>add(c,"labD"),retire:c=>add(c,"labD"),
+    safety:c=>add(c,"matSum","labD"),env:c=>add(c,"matSum","labD","mach"),subG:c=>add(c,"matSum","labD","mach"),machG:c=>add(c,"matSum","labD","mach"),
+    etcR:c=>add(c,"matSum","labSum"),gen:c=>add(c,"net"),profit:c=>add(c,"labSum","expSum","gen"),vat:c=>add(c,"cost")};
+  const CBF={matSum:c=>add(c,"matSum"),labD:c=>add(c,"labD"),labSum:c=>add(c,"labSum"),mL:c=>add(c,"matSum","labD"),mLs:c=>add(c,"matSum","labSum"),mLM:c=>add(c,"matSum","labD","mach")};
+  const SF={net:c=>add(c,"matSum","labSum","expSum"),cost:c=>add(c,"net","gen","profit"),dogeup:c=>add(c,"cost","vat"),total:c=>add(c,"dogeup","govMat")};
   c.items.forEach(it=>{
-    if(it.sub){const a=c.cd[it.sub],b=c.cc[it.sub];total(ws,it.l,["","",a,"",b,a?b/a:0],[null,null,null,NUM,null,NUM,PCT]);return}
+    const r=ws._r+1;
+    if(it.sub){
+      let fD,fF;
+      if(it.grp){const rows=grpRows[it.grp]||[];const ex=col=>rows.length?rows.map(([rr,neg])=>(neg?"-":"+")+col+rr).join("").replace(/^\+/,""):"0";fD=ex("D");fF=ex("F");}
+      else{fD=SF[it.sub]("D");fF=SF[it.sub]("F");}
+      const a=c.cd[it.sub],b=c.cc[it.sub];
+      total(ws,it.l,["","",FX(fD,a),"",FX(fF,b),FX(`IFERROR(F${r}/D${r},0)`,a?b/a:0)],[null,null,null,NUM,null,NUM,PCT]);
+      RW[it.sub]=r;return;
+    }
     const a=c.cd[it.k],b=c.cc[it.k];
-    row(ws,[(it.g?it.g+" · ":"")+it.l,it.r?it.r+" ×":"",it.b?num(p.design.rate[it.k])/100:"",a,it.b?num(p.contract.rate[it.k])/100:"",b,a?b/a:0],[null,null,"0.000%",NUM,"0.000%",NUM,PCT]);
+    let bf=null;
+    if(it.b)bf=it.custom?(CBF[(p.costCustom[it.idx]||{}).base]||null):(BF[it.k]||null);
+    const dv=bf&&!(p.design.man&&p.design.man[it.k])?FX(`ROUNDDOWN((${bf("D")})*C${r},0)`,a):a;
+    const cv=bf&&!(p.contract.man&&p.contract.man[it.k])?FX(`ROUNDDOWN((${bf("F")})*E${r},0)`,b):b;
+    row(ws,[(it.g?it.g+" · ":"")+it.l,it.r?it.r+" ×":"",it.b?num(p.design.rate[it.k])/100:"",dv,it.b?num(p.contract.rate[it.k])/100:"",cv,FX(`IFERROR(F${r}/D${r},0)`,a?b/a:0)],[null,null,"0.000%",NUM,"0.000%",NUM,PCT]);
+    RW[it.k]=r;
+    if(["재료비","노무비","경비"].includes(it.g))(grpRows[it.g]=grpRows[it.g]||[]).push([r,!!it.neg]);
   });
+  const DG=RW.dogeup, LS=RW.labSum;
   section(ws,"주요 지표");
-  kv(ws,[["낙찰률",c.bid,PCT3,1],["계약 노무비 비율",c.laborRatio,PCT],["설계 대비 차액",c.design-c.c0,NUM]]);
+  kv(ws,[["낙찰률",FX(`IFERROR(F${DG}/D${DG},0)`,c.bid),PCT3,1],["계약 노무비 비율",FX(`IFERROR(F${LS}/F${DG},0)`,c.laborRatio),PCT],["설계 대비 차액",FX(`D${DG}-F${DG}`,c.design-c.c0),NUM]]);
+  const S1=wb.getWorksheet("요약");
+  S1.getCell(`B${kr}`).value=FX(`'내역서 대비'!D${DG}`,c.design);
+  S1.getCell(`D${kr}`).value=FX(`'내역서 대비'!F${DG}`,c.c0);
   next(ws); note(ws,"낙찰률 = 계약 도급액 ÷ 설계 도급액(관급자재 제외). 요율 항목은 산정기준 × 요율, 원 미만 절사(직접 입력 시 우선). 비율이 지나치게 낮은 항목(노무비·안전관리비 등)은 적정성 검토 대상입니다.");
   finish(ws);
 
@@ -964,16 +1065,21 @@ function buildWorkbook(ExcelJS,p,c){
   ws=sheet("선급금",[18,22,20,22,18]);
   title(ws,"선급금 지급 및 정산");
   section(ws,"선급금 지급");
-  kv(ws,[["선금률",num(p.advance.rate)/100,PCT],["산정 선금액",floor1000(c.c0*num(p.advance.rate)/100),NUM],["적용 선금액",c.adv,NUM,1],["지급 여부",p.advance.paid?"지급 완료":"미지급"],["지급일",d(p.advance.date)],["보증서",d(p.advance.guarantee)]]);
+  const ar=ws._r+1;
+  kv(ws,[["선금률",num(p.advance.rate)/100,PCT],["산정 선금액",FX(`ROUNDDOWN('요약'!D${kr}*B${ar},-3)`,floor1000(c.c0*num(p.advance.rate)/100)),NUM],["적용 선금액",c.adv,NUM,1],["지급 여부",p.advance.paid?"지급 완료":"미지급"],["지급일",d(p.advance.date)],["보증서",d(p.advance.guarantee)]]);
   section(ws,"회차별 선금 정산");
-  header(ws,["회차","기성액","선금 정산액","정산 후 잔액","정산 비율"],[1,2,3,4]);
+  header(ws,["회차","기성액","선금 정산액","정산 후 잔액","적용 계약금액"],[1,2,3,4]);
   let rem=c.advPaid; const as=ws._r+1;
-  c.prog.forEach((x,i)=>{rem-=x.ded;row(ws,[`${i+1}회 기성`,x.amt,x.ded,rem,c.cur?x.amt/c.cur:0],[null,NUM,NUM,NUM,PCT],{keyIdx:[2]})});
-  row(ws,["준공(정산)",c.finalGross,c.advRemain,0,c.cur?c.finalGross/c.cur:0],[null,NUM,NUM,NUM,PCT],{keyIdx:[2]});
+  const advRef=p.advance.paid?`B${ar+1}`:"0";
+  c.prog.forEach((x,i)=>{const r=ws._r+1;rem-=x.ded;
+    const dedV=(x.last||x.capped)?x.ded:FX(`IFERROR(ROUNDDOWN(${advRef}*B${r}/E${r},0),0)`,x.ded);
+    row(ws,[`${i+1}회 기성${x.last?" (잔액 전액)":x.capped?" (잔액 한도)":""}`,x.amt,dedV,FX(i===0?`${advRef}-C${r}`:`D${r-1}-C${r}`,rem),x.base],[null,NUM,NUM,NUM,NUM],{keyIdx:[2]})});
+  const advFin=ws._r+1;
+  row(ws,["준공(정산)",c.finalGross,FX(c.prog.length?`D${advFin-1}`:advRef,c.advRemain),FX(`${c.prog.length?"D"+(advFin-1):advRef}-C${advFin}`,0),c.cur],[null,NUM,NUM,NUM,NUM],{keyIdx:[2]});
   total(ws,"합계",[sumF(ws,"B",as,ws._r,c.cur),sumF(ws,"C",as,ws._r,c.advPaid),"",""],[null,NUM,NUM,null,null]);
   section(ws,"계산 예시");
   const x0=c.prog[0];
-  if(x0)note(ws,`1회 선금 정산액 = 선금 ${won(c.adv)}원 × (기성액 ${won(x0.amt)}원 ÷ 청구일 당시 계약금액 ${won(x0.base)}원) = ${won(x0.ded)}원`);
+  if(x0)note(ws,`1회 선금 정산액 = 선금 ${won(c.adv)}원 × (기성액 ${won(x0.amt)}원 ÷ 기성 당시 계약금액 ${won(x0.base)}원) = ${won(x0.ded)}원`);
   note(ws,`선금액 = 계약금액 ${won(c.c0)}원 × 선금률 ${num(p.advance.rate)}% → 천원 미만 절사 = ${won(floor1000(c.c0*num(p.advance.rate)/100))}원`);
   note(ws,"선금은 계약 목적 외 사용을 금지하며, 잔액은 준공금에서 전액 정산합니다.",true);
   finish(ws);
@@ -989,25 +1095,43 @@ function buildWorkbook(ExcelJS,p,c){
     r.getCell(5).alignment=r.getCell(6).alignment={horizontal:"center",vertical:"middle"};
     if(st==="미지급")r.getCell(6).font=f({bold:true,color:XL.warn})});
   total(ws,"합계",["",sumF(ws,"C",ls,ws._r,c.labClaimed),sumF(ws,"D",ls,ws._r,c.labPaid),"",""],[null,null,NUM,NUM,null,null]);
+  const labTot=ws._r;
   section(ws,"공제 현황");
-  kv(ws,[["계약 노무비",c.labC,NUM],["계약 노무비 비율",c.laborRatio,PCT],["기성 공제 누계",c.progLab,NUM],["기성 미공제 노무비",c.labUnded,NUM,1]]);
+  const lr=ws._r+1;
+  kv(ws,[["계약 노무비",FX(`'내역서 대비'!F${LS}`,c.labC),NUM],["계약 노무비 비율",FX(`IFERROR(C${lr}/'내역서 대비'!F${DG},0)`,c.laborRatio),PCT],["기성 공제 누계",c.progLab,NUM],["기성 미공제 노무비",FX(`D${labTot}-C${lr+2}`,c.labUnded),NUM,1]]);
+  const S4=ws;
   next(ws); note(ws,"노무비는 청구일로부터 5일 이내 지급하며, 기지급 노무비는 다음 기성 청구 시 공제하여 이중 지급을 방지합니다.",true);
   finish(ws);
 
   /* 5. 기성금 */
-  ws=sheet("기성금",[5,11,15,14,14,15,15,7,12]);
+  ws=sheet("기성금",[5,11,11,14,9,14,13,13,13,14,14,8,8,11,12]);
   title(ws,"기성금 청구·지급 내역");
   section(ws,"회차별 기성");
-  header(ws,["회차","청구일","기성액","선금 정산","노무비 공제","실지급액","누계 기성","기성률","비고"],[2,3,4,5,6,7]);
-  const ps=ws._r+1; let cum=0;
-  c.prog.forEach((x,i)=>{cum+=x.amt;const r=row(ws,[`${i+1}회`,d(p.progress[i].date),x.amt,x.ded,x.lab,x.net,cum,c.cur?cum/c.cur:0,p.progress[i].note||""],[null,null,NUM,NUM,NUM,NUM,NUM,PCT,null],{keyIdx:[3,5]});
-    r.getCell(1).alignment=r.getCell(2).alignment={horizontal:"center",vertical:"middle"}});
-  total(ws,"합계",["",sumF(ws,"C",ps,ws._r,c.progSum),sumF(ws,"D",ps,ws._r,c.advCum),sumF(ws,"E",ps,ws._r,c.progLab),sumF(ws,"F",ps,ws._r,c.progNet),"",c.progRate,""],[null,null,NUM,NUM,NUM,NUM,null,PCT,null]);
+  header(ws,["회차","청구일","검사완료일","기성액","누계\n공정률","적용\n계약금액","선금 정산","노무비 공제","하도급 직불","실지급액","누계 기성","기성률","공정률\n차이(%p)","지급기한","비고"],[3,4,5,6,7,8,9,10,11,12]); ws.getRow(ws._r).height=32;
+  const ps=ws._r+1;
+  c.prog.forEach((x,i)=>{const rn=ws._r+1;const r=row(ws,[`${i+1}회`,d(p.progress[i].date),d(p.progress[i].inspectDate),x.amt,x.hasProg?x.prate:"",x.base,x.ded,x.lab,x.sub,FX(`D${rn}-G${rn}-H${rn}-I${rn}`,x.net),FX(`SUM(D$${ps}:D${rn})`,x.cum),x.rate,x.hasProg?Math.round(x.gap*1000)/10:"",d(x.due),p.progress[i].note||""],[null,null,null,NUM,PCT,NUM,NUM,NUM,NUM,NUM,NUM,PCT,"0.0",null,null],{keyIdx:[6,9]});
+    [1,2,3,14].forEach(k=>r.getCell(k).alignment={horizontal:"center",vertical:"middle"});
+    if(x.flag)r.getCell(13).font=f({bold:true,color:XL.warn});});
+  const progTot=ws._r+1, pe=ws._r;
+  total(ws,"합계",["","",sumF(ws,"D",ps,pe,c.progSum),"","",sumF(ws,"G",ps,pe,c.advCum),sumF(ws,"H",ps,pe,c.progLab),sumF(ws,"I",ps,pe,c.progSub),sumF(ws,"J",ps,pe,c.progNet),"",c.progRate,"","",""],[null,null,null,NUM,null,null,NUM,NUM,NUM,NUM,null,PCT,null,null,null]);
+  if(pe>=ps){S1.getCell(`D${kr+2}`).value=FX(`'기성금'!D${progTot}`,c.progSum);S4.getCell(`C${lr+2}`).value=FX(`'기성금'!H${progTot}`,c.progLab);}
   section(ws,"계산 예시");
   const xl=c.prog[c.prog.length-1];
-  if(xl)note(ws,`${c.prog.length}회 실지급액 = 기성액 ${won(xl.amt)}원 − 선금 정산 ${won(xl.ded)}원 − 노무비 공제 ${won(xl.lab)}원 = ${won(xl.net)}원`);
-  note(ws,"선금 정산액 = 선금 × (해당 기성액 ÷ 청구일 당시 계약금액), 원 미만 절사. 기성 검사는 요청 후 7일 이내, 지급은 청구 후 5일 이내가 원칙입니다.");
+  if(xl)note(ws,`${c.prog.length}회 실지급액 = 기성액 ${won(xl.amt)}원 − 선금 정산 ${won(xl.ded)}원 − 노무비 공제 ${won(xl.lab)}원 − 하도급 직불 ${won(xl.sub)}원 = ${won(xl.net)}원`);
+  note(ws,"선금 정산액 = 선금 × (해당 기성액 ÷ 기성 청구일 당시 계약금액), 원 미만 절사, 누계 100% 회차는 잔액 전액. 지급기한 = 검사완료일(검사 뒤 청구 시 청구일)부터 토·공휴일 제외 5일(지방계약법 시행령 제67조).");
   finish(ws);
+  if(p.subs.length){
+    ws=sheet("하도급 직불",[18,14,16,16,10,16].concat(p.progress.map(()=>0)).slice(0,6));
+    title(ws,"하도급대금 직접지급 내역");
+    section(ws,"하수급인별 현황");
+    header(ws,["하수급인","공종","하도급 계약금액","직불 누계","직불률","미지급 잔액"],[2,3,4,5]);
+    p.subs.forEach((s,j)=>{const cumv=p.progress.reduce((a,x)=>a+num(x.sub[j]),0);const amt=num(s.amount);row(ws,[s.name||"",s.work||"",amt,cumv,amt?cumv/amt:0,amt?amt-cumv:0],[null,null,NUM,NUM,PCT,NUM])});
+    section(ws,"회차별 직불액");
+    header(ws,["회차",...p.subs.map((s,j)=>s.name||"하수급인 "+(j+1)).slice(0,4),"합계"].slice(0,6),[1,2,3,4,5]);
+    p.progress.forEach((x,i)=>{const vals=p.subs.map((_,j)=>num(x.sub[j])).slice(0,4);const arr=[`${i+1}회`,...vals,c.prog[i].sub].slice(0,6);row(ws,arr,[null,NUM,NUM,NUM,NUM,NUM])});
+    if(p.subs.length>4)note(ws,"하수급인이 5곳 이상이면 회차별 표에는 앞의 4곳만 나오고 합계는 전체 금액입니다.",true);
+    finish(ws);
+  }
 
   /* 6. 설계변경 */
   ws=sheet("설계변경",[5,11,13,24,15,7,16,9]);
@@ -1015,27 +1139,17 @@ function buildWorkbook(ExcelJS,p,c){
   section(ws,"회차별 변경");
   header(ws,["회차","변경일","구분","사유","증감액","공기(일)","변경 후\n계약금액","증감률"],[4,5,6,7]); ws.getRow(ws._r).height=32;
   const chs=ws._r+1; let run=c.c0;
-  p.changes.forEach((x,i)=>{run+=num(x.delta);const r=row(ws,[`${i+1}회`,d(x.date),x.kind||"",x.reason||"",num(x.delta),num(x.days),run,c.c0?num(x.delta)/c.c0:0],[null,null,null,null,NUM,NUM,NUM,"0.00%"],{keyIdx:[6]});
+  p.changes.forEach((x,i)=>{run+=num(x.delta);const rn=ws._r+1;const r=row(ws,[`${i+1}회`,d(x.date),x.kind||"",x.reason||"",num(x.delta),num(x.days),FX(i===0?`'요약'!D${kr}+E${rn}`:`G${rn-1}+E${rn}`,run),FX(`IFERROR(E${rn}/'요약'!D${kr},0)`,c.c0?num(x.delta)/c.c0:0)],[null,null,null,null,NUM,NUM,NUM,"0.00%"],{keyIdx:[6]});
     r.getCell(1).alignment=r.getCell(2).alignment=r.getCell(3).alignment={horizontal:"center",vertical:"middle"};
     if(num(x.delta)<0)r.getCell(5).font=f({color:XL.warn});
     r.height=Math.max(20,Math.ceil((x.reason||"").length/14)*15)});
-  total(ws,"누계",["","","",sumF(ws,"E",chs,ws._r,c.changeSum),sumF(ws,"F",chs,ws._r,c.daysSum),c.cur,c.c0?c.changeSum/c.c0:0],[null,null,null,null,NUM,NUM,NUM,"0.00%"]);
+  const chT=ws._r+1, che=ws._r;
+  total(ws,"누계",["","","",sumF(ws,"E",chs,che,c.changeSum),sumF(ws,"F",chs,che,c.daysSum),FX(`'요약'!D${kr}+E${chT}`,c.cur),FX(`IFERROR(E${chT}/'요약'!D${kr},0)`,c.c0?c.changeSum/c.c0:0)],[null,null,null,null,NUM,NUM,NUM,"0.00%"]);
+  if(che>=chs)S1.getCell(`D${kr+1}`).value=FX(`'설계변경'!E${chT}`,c.changeSum);
   section(ws,"계약금액 변동");
   kv(ws,[["최초 계약금액",c.c0,NUM],["변경 계약금액",c.cur,NUM,1],["낙찰률(신규단가 적용)",c.bid,PCT3],["변경 준공예정일",d(c.endChanged)]]);
   next(ws); note(ws,`신규 비목 단가 = 설계변경 당시 산정단가 × 낙찰률(${pct(c.bid,3)}). 예: 100,000원 × ${pct(c.bid,3)} = ${won(Math.floor(100000*c.bid))}원`);
   if(c.c0&&Math.abs(c.changeSum)/c.c0>=0.1)note(ws,"증감률이 10% 이상입니다. 계약심의 등 절차를 확인하십시오.",true);
-  finish(ws);
-
-  /* 6-2. 물가변동 */
-  ws=sheet("물가변동",[5,11,11,8,16,13,15,16,12]);
-  title(ws,"물가변동 조정 내역");
-  section(ws,"회차별 조정");
-  header(ws,["회차","조정기준일","방식","등락률","적용대가","선금 공제","조정금액","조정 후\n계약금액","요건"],[3,4,5,6,7]); ws.getRow(ws._r).height=32;
-  const ess=ws._r+1;
-  (p.escal||[]).forEach((x,i)=>{const e=c.esc[i];const r=row(ws,[`${i+1}회`,d(x.date),x.method||"",num(x.rate)/100,e.base,e.advDed,e.amt,e.after,e.noDate?"기준일 미입력":!e.ok3?"3% 미만":e.ok90===false?"90일 미경과":"충족"],[null,null,null,"0.00%",NUM,NUM,NUM,NUM,null],{keyIdx:[6]});
-    r.getCell(1).alignment=r.getCell(2).alignment=r.getCell(3).alignment=r.getCell(9).alignment={horizontal:"center",vertical:"middle"};});
-  total(ws,"누계",["","","","",sumF(ws,"F",ess,ws._r,c.esc.reduce((a,x)=>a+x.advDed,0)),sumF(ws,"G",ess,ws._r,c.escSum),c.cur,""],[null,null,null,null,null,NUM,NUM,NUM,null]);
-  next(ws); note(ws,"조정금액 = 적용대가 × 등락률 − 선금 공제(적용대가 × 등락률 × 선금률). 요건: 계약일(직전 조정기준일)부터 90일 이상 경과 및 등락률 ±3% 이상.");
   finish(ws);
 
   /* 7. 정산 */
@@ -1047,19 +1161,20 @@ function buildWorkbook(ExcelJS,p,c){
   [["준공일(실제)",d(p.settle.completionDate)],["준공검사일",d(p.settle.inspectDate)],["지체일수",num(p.settle.delayDays)+"일"],["지체상금률",num(p.settle.delayRate)+"‰/일"]].forEach(([a,b])=>{const r=row(ws,[a,b,""]);r.getCell(1).fill=fill(XL.headBg);r.getCell(2).alignment={horizontal:"right",vertical:"middle"}});
   section(ws,"준공 지급액 산정");
   header(ws,["구분","금액","근거"],[1]);
-  row(ws,["변경 계약금액",c.cur,`최초 ${won(c.c0)} · 설계변경 ${c.changeSum>=0?"+":"−"}${won(Math.abs(c.changeSum))}${c.escSum?" · 물가변동 "+(c.escSum>=0?"+":"−")+won(Math.abs(c.escSum)):""}`],[null,NUM,null]);
-  row(ws,["(−) 기성 누계",c.progSum,`${p.progress.length}회`],[null,NUM,null]);
-  const gr=row(ws,["준공 기성액",c.finalGross,"변경계약 − 기성 누계"],[null,NUM,null],{keyIdx:[1],bold:true});
-  row(ws,["(−) 선금 잔액 정산",c.advRemain,`선금 ${won(c.advPaid)} − 정산 ${won(c.advCum)}`],[null,NUM,null],{keyIdx:[1]});
+  const grN=ws._r+3;
+  row(ws,["변경 계약금액",FX(`'요약'!B${kr+2}`,c.cur),`최초 ${won(c.c0)} ${c.changeSum>=0?"+":"−"} ${won(Math.abs(c.changeSum))}`],[null,NUM,null]);
+  row(ws,["(−) 기성 누계",pe>=ps?FX(`'기성금'!D${progTot}`,c.progSum):c.progSum,`${p.progress.length}회`],[null,NUM,null]);
+  const gr=row(ws,["준공 기성액",FX(`B${grN-2}-B${grN-1}`,c.finalGross),"변경계약 − 기성 누계"],[null,NUM,null],{keyIdx:[1],bold:true});
+  row(ws,["(−) 선금 잔액 정산",FX(`'선급금'!C${advFin}`,c.advRemain),`선금 ${won(c.advPaid)} − 정산 ${won(c.advCum)}`],[null,NUM,null],{keyIdx:[1]});
   row(ws,["(−) 노무비 공제",c.setLab,num(p.settle.laborDeduct)?"직접 입력":"기지급 노무비 중 미공제분"],[null,NUM,null]);
-  row(ws,["(−) 지체상금",c.delay,`${won(c.cur)} × ${num(p.settle.delayRate)}‰ × ${num(p.settle.delayDays)}일`],[null,NUM,null]);
+  row(ws,["(−) 지체상금",FX(`MIN(ROUNDDOWN(B${grN-2}*${num(p.settle.delayRate)}/1000*${num(p.settle.delayDays)},0),ROUNDDOWN(B${grN-2}*0.3,0))`,c.delay),`${won(c.cur)} × ${num(p.settle.delayRate)}‰ × ${num(p.settle.delayDays)}일${c.delayRaw>c.delayCap?' (계약금액 30% 한도 적용)':''}`],[null,NUM,null]);
   const g=gr.number;
   total(ws,"준공 지급액",[{formula:`B${g}-B${g+1}-B${g+2}-B${g+3}`,result:c.finalNet},c.finalNet<0?"과지급 — 환수 검토":""],[null,NUM,null]);
   section(ws,"검산");
 
-  [["선급금",c.advPaid],["노무비 구분지급",c.labPaid],["기성 실지급",c.progNet],["준공 지급액",c.finalNet],["지체상금",c.delay]].forEach(([a,b])=>row(ws,[a,b,""],[null,NUM,null]));
-  const vs=ws._r-4;
-  total(ws,"합계 (= 변경 계약금액)",[sumF(ws,"B",vs,ws._r,c.advPaid+c.labPaid+c.progNet+c.finalNet+c.delay),Math.abs(c.advPaid+c.labPaid+c.progNet+c.finalNet+c.delay-c.cur)<1?"변경 계약금액과 일치":"변경 계약금액과 차이 있음 — 확인 필요"],[null,NUM,null]);
+  [["선급금",c.advPaid],["노무비 구분지급",c.labPaid],["기성 실지급",c.progNet],["하도급 직불",c.progSub],["준공 지급액",c.finalNet],["지체상금",c.delay]].forEach(([a,b])=>row(ws,[a,b,""],[null,NUM,null]));
+  const vs=ws._r-5;
+  total(ws,"합계 (= 변경 계약금액)",[sumF(ws,"B",vs,ws._r,c.advPaid+c.labPaid+c.progNet+c.progSub+c.finalNet+c.delay),Math.abs(c.advPaid+c.labPaid+c.progNet+c.progSub+c.finalNet+c.delay-c.cur)<1?"변경 계약금액과 일치":"변경 계약금액과 차이 있음 — 확인 필요"],[null,NUM,null]);
   next(ws); note(ws,"준공검사는 준공신고 후 14일 이내, 준공금은 청구 후 5일 이내 지급이 원칙입니다. 선금 잔액은 준공금에서 전액 정산하고, 하자보수보증금 납부와 노무비·자재대금 지급 확인 후 지급하십시오.",true);
   finish(ws);
   return wb;
@@ -1087,7 +1202,7 @@ $("#fileIn").addEventListener("change",async e=>{
     let first=null;
     list.forEach(p=>{if(!p||typeof p!=="object")return;
       const b=blank(p.name);const q=Object.assign(b,p);
-      ["labor","progress","changes","escal","costCustom","costHidden"].forEach(k=>{if(!Array.isArray(q[k]))q[k]=[]});
+      ["labor","progress","changes","subs","costCustom","costHidden"].forEach(k=>{if(!Array.isArray(q[k]))q[k]=[]});
       if(order.some(id=>projects[id].name===q.name))q.name+=" (불러옴)";
       const id=uid();projects[id]=q;first=first||id;persist(id);});
     if(!first)throw new Error("empty");
@@ -1120,18 +1235,19 @@ window.__buildWorkbook=buildWorkbook;window.__calc=calc;window.__proj=()=>projec
 
 /* ---- boot ---- */
 function bootLocal(){
-  try{const s=JSON.parse(localStorage.getItem("cl.local")||"null");if(s&&typeof s==="object")projects=s}catch(_){}
+  try{const s=JSON.parse(localStorage.getItem("cl.local")||"null");if(s&&typeof s==="object"){projects=s;Object.values(projects).forEach(normalize)}}catch(_){}
   if(!Object.keys(projects).length){projects[uid()]=sample()}
   sortOrder(); if(!projects[curId])curId=order[0]; setSave("이 브라우저에만 임시 보관 중"); render();
 }
 render();
 (async()=>{
   try{db=window.claude&&window.claude.use?await window.claude.use("db"):null}catch(_){db=null}
+  $("#xlsxBtn").hidden=false;
   if(!db){bootLocal();return}
   setSave("불러오는 중…");
   db.collection("projects").onSnapshot(snap=>{
     const next={};
-    snap.docs.forEach(d=>{ if(d.exists){ next[d.id]=saveTimers[d.id]&&projects[d.id]?projects[d.id]:JSON.parse(JSON.stringify(d.data())) } });
+    snap.docs.forEach(d=>{ if(d.exists){ next[d.id]=saveTimers[d.id]&&projects[d.id]?projects[d.id]:normalize(JSON.parse(JSON.stringify(d.data()))) } });
     // keep unsaved local projects
     Object.keys(projects).forEach(id=>{if(!next[id]&&saveTimers[id])next[id]=projects[id]});
     projects=next; sortOrder();
@@ -1142,3 +1258,5 @@ render();
 })();
 })();
 </script>
+
+</body></html>

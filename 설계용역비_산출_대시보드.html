@@ -359,6 +359,52 @@
   .yellow-legend .chip{background:var(--yellow-bg);border:1px solid var(--yellow-border);}
   .foot-note,.inline-note{font-size:11.5px;color:var(--text-muted);}
 </style>
+<style id="gov24-theme">
+  /* ===== 정부24(KRDS) 디자인 적용 ===== */
+  .viz-root{--surface-1:#FFFFFF;--surface-page:#F4F5F6;--text-primary:#1E2124;--text-secondary:#464C53;--text-muted:#6D7882;
+    --grid:#E6E8EA;--baseline:#CDD1D5;--border:#CDD1D5;--series-1:#256EF4;--series-2:#86AFF9;--series-3:#052561;--series-4:#D8E5FD;
+    --good:#256EF4;--warn-bg:#E7F4FE;--warn-text:#096AB3;--yellow-bg:#ECF2FE;--yellow-bg-hover:#D8E5FD;--yellow-border:#B1CEFB;}
+  body{font-family:'Pretendard GOV','Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;letter-spacing:-.01em;line-height:1.5;}
+  .page{max-width:1248px;}
+  .header{background:transparent!important;border:0!important;border-bottom:1px solid var(--border)!important;border-radius:0!important;
+    box-shadow:none!important;padding:8px 0 24px!important;margin-bottom:24px!important;}
+  .header .kicker{font-size:15px!important;font-weight:700!important;letter-spacing:0!important;text-transform:none!important;color:var(--series-1)!important;margin-bottom:8px;}
+  .header h1{font-size:32px!important;font-weight:700!important;letter-spacing:-.01em!important;line-height:1.4!important;color:var(--text-primary);}
+  .header .sub{font-size:15px!important;color:var(--text-secondary)!important;margin-top:8px;}
+  .card,.panel,.tiles>*{border:1px solid var(--border)!important;border-radius:12px!important;}
+  .card{padding:20px 24px;}
+  .card h3,.panel h2{font-size:17px!important;font-weight:700!important;letter-spacing:-.01em!important;text-transform:none!important;color:var(--text-primary)!important;}
+  .card-desc,.panel .desc{font-size:13px!important;color:var(--text-muted)!important;}
+  .field label{font-size:13px!important;font-weight:700!important;color:var(--text-secondary)!important;letter-spacing:0!important;}
+  input[type="text"],input[type="number"],select{border-radius:8px!important;min-height:40px;font-size:15px!important;color:var(--text-primary)!important;}
+  input[type="text"]:focus,input[type="number"]:focus,select:focus{border-color:#256EF4!important;box-shadow:0 0 0 4px rgba(37,110,244,.18)!important;outline:none!important;}
+  .check-row{border-radius:8px;font-size:14px;padding:8px 10px;}
+  .yellow-legend{font-size:13px;}
+  .yellow-legend .chip{border-radius:4px;}
+  .hero{border:1px solid var(--border)!important;border-radius:16px!important;box-shadow:0 6px 8px rgba(37,110,244,.10)!important;padding:28px 32px;}
+  .hero .label{font-size:17px;font-weight:700;color:var(--text-primary);}
+  .hero .value{font-size:48px;font-weight:700;letter-spacing:-.02em;color:var(--series-1);}
+  .hero .sub{font-size:13px;}
+  .tile .label{font-size:13px;}
+  .tile .value{font-size:22px;color:var(--text-primary);}
+  .diff-bar{border-color:var(--border);border-radius:12px;}
+  thead th{border-top:2px solid var(--text-primary)!important;}
+  th{background:var(--surface-page)!important;color:var(--text-primary)!important;font-size:13px!important;}
+  td{font-size:14px;}
+  .tag,.badge-mini{border-radius:4px!important;background:#ECF2FE;color:#0B50D0;font-weight:700!important;}
+  .callout{border-radius:12px;border:1px solid #D8E5FD;font-size:13px;}
+  #bfPanel,#insPanel{border-color:#256EF4!important;}
+  .reset-btn,.hd-actions button,#pdfBtn,#xlsBtn{border-radius:8px!important;height:40px;padding:0 16px!important;font-size:15px!important;
+    font-weight:700!important;border:1px solid #58616A!important;background:transparent!important;color:var(--text-primary)!important;}
+  .hd-actions button:hover,.reset-btn:hover{background:var(--surface-page)!important;color:var(--text-primary)!important;}
+  #pdfBtn{background:#256EF4!important;border-color:#256EF4!important;color:#fff!important;}
+  #pdfBtn:hover{background:#0B50D0!important;border-color:#0B50D0!important;color:#fff!important;}
+  .theme-toggle{border-radius:8px;border:1px solid #58616A;font-size:13px;color:var(--text-primary);box-shadow:none;}
+  .foot-note,.inline-note{font-size:12.5px;}
+  :root[data-theme="dark"] .tag,:root[data-theme="dark"] .badge-mini{background:rgba(74,158,255,.16);color:#7ab8ff;}
+  :root[data-theme="dark"] .callout{border-color:rgba(74,158,255,.3);}
+  :root[data-theme="dark"] .reset-btn,:root[data-theme="dark"] .theme-toggle{border-color:#58616A!important;}
+</style>
 </head>
 <body>
 <div class="viz-root">

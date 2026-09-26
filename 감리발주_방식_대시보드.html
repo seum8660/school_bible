@@ -101,6 +101,50 @@
   .flow .st .t{font-size:14px;font-weight:700;margin-top:4px}
   .flow .st .d{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.5}
 </style>
+<style id="gov24-theme">
+  /* ===== 정부24(KRDS) 디자인 적용 ===== */
+  :root{--line:#CDD1D5;--line2:#F4F5F6;--ink:#1E2124;--sub:#464C53;--faint:#6D7882;--bg:#F4F5F6;--card:#FFFFFF;
+    --accent:#256EF4;--accent-soft:#D8E5FD;--acc-ink:#0B50D0;--info-bg:#E7F4FE;--p5:#ECF2FE}
+  html[data-theme="dark"]{--acc-ink:#7ab8ff;--info-bg:rgba(74,158,255,.12);--p5:rgba(74,158,255,.16)}
+  body{font-family:'Pretendard GOV','Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;letter-spacing:-.01em;line-height:1.5}
+  a{color:var(--acc-ink)}
+  .wrap,.cover .inner{max-width:1248px}
+  .cover{padding:48px 24px 32px;border-bottom:1px solid var(--line)}
+  .cover h1{font-size:32px;font-weight:700;letter-spacing:-.01em;line-height:1.4;margin-bottom:8px}
+  .cover .sub{font-size:17px;color:var(--sub)}
+  .kicker{font-size:15px;font-weight:700;letter-spacing:0;color:var(--accent);margin-bottom:8px}
+  .themebtn{height:40px;padding:0 16px;border-radius:8px;border:1px solid #58616A;color:var(--ink);font-size:15px;font-weight:700;background:transparent}
+  .themebtn:hover{background:var(--line2);border-color:#58616A;color:var(--ink)}
+  section{margin-top:40px}
+  .sec-title{font-size:21px;font-weight:700;letter-spacing:-.01em;padding-bottom:12px;margin-bottom:16px;border-bottom:2px solid var(--ink)}
+  .sec-title .n{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-size:14px;font-weight:700}
+  .sec-title small{font-size:13px;color:var(--faint)}
+  h3.sub-h{font-size:17px}
+  .card,.tbl-wrap,.lv .b,.flow,.result{border-radius:12px;border-color:var(--line)}
+  .card{padding:20px 24px}
+  table{font-size:15px}
+  thead th{background:var(--line2);color:var(--ink);font-size:13px;font-weight:700;letter-spacing:0;border-bottom:1px solid var(--line)}
+  th,td{border-bottom-color:#E6E8EA;padding:12px 14px}
+  html[data-theme="dark"] th,html[data-theme="dark"] td{border-bottom-color:var(--line)}
+  b.k{color:var(--acc-ink)}
+  .pill{border-radius:4px;background:var(--p5);color:var(--acc-ink);font-size:13px;font-weight:700;padding:2px 8px}
+  .pill.off{background:transparent;border:1px solid var(--line);color:var(--faint)}
+  .lv .b{padding:20px 24px}
+  .lv .b .no,.flow .st .no{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.02em}
+  .lv .b .t{font-size:19px;letter-spacing:-.01em}
+  .lv .b .s{font-size:14px}
+  .lv .b li,.result-b li{font-size:15px}
+  .fld label{font-size:13px;font-weight:700;color:var(--sub)}
+  .fld input,.fld select{height:48px;padding:0 14px;font-size:16px;border:1px solid #B1B8BE;border-radius:8px}
+  html[data-theme="dark"] .fld input,html[data-theme="dark"] .fld select{border-color:var(--line)}
+  .fld input:focus,.fld select:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .result-h{background:var(--p5);color:var(--acc-ink);font-size:17px;padding:14px 20px}
+  .result-b{padding:16px 20px}
+  .note{font-size:13px;color:var(--faint)}
+  .callout{border:1px solid var(--accent-soft);border-left:1px solid var(--accent-soft);background:var(--info-bg);border-radius:12px;padding:14px 18px;font-size:15px}
+  .flow .st .t{font-size:16px}
+  .flow .st .d{font-size:13px}
+</style>
 </head>
 <body>
 <div class="cover"><div class="inner">

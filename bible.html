@@ -1558,6 +1558,121 @@ window.dispatchEvent(new Event('qa-fb-ready'));
 </script>
 <script src="image-slot.js"></script>
 <script src="wf_tags.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/static/pretendard.min.css">
+<script>/* 디자인 스킨 — 정부24(기본) / 노션(이전) */
+(function(){var s;try{s=localStorage.getItem('bible-skin');}catch(e){}document.documentElement.setAttribute('data-skin',s||'gov24');})();
+function toggleSkin(){var r=document.documentElement,n=r.getAttribute('data-skin')==='gov24'?'notion':'gov24';r.setAttribute('data-skin',n);try{localStorage.setItem('bible-skin',n);}catch(e){}}
+</script>
+<style id="gov24-skin">
+  /* ===== SKIN v4 : 정부24(KRDS) — html[data-skin="gov24"] 일 때만 적용, 끄면 노션 스킨으로 복귀 ===== */
+  html[data-skin="gov24"]:not([data-theme="dark"]){
+    --bg:#F4F5F6; --surface:#FFFFFF; --card:#FFFFFF; --surface-2:#F4F5F6; --surface-3:#E6E8EA;
+    --ink:#1E2124; --navy:#003963; --ink-2:#464C53; --muted:#6D7882; --faint:#8A949E;
+    --line:#E6E8EA; --border:#CDD1D5;
+    --accent:#256EF4; --accent-ink:#FFFFFF; --accent-soft:#ECF2FE;
+    --blue:#256EF4; --green:#256EF4; --green-d:#0B50D0;
+    --rad:12px; --radsm:8px;
+    --cardsh:0 2px 8px 0 rgba(0,0,0,.04); --cardsh-sm:0 1px 4px rgba(0,0,0,.04);
+    --inset:inset 0 0 0 1px #CDD1D5; --glassbd:1px solid #CDD1D5;
+    --shadow:var(--cardsh); --shadow-sm:var(--cardsh-sm);
+  }
+  html[data-skin="gov24"] body,
+  html[data-skin="gov24"] .mono,html[data-skin="gov24"] .nav-grp,html[data-skin="gov24"] .block h4,html[data-skin="gov24"] .nav-title b,
+  html[data-skin="gov24"] .hero-brand-tt b,html[data-skin="gov24"] .sec-head .chip,html[data-skin="gov24"] .mcard-top .ph,
+  html[data-skin="gov24"] .thr,html[data-skin="gov24"] .pnode .pn-step,html[data-skin="gov24"] .badge-org{
+    font-family:'Pretendard GOV','Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;}
+  html[data-skin="gov24"] body{letter-spacing:-.01em;}
+  html[data-skin="gov24"]:not([data-theme="dark"]) body{background:#F4F5F6;}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .navbar{background:#FFFFFF;border-bottom:1px solid #E6E8EA;}
+  html[data-skin="gov24"] a:hover{color:#0B50D0;}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .tab.active{background:#ECF2FE;color:#0B50D0;}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .tab.active[data-p="overview"]{background:#256EF4;color:#fff;}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .tab.active .tico svg{stroke:currentColor;}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .side-nav .tab.active[data-ovgo]{background:#ECF2FE!important;color:#0B50D0!important;-webkit-text-fill-color:#0B50D0!important;border-color:#B1CEFB!important;font-weight:700;}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .side-nav .tab.active[data-ovgo] *{color:#0B50D0!important;-webkit-text-fill-color:#0B50D0!important;}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .side-nav .tab.active[data-ovgo] .tico svg{stroke:#0B50D0!important;}
+  html[data-skin="gov24"] .side-nav .extlink:hover,html[data-skin="gov24"] .tab:hover{border-color:#256EF4;}
+  html[data-skin="gov24"] .cfield input,html[data-skin="gov24"] .cfield select,html[data-skin="gov24"] .search-box input,
+  html[data-skin="gov24"] #global-q,html[data-skin="gov24"] .gz-field input,html[data-skin="gov24"] .bl-field input,
+  html[data-skin="gov24"] .bl-field select,html[data-skin="gov24"] #qbox-input{border:1px solid #B1B8BE;border-radius:8px;}
+  html[data-skin="gov24"] .cfield input:focus,html[data-skin="gov24"] .cfield select:focus,html[data-skin="gov24"] .search-box input:focus,
+  html[data-skin="gov24"] #global-q:focus,html[data-skin="gov24"] .gz-field input:focus,html[data-skin="gov24"] .bl-field input:focus,
+  html[data-skin="gov24"] .bl-field select:focus{border-color:#256EF4;box-shadow:0 0 0 4px rgba(37,110,244,.18);outline:none;}
+  html[data-skin="gov24"] thead th{border-top:2px solid var(--ink);}
+  html[data-skin="gov24"] .mk-block{background:#063A74!important;border-color:#063A74!important;}
+  html[data-skin="gov24"] .hero-notice .hn-list li.on::before{background:#256EF4;}
+  html[data-skin="gov24"] .hn-dot{background:#0FB87D;}
+  /* 사업절차안내 — 정부24 */
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-chip{border:1px solid #CDD1D5;background:#fff;color:#464C53;border-radius:999px;font-weight:700;font-size:15px;padding:9px 18px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-chip:hover{border-color:#256EF4;color:#0B50D0}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-chip.act{background:#256EF4;border-color:#256EF4;color:#fff}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-chip.act b{color:#fff;opacity:1}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-chip b{color:#0B50D0}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #gz-q{background:#fff!important;border:1px solid #B1B8BE!important;border-radius:999px!important;height:48px;padding:0 52px 0 20px;font-size:15px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #gz-q:focus{border-color:#256EF4!important;box-shadow:0 0 0 4px rgba(37,110,244,.18)!important}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-search-ic{border:0;border-radius:50%;background:#256EF4;color:#fff;width:36px;height:36px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-search-ic svg{stroke:#fff}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-search-ic:hover{background:#0B50D0}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh,html[data-skin="gov24"]:not([data-theme="dark"]) .gz-corner{background:#fff;border-top:2px solid #1E2124;border-bottom:1px solid #CDD1D5;padding:14px 16px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh i{display:inline-grid;place-items:center;min-width:26px;height:22px;padding:0 6px;margin-right:8px;border-radius:4px;background:#ECF2FE;color:#0B50D0;font-size:12px;font-weight:700;letter-spacing:0;vertical-align:1px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh b{font-size:17px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh span{margin-top:6px;font-size:13px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh b,html[data-skin="gov24"]:not([data-theme="dark"]) .gz-rh b{font-weight:700;color:#1E2124}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh span,html[data-skin="gov24"]:not([data-theme="dark"]) .gz-rh span{font-weight:400;color:#6D7882}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-rh,html[data-skin="gov24"]:not([data-theme="dark"]) .gz-cell{border-top:0;border-bottom:1px solid #E6E8EA}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-cell{background:#F4F5F6}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-rh.gz-act{background:#ECF2FE;border-left-color:#256EF4}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-rh.gz-act::after{background:#256EF4;border-radius:4px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-cell.gz-act{background:#fff}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-tile{border:1px solid #CDD1D5;border-radius:12px;background:#fff}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-tile:hover{border-color:#256EF4}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-tile.on{border:1px solid #256EF4;box-shadow:0 6px 8px rgba(37,110,244,.10)}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-tile .gz-t-h{font-weight:700;color:#1E2124}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-tile .gz-t-b{color:#464C53}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-tile .money-hl,html[data-skin="gov24"]:not([data-theme="dark"]) .gz-tile.on .gz-t-b .money-hl{color:#0B50D0}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-tile.gz-chk{border-style:dashed}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-tile.gz-chk .gz-t-h{color:#267337}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-panel{background:#E7F4FE;border:1px solid #D8E5FD;border-radius:16px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-field input,html[data-skin="gov24"]:not([data-theme="dark"]) .gz-field select{background:#fff;border:1px solid #B1B8BE;border-radius:8px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-count b{color:#256EF4}
+  html[data-skin="gov24"]:not([data-theme="dark"]) .gz-pop{border-radius:8px;border-color:#58616A}
+  /* 인증 체크 — 정부24 */
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .note{background:#E7F4FE;border:1px solid #D8E5FD;border-left:1px solid #D8E5FD;border-radius:12px;color:#096AB3;font-size:14px;padding:14px 18px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .calc-form{background:#fff;border:1px solid #CDD1D5;border-radius:16px;padding:24px;gap:16px 20px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .cfield label{font-size:14px;font-weight:700;color:#1E2124;letter-spacing:0}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .cfield input,html[data-skin="gov24"]:not([data-theme="dark"]) #cert .cfield select{height:48px;padding:0 14px;font-size:16px;border:1px solid #B1B8BE;border-radius:8px;background:#fff}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .cfield input:focus,html[data-skin="gov24"]:not([data-theme="dark"]) #cert .cfield select:focus{border-color:#256EF4;box-shadow:0 0 0 4px rgba(37,110,244,.18)}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .cfield .hint{font-size:13px;color:#6D7882}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .cfield.chk{border:1px solid #B1B8BE;border-radius:8px;padding:12px 14px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .cfield.chk:has(input:checked){background:#ECF2FE;border-color:#256EF4}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .cfield.chk label{font-size:15px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .calc-summary{font-size:17px;color:#1E2124;font-weight:700}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .calc-summary b{color:#256EF4;font-size:28px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .calc-reset{height:40px;padding:0 16px;border:1px solid #58616A!important;border-radius:8px;color:#1E2124!important;font-weight:700!important;font-size:15px;background:#fff}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .calc-reset:hover{background:#F4F5F6}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .res-head{font-size:19px;font-weight:700;letter-spacing:-.01em;text-transform:none;color:#1E2124;padding-bottom:10px;border-bottom:2px solid #1E2124}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .res-head .cnt{background:#256EF4;color:#fff;border-radius:4px;font-size:13px;padding:2px 8px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .res-head.muted{color:#6D7882;border-bottom-color:#CDD1D5}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .res-head.muted .cnt{background:#E6E8EA;color:#464C53}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .res-card{border:1px solid #CDD1D5!important;border-radius:12px;padding:16px 20px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .res-card:hover{border-color:#256EF4!important}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .res-card .rc-l .nm{font-size:17px;color:#1E2124}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .res-card .rc-l .bs{font-size:14px;color:#464C53}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .res-card .rc-r .thr{background:#ECF2FE!important;color:#0B50D0!important;font-size:13px;border-radius:4px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .rc-rel a{border-radius:4px;border-color:#D8E5FD;background:#fff;color:#0B50D0}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .rc-rel a:hover{background:#256EF4;color:#fff;border-color:#256EF4}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .na-list span{border:1px solid #CDD1D5;border-radius:4px;background:#F4F5F6;color:#6D7882;font-size:14px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .res-empty{border:1px dashed #B1B8BE;border-radius:12px;background:#F4F5F6;font-size:15px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .certcard{border:1px solid #CDD1D5;border-radius:12px}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .certcard.on{border-color:#256EF4}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .cc-badge{border-radius:4px;background:#E6E8EA;color:#464C53}
+  html[data-skin="gov24"]:not([data-theme="dark"]) #cert .certcard.on .cc-badge{background:#256EF4;color:#fff}
+  .skin-toggle{font:700 12px/1 'Pretendard',sans-serif;height:34px;padding:0 10px;border-radius:8px;border:1px solid var(--border);
+    background:var(--surface);color:var(--ink-2);cursor:pointer;white-space:nowrap;}
+  .skin-toggle:hover{border-color:var(--accent);color:var(--accent);}
+  .skin-toggle .sk-g{display:none}
+  html[data-skin="gov24"] .skin-toggle .sk-g{display:inline} html[data-skin="gov24"] .skin-toggle .sk-n{display:none}
+</style>
 </head>
 <body>
 <template id="__bundler_thumbnail" data-bg-color="#14161d">

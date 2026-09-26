@@ -433,7 +433,7 @@ function sample(){
   const s=blank(); s.example=true;
   s.info={name:'○○초등학교 다목적강당 증축공사(예시)',org:'전라남도교육청 ○○교육지원청',contractor:'(주)○○건설',sub:'(주)○○기초',spec:'PHC φ500 A종',method:'SIP(매입말뚝)',date:'2026-09-26',writer:''};
   const data=[[12,6.2,4.1,0,10.6,12],[12,6.0,4.6,0,10.9,12],[12,6.4,5.2,0.4,12.0,12],[12,5.8,3.9,0,9.9,12],[12,6.1,4.4,0,10.7,12],[12,6.3,4.9,0.3,11.5,12],[12,6.0,4.0,0,10.2,12],[12,6.5,5.4,0.6,12.3,13],[12,6.2,4.5,0,10.9,12],[12,5.9,4.2,0,10.3,12],[12,6.1,4.8,0.2,11.3,12],[12,6.0,4.3,0,10.5,12]];
-  s.piles=data.map((d,i)=>({id:'P-'+(i+1),design:d[0],soil:d[1],weath:d[2],rock:d[3],embed:d[4],supply:d[5],joint:false,set:[3,4,2,4,3,3,4,2,3,4,3,3][i]}));
+  s.piles=data.map((d,i)=>({id:'P-'+(i+1),design:d[0],soil:d[1],weath:d[2],rock:d[3],embed:d[4],supply:d[5],joint:d[5]>12,set:[3,4,2,4,3,3,4,2,3,4,3,3][i]}));
   const it=s.items;
   it.soil={design:72,actual:0,price:18500,ptype:'계약단가',reason:'주상도 대비 토사층 두께 증가'};
   it.weath={design:54,actual:0,price:42800,ptype:'계약단가',reason:'지지층 심도 변화'};
@@ -464,8 +464,13 @@ function pileCalc(p){
   let st=['정상','ok'];
   if(num(p.embed)===0) st=['미입력','info'];
   else if(num(p.supply)<num(p.embed)) st=['반입<근입','bad'];
-  else if(deduct>0.001) st=['여유 초과','warn'];
-  else if(num(p.embed)>num(p.design)&&num(p.design)>0) st=['설계 초과','info'];
+  else{
+    const jm=num(S.govIn.len)>0&&num(p.supply)>num(S.govIn.len)+0.001&&!p.joint;
+    if(jm&&deduct>0.001) st=['여유 초과·이음 확인','warn'];
+    else if(jm) st=['이음 확인','warn'];
+    else if(deduct>0.001) st=['여유 초과','warn'];
+  }
+  if(st[0]==='정상'&&num(p.embed)>num(p.design)&&num(p.design)>0) st=['설계 초과','info'];
   return {drill,cut,matOk,deduct,st};
 }
 function totals(){
@@ -487,8 +492,11 @@ function money(t){
 function gov(t){
   const inM=num(S.govIn.count)*num(S.govIn.len);
   const used=t.supply, ok=t.matOk;
-  const unusedPieces=Math.max(0,num(S.govIn.count)-t.n);
-  return {inM,used,ok,remainM:r2(inM-ok),unusedPieces,deduct:t.deduct};
+  const L=num(S.govIn.len);
+  const usedPieces=L>0?S.piles.reduce((a,p)=>a+(num(p.supply)>0?Math.ceil(num(p.supply)/L-1e-9):0),0):t.n;
+  const unusedPieces=Math.max(0,num(S.govIn.count)-usedPieces);
+  const short=num(S.govIn.count)>0&&usedPieces>num(S.govIn.count);
+  return {inM,used,ok,remainM:r2(inM-ok),usedPieces,unusedPieces,deduct:t.deduct,short,shortN:usedPieces-num(S.govIn.count)};
 }
 
 /* ---------- 엑셀보고서 서식 (웜 그레이 + #D9730D, 맑은 고딕, A4 세로) ---------- */
@@ -583,14 +591,14 @@ async function buildWorkbook(ExcelJS){
     s2.getCell(`K${r}`).numFmt=FMT.m;
     put(s2,`L${r}`,p.joint?'Y':'N','input',null,'center');
     put(s2,`M${r}`,num(p.set),'input',FMT.mm,'right');
-    put(s2,`N${r}`,{formula:`IF(G${r}=0,"미입력",IF(H${r}<G${r},"반입<근입",IF(ROUND(K${r},3)>0,"여유 초과",IF(AND(B${r}>0,G${r}>B${r}),"설계 초과","정상"))))`,result:c.st[0]},(c.st[1]==='warn'||c.st[1]==='bad')?'warn':'data',null,'center');
+    put(s2,`N${r}`,{formula:`IF(G${r}=0,"미입력",IF(H${r}<G${r},"반입<근입",IF(AND('관급자재'!$B$7>0,H${r}>'관급자재'!$B$7+0.001,L${r}="N"),IF(ROUND(K${r},3)>0,"여유 초과·이음 확인","이음 확인"),IF(ROUND(K${r},3)>0,"여유 초과",IF(AND(B${r}>0,G${r}>B${r}),"설계 초과","정상")))))`,result:c.st[0]},(c.st[1]==='warn'||c.st[1]==='bad')?'warn':'data',null,'center');
   });
   put(s2,`A${PT}`,has?'계':'계 (입력 없음)','totalLabel',null,'center');
   ['B','C','D','E','F','G','H','I','J','K'].forEach(L=>{const key={B:'design',C:'soil',D:'weath',E:'rock',F:'drill',G:'embed',H:'supply',I:'cut',J:'matOk',K:'deduct'}[L];put(s2,`${L}${PT}`,fx(`SUM(${L}${P0}:${L}${PL})`,r2(t[key])),'total',FMT.m,'right');});
   put(s2,`L${PT}`,fx(`COUNTIF(L${P0}:L${PL},"Y")`,t.joint),'total',FMT.cnt,'center');
   put(s2,`M${PT}`,'','totalLabel');put(s2,`N${PT}`,'','totalLabel');
   note(s2,PT+2,'절단길이 = 반입길이 − 근입깊이 · 자재인정 = MIN(반입길이, 근입깊이 + 두부정리 여유) · 자재공제 = 반입길이 − 자재인정');
-  note(s2,PT+3,'판정: 여유 초과·반입<근입은 붉은 글씨로 표시됩니다. 노란 칸은 입력값, 흰 칸은 자동 계산입니다.');
+  note(s2,PT+3,'판정: 여유 초과·반입<근입·이음 확인(반입길이가 본당 길이를 넘는데 이음 없음)은 붉은 글씨로 표시됩니다. 노란 칸은 입력값, 흰 칸은 자동 계산입니다.');
   print(s2,PT+3,'4:4');
 
   /* 3. 수량·금액 정산 */
@@ -634,10 +642,11 @@ async function buildWorkbook(ExcelJS){
     ['현장 반입(사용) 길이',fx(`${PS}!H${PT}`,r2(g.used)),'m','data',FMT.m],
     ['인정 사용 길이',fx(`${PS}!J${PT}`,r2(g.ok)),'m','data',FMT.m],
     ['여유 초과 절단(공제 대상)',fx(`${PS}!K${PT}`,r2(g.deduct)),'m',g.deduct>0?'warn':'data',FMT.m],
-    ['미사용 본수',{formula:`MAX(0,B6-${OV}!B20)`,result:g.unusedPieces},'본','data',FMT.cnt]];
+    ['미사용 본수 (본당 길이 환산)',fx(`IF(B7>0,MAX(0,B6-SUMPRODUCT(ROUNDUP(${PS}!H${P0}:H${PL}/B7-0.000000001,0)*(${PS}!H${P0}:H${PL}>0))),MAX(0,B6-${OV}!B20))`,g.unusedPieces),'본','data',FMT.cnt]];
   g4.forEach((r,i)=>{const R=5+i;put(s4,`A${R}`,r[0],'label');put(s4,`B${R}`,r[1],r[3],r[4],'right');s4.getCell(`B${R}`).numFmt=r[4]||'General';put(s4,`C${R}`,r[2],'data',null,'center');});
   put(s4,'A13','정산 잔량','totalLabel');put(s4,'B13',{formula:'ROUND(B8-B10,2)',result:g.remainM},'total',FMT.m,'right');put(s4,'C13','m','totalLabel',null,'center');
   put(s4,'A14','잔량 처리 방법','label');put(s4,'B14',S.govIn.handle,'input',null,'center');put(s4,'C14','','data');
+  if(g.short) note(s4,15,`※ 수불 불일치: 사용 본수(${g.usedPieces}본)가 납품 본수보다 ${g.shortN}본 많습니다. 추가 납품·이음 기록 확인 전에는 잔량을 반납 재고로 보지 마십시오.`,true);
   note(s4,16,'납품 수량은 납품검사조서, 사용 수량은 반입검수부·항타기록부와 대사합니다. 계약상대자 귀책 파손분은 변상 또는 공제 대상입니다.');
   print(s4,16);
 
@@ -702,7 +711,7 @@ function renderQty(){
     <td class="n"><input type="number" step="0.1" id="q-d-${i.k}" data-q="${i.k}" data-f="design" value="${it.design}"></td>
     ${i.manual?`<td class="n"><input type="number" step="1" id="q-a-${i.k}" data-q="${i.k}" data-f="actual" value="${it.actual}"></td>`:`<td class="calc" data-c="a"></td>`}
     <td class="calc" data-c="diff"></td>
-    <td class="n"><input type="number" step="100" id="q-p-${i.k}" data-q="${i.k}" data-f="price" value="${it.price}" style="width:104px"></td>
+    <td class="n"><input type="text" inputmode="numeric" class="comma" id="q-p-${i.k}" data-q="${i.k}" data-f="price" value="${num(it.price)?won(it.price):''}" style="width:120px;text-align:right;font-variant-numeric:tabular-nums"></td>
     <td><select id="q-t-${i.k}" data-q="${i.k}" data-f="ptype">${['계약단가','신규/협의'].map(o=>`<option ${it.ptype===o?'selected':''}>${o}</option>`).join('')}</select></td>
     <td class="calc" data-c="amt"></td>
     <td><input type="text" id="q-r-${i.k}" data-q="${i.k}" data-f="reason" value="${esc(it.reason)}"></td></tr>`}).join('');
@@ -722,7 +731,7 @@ function update(){
     tr.querySelector('[data-c=amt]').textContent=r.excl?'관급 제외':(r.amt>0?'+':'')+won(r.amt);});
   $('#sumBox').innerHTML=`<dt>직접공사비 증감</dt><dd>${(m.direct>0?'+':'')+won(m.direct)}</dd><dt>제경비 (${fm(num(S.overhead))}%)</dt><dd>${(m.oh>0?'+':'')+won(m.oh)}</dd><dt>부가가치세 (${fm(num(S.vat),1)}%)</dt><dd>${(m.vat>0?'+':'')+won(m.vat)}</dd><dt style="font-weight:600;color:var(--ink)">정산 증감 합계</dt><dd class="total ${m.total>0?'pos':m.total<0?'neg':''}">${(m.total>0?'+':'')+won(m.total)} 원</dd>`;
   // gov
-  $('#govBox').innerHTML=`<dt>납품 길이</dt><dd>${fm(g.inM)} m</dd><dt>현장 반입(사용) 길이</dt><dd>${fm(g.used)} m</dd><dt>인정 사용 길이</dt><dd>${fm(g.ok)} m</dd><dt>여유 초과 절단(공제 대상)</dt><dd class="${g.deduct>0?'neg':''}">${fm(g.deduct)} m</dd><dt>미사용 본수</dt><dd>${g.unusedPieces} 본</dd><dt style="font-weight:600;color:var(--ink)">정산 잔량 (${esc(S.govIn.handle)})</dt><dd class="total ${g.remainM>0?'neg':''}">${fm(g.remainM)} m</dd>`;
+  $('#govBox').innerHTML=`<dt>납품 길이</dt><dd>${fm(g.inM)} m</dd><dt>현장 반입(사용) 길이</dt><dd>${fm(g.used)} m</dd><dt>인정 사용 길이</dt><dd>${fm(g.ok)} m</dd><dt>여유 초과 절단(공제 대상)</dt><dd class="${g.deduct>0?'neg':''}">${fm(g.deduct)} m</dd><dt>사용 본수 (본당 길이 환산)</dt><dd class="${g.short?'neg':''}">${g.usedPieces} 본${g.short?' <span class="pill bad">납품보다 '+g.shortN+'본 많음</span>':''}</dd><dt>미사용 본수</dt><dd>${g.unusedPieces} 본</dd><dt style="font-weight:600;color:var(--ink)">정산 잔량 (${esc(S.govIn.handle)})</dt><dd class="total ${g.remainM>0?'neg':''}">${fm(g.remainM)} m</dd>`+(g.short?`<dt style="grid-column:1/-1;color:var(--err);font-weight:700;border-bottom:0">수불 불일치: 사용 본수가 납품 본수보다 ${g.shortN}본 많습니다. 추가 납품·이음 기록·반입길이를 확인하기 전에는 잔량을 반납 재고로 보지 마십시오.</dt>`:'');
   // checks
   const done=S.checks.filter(Boolean).length;$('#chkCount').textContent=`${done} / ${CHECKS.length} 확인`;$('#chkBar').style.width=(done/CHECKS.length*100)+'%';
   // kpi
@@ -748,7 +757,7 @@ function onEdit(e){
     else{inp.hidden=true;inp.value=el.value;S.info[k]=el.value;}}
   else if(el.dataset.bind){const [o,k]=el.dataset.bind.split('.');S[o][k]=el.dataset.bool?el.value==='1':(el.type==='number'?num(el.value):el.value);}
   else if(el.dataset.p!==undefined){const p=S.piles[+el.dataset.p];const f=el.dataset.f;p[f]=el.type==='checkbox'?el.checked:(el.type==='number'?num(el.value):el.value);}
-  else if(el.dataset.q){const it=S.items[el.dataset.q];const f=el.dataset.f;it[f]=el.type==='number'?num(el.value):el.value;}
+  else if(el.dataset.q){const it=S.items[el.dataset.q];const f=el.dataset.f;it[f]=el.classList.contains('comma')?num(String(el.value).replace(/,/g,'')):(el.type==='number'?num(el.value):el.value);}
   else if(el.dataset.chk!==undefined){S.checks[+el.dataset.chk]=el.checked;}
   else if(el.dataset.op!==undefined){S.ops[+el.dataset.op][el.dataset.f]=el.value;}
   else if(el.dataset.sign!==undefined){S.signs[+el.dataset.sign][el.dataset.f]=el.value;}
@@ -767,6 +776,8 @@ document.addEventListener('click',e=>{
   if(b.id==='btnSample'){S=sample();renderStatic();update();flash('예시 자료를 불러왔습니다.');return;}
   if(b.id==='btnExport'){exportXlsx();return;}
 });
+document.addEventListener('focusout',e=>{const el=e.target;if(el.classList&&el.classList.contains('comma')){const v=num(String(el.value).replace(/,/g,''));el.value=v?won(v):'';}});
+document.addEventListener('focusin',e=>{const el=e.target;if(el.classList&&el.classList.contains('comma')&&el.value){el.value=String(el.value).replace(/,/g,'');el.select();}});
 function flash(t,err){const m=$('#msg');m.textContent=t;m.className='msg'+(err?' err':'');clearTimeout(flash._t);flash._t=setTimeout(()=>{m.textContent=''},5000)}
 
 /* ---------- export ---------- */

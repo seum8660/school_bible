@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>물가변동 조정 판정기</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap">
+<style>
+/* KRDS 토큰 기반 · 라이트 전용 */
+:root{
+  --p5:#ECF2FE; --p10:#D8E5FD; --p20:#B1CEFB; --p50:#256EF4; --p60:#0B50D0; --p70:#083891;
+  --ai:linear-gradient(102deg,#0FB87D 10%,#256EF4 90%);
+  --sec5:#EEF2F7;
+  --g0:#FFFFFF; --g5:#F4F5F6; --g10:#E6E8EA; --g20:#CDD1D5; --g30:#B1B8BE; --g40:#8A949E; --g50:#6D7882; --g60:#58616A; --g70:#464C53; --g90:#1E2124;
+  --ok-bg:#EAF6EC; --ok:#267337; --warn-bg:#FFF3DB; --warn:#8A5C00; --bad-bg:#FDEFEC; --bad:#BD2C0F; --info-bg:#E7F4FE;
+  --sh-sm:0 2px 8px 0 rgba(0,0,0,.04); --sh-md:0 6px 8px 0 rgba(37,110,244,.10);
+  --sans:"Pretendard GOV","Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"Roboto Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+body{background:var(--g5);color:var(--g90);font-family:var(--sans);font-size:15px;line-height:1.5;letter-spacing:-.01em;padding-inline:16px;padding-block:0 56px}
+.wrap{max-width:1248px;margin:24px auto 0;display:flex;flex-direction:column;gap:24px}
+
+header{background:var(--g0);border-bottom:1px solid var(--g10);margin-inline:-16px;padding:28px 16px 24px}
+header .inner{max-width:1248px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px}
+.crumb{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;background:var(--p5);color:var(--p60);font-size:13px;font-weight:700}
+header h1{margin:8px 0 4px;font-size:28px;line-height:1.35;font-weight:700;text-wrap:balance}
+header p{margin:0;color:var(--g70);font-size:15px}
+.law{font-size:13px;color:var(--g50);text-align:right;line-height:1.6}
+.law b{color:var(--g70);font-weight:500}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:24px;align-items:start}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+
+.panel{background:var(--g0);border:1px solid var(--g20);border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:14px;min-width:0}
+@media (max-width:600px){.panel{padding:16px}}
+.panel h2{margin:0;font-size:19px;line-height:1.5;font-weight:700;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.panel h2 .step{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--p50);color:#fff;font-size:13px;font-weight:700;font-family:var(--sans)}
+.panel h2 small{font-weight:400;color:var(--g50);font-size:13px;margin-left:auto}
+.lead{margin:-8px 0 0;font-size:14px;color:var(--g70)}
+
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px 16px}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f.wide{grid-column:1/-1}
+label,.lbl{font-size:14px;color:var(--g90);font-weight:700}
+input[type=text],input[type=date],select{font:inherit;font-size:15px;color:var(--g90);background:var(--g0);border:1px solid var(--g30);border-radius:8px;height:44px;padding:0 12px;width:100%;min-width:0;transition:border-color .15s}
+input:hover,select:hover{border-color:var(--g60)}
+input[type=text]:focus,input[type=date]:focus,select:focus{border-color:var(--p50);box-shadow:0 0 0 4px var(--p10);outline:none}
+input.num{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums;font-size:14.5px}
+button:focus-visible,summary:focus-visible{outline:2px solid #fff;box-shadow:0 0 0 4px var(--p50)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:15px;font-weight:400;color:var(--g90);cursor:pointer}
+.check input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--p50);flex:none}
+
+/* KRDS 탭 */
+.seg{display:flex;border-bottom:1px solid var(--g20);gap:24px}
+.seg label{padding:10px 2px 12px;cursor:pointer;font-size:17px;font-weight:700;color:var(--g50);border-bottom:2px solid transparent;margin-bottom:-1px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:hover{color:var(--g90)}
+.seg label:has(input:checked){color:var(--p60);border-bottom-color:var(--p50)}
+.seg label:has(input:focus-visible){outline:2px solid var(--p50);outline-offset:2px;border-radius:4px}
+
+.hint{font-size:13px;color:var(--g50);margin:0;line-height:1.6}
+.calc-line{font-family:var(--mono);font-size:13.5px;background:var(--p5);border-radius:8px;padding:12px 14px;color:var(--g70);overflow-x:auto;white-space:nowrap}
+.calc-line b{color:var(--p60);font-weight:700}
+
+.tbl-wrap{overflow-x:auto;border-top:2px solid var(--g90)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{background:var(--g5);color:var(--g70);font-weight:700;text-align:left;padding:10px 8px;border-bottom:1px solid var(--g20);white-space:nowrap}
+td{padding:4px 6px;border-bottom:1px solid var(--g10);vertical-align:middle}
+td:first-child input[type=text]{min-width:180px}
+td input.num{min-width:104px}
+#idxBody input.num{min-width:84px}
+td input[type=text]{height:36px;padding:0 8px;border-color:transparent;background:transparent;border-radius:6px}
+td input[type=text]:hover{border-color:var(--g30)}
+td input[type=text]:focus{background:var(--g0)}
+td.out{font-family:var(--mono);font-size:13.5px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+td.muted{color:var(--g50)}
+tfoot td{background:var(--g5);font-weight:700;border-bottom:1px solid var(--g20);padding:10px 8px}
+tfoot td.out{color:var(--p60)}
+.rowbtn{background:none;border:0;color:var(--g40);cursor:pointer;font-size:18px;line-height:1;width:28px;height:28px;border-radius:6px}
+.rowbtn:hover{color:var(--bad);background:var(--bad-bg)}
+
+.btn{font:inherit;font-size:15px;font-weight:700;height:40px;padding:0 16px;border-radius:8px;border:1px solid var(--g60);background:transparent;color:var(--g90);cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:background-color .15s}
+.btn:hover{background:var(--g5)} .btn:active{background:var(--g10)}
+.btn.primary{background:var(--p50);border-color:var(--p50);color:#fff;height:48px;padding:0 20px;font-size:17px}
+.btn.primary:hover{background:var(--p60)} .btn.primary:active{background:var(--p70)}
+.btn.sub{background:var(--p5);border-color:var(--p50);color:var(--p60)}
+.btn.sub:hover{background:var(--p10)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+.tag{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:700;white-space:nowrap}
+.tag.ok{background:var(--ok-bg);color:var(--ok)} .tag.bad{background:var(--bad-bg);color:var(--bad)} .tag.warn{background:var(--warn-bg);color:var(--warn)} .tag.na{background:var(--g5);color:var(--g50)}
+
+details.panel>summary{cursor:pointer;font-size:19px;font-weight:700;list-style:none;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+details.panel>summary::-webkit-details-marker{display:none}
+details.panel>summary::after{content:"펼치기 ›";margin-left:auto;font-size:14px;font-weight:400;color:var(--g70)}
+details.panel[open]>summary::after{content:"접기"}
+details.panel:not([open]){gap:0}
+.opt{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;border:1px solid #063A74;color:#052B57;font-size:13px;font-weight:700}
+
+/* 판정 패널 — 폴더 탭 */
+aside{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);display:flex;flex-direction:column;gap:16px}
+@media (max-width:960px){aside{position:static}}
+.vtab{display:inline-block;align-self:flex-start;padding:12px 20px 10px;font-size:15px;font-weight:700;line-height:1;color:var(--p60);background:var(--info-bg);border:1px solid var(--p10);border-bottom:0;border-radius:12px 12px 0 0;margin-bottom:-17px;position:relative;z-index:1}
+.verdict{background:var(--info-bg);border:1px solid var(--p10);border-radius:0 16px 16px 16px;box-shadow:var(--sh-sm);padding:16px;display:flex;flex-direction:column;gap:12px}
+.v-head{border-radius:12px;padding:2px;background:var(--g30)}
+.v-head .in{background:var(--g0);border-radius:10px;padding:16px 18px}
+.v-head.ok{background:var(--ai);box-shadow:var(--sh-md)}
+.v-head.warn{background:#F2B544}
+.v-head.bad{background:#E77E6A}
+.v-head .big{font-size:24px;font-weight:700;line-height:1.4}
+.v-head.ok .big{color:var(--p60)} .v-head.warn .big{color:var(--warn)} .v-head.bad .big{color:var(--bad)}
+.v-head .sub{font-size:14px;color:var(--g70);margin-top:2px}
+.card-w{background:var(--g0);border-radius:12px;padding:6px 18px}
+.card-w h3{margin:10px 0 2px;font-size:15px;font-weight:700}
+.reqs{list-style:none;margin:0;padding:0;counter-reset:rq}
+.reqs li{counter-increment:rq;display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:start;padding:11px 0;border-bottom:1px solid var(--g10);font-size:15px}
+.reqs li:last-child{border-bottom:0}
+.reqs li::before{content:counter(rq);font-weight:700;color:var(--p50);text-align:center}
+.reqs li.bad::before{color:var(--bad)} .reqs li.na::before{color:var(--g40)} .reqs li.warn::before{color:var(--warn)}
+.reqs .d{font-size:13px;color:var(--g50);display:block;margin-top:1px}
+.reqs .val{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.money dl{margin:0;display:grid;grid-template-columns:1fr auto}
+.money dt,.money dd{padding:9px 0;border-bottom:1px solid var(--g10);font-size:15px;margin:0}
+.money dt{color:var(--g70)}
+.money dd{font-family:var(--mono);font-size:14.5px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.money dt.total,.money dd.total{border-bottom:1px solid var(--g10);border-top:2px solid var(--g90);font-weight:700;color:var(--g90);font-size:17px;padding-block:12px}
+.money dd.total{color:var(--p60)}
+.money dl>*:last-child,.money dl>*:nth-last-child(2){border-bottom:0}
+.dates{background:var(--g0);border:1px solid var(--g20);border-radius:12px;padding:14px 18px}
+.dates h3{margin:0 0 8px;font-size:15px;font-weight:700}
+.dates dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
+.dates dt{color:var(--g70)} .dates dd{margin:0;font-family:var(--mono);font-size:13.5px;text-align:right}
+.note{font-size:13px;color:var(--g50);line-height:1.65;margin:0}
+.toast{font-size:14px;color:var(--ok);font-weight:700;min-height:1.2em}
+textarea#reportText{position:absolute;left:-9999px;width:1px;height:1px}
+/* 표준시장단가 자료 */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;border:1.5px dashed var(--g30);border-radius:12px;padding:20px 16px;background:var(--g5);cursor:pointer;font-weight:400;color:var(--g70);transition:border-color .15s,background-color .15s}
+.drop b{color:var(--p60);font-size:16px}
+.drop:hover,.drop.over{border-color:var(--p50);background:var(--p5)}
+.drop:focus-within{border-color:var(--p50);box-shadow:0 0 0 4px var(--p10)}
+.vis-hide{position:absolute;opacity:0;width:1px;height:1px}
+.pill{padding:2px;border-radius:999px;background:var(--ai);box-shadow:var(--sh-md)}
+.pill .in{display:flex;align-items:center;height:52px;padding:0 6px 0 20px;background:#fff;border-radius:999px;gap:8px}
+.pill input{flex:1;border:0!important;box-shadow:none!important;height:44px!important;padding:0!important;font-size:16px!important;background:transparent!important;min-width:0}
+.pill .go{flex:none;width:40px;height:40px;border-radius:50%;background:var(--p50);display:grid;place-items:center}
+.pill:focus-within{background:var(--p50)}
+.smbar{display:flex;flex-direction:column;gap:10px;padding:16px;background:var(--g5);border-radius:12px}
+.smopts{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;font-size:14px}
+.smopts label{font-size:14px;display:flex;align-items:center;gap:8px}
+.smopts select,.smopts input{height:36px;width:auto}
+.smopts input{width:80px}
+.up{color:var(--bad)} .down{color:var(--p60)}
+.addbtn{height:30px;padding:0 10px;font-size:13px;border-radius:6px;border:1px solid var(--p50);background:var(--p5);color:var(--p60);font-weight:700;cursor:pointer;white-space:nowrap}
+.addbtn:hover{background:var(--p10)}
+.addbtn:disabled{border-color:var(--g20);background:var(--g5);color:var(--g40);cursor:not-allowed}
+td input[type=date].mini{height:34px;width:150px;font-size:14px}
+td input[type=text].mini{height:34px;border-color:var(--g20)}
+.src{font-size:12px;color:var(--g50);display:block}
+aside .btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+aside .btn,aside .btn.primary{height:44px;padding:0 8px;font-size:15px;justify-content:center;white-space:nowrap}
+.dbody{display:flex;flex-direction:column;gap:14px;padding-top:16px}
+.gnb{display:flex;gap:4px;background:var(--g5);border-radius:10px;padding:4px;align-self:flex-end}
+.gnb button{font:inherit;font-size:15px;font-weight:700;height:40px;padding:0 18px;border:0;border-radius:8px;background:transparent;color:var(--g50);cursor:pointer}
+.gnb button:hover{color:var(--g90)}
+.gnb button.on{background:#fff;color:var(--p60);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+header .inner{align-items:flex-end}
+.guide{background:#fff;border:1px solid var(--g20);border-radius:12px;padding:32px clamp(16px,4vw,48px);display:flex;flex-direction:column;gap:32px;max-width:960px;margin:0 auto;width:100%}
+.g-intro h2{margin:0 0 8px;font-size:24px;line-height:1.5}
+.g-intro p{margin:0;color:var(--g70);font-size:16px;line-height:1.7}
+.g-sec{display:flex;flex-direction:column;gap:12px;border-top:2px solid var(--g90);padding-top:20px}
+.g-sec h3{margin:0;font-size:19px;display:flex;align-items:center;gap:10px}
+.g-sec h3 .step,.panel h2 .step{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--p50);color:#fff;font-size:13px;font-weight:700}
+.g-sec h4{margin:8px 0 0;font-size:16px}
+.g-sec p{margin:0;font-size:15px;line-height:1.75;color:var(--g90)}
+.g-law{font-size:13px!important;color:var(--g50)!important}
+td.g-law{white-space:nowrap}
+.formula{font-family:var(--mono);font-size:14.5px;line-height:1.8;background:var(--p5);color:var(--p70);border-radius:8px;padding:14px 16px;overflow-x:auto}
+.g-tbl{border-top:1px solid var(--g20)}
+.g-tbl th{background:var(--g5);vertical-align:top;white-space:nowrap}
+.g-tbl td{padding:10px 8px;line-height:1.65;font-size:14.5px}
+.g-tbl tbody th{border-bottom:1px solid var(--g10);color:var(--g90)}
+.g-links{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:15px}
+.g-links a{color:var(--p60);font-weight:700}
+.preview{background:#fff;border:1px solid var(--g20);border-radius:12px;padding:12px 16px}
+.preview summary{cursor:pointer;font-weight:700;font-size:15px}
+.preview pre{margin:10px 0 0;white-space:pre-wrap;word-break:keep-all;font-family:var(--sans);font-size:13px;line-height:1.7;color:var(--g70);max-height:420px;overflow:auto}
+.chk-note{margin:0;padding:10px 14px;border-radius:8px;background:var(--warn-bg);color:var(--warn);font-size:13.5px;line-height:1.6}
+.chk-note b{color:var(--warn)}
+.testbar{margin-inline:-16px;padding:8px 16px;background:var(--warn-bg);color:var(--warn);font-size:14px;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head><body style="margin:0">
+
+  <div class="testbar" role="note"><span class="tag warn">테스트용</span> 검증 중인 도구입니다. 산출 결과는 참고용으로만 쓰고, 실제 조정은 산출내역서와 집행기준으로 다시 확인해 주세요.</div>
+  <header>
+    <div class="inner">
+      <div>
+        <span class="crumb">계약관리 · 정산</span>
+        <h1>물가변동 조정 판정기</h1>
+        <p>물가변동(ES) 계약금액 조정 요건을 판정하고, 조정금액과 선금 공제액을 계산할 수 있어요.</p>
+      </div>
+      <nav class="gnb" aria-label="화면 선택"><button type="button" class="on" data-view="app" aria-pressed="true">판정기</button><button type="button" data-view="guide" aria-pressed="false">산출기준 안내</button></nav>
+      <div class="law"><b>지방계약법 시행령 제73조</b> (2026.6.3. 시행)<br><b>같은 법 시행규칙 제72조</b> (2026.7.1. 시행)<br>입력값은 이 브라우저에만 임시 보관돼요</div>
+    </div>
+  </header>
+<div class="wrap" id="app">
+
+  <div class="grid">
+    <div class="col">
+      <!-- STEP 1 -->
+      <section class="panel">
+        <h2><span class="step">1</span>계약 기본정보 <small id="sampleFlag">예시값 입력됨</small></h2>
+        <div class="fields">
+          <div class="f wide"><label for="cName">계약명</label><input type="text" id="cName"></div>
+          <div class="f"><label for="cAmt">계약금액 (원)</label><input type="text" id="cAmt" class="num money" inputmode="numeric"></div>
+          <div class="f"><label for="dBid">입찰일 (수의계약은 계약체결일)</label><input type="date" id="dBid"></div>
+          <div class="f"><label for="dCon">계약체결일 (장기계속은 1차 계약일)</label><input type="date" id="dCon"></div>
+          <div class="f"><label for="round">조정 회차</label>
+            <select id="round"><option value="1">1차 조정</option><option value="2">2차 이후 조정</option></select></div>
+          <div class="f" id="prevWrap" hidden><label for="dPrev">직전 조정기준일</label><input type="date" id="dPrev"></div>
+          <div class="f"><label for="dAdj">조정기준일 (조정사유 발생일)</label><input type="date" id="dAdj"></div>
+          <div class="f"><label for="dReq">조정 청구일</label><input type="date" id="dReq"></div>
+          <div class="f"><label for="advRate">선금급률 (%)</label><input type="text" id="advRate" class="num" inputmode="decimal"></div>
+        </div>
+        <p class="chk-note"><span class="tag warn">원문 확인</span> 선금 공제는 <b>증액 조정일 때만</b> 계산해요. 감액 조정에도 같은 산식(적용대가 × 조정률 × 선금급률)을 적용한다는 해석이 있으니, 감액이면 발주기관 기준을 확인하세요.</p>
+        <label class="check"><input type="checkbox" id="special"> <span>천재지변 또는 원자재 가격 급등으로 90일 이내 조정이 불가피함 <span class="hint">(영 제73조제5항 특례, 기간요건 적용 제외)</span></span></label>
+      </section>
+
+      <!-- STEP 2 -->
+      <section class="panel">
+        <h2><span class="step">2</span>물가변동적용대가</h2>
+        <div class="fields">
+          <div class="f"><label for="doneAmt">조정기준일 전 기성(이행)액</label><input type="text" id="doneAmt" class="num money" inputmode="numeric"></div>
+          <div class="f"><label for="lateAmt">계약상대자 귀책 지연분</label><input type="text" id="lateAmt" class="num money" inputmode="numeric"></div>
+        </div>
+        <p class="hint">지연분: 공정표상 조정기준일 전에 끝났어야 할 미이행 부분. 발주기관 책임이나 불가항력으로 지연됐다면 0으로 두십시오 (규칙 제72조제5항 단서).</p>
+        <div class="calc-line" id="baseLine"></div>
+      </section>
+
+      <!-- 표준시장단가 자료 -->
+      <section class="panel" id="smPanel">
+        <h2><span class="opt">자료</span>표준시장단가 자료 <small id="smCount"></small></h2>
+        <p class="lead">국토교통부가 공표한 표준시장단가 엑셀 파일을 회차별로 넣어 두면, 입찰일과 조정기준일에 맞는 회차 단가를 자동으로 찾아 넣을 수 있어요.</p>
+        <label class="drop" id="smDrop">
+          <input type="file" id="smFile" class="vis-hide" accept=".xlsx,.xls,.csv" multiple>
+          <b>파일 선택</b>
+          <span>또는 여기로 끌어다 놓기 · .xlsx .xls .csv · 여러 파일 가능</span>
+          <span class="hint">파일명에 「2026 하반기」처럼 연도와 반기가 있으면 적용일을 자동으로 정해요</span>
+        </label>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>적용일</th><th>회차 이름</th><th>항목 수</th><th>인식한 열</th><th></th></tr></thead>
+          <tbody id="smList"></tbody>
+        </table></div>
+        <div class="calc-line" id="smUse"></div>
+        <p class="hint">넣은 자료는 이 브라우저에만 보관돼요. 헤더에 「공종명(명칭)」과 「합계」 또는 「재료비·노무비·경비」 열이 있어야 인식할 수 있어요.</p>
+      </section>
+
+      <!-- STEP 3 -->
+      <section class="panel">
+        <h2><span class="step">3</span>조정률 산출</h2>
+        <div class="seg" role="radiogroup" aria-label="조정 방법">
+          <label><input type="radio" name="method" value="index" id="mIndex">지수조정률</label>
+          <label><input type="radio" name="method" value="item" id="mItem">품목조정률</label>
+        </div>
+        <label class="check" id="contractFlagWrap"><input type="checkbox" id="contractFlag"> <span>계약서에 지수조정률 방법이 명시되어 있음 <span class="hint">(미명시 시 품목조정률이 원칙, 영 제73조제2항)</span></span></label>
+
+        <div id="indexBox">
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>비목군</th><th>계수</th><th>기준지수</th><th>비교지수</th><th style="text-align:right">변동률</th><th style="text-align:right">기여분</th><th></th></tr></thead>
+            <tbody id="idxBody"></tbody>
+            <tfoot><tr><td>합계</td><td class="out" id="idxWsum"></td><td colspan="3" class="muted" id="idxWmsg"></td><td class="out" id="idxK"></td><td></td></tr></tfoot>
+          </table></div>
+          <div class="btns" style="margin-top:8px"><button type="button" class="btn" id="addIdx">+ 비목군 추가</button><button type="button" class="btn sub" id="fillZ">표준시장단가(G) 지수 채우기</button></div>
+          <p class="hint" style="margin-top:6px">계수는 적용대가 산출내역의 비목군별 구성비(합계 1.0000). 기준지수는 입찰일(2차 이후는 직전 조정기준일), 비교지수는 조정기준일 지수. 비목군별 지수 출처는 상단 「산출기준 안내」에서 확인할 수 있어요.</p>
+        </div>
+
+        <div id="itemBox" hidden>
+          <div class="smbar">
+            <div class="pill"><div class="in">
+              <label for="smQ" class="sr">표준시장단가 검색</label>
+              <input type="text" id="smQ" placeholder="표준시장단가 공종명·코드·규격으로 찾아 추가해요" autocomplete="off">
+              <span class="go" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg></span>
+            </div></div>
+            <div class="smopts">
+              <label for="smBasis">비교 단가 <select id="smBasis"><option value="7">합계</option><option value="4">재료비</option><option value="5">노무비</option><option value="6">경비</option></select></label>
+              <label for="smCR">계약단가 = 입찰당시가격 × <input type="text" id="smCR" class="num" inputmode="decimal" value="100"> %</label>
+              <span class="hint" id="smInfo"></span>
+            </div>
+            <div class="tbl-wrap" id="smResWrap" hidden><table>
+              <thead><tr><th>공종</th><th>단위</th><th style="text-align:right">입찰일 회차</th><th style="text-align:right">조정기준일 회차</th><th style="text-align:right">변동률</th><th></th></tr></thead>
+              <tbody id="smRes"></tbody>
+            </table></div>
+          </div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>품목·비목</th><th>잔여수량</th><th>계약단가</th><th>입찰당시가격</th><th>물가변동당시가격</th><th style="text-align:right">등락률</th><th style="text-align:right">등락폭</th><th style="text-align:right">금액</th><th></th></tr></thead>
+            <tbody id="itmBody"></tbody>
+            <tfoot>
+              <tr><td colspan="7">등락금액 소계</td><td class="out" id="itmSub"></td><td></td></tr>
+              <tr><td colspan="5">비례 제경비 가산 (일반관리비·이윤 등, 예정가격 기준 계약 시)</td><td colspan="2"><input type="text" id="ohRate" class="num" inputmode="decimal" aria-label="제경비 가산율(%)" style="width:90px;height:36px;background:#fff"> %</td><td class="out" id="itmOh"></td><td></td></tr>
+              <tr><td colspan="7">품목조정률 = 합계 ÷ 물가변동적용대가</td><td class="out" id="itmK"></td><td></td></tr>
+            </tfoot>
+          </table></div>
+          <div class="btns" style="margin-top:8px"><button type="button" class="btn" id="addItm">+ 품목 추가</button></div>
+          <p class="chk-note"><span class="tag warn">원문 확인</span> 이 도구는 품목조정률을 <b>등락금액 합계 ÷ 물가변동적용대가</b>로 계산해요. 시행규칙 조문은 분모를 「계약금액」으로 적고 있어, 전체 수량 기준으로 산정하는 발주기관은 결과가 다를 수 있어요. 발주기관 기준을 확인하세요.</p>
+          <p class="hint" style="margin-top:6px">등락폭 특례(규칙 제72조제3항): 변동당시가격 &gt; 계약단가 &gt; 입찰당시가격이면 등락폭 = 변동당시가격 − 계약단가, 입찰당시가격 &lt; 변동당시가격 &lt; 계약단가이면 등락폭 0. 표에 자동 반영됩니다. 조정기준일 이후 이행할 전 품목을 넣어야 정확합니다.</p>
+        </div>
+        <div class="calc-line" id="rateLine"></div>
+      </section>
+
+      <!-- STEP 4 -->
+      <details class="panel" id="unitPanel">
+        <summary><span class="opt">별도 검토</span>단품 조정 요건 확인 <span class="hint" style="font-weight:400">영 제73조제6항</span></summary>
+        <div class="dbody">
+        <div class="fields">
+          <div class="f"><label for="netCost">순공사비 (재료비+노무비+경비)</label><input type="text" id="netCost" class="num money" inputmode="numeric"></div>
+        </div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>특정규격 자재</th><th>자재 금액</th><th>입찰일 가격</th><th>조정기준일 가격</th><th style="text-align:right">비중</th><th style="text-align:right">증감률</th><th>판정</th><th></th></tr></thead>
+          <tbody id="unitBody"></tbody>
+        </table></div>
+        <div class="btns"><button type="button" class="btn" id="addUnit">+ 자재 추가</button></div>
+        <p class="hint">순공사비의 0.5%를 초과하는 자재가 입찰일 대비 10% 이상 증감하면, 전체 조정률이 3% 미만이어도 그 자재만 조정합니다.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- VERDICT -->
+    <aside>
+      <div>
+      <div class="vtab">판정 결과</div>
+      <div class="verdict">
+        <div class="v-head" id="vHead"><div class="in">
+          <div class="big" id="vBig">—</div>
+          <div class="sub" id="vSub"></div>
+        </div></div>
+        <div class="card-w"><h3>요건 검토</h3><ul class="reqs" id="reqs"></ul></div>
+        <div class="card-w money"><h3>조정금액</h3><dl id="moneyDl"></dl></div>
+      </div>
+      </div>
+      <div class="dates">
+        <h3>관련 일정</h3>
+        <dl id="datesDl"></dl>
+      </div>
+      <div class="btns">
+        <button type="button" class="btn primary" id="copyBtn">검토의견 복사</button>
+        <button type="button" class="btn sub" id="resetBtn">예시로 초기화</button>
+        <button type="button" class="btn" id="clearBtn">전체 비우기</button>
+      </div>
+      <div class="toast" id="toast" role="status"></div>
+      <details class="preview"><summary>검토의견 미리보기</summary><pre id="reportPre"></pre></details>
+      <textarea id="reportText" aria-hidden="true" tabindex="-1"></textarea>
+      <p class="note">기간은 초일불산입으로 계산하며(계약일 다음 날부터 기산), 조정금액은 원 미만을 절사했습니다. 경계일 해석, 장기계속공사의 차수별 적용대가, 부가가치세 처리 등은 「지방자치단체 입찰 및 계약 집행기준」과 발주기관 해석을 확인하십시오. 이 도구는 개략 검토용입니다.</p>
+    </aside>
+  </div>
+</div>
+
+<div class="wrap" id="guide" hidden>
+  <article class="guide">
+    <div class="g-intro">
+      <h2>물가변동 조정 산출기준 안내</h2>
+      <p>판정기에 넣는 값이 어디서 오고 어떤 기준으로 계산되는지 정리했어요. 법령 조문은 2026년 9월 현행본을 확인했고, 비목군별 지수 출처처럼 집행기준 원문을 직접 확인하지 못한 부분은 <span class="tag warn">원문 확인</span>으로 표시했어요.</p>
+    </div>
+
+    <section class="g-sec">
+      <h3><span class="step">1</span>조정 요건</h3>
+      <table class="g-tbl"><tbody>
+        <tr><th>기간</th><td>계약체결일(장기계속공사는 1차 계약일)부터 90일 이상 지나야 해요. 조정기준일부터 90일 안에는 다시 조정할 수 없어요. 천재지변·원자재 가격 급등으로 계약이행이 곤란하면 90일 안에도 조정할 수 있어요.</td><td class="g-law">영 제73조 ①⑤</td></tr>
+        <tr><th>등락</th><td>품목조정률 또는 지수조정률이 ±3% 이상이어야 해요. 증가·감소 모두 해당하므로 감소하면 감액 조정해요.</td><td class="g-law">영 제73조 ①</td></tr>
+        <tr><th>기준일</th><td>1차 조정은 입찰일(수의계약은 계약체결일), 2차 이후는 직전 조정기준일을 기준으로 등락을 계산해요.</td><td class="g-law">영 제73조 ①1</td></tr>
+        <tr><th>방법</th><td>한 계약에는 한 가지 방법만 써요. 계약상대자가 원해 계약서에 지수조정률을 명시한 경우가 아니면 품목조정률로 조정해요.</td><td class="g-law">영 제73조 ②</td></tr>
+      </tbody></table>
+    </section>
+
+    <section class="g-sec">
+      <h3><span class="step">2</span>물가변동적용대가</h3>
+      <div class="formula">적용대가 = 계약금액 − 조정기준일 전 기성(이행)액 − 계약상대자 귀책 지연분</div>
+      <p>조정기준일 이후에 이행되는 부분만 대상이에요. 공정표상 조정기준일 전에 끝났어야 할 부분은 빼지만, 발주기관 책임이나 불가항력으로 늦어진 부분은 포함해요. 장기계속공사·계속비 공사는 해당 연도 계약체결분이나 이행금액을 기준으로 해요.</p>
+      <p class="g-law">규칙 제72조 ⑤⑥</p>
+    </section>
+
+    <section class="g-sec">
+      <h3><span class="step">3</span>품목조정률</h3>
+      <p class="chk-note"><span class="tag warn">원문 확인</span> 시행규칙 조문은 품목조정률의 분모를 「계약금액」으로 적고 있어요. 이 도구는 잔여수량 기준 등락금액을 <b>물가변동적용대가</b>로 나누는 방식으로 계산하므로, 전체 수량 ÷ 계약금액 방식을 쓰는 발주기관은 결과가 달라요.</p>
+      <div class="formula">품목조정률 = Σ(수량 × 등락폭) ÷ 적용대가<br>등락폭 = 계약단가 × 등락률 · 등락률 = (물가변동당시가격 − 입찰당시가격) ÷ 입찰당시가격</div>
+      <table class="g-tbl"><thead><tr><th>입력값</th><th>가져오는 곳</th></tr></thead><tbody>
+        <tr><th>잔여수량</th><td>산출내역서 수량 중 조정기준일 이후 이행할 물량</td></tr>
+        <tr><th>계약단가</th><td>계약상대자가 낸 산출내역서의 단가</td></tr>
+        <tr><th>입찰당시가격</th><td>입찰서 제출마감일 당시 가격. 설계 때와 같은 방법(거래실례가격, 전문가격조사기관 공표가격, 표준시장단가 등)으로 산정해요.</td></tr>
+        <tr><th>물가변동당시가격</th><td>조정기준일 당시 가격. 입찰당시가격과 같은 기준·방법으로 산정해야 해요. 천재지변·원자재 가격 급등 같은 사유가 있으면 달리할 수 있어요.</td></tr>
+      </tbody></table>
+      <p>등락폭 특례: 물가변동당시가격 &gt; 계약단가 &gt; 입찰당시가격이면 등락폭은 「물가변동당시가격 − 계약단가」예요. 입찰당시가격 &lt; 물가변동당시가격 &lt; 계약단가이면 등락폭은 0이에요. 예정가격 기준 계약이면 등락금액에 비례하는 일반관리비·이윤 등을 더해요.</p>
+      <p class="g-law">규칙 제72조 ①②③⑦</p>
+    </section>
+
+    <section class="g-sec">
+      <h3><span class="step">4</span>지수조정률</h3>
+      <div class="formula">K = Σ(계수 × 비교지수 ÷ 기준지수) − 1</div>
+      <table class="g-tbl"><thead><tr><th>입력값</th><th>가져오는 곳</th></tr></thead><tbody>
+        <tr><th>계수</th><td>산출내역서 재료비·노무비·경비 합계에서 각 비목군 금액이 차지하는 비율이에요. 조정기준일 이후 이행 부분 기준으로 산출하고 합계는 1이에요. 소수점 자리수는 집행기준을 따르세요. <span class="tag warn">원문 확인</span></td></tr>
+        <tr><th>기준지수</th><td>입찰일(2차 이후는 직전 조정기준일) 시점의 비목군별 지수</td></tr>
+        <tr><th>비교지수</th><td>조정기준일 시점의 같은 지수. 공표 시차가 있으므로 어느 달 지수를 쓰는지는 집행기준과 발주기관 선례를 확인하세요. <span class="tag warn">원문 확인</span></td></tr>
+      </tbody></table>
+      <p>시행규칙이 정한 지수는 ① 한국은행 생산자물가 기본분류지수·수입물가지수, ② 정부·지자체·공공기관·지방공기업이 결정·허가·인가한 임금·가격·요금의 평균지수, ③ 조사·공표된 가격의 평균지수, ④ 행정안전부장관이 정하는 유사 지수예요.</p>
+      <h4>비목군과 지수 출처</h4>
+      <div class="tbl-wrap"><table class="g-tbl"><thead><tr><th>기호</th><th>비목군</th><th>주로 쓰는 지수</th></tr></thead><tbody>
+        <tr><th>A</th><td>노무비 (간접노무비 포함)</td><td>대한건설협회가 공표하는 건설업 시중노임단가 (해당 직종 평균)</td></tr>
+        <tr><th>B</th><td>기계경비</td><td>건설기계 가격·손료 관련 지수 <span class="tag warn">원문 확인</span></td></tr>
+        <tr><th>C</th><td>광산품</td><td rowspan="4">한국은행 생산자물가 기본분류지수 (ECOS에서 조회)</td></tr>
+        <tr><th>D</th><td>공산품</td></tr>
+        <tr><th>E</th><td>전력·수도·도시가스</td></tr>
+        <tr><th>F</th><td>농림·수산품</td></tr>
+        <tr><th>G</th><td>표준시장단가 (G1 토목 · G2 건축 · G3 기계설비 · G4 전기)</td><td>국토교통부가 반기별로 공표하는 표준시장단가의 부문별 변동 <span class="tag warn">원문 확인</span></td></tr>
+        <tr><th>H~N</th><td>산재보험료 · 산업안전보건관리비 · 고용보험료 · 퇴직공제부금비 · 건강보험료 · 국민연금 · 장기요양보험료</td><td>산정 대상 비목의 지수 변동과 요율 변동을 반영 <span class="tag warn">원문 확인</span></td></tr>
+        <tr><th>Z</th><td>기타 비목군</td><td>다른 비목군 지수의 가중평균 등 <span class="tag warn">원문 확인</span></td></tr>
+      </tbody></table></div>
+      <p class="g-law">영 제73조 ①2 · 규칙 제72조 ④⑨ · 비목군 분류는 조달청 실무 자료 기준</p>
+    </section>
+
+    <section class="g-sec">
+      <h3><span class="step">5</span>조정금액과 선금 공제</h3>
+      <div class="formula">조정금액 = 적용대가 × 조정률<br>선금 공제 = 적용대가 × 조정률 × 선금급률</div>
+      <p class="chk-note"><span class="tag warn">원문 확인</span> 이 도구는 선금 공제를 증액 조정에만 적용해요. 감액 조정에도 같은 산식을 적용한다는 해석이 있으니 발주기관 기준을 확인하세요.</p>
+      <p>선금 공제는 증액할 때 증가액에서 빼요. 증액 조정은 계약상대자가 청구한 날부터 30일 안에 해야 하고, 예산배정 지연 등 불가피한 사유가 있으면 협의해 연장할 수 있어요.</p>
+      <p class="g-law">영 제73조 ③ · 규칙 제72조 ⑥⑧</p>
+    </section>
+
+    <section class="g-sec">
+      <h3><span class="step">6</span>단품 조정</h3>
+      <p>공사계약에서 재료비·노무비·경비 합계의 0.5%를 넘는 특정규격 자재가 입찰일 대비 10% 이상 증감하면, 전체 조정률과 관계없이 그 자재만 조정해요.</p>
+      <p class="g-law">영 제73조 ⑥</p>
+    </section>
+
+    <section class="g-sec">
+      <h3><span class="step">7</span>자료 찾는 곳</h3>
+      <ul class="g-links">
+        <li><a href="https://ecos.bok.or.kr" target="_blank" rel="noopener">한국은행 경제통계시스템(ECOS)</a> · 생산자물가 기본분류지수, 수입물가지수</li>
+        <li><a href="https://www.cak.or.kr" target="_blank" rel="noopener">대한건설협회</a> · 건설업 임금실태조사 시중노임단가</li>
+        <li><a href="https://www.law.go.kr" target="_blank" rel="noopener">국가법령정보센터</a> · 지방계약법 시행령·시행규칙, 「지방자치단체 입찰 및 계약 집행기준」(행정안전부 예규, 2026.6.29. 개정)</li>
+        <li>국토교통부 · 한국건설기술연구원 공표 건설공사 표준시장단가 (반기별, 1월 1일·7월 1일 적용)</li>
+      </ul>
+    </section>
+  </article>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+(function(){
+const $ = id => document.getElementById(id);
+const KEY = 'es-adjust-v2';
+
+const SAMPLE = {
+  cName:'○○초등학교 교사동 증축공사', cAmt:'3,280,000,000', dBid:'2026-02-10', dCon:'2026-02-24',
+  round:'1', dPrev:'', dAdj:'2026-07-01', dReq:'2026-07-20', advRate:'30', special:false,
+  doneAmt:'820,000,000', lateAmt:'0', method:'index', contractFlag:true, ohRate:'14.5', netCost:'2,690,000,000',
+  idx:[
+    ['노무비 (A)','0.3120','100.00','105.21'],
+    ['기계경비 (B)','0.0580','118.42','120.05'],
+    ['광산품 (C)','0.0610','131.20','134.87'],
+    ['공산품 (D)','0.3350','122.36','126.10'],
+    ['전력·수도·도시가스 (E)','0.0240','144.10','150.90'],
+    ['표준시장단가 (G2 건축)','0.1100','100.00','102.30'],
+    ['기타 비목군 (Z)','0.1000','100.00','103.10']
+  ],
+  itm:[
+    ['레미콘 25-24-15 (㎥)','1,850','78,500','84,000','89,300'],
+    ['철근 SD400 D13 (ton)','420','905,000','960,000','1,012,000'],
+    ['보통인부 (인)','6,200','158,000','167,000','172,068'],
+    ['형틀목공 (인)','3,100','245,000','259,000','268,300']
+  ],
+  unit:[
+    ['철근 SD400','298,000,000','960,000','1,012,000'],
+    ['레미콘 25-24-15','176,000,000','84,000','89,300'],
+    ['동관 KS L형','14,800,000','24,500','27,600']
+  ]
+};
+const EMPTY = {cName:'',cAmt:'',dBid:'',dCon:'',round:'1',dPrev:'',dAdj:'',dReq:'',advRate:'',special:false,doneAmt:'',lateAmt:'',method:'item',contractFlag:false,ohRate:'',netCost:'',idx:[['','','','']],itm:[['','','','','']],unit:[['','','','']]};
+
+const num = s => { const v = parseFloat(String(s??'').replace(/[^\d.\-]/g,'')); return isFinite(v)?v:0; };
+const has = s => String(s??'').replace(/[^\d.\-]/g,'') !== '';
+const won = v => (v<0?'−':'') + Math.abs(Math.trunc(v)).toLocaleString('ko-KR') + '원';
+const fmtInt = v => Math.trunc(v).toLocaleString('ko-KR');
+const pct = (v,d=4) => (v>0?'+':v<0?'−':'') + Math.abs(v*100).toFixed(d) + '%';
+const D = s => s ? new Date(s+'T00:00:00Z') : null;
+const diff = (a,b) => Math.round((b-a)/86400000);
+const addDays = (d,n) => { const x=new Date(d.getTime()); x.setUTCDate(x.getUTCDate()+n); return x; };
+const ymd = d => d ? d.toISOString().slice(0,10).replace(/-/g,'.') : '—';
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function cell(v,cls,aria){ return `<td><input type="text" class="${cls||''}" value="${esc(v)}" aria-label="${aria}"></td>`; }
+function renderRows(body, rows, spec, outCols){
+  body.innerHTML = rows.map((r,i)=>'<tr>'+spec.map((s,j)=>cell(r[j]??'',s.num?'num'+(s.money?' money':''):'',s.label)).join('')
+    + outCols.map(c=>`<td class="${c}"></td>`).join('')
+    + `<td><button type="button" class="rowbtn" aria-label="행 삭제" data-del="${i}">×</button></td></tr>`).join('');
+}
+const IDX_SPEC=[{label:'비목군'},{label:'계수',num:1},{label:'기준지수',num:1},{label:'비교지수',num:1}];
+const ITM_SPEC=[{label:'품목'},{label:'잔여수량',num:1,money:1},{label:'계약단가',num:1,money:1},{label:'입찰당시가격',num:1,money:1},{label:'물가변동당시가격',num:1,money:1}];
+const UNIT_SPEC=[{label:'자재명'},{label:'자재 금액',num:1,money:1},{label:'입찰일 가격',num:1,money:1},{label:'조정기준일 가격',num:1,money:1}];
+const readRows = body => [...body.querySelectorAll('tr')].map(tr=>[...tr.querySelectorAll('input')].map(i=>i.value));
+
+function load(st){
+  ['cName','cAmt','dBid','dCon','round','dPrev','dAdj','dReq','advRate','doneAmt','lateAmt','ohRate','netCost'].forEach(k=>$(k).value=st[k]??'');
+  $('special').checked=!!st.special; $('contractFlag').checked=!!st.contractFlag;
+  (st.method==='index'?$('mIndex'):$('mItem')).checked=true;
+  renderRows($('idxBody'),st.idx,IDX_SPEC,['out','out']);
+  renderRows($('itmBody'),st.itm,ITM_SPEC,['out','out','out']);
+  renderRows($('unitBody'),st.unit,UNIT_SPEC,['out','out','']);
+}
+function snapshot(){
+  const o={}; ['cName','cAmt','dBid','dCon','round','dPrev','dAdj','dReq','advRate','doneAmt','lateAmt','ohRate','netCost'].forEach(k=>o[k]=$(k).value);
+  o.special=$('special').checked; o.contractFlag=$('contractFlag').checked;
+  o.method=$('mIndex').checked?'index':'item';
+  o.idx=readRows($('idxBody')); o.itm=readRows($('itmBody')); o.unit=readRows($('unitBody'));
+  return o;
+}
+let isSample=true;
+
+function compute(){
+  const s=snapshot();
+  $('prevWrap').hidden = s.round!=='2';
+  const isIdx = s.method==='index';
+  $('indexBox').hidden=!isIdx; $('itemBox').hidden=isIdx;
+  $('contractFlagWrap').style.display = isIdx?'flex':'none';
+  $('sampleFlag').textContent = isSample?'예시값 입력됨':'';
+
+  const C=num(s.cAmt), done=num(s.doneAmt), late=num(s.lateAmt);
+  const base=Math.max(0,C-done-late);
+  $('baseLine').innerHTML = `물가변동적용대가 = ${fmtInt(C)} − ${fmtInt(done)} − ${fmtInt(late)} = <b>${won(base)}</b>`;
+
+  // index method
+  let wsum=0,K=0; const idxD=[], itmD=[], unitD=[];
+  [...$('idxBody').querySelectorAll('tr')].forEach(tr=>{
+    const v=[...tr.querySelectorAll('input')].map(i=>i.value); const out=tr.querySelectorAll('td.out');
+    const w=num(v[1]),b=num(v[2]),c=num(v[3]); wsum+=w;
+    if(b>0&&has(v[3])){const r=c/b-1; K+=w*r; out[0].textContent=pct(r,3); out[1].textContent=pct(w*r,4); idxD.push({n:v[0]||'비목군',w,b,c,r});}
+    else{out[0].textContent='—'; out[1].textContent='—';}
+  });
+  $('idxWsum').textContent=wsum.toFixed(4);
+  const wOk=Math.abs(wsum-1)<0.00005;
+  $('idxWmsg').innerHTML = wOk?'<span class="tag ok">계수 합계 1.0000</span>':'<span class="tag warn">계수 합계가 1이 아닙니다</span>';
+  $('idxK').textContent=pct(K,4);
+
+  // item method
+  let sub=0;
+  [...$('itmBody').querySelectorAll('tr')].forEach(tr=>{
+    const v=[...tr.querySelectorAll('input')].map(i=>i.value); const out=tr.querySelectorAll('td.out');
+    const q=num(v[1]),cp=num(v[2]),p0=num(v[3]),p1=num(v[4]);
+    if(p0>0&&has(v[4])){
+      const r=(p1-p0)/p0; let w=cp*r, note='';
+      if(p1>cp && cp>p0){w=p1-cp; note=' *';}
+      else if(p1>p0 && p1<cp){w=0; note=' *';}
+      w=Math.trunc(w); const amt=Math.trunc(q*w); sub+=amt;
+      out[0].textContent=pct(r,3); out[1].textContent=fmtInt(w)+note; out[2].textContent=fmtInt(amt); itmD.push({n:v[0]||'품목',q,cp,p0,p1,r,w,amt,sp:!!note});
+    } else { out.forEach(o=>o.textContent='—'); }
+  });
+  const oh=Math.trunc(sub*num(s.ohRate)/100);
+  const itmTotal=sub+oh;
+  const Ki = base>0 ? itmTotal/base : 0;
+  $('itmSub').textContent=fmtInt(sub); $('itmOh').textContent=fmtInt(oh); $('itmK').textContent=pct(Ki,4);
+
+  const rate = isIdx?K:Ki;
+  $('rateLine').innerHTML = isIdx
+    ? `지수조정률 K = Σ(계수 × 비교지수/기준지수) − 1 = <b>${pct(K,4)}</b>`
+    : `품목조정률 = ${fmtInt(itmTotal)} ÷ ${fmtInt(base)} = <b>${pct(Ki,4)}</b>`;
+
+  // unit
+  const net=num(s.netCost); let unitHits=[];
+  [...$('unitBody').querySelectorAll('tr')].forEach(tr=>{
+    const v=[...tr.querySelectorAll('input')].map(i=>i.value); const tds=tr.querySelectorAll('td'); const out=tr.querySelectorAll('td.out');
+    const a=num(v[1]),p0=num(v[2]),p1=num(v[3]); const judge=tds[6];
+    if(net>0&&a>0&&p0>0&&has(v[3])){
+      const share=a/net, r=(p1-p0)/p0;
+      out[0].textContent=(share*100).toFixed(2)+'%'; out[1].textContent=pct(r,2);
+      const okShare=share>0.005, okRate=Math.abs(r)>=0.10;
+      unitD.push({n:v[0]||'자재',a,p0,p1,share,r,hit:okShare&&okRate});
+      if(okShare&&okRate){judge.innerHTML='<span class="tag ok">조정 대상</span>'; unitHits.push(v[0]||'자재');}
+      else judge.innerHTML=`<span class="tag na">${!okShare?'비중 0.5% 이하':'증감 10% 미만'}</span>`;
+    } else { out[0].textContent='—'; out[1].textContent='—'; judge.innerHTML=''; }
+  });
+
+  // requirements
+  const dBid=D(s.dBid),dCon=D(s.dCon),dAdj=D(s.dAdj),dPrev=D(s.dPrev),dReq=D(s.dReq);
+  const reqs=[]; let fail=false, pending=false, warn=false;
+  const add=(st,t,d,val)=>{reqs.push({st,t,d,val}); if(st==='bad')fail=true; if(st==='na')pending=true; if(st==='warn')warn=true;};
+
+  if(dCon&&dAdj){
+    const n=diff(dCon,dAdj);
+    if(s.special) add('warn','계약체결일부터 90일 경과','특례 적용 · 기간요건 배제 (영 제73조제5항)',n+'일');
+    else add(n>=90?'ok':'bad','계약체결일부터 90일 경과',`최초 가능일 ${ymd(addDays(dCon,90))}`,n+'일');
+  } else add('na','계약체결일부터 90일 경과','계약체결일과 조정기준일을 입력하십시오','—');
+
+  if(s.round==='2'){
+    if(dPrev&&dAdj){
+      const n=diff(dPrev,dAdj);
+      if(s.special) add('warn','직전 조정기준일부터 90일 경과','특례 적용 · 기간요건 배제',n+'일');
+      else add(n>=90?'ok':'bad','직전 조정기준일부터 90일 경과',`최초 가능일 ${ymd(addDays(dPrev,90))}`,n+'일');
+    } else add('na','직전 조정기준일부터 90일 경과','직전 조정기준일을 입력하십시오','—');
+  }
+  if(dBid&&dAdj&&dAdj<=dBid) add('bad','조정기준일 선후','조정기준일이 입찰일보다 앞섭니다','확인');
+  if(dBid&&dCon&&dCon<dBid) add('warn','입찰일·계약체결일 선후','계약체결일이 입찰일보다 앞섭니다','확인');
+  if(dReq&&dAdj&&dReq<dAdj) add('warn','조정 청구일','청구일이 조정기준일보다 앞섭니다 · 조정기준일 이후 청구해야 합니다','확인');
+
+  const rateOk=Math.round(Math.abs(rate)*1e8)>=3e6;
+  const rateReady = isIdx ? [...$('idxBody').querySelectorAll('tr')].some(tr=>num(tr.querySelectorAll('input')[2].value)>0) : (base>0 && sub!==0);
+  if(!rateReady) add('na',(isIdx?'지수':'품목')+'조정률 ±3% 이상','조정률 산출 자료를 입력하십시오','—');
+  else add(rateOk?'ok':'bad',(isIdx?'지수':'품목')+'조정률 ±3% 이상', rate<0?'감액 방향 · 요건 충족 시 감액 조정 의무':'기준: '+(s.round==='2'?'직전 조정기준일':'입찰일'), pct(rate,4));
+
+  if(isIdx){
+    if(!s.contractFlag) add('warn','조정 방법 적정성','계약서 명시 없으면 품목조정률로 조정해야 합니다','확인');
+    else add('ok','조정 방법 적정성','계약서 명시 · 지수조정률 적용','지수');
+    if(!wOk) add('warn','비목군 계수 합계','합계가 1.0000이 아닙니다',wsum.toFixed(4));
+  } else { add('ok','조정 방법 적정성','원칙 방법(영 제73조제2항)','품목'); if(rateReady) add('warn','품목조정률 산정 분모','적용대가로 나눔 · 조문은 「계약금액」 — 발주기관 기준 확인','확인'); }
+  if(rateReady&&rate<0&&num(s.advRate)>0) add('warn','감액 시 선금 공제','감액에도 선금 공제를 적용하는지 발주기관 기준 확인','확인');
+
+  if(!(C>0)) add('na','계약금액','계약금액을 입력하십시오','—');
+
+  // money
+  const eligible = !fail && !pending && rateOk;
+  const adj = eligible ? Math.trunc(base*rate) : 0;
+  const advR=num(s.advRate)/100;
+  const ded = eligible && adj>0 ? Math.trunc(base*rate*advR) : 0;
+  const net2 = adj - ded;
+  const after = C + net2;
+
+  const head=$('vHead'); head.className='v-head';
+  let big, subTxt;
+  if(pending){ big='입력 필요'; subTxt='필수 항목을 채우면 판정합니다'; }
+  else if(eligible){ head.classList.add(warn?'warn':'ok'); big = rate>0?'증액 조정 대상':'감액 조정 대상'; subTxt = warn?'요건은 충족하나 확인할 항목이 있습니다':'시행령 제73조제1항 요건 충족'; }
+  else { head.classList.add(unitHits.length?'warn':'bad'); big='조정 요건 미충족'; subTxt = unitHits.length?`단품 조정 검토 대상: ${unitHits.join(', ')}`:'요건 미충족 항목을 확인하십시오'; }
+  $('vBig').textContent=big; $('vSub').textContent=subTxt;
+
+  $('reqs').innerHTML = reqs.map(r=>`<li class="${r.st}"><span>${esc(r.t)}<span class="d">${esc(r.d)}</span></span><span class="val">${esc(r.val)}<span class="tag ${r.st}">${{ok:'충족',bad:'미충족',warn:'확인 필요',na:'미입력'}[r.st]}</span></span></li>`).join('');
+
+  $('moneyDl').innerHTML = `
+    <dt>물가변동적용대가</dt><dd>${won(base)}</dd>
+    <dt>적용 조정률</dt><dd>${pct(rate,4)}</dd>
+    <dt>조정금액</dt><dd>${eligible?won(adj):'—'}</dd>
+    <dt>선금 공제 (${(advR*100).toFixed(1)}%)</dt><dd>${eligible?(adj>0?'−'+won(ded).replace('−',''):'해당 없음 <span class="tag warn">원문 확인</span>'):'—'}</dd>
+    <dt class="total">실 조정금액</dt><dd class="total">${eligible?won(net2):'—'}</dd>
+    <dt>조정 후 계약금액</dt><dd>${eligible?won(after):'—'}</dd>`;
+
+  const dl=[];
+  dl.push(['등락률 산정 기준일', s.round==='2'?ymd(dPrev):ymd(dBid)]);
+  if(dCon) dl.push(['1차 조정 최초 가능일', ymd(addDays(dCon,90))]);
+  if(dAdj) dl.push(['다음 조정 가능일', ymd(addDays(dAdj,90))]);
+  if(dReq) dl.push(['증액 조정 처리기한', ymd(addDays(dReq,30))+' (청구 후 30일)']);
+  $('datesDl').innerHTML = dl.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('');
+
+  // report text
+  const L=[];
+  L.push(`[물가변동 계약금액 조정 검토의견] ※ 테스트용 산출 결과(검증 전, 참고용)`);
+  L.push(`○ 계약명: ${s.cName||'-'}`);
+  L.push(`○ 계약금액: ${won(C)} / 입찰일 ${ymd(dBid)} / 계약체결일 ${ymd(dCon)}`);
+  L.push(`○ 조정기준일: ${ymd(dAdj)} (${s.round==='2'?'2차 이후, 직전 조정기준일 '+ymd(dPrev):'1차 조정'})`);
+  L.push(`○ 조정방법: ${isIdx?'지수조정률':'품목조정률'}`);
+  L.push(`○ 요건 검토`);
+  reqs.forEach(r=>L.push(`  - ${r.t}: ${r.val} ${r.st==='ok'?'(충족)':r.st==='bad'?'(미충족)':r.st==='warn'?'(확인 필요)':'(미입력)'}${r.d?' · '+r.d:''}`));
+  L.push(`○ 판정: ${big}`);
+  const f2=v=>Number(v).toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  if(rateReady){
+    L.push(`○ 조정률 산출 내역 (${isIdx?'지수조정률':'품목조정률'})`);
+    if(isIdx){
+      L.push(`  - 산식: K = Σ(계수 × 비교지수 ÷ 기준지수) − 1`);
+      L.push(`  - 기준시점: ${s.round==='2'?'직전 조정기준일 '+ymd(dPrev):'입찰일 '+ymd(dBid)} / 비교시점: 조정기준일 ${ymd(dAdj)}`);
+      idxD.forEach(d=>L.push(`    · ${d.n}: 계수 ${d.w.toFixed(4)} × (${f2(d.c)} ÷ ${f2(d.b)}) → 변동률 ${pct(d.r,3)}, 기여분 ${pct(d.w*d.r,4)}${eligible?`, 조정금액 ${won(base*d.w*d.r)}`:''}`));
+      L.push(`  - 계수 합계 ${wsum.toFixed(4)} / 지수조정률 ${pct(K,4)}${eligible?' (비목군별 조정금액은 원 미만 절사로 합계와 몇 원 차이 날 수 있음)':''}`);
+    } else {
+      L.push(`  - 산식: 품목조정률 = Σ(잔여수량 × 등락폭) ÷ 물가변동적용대가`);
+      itmD.forEach(d=>L.push(`    · ${d.n}: 수량 ${fmtInt(d.q)} × 등락폭 ${fmtInt(d.w)}원 = ${won(d.amt)} (계약단가 ${fmtInt(d.cp)}, 입찰당시 ${fmtInt(d.p0)}, 변동당시 ${fmtInt(d.p1)}, 등락률 ${pct(d.r,3)}${d.sp?', 등락폭 특례 적용(규칙 제72조제3항)':''})`));
+      L.push(`  - 등락금액 소계 ${won(sub)} + 비례 제경비 ${won(oh)} (${num(s.ohRate)}%) = ${won(itmTotal)}`);
+      L.push(`  - 품목조정률: ${won(itmTotal)} ÷ ${won(base)} = ${pct(Ki,4)}`);
+    }
+  }
+  if(eligible){
+    L.push(`○ 조정금액 산출`);
+    L.push(`  - 물가변동적용대가: ${won(C)} − 조정기준일 전 기성 ${won(done)} − 귀책지연분 ${won(late)} = ${won(base)}`);
+    L.push(`  - 조정금액: ${won(base)} × ${pct(rate,4)} = ${won(adj)}`);
+    if(adj>0) L.push(`  - 선금 공제: ${won(base)} × ${pct(rate,4)} × 선금급률 ${(advR*100).toFixed(1)}% = ${won(ded)}`);
+    else L.push(`  - 선금 공제: 감액 조정이므로 해당 없음`);
+    L.push(`  - 실 조정금액: ${won(adj)} − ${won(ded)} = ${won(net2)}`);
+    L.push(`  - 조정 후 계약금액: ${won(C)} ${net2<0?'−':'+'} ${won(Math.abs(net2))} = ${won(after)}`);
+    if(dReq&&adj>0) L.push(`  - 처리기한: ${ymd(addDays(dReq,30))} (청구일 ${ymd(dReq)}부터 30일)`);
+    L.push(`  - 다음 조정 가능일: ${ymd(addDays(dAdj,90))} (조정기준일부터 90일)`);
+  }
+  if(unitD.length){
+    L.push(`○ 단품 조정 요건 확인 (영 제73조제6항, 순공사비 ${won(net)})`);
+    unitD.forEach(d=>L.push(`    · ${d.n}: 자재금액 ${won(d.a)} (비중 ${(d.share*100).toFixed(2)}%), ${fmtInt(d.p0)} → ${fmtInt(d.p1)} (${pct(d.r,2)}) → ${d.hit?'조정 대상':(d.share<=0.005?'비중 0.5% 이하':'증감 10% 미만')}`));
+  }
+  const cks=[];
+  if(!isIdx) cks.push('품목조정률 분모를 물가변동적용대가로 적용함(시행규칙 조문은 「계약금액」) — 발주기관 기준 확인');
+  if(rate<0&&num(s.advRate)>0) cks.push('감액 조정 시 선금 공제 적용 여부 — 발주기관 기준 확인');
+  if(cks.length){ L.push('○ 확인 필요 사항'); cks.forEach(t=>L.push('  - '+t)); }
+  L.push(`○ 근거: 지방계약법 시행령 제73조, 같은 법 시행규칙 제72조`);
+  $('reportText').value=L.join('\n'); $('reportPre').textContent=L.join('\n');
+
+  if(typeof smRefresh==="function"&&SM) smRefresh();
+  try{ localStorage.setItem(KEY, JSON.stringify({isSample, st:s})); }catch(e){}
+}
+
+// events
+document.addEventListener('input', e=>{ if(e.target.closest('.wrap')){ isSample=false; compute(); } });
+document.addEventListener('change', e=>{ if(e.target.closest('.wrap')){ isSample = isSample && e.target.type!=='checkbox' && e.target.type!=='radio' && e.target.tagName!=='SELECT'; compute(); } });
+document.addEventListener('focusout', e=>{
+  const t=e.target; if(t.classList&&t.classList.contains('money')&&has(t.value)){ t.value=fmtInt(num(t.value)); }
+});
+document.addEventListener('click', e=>{
+  const b=e.target.closest('[data-del]'); if(!b) return;
+  const tbody=b.closest('tbody'); if(tbody.rows.length>1) b.closest('tr').remove(); else tbody.querySelectorAll('input').forEach(i=>i.value='');
+  isSample=false; compute();
+});
+function addRow(body,spec,outs){ const rows=readRows(body); rows.push(spec.map(()=>'')); renderRows(body,rows,spec,outs); body.lastElementChild.querySelector('input').focus(); compute(); }
+$('addIdx').onclick=()=>addRow($('idxBody'),IDX_SPEC,['out','out']);
+$('addItm').onclick=()=>addRow($('itmBody'),ITM_SPEC,['out','out','out']);
+$('addUnit').onclick=()=>addRow($('unitBody'),UNIT_SPEC,['out','out','']);
+$('resetBtn').onclick=()=>{ isSample=true; load(SAMPLE); compute(); flash('예시값으로 되돌렸습니다'); };
+$('clearBtn').onclick=()=>{ isSample=false; load(EMPTY); compute(); flash('입력값을 모두 비웠습니다'); };
+function flash(m){ const t=$('toast'); t.textContent=m; clearTimeout(flash.t); flash.t=setTimeout(()=>t.textContent='',2500); }
+$('copyBtn').onclick=()=>{
+  const txt=$('reportText').value;
+  const fallback=()=>{ const ta=$('reportText'); ta.select(); try{ document.execCommand('copy'); flash('검토의견을 복사했습니다'); }catch(e){ flash('복사하지 못했습니다. 다시 시도하십시오'); } };
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>flash('검토의견을 복사했습니다'),fallback); } else fallback();
+};
+
+// ===== 표준시장단가 자료 =====
+const SMKEY='es-sm-v1';
+let SM=[]; // {id,label,date,file,cols,rows:[[code,name,spec,unit,mat,lab,exp,total,group]]}
+const smSample=()=>{
+  const base=[
+    ['A0101','철근가공 및 조립','보통, 현장가공','ton',0,512300,21400],
+    ['A0102','합판거푸집 설치 및 해체','3회 사용, 벽','㎡',6820,31250,1180],
+    ['A0103','콘크리트 타설','펌프차, 철근구조물','㎥',0,15870,4930],
+    ['A0201','시멘트벽돌 쌓기','1.0B','천매',0,148600,2900],
+    ['A0301','수성페인트 롤러칠','내부, 2회','㎡',1420,5860,40],
+    ['A0302','시트방수','개량아스팔트, 1겹','㎡',11900,8350,210]
+  ];
+  const mk=(f)=>base.map(r=>{const m=Math.round(r[4]*f),l=Math.round(r[5]*f*1.012),e=Math.round(r[6]*f);return [r[0],r[1],r[2],r[3],m,l,e,m+l+e,'예시 공종'];});
+  return [
+    {id:'s1',label:'예시 2026 상반기 (실제 공표단가 아님)',date:'2026-01-01',file:'예시',cols:'예시',rows:mk(1)},
+    {id:'s2',label:'예시 2026 하반기 (실제 공표단가 아님)',date:'2026-07-01',file:'예시',cols:'예시',rows:mk(1.034)}
+  ];
+};
+function smSave(){ try{ localStorage.setItem(SMKEY,JSON.stringify(SM)); return true; }catch(e){ return false; } }
+function smLoad(){ try{ const r=localStorage.getItem(SMKEY); if(r){ const a=JSON.parse(r); if(Array.isArray(a)) return a; } }catch(e){} return null; }
+const smKey=r=> r[0] ? 'c:'+String(r[0]).trim() : 'n:'+[r[1],r[2],r[3]].join('|');
+function smFor(dateStr){
+  if(!dateStr) return null;
+  return SM.filter(d=>d.date && d.date<=dateStr).sort((a,b)=>a.date<b.date?1:-1)[0]||null;
+}
+function smIndex(ds){ if(!ds) return null; if(!ds._ix){ ds._ix=new Map(); ds.rows.forEach(r=>ds._ix.set(smKey(r),r)); } return ds._ix; }
+function guessDate(name){
+  const y=(name.match(/(20\d{2})/)||[])[1]; if(!y) return '';
+  if(/하반기|하\s*반|07월|7월|\.07|-07|_07|하\b/.test(name)) return y+'-07-01';
+  if(/상반기|상\s*반|01월|1월|\.01|-01|_01|상\b/.test(name)) return y+'-01-01';
+  return '';
+}
+const toNum=v=>{ if(typeof v==='number') return v; const t=String(v??'').replace(/[,\s원]/g,''); if(t===''||t==='-') return NaN; const n=parseFloat(t); return isFinite(n)?n:NaN; };
+const FIELD=[['code',/코드|번호|^no\.?$/i],['name',/공종명|명칭|품명|세부공종|공종|항목/],['spec',/규격/],['unit',/단위/],['mat',/재료/],['lab',/노무/],['exp',/경비/],['total',/합계|^계$|\s계$|단가|금액/]];
+function mapHeader(texts){
+  const m={}, used=new Set();
+  FIELD.forEach(([k,re])=>{ for(let c=0;c<texts.length;c++){ if(used.has(c)) continue; const t=texts[c].replace(/\s+/g,' ').trim(); if(t&&re.test(t)){ m[k]=c; used.add(c); break; } } });
+  return m;
+}
+function parseSheet(aoa){
+  const lim=Math.min(aoa.length,40); let best=null;
+  for(let h=0;h<lim;h++){
+    const r0=(aoa[h]||[]).map(v=>String(v??'')), r1=(aoa[h+1]||[]).map(v=>String(v??''));
+    const n=Math.max(r0.length,r1.length);
+    const r1Header = r1.some(v=>/재료|노무|경비|합계|^계$|규격|단위/.test(v.trim())) && !r1.some(v=>isFinite(toNum(v))&&String(v).trim()!=='');
+    const single=mapHeader(Array.from({length:n},(_,c)=>r0[c]||''));
+    const combo=r1Header?mapHeader(Array.from({length:n},(_,c)=>((r0[c]||'')+' '+(r1[c]||'')).trim())):null;
+    for(const [m,skip] of [[single,1],[combo,2]]){
+      if(!m) continue;
+      const ok=m.name!=null && (m.total!=null || m.mat!=null || m.lab!=null);
+      const score=Object.keys(m).length;
+      if(ok && (!best||score>best.score)) best={m,score,start:h+skip};
+    }
+  }
+  if(!best) return null;
+  const {m}=best, rows=[]; let group='';
+  for(let i=best.start;i<aoa.length;i++){
+    const r=aoa[i]||[]; const g=c=>c==null?'':String(r[c]??'').trim();
+    const name=g(m.name); if(!name) continue;
+    const mat=toNum(r[m.mat]),lab=toNum(r[m.lab]),exp=toNum(r[m.exp]);
+    let tot=toNum(r[m.total]);
+    const parts=[mat,lab,exp].filter(isFinite);
+    if(!isFinite(tot) && parts.length) tot=parts.reduce((a,b)=>a+b,0);
+    if(!isFinite(tot)){ group=name; continue; }
+    if(/공종명|명칭|합계/.test(name)) continue;
+    rows.push([g(m.code),name,g(m.spec),g(m.unit),isFinite(mat)?mat:0,isFinite(lab)?lab:0,isFinite(exp)?exp:0,tot,group]);
+  }
+  const lab={code:'코드',name:'공종명',spec:'규격',unit:'단위',mat:'재료비',lab:'노무비',exp:'경비',total:'합계'};
+  return {rows, cols:Object.keys(m).map(k=>lab[k]).join('·')};
+}
+async function smImport(files){
+  if(typeof XLSX==='undefined'){ flash('엑셀 읽기 도구를 불러오지 못했어요. 새로고침 후 다시 시도해 주세요'); return; }
+  let added=0, failed=[];
+  for(const f of files){
+    try{
+      const buf=await f.arrayBuffer();
+      const wb=XLSX.read(buf,{type:'array'});
+      let rows=[], cols='';
+      wb.SheetNames.forEach(sn=>{ const aoa=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:true,defval:''}); const p=parseSheet(aoa); if(p&&p.rows.length){ rows=rows.concat(p.rows); if(!cols) cols=p.cols; } });
+      if(!rows.length){ failed.push(f.name); continue; }
+      const base=f.name.replace(/\.[^.]+$/,'');
+      SM=SM.filter(d=>d.file!=='예시');
+      SM.push({id:'d'+Date.now()+Math.random().toString(36).slice(2,6),label:base,date:guessDate(base),file:f.name,cols,rows});
+      added++;
+    }catch(e){ failed.push(f.name); }
+  }
+  const saved=smSave();
+  smRenderList(); compute();
+  let msg=added?`${added}개 파일을 넣었어요`:'';
+  if(failed.length) msg+=(msg?' · ':'')+`열을 찾지 못한 파일: ${failed.join(', ')}`;
+  if(added&&!saved) msg+=' · 브라우저 저장 공간이 부족해 이 화면에서만 유지돼요';
+  flash(msg||'넣을 수 있는 자료가 없었어요');
+}
+function smRenderList(){
+  $('smRes')._ck=''; SM.forEach(d=>{delete d._ix;});
+  const body=$('smList');
+  if(!SM.length){ body.innerHTML='<tr><td colspan="5" class="muted" style="padding:14px 8px">아직 넣은 자료가 없어요.</td></tr>'; }
+  else body.innerHTML=SM.slice().sort((a,b)=>(a.date||'9')<(b.date||'9')?-1:1).map(d=>`<tr data-sm="${d.id}">
+    <td><input type="date" class="mini" data-f="date" value="${esc(d.date||'')}" aria-label="적용일"></td>
+    <td><input type="text" class="mini" data-f="label" value="${esc(d.label)}" aria-label="회차 이름"><span class="src">${esc(d.file)}</span></td>
+    <td class="out">${d.rows.length.toLocaleString('ko-KR')}</td>
+    <td class="muted" style="font-size:13px">${esc(d.cols)}${d.date?'':' <span class="tag warn">적용일 입력</span>'}</td>
+    <td><button type="button" class="rowbtn" data-smdel="${d.id}" aria-label="자료 삭제">×</button></td></tr>`).join('');
+  $('smCount').textContent=SM.length?`${SM.length}개 회차`:'';
+}
+function smRefresh(){
+  const s={bid:$('dBid').value, adj:$('dAdj').value, prev:$('dPrev').value, round:$('round').value};
+  const refDate = s.round==='2'? s.prev : s.bid;
+  const A=smFor(refDate), B=smFor(s.adj);
+  $('smUse').innerHTML = SM.length
+    ? `${s.round==='2'?'직전 조정기준일':'입찰일'} ${ymd(D(refDate))} → <b>${A?esc(A.label):'해당 회차 없음'}</b>  ·  조정기준일 ${ymd(D(s.adj))} → <b>${B?esc(B.label):'해당 회차 없음'}</b>`
+    : '자료를 넣으면 날짜별 적용 회차가 여기에 표시돼요';
+  $('smInfo').textContent = !SM.length ? '위 「표준시장단가 자료」에 파일을 먼저 넣어 주세요' : (A&&B ? (A===B?'두 날짜가 같은 회차라 변동이 없어요':'') : '날짜에 맞는 회차 자료가 없어요');
+  smSearch(A,B);
+}
+function smSearch(A,B){
+  const q=$('smQ').value.trim().toLowerCase(); const wrap=$('smResWrap'), body=$('smRes');
+  if(!q||!A){ wrap.hidden=true; body.innerHTML=''; body._ck=''; return; }
+  const col=+$('smBasis').value; const ck=[q,A.id,B&&B.id,col,A.rows.length].join('|'); if(body._ck===ck&&!wrap.hidden) return; body._ck=ck;
+  const words=q.split(/\s+/); const bi=smIndex(B);
+  const hits=[]; for(const r of A.rows){ const hay=(r[0]+' '+r[1]+' '+r[2]+' '+r[8]).toLowerCase(); if(words.every(w=>hay.includes(w))){ hits.push(r); if(hits.length>=40) break; } }
+  wrap.hidden=false;
+  if(!hits.length){ body.innerHTML='<tr><td colspan="6" class="muted" style="padding:12px 8px">검색 결과가 없어요. 다른 단어로 찾아보세요.</td></tr>'; return; }
+  body.innerHTML=hits.map((r,i)=>{ const o=bi?bi.get(smKey(r)):null; const p0=r[col], p1=o?o[col]:NaN; const rr=(o&&p0)?(p1-p0)/p0:NaN;
+    return `<tr><td>${esc(r[1])}<span class="src">${esc([r[0],r[2]].filter(Boolean).join(' · '))}</span></td><td class="muted">${esc(r[3])}</td>
+    <td class="out">${fmtInt(p0)}</td><td class="out">${o?fmtInt(p1):'<span class="muted">없음</span>'}</td>
+    <td class="out ${rr>0?'up':rr<0?'down':''}">${isFinite(rr)?pct(rr,2):'—'}</td>
+    <td><button type="button" class="addbtn" data-smadd="${i}" ${o?'':'disabled'}>추가</button></td></tr>`; }).join('');
+  body._hits=hits; body._B=bi; body._col=col;
+}
+function smAdd(i){
+  const body=$('smRes'); const r=body._hits[i], o=body._B.get(smKey(r)), col=body._col;
+  const basis={7:'',4:' 재료비',5:' 노무비',6:' 경비'}[col];
+  const label=`[표준시장단가] ${r[1]}${r[2]?' '+r[2]:''} (${r[3]})${basis}`;
+  const cr=num($('smCR').value)||100;
+  const rows=readRows($('itmBody')).filter(x=>x.some(v=>String(v).trim()!==''));
+  rows.push([label,'',fmtInt(Math.round(r[col]*cr/100)),fmtInt(r[col]),fmtInt(o[col])]);
+  renderRows($('itmBody'),rows,ITM_SPEC,['out','out','out']);
+  const tr=$('itmBody').lastElementChild; tr.querySelectorAll('input')[1].focus();
+  isSample=false; compute(); flash('품목표에 추가했어요. 잔여수량을 입력해 주세요');
+}
+function smFillZ(){
+  let s0=0,s1=0;
+  readRows($('itmBody')).forEach(v=>{ if(!String(v[0]).startsWith('[표준시장단가]')) return; const q=num(v[1]); s0+=q*num(v[3]); s1+=q*num(v[4]); });
+  if(!(s0>0)){ flash('품목표에 수량을 넣은 표준시장단가 항목이 있어야 계산할 수 있어요'); return; }
+  const r=s1/s0-1;
+  const trs=[...$('idxBody').querySelectorAll('tr')];
+  let tr=trs.find(t=>/표준시장|\(G/.test(t.querySelector('input').value));
+  if(!tr){ const rows=readRows($('idxBody')); rows.push(['표준시장단가 (G)','','','']); renderRows($('idxBody'),rows,IDX_SPEC,['out','out']); tr=$('idxBody').lastElementChild; }
+  const ins=tr.querySelectorAll('input'); ins[2].value='100.00'; ins[3].value=(100*(1+r)).toFixed(2);
+  isSample=false; compute(); flash(`표준시장단가(G) 비교지수를 ${(100*(1+r)).toFixed(2)}로 채웠어요 (수량 가중 변동률 ${pct(r,2)})`);
+}
+// events
+$('smFile').addEventListener('change',e=>{ const fs=[...e.target.files]; e.target.value=''; if(fs.length) smImport(fs); });
+const dz=$('smDrop');
+['dragenter','dragover'].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault(); dz.classList.add('over');}));
+['dragleave','drop'].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault(); dz.classList.remove('over');}));
+dz.addEventListener('drop',e=>{ const fs=[...(e.dataTransfer?.files||[])]; if(fs.length) smImport(fs); });
+$('smList').addEventListener('change',e=>{ const tr=e.target.closest('tr[data-sm]'); if(!tr) return; const d=SM.find(x=>x.id===tr.dataset.sm); if(!d) return; d[e.target.dataset.f]=e.target.value; smSave(); smRenderList(); compute(); });
+document.addEventListener('click',e=>{
+  const del=e.target.closest('[data-smdel]'); if(del){ SM=SM.filter(d=>d.id!==del.dataset.smdel); smSave(); smRenderList(); compute(); flash('자료를 삭제했어요'); return; }
+  const add=e.target.closest('[data-smadd]'); if(add){ smAdd(+add.dataset.smadd); }
+});
+$('smBasis').addEventListener('change',()=>smRefresh());
+$('fillZ').addEventListener('click',smFillZ);
+SM = smLoad() || smSample();
+smRenderList();
+
+document.querySelectorAll('.gnb button').forEach(b=>b.addEventListener('click',()=>{
+  const v=b.dataset.view; $('app').hidden=v!=='app'; $('guide').hidden=v!=='guide';
+  document.querySelectorAll('.gnb button').forEach(x=>{const on=x===b; x.classList.toggle('on',on); x.setAttribute('aria-pressed',on);});
+  try{localStorage.setItem('es-view',v);}catch(e){} window.scrollTo(0,0);
+}));
+try{ if(localStorage.getItem('es-view')==='guide') document.querySelector('.gnb [data-view=guide]').click(); }catch(e){}
+// boot
+let init=SAMPLE;
+try{ const raw=localStorage.getItem(KEY); if(raw){ const o=JSON.parse(raw); if(o&&o.st){ init=o.st; isSample=!!o.isSample; } } }catch(e){}
+load(init); compute();
+})();
+</script>
+
+</body></html>

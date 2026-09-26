@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>지연배상금 계산기</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap">
+<style>
+/* KRDS 토큰 기반 · 라이트 전용 */
+:root{
+  --p5:#ECF2FE; --p10:#D8E5FD; --p20:#B1CEFB; --p50:#256EF4; --p60:#0B50D0; --p70:#083891;
+  --ai:linear-gradient(102deg,#0FB87D 10%,#256EF4 90%);
+  --sec5:#EEF2F7;
+  --g0:#FFFFFF; --g5:#F4F5F6; --g10:#E6E8EA; --g20:#CDD1D5; --g30:#B1B8BE; --g40:#8A949E; --g50:#6D7882; --g60:#58616A; --g70:#464C53; --g90:#1E2124;
+  --ok-bg:#EAF6EC; --ok:#267337; --warn-bg:#FFF3DB; --warn:#8A5C00; --bad-bg:#FDEFEC; --bad:#BD2C0F; --info-bg:#E7F4FE;
+  --sh-sm:0 2px 8px 0 rgba(0,0,0,.04); --sh-md:0 6px 8px 0 rgba(37,110,244,.10);
+  --sans:"Pretendard GOV","Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"Roboto Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+body{background:var(--g5);color:var(--g90);font-family:var(--sans);font-size:15px;line-height:1.5;letter-spacing:-.01em;padding-inline:16px;padding-block:0 56px}
+.wrap{max-width:1248px;margin:24px auto 0;display:flex;flex-direction:column;gap:24px}
+
+header{background:var(--g0);border-bottom:1px solid var(--g10);margin-inline:-16px;padding:28px 16px 24px}
+header .inner{max-width:1248px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px}
+.crumb{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;background:var(--p5);color:var(--p60);font-size:13px;font-weight:700}
+header h1{margin:8px 0 4px;font-size:28px;line-height:1.35;font-weight:700;text-wrap:balance}
+header p{margin:0;color:var(--g70);font-size:15px}
+.law{font-size:13px;color:var(--g50);text-align:right;line-height:1.6}
+.law b{color:var(--g70);font-weight:500}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:24px;align-items:start}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+
+.panel{background:var(--g0);border:1px solid var(--g20);border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:14px;min-width:0}
+@media (max-width:600px){.panel{padding:16px}}
+.panel h2{margin:0;font-size:19px;line-height:1.5;font-weight:700;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.panel h2 .step{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--p50);color:#fff;font-size:13px;font-weight:700;font-family:var(--sans)}
+.panel h2 small{font-weight:400;color:var(--g50);font-size:13px;margin-left:auto}
+.lead{margin:-8px 0 0;font-size:14px;color:var(--g70)}
+
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px 16px}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f.wide{grid-column:1/-1}
+label,.lbl{font-size:14px;color:var(--g90);font-weight:700}
+input[type=text],input[type=date],select{font:inherit;font-size:15px;color:var(--g90);background:var(--g0);border:1px solid var(--g30);border-radius:8px;height:44px;padding:0 12px;width:100%;min-width:0;transition:border-color .15s}
+input:hover,select:hover{border-color:var(--g60)}
+input[type=text]:focus,input[type=date]:focus,select:focus{border-color:var(--p50);box-shadow:0 0 0 4px var(--p10);outline:none}
+input.num{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums;font-size:14.5px}
+button:focus-visible,summary:focus-visible{outline:2px solid #fff;box-shadow:0 0 0 4px var(--p50)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:15px;font-weight:400;color:var(--g90);cursor:pointer}
+.check input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--p50);flex:none}
+
+/* KRDS 탭 */
+.seg{display:flex;border-bottom:1px solid var(--g20);gap:24px}
+.seg label{padding:10px 2px 12px;cursor:pointer;font-size:17px;font-weight:700;color:var(--g50);border-bottom:2px solid transparent;margin-bottom:-1px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:hover{color:var(--g90)}
+.seg label:has(input:checked){color:var(--p60);border-bottom-color:var(--p50)}
+.seg label:has(input:focus-visible){outline:2px solid var(--p50);outline-offset:2px;border-radius:4px}
+
+.hint{font-size:13px;color:var(--g50);margin:0;line-height:1.6}
+.calc-line{font-family:var(--mono);font-size:13.5px;background:var(--p5);border-radius:8px;padding:12px 14px;color:var(--g70);overflow-x:auto;white-space:nowrap}
+.calc-line b{color:var(--p60);font-weight:700}
+
+.tbl-wrap{overflow-x:auto;border-top:2px solid var(--g90)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{background:var(--g5);color:var(--g70);font-weight:700;text-align:left;padding:10px 8px;border-bottom:1px solid var(--g20);white-space:nowrap}
+td{padding:4px 6px;border-bottom:1px solid var(--g10);vertical-align:middle}
+td:first-child input[type=text]{min-width:180px}
+td input.num{min-width:104px}
+#idxBody input.num{min-width:84px}
+td input[type=text]{height:36px;padding:0 8px;border-color:transparent;background:transparent;border-radius:6px}
+td input[type=text]:hover{border-color:var(--g30)}
+td input[type=text]:focus{background:var(--g0)}
+td.out{font-family:var(--mono);font-size:13.5px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+td.muted{color:var(--g50)}
+tfoot td{background:var(--g5);font-weight:700;border-bottom:1px solid var(--g20);padding:10px 8px}
+tfoot td.out{color:var(--p60)}
+.rowbtn{background:none;border:0;color:var(--g40);cursor:pointer;font-size:18px;line-height:1;width:28px;height:28px;border-radius:6px}
+.rowbtn:hover{color:var(--bad);background:var(--bad-bg)}
+
+.btn{font:inherit;font-size:15px;font-weight:700;height:40px;padding:0 16px;border-radius:8px;border:1px solid var(--g60);background:transparent;color:var(--g90);cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:background-color .15s}
+.btn:hover{background:var(--g5)} .btn:active{background:var(--g10)}
+.btn.primary{background:var(--p50);border-color:var(--p50);color:#fff;height:48px;padding:0 20px;font-size:17px}
+.btn.primary:hover{background:var(--p60)} .btn.primary:active{background:var(--p70)}
+.btn.sub{background:var(--p5);border-color:var(--p50);color:var(--p60)}
+.btn.sub:hover{background:var(--p10)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+.tag{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:700;white-space:nowrap}
+.tag.ok{background:var(--ok-bg);color:var(--ok)} .tag.bad{background:var(--bad-bg);color:var(--bad)} .tag.warn{background:var(--warn-bg);color:var(--warn)} .tag.na{background:var(--g5);color:var(--g50)}
+
+details.panel>summary{cursor:pointer;font-size:19px;font-weight:700;list-style:none;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+details.panel>summary::-webkit-details-marker{display:none}
+details.panel>summary::after{content:"펼치기 ›";margin-left:auto;font-size:14px;font-weight:400;color:var(--g70)}
+details.panel[open]>summary::after{content:"접기"}
+details.panel:not([open]){gap:0}
+.opt{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;border:1px solid #063A74;color:#052B57;font-size:13px;font-weight:700}
+
+/* 판정 패널 — 폴더 탭 */
+aside{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);display:flex;flex-direction:column;gap:16px}
+@media (max-width:960px){aside{position:static}}
+.vtab{display:inline-block;align-self:flex-start;padding:12px 20px 10px;font-size:15px;font-weight:700;line-height:1;color:var(--p60);background:var(--info-bg);border:1px solid var(--p10);border-bottom:0;border-radius:12px 12px 0 0;margin-bottom:-17px;position:relative;z-index:1}
+.verdict{background:var(--info-bg);border:1px solid var(--p10);border-radius:0 16px 16px 16px;box-shadow:var(--sh-sm);padding:16px;display:flex;flex-direction:column;gap:12px}
+.v-head{border-radius:12px;padding:2px;background:var(--g30)}
+.v-head .in{background:var(--g0);border-radius:10px;padding:16px 18px}
+.v-head.ok{background:var(--ai);box-shadow:var(--sh-md)}
+.v-head.warn{background:#F2B544}
+.v-head.bad{background:#E77E6A}
+.v-head .big{font-size:24px;font-weight:700;line-height:1.4}
+.v-head.ok .big{color:var(--p60)} .v-head.warn .big{color:var(--warn)} .v-head.bad .big{color:var(--bad)}
+.v-head .sub{font-size:14px;color:var(--g70);margin-top:2px}
+.card-w{background:var(--g0);border-radius:12px;padding:6px 18px}
+.card-w h3{margin:10px 0 2px;font-size:15px;font-weight:700}
+.reqs{list-style:none;margin:0;padding:0;counter-reset:rq}
+.reqs li{counter-increment:rq;display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:start;padding:11px 0;border-bottom:1px solid var(--g10);font-size:15px}
+.reqs li:last-child{border-bottom:0}
+.reqs li::before{content:counter(rq);font-weight:700;color:var(--p50);text-align:center}
+.reqs li.bad::before{color:var(--bad)} .reqs li.na::before{color:var(--g40)} .reqs li.warn::before{color:var(--warn)}
+.reqs .d{font-size:13px;color:var(--g50);display:block;margin-top:1px}
+.reqs .val{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.money dl{margin:0;display:grid;grid-template-columns:1fr auto}
+.money dt,.money dd{padding:9px 0;border-bottom:1px solid var(--g10);font-size:15px;margin:0}
+.money dt{color:var(--g70)}
+.money dd{font-family:var(--mono);font-size:14.5px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.money dt.total,.money dd.total{border-bottom:1px solid var(--g10);border-top:2px solid var(--g90);font-weight:700;color:var(--g90);font-size:17px;padding-block:12px}
+.money dd.total{color:var(--p60)}
+.money dl>*:last-child,.money dl>*:nth-last-child(2){border-bottom:0}
+.dates{background:var(--g0);border:1px solid var(--g20);border-radius:12px;padding:14px 18px}
+.dates h3{margin:0 0 8px;font-size:15px;font-weight:700}
+.dates dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
+.dates dt{color:var(--g70)} .dates dd{margin:0;font-family:var(--mono);font-size:13.5px;text-align:right}
+.note{font-size:13px;color:var(--g50);line-height:1.65;margin:0}
+.toast{font-size:14px;color:var(--ok);font-weight:700;min-height:1.2em}
+textarea#reportText{position:absolute;left:-9999px;width:1px;height:1px}
+/* 표준시장단가 자료 */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;border:1.5px dashed var(--g30);border-radius:12px;padding:20px 16px;background:var(--g5);cursor:pointer;font-weight:400;color:var(--g70);transition:border-color .15s,background-color .15s}
+.drop b{color:var(--p60);font-size:16px}
+.drop:hover,.drop.over{border-color:var(--p50);background:var(--p5)}
+.drop:focus-within{border-color:var(--p50);box-shadow:0 0 0 4px var(--p10)}
+.vis-hide{position:absolute;opacity:0;width:1px;height:1px}
+.pill{padding:2px;border-radius:999px;background:var(--ai);box-shadow:var(--sh-md)}
+.pill .in{display:flex;align-items:center;height:52px;padding:0 6px 0 20px;background:#fff;border-radius:999px;gap:8px}
+.pill input{flex:1;border:0!important;box-shadow:none!important;height:44px!important;padding:0!important;font-size:16px!important;background:transparent!important;min-width:0}
+.pill .go{flex:none;width:40px;height:40px;border-radius:50%;background:var(--p50);display:grid;place-items:center}
+.pill:focus-within{background:var(--p50)}
+.smbar{display:flex;flex-direction:column;gap:10px;padding:16px;background:var(--g5);border-radius:12px}
+.smopts{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;font-size:14px}
+.smopts label{font-size:14px;display:flex;align-items:center;gap:8px}
+.smopts select,.smopts input{height:36px;width:auto}
+.smopts input{width:80px}
+.up{color:var(--bad)} .down{color:var(--p60)}
+.addbtn{height:30px;padding:0 10px;font-size:13px;border-radius:6px;border:1px solid var(--p50);background:var(--p5);color:var(--p60);font-weight:700;cursor:pointer;white-space:nowrap}
+.addbtn:hover{background:var(--p10)}
+.addbtn:disabled{border-color:var(--g20);background:var(--g5);color:var(--g40);cursor:not-allowed}
+.rvc{font-size:12.5px;line-height:1.45;min-width:170px}
+#excBody input[type=date]{height:36px;width:150px;font-size:14px;padding:0 8px;border-color:var(--g20)}
+#excBody input.num::placeholder{color:var(--p60);opacity:1}
+.amt-guide{margin:0;padding:10px 14px;border-radius:8px;background:var(--info-bg);border:1px solid var(--p10);font-size:13.5px;color:var(--g70);line-height:1.6}
+.amt-guide b{color:var(--p60)}
+td input[type=date].mini{height:34px;width:150px;font-size:14px}
+td input[type=text].mini{height:34px;border-color:var(--g20)}
+.src{font-size:12px;color:var(--g50);display:block}
+aside .btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+aside .btn,aside .btn.primary{height:44px;padding:0 8px;font-size:15px;justify-content:center;white-space:nowrap}
+.dbody{display:flex;flex-direction:column;gap:14px;padding-top:16px}
+.gnb{display:flex;gap:4px;background:var(--g5);border-radius:10px;padding:4px;align-self:flex-end}
+.gnb button{font:inherit;font-size:15px;font-weight:700;height:40px;padding:0 18px;border:0;border-radius:8px;background:transparent;color:var(--g50);cursor:pointer}
+.gnb button:hover{color:var(--g90)}
+.gnb button.on{background:#fff;color:var(--p60);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+header .inner{align-items:flex-end}
+.guide{background:#fff;border:1px solid var(--g20);border-radius:12px;padding:32px clamp(16px,4vw,48px);display:flex;flex-direction:column;gap:32px;max-width:960px;margin:0 auto;width:100%}
+.g-intro h2{margin:0 0 8px;font-size:24px;line-height:1.5}
+.g-intro p{margin:0;color:var(--g70);font-size:16px;line-height:1.7}
+.g-sec{display:flex;flex-direction:column;gap:12px;border-top:2px solid var(--g90);padding-top:20px}
+.g-sec h3{margin:0;font-size:19px;display:flex;align-items:center;gap:10px}
+.g-sec h3 .step,.panel h2 .step{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--p50);color:#fff;font-size:13px;font-weight:700}
+.g-sec h4{margin:8px 0 0;font-size:16px}
+.g-sec p{margin:0;font-size:15px;line-height:1.75;color:var(--g90)}
+.g-law{font-size:13px!important;color:var(--g50)!important}
+td.g-law{white-space:nowrap}
+.formula{font-family:var(--mono);font-size:14.5px;line-height:1.8;background:var(--p5);color:var(--p70);border-radius:8px;padding:14px 16px;overflow-x:auto}
+.g-tbl{border-top:1px solid var(--g20)}
+.g-tbl th{background:var(--g5);vertical-align:top;white-space:nowrap}
+.g-tbl td{padding:10px 8px;line-height:1.65;font-size:14.5px}
+.g-tbl tbody th{border-bottom:1px solid var(--g10);color:var(--g90)}
+.g-links{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:15px}
+.g-links a{color:var(--p60);font-weight:700}
+.preview{background:#fff;border:1px solid var(--g20);border-radius:12px;padding:12px 16px}
+.preview summary{cursor:pointer;font-weight:700;font-size:15px}
+.preview pre{margin:10px 0 0;white-space:pre-wrap;word-break:keep-all;font-family:var(--sans);font-size:13px;line-height:1.7;color:var(--g70);max-height:420px;overflow:auto}
+.testbar{margin-inline:-16px;padding:8px 16px;background:var(--warn-bg);color:var(--warn);font-size:14px;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style><style>
+.delay-note{font-size:13px;color:var(--g50)}
+.kpis{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:8px}
+.kpi{background:#fff;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.kpi .k{font-size:13px;color:var(--g70)}
+.kpi .v{font-family:var(--mono);font-size:15.5px;font-weight:700;color:var(--g90);white-space:nowrap}
+.kpi .v.hl{color:var(--p60)} .kpi .v.bad{color:var(--bad)}
+.gauge{height:10px;border-radius:999px;background:var(--g10);overflow:hidden}
+.gauge i{display:block;height:100%;background:var(--p50);border-radius:999px}
+.gauge.bad i{background:var(--bad)} .gauge.warn i{background:#E7A33A}
+.gauge-lbl{display:flex;justify-content:space-between;font-size:12.5px;color:var(--g50);font-family:var(--mono)}
+.timeline{display:flex;flex-direction:column;gap:0;border-top:2px solid var(--g90)}
+.timeline div{display:grid;grid-template-columns:130px 1fr auto;gap:12px;padding:10px 4px;border-bottom:1px solid var(--g10);font-size:14.5px;align-items:baseline}
+.timeline .d{font-family:var(--mono);font-size:13.5px;color:var(--g70)}
+.timeline .t{font-weight:700}
+.timeline .x{font-size:13px;color:var(--g50);text-align:right}
+@media (max-width:600px){.timeline div{grid-template-columns:1fr;gap:2px}.timeline .x{text-align:left}.kpis{grid-template-columns:1fr 1fr}}
+</style>
+</head><body style="margin:0">
+
+<div class="testbar" role="note"><span class="tag warn">테스트용</span> 검증 중인 도구입니다. 산출 결과는 참고용으로만 쓰고, 실제 부과는 계약서와 집행기준으로 다시 확인해 주세요.</div>
+<header>
+  <div class="inner">
+    <div>
+      <span class="crumb">계약관리 · 정산</span>
+      <h1>지연배상금·계약기간 계산기</h1>
+      <p>변경 준공기한과 지체일수를 정리하고, 지연배상금(지체상금)과 한도를 계산할 수 있어요.</p>
+    </div>
+    <nav class="gnb" aria-label="화면 선택"><button type="button" class="on" data-view="app" aria-pressed="true">계산기</button><button type="button" data-view="guide" aria-pressed="false">산출기준 안내</button></nav>
+    <div class="law"><b>지방계약법 시행령 제90조</b> (2026.6.3. 시행)<br><b>같은 법 시행규칙 제75조</b> (2026.7.1. 시행)<br>입력값은 이 브라우저에만 임시 보관돼요</div>
+  </div>
+</header>
+
+<div class="wrap" id="app">
+  <div class="grid">
+    <div class="col">
+      <section class="panel">
+        <h2><span class="step">1</span>계약 기본정보 <small id="sampleFlag">예시값 입력됨</small></h2>
+        <div class="fields">
+          <div class="f wide"><label for="cName">계약명</label><input type="text" id="cName"></div>
+          <div class="f"><label for="cType">계약 종류</label>
+            <select id="cType">
+              <option value="0.5">공사 (1000분의 0.5)</option>
+              <option value="0.8">물품 제조·구매 (1000분의 0.8)</option>
+              <option value="0.5b">물품 설계·제조 일괄, 승인 필요 (1000분의 0.5)</option>
+              <option value="1.3">용역·물품 수리·가공·대여·기타 (1000분의 1.3)</option>
+              <option value="2.5">운송·보관·양곡가공 (1000분의 2.5)</option>
+            </select></div>
+          <div class="f"><label for="cAmt">변경 계약금액 (원)</label><input type="text" id="cAmt" class="num money" inputmode="numeric"></div>
+          <div class="f"><label for="dStart">착공(계약이행 시작)일</label><input type="date" id="dStart"></div>
+          <div class="f"><label for="dDue">당초 준공(이행)기한</label><input type="date" id="dDue"></div>
+          <div class="f"><label for="bondRate">계약보증금률 (%)</label><input type="text" id="bondRate" class="num" inputmode="decimal"></div>
+        </div>
+        <p class="amt-guide">계약금액에는 <b>설계변경·물가변동을 반영한 최종 변경 계약금액</b>(부가세 포함)을 넣어 주세요. 최초 계약금액을 넣으면 지연배상금과 한도가 적게 계산돼요. 관급자재 금액은 넣지 않아요.</p>
+        <label class="check"><input type="checkbox" id="longTerm"> <span>장기계속계약 <span class="hint">(계약금액에 해당 차수의 연차별 계약금액을 넣어 주세요)</span></span></label>
+      </section>
+
+      <section class="panel">
+        <h2><span class="step">2</span>계약기간 연장</h2>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>연장 사유</th><th>승인일</th><th>연장일수</th><th></th></tr></thead>
+          <tbody id="extBody"></tbody>
+          <tfoot><tr><td colspan="2">연장일수 합계</td><td class="out" id="extSum"></td><td></td></tr></tfoot>
+        </table></div>
+        <div class="btns"><button type="button" class="btn" id="addExt">+ 연장 추가</button></div>
+        <label class="check"><input type="checkbox" id="holidayShift" checked> <span>기한 말일이 토요일·공휴일이면 다음 날로 넘김 <span class="hint">(민법 제161조 준용, 발주기관 운영 기준 확인)</span></span></label>
+        <div class="calc-line" id="dueLine"></div>
+      </section>
+
+      <section class="panel">
+        <h2><span class="step">3</span>이행 완료와 지체일수</h2>
+        <div class="fields">
+          <div class="f"><label for="dDone">준공신고(이행완료)일</label><input type="date" id="dDone"></div>
+          <div class="f"><label for="fixDays">검사 불합격 보완기간 (일)</label><input type="text" id="fixDays" class="num" inputmode="numeric"></div>
+          <div class="f"><label for="dToday">현황 기준일</label><input type="date" id="dToday"></div>
+        </div>
+        <p class="hint">보완기간: 준공검사에 불합격해 보완을 지시한 날부터 보완 완료까지 지체일수에 더하는 기간이에요. 기한 안에 신고했더라도 보완이 기한을 넘기면 여기에 넣어 주세요.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>계약상대자 책임 없는 지연 사유</th><th>시작일</th><th>종료일</th><th>제외일수</th><th>검토</th><th></th></tr></thead>
+          <tbody id="excBody"></tbody>
+          <tfoot><tr><td colspan="3">제외일수 합계 <span class="src" id="excWin"></span></td><td class="out" id="excSum"></td><td id="excRv"></td><td></td></tr></tfoot>
+        </table></div>
+        <div class="btns"><button type="button" class="btn" id="addExc">+ 제외 사유 추가</button></div>
+        <p class="hint">천재지변, 발주기관 책임(관급자재 공급 지연, 설계변경 지시 지연 등)처럼 계약상대자 책임이 없는 일수는 지체일수에서 빼요 (영 제90조제1항 후단). 사유의 <b>시작일·종료일</b>을 넣으면 지체기간(변경 준공기한 다음 날 ~ 준공신고일)과 겹치는 일수를 계산해 검토해요. 제외일수를 비우면 겹치는 일수가 자동으로 들어가요. 이미 계약기간을 연장해 준 사유는 중복으로 넣지 마세요.</p>
+        <div class="calc-line" id="daysLine"></div>
+      </section>
+
+      <section class="panel">
+        <h2><span class="step">4</span>지연배상금 기준금액</h2>
+        <div class="fields">
+          <div class="f"><label for="accepted">검사·인수한 기성(기납) 부분 금액</label><input type="text" id="accepted" class="num money" inputmode="numeric"></div>
+          <div class="f"><label for="jvOther">비귀책 공동수급 구성원 금액</label><input type="text" id="jvOther" class="num money" inputmode="numeric"></div>
+        </div>
+        <p class="hint">성질상 나눌 수 있는 완성 부분을 검사해 인수(또는 인수 없이 관리·사용)한 경우에만 뺄 수 있어요 (영 제90조제2항). 분담이행 공동계약에서 일부 구성원 때문에 지연됐다면 다른 구성원 금액을 빼고 지연을 일으킨 구성원에게 부과해요 (같은 조 제4항).</p>
+        <div class="calc-line" id="baseLine"></div>
+      </section>
+    </div>
+
+    <aside>
+      <div>
+        <div class="vtab">계산 결과</div>
+        <div class="verdict">
+          <div class="v-head" id="vHead"><div class="in">
+            <div class="big" id="vBig">—</div>
+            <div class="sub" id="vSub"></div>
+          </div></div>
+          <div class="kpis">
+            <div class="kpi"><span class="k">변경 준공기한</span><span class="v" id="kDue">—</span></div>
+            <div class="kpi"><span class="k">지체일수</span><span class="v" id="kDays">—</span></div>
+            <div class="kpi"><span class="k">1일 배상금</span><span class="v" id="kDaily">—</span></div>
+          </div>
+          <div class="card-w money"><h3>지연배상금</h3><dl id="moneyDl"></dl></div>
+          <div class="card-w" style="padding-bottom:14px"><h3>한도 대비</h3>
+            <div class="gauge" id="gauge"><i id="gaugeBar" style="width:0"></i></div>
+            <div class="gauge-lbl"><span id="gL">0%</span><span id="gR">한도 30%</span></div>
+            <p class="hint" id="bondMsg" style="margin-top:8px"></p>
+          </div>
+        </div>
+      </div>
+      <div class="dates"><h3>계약기간 현황</h3><dl id="datesDl"></dl></div>
+      <div class="btns">
+        <button type="button" class="btn primary" id="copyBtn">검토의견 복사</button>
+        <button type="button" class="btn sub" id="resetBtn">예시로 초기화</button>
+        <button type="button" class="btn" id="clearBtn">전체 비우기</button>
+      </div>
+      <div class="toast" id="toast" role="status"></div>
+      <details class="preview"><summary>검토의견 미리보기</summary><pre id="reportPre"></pre></details>
+      <textarea id="reportText" aria-hidden="true" tabindex="-1"></textarea>
+      <p class="note">지연배상금은 원 미만을 절사했어요. 공휴일은 2026~2027년 관공서 공휴일을 넣어 두었으니, 임시공휴일 지정 여부는 따로 확인하세요.</p>
+    </aside>
+  </div>
+</div>
+
+<div class="wrap" id="guide" hidden>
+  <article class="guide">
+    <div class="g-intro">
+      <h2>지연배상금 산출기준 안내</h2>
+      <p>지방계약법령에서는 「지체상금」 대신 <b>「지연배상금」</b>이라고 불러요. 조문은 2026년 9월 현행본을 확인했고, 집행기준·계약일반조건 원문을 직접 확인하지 못한 부분은 <span class="tag warn">원문 확인</span>으로 표시했어요.</p>
+    </div>
+    <section class="g-sec">
+      <h3><span class="step">1</span>산식</h3>
+      <div class="formula">지연배상금 = 기준금액 × 지연배상금률 × 지체일수<br>기준금액 = 계약금액 − 검사·인수한 기성(기납) 부분 − (공동계약) 지연 책임 없는 구성원 금액<br>한도 = 기준금액 × 30%</div>
+      <p>계약금액은 설계변경·물가변동으로 조정된 <b>최종 변경 계약금액</b>을 기준으로 해요. 장기계속계약은 연차별(차수별) 계약금액이 계약금액이에요. 지연배상금은 현금으로 내게 해요.</p>
+      <p class="g-law">영 제90조 ①②③④</p>
+    </section>
+    <section class="g-sec">
+      <h3><span class="step">2</span>지연배상금률</h3>
+      <table class="g-tbl"><thead><tr><th>계약 종류</th><th>비율</th><th>한도(30%) 도달 일수</th></tr></thead><tbody>
+        <tr><th>공사</th><td>1000분의 0.5</td><td>600일</td></tr>
+        <tr><th>물품 제조·구매</th><td>1000분의 0.8 (설계·제조 일괄이고 설계 승인이 필요하면 0.5)</td><td>375일 (600일)</td></tr>
+        <tr><th>물품 수리·가공·대여, 용역, 그 밖의 계약</th><td>1000분의 1.3</td><td>231일</td></tr>
+        <tr><th>운송·보관·양곡가공</th><td>1000분의 2.5</td><td>120일</td></tr>
+      </tbody></table>
+      <p class="g-law">규칙 제75조</p>
+    </section>
+    <section class="g-sec">
+      <h3><span class="step">3</span>지체일수</h3>
+      <table class="g-tbl"><tbody>
+        <tr><th>기산</th><td>변경 준공(이행)기한 다음 날부터 준공신고(이행완료)일까지 세어요.</td></tr>
+        <tr><th>검사 불합격</th><td>보완을 지시한 날부터 보완 완료(재검사 합격)까지의 기간을 지체일수에 넣어요. <span class="tag warn">원문 확인</span></td></tr>
+        <tr><th>제외</th><td>계약상대자 책임 없는 사유로 지체된 일수는 넣지 않아요 (영 제90조제1항 후단). 계산기는 사유 기간이 <b>지체기간과 겹치는 일수</b>만 인정 범위로 보고, 초과 입력·지체기간 밖 사유·사유 간 중복을 표시해요.</td></tr>
+        <tr><th>기한 말일</th><td>기한 말일이 토요일·공휴일이면 다음 날 만료로 보는 민법 제161조를 준용했어요. 발주기관 운영 기준과 계약서를 확인하세요. <span class="tag warn">원문 확인</span></td></tr>
+      </tbody></table>
+    </section>
+    <section class="g-sec">
+      <h3><span class="step">4</span>계약보증금 상당액과 해제·해지</h3>
+      <p>지연배상금이 계약보증금 상당액에 이르면 계약을 해제·해지할 수 있는지 검토하는 것이 실무 관행이에요. 이 도구는 계약보증금률로 도달 여부만 표시하고, 해제·해지 요건은 계약서와 집행기준으로 판단하세요. <span class="tag warn">원문 확인</span></p>
+    </section>
+    <section class="g-sec">
+      <h3><span class="step">5</span>자료 찾는 곳</h3>
+      <ul class="g-links">
+        <li><a href="https://www.law.go.kr" target="_blank" rel="noopener">국가법령정보센터</a> · 지방계약법 시행령 제90조, 시행규칙 제75조, 「지방자치단체 입찰 및 계약 집행기준」</li>
+        <li>계약서의 공사(용역·물품)계약 일반조건·특수조건 · 기성 인수, 검사, 계약기간 연장 조항</li>
+      </ul>
+    </section>
+  </article>
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const KEY='delay-calc-v1';
+const HOL=new Set(['2026-01-01','2026-02-16','2026-02-17','2026-02-18','2026-03-02','2026-05-05','2026-05-25','2026-06-03','2026-08-17','2026-09-24','2026-09-25','2026-09-26','2026-10-05','2026-10-09','2026-12-25',
+ '2027-01-01','2027-02-08','2027-02-09','2027-03-01','2027-05-05','2027-05-13','2027-08-16','2027-09-14','2027-09-15','2027-09-16','2027-10-04','2027-10-11','2027-12-27']);
+const SAMPLE={cName:'○○중학교 다목적강당 증축공사',cType:'0.5',cAmt:'1,250,000,000',dStart:'2025-11-03',dDue:'2026-06-30',bondRate:'10',longTerm:false,holidayShift:true,
+  dDone:'2026-08-21',fixDays:'4',dToday:'',accepted:'0',jvOther:'0',
+  ext:[['설계변경(외벽 마감재 변경)','2026-06-12','30']], exc:[['관급자재(창호) 공급 지연','2026-08-04','2026-08-06','']]};
+const EMPTY={cName:'',cType:'0.5',cAmt:'',dStart:'',dDue:'',bondRate:'10',longTerm:false,holidayShift:true,dDone:'',fixDays:'',dToday:'',accepted:'',jvOther:'',ext:[['','','']],exc:[['','','','']]};
+const num=s=>{const v=parseFloat(String(s??'').replace(/[^\d.\-]/g,''));return isFinite(v)?v:0;};
+const has=s=>String(s??'').replace(/[^\d.\-]/g,'')!=='';
+const won=v=>(v<0?'−':'')+Math.abs(Math.trunc(v)).toLocaleString('ko-KR')+'원';
+const fmtInt=v=>Math.trunc(v).toLocaleString('ko-KR');
+const D=s=>s?new Date(s+'T00:00:00Z'):null;
+const diff=(a,b)=>Math.round((b-a)/86400000);
+const addDays=(d,n)=>{const x=new Date(d.getTime());x.setUTCDate(x.getUTCDate()+n);return x;};
+const iso=d=>d.toISOString().slice(0,10);
+const WK='일월화수목금토';
+const ymd=d=>d?iso(d).replace(/-/g,'.')+'('+WK[d.getUTCDay()]+')':'—';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const todayStr=()=>{const n=new Date();const k=new Date(n.getTime()+9*3600000);return k.toISOString().slice(0,10);};
+const isOff=d=>d.getUTCDay()===0||d.getUTCDay()===6||HOL.has(iso(d));
+
+const EXT_SPEC=[{l:'연장 사유'},{l:'승인일',date:1},{l:'연장일수',num:1}];
+const EXC_SPEC=[{l:'제외 사유'},{l:'시작일',date:1},{l:'종료일',date:1},{l:'제외일수',num:1},{l:'검토',out:1}];
+const normExc=rows=>(rows||[]).map(r=>r.length===2?[r[0],'','',r[1]]:r);
+function renderRows(body,rows,spec){
+  body.innerHTML=rows.map((r,i)=>'<tr>'+spec.map((s,j)=>s.out?'<td class="rvc"></td>':`<td><input type="${s.date?'date':'text'}" class="${s.num?'num':''}" value="${esc(r[j]??'')}" aria-label="${s.l}"${s.num?' inputmode="numeric"':''}></td>`).join('')+`<td><button type="button" class="rowbtn" data-del aria-label="행 삭제">×</button></td></tr>`).join('');
+}
+const readRows=b=>[...b.querySelectorAll('tr')].map(tr=>[...tr.querySelectorAll('input')].map(i=>i.value));
+const FIELDS=['cName','cType','cAmt','dStart','dDue','bondRate','dDone','fixDays','dToday','accepted','jvOther'];
+function load(st){FIELDS.forEach(k=>$(k).value=st[k]??'');$('longTerm').checked=!!st.longTerm;$('holidayShift').checked=st.holidayShift!==false;renderRows($('extBody'),st.ext,EXT_SPEC);renderRows($('excBody'),normExc(st.exc),EXC_SPEC);if(!$('dToday').value)$('dToday').value=todayStr();}
+function snap(){const o={};FIELDS.forEach(k=>o[k]=$(k).value);o.longTerm=$('longTerm').checked;o.holidayShift=$('holidayShift').checked;o.ext=readRows($('extBody'));o.exc=readRows($('excBody'));return o;}
+let isSample=true;
+
+function compute(){
+  const s=snap();
+  $('sampleFlag').textContent=isSample?'예시값 입력됨':'';
+  const rateKey=s.cType, rate=parseFloat(rateKey)/1000;
+  const typeName=$('cType').selectedOptions[0].textContent.replace(/\s*\(.*\)$/,'');
+  const C=num(s.cAmt);
+  const extSum=s.ext.reduce((a,r)=>a+num(r[2]),0); $('extSum').textContent=fmtInt(extSum)+'일';
+  const dDue0=D(s.dDue), dStart=D(s.dStart), dDone=D(s.dDone), dToday=D(s.dToday);
+  let due=null, shifted=0;
+  if(dDue0){ due=addDays(dDue0,extSum); if(s.holidayShift){ while(isOff(due)){ due=addDays(due,1); shifted++; } } }
+  $('dueLine').innerHTML = due ? `변경 준공기한 = ${ymd(dDue0)} + ${fmtInt(extSum)}일${shifted?` + 휴일 이월 ${shifted}일`:''} = <b>${ymd(due)}</b>` : '당초 준공기한을 입력하면 변경 기한을 계산해요';
+
+  // 제외일수 검토
+  const wS=due?addDays(due,1):null, wE=dDone;
+  const win=wS&&wE&&wE>=wS;
+  $('excWin').textContent=win?`지체기간 ${iso(wS).slice(5).replace('-','.')}~${iso(wE).slice(5).replace('-','.')} (${diff(wS,wE)+1}일)`:'';
+  const segs=[];
+  const excRv=s.exc.map((r,i)=>{
+    const a=D(r[1]),b=D(r[2]),hasD=has(r[3]);
+    let ov=null,st,msg;
+    if(a&&b&&b>=a&&win){const x=a>wS?a:wS,y=b<wE?b:wE;ov=y>=x?diff(x,y)+1:0;if(ov>0)segs.push([x,y,i]);}
+    const eff=hasD?num(r[3]):(ov??0);
+    if(!r[0]&&!r[1]&&!r[2]&&!hasD){st='na';msg='';}
+    else if(!(a&&b)){st=hasD?'warn':'na';msg=hasD?'기간 미입력 — 겹침 검토 불가':'시작·종료일 입력';}
+    else if(b<a){st='bad';msg='종료일이 시작일보다 빨라요';}
+    else if(!win){st='na';msg='준공기한·준공신고일 입력 후 검토';}
+    else if(ov===0){st='bad';msg=b<wS?'지체기간 전 사유 — 기간 연장 대상':'지체기간 밖 사유';}
+    else if(eff>ov){st='bad';msg=`겹치는 기간 ${ov}일보다 ${eff-ov}일 많아요`;}
+    else {st='ok';msg=`지체기간과 ${ov}일 겹침${hasD?'':' · 자동 적용'}`;}
+    return {ov,eff,st,msg};
+  });
+  const dup={};let dupTot=0;
+  for(let i=0;i<segs.length;i++)for(let j=i+1;j<segs.length;j++){const x=segs[i][0]>segs[j][0]?segs[i][0]:segs[j][0],y=segs[i][1]<segs[j][1]?segs[i][1]:segs[j][1];if(y>=x){const n=diff(x,y)+1;dupTot+=n;dup[segs[i][2]]=(dup[segs[i][2]]||0)+n;dup[segs[j][2]]=(dup[segs[j][2]]||0)+n;}}
+  const rvCells=[...$('excBody').querySelectorAll('td.rvc')];
+  const numIns=[...$('excBody').querySelectorAll('input.num')];
+  excRv.forEach((v,i)=>{
+    if(numIns[i])numIns[i].placeholder=v.ov!=null?String(v.ov):'';
+    let h=v.msg?`<span class="tag ${v.st}">${{ok:'적정',bad:'확인',warn:'주의',na:'대기'}[v.st]}</span><br>${v.msg}`:'';
+    if(dup[i])h+=`<br><span class="tag warn">중복</span> 다른 사유와 ${dup[i]}일 겹쳐요`;
+    if(rvCells[i])rvCells[i].innerHTML=h;
+  });
+  const excSum=excRv.reduce((a,v)=>a+v.eff,0); $('excSum').textContent=fmtInt(excSum)+'일';
+  const excBad=excRv.filter(v=>v.st==='bad').length+(dupTot?1:0);
+  $('excRv').innerHTML=excRv.some(v=>v.msg)?(excBad?`<span class="tag bad">확인 ${excBad}건</span>`:'<span class="tag ok">적정</span>'):'';
+
+  // days
+  const fix=num(s.fixDays);
+  let raw=0, days=0, pending=false;
+  if(due&&dDone){ raw=Math.max(0,diff(due,dDone)); days=Math.max(0,raw+fix-excSum); }
+  else pending=true;
+  $('daysLine').innerHTML = pending ? '변경 준공기한과 준공신고일을 입력하면 지체일수를 계산해요'
+    : `지체일수 = 기한 초과 ${raw}일 + 보완기간 ${fmtInt(fix)}일 − 제외 ${fmtInt(excSum)}일 = <b>${days}일</b>`+(excBad?' <span class="tag bad">제외일수 확인 필요</span>':'');
+
+  // base
+  const acc=num(s.accepted), jv=num(s.jvOther);
+  const base=Math.max(0,C-acc-jv);
+  $('baseLine').innerHTML=`기준금액 = ${fmtInt(C)} − 기성 인수분 ${fmtInt(acc)} − 비귀책 구성원 ${fmtInt(jv)} = <b>${won(base)}</b>`;
+
+  const daily=Math.trunc(base*rate);
+  const rawAmt=Math.trunc(base*rate*days);
+  const cap=Math.trunc(base*0.3);
+  const amt=Math.min(rawAmt,cap);
+  const capped=rawAmt>cap;
+  const capDays=Math.ceil(0.3/rate-1e-9);
+  const bond=Math.trunc(C*num(s.bondRate)/100);
+
+  const head=$('vHead'); head.className='v-head';
+  let big,sub;
+  if(!(C>0)||pending){ big='입력 필요'; sub='계약금액, 준공기한, 준공신고일을 넣어 주세요'; }
+  else if(days===0){ head.classList.add('ok'); big='지연배상금 없음'; sub=raw>0?'기한 초과분이 제외일수로 모두 상쇄됐어요':'변경 준공기한 안에 이행을 완료했어요'; }
+  else { head.classList.add(capped?'bad':'warn'); big=won(amt); sub=capped?`한도(기준금액의 30%)에 걸려 ${won(rawAmt-cap)}을 줄였어요`:`${typeName} · 1000분의 ${parseFloat(rateKey)} × ${days}일`; }
+  $('vBig').textContent=big; $('vSub').textContent=sub;
+  $('kDue').textContent=due?iso(due).replace(/-/g,'.'):'—';
+  $('kDays').textContent=pending?'—':days+'일'; $('kDays').className='v'+(days>0?' bad':'');
+  $('kDaily').textContent=base>0?fmtInt(daily)+'원':'—';
+
+  $('moneyDl').innerHTML=`
+    <dt>기준금액</dt><dd>${won(base)}</dd>
+    <dt>지연배상금률</dt><dd>1000분의 ${parseFloat(rateKey)}</dd>
+    <dt>지체일수</dt><dd>${pending?'—':days+'일'}</dd>
+    <dt>산출액</dt><dd>${pending?'—':won(rawAmt)}</dd>
+    <dt>한도 (30%)</dt><dd>${won(cap)}</dd>
+    <dt class="total">부과할 지연배상금</dt><dd class="total">${pending?'—':won(amt)}</dd>`;
+  const ratio=cap>0?Math.min(1,amt/cap):0;
+  $('gaugeBar').style.width=(ratio*100).toFixed(1)+'%';
+  $('gauge').className='gauge'+(ratio>=1?' bad':ratio>=0.5?' warn':'');
+  $('gL').textContent=`${(base>0?amt/base*100:0).toFixed(2)}% (${Math.round(ratio*100)}%)`;
+  $('gR').textContent=`한도 30% · ${capDays}일째 도달`;
+  $('bondMsg').innerHTML = bond>0 ? (amt>=bond&&!pending ? `<span class="tag bad">확인</span> 계약보증금 상당액(${won(bond)})에 이르렀어요. 계약 해제·해지 여부를 검토하세요.` : `계약보증금 상당액 ${won(bond)}까지 ${base>0&&daily>0?Math.max(0,Math.ceil((bond-amt)/daily))+'일 더 지체하면 도달해요':'—'}`) : '';
+
+  // status
+  const dl=[];
+  if(dStart&&due){ const total=diff(dStart,due)+1; dl.push(['총 계약기간',`${total}일 (연장 ${extSum}일 포함)`]); }
+  if(dToday&&due&&!dDone){ const left=diff(dToday,due); dl.push(['기준일 현재', left>=0?`준공기한까지 ${left}일 (D-${left})`:`기한 ${-left}일 초과 · 예상 배상금 ${won(Math.min(cap,daily*Math.max(0,-left+fix-excSum)))}`]); if(dStart){const el=diff(dStart,dToday)+1,total=diff(dStart,due)+1; dl.push(['기간 경과율',`${Math.max(0,Math.min(100,el/total*100)).toFixed(1)}%`]);} }
+  if(dDone&&due) dl.push(['준공신고일',`${ymd(dDone)} · 기한 ${diff(due,dDone)>0?diff(due,dDone)+'일 초과':'이내'}`]);
+  dl.push(['한도 도달 지체일수',`${capDays}일`]);
+  $('datesDl').innerHTML=dl.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('');
+
+  // report
+  const L=[];
+  L.push('[지연배상금 산정 검토의견] ※ 테스트용 산출 결과(검증 전, 참고용)');
+  L.push(`○ 계약명: ${s.cName||'-'}`);
+  L.push(`○ 계약 종류: ${typeName} / 지연배상금률 1000분의 ${parseFloat(rateKey)} (시행규칙 제75조)`);
+  L.push(`○ 계약금액(변경): ${won(C)}${s.longTerm?' (장기계속계약 연차별 계약금액)':''}`);
+  L.push(`○ 계약기간`);
+  L.push(`  - 착공일 ${ymd(dStart)} / 당초 준공기한 ${ymd(dDue0)}`);
+  s.ext.filter(r=>num(r[2])>0).forEach(r=>L.push(`  - 연장: ${r[0]||'사유 미기재'} ${fmtInt(num(r[2]))}일${r[1]?` (승인 ${ymd(D(r[1]))})`:''}`));
+  L.push(`  - 변경 준공기한: ${ymd(dDue0)} + ${fmtInt(extSum)}일${shifted?` + 휴일 이월 ${shifted}일`:''} = ${ymd(due)}`);
+  L.push(`○ 지체일수`);
+  L.push(`  - 준공신고일: ${ymd(dDone)} → 기한 초과 ${raw}일`);
+  if(fix) L.push(`  - 검사 불합격 보완기간: ${fmtInt(fix)}일 가산`);
+  s.exc.forEach((r,i)=>{const v=excRv[i];if(!(v.eff>0))return;const w=[v.st==='bad'?v.msg:'',dup[i]?'다른 사유와 '+dup[i]+'일 중복':''].filter(Boolean);L.push(`  - 제외: ${r[0]||'사유 미기재'} ${fmtInt(v.eff)}일${r[1]&&r[2]?` (${ymd(D(r[1]))}~${ymd(D(r[2]))})`:''} — 계약상대자 책임 없는 사유, 영 제90조제1항 후단${w.length?' ※ 검토 필요: '+w.join(', '):''}`);});
+  L.push(`  - 지체일수: ${raw} + ${fmtInt(fix)} − ${fmtInt(excSum)} = ${days}일`);
+  L.push(`○ 지연배상금 산출`);
+  L.push(`  - 기준금액: ${won(C)} − 기성 인수분 ${won(acc)} − 비귀책 구성원 ${won(jv)} = ${won(base)} (영 제90조제2항·제4항)`);
+  L.push(`  - 산출액: ${won(base)} × ${parseFloat(rateKey)}/1000 × ${days}일 = ${won(rawAmt)}`);
+  L.push(`  - 한도: ${won(base)} × 30% = ${won(cap)} (영 제90조제3항) → ${capped?'한도 적용':'한도 이내'}`);
+  L.push(`  - 부과할 지연배상금: ${won(amt)} (원 미만 절사, 현금 납부)`);
+  if(bond>0) L.push(`  - 계약보증금 상당액(${num(s.bondRate)}%) ${won(bond)} ${amt>=bond?'도달 → 계약 해제·해지 여부 검토 필요':'미도달'}`);
+  L.push('○ 근거: 지방계약법 시행령 제90조, 같은 법 시행규칙 제75조');
+  $('reportText').value=L.join('\n'); $('reportPre').textContent=L.join('\n');
+  try{localStorage.setItem(KEY,JSON.stringify({isSample,st:s}));}catch(e){}
+}
+document.addEventListener('input',e=>{if(e.target.closest('#app')){isSample=false;compute();}});
+document.addEventListener('change',e=>{if(e.target.closest('#app')){if(e.target.type==='checkbox'||e.target.tagName==='SELECT')isSample=false;compute();}});
+document.addEventListener('focusout',e=>{const t=e.target;if(t.classList&&t.classList.contains('money')&&has(t.value))t.value=fmtInt(num(t.value));});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(!b)return;const tb=b.closest('tbody');if(tb.rows.length>1)b.closest('tr').remove();else tb.querySelectorAll('input').forEach(i=>i.value='');isSample=false;compute();});
+function addRow(body,spec){const r=readRows(body);r.push(spec.map(()=>''));renderRows(body,r,spec);body.lastElementChild.querySelector('input').focus();compute();}
+$('addExt').onclick=()=>addRow($('extBody'),EXT_SPEC);
+$('addExc').onclick=()=>addRow($('excBody'),EXC_SPEC);
+function flash(m){const t=$('toast');t.textContent=m;clearTimeout(flash.t);flash.t=setTimeout(()=>t.textContent='',2500);}
+$('resetBtn').onclick=()=>{isSample=true;load(SAMPLE);compute();flash('예시값으로 되돌렸어요');};
+$('clearBtn').onclick=()=>{isSample=false;load(EMPTY);compute();flash('입력값을 모두 비웠어요');};
+$('copyBtn').onclick=()=>{const txt=$('reportText').value;const fb=()=>{const ta=$('reportText');ta.select();try{document.execCommand('copy');flash('검토의견을 복사했어요');}catch(e){flash('복사하지 못했어요. 다시 시도해 주세요');}};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(()=>flash('검토의견을 복사했어요'),fb);else fb();};
+document.querySelectorAll('.gnb button').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.view;$('app').hidden=v!=='app';$('guide').hidden=v!=='guide';document.querySelectorAll('.gnb button').forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});window.scrollTo(0,0);}));
+let init=SAMPLE;
+try{const raw=localStorage.getItem(KEY);if(raw){const o=JSON.parse(raw);if(o&&o.st){init=o.st;isSample=!!o.isSample;}}}catch(e){}
+load(init);compute();
+})();
+</script>
+
+</body></html>

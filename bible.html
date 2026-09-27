@@ -1559,9 +1559,8 @@ window.dispatchEvent(new Event('qa-fb-ready'));
 <script src="image-slot.js"></script>
 <script src="wf_tags.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/static/pretendard.min.css">
-<script>/* 디자인 스킨 — 정부24(기본) / 노션(이전) */
-(function(){var s;try{s=localStorage.getItem('bible-skin');}catch(e){}document.documentElement.setAttribute('data-skin',s||'gov24');})();
-function toggleSkin(){var r=document.documentElement,n=r.getAttribute('data-skin')==='gov24'?'notion':'gov24';r.setAttribute('data-skin',n);try{localStorage.setItem('bible-skin',n);}catch(e){}}
+<script>/* 디자인 — 정부24 고정 */
+document.documentElement.setAttribute('data-skin','gov24');
 </script>
 <style id="gov24-skin">
   /* ===== SKIN v4 : 정부24(KRDS) — html[data-skin="gov24"] 일 때만 적용, 끄면 노션 스킨으로 복귀 ===== */
@@ -1765,6 +1764,8 @@ function toggleSkin(){var r=document.documentElement,n=r.getAttribute('data-skin
       <button class="tab" data-p="check-owner" data-sub="check" data-ops="1" style="display:none"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c1.5-3.4 4-5 7-5s5.5 1.6 7 5"/></svg></span>발주자 의무</button>
       <button class="tab" data-p="check-jn" data-sub="check" data-ops="1" style="display:none"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span>전남·광주</button>
       <button class="tab" data-p="check-etc" data-sub="check" data-ops="1" style="display:none"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.4 2.6 14.1 0 17"/></svg></span>타시도</button>
+      <a class="tab ops" id="chkStart" href="착공서류_체크리스트.html" target="_blank" rel="noopener noreferrer" onclick="window.open(this.href,'_blank','noopener');return false;" style="text-decoration:none"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 3.5V6h6V3.5"/><path d="M8.5 12l2 2 4-4.5"/><path d="M8.5 17h7"/></svg></span>공사서류 체크리스트</a>
+      <a class="tab ops" href="molit-faq/index.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/><path d="M8.8 8.3a1.8 1.8 0 1 1 2.6 1.6c-.6.3-.9.7-.9 1.4"/><path d="M10.5 13.6h.01"/></svg></span>질의회신 검색</a>
       <button class="tab ops" data-p="law"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>법령 검색</button>
       <button class="tab ops" data-p="price"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17 10 6l4 6 3-4 4 9z"/><path d="M3 21h18"/></svg></span>2027 시설단가</button>
       <button class="tab ops" data-p="glossary"><span class="tico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2z"/><path d="M8 8h7M8 12h7"/></svg></span>용어정리</button>
@@ -3334,16 +3335,19 @@ function toggleSkin(){var r=document.documentElement,n=r.getAttribute('data-skin
       <a class="extlink" id="oneClickDocBtn" aria-disabled="true" tabindex="-1" title="원클릭 문서함 (준비 중)" style="pointer-events:none;opacity:.45;cursor:default"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><path d="M3 12h4l2 3h6l2-3h4"/><path d="M5.5 5h13L21 12v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6z"/><path d="M12 3v6M9.5 6.5 12 9l2.5-2.5"/></svg><span class="lb">원클릭 문서함</span></a>
       <a class="extlink" id="budgetAnalysisBtn" aria-disabled="true" tabindex="-1" title="예산 집행분석 (준비 중)" style="pointer-events:none;opacity:.45;cursor:default"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><path d="M4 20h16"/><path d="M6 20v-6M11 20V9M16 20v-9"/><path d="M5 10l5-4 4 3 6-5"/></svg><span class="lb">예산 집행분석</span></a>
       <a class="extlink" id="schoolStatusBtn" href="현황보고서_작성기.html" target="_blank" rel="noopener noreferrer" title="학교시설 현황판 — 건물정보 엑셀로 현황보고서 작성"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/><path d="M12.5 13h5M12.5 16.5h5"/></svg><span class="lb">학교시설 현황판</span></a>
-      <a class="extlink" id="pileSettleBtn" href="파일공사_정산검토_대시보드.html" target="_blank" rel="noopener noreferrer" title="파일공사 정산검토 대시보드 (테스트)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><path d="M3 20h18"/><path d="M7 4v16M12 4v16M17 4v16"/><path d="M5 4h14"/></svg><span class="lb">기초파일 정산</span></a>
-      <a class="extlink" id="advanceSettleBtn" href="선금기성금준공금 정산기.html" target="_blank" rel="noopener noreferrer" title="선금·기성금 정산 — 선금·기성금·준공금 정산기"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9.5v5M18 9.5v5"/></svg><span class="lb">선금·기성금 정산</span></a>
-      <a class="extlink" id="escalationBtn" href="물가변동_조정_판정기.html" target="_blank" rel="noopener noreferrer" title="물가변동 조정 판정기"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><path d="M3 20h18"/><path d="M4 16l5-5 4 3 7-8"/><path d="M15 6h5v5"/></svg><span class="lb">물가조정 분석</span></a>
-      <a class="extlink" id="delayCompBtn" href="지연배상금_계산기.html" target="_blank" rel="noopener noreferrer" title="지연배상금 계산기"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg><span class="lb">지연배상금 계산</span></a>
       <div class="nav-grp">현장 체크</div>
       <button type="button" class="extlink tab chk" data-p="cert"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><circle cx="12" cy="9" r="5.5"/><path d="M9 13.5 8 21l4-2 4 2-1-7.5"/></svg><span class="lb">인증 체크</span></button>
       <button type="button" class="extlink tab chk" data-p="bom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2z"/><path d="M8 8h7M8 12h7M8 16h4"/></svg><span class="lb">표준품셈 체크</span></button>
       <button type="button" class="extlink tab chk" data-p="wx"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><circle cx="8.5" cy="8.5" r="3"/><path d="M8.5 2.5v1.6M8.5 13v1.6M2.5 8.5h1.6M13 8.5h1.6M4.6 4.6l1.1 1.1M11.3 11.3l1.1 1.1M12.4 4.6l-1.1 1.1M5.7 11.3l-1.1 1.1"/><path d="M9 20h8a2.6 2.6 0 0 0 .2-5.2A3.8 3.8 0 0 0 10 14a3 3 0 0 0-1 6z"/></svg><span class="lb">기상데이터 체크</span></button>
-      <a class="extlink tab chk" href="molit-faq/index.html" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/><path d="M8.8 8.3a1.8 1.8 0 1 1 2.6 1.6c-.6.3-.9.7-.9 1.4"/><path d="M10.5 13.6h.01"/></svg><span class="lb">질의회신 검색</span></a>
-      <a class="extlink tab chk" id="chkStart" href="착공서류_체크리스트.html" target="_blank" rel="noopener noreferrer" onclick="window.open(this.href,'_blank','noopener');return false;"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 3.5V6h6V3.5"/><path d="M8.5 12l2 2 4-4.5"/><path d="M8.5 17h7"/></svg><span class="lb">공사서류 체크리스트</span></a>
+      <div class="nav-grp">정산 도구</div>
+      <a class="extlink" id="pileSettleBtn" href="파일공사_정산검토_대시보드.html" target="_blank" rel="noopener noreferrer" title="파일공사 정산검토 대시보드 (테스트)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><path d="M3 20h18"/><path d="M7 4v16M12 4v16M17 4v16"/><path d="M5 4h14"/></svg><span class="lb">기초파일 정산</span></a>
+      <a class="extlink" id="advanceSettleBtn" href="선금기성금준공금 정산기.html" target="_blank" rel="noopener noreferrer" title="선금·기성금 정산 — 선금·기성금·준공금 정산기"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9.5v5M18 9.5v5"/></svg><span class="lb">선금·기성금 정산</span></a>
+      <a class="extlink" id="escalationBtn" href="물가변동_조정_판정기.html" target="_blank" rel="noopener noreferrer" title="물가변동 조정 판정기"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><path d="M3 20h18"/><path d="M4 16l5-5 4 3 7-8"/><path d="M15 6h5v5"/></svg><span class="lb">물가조정 분석</span></a>
+      <a class="extlink" id="delayCompBtn" href="지연배상금_계산기.html" target="_blank" rel="noopener noreferrer" title="지연배상금 계산기"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg><span class="lb">지연배상금 계산</span></a>
+      <a class="extlink" id="siteEngBtn" href="현장기술자_배치기준_판정기.html" target="_blank" rel="noopener noreferrer" title="현장기술자 배치기준 판정기"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><circle cx="12" cy="7" r="3"/><path d="M5.5 20c1.2-3.6 3.6-5.5 6.5-5.5s5.3 1.9 6.5 5.5"/><path d="M8.5 5.5h7"/></svg><span class="lb">현장기술자 배치검토</span></a>
+      <a class="extlink" id="subconBtn" href="하도급_적정성_심사_계산기.html" target="_blank" rel="noopener noreferrer" title="하도급 적정성 심사 계산기"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h5"/><path d="M13 17l2 2 3.5-3.5"/></svg><span class="lb">하도급 적정성 심사</span></a>
+      <a class="extlink" id="extIndirBtn" href="공기연장_간접비_산정기.html" target="_blank" rel="noopener noreferrer" title="공기연장 간접비 산정기"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M9 15h6M13 13l2 2-2 2"/></svg><span class="lb">공기연장 간접비 검토</span></a>
+      <a class="extlink" id="terminateBtn" href="계약_해제해지_정산기.html" target="_blank" rel="noopener noreferrer" title="계약 해제·해지 정산기"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;display:block"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9.5 12.5l5 5M14.5 12.5l-5 5"/></svg><span class="lb">계약 해제·해지 정산</span></a>
     </nav>
 
     <div class="qbox" id="qbox" data-folded="1">
@@ -4130,9 +4134,7 @@ function activate(p){
   document.querySelectorAll('.tab').forEach(t=>{
     const on=(t.dataset.p===p);
     t.classList.toggle('active',on);
-    if(on){ t.style.setProperty('color','#fff','important'); t.style.setProperty('-webkit-text-fill-color','#fff','important');
-      t.querySelectorAll('*').forEach(c=>{ c.style.setProperty('color','#fff','important'); c.style.setProperty('-webkit-text-fill-color','#fff','important'); }); }
-    else { t.style.removeProperty('color'); t.style.removeProperty('-webkit-text-fill-color');
+    { t.style.removeProperty('color'); t.style.removeProperty('-webkit-text-fill-color');
       t.querySelectorAll('*').forEach(c=>{ c.style.removeProperty('color'); c.style.removeProperty('-webkit-text-fill-color'); }); }
   });
   document.querySelectorAll('.panel').forEach(pn=>pn.classList.toggle('show',pn.id===p));
@@ -5668,9 +5670,7 @@ function syncOvgo(){
   document.querySelectorAll('.side-nav .tab[data-ovgo]').forEach(function(b){
     var on=ovOpen&&b.dataset.ovgo===v;
     b.classList.toggle('active',on);
-    if(on){ b.style.setProperty('color','#fff','important');
-      b.querySelectorAll('*').forEach(function(c){c.style.setProperty('color','#fff','important');}); }
-    else { b.style.removeProperty('color');
+    { b.style.removeProperty('color');
       b.querySelectorAll('*').forEach(function(c){c.style.removeProperty('color');}); }
   });
   var ob=document.querySelector('.side-nav .tab[data-p="overview"]');
@@ -5947,6 +5947,8 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 /* 인트로(히어로 공지) 자동 업데이트 — 매뉴얼/유틸 카드 수를 DOM에서 직접 집계 */
 (function(){
   var NOTICES=[
+    {d:'2026-09-27', tx:'<b>정산 도구</b> 메뉴 신설 — 기초파일 정산 · 선금·기성금 정산 · 물가조정 분석 · 지연배상금 계산 이동, <b>현장기술자 배치검토 · 하도급 적정성 심사 · 공기연장 간접비 검토 · 계약 해제·해지 정산</b> 4종 추가(새 창)'},
+    {d:'2026-09-27', tx:'<b>메뉴 정비</b> — 공사서류 체크리스트 · 질의회신 검색을 실무 운영 메뉴로 이동'},
     {d:'2026-09-26', tx:'<b>학교시설 현황판</b> 신설 — 산출 도구 메뉴, 건물정보 엑셀로 학교시설 현황보고서 작성(새 창) · 입력 내용은 브라우저에 자동 저장'},
     {d:'2026-09-25', tx:'<b>산출 도구</b> 메뉴 추가 — 공사기간 산출 아래 <b>원클릭 문서함</b> · <b>예산 집행분석</b>(준비 중, 비활성)'},
     {d:'2026-09-24', tx:'<b>기상데이터</b> 개편 — 기상청 과거(일별) 자료 기준 조회 · 3년치 자동 수집 · 매일 오전 10시 전일 자료 갱신'},
@@ -6619,5 +6621,76 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
   document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 })();
 </script>
+<style id="g24-sidebar-v2">
+/* ===== 사이드바 v2 — 정부24 LNB ===== */
+@media(min-width:861px){
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav{background:#fff!important;border:1px solid #E6E8EA!important;border-radius:16px!important;box-shadow:0 2px 8px rgba(0,0,0,.04)!important;padding:14px 12px 18px!important;gap:2px!important;backdrop-filter:none!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .nav-grp{display:flex!important;align-items:center;justify-content:space-between;width:100%;box-sizing:border-box;background:transparent!important;border:0!important;border-top:1px solid #E6E8EA!important;border-radius:0!important;box-shadow:none!important;margin:10px 0 2px!important;padding:16px 12px 6px!important;font:700 13px/1.4 'Pretendard GOV','Pretendard',sans-serif!important;color:#6D7882!important;letter-spacing:0!important;text-transform:none!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .nav-grp:first-child{border-top:0!important;margin-top:0!important;padding-top:4px!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .nav-fold{cursor:pointer}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .nav-fold:hover{color:#0B50D0!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab,html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .extlink{background:transparent!important;background-image:none!important;border:0!important;border-radius:8px!important;box-shadow:none!important;transform:none!important;padding:10px 12px!important;gap:10px!important;font-size:15px!important;font-weight:500!important;color:#1E2124!important;-webkit-text-fill-color:#1E2124!important;transition:background-color .15s,color .15s!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .extlink .lb{font-size:15px!important;font-weight:500!important;color:inherit!important;-webkit-text-fill-color:inherit!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab .tico,html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab .tico svg{opacity:1!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab .tico svg,html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .extlink>svg{stroke:#6D7882!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab[data-sub]{padding:7px 12px 7px 40px!important;margin-left:0!important;width:100%!important;font-size:14px!important;color:#464C53!important;-webkit-text-fill-color:#464C53!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab:not(.active):hover,html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .extlink:hover{background:#F4F5F6!important;color:#0B50D0!important;-webkit-text-fill-color:#0B50D0!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab:not(.active):hover *,html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .extlink:hover *{color:#0B50D0!important;-webkit-text-fill-color:#0B50D0!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab:hover .tico svg,html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .extlink:hover>svg{stroke:#256EF4!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab.active,html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab.active[data-ovgo],html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab.active[data-p="overview"]{background:#ECF2FE!important;color:#0B50D0!important;-webkit-text-fill-color:#0B50D0!important;font-weight:700!important;border:0!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab.active *{color:#0B50D0!important;-webkit-text-fill-color:#0B50D0!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab.active .tico svg{stroke:#256EF4!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .extlink[target="_blank"]::after,html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav a.tab[target="_blank"]::after{content:"";flex:0 0 auto;width:12px;height:12px;margin-left:auto;opacity:0;transition:opacity .15s;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E") center/contain no-repeat}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .extlink[target="_blank"]:hover::after,html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav a.tab[target="_blank"]:hover::after{opacity:.8}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .extlink .lb{flex:1 1 auto}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .tab:focus-visible,html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .side-nav .extlink:focus-visible{outline:2px solid #256EF4!important;outline-offset:-2px}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .nav-grp{font-size:16px!important;font-weight:800!important;color:#1E2124!important;-webkit-text-fill-color:#1E2124!important;padding:18px 12px 8px!important;letter-spacing:-.02em!important;justify-content:flex-start!important;gap:8px}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .nav-grp::before{content:"";flex:0 0 auto;width:4px;height:16px;border-radius:2px;background:#256EF4}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .nav-fold .fold-i{margin-left:auto;color:#6D7882;font-weight:500}
+html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .nav-fold:hover,html[data-skin="gov24"]:not([data-theme="dark"]) .sidebar .nav-fold:hover *{color:#0B50D0!important;-webkit-text-fill-color:#0B50D0!important}
+}
+</style>
+<style id="grp-fold-css">.side-nav .grp-hide{display:none!important}
+.side-nav .nav-fold .fold-i,.side-nav .nav-fold[aria-expanded="true"] .fold-i{transform:none!important;font-size:0!important}
+.side-nav .nav-fold .fold-i::before{content:"＋";font-size:19px;line-height:1}
+.side-nav .nav-fold[aria-expanded="true"] .fold-i::before{content:"−"}</style>
+<script>/* 사이드바 그룹 접기/펼치기 */
+(function(){
+  document.querySelectorAll('.side-nav > div.nav-grp').forEach(function(g){
+    var key='sbGrp:'+g.textContent.trim();
+    g.classList.add('nav-fold'); g.setAttribute('role','button'); g.setAttribute('tabindex','0');
+    var ic=document.createElement('span'); ic.className='fold-i'; ic.textContent='＋'; g.appendChild(ic);
+    function items(){ var a=[],n=g.nextElementSibling; while(n&&!n.classList.contains('nav-grp')){a.push(n);n=n.nextElementSibling;} return a; }
+    function set(open){ g.setAttribute('aria-expanded',open?'true':'false'); items().forEach(function(el){el.classList.toggle('grp-hide',!open);}); try{localStorage.setItem(key,open?'1':'0');}catch(e){} }
+    var open=true; try{open=localStorage.getItem(key)!=='0';}catch(e){}
+    set(open);
+    g.addEventListener('click',function(){ set(g.getAttribute('aria-expanded')!=='true'); });
+    g.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click();} });
+  });
+})();
+</script>
+<style id="g24-hero">
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero{background:#F4F5F6!important;border-bottom:1px solid #E6E8EA!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero-in{padding:18px 24px 16px!important;align-items:center!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero-eyebrow{font-size:13px!important;font-weight:700!important;color:#0B50D0!important;margin:0 0 4px!important;text-transform:none!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero-h1{font-size:clamp(20px,2.2vw,26px)!important;font-weight:700!important;line-height:1.3!important;letter-spacing:-.02em!important;color:#1E2124!important;margin:0 0 12px!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero .ts-field{max-width:760px!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero #global-q{height:48px!important;padding:0 60px 0 22px!important;border-radius:999px!important;border:2px solid transparent!important;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(102deg,#0FB87D 10%,#256EF4 90%) border-box!important;box-shadow:0 6px 8px rgba(37,110,244,.10)!important;font-size:15px!important;font-weight:400!important;color:#1E2124!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero #global-q::placeholder{color:#6D7882}
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero #global-q:focus{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(#256EF4,#256EF4) border-box!important;box-shadow:0 0 0 4px #D8E5FD!important;outline:none}
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero .ts-ic{right:6px!important;width:36px!important;height:36px!important;border:0!important;border-radius:50%!important;background:#256EF4!important;color:#fff!important;opacity:1!important;font-size:20px!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero .ts-ic:hover{background:#0B50D0!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero .ts-ic svg{stroke-width:2.4}
+@media(max-width:860px){html[data-skin="gov24"]:not([data-theme="dark"]) .hero-in{padding:28px 16px 24px!important}html[data-skin="gov24"]:not([data-theme="dark"]) .hero #global-q{height:52px!important;font-size:15px!important}html[data-skin="gov24"]:not([data-theme="dark"]) .hero .ts-ic{width:38px!important;height:38px!important}}
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero-notice{padding:12px 16px!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .hero-notice .hn-list{max-height:128px;overflow-y:auto}
+</style>
+<style id="g24-matrix-head">
+html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh,html[data-skin="gov24"]:not([data-theme="dark"]) .gz-corner{background:#F4F5F6!important;border-top:2px solid #1E2124!important;border-bottom:1px solid #B1B8BE!important;padding:16px 16px 14px!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh{border-left:1px solid #E6E8EA!important;display:flex;flex-wrap:wrap;align-items:center;row-gap:6px}
+html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh i{display:inline-grid!important;place-items:center;width:26px!important;min-width:26px!important;height:26px!important;padding:0!important;margin-right:8px!important;border-radius:50%!important;background:#256EF4!important;color:#fff!important;font-size:12px!important;font-weight:700!important;letter-spacing:0!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh b{font-size:19px!important;font-weight:700!important;color:#1E2124!important;letter-spacing:-.01em!important}
+html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh span{flex-basis:100%;display:block;margin-top:0!important;font-size:14px!important;font-weight:400!important;color:#464C53!important}
+</style>
 </body>
 </html>

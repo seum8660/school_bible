@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>계약 해제·해지 정산기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-gov-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<style>:root{
+  --primary:#256EF4; --primary-h:#0B50D0; --primary-50:#ECF2FE; --primary-100:#D8E5FD;
+  --text:#1E2124; --text-2:#464C53; --text-3:#6D7882; --line:#CDD1D5; --line-2:#E6E8EA;
+  --bg:#F4F5F6; --surface:#FFFFFF;
+  --danger:#DE3412; --danger-50:#FDEFEC; --warn:#9E6A00; --warn-50:#FFF3DB; --ok:#228738; --ok-50:#EAF6EC;
+  --radius:8px; --radius-lg:12px;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --text:#E6E8EA; --text-2:#C6CACF; --text-3:#9AA3AC; --line:#3A4048; --line-2:#2C3137;
+    --bg:#131619; --surface:#1B1F23; --primary-50:#16233D; --primary-100:#1D3363;
+    --danger-50:#3A1A13; --warn-50:#3A2E12; --ok-50:#15301C; --warn:#F2B53B; --ok:#4FC26A; --danger:#FF6B4A;
+  }
+}
+:root[data-theme="dark"]{
+  --text:#E6E8EA; --text-2:#C6CACF; --text-3:#9AA3AC; --line:#3A4048; --line-2:#2C3137;
+  --bg:#131619; --surface:#1B1F23; --primary-50:#16233D; --primary-100:#1D3363;
+  --danger-50:#3A1A13; --warn-50:#3A2E12; --ok-50:#15301C; --warn:#F2B53B; --ok:#4FC26A; --danger:#FF6B4A;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:"Pretendard GOV Variable","Pretendard GOV","IBM Plex Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.num,.mono{font-family:"IBM Plex Sans KR","Pretendard GOV Variable",sans-serif;font-variant-numeric:tabular-nums}
+a{color:var(--primary)}
+.test-banner{background:var(--danger);color:#fff;text-align:center;font-size:13px;font-weight:600;padding:6px 16px;letter-spacing:.02em}
+.hd{background:var(--surface);border-bottom:1px solid var(--line)}
+.hd-in{max-width:1180px;margin:0 auto;padding:18px 16px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.hd .crumb{font-size:13px;color:var(--text-3);margin-bottom:2px}
+.hd h1{margin:0;font-size:24px;font-weight:700;letter-spacing:-.01em}
+.hd h1 .tag{display:inline-block;vertical-align:middle;margin-left:8px;font-size:12px;font-weight:600;color:var(--danger);border:1px solid var(--danger);border-radius:4px;padding:1px 6px}
+.hd .sub{font-size:14px;color:var(--text-2);margin-top:4px}
+.hd-actions{display:flex;gap:8px;flex-wrap:wrap}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+.seg{display:inline-flex;background:var(--line-2);border-radius:10px;padding:4px;gap:4px;margin-bottom:18px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;color:var(--text-2);font:inherit;font-weight:600;font-size:14px;padding:8px 16px;border-radius:7px;cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--primary);box-shadow:var(--shadow)}
+.panel[hidden]{display:none}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:20px;align-items:start}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
+.card h2{margin:0 0 4px;font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card h2 .no{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px}
+.card .desc{margin:0 0 14px;color:var(--text-3);font-size:13px}
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px 14px}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.f.wide{grid-column:1/-1}
+.f label{font-size:13px;font-weight:600;color:var(--text-2)}
+.f .hint{font-size:12px;color:var(--text-3)}
+input[type=text],input[type=number],input[type=date],select,textarea{font:inherit;font-size:15px;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:9px 11px;width:100%;min-width:0}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--primary);outline-offset:1px;border-color:var(--primary)}
+input.money,input.rate{text-align:right;font-family:"IBM Plex Sans KR",sans-serif;font-variant-numeric:tabular-nums}
+input[readonly]{background:var(--bg);color:var(--text-2)}
+.unit{position:relative}.unit input{padding-right:34px}.unit span{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text-3);pointer-events:none}
+.chk{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--text);cursor:pointer;padding:4px 0}
+.chk input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--primary);flex:none}
+.radios{display:flex;flex-wrap:wrap;gap:8px}
+.radios label{border:1px solid var(--line);border-radius:var(--radius);padding:8px 12px;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:6px;background:var(--surface)}
+.radios input{accent-color:var(--primary)}
+.radios label:has(input:checked){border-color:var(--primary);background:var(--primary-50);color:var(--primary);font-weight:600}
+.btn{font:inherit;font-size:14px;font-weight:600;border-radius:var(--radius);padding:9px 14px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--text);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--text-3)}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn.primary:hover{background:var(--primary-h)}
+.btn.sm{font-size:13px;padding:6px 10px}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--text-3)}
+.btn.ghost:hover{color:var(--danger)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{background:var(--bg);font-weight:600;color:var(--text-2);font-size:13px;text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.t td{padding:6px 8px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+table.t tr:last-child td{border-bottom:0}
+table.t td input,table.t td select{padding:7px 8px;font-size:14px}
+table.t .r{text-align:right}
+table.t tfoot td{background:var(--primary-50);font-weight:700;border-top:1px solid var(--line)}
+.tbl-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:8px;flex-wrap:wrap}
+.sticky{position:sticky;top:12px}
+/* verdict folder tab */
+.verdict{margin-bottom:16px}
+.verdict .tab{display:inline-block;padding:7px 16px 6px;border-radius:10px 10px 0 0;font-weight:700;font-size:14px;color:#fff;background:var(--text-3)}
+.verdict .body{background:var(--surface);border:2px solid var(--text-3);border-left:0;border-right:0;border-radius:0;padding:18px 4px}
+.verdict.ok .tab{background:var(--ok)}.verdict.ok .body{border-color:var(--ok)}
+.verdict.warn .tab{background:#C88A00}.verdict.warn .body{border-color:#C88A00}
+.verdict.bad .tab{background:var(--danger)}.verdict.bad .body{border-color:var(--danger)}
+.verdict.info .tab{background:var(--primary)}.verdict.info .body{border-color:var(--primary)}
+.verdict .big{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.3}
+.verdict .big small{font-size:14px;font-weight:600;color:var(--text-3);margin-left:4px}
+.verdict .lead{font-size:14px;color:var(--text-2);margin:4px 0 12px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px;margin:0}
+.kv dt{color:var(--text-3)}.kv dd{margin:0;text-align:right;font-weight:600}
+.kv .tot{border-top:1px solid var(--line);padding-top:8px;margin-top:2px;font-size:16px;color:var(--primary)}
+.checks{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.checks li{display:flex;gap:8px;font-size:13.5px;line-height:1.5;padding:8px 10px;border-radius:var(--radius);background:var(--bg)}
+.checks li .ic{flex:none;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;margin-top:1px}
+.checks li.ok .ic{background:var(--ok)}.checks li.warn .ic{background:#C88A00}.checks li.bad .ic{background:var(--danger)}.checks li.info .ic{background:var(--primary)}
+.checks li.bad{background:var(--danger-50)}.checks li.warn{background:var(--warn-50)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn-row .btn{flex:1;justify-content:center}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px}
+.pill.ok{background:var(--ok-50);color:var(--ok)}.pill.bad{background:var(--danger-50);color:var(--danger)}.pill.warn{background:var(--warn-50);color:var(--warn)}.pill.info{background:var(--primary-50);color:var(--primary)}
+.note{font-size:13px;color:var(--text-2);background:var(--primary-50);border-left:3px solid var(--primary);padding:10px 12px;border-radius:0 var(--radius) var(--radius) 0;margin:12px 0 0}
+.note.warn{background:var(--warn-50);border-color:#C88A00}
+/* guide */
+.guide h3{font-size:16px;margin:22px 0 8px}
+.guide h3:first-child{margin-top:0}
+.guide p,.guide li{font-size:14px;color:var(--text-2)}
+.guide ol,.guide ul{padding-left:20px;margin:6px 0}
+.guide .law{font-size:13px;background:var(--bg);border:1px solid var(--line-2);border-radius:var(--radius);padding:12px 14px;white-space:pre-wrap;color:var(--text-2)}
+.guide .src{font-size:12px;color:var(--text-3)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#1E2124;color:#fff;font-size:14px;padding:10px 18px;border-radius:999px;opacity:0;transition:.2s;pointer-events:none;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.ft{max-width:1180px;margin:0 auto;padding:0 16px 40px;font-size:12px;color:var(--text-3)}
+@media (max-width:600px){.hd h1{font-size:20px}.card{padding:16px}.verdict .big{font-size:22px}}
+@media print{.test-banner,.hd-actions,.seg,.btn-row,.tbl-actions,.btn{display:none!important}.grid{grid-template-columns:1fr}.sticky{position:static}body{background:#fff}}
+.pdf-dlg{border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;width:min(560px,calc(100vw - 32px));background:var(--surface);color:var(--text);box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.pdf-dlg::backdrop{background:rgba(0,0,0,.35)}
+.pdf-drop{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1.5px dashed var(--primary);background:var(--primary-50);border-radius:var(--radius);padding:12px 14px;margin:0 0 14px;font-size:13.5px;color:var(--text-2)}
+.pdf-drop b{color:var(--primary)}
+body.dragging .pdf-drop{background:var(--primary-100);border-style:solid}
+.f[hidden],[hidden]{display:none!important}
+
+#gsT{min-width:720px}
+.flow{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-top:10px}
+.flow .box{background:var(--bg);border-radius:var(--radius);padding:10px 12px;font-size:13px}
+.flow .box b{display:block;font-size:16px;font-variant-numeric:tabular-nums}
+.flow .arrow{color:var(--text-3);font-size:18px}
+.reason-list[hidden]{display:none}
+</style>
+</head>
+<body>
+<div class="test-banner">테스트용 — 정산 결과는 참고용이며, 해제·해지 통지 전에 계약문서·보증서와 관계 법령을 확인하십시오.</div>
+<header class="hd"><div class="hd-in">
+  <div>
+    <div class="crumb">학교시설업무 치트키 · 계약관리·정산 도구</div>
+    <h1>계약 해제·해지 정산기<span class="tag">테스트용</span></h1>
+    <div class="sub">지방계약법 제15조 · 시행령 제51조·제54조 · 공사계약 일반조건(해제·해지) · 선금 반환청구 기준</div>
+  </div>
+  <div class="hd-actions">
+    <button class="btn sm" type="button" data-pdf-btn>📄 계약정보 PDF</button>
+    <button class="btn sm" id="sampleBtn" type="button">예시 불러오기</button>
+    <button class="btn sm" id="resetBtn" type="button">초기화</button>
+    <button class="btn sm" id="themeBtn" type="button" aria-label="화면 테마 전환">◐ 테마</button>
+    <button class="btn sm primary" id="xlsxTop" type="button">엑셀 내보내기</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <div class="seg" role="tablist">
+    <button type="button" role="tab" data-tab="calc" aria-selected="true">해제·해지 정산</button>
+    <button type="button" role="tab" data-tab="guide" aria-selected="false">산출기준 안내</button>
+  </div>
+
+  <section class="panel" id="calc">
+    <div class="grid">
+      <div>
+        <div class="card">
+          <h2><span class="no">1</span>계약 정보</h2>
+          <p class="desc">현재(변경) 계약금액 기준으로 입력합니다. 장기계속공사는 해당 차수 계약을 기준으로 하되, 계약보증금은 총공사금액 기준입니다.</p>
+          <div class="pdf-drop"><span><b>에듀파인 계약정보 PDF</b>를 끌어다 놓거나 불러오면 계약 정보가 자동 입력됩니다.</span><button class="btn sm primary" type="button" data-pdf-btn>PDF 불러오기</button></div>
+          <div class="fields">
+            <div class="f wide"><label for="name">공사명</label><input type="text" id="name" data-k="name" placeholder="예) ○○중학교 급식실 증축공사"></div>
+            <div class="f"><label for="vendor">계약상대자</label><input type="text" id="vendor" data-k="vendor"></div>
+            <div class="f"><label for="amt">계약금액</label><div class="unit"><input type="text" class="money" id="amt" data-k="amt"><span>원</span></div></div>
+            <div class="f"><label for="dS">착공일</label><input type="date" id="dS" data-k="dS"></div>
+            <div class="f"><label for="dE">준공기한</label><input type="date" id="dE" data-k="dE"></div>
+            <div class="f"><label for="dT">해제·해지일</label><input type="date" id="dT" data-k="dT"><span class="hint">통지일</span></div>
+            <div class="f wide"><label class="chk"><input type="checkbox" data-k="longTerm"> 장기계속공사</label></div>
+            <div class="f"><label for="totalAmt">총공사 부기금액</label><div class="unit"><input type="text" class="money" id="totalAmt" data-k="totalAmt"><span>원</span></div><span class="hint">장기계속공사만 — 계약보증금 기준</span></div>
+            <div class="f"><label for="doneYears">이행 완료된 연차 계약금액 합계</label><div class="unit"><input type="text" class="money" id="doneYears" data-k="doneYears"><span>원</span></div><span class="hint">완료 차수분 보증금은 반환 대상</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="no">2</span>해제·해지 유형과 이행보증</h2>
+          <div class="radios" style="margin-bottom:12px">
+            <label><input type="radio" name="type" value="A" data-k="type" checked> 계약상대자 책임</label>
+            <label><input type="radio" name="type" value="B" data-k="type"> 발주기관 사정변경</label>
+            <label><input type="radio" name="type" value="C" data-k="type"> 계약상대자의 해제·해지 요구</label>
+          </div>
+          <div class="fields">
+            <div class="f wide reason-list" data-for="A"><label for="rA">사유</label>
+              <select id="rA" data-k="rA">
+                <option value="1">① 정당한 이유 없이 착공시일을 넘기고도 착수하지 않음</option>
+                <option value="2">② 계약상대자 책임으로 준공기한까지 완공 못하거나 완성 가능성 없음</option>
+                <option value="3">③ 지연배상금이 계약보증금 상당액에 도달</option>
+                <option value="4">④ 장기계속공사 2차 이후 계약을 체결하지 않음</option>
+                <option value="5">⑤ 뇌물수수·계약관리 방해 등 불법·부정행위</option>
+                <option value="6">⑥ 시공계획서 미제출·미보완 또는 계획서대로 이행하지 않음</option>
+                <option value="7">⑦ 입찰서류 허위·부정 제출로 계약 체결</option>
+                <option value="9">⑧ 그 밖의 계약조건 위반으로 계약목적 달성 불가</option>
+              </select></div>
+            <div class="f wide reason-list" data-for="B" hidden><label for="rB">사유</label>
+              <select id="rB" data-k="rB">
+                <option value="1">① 정책 변화 등에 따른 불가피한 사업취소</option>
+                <option value="2">② 관계 법령 제·개정으로 인한 사업취소</option>
+                <option value="3">③ 과다한 지역 민원 제기로 인한 사업취소</option>
+                <option value="4">④ 공공복리에 의한 사업 변경 등</option>
+              </select></div>
+            <div class="f wide reason-list" data-for="C" hidden><label for="rC">사유</label>
+              <select id="rC" data-k="rC">
+                <option value="1">① 공사내용 변경으로 계약금액이 40% 이상 감소</option>
+                <option value="2">② 공사정지기간이 공기의 50%를 초과</option>
+                <option value="3">③ 발주기관이 정당한 이유 없이 계약내용을 이행하지 않아 적정 이행이 불가능</option>
+              </select></div>
+            <div class="f wide"><label>이행보증 방법</label>
+              <div class="radios">
+                <label><input type="radio" name="bond" value="cash" data-k="bond" checked> 계약보증금(보증서 포함)</label>
+                <label><input type="radio" name="bond" value="perf" data-k="bond"> 공사이행보증서</label>
+                <label><input type="radio" name="bond" value="exempt" data-k="bond"> 면제(지급확약서)</label>
+              </div></div>
+            <div class="f"><label for="bondRate">보증률</label><div class="unit"><input type="text" class="rate" id="bondRate" data-k="bondRate" value="10"><span>%</span></div><span class="hint" id="bondHint">계약보증금 10% 이상</span></div>
+            <div class="f"><label for="bondAmt">보증(확약)금액</label><div class="unit"><input type="text" class="money" id="bondAmt" data-k="bondAmt" placeholder="비우면 자동 계산"><span>원</span></div></div>
+            <div class="f wide"><label class="chk"><input type="checkbox" data-k="divisible" checked> 성질상 분할할 수 있는 공사로서 기성부분을 검사해 인수함 (기성분 보증금 제외 — 시행령 제54조①제1호)</label></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="no">3</span>기성 및 선금</h2>
+          <p class="desc">해제·해지 시점에 검사해 인수한 기성부분(해지 기성)까지 입력합니다. 회차별 선금정산액 = 선금 × 기성금액 ÷ 계약금액.</p>
+          <div class="fields" style="margin-bottom:14px">
+            <div class="f"><label for="adv">선금 지급액</label><div class="unit"><input type="text" class="money" id="adv" data-k="adv"><span>원</span></div></div>
+            <div class="f"><label for="advDate">선금 지급일</label><input type="date" id="advDate" data-k="advDate"></div>
+            <div class="f"><label for="advRate">약정이자율(선금 지급 시점)</label><div class="unit"><input type="text" class="rate" id="advRate" data-k="advRate"><span>%</span></div><span class="hint">금융기관 대출평균금리</span></div>
+            <div class="f"><label for="retDate">선금 반환(예정)일</label><input type="date" id="retDate" data-k="retDate"><span class="hint">비우면 해제·해지일</span></div>
+          </div>
+          <div class="tbl-wrap"><table class="t" id="gsT">
+            <thead><tr><th style="width:90px">구분</th><th style="width:150px">검사(인수)일</th><th class="r" style="min-width:140px">기성금액(원)</th><th class="r">선금정산액</th><th style="width:110px">대가 지급</th><th style="width:36px"></th></tr></thead>
+            <tbody></tbody>
+            <tfoot><tr><td colspan="2">기성 누계</td><td class="r num" id="gsSum">0</td><td class="r num" id="gsAdv">0</td><td colspan="2"></td></tr></tfoot>
+          </table></div>
+          <div class="tbl-actions"><button class="btn sm" type="button" id="addGs">+ 기성 회차 추가</button>
+            <span style="font-size:12px;color:var(--text-3)">"미지급"은 해지 시 검사·인수했으나 아직 대가를 주지 않은 기성입니다.</span></div>
+        </div>
+
+        <div class="card">
+          <h2><span class="no">4</span>공제·가산 항목</h2>
+          <div class="fields">
+            <div class="f type-A"><label for="delay">지연배상금</label><div class="unit"><input type="text" class="money" id="delay" data-k="delay"><span>원</span></div><span class="hint">지연배상금 계산기 산출액</span></div>
+            <div class="f"><label for="subDirect">하도급대금 직접지급액</label><div class="unit"><input type="text" class="money" id="subDirect" data-k="subDirect"><span>원</span></div><span class="hint">지급보증 없는 직불분 — 상계보다 먼저 지급</span></div>
+            <div class="f type-BC" hidden><label for="withdraw">인력·자재·장비 철수비용</label><div class="unit"><input type="text" class="money" id="withdraw" data-k="withdraw"><span>원</span></div><span class="hint">해제·해지일 이전 투입분</span></div>
+            <div class="f type-BC" hidden><label for="wDone">철수 완료일</label><input type="date" id="wDone" data-k="wDone"><span class="hint">완료일부터 14일 이내 지급</span></div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="sticky">
+        <div class="verdict info" id="verdict">
+          <span class="tab">입력 대기</span>
+          <div class="body">
+            <div class="big num" id="bigAmt">0<small>원</small></div>
+            <div class="lead" id="leadTxt">계약 정보와 기성·선금을 입력하십시오.</div>
+            <dl class="kv" id="kv"></dl>
+            <ul class="checks" id="checks"></ul>
+            <div class="btn-row">
+              <button class="btn" type="button" id="copyBtn">검토의견 복사</button>
+              <button class="btn primary" type="button" id="xlsxBtn">엑셀 내보내기</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="panel card guide" id="guide" hidden>
+    <h3>1. 계약보증금 세입조치</h3>
+    <div class="law">「지방계약법」 제15조③ 계약상대자가 계약상의 의무를 이행하지 아니하면 계약보증금을 해당 지방자치단체에 귀속시켜야 한다.
+「지방계약법 시행령」 제51조① 공사: 계약보증금 계약금액의 10% 이상, 또는 공사이행보증서(계약금액의 40%, 예정가격 70% 미만 낙찰 시 50% 이상) ⑧ 장기계속계약은 총공사금액 기준, 연차별 계약 완료 시 완료분의 10%를 반환
+「지방계약법 시행령」 제54조① 정당한 이유 없이 계약상 의무를 이행하지 않으면 계약보증금을 세입조치한다. 다만, 성질상 분할할 수 있는 계약으로서 기성부분을 검사해 인수한 경우에는 당초 계약보증금 중 기성부분에 해당하는 금액을 제외한다.
+  ③ 세입조치하는 계약보증금은 기성부분 미지급액과 <b>상계하여서는 아니 된다</b>(계약보증금 면제의 경우 제외).
+「지방계약법 시행령」 제53조 계약금액 5천만원 이하 등 면제 시 지급확약서 제출</div>
+
+    <h3>2. 해제·해지 유형별 정산</h3>
+    <div class="tbl-wrap"><table class="t">
+      <thead><tr><th>구분</th><th>기성 대가</th><th>선금 잔액</th><th>계약보증금</th><th>그 밖에</th></tr></thead>
+      <tbody>
+        <tr><td>계약상대자 책임</td><td>검사·인수한 기성부분 지급</td><td>미정산잔액 + <b>약정이자</b> 상환, 기성 미지급액과 상계</td><td>세입조치(기성분 제외), 상계 금지</td><td>이행보증서 제출 공사는 해지하지 않고 보증기관에 보증시공 청구가 원칙</td></tr>
+        <tr><td>발주기관 사정변경</td><td>미지급 시공부분 대가</td><td>미정산잔액 상환, <b>이자 없음</b></td><td>동시에 반환</td><td>철수비용 지급, 철수 완료일부터 14일 이내</td></tr>
+        <tr><td>계약상대자의 해제·해지</td><td colspan="4">사정변경 해제·해지 규정 준용</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>3. 선금 반환청구</h3>
+    <ul>
+      <li>계약 해제·해지 시 선금잔액(선금액 − 선금정산액)을 지체 없이 반환청구합니다.</li>
+      <li>계약상대자 귀책이면 약정이자상당액을 가산합니다. 이율은 선금 지급 시점의 금융기관 대출평균금리(한국은행 통계)이며, 매일의 선금잔액에 대한 일변계산으로 반환 시까지 계산합니다.</li>
+      <li>기성부분 미지급액이 있으면 선금잔액에 우선 충당(상계)합니다. 다만 지급보증이 없는 하도급대금을 직접 지급해야 하면 하도급대가를 먼저 지급한 뒤 남은 미지급액과 상계합니다.</li>
+      <li>상계 후에도 남는 선금잔액은 계약상대자 또는 선금보증기관에 청구합니다.</li>
+    </ul>
+
+    <h3>4. 해제·해지 후 조치</h3>
+    <ul>
+      <li>계약상대자와 하수급인에게 해제·해지 사실을 통지합니다.</li>
+      <li>계약상대자는 공사를 즉시 중지하고 자재·기구를 철거하며, 대여품과 기성 인수분에 쓰지 않은 관급재료를 반환합니다.</li>
+      <li>계약상대자 책임이면 부정당업자 입찰참가자격 제한 사유에 해당하는지 검토합니다.</li>
+    </ul>
+    <div class="note warn">해제·해지 사유와 사정변경 정산 규정은 「공사계약일반조건」(기획재정부 계약예규 제44~48조)과 「정부 입찰·계약 집행기준」 제38조(선금 반환청구)를 기준으로 정리했습니다. 지방자치단체는 「지방자치단체 입찰 및 계약 집행기준」의 공사계약 일반조건과 선금 규정에 같은 취지로 규정되어 있으나, 원문이 첨부파일로만 제공되어 대조하지 못했습니다. 적용 전 원문을 확인하십시오.</div>
+    <p class="src">법령 확인: 지방계약법(2024. 2. 17. 시행), 같은 법 시행령(2026. 6. 3. 시행) · 참고: 공사계약일반조건(2026. 4. 1.), 정부 입찰·계약 집행기준(2025. 5. 1.)</p>
+  </section>
+</main>
+<footer class="ft">학교시설업무 치트키 · 계약관리·정산 도구 시리즈 · 테스트용 · 입력값은 이 브라우저에만 저장됩니다.</footer>
+
+<script>/* ===== 공통 유틸 (테스트용 정산도구 시리즈) ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const num = v => { if (v == null) return 0; const n = parseFloat(String(v).replace(/[^0-9.\-]/g, '')); return isFinite(n) ? n : 0; };
+const won = n => (Math.round(n) || 0).toLocaleString('ko-KR');
+const pct = (n, d = 2) => (isFinite(n) ? n.toFixed(d) : '0.00') + '%';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const floor10 = n => Math.floor(n / 10) * 10; // 원 단위 절사(10원 미만)
+function parseDate(s) { if (!s) return null; const d = new Date(s + 'T00:00:00'); return isNaN(d) ? null : d; }
+function fmtDate(d) { if (!d) return '-'; const p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}. ${p(d.getMonth() + 1)}. ${p(d.getDate())}.`; }
+function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function diffDays(a, b) { return Math.round((b - a) / 86400000); }
+
+/* 금액 입력 자동 콤마 */
+function bindMoney(root = document) {
+  $$('input.money', root).forEach(el => {
+    if (el._bound) return; el._bound = true;
+    el.setAttribute('inputmode', 'numeric');
+    el.addEventListener('input', () => {
+      const pos = el.value.length - el.selectionStart;
+      const neg = el.value.trim().startsWith('-');
+      const raw = el.value.replace(/[^0-9]/g, '');
+      el.value = raw ? (neg ? '-' : '') + Number(raw).toLocaleString('ko-KR') : (neg ? '-' : '');
+      const p = Math.max(0, el.value.length - pos); try { el.setSelectionRange(p, p); } catch (e) { }
+    });
+  });
+}
+
+/* 저장소 (실패해도 동작) */
+const store = {
+  get(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } },
+  del(k) { try { localStorage.removeItem(k); } catch (e) { } }
+};
+
+function toast(msg) {
+  let t = $('.toast'); if (!t) { t = document.createElement('div'); t.className = 'toast'; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 1800);
+}
+async function copyText(text) {
+  if (!text) { toast('먼저 필요한 값을 입력하십시오'); return; }
+  try { await navigator.clipboard.writeText(text); toast('검토의견을 복사했습니다'); return; } catch (e) { }
+  const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('검토의견을 복사했습니다'); } catch (e) { toast('복사하지 못했습니다'); } ta.remove();
+}
+
+/* 탭 */
+function initTabs() {
+  $$('.seg button').forEach(b => b.addEventListener('click', () => {
+    $$('.seg button').forEach(x => x.setAttribute('aria-selected', x === b));
+    $$('.panel').forEach(p => p.hidden = p.id !== b.dataset.tab);
+  }));
+}
+
+/* 테마 */
+function initTheme() {
+  const saved = store.get('krds-theme'); if (saved) document.documentElement.dataset.theme = saved;
+  const b = $('#themeBtn'); if (!b) return;
+  b.addEventListener('click', () => {
+    const cur = document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const nx = cur === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = nx; store.set('krds-theme', nx);
+  });
+}
+
+/* 폼 직렬화: [data-k] 요소 */
+function readForm(root = document) {
+  const o = {};
+  $$('[data-k]', root).forEach(el => {
+    const k = el.dataset.k;
+    if (el.type === 'checkbox') o[k] = el.checked;
+    else if (el.type === 'radio') { if (el.checked) o[k] = el.value; }
+    else o[k] = el.value;
+  });
+  return o;
+}
+function writeForm(o, root = document) {
+  if (!o) return;
+  $$('[data-k]', root).forEach(el => {
+    const k = el.dataset.k; if (!(k in o)) return;
+    if (el.type === 'checkbox') el.checked = !!o[k];
+    else if (el.type === 'radio') el.checked = el.value === o[k];
+    else el.value = o[k];
+  });
+}
+
+/* ===== 엑셀 내보내기 (ExcelJS) =====
+   spec = { file, sheets:[{ name, title, meta:[[k,v]], blocks:[{ heading, columns:[{h,w,t}], rows:[[]], foot:[] }] }] }
+   t: 'text' | 'won' | 'pct' | 'num' | 'date' */
+async function exportXlsx(spec) {
+  if (typeof ExcelJS === 'undefined') { toast('엑셀 라이브러리를 불러오지 못했습니다(네트워크 확인)'); return; }
+  const wb = new ExcelJS.Workbook(); wb.creator = '정산도구(테스트용)'; wb.created = new Date();
+  const thin = { style: 'thin', color: { argb: 'FFCDD1D5' } };
+  const border = { top: thin, left: thin, bottom: thin, right: thin };
+  const fmtOf = t => t === 'won' ? '#,##0' : t === 'pct' ? '0.00"%"' : t === 'num' ? '#,##0.##' : '@';
+  for (const sh of spec.sheets) {
+    const ws = wb.addWorksheet(sh.name, { pageSetup: { paperSize: 9, orientation: 'portrait', fitToPage: true, fitToWidth: 1, fitToHeight: 0, margins: { left: .5, right: .5, top: .6, bottom: .6, header: .3, footer: .3 } }, views: [{ showGridLines: false }] });
+    const maxCols = Math.max(2, ...sh.blocks.map(b => b.columns.length));
+    const widths = new Array(maxCols).fill(12);
+    sh.blocks.forEach(b => b.columns.forEach((c, i) => { widths[i] = Math.max(widths[i], c.w || 12); }));
+    ws.columns = widths.map(w => ({ width: w }));
+    let r = 1;
+    ws.mergeCells(r, 1, r, maxCols); const tc = ws.getCell(r, 1); tc.value = sh.title; tc.font = { bold: true, size: 15, color: { argb: 'FF1E2124' } }; ws.getRow(r).height = 26; r++;
+    ws.mergeCells(r, 1, r, maxCols); const wc = ws.getCell(r, 1); wc.value = '※ 테스트용 — 참고용 산출 결과이며, 최종 판단은 관계 법령·계약문서와 원본 증빙으로 확인하시기 바랍니다.'; wc.font = { size: 10, bold: true, color: { argb: 'FFDE3412' } }; r++;
+    if (sh.meta && sh.meta.length) {
+      r++;
+      sh.meta.forEach(([k, v]) => {
+        const a = ws.getCell(r, 1); a.value = k; a.font = { bold: true, color: { argb: 'FF464C53' } }; a.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4F5F6' } }; a.border = border;
+        if (maxCols > 2) ws.mergeCells(r, 2, r, maxCols);
+        const b = ws.getCell(r, 2); b.value = v; b.border = border; b.alignment = { wrapText: true, vertical: 'middle' };
+        if (typeof v === 'number') b.numFmt = '#,##0';
+        r++;
+      });
+    }
+    for (const blk of sh.blocks) {
+      r++;
+      if (blk.heading) { ws.mergeCells(r, 1, r, maxCols); const h = ws.getCell(r, 1); h.value = blk.heading; h.font = { bold: true, size: 12, color: { argb: 'FF256EF4' } }; r++; }
+      blk.columns.forEach((c, i) => {
+        const cell = ws.getCell(r, i + 1); cell.value = c.h; cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF256EF4' } }; cell.border = border; cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+      });
+      ws.getRow(r).height = 22; r++;
+      const all = blk.rows.concat(blk.foot ? [blk.foot] : []);
+      all.forEach((row, ri) => {
+        const isFoot = blk.foot && ri === all.length - 1;
+        row.forEach((v, i) => {
+          const c = blk.columns[i] || {}; const cell = ws.getCell(r, i + 1);
+          cell.value = (v === '' || v == null) ? null : v; cell.border = border;
+          if (typeof v === 'number') { cell.numFmt = fmtOf(c.t); cell.alignment = { horizontal: 'right', vertical: 'middle' }; }
+          else cell.alignment = { vertical: 'middle', wrapText: true, horizontal: c.t === 'text' || !c.t ? 'left' : 'center' };
+          if (isFoot) { cell.font = { bold: true }; cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFECF2FE' } }; }
+        });
+        r++;
+      });
+    }
+  }
+  const buf = await wb.xlsx.writeBuffer();
+  const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = spec.file; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  toast('엑셀 파일을 내려받았습니다');
+}
+
+/* 판정 패널 렌더 */
+function renderChecks(ul, items) {
+  const ic = { ok: '✓', warn: '!', bad: '✕', info: 'i' };
+  ul.innerHTML = items.map(x => `<li class="${x.lv}"><span class="ic">${ic[x.lv]}</span><span>${x.html || esc(x.t)}</span></li>`).join('');
+}
+function setVerdict(el, lv, tabText) { el.className = 'verdict ' + lv; $('.tab', el).textContent = tabText; }
+
+/* ===== 에듀파인 계약정보 PDF 가져오기 =====
+   pdf.js로 텍스트를 추출해 항목명(라벨) 기준으로 값을 찾습니다. 스캔(이미지) PDF는 읽을 수 없습니다. */
+const PDFJS_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+const PDFJS_WORKER = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+function loadPdfJs() {
+  if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  return new Promise((res, rej) => {
+    const s = document.createElement('script'); s.src = PDFJS_URL;
+    s.onload = () => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER; res(window.pdfjsLib); };
+    s.onerror = () => rej(new Error('PDF 라이브러리를 불러오지 못했습니다(네트워크 확인)'));
+    document.head.appendChild(s);
+  });
+}
+async function pdfToLines(file) {
+  const lib = await loadPdfJs();
+  const doc = await lib.getDocument({ data: await file.arrayBuffer() }).promise;
+  const lines = [];
+  for (let p = 1; p <= doc.numPages; p++) {
+    const tc = await (await doc.getPage(p)).getTextContent();
+    const rows = [];
+    tc.items.forEach(it => {
+      if (!it.str || !it.str.trim()) return;
+      const y = it.transform[5], x = it.transform[4];
+      let row = rows.find(r => Math.abs(r.y - y) < 3);
+      if (!row) { row = { y, items: [] }; rows.push(row); }
+      row.items.push({ x, w: it.width || 0, h: Math.abs(it.transform[3]) || 10, s: it.str });
+    });
+    rows.sort((a, b) => b.y - a.y).forEach(r => {
+      const its = r.items.sort((a, b) => a.x - b.x); let line = '', prevEnd = null;
+      its.forEach(i => {
+        if (prevEnd != null) { const gap = i.x - prevEnd; line += gap > i.h * 1.2 ? '  ' : gap > i.h * 0.15 ? ' ' : ''; }
+        line += i.s; prevEnd = i.x + i.w;
+      });
+      lines.push(line.replace(/\s{3,}/g, '  ').trim());
+    });
+  }
+  return lines;
+}
+const PDF_LABELS = {
+  name: ['계약명', '공사명', '건명', '사업명'],
+  vendor: ['계약상대자', '계약업체명', '업체명', '상호', '계약자'],
+  amount: ['계약금액', '총계약금액', '계약총액', '금차계약금액'],
+  design: ['설계금액', '공사예정금액', '추정금액'],
+  pre: ['예정가격'],
+  base: ['기초금액'],
+  bidRate: ['낙찰률', '낙찰율', '사정률'],
+  method: ['계약방법', '낙찰자결정방법', '낙찰방법'],
+  start: ['착공일자', '착공일', '계약기간시작', '착수일자', '공사시작일'],
+  end: ['준공예정일자', '준공예정일', '준공기한', '완료예정일', '계약기간종료', '준공일자'],
+  period: ['계약기간', '공사기간', '이행기간'],
+  contractDate: ['계약일자', '계약체결일']
+};
+const DATE_RE = /(20\d{2})\s*[.\-\/년]\s*(\d{1,2})\s*[.\-\/월]\s*(\d{1,2})\s*일?\.?|(20\d{2})(\d{2})(\d{2})/g;
+function toISO(m) { const y = m[1] || m[4], mo = m[2] || m[5], d = m[3] || m[6]; return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`; }
+function parseContract(lines) {
+  const norm = s => s.replace(/\s+/g, '');
+  const out = {};
+  const after = (key) => {
+    for (const lab of PDF_LABELS[key]) {
+      for (let i = 0; i < lines.length; i++) {
+        const L = lines[i], nL = norm(L); const idx = nL.indexOf(lab);
+        if (idx < 0) continue;
+        // 라벨 이후 원문 위치 찾기
+        let cnt = 0, pos = 0;
+        for (; pos < L.length && cnt < idx + lab.length; pos++) if (!/\s/.test(L[pos])) cnt++;
+        let rest = L.slice(pos).replace(/^[\s:：)\]]+/, '');
+        if (key !== 'period') rest = rest.split(/\s{2,}/)[0];
+        // 다음 라벨이 바로 이어지면 그 앞까지
+        if (!rest || rest.length < 1) rest = lines[i + 1] || '';
+        if (rest) return rest;
+      }
+    }
+    return null;
+  };
+  const cutAtLabel = s => {
+    const all = Object.values(PDF_LABELS).flat();
+    let end = s.length;
+    all.forEach(l => { const re = new RegExp(l.split('').join('\\s*')); const m = s.slice(1).search(re); if (m >= 0 && m + 1 < end) end = m + 1; });
+    return s.slice(0, end).trim();
+  };
+  const money = s => { if (!s) return null; const m = s.match(/(?:금\s*)?([0-9]{1,3}(?:,[0-9]{3})+|[0-9]{5,})\s*원?/); return m ? Number(m[1].replace(/,/g, '')) : null; };
+  const dates = s => { if (!s) return []; const r = []; let m; DATE_RE.lastIndex = 0; while ((m = DATE_RE.exec(s))) r.push(toISO(m)); return r; };
+
+  const t = s => s ? cutAtLabel(s).replace(/\s{2,}/g, ' ').trim() : null;
+  const nm = after('name'); if (nm) out.name = t(nm);
+  const vd = after('vendor'); if (vd) out.vendor = t(vd).replace(/\s*[\(（]?\s*(대표자|대표이사|대표)(?![가-힣]).*$/, '').trim();
+  ['amount', 'design', 'pre', 'base'].forEach(k => { const v = money(after(k)); if (v) out[k] = v; });
+  const br = after('bidRate'); if (br) { const m = br.replace(/\s/g, '').match(/(\d{1,3}\.\d+|\d{2,3})%?/); if (m && +m[1] > 0 && +m[1] <= 100) out.bidRate = m[1]; }
+  const me = after('method'); if (me) out.method = t(me);
+  const st = dates(after('start')); if (st.length) out.start = st[0];
+  const en = dates(after('end')); if (en.length) out.end = en[0];
+  const pr = dates(after('period'));
+  if (pr.length >= 2) { out.start = out.start || pr[0]; out.end = out.end || pr[pr.length - 1]; }
+  const cd = dates(after('contractDate')); if (cd.length) out.contractDate = cd[0];
+  return out;
+}
+const PDF_FIELD_NAME = { name: '공사명(계약명)', vendor: '계약상대자', amount: '계약금액', design: '설계금액', pre: '예정가격', base: '기초금액', bidRate: '낙찰률', method: '계약방법', start: '착공일', end: '준공기한', contractDate: '계약일자' };
+/* map: { 추출키: 'data-k 이름' | function(value, parsed) } */
+function initPdfImport(map, onApplied) {
+  const input = document.createElement('input'); input.type = 'file'; input.accept = 'application/pdf,.pdf'; input.hidden = true; document.body.appendChild(input);
+  const dlg = document.createElement('dialog'); dlg.className = 'pdf-dlg'; document.body.appendChild(dlg);
+  $$('[data-pdf-btn]').forEach(b => b.addEventListener('click', () => input.click()));
+  input.addEventListener('change', () => { if (input.files[0]) handle(input.files[0]); input.value = ''; });
+  document.addEventListener('dragover', e => { if ([...e.dataTransfer.items].some(i => i.kind === 'file')) { e.preventDefault(); document.body.classList.add('dragging'); } });
+  document.addEventListener('dragleave', e => { if (!e.relatedTarget) document.body.classList.remove('dragging'); });
+  document.addEventListener('drop', e => { const f = [...e.dataTransfer.files].find(f => /\.pdf$/i.test(f.name)); document.body.classList.remove('dragging'); if (f) { e.preventDefault(); handle(f); } });
+  async function handle(file) {
+    toast('PDF를 읽는 중입니다…');
+    let lines;
+    try { lines = await pdfToLines(file); } catch (e) { toast(e.message || 'PDF를 읽지 못했습니다'); return; }
+    if (!lines.join('').trim()) { show(file.name, null, '텍스트가 없는 PDF(스캔 이미지)입니다. 에듀파인에서 "PDF 저장"으로 내려받은 파일을 사용하십시오.'); return; }
+    const p = parseContract(lines);
+    const keys = Object.keys(map).filter(k => p[k] != null);
+    show(file.name, p, keys.length ? '' : '계약정보 항목을 찾지 못했습니다. 에듀파인 계약정보(계약대장) 화면에서 저장한 PDF인지 확인하십시오.', lines);
+  }
+  function show(fname, p, msg, lines) {
+    const rows = p ? Object.keys(map).map(k => {
+      const v = p[k]; const has = v != null;
+      const disp = !has ? '<span style="color:var(--text-3)">찾지 못함</span>' : typeof v === 'number' ? won(v) + '원' : (k === 'bidRate' ? v + '%' : esc(v));
+      return `<tr><td><label class="chk" style="padding:0"><input type="checkbox" data-pk="${k}" ${has ? 'checked' : 'disabled'}> ${PDF_FIELD_NAME[k]}</label></td><td>${disp}</td></tr>`;
+    }).join('') : '';
+    dlg.innerHTML = `<form method="dialog">
+      <h3 style="margin:0 0 4px;font-size:17px">에듀파인 계약정보 가져오기</h3>
+      <p style="margin:0 0 12px;font-size:13px;color:var(--text-3)">${esc(fname)} · 입력할 항목을 확인하십시오. 기존 값은 덮어씁니다.</p>
+      ${msg ? `<div class="note warn" style="margin:0 0 12px">${msg}</div>` : ''}
+      ${rows ? `<div class="tbl-wrap"><table class="t"><thead><tr><th>항목</th><th>추출 값</th></tr></thead><tbody>${rows}</tbody></table></div>` : ''}
+      ${lines ? `<details style="margin-top:10px;font-size:12px;color:var(--text-3)"><summary>추출된 원문 보기</summary><pre style="white-space:pre-wrap;max-height:180px;overflow:auto;background:var(--bg);padding:8px;border-radius:6px">${esc(lines.join('\n').slice(0, 4000))}</pre></details>` : ''}
+      <div class="btn-row"><button class="btn" value="cancel">닫기</button>${rows && !msg ? '<button class="btn primary" value="ok" id="pdfApply">입력하기</button>' : ''}</div>
+    </form>`;
+    dlg.showModal();
+    const ap = $('#pdfApply', dlg);
+    if (ap) ap.addEventListener('click', () => {
+      const done = [];
+      $$('[data-pk]:checked', dlg).forEach(cb => {
+        const k = cb.dataset.pk, v = p[k], tgt = map[k];
+        if (typeof tgt === 'function') { tgt(v, p); done.push(PDF_FIELD_NAME[k]); return; }
+        $$(`[data-k="${tgt}"]`).forEach(el => {
+          if (el.type === 'radio') el.checked = el.value === v;
+          else el.value = (typeof v === 'number' && el.classList.contains('money')) ? v.toLocaleString('ko-KR') : v;
+        });
+        done.push(PDF_FIELD_NAME[k]);
+      });
+      if (onApplied) onApplied(p);
+      toast(done.length ? `${done.length}개 항목을 입력했습니다` : '입력한 항목이 없습니다');
+    });
+  }
+}
+</script>
+<script>
+const KEY = 'tool-haeji-jeongsan-v1';
+const TYPE = { A: '계약상대자 책임 해제·해지', B: '발주기관 사정변경 해제·해지', C: '계약상대자의 해제·해지 요구' };
+const BOND = { cash: '계약보증금', perf: '공사이행보증서', exempt: '면제(지급확약서)' };
+let gs = [];
+const gsRow = (d = {}) => ({ kind: d.kind || '기성', date: d.date || '', amt: d.amt || '', paid: d.paid ?? true });
+
+function renderGs() {
+  $('#gsT tbody').innerHTML = gs.map((r, i) => `<tr data-i="${i}">
+    <td><input type="text" data-f="kind" value="${esc(r.kind)}" aria-label="구분"></td>
+    <td><input type="date" data-f="date" value="${esc(r.date)}" aria-label="검사일"></td>
+    <td><input type="text" class="money" data-f="amt" value="${esc(r.amt)}" aria-label="기성금액"></td>
+    <td class="r num" data-o>0</td>
+    <td><select data-f="paid" aria-label="대가 지급"><option value="1" ${r.paid ? 'selected' : ''}>지급 완료</option><option value="0" ${!r.paid ? 'selected' : ''}>미지급</option></select></td>
+    <td><button class="btn ghost sm" type="button" data-del aria-label="삭제">✕</button></td></tr>`).join('');
+  bindMoney($('#gsT'));
+}
+
+let last = null;
+function calc() {
+  const f = readForm($('#calc'));
+  $$('.reason-list').forEach(el => el.hidden = el.dataset.for !== f.type);
+  $$('.type-A').forEach(el => el.hidden = f.type !== 'A'); $$('.type-BC').forEach(el => el.hidden = f.type === 'A');
+
+  const amt = num(f.amt), adv = num(f.adv);
+  const dS = parseDate(f.dS), dE = parseDate(f.dE), dT = parseDate(f.dT), advD = parseDate(f.advDate);
+  const retD = parseDate(f.retDate) || dT;
+
+  // 기성·선금정산
+  let gsSum = 0, paidSum = 0, unpaid = 0, advSettled = 0;
+  $$('#gsT tbody tr').forEach((tr, i) => {
+    const r = gs[i], a = num(r.amt), s = amt ? Math.floor(adv * a / amt) : 0;
+    r._s = s; gsSum += a; advSettled += s;
+    if (r.paid) paidSum += a; else unpaid += a;
+    $('[data-o]', tr).textContent = won(s);
+  });
+  $('#gsSum').textContent = won(gsSum); $('#gsAdv').textContent = won(advSettled);
+  const advBal = Math.max(0, adv - advSettled);
+  const interestOn = f.type === 'A';
+  const iDays = advD && retD ? Math.max(0, diffDays(advD, retD)) : 0;
+  const interest = interestOn ? Math.floor(advBal * num(f.advRate) / 100 * iDays / 365) : 0;
+
+  // 계약보증금
+  const base = f.longTerm && num(f.totalAmt) ? num(f.totalAmt) : amt;
+  const defRate = f.bond === 'perf' ? 40 : 10;
+  const bRate = num(f.bondRate) || defRate;
+  $('#bondHint').textContent = f.bond === 'perf' ? '공사이행보증서 40%(70% 미만 낙찰 50%) 이상' : f.bond === 'exempt' ? '면제 시 확약금액 — 계약보증금 상당액' : '계약보증금 10% 이상';
+  const bondFull = num(f.bondAmt) || Math.floor(base * bRate / 100);
+  const bondReturnedYears = f.longTerm ? Math.floor(num(f.doneYears) * bRate / 100) : 0;
+  const bondNow = Math.max(0, bondFull - bondReturnedYears);
+  // 기성분 제외(제54조①1): 당초 계약보증금 중 기성부분 해당액
+  const bondBaseAmt = f.longTerm && num(f.totalAmt) ? num(f.totalAmt) : amt;
+  const bondExcl = f.divisible && bondBaseAmt ? Math.floor(bondFull * gsSum / bondBaseAmt) : 0;
+  const forfeit = f.type === 'A' && f.bond !== 'perf' ? Math.max(0, bondNow - bondExcl) : 0;
+
+  // 상계
+  const delay = f.type === 'A' ? num(f.delay) : 0;
+  const subD = num(f.subDirect);
+  const withdraw = f.type !== 'A' ? num(f.withdraw) : 0;
+  const payable = unpaid + withdraw;                           // 지급할 대가
+  const afterDelay = payable - delay;                          // 지연배상금 공제
+  const delayExcess = Math.max(0, -afterDelay);                // 대가로 공제하지 못한 지연배상금
+  const afterSub = Math.max(0, afterDelay) - subD;             // 하도급 직불 우선
+  const subShort = Math.max(0, -afterSub);
+  const advClaim = advBal + interest;                          // 선금 반환청구액
+  const offsetBase = Math.max(0, afterSub);
+  const offset = Math.min(offsetBase, advClaim);
+  const payVendor = offsetBase - offset;                       // 계약상대자에게 지급
+  const claimVendor = advClaim - offset;                       // 선금 반환청구(계약상대자·선금보증기관)
+  // 면제(확약서)는 상계 가능 → 지급액에서 추가 공제
+  const exemptOffset = f.type === 'A' && f.bond === 'exempt' ? Math.min(payVendor, forfeit) : 0;
+  const payFinal = payVendor - exemptOffset;
+  const forfeitSeparate = forfeit - exemptOffset;
+
+  // 판정
+  const ck = []; let lv = 'ok';
+  const bump = l => { const o = { ok: 0, info: 0, warn: 1, bad: 2 }; if (o[l] > o[lv]) lv = l; };
+  const add = (l, t) => { ck.push({ lv: l, t }); bump(l); };
+  if (!amt) add('info', '계약금액을 입력하십시오.');
+  if (amt && gsSum > amt) add('bad', `기성 누계(${won(gsSum)}원)가 계약금액보다 큽니다.`);
+  if (adv && amt && adv > amt * 0.8) add('warn', '선금이 계약금액의 80%를 넘습니다. 선금 지급액을 확인하십시오.');
+  if (dT && dE && dS && dT < dS) add('bad', '해제·해지일이 착공일보다 빠릅니다.');
+
+  if (f.type === 'A') {
+    add('info', '계약상대자 책임 해제·해지: 검사·인수한 기성부분 대가를 지급하고, 선금 미정산잔액에 약정이자를 가산해 상환받습니다.');
+    if (f.bond === 'perf') add('bad', '공사이행보증서가 제출된 공사는 계약을 해제·해지하지 않고 보증기관에 공사 완성(보증시공)을 청구하는 것이 원칙입니다. 보증기관은 보증서 금액을 현금 납부해 보증이행을 갈음할 수 있습니다.');
+    if (f.rA === '3') {
+      if (delay >= bondNow && bondNow > 0) add('ok', `지연배상금(${won(delay)}원)이 계약보증금 상당액(${won(bondNow)}원)에 도달했습니다.`);
+      else add('warn', `사유 ③인데 지연배상금(${won(delay)}원)이 계약보증금 상당액(${won(bondNow)}원)에 미달합니다. 계약상대자가 이행 가능성이 있어 보증금을 추가 납부하면 계약을 유지합니다.`);
+    }
+    if (adv && advBal && !num(f.advRate)) add('warn', '약정이자율(선금 지급 시점 금융기관 대출평균금리)을 입력하십시오.');
+    if (adv && advBal && !advD) add('warn', '선금 지급일을 입력해야 약정이자를 계산할 수 있습니다.');
+    if (forfeit) add('info', `계약보증금 ${won(forfeit)}원 세입조치 대상${bondExcl ? ` (기성분 ${won(bondExcl)}원 제외)` : ''}. ${f.bond === 'exempt' ? '면제분은 지급확약서에 따라 징수하며 미지급 대가와 상계할 수 있습니다.' : '기성 미지급액과 상계하지 말고 보증기관에 별도 청구하십시오(시행령 제54조③).'}`);
+    if (!f.divisible) add('info', '성질상 분할할 수 없는 공사로 보아 계약보증금 전액을 세입조치합니다.');
+    ck.push({ lv: 'info', t: '부정당업자 입찰참가자격 제한 해당 여부를 검토하십시오(지방계약법 제31조).' });
+  } else {
+    add('info', `${TYPE[f.type]}: 미지급 기성대가와 철수비용을 지급하고 계약보증금을 반환합니다. 선금 미정산잔액은 이자 없이 상환받습니다.`);
+    const wD = parseDate(f.wDone);
+    if (wD) ck.push({ lv: 'info', t: `지급기한: ${fmtDate(addDays(wD, 14))}까지 (철수 완료일부터 14일 이내)` });
+    else add('warn', '철수 완료일을 입력하면 14일 지급기한을 계산합니다.');
+    if (!withdraw) ck.push({ lv: 'info', t: '해제·해지일 이전 투입된 인력·자재·장비의 철수비용이 있으면 증빙을 받아 입력하십시오.' });
+    if (f.type === 'C' && f.rC === '2' && dS && dE) ck.push({ lv: 'info', t: `공기 ${diffDays(dS, dE) + 1}일의 50%는 ${Math.floor((diffDays(dS, dE) + 1) / 2)}일입니다. 공사정지기간이 이를 넘는지 확인하십시오.` });
+  }
+  if (subD) ck.push({ lv: 'info', t: `하도급대금 ${won(subD)}원을 먼저 직접 지급한 뒤 남은 미지급액과 선금잔액을 상계합니다.` });
+  if (delayExcess) add('warn', `지연배상금이 지급할 대가보다 ${won(delayExcess)}원 많습니다. 차액은 계약상대자에게 별도로 징수하십시오.`);
+  if (subShort) add('warn', `남은 대가가 하도급대금 직접지급액보다 ${won(subShort)}원 부족합니다. 하도급대금 지급 방안을 검토하십시오.`);
+  if (claimVendor) add('warn', `상계 후 남은 선금 ${won(claimVendor)}원을 계약상대자 또는 선금보증기관에 반환청구하십시오.`);
+  if (f.longTerm) ck.push({ lv: 'info', t: `장기계속공사: 계약보증금은 총공사금액 기준이며, 이행 완료 연차분 ${won(bondReturnedYears)}원은 반환 대상입니다.` });
+  ck.push({ lv: 'info', t: '계약상대자와 하수급인에게 해제·해지 사실을 통지하고, 대여품·잔여 관급재료 반환을 확인하십시오.' });
+
+  let tab = f.type === 'A' ? '귀책 해지 정산' : '사정변경 정산';
+  if (lv === 'bad') tab = '보완 필요'; else if (lv === 'warn') tab = '검토 필요';
+  if (!amt) { tab = '입력 대기'; lv = 'info'; }
+  setVerdict($('#verdict'), lv, tab);
+
+  const net = payFinal - claimVendor - delayExcess;
+  $('#bigAmt').innerHTML = `${net >= 0 ? '' : '△'}${won(Math.abs(net))}<small>원</small>`;
+  $('#leadTxt').textContent = net >= 0 ? `계약상대자에게 지급할 금액 (${TYPE[f.type]})` : `계약상대자·보증기관에게 받을 금액 (${TYPE[f.type]}, 보증금 세입 제외)`;
+  const kv = [
+    ['미지급 기성대가', unpaid], ...(withdraw ? [['철수비용', withdraw]] : []), ...(delay ? [['지연배상금 공제', -delay]] : []),
+    ...(subD ? [['하도급 직불(선지급)', -subD]] : []),
+    ['선금잔액', advBal], ...(interestOn ? [[`약정이자(${iDays}일)`, interest]] : []), ['상계액', -offset],
+    ...(exemptOffset ? [['확약금 상계', -exemptOffset]] : []),
+    ['계약상대자 지급', payFinal], ['선금 반환청구', claimVendor], ...(delayExcess ? [['지연배상금 별도 징수', delayExcess]] : [])
+  ];
+  $('#kv').innerHTML = kv.map(([k, v]) => `<dt>${k}</dt><dd class="num">${won(v)}</dd>`).join('') +
+    `<dt class="tot">${f.type === 'A' ? '계약보증금 세입' : '계약보증금 반환'}</dt><dd class="tot num">${won(f.type === 'A' ? forfeitSeparate : (f.bond === 'perf' ? 0 : bondNow))}</dd>` +
+    (f.type === 'A' && f.bond === 'perf' ? `<dt></dt><dd style="font-size:12px;color:var(--text-3)">이행보증서 금액 ${won(bondNow)}원 — 보증시공 또는 현금납부</dd>` : '');
+  renderChecks($('#checks'), ck);
+
+  last = { f, amt, adv, gsSum, paidSum, unpaid, advSettled, advBal, iDays, interest, bondFull, bondNow, bondExcl, bondReturnedYears, forfeit: forfeitSeparate, exemptOffset, delay, delayExcess, subD, withdraw, payable, offset, payFinal, claimVendor, net, dT, retD, ck, tab };
+  store.set(KEY, { f, gs: gs.map(gsRow) });
+}
+
+function opinion() {
+  const L = last; if (!L || !L.amt) return ''; const f = L.f;
+  return ['[테스트용] 계약 해제·해지 정산 검토의견', '',
+    `1. 공 사 명: ${f.name || '-'} / 계약상대자: ${f.vendor || '-'}`,
+    `2. 계약금액: ${won(L.amt)}원 / 해제·해지일: ${L.dT ? fmtDate(L.dT) : '-'}`,
+    `3. 유형: ${TYPE[f.type]} (${$(`#r${f.type} option:checked`).textContent})`,
+    `4. 기성: 누계 ${won(L.gsSum)}원 (지급 ${won(L.paidSum)}원, 미지급 ${won(L.unpaid)}원)`,
+    `5. 선금: 지급 ${won(L.adv)}원, 정산 ${won(L.advSettled)}원, 잔액 ${won(L.advBal)}원${f.type === 'A' ? `, 약정이자 ${won(L.interest)}원(${L.iDays}일, ${num(f.advRate)}%)` : ' (이자 없음)'}`,
+    `6. 상계: 미지급 대가 ${won(L.payable)}원${L.delay ? ` − 지연배상금 ${won(L.delay)}원` : ''}${L.subD ? ` − 하도급 직불 ${won(L.subD)}원` : ''} ↔ 선금 반환액, 상계 ${won(L.offset)}원`,
+    `7. 결과: 계약상대자 지급 ${won(L.payFinal)}원 / 선금 반환청구 ${won(L.claimVendor)}원${L.delayExcess ? ` / 지연배상금 별도 징수 ${won(L.delayExcess)}원` : ''}`,
+    `8. 계약보증금(${BOND[f.bond]}): ${f.type === 'A' ? `세입조치 ${won(L.forfeit)}원${L.bondExcl ? ` (기성분 ${won(L.bondExcl)}원 제외)` : ''}` : `반환 ${won(f.bond === 'perf' ? 0 : L.bondNow)}원`}`,
+    `9. 판정: ${L.tab}`, '10. 확인사항', ...L.ck.map(c => '  - ' + c.t), '',
+    '근거: 지방계약법 제15조, 같은 법 시행령 제51조·제53조·제54조 / 공사계약 일반조건(해제·해지), 선금 반환청구 기준',
+    '※ 테스트용 산출 결과이며, 계약문서·보증서 확인 후 최종 결정하시기 바랍니다.'].join('\n');
+}
+
+function xlsx() {
+  const L = last, f = L.f; if (!L.amt) { toast('계약금액을 입력하십시오'); return; }
+  const d = new Date(), ymd = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+  exportXlsx({
+    file: `계약해지_정산_${(f.name || '공사').replace(/[\\/:*?"<>|]/g, '')}_${ymd}.xlsx`,
+    sheets: [{
+      name: '정산총괄', title: '계약 해제·해지 정산서',
+      meta: [['공사명', f.name || '-'], ['계약상대자', f.vendor || '-'], ['계약금액(원)', L.amt], ['해제·해지일', L.dT ? fmtDate(L.dT) : '-'],
+        ['유형·사유', `${TYPE[f.type]} — ${$(`#r${f.type} option:checked`).textContent}`], ['이행보증 방법', BOND[f.bond]], ['판정', L.tab]],
+      blocks: [{
+        heading: '대가·선금 상계', columns: [{ h: '구분', w: 30 }, { h: '산출 근거', w: 50 }, { h: '금액(원)', w: 18, t: 'won' }],
+        rows: [
+          ['미지급 기성대가', '검사·인수한 기성 중 미지급분', L.unpaid],
+          ['철수비용', f.type === 'A' ? '해당 없음' : '해제·해지일 이전 투입분', L.withdraw],
+          ['지연배상금 공제', f.type === 'A' ? '지연배상금 계산기 산출액' : '해당 없음', -L.delay],
+          ['하도급대금 직접지급', '상계보다 우선 지급', -L.subD],
+          ['선금잔액', '선금 − Σ(선금 × 기성 ÷ 계약금액)', L.advBal],
+          ['약정이자', f.type === 'A' ? `잔액 × ${num(f.advRate)}% × ${L.iDays}일 ÷ 365` : '가산하지 않음', L.interest],
+          ['상계액', '미지급 대가와 선금 반환액 중 작은 금액', L.offset],
+          ...(L.exemptOffset ? [['지급확약금 상계', '면제분 계약보증금 상당액', -L.exemptOffset]] : []),
+          ['계약상대자 지급액', '', L.payFinal],
+          ...(L.delayExcess ? [['지연배상금 별도 징수', '대가 초과분', L.delayExcess]] : [])
+        ],
+        foot: ['선금 반환청구액', '계약상대자 또는 선금보증기관', L.claimVendor]
+      }, {
+        heading: '계약보증금', columns: [{ h: '구분', w: 30 }, { h: '산출 근거', w: 50 }, { h: '금액(원)', w: 18, t: 'won' }],
+        rows: [
+          ['당초 보증금액', `${f.longTerm ? '총공사금액' : '계약금액'} × ${num(f.bondRate) || (f.bond === 'perf' ? 40 : 10)}%`, L.bondFull],
+          ...(f.longTerm ? [['이행 완료 연차분 반환', '완료 연차 계약금액 × 보증률', -L.bondReturnedYears]] : []),
+          ['기성분 제외', f.divisible ? '보증금 × 기성 누계 ÷ 계약금액' : '분할 불가 — 제외 없음', -L.bondExcl]
+        ],
+        foot: [f.type === 'A' ? '세입조치액(별도 청구)' : '반환액', f.type === 'A' ? '기성 미지급액과 상계 금지' : '해제·해지와 동시 반환', f.type === 'A' ? L.forfeit : (f.bond === 'perf' ? 0 : L.bondNow)]
+      }]
+    }, {
+      name: '기성·선금 명세', title: '기성 및 선금정산 명세',
+      blocks: [{
+        columns: [{ h: '구분', w: 14 }, { h: '검사(인수)일', w: 16 }, { h: '기성금액(원)', w: 18, t: 'won' }, { h: '선금정산액(원)', w: 18, t: 'won' }, { h: '대가 지급', w: 12 }],
+        rows: gs.map(r => [r.kind, r.date ? fmtDate(parseDate(r.date)) : '', num(r.amt), r._s || 0, r.paid ? '지급 완료' : '미지급']),
+        foot: ['계', '', L.gsSum, L.advSettled, '']
+      }]
+    }, { name: '검토의견', title: '검토의견', blocks: [{ columns: [{ h: '구분', w: 10 }, { h: '내용', w: 100 }], rows: L.ck.map(c => [({ ok: '적정', warn: '검토', bad: '보완', info: '안내' })[c.lv], c.t]) }] }]
+  });
+}
+
+function sample() {
+  writeForm({ name: '○○중학교 급식실 증축공사', vendor: '(주)○○건설', amt: '1,200,000,000', dS: '2026-03-02', dE: '2026-10-31', dT: '2026-09-25',
+    longTerm: false, totalAmt: '', doneYears: '', type: 'A', rA: '2', rB: '1', rC: '1', bond: 'cash', bondRate: '10', bondAmt: '', divisible: true,
+    adv: '360,000,000', advDate: '2026-03-10', advRate: '4.62', retDate: '2026-10-10', delay: '18,600,000', subDirect: '', withdraw: '', wDone: '' }, $('#calc'));
+  gs = [gsRow({ kind: '1회 기성', date: '2026-05-20', amt: '240,000,000', paid: true }), gsRow({ kind: '2회 기성', date: '2026-07-22', amt: '310,000,000', paid: true }), gsRow({ kind: '해지 기성', date: '2026-09-30', amt: '95,000,000', paid: false })];
+  renderGs(); bindMoney(); calc(); toast('예시를 불러왔습니다');
+}
+function reset() {
+  store.del(KEY);
+  $$('[data-k]', $('#calc')).forEach(el => {
+    if (el.type === 'checkbox') el.checked = el.dataset.k === 'divisible';
+    else if (el.type === 'radio') el.checked = ['A', 'cash'].includes(el.value);
+    else if (el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = el.dataset.k === 'bondRate' ? '10' : '';
+  });
+  gs = [gsRow()]; renderGs(); calc();
+}
+(function init() {
+  initTabs(); initTheme(); bindMoney();
+  initPdfImport({ name: 'name', vendor: 'vendor', amount: 'amt', start: 'dS', end: 'dE' }, () => calc());
+  const s = store.get(KEY);
+  if (s) { writeForm(s.f, $('#calc')); gs = (s.gs || []).map(gsRow); }
+  if (!gs.length) gs = [gsRow()];
+  renderGs();
+  const tb = $('#gsT tbody');
+  const upd = e => { const tr = e.target.closest('tr'); if (!tr || !e.target.dataset.f) return; const r = gs[+tr.dataset.i]; r[e.target.dataset.f] = e.target.dataset.f === 'paid' ? e.target.value === '1' : e.target.value; calc(); };
+  tb.addEventListener('input', upd); tb.addEventListener('change', upd);
+  tb.addEventListener('click', e => { if (e.target.closest('[data-del]')) { gs.splice(+e.target.closest('tr').dataset.i, 1); renderGs(); calc(); } });
+  const outer = e => { if (!e.target.closest('#gsT')) calc(); };
+  $('#calc').addEventListener('input', outer); $('#calc').addEventListener('change', outer);
+  $$('input[name=bond]').forEach(r => r.addEventListener('change', () => { $('#bondRate').value = r.value === 'perf' ? '40' : '10'; calc(); }));
+  $('#addGs').onclick = () => { gs.push(gsRow({ kind: `${gs.length + 1}회 기성` })); renderGs(); calc(); };
+  $('#sampleBtn').onclick = sample; $('#resetBtn').onclick = reset;
+  $('#copyBtn').onclick = () => copyText(opinion());
+  $('#xlsxBtn').onclick = xlsx; $('#xlsxTop').onclick = xlsx;
+  calc();
+})();
+</script>
+</body>
+</html>

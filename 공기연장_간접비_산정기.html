@@ -1,0 +1,979 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공기연장 간접비 산정기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-gov-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<style>:root{
+  --primary:#256EF4; --primary-h:#0B50D0; --primary-50:#ECF2FE; --primary-100:#D8E5FD;
+  --text:#1E2124; --text-2:#464C53; --text-3:#6D7882; --line:#CDD1D5; --line-2:#E6E8EA;
+  --bg:#F4F5F6; --surface:#FFFFFF;
+  --danger:#DE3412; --danger-50:#FDEFEC; --warn:#9E6A00; --warn-50:#FFF3DB; --ok:#228738; --ok-50:#EAF6EC;
+  --radius:8px; --radius-lg:12px;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --text:#E6E8EA; --text-2:#C6CACF; --text-3:#9AA3AC; --line:#3A4048; --line-2:#2C3137;
+    --bg:#131619; --surface:#1B1F23; --primary-50:#16233D; --primary-100:#1D3363;
+    --danger-50:#3A1A13; --warn-50:#3A2E12; --ok-50:#15301C; --warn:#F2B53B; --ok:#4FC26A; --danger:#FF6B4A;
+  }
+}
+:root[data-theme="dark"]{
+  --text:#E6E8EA; --text-2:#C6CACF; --text-3:#9AA3AC; --line:#3A4048; --line-2:#2C3137;
+  --bg:#131619; --surface:#1B1F23; --primary-50:#16233D; --primary-100:#1D3363;
+  --danger-50:#3A1A13; --warn-50:#3A2E12; --ok-50:#15301C; --warn:#F2B53B; --ok:#4FC26A; --danger:#FF6B4A;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:"Pretendard GOV Variable","Pretendard GOV","IBM Plex Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.num,.mono{font-family:"IBM Plex Sans KR","Pretendard GOV Variable",sans-serif;font-variant-numeric:tabular-nums}
+a{color:var(--primary)}
+.test-banner{background:var(--danger);color:#fff;text-align:center;font-size:13px;font-weight:600;padding:6px 16px;letter-spacing:.02em}
+.hd{background:var(--surface);border-bottom:1px solid var(--line)}
+.hd-in{max-width:1180px;margin:0 auto;padding:18px 16px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.hd .crumb{font-size:13px;color:var(--text-3);margin-bottom:2px}
+.hd h1{margin:0;font-size:24px;font-weight:700;letter-spacing:-.01em}
+.hd h1 .tag{display:inline-block;vertical-align:middle;margin-left:8px;font-size:12px;font-weight:600;color:var(--danger);border:1px solid var(--danger);border-radius:4px;padding:1px 6px}
+.hd .sub{font-size:14px;color:var(--text-2);margin-top:4px}
+.hd-actions{display:flex;gap:8px;flex-wrap:wrap}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+.seg{display:inline-flex;background:var(--line-2);border-radius:10px;padding:4px;gap:4px;margin-bottom:18px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;color:var(--text-2);font:inherit;font-weight:600;font-size:14px;padding:8px 16px;border-radius:7px;cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--primary);box-shadow:var(--shadow)}
+.panel[hidden]{display:none}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:20px;align-items:start}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
+.card h2{margin:0 0 4px;font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card h2 .no{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px}
+.card .desc{margin:0 0 14px;color:var(--text-3);font-size:13px}
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px 14px}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.f.wide{grid-column:1/-1}
+.f label{font-size:13px;font-weight:600;color:var(--text-2)}
+.f .hint{font-size:12px;color:var(--text-3)}
+input[type=text],input[type=number],input[type=date],select,textarea{font:inherit;font-size:15px;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:9px 11px;width:100%;min-width:0}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--primary);outline-offset:1px;border-color:var(--primary)}
+input.money,input.rate{text-align:right;font-family:"IBM Plex Sans KR",sans-serif;font-variant-numeric:tabular-nums}
+input[readonly]{background:var(--bg);color:var(--text-2)}
+.unit{position:relative}.unit input{padding-right:34px}.unit span{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text-3);pointer-events:none}
+.chk{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--text);cursor:pointer;padding:4px 0}
+.chk input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--primary);flex:none}
+.radios{display:flex;flex-wrap:wrap;gap:8px}
+.radios label{border:1px solid var(--line);border-radius:var(--radius);padding:8px 12px;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:6px;background:var(--surface)}
+.radios input{accent-color:var(--primary)}
+.radios label:has(input:checked){border-color:var(--primary);background:var(--primary-50);color:var(--primary);font-weight:600}
+.btn{font:inherit;font-size:14px;font-weight:600;border-radius:var(--radius);padding:9px 14px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--text);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--text-3)}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn.primary:hover{background:var(--primary-h)}
+.btn.sm{font-size:13px;padding:6px 10px}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--text-3)}
+.btn.ghost:hover{color:var(--danger)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{background:var(--bg);font-weight:600;color:var(--text-2);font-size:13px;text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.t td{padding:6px 8px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+table.t tr:last-child td{border-bottom:0}
+table.t td input,table.t td select{padding:7px 8px;font-size:14px}
+table.t .r{text-align:right}
+table.t tfoot td{background:var(--primary-50);font-weight:700;border-top:1px solid var(--line)}
+.tbl-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:8px;flex-wrap:wrap}
+.sticky{position:sticky;top:12px}
+/* verdict folder tab */
+.verdict{margin-bottom:16px}
+.verdict .tab{display:inline-block;padding:7px 16px 6px;border-radius:10px 10px 0 0;font-weight:700;font-size:14px;color:#fff;background:var(--text-3)}
+.verdict .body{background:var(--surface);border:2px solid var(--text-3);border-left:0;border-right:0;border-radius:0;padding:18px 4px}
+.verdict.ok .tab{background:var(--ok)}.verdict.ok .body{border-color:var(--ok)}
+.verdict.warn .tab{background:#C88A00}.verdict.warn .body{border-color:#C88A00}
+.verdict.bad .tab{background:var(--danger)}.verdict.bad .body{border-color:var(--danger)}
+.verdict.info .tab{background:var(--primary)}.verdict.info .body{border-color:var(--primary)}
+.verdict .big{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.3}
+.verdict .big small{font-size:14px;font-weight:600;color:var(--text-3);margin-left:4px}
+.verdict .lead{font-size:14px;color:var(--text-2);margin:4px 0 12px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px;margin:0}
+.kv dt{color:var(--text-3)}.kv dd{margin:0;text-align:right;font-weight:600}
+.kv .tot{border-top:1px solid var(--line);padding-top:8px;margin-top:2px;font-size:16px;color:var(--primary)}
+.checks{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.checks li{display:flex;gap:8px;font-size:13.5px;line-height:1.5;padding:8px 10px;border-radius:var(--radius);background:var(--bg)}
+.checks li .ic{flex:none;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;margin-top:1px}
+.checks li.ok .ic{background:var(--ok)}.checks li.warn .ic{background:#C88A00}.checks li.bad .ic{background:var(--danger)}.checks li.info .ic{background:var(--primary)}
+.checks li.bad{background:var(--danger-50)}.checks li.warn{background:var(--warn-50)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn-row .btn{flex:1;justify-content:center}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px}
+.pill.ok{background:var(--ok-50);color:var(--ok)}.pill.bad{background:var(--danger-50);color:var(--danger)}.pill.warn{background:var(--warn-50);color:var(--warn)}.pill.info{background:var(--primary-50);color:var(--primary)}
+.note{font-size:13px;color:var(--text-2);background:var(--primary-50);border-left:3px solid var(--primary);padding:10px 12px;border-radius:0 var(--radius) var(--radius) 0;margin:12px 0 0}
+.note.warn{background:var(--warn-50);border-color:#C88A00}
+/* guide */
+.guide h3{font-size:16px;margin:22px 0 8px}
+.guide h3:first-child{margin-top:0}
+.guide p,.guide li{font-size:14px;color:var(--text-2)}
+.guide ol,.guide ul{padding-left:20px;margin:6px 0}
+.guide .law{font-size:13px;background:var(--bg);border:1px solid var(--line-2);border-radius:var(--radius);padding:12px 14px;white-space:pre-wrap;color:var(--text-2)}
+.guide .src{font-size:12px;color:var(--text-3)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#1E2124;color:#fff;font-size:14px;padding:10px 18px;border-radius:999px;opacity:0;transition:.2s;pointer-events:none;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.ft{max-width:1180px;margin:0 auto;padding:0 16px 40px;font-size:12px;color:var(--text-3)}
+@media (max-width:600px){.hd h1{font-size:20px}.card{padding:16px}.verdict .big{font-size:22px}}
+@media print{.test-banner,.hd-actions,.seg,.btn-row,.tbl-actions,.btn{display:none!important}.grid{grid-template-columns:1fr}.sticky{position:static}body{background:#fff}}
+.pdf-dlg{border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;width:min(560px,calc(100vw - 32px));background:var(--surface);color:var(--text);box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.pdf-dlg::backdrop{background:rgba(0,0,0,.35)}
+.pdf-drop{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1.5px dashed var(--primary);background:var(--primary-50);border-radius:var(--radius);padding:12px 14px;margin:0 0 14px;font-size:13.5px;color:var(--text-2)}
+.pdf-drop b{color:var(--primary)}
+body.dragging .pdf-drop{background:var(--primary-100);border-style:solid}
+.f[hidden],[hidden]{display:none!important}
+
+#laborT{min-width:1180px}#expT{min-width:760px}
+#laborT input,#laborT select,#expT select{min-width:0}
+#laborT select,#expT select{padding-right:4px}
+#laborT td.auto{color:var(--text-2);text-align:right;white-space:nowrap}
+.sub-h{font-size:14px;font-weight:700;margin:16px 0 8px;color:var(--text)}
+.mode-rate[hidden],.mode-real[hidden]{display:none}
+</style>
+</head>
+<body>
+<div class="test-banner">테스트용 — 산정 결과는 참고용이며, 실제 조정은 계약문서·증빙과 관계 법령을 확인한 뒤 결정하십시오.</div>
+<header class="hd"><div class="hd-in">
+  <div>
+    <div class="crumb">학교시설업무 치트키 · 계약관리·정산 도구</div>
+    <h1>공기연장 간접비 산정기<span class="tag">테스트용</span></h1>
+    <div class="sub">지방계약법 시행령 제75조·제75조의2 · 서울시 「공기연장에 따른 간접공사비 실무 가이드라인」 Ver.1.1 산정요령</div>
+  </div>
+  <div class="hd-actions">
+    <button class="btn sm" type="button" data-pdf-btn>📄 계약정보 PDF</button>
+    <button class="btn sm" id="sampleBtn" type="button">예시 불러오기</button>
+    <button class="btn sm" id="resetBtn" type="button">초기화</button>
+    <button class="btn sm" id="themeBtn" type="button" aria-label="화면 테마 전환">◐ 테마</button>
+    <button class="btn sm primary" id="xlsxTop" type="button">엑셀 내보내기</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <div class="seg" role="tablist">
+    <button type="button" role="tab" data-tab="calc" aria-selected="true">간접비 산정</button>
+    <button type="button" role="tab" data-tab="guide" aria-selected="false">산출기준 안내</button>
+  </div>
+
+  <section class="panel" id="calc">
+    <div class="grid">
+      <div>
+        <div class="card">
+          <h2><span class="no">1</span>계약 및 연장 정보</h2>
+          <p class="desc">장기계속공사는 해당 차수(연차별) 계약의 착공일·준공기한을 입력합니다. 연장일수에서 물량증감(설계변경)으로 연장된 일수를 뺀 기간이 공기연장 간접비 대상입니다.</p>
+          <div class="pdf-drop"><span><b>에듀파인 계약정보 PDF</b>를 끌어다 놓거나 불러오면 계약 정보가 자동 입력됩니다.</span><button class="btn sm primary" type="button" data-pdf-btn>PDF 불러오기</button></div>
+
+          <div class="fields">
+            <div class="f wide"><label for="name">공사명</label><input type="text" id="name" data-k="name" placeholder="예) ○○초등학교 교사 증축공사"></div>
+            <div class="f"><label for="vendor">계약상대자</label><input type="text" id="vendor" data-k="vendor"></div>
+            <div class="f"><label for="amt">현재 계약금액</label><div class="unit"><input type="text" class="money" id="amt" data-k="amt"><span>원</span></div></div>
+            <div class="f"><label for="kind">공종 구분</label>
+              <select id="kind" data-k="kind"><option value="gen">종합공사</option><option value="spec">전문·전기·정보통신·소방 등</option></select>
+              <span class="hint">일반관리비 규모별 한도 판정</span></div>
+            <div class="f"><label for="dS">착공일(계약기간 시작)</label><input type="date" id="dS" data-k="dS"></div>
+            <div class="f"><label for="d0">당초 준공기한</label><input type="date" id="d0" data-k="d0"></div>
+            <div class="f"><label for="d1">변경 준공기한</label><input type="date" id="d1" data-k="d1"></div>
+            <div class="f"><label for="days">연장일수</label><div class="unit"><input type="text" id="days" readonly><span>일</span></div></div>
+            <div class="f"><label for="dDesign">그중 물량증감(설계변경) 연장일수</label><div class="unit"><input type="number" id="dDesign" data-k="dDesign" min="0"><span>일</span></div><span class="hint">승률방식으로 이미 반영된 기간</span></div>
+            <div class="f"><label for="tDays">공기연장 간접비 대상일수</label><div class="unit"><input type="text" id="tDays" readonly><span>일</span></div></div>
+            <div class="f wide"><label>연장 사유 구분</label>
+              <div class="radios">
+                <label><input type="radio" name="cause" value="owner" data-k="cause" checked> 발주기관 책임</label>
+                <label><input type="radio" name="cause" value="force" data-k="cause"> 통제범위 밖 사유(제75조의2)</label>
+                <label><input type="radio" name="cause" value="mixed" data-k="cause"> 귀책 혼재(부담률 적용)</label>
+                <label><input type="radio" name="cause" value="vendor" data-k="cause"> 계약상대자 책임</label>
+              </div>
+            </div>
+            <div class="f"><label for="share">발주기관 측 부담률</label><div class="unit"><input type="text" class="rate" id="share" data-k="share" value="100"><span>%</span></div><span class="hint">귀책 혼재 시에만 적용</span></div>
+            <div class="f wide"><label for="causeTxt">사유 상세</label><input type="text" id="causeTxt" data-k="causeTxt" placeholder="예) 학교 요청에 따른 공정 조정, 인허가 지연, 보상 지연 등"></div>
+            <div class="f"><label for="reqDate">계약금액 조정 신청일</label><input type="date" id="reqDate" data-k="reqDate"></div>
+            <div class="f wide">
+              <label class="chk"><input type="checkbox" data-k="beforePay" checked> 최종 기성대가(준공대가) 지급 전에 조정을 신청함</label>
+              <label class="chk"><input type="checkbox" data-k="longTerm"> 장기계속공사(차수별 계약)</label>
+              <label class="chk"><input type="checkbox" data-k="gap"> 연장기간에 차수 간 공백기(차수 계약 사이 기간)가 포함됨</label>
+              <label class="chk"><input type="checkbox" data-k="suspend"> 공사 일시정지로 인한 연장임</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="no">2</span>산정방식</h2>
+          <p class="desc">실비 정산이 원칙입니다. 노무비·경비의 실비 산정이 이루어지지 않을 때만 계약당사자 협의로 요율방식을 적용합니다(집행기준 제1장 제8절 2-자).</p>
+          <div class="radios">
+            <label><input type="radio" name="mode" value="real" data-k="mode" checked> 실비 정산(원칙)</label>
+            <label><input type="radio" name="mode" value="rate" data-k="mode"> 요율방식(실비 산정 불가 · 당사자 협의)</label>
+          </div>
+          <div class="mode-rate fields" style="margin-top:14px" hidden>
+            <div class="f wide"><label class="chk"><input type="checkbox" data-k="rateAgreed"> 계약당사자 간 요율방식 적용에 협의함</label></div>
+            <div class="f wide"><label>예정가격 작성 여부</label>
+              <div class="radios">
+                <label><input type="radio" name="preMade" value="y" data-k="preMade" checked> 예정가격 작성 공사</label>
+                <label><input type="radio" name="preMade" value="n" data-k="preMade"> 예정가격 미작성(산출내역서 기준)</label>
+              </div></div>
+            <div class="f"><label for="pIL">예정가격상 간접노무비</label><div class="unit"><input type="text" class="money" id="pIL" data-k="pIL"><span>원</span></div><span class="hint">미작성 공사는 산출내역서상 금액</span></div>
+            <div class="f"><label for="pEX">예정가격상 경비(기타경비)</label><div class="unit"><input type="text" class="money" id="pEX" data-k="pEX"><span>원</span></div><span class="hint">미작성 공사는 산출내역서상 금액</span></div>
+            <div class="f"><label for="bidRate">낙찰률</label><div class="unit"><input type="text" class="rate" id="bidRate" data-k="bidRate"><span>%</span></div><span class="hint">예정가격 작성 공사만 적용</span></div>
+            <div class="f"><label for="allDays">전체 계약기간</label><div class="unit"><input type="text" id="allDays" readonly><span>일</span></div><span class="hint">착공일 ~ 당초 준공기한</span></div>
+          </div>
+        </div>
+
+        <div class="card mode-real">
+          <h2><span class="no">3</span>간접노무비 — 노무량 × 지급확인 임금</h2>
+          <p class="desc">현장사무소 근무 인원만 입력합니다. 단가는 변경사유 발생 전 최근 3개월 평균이며 실제 지급 임금을 넘을 수 없습니다. 퇴직급여충당금은 (기본급 + 제수당 + 상여금) ÷ 12로 자동 계산합니다.</p>
+          <datalist id="jobList">
+            <option value="현장소장"><option value="현장사무원(총무·경리)"><option value="기획·설계부문 종사자"><option value="노무관리원"><option value="자재·구매관리원"><option value="공구담당원">
+            <option value="시험관리원"><option value="교육·산재담당원"><option value="복지후생부문 종사자"><option value="경비원"><option value="청소원"><option value="작업반장">
+          </datalist>
+          <div class="tbl-wrap"><table class="t" id="laborT">
+            <thead><tr><th style="width:100px">소속</th><th style="min-width:130px">직종</th><th style="width:58px">인원</th><th style="min-width:110px">기본급(월)</th><th style="min-width:100px">제수당(월)</th><th style="min-width:100px">상여금(월할)</th><th class="r">퇴직충당</th><th class="r">월 계</th><th style="width:74px">투입일수</th><th class="r" style="min-width:110px">금액(원)</th><th style="width:44px">증빙</th><th style="width:36px"></th></tr></thead>
+            <tbody></tbody>
+            <tfoot><tr><td colspan="9">간접노무비 계</td><td class="r num" id="laborSum">0</td><td colspan="2"></td></tr></tfoot>
+          </table></div>
+          <div class="tbl-actions">
+            <button class="btn sm" type="button" id="addLabor">+ 인력 추가</button>
+            <span style="font-size:12px;color:var(--text-3)">금액 = 인원 × 월 계 × 투입일수 ÷ 30 · 상여금은 기본급의 연 400%(월 133.3%) 이내 · 성과격려금·학자금·개인연금 제외</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="no" id="expNo">4</span>경비 — 시간변동 경비만</h2>
+          <p class="desc">운반비·기계경비·품질관리비·퇴직공제부금비·폐기물처리비·환경보전비·안전관리비 등 시공물량에 따라 변하는 경비는 제외합니다. 요율방식이면 법정경비·보험료·보증수수료 등 실비만 입력합니다.</p>
+          <datalist id="expList">
+            <option value="지급임차료(건설기계 제외)"><option value="보관비(외부 지급분)"><option value="가설비(사용기간 연장분)"><option value="유휴장비비(임대장비 실임대료)"><option value="유휴장비비(보유장비)">
+            <option value="지급수수료(보증서 기간연장)"><option value="전력비"><option value="수도광열비"><option value="산업안전보건관리비"><option value="보험료"><option value="복리후생비">
+            <option value="소모품비"><option value="여비·교통비·통신비"><option value="세금과공과금"><option value="도서인쇄비"><option value="기타 법정경비"><option value="하도급업체 간접비(실비)">
+          </datalist>
+          <div class="fields mode-real" style="margin-bottom:14px">
+            <div class="f"><label for="rInd">산재보험료율</label><div class="unit"><input type="text" class="rate" id="rInd" data-k="rInd" placeholder="산출내역서 요율"><span>%</span></div><span class="hint">간접노무비 × 요율</span></div>
+            <div class="f"><label for="rEmp">고용보험료율</label><div class="unit"><input type="text" class="rate" id="rEmp" data-k="rEmp" placeholder="산출내역서 요율"><span>%</span></div><span class="hint">간접노무비 × 요율</span></div>
+            <div class="f"><label for="rEtc">기타경비율</label><div class="unit"><input type="text" class="rate" id="rEtc" data-k="rEtc" placeholder="직접계상 시 비움"><span>%</span></div><span class="hint">(재료비+노무비) × 요율 — 공기연장분은 간접노무비 기준</span></div>
+          </div>
+          <div class="tbl-wrap"><table class="t" id="expT">
+            <thead><tr><th style="width:100px">소속</th><th style="min-width:170px">비목</th><th style="min-width:170px">산정 내용·증빙</th><th class="r" style="min-width:120px">금액(원)</th><th style="width:44px">증빙</th><th style="width:36px"></th></tr></thead>
+            <tbody></tbody>
+            <tfoot><tr><td colspan="3">경비(실비) 계</td><td class="r num" id="expSum">0</td><td colspan="2"></td></tr></tfoot>
+          </table></div>
+          <div class="tbl-actions"><button class="btn sm" type="button" id="addExp">+ 경비 추가</button>
+            <span style="font-size:12px;color:var(--text-3)">보유장비 유휴장비비 = (장비가격 × 시간당 손료계수) × (연간표준가동시간 ÷ 365) × 유휴일수 × 1/2</span></div>
+        </div>
+
+        <div class="card">
+          <h2><span class="no" id="genNo">5</span>일반관리비·이윤·공사손해보험료</h2>
+          <p class="desc">산출내역서상 승률을 적용하되, 변경사유 발생 당시 관계 법령 요율을 넘을 수 없습니다. 공사손해보험료는 실비로 이윤 다음에 더합니다.</p>
+          <div class="fields">
+            <div class="f"><label for="rGen">일반관리비율</label><div class="unit"><input type="text" class="rate" id="rGen" data-k="rGen"><span>%</span></div><span class="hint" id="genHint">(간접노무비 + 경비) × 율</span></div>
+            <div class="f"><label for="rPro">이윤율</label><div class="unit"><input type="text" class="rate" id="rPro" data-k="rPro"><span>%</span></div><span class="hint">(간접노무비 + 경비 + 일반관리비) × 율, 15% 이내</span></div>
+            <div class="f"><label for="ins">공사손해보험료(실비)</label><div class="unit"><input type="text" class="money" id="ins" data-k="ins"><span>원</span></div><span class="hint">보험기간 연장 납부확인서</span></div>
+            <div class="f"><label for="dup">설계변경 간접비 중복분 공제</label><div class="unit"><input type="text" class="money" id="dup" data-k="dup"><span>원</span></div><span class="hint">중복이 특정되는 금액만</span></div>
+            <div class="f wide">
+              <label class="chk"><input type="checkbox" data-k="vat" checked> 부가가치세(10%) 포함</label>
+              <label class="chk"><input type="checkbox" data-k="cut1000"> 조정금액 1,000원 미만 절사</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="sticky">
+        <div class="verdict info" id="verdict">
+          <span class="tab">입력 대기</span>
+          <div class="body">
+            <div class="big num" id="bigAmt">0<small>원</small></div>
+            <div class="lead" id="leadTxt">연장 정보와 비용을 입력하면 조정금액이 산정됩니다.</div>
+            <dl class="kv" id="kv"></dl>
+            <ul class="checks" id="checks"></ul>
+            <div class="btn-row">
+              <button class="btn" type="button" id="copyBtn">검토의견 복사</button>
+              <button class="btn primary" type="button" id="xlsxBtn">엑셀 내보내기</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="panel card guide" id="guide" hidden>
+    <h3>1. 근거 법령</h3>
+    <div class="law">「지방계약법」 제22조 ① 물가변동·설계변경·그 밖의 계약내용 변경으로 계약금액 조정 ② 계약상대자의 통제범위를 벗어난 사유로 계약기간 연장 시 조정
+「지방계약법 시행령」 제75조① 공사기간·운반거리 변경 등 계약내용 변경 시 <b>실비를 초과하지 아니하는 범위</b>에서 조정
+「지방계약법 시행령」 제75조의2 통제범위 밖 사유: ① 자연현상 ② 붕괴·폭발·국가기반체계 마비·감염병·고농도 미세먼지 비상저감조치 ③ 전쟁·사변·테러·폭동 ④ 행정안전부장관 고시 사유
+「지방계약법 시행규칙」 제74조② → 제72조⑧ 준용: 조정 청구를 받은 날부터 30일 이내 조정
+「지방자치단체 입찰 및 계약 집행기준」 제1장 제8절(실비 산정) · 제9장 제7절(계약금액의 조정) · 제9장 제8절(계약기간 연장)</div>
+
+    <h3>2. 간접비 원가계산서(총괄) 산출방법</h3>
+    <div class="tbl-wrap"><table class="t">
+      <thead><tr><th>구분</th><th>산출 방법</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>1. 간접노무비</td><td>실비(현장관리 투입 인원 보수 총액) = 노무량 × 지급확인 임금</td><td>기본급 + 제수당 + 상여금(연 400% 이내) + 퇴직급여충당금</td></tr>
+        <tr><td>2-가. 직접계상 비목</td><td>지급임차료 + 보관비 + 가설비 + 유휴장비비 + 지급수수료(보증서) + 기타 실비</td><td>실비(증빙)</td></tr>
+        <tr><td>2-나. 산재·고용보험료</td><td>노무비 × 산출내역서상 요율</td><td>관계법령 요율 확인</td></tr>
+        <tr><td>2-나. 기타경비</td><td>(재료비 + 노무비) × 산출내역서상 요율</td><td>7개 항목(수도광열·복리후생·소모품·여비교통통신·세금과공과·도서인쇄·지급수수료), 증빙 있으면 직접계상</td></tr>
+        <tr><td>3. 일반관리비</td><td>소계(1 + 2) × 산출내역서상 요율</td><td>종합 50억 미만 8.0% · 50~300억 6.5% · 300억 이상 5.0% / 전문 등 5억 미만 8.0% · 5~30억 6.5% · 30억 이상 5.0%</td></tr>
+        <tr><td>4. 이윤</td><td>(소계 + 일반관리비) × 산출내역서상 요율</td><td>15% 이내</td></tr>
+        <tr><td>5. 공사손해보험료</td><td>실비(증빙)</td><td>추정가격 100억 이상 의무가입</td></tr>
+        <tr><td>공급가액 / 부가가치세</td><td>1 + 2 + 3 + 4 + 5 / 산출내역서상 요율</td><td></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>3. 요율방식 (실비 산정이 불가할 때, 당사자 협의)</h3>
+    <ul>
+      <li>예정가격 작성 공사 간접노무비 = [(연장기간 ÷ 전체계약기간) × 예정가격상 간접노무비 + (연장기간 ÷ 전체계약기간) × 예정가격상 간접노무비 × 낙찰률] ÷ 2</li>
+      <li>예정가격 미작성 공사 간접노무비 = (연장기간 ÷ 전체계약기간) × 산출내역서상 간접노무비</li>
+      <li>기타경비는 위 산식의 '간접노무비'를 '경비'로 바꾸어 적용합니다. 법정경비·보험료는 계약서·고지서·영수증으로 실비를 확인하고, 일반관리비·이윤은 산출내역서상 승률을 적용합니다.</li>
+      <li>공사 일시정지로 인한 경우에는 발주기관이 현장유지·관리 노무량을 산정하여 정산합니다.</li>
+    </ul>
+    <div class="note warn">요약문서의 요율방식 산식은 "… + (…) × 낙찰률 ÷ 2"로 표기되어 있습니다. 이 도구는 이를 설계 기준액과 낙찰률 적용액의 평균([A + A × 낙찰률] ÷ 2, 시행령 제74조④제3호와 같은 구조)으로 계산합니다. 집행기준 원문으로 확인하시기 바랍니다.</div>
+
+    <h3>4. 경비 대상 구분</h3>
+    <ul>
+      <li><b>시간변동 경비(대상)</b>: 전력비·수도광열비, 지급임차료, 보험료, 복리후생비, 보관비, 산업안전보건관리비, 소모품비, 여비·교통비·통신비, 세금과공과금, 도서인쇄비, 지급수수료, 가설비, 기타 법정경비</li>
+      <li><b>시공변동 경비(제외)</b>: 운반비, 기계경비, 특허권사용료, 기술료, 연구개발비, 품질관리비, 외주가공비, 퇴직공제부금비, 폐기물처리비, 환경보전비, 보상비, 안전관리비</li>
+      <li>지급임차료는 건설기계를 제외하고(건설기계는 유휴장비비), 보관비는 외부 지급분만 인정합니다.</li>
+      <li>건강·연금·노인장기요양보험료는 제외합니다. 직접노무비 기준으로 산정되며, 간접노무비 대상자분 사업자 부담분은 일반관리비에서 지급합니다(조달청 질의회신).</li>
+    </ul>
+
+    <h3>5. 설계변경 간접비와의 관계</h3>
+    <ul>
+      <li>공기연장 간접비는 실비 정산, 물량증감 간접비는 승률방식입니다. 분리 산출 후 중복분만 공제합니다.</li>
+      <li>변경계약서 변경사유를 "물량증감(00일 연장) / 공기연장(00일 연장)"으로 분리 기재해 중복 여부를 문서로 특정합니다.</li>
+      <li>중복 부분을 특정할 수 없으면 중복 가능성만으로 곧바로 공제할 수 없습니다(서울고법 2017나2061097). 증액과 공기연장이 함께 있으면 물량 증가에 따른 시공기간분은 이미 반영된 것이므로 공제합니다(서울고법 2018나2015763).</li>
+    </ul>
+
+    <h3>6. 신청 시기와 절차</h3>
+    <ul>
+      <li>사유 발생 시 지체 없이 실정보고와 함께 수정공정표·인력투입계획서를 제출합니다(노무량은 실정보고 단계에서 사전 협의).</li>
+      <li>계약금액 조정 신청은 준공예정일 90일 전 제출이 원칙이며(서울시 가이드라인), 늦어도 최종 기성대가(준공대가) 지급 전까지 마쳐야 합니다(서울고법 2017나2012996).</li>
+      <li>장기계속공사는 차수별 계약기간만 인정되며, 차수 간 공백기 간접비는 조정할 수 없습니다(대법원 2015다255463).</li>
+      <li>귀책이 혼재하면 부담률을 검토합니다(수정 직전 공정표상 계약상대자 귀책의 부진공정 제외). 귀책이 불명확하면 상호 상계하여 계약금액을 조정하고 지연배상금을 부과하지 않는 합의 처리를 권고합니다.</li>
+      <li>계약내용 변경·계약기간 연장 시 15일 이내에 관련 하도급업체에 통보합니다. 산출 시 하도급업체 비용을 포함합니다.</li>
+    </ul>
+
+    <h3>7. 증빙서류</h3>
+    <ul>
+      <li>간접비 산출 총괄표, 간접노무인력 산출자료(월별 급여명세서·급여지불조서·보수규정·근로계약서), 경비 집계표</li>
+      <li>지급임차료: 전자세금계산서·이체확인증·입출금거래내역 / 전력비: 고지서 / 식비: 카드 승인전표·영수증 — 연장기간 월별 거래내역 일체</li>
+      <li>보증서 수수료: 계약·공사이행·하도급대금지급·건설기계대여대금 보증 기간연장 납부확인서</li>
+      <li>도급사·하도급사를 각각 구분하여 작성</li>
+    </ul>
+    <p class="src">출처: 서울특별시 「공기연장에 따른 간접공사비 실무 가이드라인」 Ver.1.1(2026. 1. 1. 시행) 요약. 서울시 기준 문서이나 근거 법령(지방계약법·시행령·행정안전부 예규)은 시도교육청에도 같게 적용됩니다. 90일 전 신청, 심의위원회 등 서울시 운영 절차는 기관 방침에 따라 다를 수 있습니다.</p>
+  </section>
+</main>
+<footer class="ft">학교시설업무 치트키 · 계약관리·정산 도구 시리즈 · 테스트용 · 입력값은 이 브라우저에만 저장됩니다.</footer>
+
+<script>/* ===== 공통 유틸 (테스트용 정산도구 시리즈) ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const num = v => { if (v == null) return 0; const n = parseFloat(String(v).replace(/[^0-9.\-]/g, '')); return isFinite(n) ? n : 0; };
+const won = n => (Math.round(n) || 0).toLocaleString('ko-KR');
+const pct = (n, d = 2) => (isFinite(n) ? n.toFixed(d) : '0.00') + '%';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const floor10 = n => Math.floor(n / 10) * 10; // 원 단위 절사(10원 미만)
+function parseDate(s) { if (!s) return null; const d = new Date(s + 'T00:00:00'); return isNaN(d) ? null : d; }
+function fmtDate(d) { if (!d) return '-'; const p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}. ${p(d.getMonth() + 1)}. ${p(d.getDate())}.`; }
+function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function diffDays(a, b) { return Math.round((b - a) / 86400000); }
+
+/* 금액 입력 자동 콤마 */
+function bindMoney(root = document) {
+  $$('input.money', root).forEach(el => {
+    if (el._bound) return; el._bound = true;
+    el.setAttribute('inputmode', 'numeric');
+    el.addEventListener('input', () => {
+      const pos = el.value.length - el.selectionStart;
+      const neg = el.value.trim().startsWith('-');
+      const raw = el.value.replace(/[^0-9]/g, '');
+      el.value = raw ? (neg ? '-' : '') + Number(raw).toLocaleString('ko-KR') : (neg ? '-' : '');
+      const p = Math.max(0, el.value.length - pos); try { el.setSelectionRange(p, p); } catch (e) { }
+    });
+  });
+}
+
+/* 저장소 (실패해도 동작) */
+const store = {
+  get(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } },
+  del(k) { try { localStorage.removeItem(k); } catch (e) { } }
+};
+
+function toast(msg) {
+  let t = $('.toast'); if (!t) { t = document.createElement('div'); t.className = 'toast'; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 1800);
+}
+async function copyText(text) {
+  if (!text) { toast('먼저 필요한 값을 입력하십시오'); return; }
+  try { await navigator.clipboard.writeText(text); toast('검토의견을 복사했습니다'); return; } catch (e) { }
+  const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('검토의견을 복사했습니다'); } catch (e) { toast('복사하지 못했습니다'); } ta.remove();
+}
+
+/* 탭 */
+function initTabs() {
+  $$('.seg button').forEach(b => b.addEventListener('click', () => {
+    $$('.seg button').forEach(x => x.setAttribute('aria-selected', x === b));
+    $$('.panel').forEach(p => p.hidden = p.id !== b.dataset.tab);
+  }));
+}
+
+/* 테마 */
+function initTheme() {
+  const saved = store.get('krds-theme'); if (saved) document.documentElement.dataset.theme = saved;
+  const b = $('#themeBtn'); if (!b) return;
+  b.addEventListener('click', () => {
+    const cur = document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const nx = cur === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = nx; store.set('krds-theme', nx);
+  });
+}
+
+/* 폼 직렬화: [data-k] 요소 */
+function readForm(root = document) {
+  const o = {};
+  $$('[data-k]', root).forEach(el => {
+    const k = el.dataset.k;
+    if (el.type === 'checkbox') o[k] = el.checked;
+    else if (el.type === 'radio') { if (el.checked) o[k] = el.value; }
+    else o[k] = el.value;
+  });
+  return o;
+}
+function writeForm(o, root = document) {
+  if (!o) return;
+  $$('[data-k]', root).forEach(el => {
+    const k = el.dataset.k; if (!(k in o)) return;
+    if (el.type === 'checkbox') el.checked = !!o[k];
+    else if (el.type === 'radio') el.checked = el.value === o[k];
+    else el.value = o[k];
+  });
+}
+
+/* ===== 엑셀 내보내기 (ExcelJS) =====
+   spec = { file, sheets:[{ name, title, meta:[[k,v]], blocks:[{ heading, columns:[{h,w,t}], rows:[[]], foot:[] }] }] }
+   t: 'text' | 'won' | 'pct' | 'num' | 'date' */
+async function exportXlsx(spec) {
+  if (typeof ExcelJS === 'undefined') { toast('엑셀 라이브러리를 불러오지 못했습니다(네트워크 확인)'); return; }
+  const wb = new ExcelJS.Workbook(); wb.creator = '정산도구(테스트용)'; wb.created = new Date();
+  const thin = { style: 'thin', color: { argb: 'FFCDD1D5' } };
+  const border = { top: thin, left: thin, bottom: thin, right: thin };
+  const fmtOf = t => t === 'won' ? '#,##0' : t === 'pct' ? '0.00"%"' : t === 'num' ? '#,##0.##' : '@';
+  for (const sh of spec.sheets) {
+    const ws = wb.addWorksheet(sh.name, { pageSetup: { paperSize: 9, orientation: 'portrait', fitToPage: true, fitToWidth: 1, fitToHeight: 0, margins: { left: .5, right: .5, top: .6, bottom: .6, header: .3, footer: .3 } }, views: [{ showGridLines: false }] });
+    const maxCols = Math.max(2, ...sh.blocks.map(b => b.columns.length));
+    const widths = new Array(maxCols).fill(12);
+    sh.blocks.forEach(b => b.columns.forEach((c, i) => { widths[i] = Math.max(widths[i], c.w || 12); }));
+    ws.columns = widths.map(w => ({ width: w }));
+    let r = 1;
+    ws.mergeCells(r, 1, r, maxCols); const tc = ws.getCell(r, 1); tc.value = sh.title; tc.font = { bold: true, size: 15, color: { argb: 'FF1E2124' } }; ws.getRow(r).height = 26; r++;
+    ws.mergeCells(r, 1, r, maxCols); const wc = ws.getCell(r, 1); wc.value = '※ 테스트용 — 참고용 산출 결과이며, 최종 판단은 관계 법령·계약문서와 원본 증빙으로 확인하시기 바랍니다.'; wc.font = { size: 10, bold: true, color: { argb: 'FFDE3412' } }; r++;
+    if (sh.meta && sh.meta.length) {
+      r++;
+      sh.meta.forEach(([k, v]) => {
+        const a = ws.getCell(r, 1); a.value = k; a.font = { bold: true, color: { argb: 'FF464C53' } }; a.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4F5F6' } }; a.border = border;
+        if (maxCols > 2) ws.mergeCells(r, 2, r, maxCols);
+        const b = ws.getCell(r, 2); b.value = v; b.border = border; b.alignment = { wrapText: true, vertical: 'middle' };
+        if (typeof v === 'number') b.numFmt = '#,##0';
+        r++;
+      });
+    }
+    for (const blk of sh.blocks) {
+      r++;
+      if (blk.heading) { ws.mergeCells(r, 1, r, maxCols); const h = ws.getCell(r, 1); h.value = blk.heading; h.font = { bold: true, size: 12, color: { argb: 'FF256EF4' } }; r++; }
+      blk.columns.forEach((c, i) => {
+        const cell = ws.getCell(r, i + 1); cell.value = c.h; cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF256EF4' } }; cell.border = border; cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+      });
+      ws.getRow(r).height = 22; r++;
+      const all = blk.rows.concat(blk.foot ? [blk.foot] : []);
+      all.forEach((row, ri) => {
+        const isFoot = blk.foot && ri === all.length - 1;
+        row.forEach((v, i) => {
+          const c = blk.columns[i] || {}; const cell = ws.getCell(r, i + 1);
+          cell.value = (v === '' || v == null) ? null : v; cell.border = border;
+          if (typeof v === 'number') { cell.numFmt = fmtOf(c.t); cell.alignment = { horizontal: 'right', vertical: 'middle' }; }
+          else cell.alignment = { vertical: 'middle', wrapText: true, horizontal: c.t === 'text' || !c.t ? 'left' : 'center' };
+          if (isFoot) { cell.font = { bold: true }; cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFECF2FE' } }; }
+        });
+        r++;
+      });
+    }
+  }
+  const buf = await wb.xlsx.writeBuffer();
+  const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = spec.file; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  toast('엑셀 파일을 내려받았습니다');
+}
+
+/* 판정 패널 렌더 */
+function renderChecks(ul, items) {
+  const ic = { ok: '✓', warn: '!', bad: '✕', info: 'i' };
+  ul.innerHTML = items.map(x => `<li class="${x.lv}"><span class="ic">${ic[x.lv]}</span><span>${x.html || esc(x.t)}</span></li>`).join('');
+}
+function setVerdict(el, lv, tabText) { el.className = 'verdict ' + lv; $('.tab', el).textContent = tabText; }
+
+/* ===== 에듀파인 계약정보 PDF 가져오기 =====
+   pdf.js로 텍스트를 추출해 항목명(라벨) 기준으로 값을 찾습니다. 스캔(이미지) PDF는 읽을 수 없습니다. */
+const PDFJS_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+const PDFJS_WORKER = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+function loadPdfJs() {
+  if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  return new Promise((res, rej) => {
+    const s = document.createElement('script'); s.src = PDFJS_URL;
+    s.onload = () => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER; res(window.pdfjsLib); };
+    s.onerror = () => rej(new Error('PDF 라이브러리를 불러오지 못했습니다(네트워크 확인)'));
+    document.head.appendChild(s);
+  });
+}
+async function pdfToLines(file) {
+  const lib = await loadPdfJs();
+  const doc = await lib.getDocument({ data: await file.arrayBuffer() }).promise;
+  const lines = [];
+  for (let p = 1; p <= doc.numPages; p++) {
+    const tc = await (await doc.getPage(p)).getTextContent();
+    const rows = [];
+    tc.items.forEach(it => {
+      if (!it.str || !it.str.trim()) return;
+      const y = it.transform[5], x = it.transform[4];
+      let row = rows.find(r => Math.abs(r.y - y) < 3);
+      if (!row) { row = { y, items: [] }; rows.push(row); }
+      row.items.push({ x, w: it.width || 0, h: Math.abs(it.transform[3]) || 10, s: it.str });
+    });
+    rows.sort((a, b) => b.y - a.y).forEach(r => {
+      const its = r.items.sort((a, b) => a.x - b.x); let line = '', prevEnd = null;
+      its.forEach(i => {
+        if (prevEnd != null) { const gap = i.x - prevEnd; line += gap > i.h * 1.2 ? '  ' : gap > i.h * 0.15 ? ' ' : ''; }
+        line += i.s; prevEnd = i.x + i.w;
+      });
+      lines.push(line.replace(/\s{3,}/g, '  ').trim());
+    });
+  }
+  return lines;
+}
+const PDF_LABELS = {
+  name: ['계약명', '공사명', '건명', '사업명'],
+  vendor: ['계약상대자', '계약업체명', '업체명', '상호', '계약자'],
+  amount: ['계약금액', '총계약금액', '계약총액', '금차계약금액'],
+  design: ['설계금액', '공사예정금액', '추정금액'],
+  pre: ['예정가격'],
+  base: ['기초금액'],
+  bidRate: ['낙찰률', '낙찰율', '사정률'],
+  method: ['계약방법', '낙찰자결정방법', '낙찰방법'],
+  start: ['착공일자', '착공일', '계약기간시작', '착수일자', '공사시작일'],
+  end: ['준공예정일자', '준공예정일', '준공기한', '완료예정일', '계약기간종료', '준공일자'],
+  period: ['계약기간', '공사기간', '이행기간'],
+  contractDate: ['계약일자', '계약체결일']
+};
+const DATE_RE = /(20\d{2})\s*[.\-\/년]\s*(\d{1,2})\s*[.\-\/월]\s*(\d{1,2})\s*일?\.?|(20\d{2})(\d{2})(\d{2})/g;
+function toISO(m) { const y = m[1] || m[4], mo = m[2] || m[5], d = m[3] || m[6]; return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`; }
+function parseContract(lines) {
+  const norm = s => s.replace(/\s+/g, '');
+  const out = {};
+  const after = (key) => {
+    for (const lab of PDF_LABELS[key]) {
+      for (let i = 0; i < lines.length; i++) {
+        const L = lines[i], nL = norm(L); const idx = nL.indexOf(lab);
+        if (idx < 0) continue;
+        // 라벨 이후 원문 위치 찾기
+        let cnt = 0, pos = 0;
+        for (; pos < L.length && cnt < idx + lab.length; pos++) if (!/\s/.test(L[pos])) cnt++;
+        let rest = L.slice(pos).replace(/^[\s:：)\]]+/, '');
+        if (key !== 'period') rest = rest.split(/\s{2,}/)[0];
+        // 다음 라벨이 바로 이어지면 그 앞까지
+        if (!rest || rest.length < 1) rest = lines[i + 1] || '';
+        if (rest) return rest;
+      }
+    }
+    return null;
+  };
+  const cutAtLabel = s => {
+    const all = Object.values(PDF_LABELS).flat();
+    let end = s.length;
+    all.forEach(l => { const re = new RegExp(l.split('').join('\\s*')); const m = s.slice(1).search(re); if (m >= 0 && m + 1 < end) end = m + 1; });
+    return s.slice(0, end).trim();
+  };
+  const money = s => { if (!s) return null; const m = s.match(/(?:금\s*)?([0-9]{1,3}(?:,[0-9]{3})+|[0-9]{5,})\s*원?/); return m ? Number(m[1].replace(/,/g, '')) : null; };
+  const dates = s => { if (!s) return []; const r = []; let m; DATE_RE.lastIndex = 0; while ((m = DATE_RE.exec(s))) r.push(toISO(m)); return r; };
+
+  const t = s => s ? cutAtLabel(s).replace(/\s{2,}/g, ' ').trim() : null;
+  const nm = after('name'); if (nm) out.name = t(nm);
+  const vd = after('vendor'); if (vd) out.vendor = t(vd).replace(/\s*[\(（]?\s*(대표자|대표이사|대표)(?![가-힣]).*$/, '').trim();
+  ['amount', 'design', 'pre', 'base'].forEach(k => { const v = money(after(k)); if (v) out[k] = v; });
+  const br = after('bidRate'); if (br) { const m = br.replace(/\s/g, '').match(/(\d{1,3}\.\d+|\d{2,3})%?/); if (m && +m[1] > 0 && +m[1] <= 100) out.bidRate = m[1]; }
+  const me = after('method'); if (me) out.method = t(me);
+  const st = dates(after('start')); if (st.length) out.start = st[0];
+  const en = dates(after('end')); if (en.length) out.end = en[0];
+  const pr = dates(after('period'));
+  if (pr.length >= 2) { out.start = out.start || pr[0]; out.end = out.end || pr[pr.length - 1]; }
+  const cd = dates(after('contractDate')); if (cd.length) out.contractDate = cd[0];
+  return out;
+}
+const PDF_FIELD_NAME = { name: '공사명(계약명)', vendor: '계약상대자', amount: '계약금액', design: '설계금액', pre: '예정가격', base: '기초금액', bidRate: '낙찰률', method: '계약방법', start: '착공일', end: '준공기한', contractDate: '계약일자' };
+/* map: { 추출키: 'data-k 이름' | function(value, parsed) } */
+function initPdfImport(map, onApplied) {
+  const input = document.createElement('input'); input.type = 'file'; input.accept = 'application/pdf,.pdf'; input.hidden = true; document.body.appendChild(input);
+  const dlg = document.createElement('dialog'); dlg.className = 'pdf-dlg'; document.body.appendChild(dlg);
+  $$('[data-pdf-btn]').forEach(b => b.addEventListener('click', () => input.click()));
+  input.addEventListener('change', () => { if (input.files[0]) handle(input.files[0]); input.value = ''; });
+  document.addEventListener('dragover', e => { if ([...e.dataTransfer.items].some(i => i.kind === 'file')) { e.preventDefault(); document.body.classList.add('dragging'); } });
+  document.addEventListener('dragleave', e => { if (!e.relatedTarget) document.body.classList.remove('dragging'); });
+  document.addEventListener('drop', e => { const f = [...e.dataTransfer.files].find(f => /\.pdf$/i.test(f.name)); document.body.classList.remove('dragging'); if (f) { e.preventDefault(); handle(f); } });
+  async function handle(file) {
+    toast('PDF를 읽는 중입니다…');
+    let lines;
+    try { lines = await pdfToLines(file); } catch (e) { toast(e.message || 'PDF를 읽지 못했습니다'); return; }
+    if (!lines.join('').trim()) { show(file.name, null, '텍스트가 없는 PDF(스캔 이미지)입니다. 에듀파인에서 "PDF 저장"으로 내려받은 파일을 사용하십시오.'); return; }
+    const p = parseContract(lines);
+    const keys = Object.keys(map).filter(k => p[k] != null);
+    show(file.name, p, keys.length ? '' : '계약정보 항목을 찾지 못했습니다. 에듀파인 계약정보(계약대장) 화면에서 저장한 PDF인지 확인하십시오.', lines);
+  }
+  function show(fname, p, msg, lines) {
+    const rows = p ? Object.keys(map).map(k => {
+      const v = p[k]; const has = v != null;
+      const disp = !has ? '<span style="color:var(--text-3)">찾지 못함</span>' : typeof v === 'number' ? won(v) + '원' : (k === 'bidRate' ? v + '%' : esc(v));
+      return `<tr><td><label class="chk" style="padding:0"><input type="checkbox" data-pk="${k}" ${has ? 'checked' : 'disabled'}> ${PDF_FIELD_NAME[k]}</label></td><td>${disp}</td></tr>`;
+    }).join('') : '';
+    dlg.innerHTML = `<form method="dialog">
+      <h3 style="margin:0 0 4px;font-size:17px">에듀파인 계약정보 가져오기</h3>
+      <p style="margin:0 0 12px;font-size:13px;color:var(--text-3)">${esc(fname)} · 입력할 항목을 확인하십시오. 기존 값은 덮어씁니다.</p>
+      ${msg ? `<div class="note warn" style="margin:0 0 12px">${msg}</div>` : ''}
+      ${rows ? `<div class="tbl-wrap"><table class="t"><thead><tr><th>항목</th><th>추출 값</th></tr></thead><tbody>${rows}</tbody></table></div>` : ''}
+      ${lines ? `<details style="margin-top:10px;font-size:12px;color:var(--text-3)"><summary>추출된 원문 보기</summary><pre style="white-space:pre-wrap;max-height:180px;overflow:auto;background:var(--bg);padding:8px;border-radius:6px">${esc(lines.join('\n').slice(0, 4000))}</pre></details>` : ''}
+      <div class="btn-row"><button class="btn" value="cancel">닫기</button>${rows && !msg ? '<button class="btn primary" value="ok" id="pdfApply">입력하기</button>' : ''}</div>
+    </form>`;
+    dlg.showModal();
+    const ap = $('#pdfApply', dlg);
+    if (ap) ap.addEventListener('click', () => {
+      const done = [];
+      $$('[data-pk]:checked', dlg).forEach(cb => {
+        const k = cb.dataset.pk, v = p[k], tgt = map[k];
+        if (typeof tgt === 'function') { tgt(v, p); done.push(PDF_FIELD_NAME[k]); return; }
+        $$(`[data-k="${tgt}"]`).forEach(el => {
+          if (el.type === 'radio') el.checked = el.value === v;
+          else el.value = (typeof v === 'number' && el.classList.contains('money')) ? v.toLocaleString('ko-KR') : v;
+        });
+        done.push(PDF_FIELD_NAME[k]);
+      });
+      if (onApplied) onApplied(p);
+      toast(done.length ? `${done.length}개 항목을 입력했습니다` : '입력한 항목이 없습니다');
+    });
+  }
+}
+</script>
+<script>
+const KEY = 'tool-gigan-ganjeopbi-v2';
+const CAUSE = { owner: '발주기관 책임', force: '통제범위 밖 사유(시행령 제75조의2)', mixed: '귀책 혼재(부담률 적용)', vendor: '계약상대자 책임' };
+const ORG = { prime: '원도급', sub: '하도급' };
+const ETC7 = ['수도광열', '복리후생', '소모품', '여비', '교통', '통신', '세금', '공과', '도서인쇄'];
+const EXCL = ['운반', '기계경비', '특허', '기술료', '연구개발', '품질관리', '외주가공', '퇴직공제', '폐기물', '환경보전', '보상비'];
+let labor = [], exp = [];
+
+const laborRow = (d = {}) => ({ org: d.org || 'prime', job: d.job || '', n: d.n ?? 1, base: d.base || '', allow: d.allow || '', bonus: d.bonus || '', days: d.days ?? '', ev: !!d.ev });
+const expRow = (d = {}) => ({ org: d.org || 'prime', item: d.item || '', memo: d.memo || '', amt: d.amt || '', ev: !!d.ev });
+const orgSel = v => `<select data-f="org" aria-label="소속"><option value="prime" ${v === 'prime' ? 'selected' : ''}>원도급</option><option value="sub" ${v === 'sub' ? 'selected' : ''}>하도급</option></select>`;
+const evBox = v => `<input type="checkbox" data-f="ev" ${v ? 'checked' : ''} aria-label="증빙 확인" style="width:18px;height:18px;accent-color:var(--primary)">`;
+function laborCalc(r) {
+  const b = num(r.base), a = num(r.allow), s = num(r.bonus);
+  const ret = floor10((b + a + s) / 12), month = b + a + s + ret;
+  return { ret, month, amt: floor10(num(r.n) * month * num(r.days) / 30) };
+}
+function renderTables() {
+  $('#laborT tbody').innerHTML = labor.map((r, i) => `<tr data-i="${i}">
+    <td>${orgSel(r.org)}</td>
+    <td><input type="text" list="jobList" data-f="job" value="${esc(r.job)}" placeholder="직종" aria-label="직종"></td>
+    <td><input type="number" min="0" step="1" data-f="n" value="${esc(r.n)}" aria-label="인원"></td>
+    <td><input type="text" class="money" data-f="base" value="${esc(r.base)}" aria-label="기본급"></td>
+    <td><input type="text" class="money" data-f="allow" value="${esc(r.allow)}" aria-label="제수당"></td>
+    <td><input type="text" class="money" data-f="bonus" value="${esc(r.bonus)}" aria-label="상여금 월할"></td>
+    <td class="auto num" data-o="ret">0</td><td class="auto num" data-o="month">0</td>
+    <td><input type="number" min="0" step="1" data-f="days" value="${esc(r.days)}" aria-label="투입일수"></td>
+    <td class="r num" data-o="amt">0</td>
+    <td style="text-align:center">${evBox(r.ev)}</td>
+    <td><button class="btn ghost sm" type="button" data-del aria-label="삭제">✕</button></td></tr>`).join('');
+  $('#expT tbody').innerHTML = exp.map((r, i) => `<tr data-i="${i}">
+    <td>${orgSel(r.org)}</td>
+    <td><input type="text" list="expList" data-f="item" value="${esc(r.item)}" placeholder="비목 선택·입력" aria-label="비목"></td>
+    <td><input type="text" data-f="memo" value="${esc(r.memo)}" placeholder="예) 현장사무실 임차 2개월" aria-label="산정 내용"></td>
+    <td><input type="text" class="money" data-f="amt" value="${esc(r.amt)}" aria-label="금액"></td>
+    <td style="text-align:center">${evBox(r.ev)}</td>
+    <td><button class="btn ghost sm" type="button" data-del aria-label="삭제">✕</button></td></tr>`).join('');
+  bindMoney($('#laborT')); bindMoney($('#expT'));
+}
+function tableEvents(tbodySel, arr, rerender) {
+  const tb = $(tbodySel);
+  const upd = e => { const tr = e.target.closest('tr'); if (!tr || !e.target.dataset.f) return; arr()[+tr.dataset.i][e.target.dataset.f] = e.target.type === 'checkbox' ? e.target.checked : e.target.value; calc(); };
+  tb.addEventListener('input', upd); tb.addEventListener('change', upd);
+  tb.addEventListener('click', e => { if (e.target.closest('[data-del]')) { arr().splice(+e.target.closest('tr').dataset.i, 1); rerender(); calc(); } });
+}
+function genLimit(kind, amt) {
+  const E = 100000000;
+  if (kind === 'gen') return amt < 50 * E ? 8 : amt < 300 * E ? 6.5 : 5;
+  return amt < 5 * E ? 8 : amt < 30 * E ? 6.5 : 5;
+}
+
+let last = null;
+function calc() {
+  const f = readForm($('#calc'));
+  const rate = f.mode === 'rate';
+  $$('.mode-rate').forEach(el => el.hidden = !rate); $$('.mode-real').forEach(el => el.hidden = rate);
+  $('#expNo').textContent = rate ? '3' : '4'; $('#genNo').textContent = rate ? '4' : '5';
+
+  const dS = parseDate(f.dS), d0 = parseDate(f.d0), d1 = parseDate(f.d1);
+  const days = d0 && d1 ? diffDays(d0, d1) : 0;
+  const dDes = num(f.dDesign);
+  const tDays = Math.max(0, days - dDes);
+  const allDays = dS && d0 ? diffDays(dS, d0) + 1 : 0;
+  $('#days').value = d0 && d1 ? days : ''; $('#tDays').value = d0 && d1 ? tDays : ''; $('#allDays').value = allDays || '';
+  const amt = num(f.amt);
+  const gLim = genLimit(f.kind, amt);
+  $('#genHint').textContent = `(간접노무비 + 경비) × 율 · 한도 ${gLim}%${amt ? '' : '(계약금액 입력 시 판정)'}`;
+
+  // 1. 간접노무비
+  let laborSum = 0, rateIL = 0, rateEX = 0, ratio = 0;
+  if (!rate) {
+    $$('#laborT tbody tr').forEach((tr, i) => {
+      const c = laborCalc(labor[i]); labor[i]._c = c; laborSum += c.amt;
+      $('[data-o=ret]', tr).textContent = won(c.ret); $('[data-o=month]', tr).textContent = won(c.month); $('[data-o=amt]', tr).textContent = won(c.amt);
+    });
+  } else {
+    ratio = allDays ? tDays / allDays : 0;
+    const br = num(f.bidRate) / 100;
+    const k = f.preMade === 'y' ? (1 + br) / 2 : 1;
+    rateIL = floor10(ratio * num(f.pIL) * k); rateEX = floor10(ratio * num(f.pEX) * k);
+    laborSum = rateIL;
+  }
+  const ind = floor10(laborSum * num(f.rInd) / 100);
+  const emp = floor10(laborSum * num(f.rEmp) / 100);
+  const etc = rate ? rateEX : floor10(laborSum * num(f.rEtc) / 100);
+  let expReal = 0; exp.forEach(r => expReal += num(r.amt));
+  const expTot = ind + emp + etc + expReal;
+  const sub = laborSum + expTot;
+  const gen = floor10(sub * num(f.rGen) / 100);
+  const pro = floor10((sub + gen) * num(f.rPro) / 100);
+  const ins = num(f.ins);
+  const dup = num(f.dup);
+  const gross = sub + gen + pro + ins;
+  const beforeShare = Math.max(0, gross - dup);
+  const share = f.cause === 'mixed' ? Math.min(100, Math.max(0, num(f.share))) : 100;
+  const supply = floor10(beforeShare * share / 100);
+  const vat = f.vat ? floor10(supply * 0.1) : 0;
+  let total = supply + vat;
+  if (f.cut1000) total = Math.floor(total / 1000) * 1000;
+  $('#laborSum').textContent = won(laborSum); $('#expSum').textContent = won(expReal);
+  const reqD = parseDate(f.reqDate), deadline = reqD ? addDays(reqD, 30) : null;
+
+  // 판정
+  const ck = []; let lv = 'ok';
+  const bump = l => { const o = { ok: 0, info: 0, warn: 1, bad: 2 }; if (o[l] > o[lv]) lv = l; };
+  const add = (l, t) => { ck.push({ lv: l, t }); bump(l); };
+  if (!d0 || !d1) add('info', '당초·변경 준공기한을 입력하십시오.');
+  else if (days <= 0) add('bad', `변경 준공기한이 당초 준공기한보다 늦지 않습니다(${days}일). 날짜를 확인하십시오.`);
+  else {
+    add('ok', `연장일수 ${days}일 (${fmtDate(d0)} → ${fmtDate(d1)})${dDes ? ` · 물량증감 ${dDes}일 제외 → 대상 ${tDays}일` : ''}`);
+    if (dDes > days) add('bad', `물량증감 연장일수(${dDes}일)가 전체 연장일수(${days}일)보다 깁니다.`);
+    else if (dDes && tDays === 0) add('warn', '연장기간 전부가 물량증감(설계변경)분입니다. 승률방식으로 이미 반영되어 공기연장 간접비 대상이 없습니다.');
+  }
+  if (f.cause === 'vendor') add('bad', '계약상대자 책임으로 인한 연장은 간접비 조정 대상이 아닙니다. 지연배상금 부과 여부를 검토하십시오.');
+  else if (f.cause === 'force') add('info', '통제범위 밖 사유(시행령 제75조의2): 법 제22조제2항에 따라 계약금액을 조정합니다. 사유 발생 기간·영향을 증빙으로 확인하십시오.');
+  else if (f.cause === 'mixed') add('warn', `귀책 혼재: 발주기관 측 부담률 ${share}% 적용. 수정 직전 공정표상 계약상대자 귀책 부진공정은 제외하고, 귀책이 불명확하면 상계 후 지연배상금 미부과 합의를 검토하십시오.`);
+  else add('ok', '발주기관 책임 사유: 시행령 제75조제1항에 따라 실비 범위에서 조정합니다.');
+
+  if (!f.beforePay) add('bad', '조정은 적법한 신청으로 이루어지며, 최종 기성대가(준공대가) 지급 후 신청분은 대상이 아닙니다(서울고법 2017나2012996).');
+  if (reqD && d1 && reqD > addDays(d1, -90)) add('info', `신청일이 변경 준공기한 90일 전(${fmtDate(addDays(d1, -90))})보다 늦습니다. 서울시 가이드라인은 90일 전 제출을 원칙으로 합니다(기관 방침 확인).`);
+  if (f.longTerm && f.gap) add('bad', '장기계속공사의 차수 간 공백기 간접비는 계약금액 조정 대상이 아닙니다(대법원 2015다255463). 공백기를 연장기간에서 빼십시오.');
+  else if (f.longTerm) add('info', '장기계속공사: 해당 차수(연차별) 계약기간 기준으로 산정합니다.');
+  if (f.suspend) add('info', '공사 일시정지: 발주기관이 현장유지·관리 노무량을 산정하여 정산합니다. 발주기관 책임 정지가 60일을 넘으면 초과일수 이자를 준공대가 지급 시 지급합니다.');
+
+  if (rate) {
+    if (!f.rateAgreed) add('warn', '요율방식은 실비 산정이 이루어지지 않을 때 계약당사자 협의로만 적용합니다. 협의 여부를 확인하십시오.');
+    if (!allDays) add('warn', '착공일을 입력해야 전체 계약기간과 연장비율을 계산할 수 있습니다.');
+    else ck.push({ lv: 'info', t: `연장비율 ${tDays}일 ÷ ${allDays}일 = ${(ratio * 100).toFixed(2)}%${f.preMade === 'y' ? ` · 낙찰률 ${num(f.bidRate)}% 평균 적용` : ''}` });
+    if (f.preMade === 'y' && !num(f.bidRate)) add('warn', '낙찰률을 입력하십시오.');
+    const nonLegal = exp.filter(r => num(r.amt) && !/보험|보증|수수료|법정|산업안전보건|세금|공과|유휴장비|하도급/.test(r.item));
+    if (nonLegal.length) add('warn', `요율방식에서는 경비를 요율로 산정하므로 직접계상은 법정경비·보험료·보증수수료 등 실비만 입력합니다. 중복 여부 확인: ${nonLegal.map(r => r.item).join(', ')}`);
+  } else {
+    const over = labor.filter(r => tDays > 0 && num(r.days) > tDays);
+    if (over.length) add('warn', `투입일수가 대상일수(${tDays}일)를 넘는 인력 ${over.length}건: ${over.map(r => r.job || '직종 미입력').join(', ')}`);
+    const noDays = labor.filter(r => laborCalc(r).month && !num(r.days));
+    if (noDays.length) add('warn', `임금은 있으나 투입일수가 없는 인력 ${noDays.length}건 — 0원으로 계산됩니다.`);
+    const bonusOver = labor.filter(r => num(r.bonus) > num(r.base) * 4 / 12 + 0.5);
+    if (bonusOver.length) add('bad', `상여금이 기본급의 연 400%(월 133.3%)를 넘는 인력 ${bonusOver.length}건: ${bonusOver.map(r => r.job || '직종 미입력').join(', ')}`);
+    if (laborSum > 0 && num(f.rEtc) > 0) {
+      const dupEtc = exp.filter(r => num(r.amt) && (ETC7.some(k => r.item.includes(k)) || (r.item.includes('지급수수료') && !r.item.includes('보증'))));
+      if (dupEtc.length) add('warn', `기타경비율을 적용하면서 기타경비 7개 항목을 직접계상했습니다(${dupEtc.map(r => r.item).join(', ')}). 둘 중 하나만 적용하십시오.`);
+    }
+  }
+  const excl = exp.filter(r => num(r.amt) && (EXCL.some(k => r.item.includes(k)) || (r.item.includes('안전관리비') && !r.item.includes('산업안전보건'))));
+  if (excl.length) add('bad', `시공변동 경비는 간접비 대상이 아닙니다: ${excl.map(r => r.item).join(', ')}`);
+  if (exp.some(r => r.item.includes('지급임차료') && /건설기계|장비/.test(r.memo + r.item.replace('건설기계 제외', '')))) add('warn', '지급임차료에는 건설기계 임차료를 넣지 않습니다. 유휴장비비로 입력하십시오.');
+  const noEv = labor.filter(r => laborCalc(r).month && !r.ev).length + exp.filter(r => num(r.amt) && !r.ev).length;
+  if (noEv) add('warn', `증빙 미확인 항목 ${noEv}건 — 급여명세서·급여지불조서, 세금계산서·이체확인증 등 연장기간 월별 거래내역으로 실비를 확인하십시오.`);
+  if (laborSum > 0 && (!num(f.rInd) || !num(f.rEmp))) add('warn', '산재·고용보험료율이 비어 있습니다. 산출내역서 요율을 입력하십시오.');
+  if (laborSum > 0 && (!f.rGen || !f.rPro)) add('warn', '일반관리비율·이윤율이 비어 있습니다. 산출내역서상 승률을 입력하십시오.');
+  if (amt && num(f.rGen) > gLim) add('bad', `일반관리비율 ${num(f.rGen)}%가 규모별 한도 ${gLim}%(${f.kind === 'gen' ? '종합공사' : '전문공사 등'}, 계약금액 ${won(amt)}원 기준)를 넘습니다.`);
+  if (num(f.rPro) > 15) add('bad', `이윤율 ${num(f.rPro)}%가 한도 15%를 넘습니다.`);
+  if (amt >= 10000000000 && !ins) ck.push({ lv: 'info', t: '추정가격 100억 이상 공사는 공사손해보험 의무가입 대상입니다. 보험기간 연장 실비가 있으면 입력하십시오.' });
+  if (dup > 0 && dup > gross) add('bad', `중복분 공제액(${won(dup)}원)이 산정액(${won(gross)}원)보다 큽니다.`);
+  if (dDes && !dup) ck.push({ lv: 'info', t: '물량증감 연장일수를 대상일수에서 뺐습니다. 그 밖에 특정되는 중복분이 있으면 공제액에 입력하십시오.' });
+  if (reqD) ck.push({ lv: 'info', t: `조정 기한: ${fmtDate(deadline)}까지 (신청일부터 30일, 시행규칙 제74조② → 제72조⑧)` });
+  if (!labor.some(r => r.org === 'sub') && !exp.some(r => r.org === 'sub' || r.item.includes('하도급'))) ck.push({ lv: 'info', t: '하도급업체 간접비가 없습니다. 하도급업체가 지출한 비용도 포함해 산출하십시오(도급사·하도급사 구분 작성).' });
+  ck.push({ lv: 'info', t: '계약기간 연장 시 15일 이내에 하도급업체에 통보하십시오. 건강·연금·노인장기요양보험료는 제외합니다.' });
+
+  const empty = !laborSum && !expReal && !ins;
+  const blocked = f.cause === 'vendor' || (d0 && d1 && (days <= 0 || tDays <= 0));
+  let tab = '산정 가능';
+  if (f.cause === 'vendor') tab = '조정 대상 아님';
+  else if (lv === 'bad') tab = '보완 필요';
+  else if (lv === 'warn') tab = '검토 필요';
+  if (empty && !blocked) { tab = '입력 대기'; lv = 'info'; }
+  setVerdict($('#verdict'), f.cause === 'vendor' ? 'bad' : lv, tab);
+
+  const shown = blocked ? 0 : total;
+  const cutAmt = f.cut1000 ? total - (supply + vat) : 0;
+  $('#bigAmt').innerHTML = `${won(shown)}<small>원</small>`;
+  $('#leadTxt').textContent = f.cause === 'vendor' ? '계약상대자 책임 연장 — 간접비 조정금액 없음' :
+    blocked ? (days > 0 ? '공기연장 간접비 대상일수가 없어 조정금액을 산정하지 않았습니다.' : '연장기간이 올바르지 않아 조정금액을 산정하지 않았습니다.') :
+    `간접비 조정금액${f.vat ? '(부가세 포함)' : '(부가세 제외)'} · ${rate ? '요율방식' : '실비 정산'}` + (amt ? ` · 계약금액 대비 ${pct(shown / amt * 100)}` : '');
+  const kv = [
+    ['1. 간접노무비', laborSum], ['2. 산재보험료', ind], ['2. 고용보험료', emp], [rate ? '2. 경비(요율)' : '2. 기타경비', etc], ['2. 경비(직접계상)', expReal],
+    ['3. 일반관리비', gen], ['4. 이윤', pro], ['5. 공사손해보험료', ins], ...(dup ? [['중복분 공제', -dup]] : []),
+    ...(share !== 100 ? [[`부담률 ${share}% 적용`, supply - beforeShare]] : []), ['공급가액', supply], ...(f.vat ? [['부가가치세', vat]] : []), ...(cutAmt ? [['1,000원 미만 절사', cutAmt]] : [])
+  ];
+  $('#kv').innerHTML = kv.map(([k, v]) => `<dt>${k}</dt><dd class="num">${won(v)}</dd>`).join('') +
+    `<dt class="tot">조정금액 합계</dt><dd class="tot num">${won(shown)}</dd>` +
+    (blocked ? `<dt></dt><dd style="font-size:12px;color:var(--danger);font-weight:600">${f.cause === 'vendor' ? '조정 대상 아님 — 위 금액은 참고용' : (days > 0 ? '대상일수 없음 — 합계 미반영' : '연장기간 오류 — 합계 미반영')}</dd>` : '') +
+    (amt ? `<dt>변경 계약금액</dt><dd class="num">${won(amt + shown)}</dd>` : '');
+  renderChecks($('#checks'), ck);
+
+  last = { f, rate, days, dDes, tDays, allDays, ratio, dS, d0, d1, laborSum, ind, emp, etc, expReal, expTot, sub, gen, pro, ins, dup, share, beforeShare, supply, vat, cutAmt, total: shown, amt, gLim, deadline, ck, tab };
+  store.set(KEY, { f, labor: labor.map(laborRow), exp: exp.map(expRow) });
+}
+
+function opinion() {
+  const L = last; if (!L) return ''; const f = L.f;
+  const n = ['가', '나', '다', '라', '마', '바', '사', '아'];
+  const items = [
+    `간접노무비: ${won(L.laborSum)}원${L.rate ? ` (요율방식: 대상 ${L.tDays}일 ÷ 전체 ${L.allDays}일)` : ''}`,
+    `경비: ${won(L.expTot)}원 (산재 ${won(L.ind)} / 고용 ${won(L.emp)} / ${L.rate ? '경비(요율)' : '기타경비'} ${won(L.etc)} / 직접계상 ${won(L.expReal)})`,
+    `일반관리비(${num(f.rGen)}%, 한도 ${L.gLim}%): ${won(L.gen)}원`,
+    `이윤(${num(f.rPro)}%): ${won(L.pro)}원`,
+    ...(L.ins ? [`공사손해보험료(실비): ${won(L.ins)}원`] : []),
+    ...(L.dup ? [`설계변경 간접비 중복분 공제: △${won(L.dup)}원`] : []),
+    ...(L.share !== 100 ? [`귀책 부담률 ${L.share}% 적용`] : []),
+    `공급가액 ${won(L.supply)}원${f.vat ? ` + 부가세 ${won(L.vat)}원` : ''}`
+  ];
+  return [
+    '[테스트용] 공기연장 간접비 산정 검토의견', '',
+    `1. 공 사 명: ${f.name || '-'}`,
+    `2. 계약상대자: ${f.vendor || '-'}`,
+    `3. 연장기간: ${fmtDate(L.d0)} → ${fmtDate(L.d1)} (${L.days}일${L.dDes ? `, 물량증감 ${L.dDes}일 제외 → 대상 ${L.tDays}일` : ''})`,
+    `4. 연장사유: ${CAUSE[f.cause]}${f.causeTxt ? ' — ' + f.causeTxt : ''}`,
+    `5. 산정내역 (${L.rate ? '요율방식' : '실비 정산'})`,
+    ...items.map((t, i) => `  ${n[i]}. ${t}`),
+    `6. 조정금액: ${won(L.total)}원${L.cutAmt ? ' (1,000원 미만 절사)' : ''}${L.amt ? ` (계약금액 ${won(L.amt)}원 → ${won(L.amt + L.total)}원)` : ''}`,
+    `7. 판정: ${L.tab}`,
+    '8. 확인사항', ...L.ck.map(c => `  - ${c.t}`), '',
+    '근거: 지방계약법 제22조, 같은 법 시행령 제75조·제75조의2, 시행규칙 제74조 / 서울시 공기연장 간접공사비 실무 가이드라인 Ver.1.1',
+    '※ 테스트용 산출 결과이며, 증빙 확인 후 최종 결정하시기 바랍니다.'
+  ].join('\n');
+}
+
+function xlsx() {
+  const L = last, f = L.f;
+  const d = new Date(), ymd = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+  const sheets = [{
+    name: '간접비 총괄', title: '공기연장 간접비 원가계산서(총괄)',
+    meta: [['공사명', f.name || '-'], ['계약상대자', f.vendor || '-'], ['현재 계약금액(원)', L.amt || 0],
+      ['연장기간', `${fmtDate(L.d0)} → ${fmtDate(L.d1)} (${L.days}일)`], ['공기연장 대상일수', `${L.tDays}일${L.dDes ? ` (물량증감 ${L.dDes}일 제외)` : ''}`],
+      ['연장사유', CAUSE[f.cause] + (f.causeTxt ? ' — ' + f.causeTxt : '')], ['산정방식', L.rate ? `요율방식 (연장비율 ${(L.ratio * 100).toFixed(2)}%)` : '실비 정산'],
+      ['신청일 / 조정기한', `${f.reqDate ? fmtDate(parseDate(f.reqDate)) : '-'} / ${L.deadline ? fmtDate(L.deadline) : '-'}`], ['판정', L.tab]],
+    blocks: [{
+      heading: '산출 내역', columns: [{ h: '구분', w: 26 }, { h: '산출 방법', w: 48 }, { h: '금액(원)', w: 18, t: 'won' }],
+      rows: [
+        ['1. 간접노무비', L.rate ? (f.preMade === 'y' ? '[(연장÷전체)×예가상 간접노무비 + 동 × 낙찰률] ÷ 2' : '(연장÷전체) × 산출내역서상 간접노무비') : '노무량 × 지급확인 임금', L.laborSum],
+        ['2-나. 산재보험료', `노무비 × ${num(f.rInd)}%`, L.ind],
+        ['2-나. 고용보험료', `노무비 × ${num(f.rEmp)}%`, L.emp],
+        [L.rate ? '2. 경비(요율)' : '2-나. 기타경비', L.rate ? '간접노무비 산식을 경비에 적용' : `노무비 × ${num(f.rEtc)}%`, L.etc],
+        ['2-가. 직접계상 비목', '실비(증빙)', L.expReal],
+        ['3. 일반관리비', `소계(1+2) × ${num(f.rGen)}% (한도 ${L.gLim}%)`, L.gen],
+        ['4. 이윤', `(소계 + 일반관리비) × ${num(f.rPro)}%`, L.pro],
+        ['5. 공사손해보험료', '실비(증빙)', L.ins],
+        ['설계변경 간접비 중복분 공제', '중복 특정 금액', -L.dup],
+        ...(L.share !== 100 ? [[`귀책 부담률 ${L.share}%`, '', L.supply - L.beforeShare]] : []),
+        ['공급가액', '1+2+3+4+5', L.supply],
+        ['부가가치세', f.vat ? '공급가액 × 10%' : '미적용', L.vat],
+        ...(L.cutAmt ? [['1,000원 미만 절사', '', L.cutAmt]] : [])
+      ],
+      foot: ['조정금액 합계', f.cause === 'vendor' ? '계약상대자 책임 — 조정 대상 아님' : (L.d0 && L.d1 && (L.days <= 0 || L.tDays <= 0)) ? '연장기간 오류·대상일수 없음 — 미반영' : '', L.total]
+    }]
+  }];
+  if (!L.rate) sheets.push({
+    name: '간접노무비', title: '간접노무비 산출내역',
+    blocks: [{
+      columns: [{ h: '소속', w: 9 }, { h: '직종', w: 18 }, { h: '인원', w: 7, t: 'num' }, { h: '기본급', w: 13, t: 'won' }, { h: '제수당', w: 12, t: 'won' }, { h: '상여금(월할)', w: 13, t: 'won' }, { h: '퇴직급여충당금', w: 14, t: 'won' }, { h: '월 계', w: 13, t: 'won' }, { h: '투입일수', w: 9, t: 'num' }, { h: '금액', w: 15, t: 'won' }, { h: '증빙', w: 8 }],
+      rows: labor.map(r => { const c = laborCalc(r); return [ORG[r.org], r.job, num(r.n), num(r.base), num(r.allow), num(r.bonus), c.ret, c.month, num(r.days), c.amt, r.ev ? '확인' : '미확인']; }),
+      foot: ['계', '', '', '', '', '', '', '', '', L.laborSum, '']
+    }]
+  });
+  sheets.push({
+    name: '경비 집계', title: '경비 집계표',
+    blocks: [{
+      columns: [{ h: '소속', w: 9 }, { h: '비목', w: 26 }, { h: '산정 내용·증빙', w: 40 }, { h: '금액(원)', w: 16, t: 'won' }, { h: '증빙', w: 8 }],
+      rows: [
+        ['', '산재보험료', `노무비 × ${num(f.rInd)}%`, L.ind, '요율'],
+        ['', '고용보험료', `노무비 × ${num(f.rEmp)}%`, L.emp, '요율'],
+        ['', L.rate ? '경비(요율)' : '기타경비', L.rate ? '요율방식' : `노무비 × ${num(f.rEtc)}%`, L.etc, '요율'],
+        ...exp.map(r => [ORG[r.org], r.item, r.memo, num(r.amt), r.ev ? '확인' : '미확인'])
+      ],
+      foot: ['계', '', '', L.expTot, '']
+    }]
+  });
+  sheets.push({ name: '검토의견', title: '검토의견', blocks: [{ columns: [{ h: '구분', w: 10 }, { h: '내용', w: 100 }], rows: L.ck.map(c => [({ ok: '적정', warn: '검토', bad: '보완', info: '안내' })[c.lv], c.t]) }] });
+  exportXlsx({ file: `공기연장_간접비_산정_${(f.name || '공사').replace(/[\\/:*?"<>|]/g, '')}_${ymd}.xlsx`, sheets });
+}
+
+function sample() {
+  writeForm({ name: '○○초등학교 교사 증축공사', vendor: '(주)○○건설', amt: '2,850,000,000', kind: 'gen', dS: '2026-02-02', d0: '2026-08-31', d1: '2026-10-30', dDesign: '15',
+    cause: 'owner', share: '100', causeTxt: '학교 학사일정 조정 요청으로 내부 마감공사 시기 변경', reqDate: '2026-07-27', beforePay: true, longTerm: false, gap: false, suspend: false,
+    mode: 'real', rateAgreed: false, preMade: 'y', pIL: '', pEX: '', bidRate: '',
+    rInd: '3.56', rEmp: '1.01', rEtc: '', rGen: '6', rPro: '10', ins: '', dup: '', vat: true, cut1000: true }, $('#calc'));
+  labor = [laborRow({ job: '현장소장', n: 1, base: '4,800,000', allow: '600,000', bonus: '800,000', days: 45, ev: true }),
+    laborRow({ job: '현장사무원(총무·경리)', n: 1, base: '2,900,000', allow: '300,000', bonus: '480,000', days: 45, ev: true }),
+    laborRow({ org: 'sub', job: '작업반장', n: 1, base: '3,200,000', allow: '400,000', bonus: '0', days: 30, ev: false })];
+  exp = [expRow({ item: '지급임차료(건설기계 제외)', memo: '현장사무실·컨테이너 임차 연장분(1.5개월)', amt: '1,200,000', ev: true }),
+    expRow({ item: '전력비', memo: '임시전력 요금 고지서(1.5개월)', amt: '630,000', ev: true }),
+    expRow({ item: '지급수수료(보증서 기간연장)', memo: '계약이행보증 기간 연장', amt: '312,000', ev: false })];
+  renderTables(); bindMoney(); calc(); toast('예시를 불러왔습니다');
+}
+function reset() {
+  store.del(KEY);
+  $$('[data-k]', $('#calc')).forEach(el => {
+    if (el.type === 'checkbox') el.checked = ['beforePay', 'vat'].includes(el.dataset.k);
+    else if (el.type === 'radio') el.checked = ['owner', 'real', 'y'].includes(el.value);
+    else if (el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = el.dataset.k === 'share' ? '100' : '';
+  });
+  labor = [laborRow()]; exp = [expRow()]; renderTables(); calc();
+}
+
+(function init() {
+  initTabs(); initTheme(); bindMoney();
+  initPdfImport({ name: 'name', vendor: 'vendor', amount: 'amt', start: 'dS', end: 'd0', bidRate: 'bidRate' }, () => calc());
+  const s = store.get(KEY);
+  if (s) { writeForm(s.f, $('#calc')); labor = (s.labor || []).map(laborRow); exp = (s.exp || []).map(expRow); }
+  if (!labor.length) labor = [laborRow()]; if (!exp.length) exp = [expRow()];
+  renderTables();
+  tableEvents('#laborT tbody', () => labor, renderTables);
+  tableEvents('#expT tbody', () => exp, renderTables);
+  const outer = e => { if (!e.target.closest('table')) calc(); };
+  $('#calc').addEventListener('input', outer); $('#calc').addEventListener('change', outer);
+  $('#addLabor').onclick = () => { labor.push(laborRow({ days: num($('#tDays').value) || '' })); renderTables(); calc(); };
+  $('#addExp').onclick = () => { exp.push(expRow()); renderTables(); calc(); };
+  $('#sampleBtn').onclick = sample; $('#resetBtn').onclick = reset;
+  $('#copyBtn').onclick = () => copyText(opinion());
+  $('#xlsxBtn').onclick = xlsx; $('#xlsxTop').onclick = xlsx;
+  calc();
+})();
+</script>
+</body>
+</html>

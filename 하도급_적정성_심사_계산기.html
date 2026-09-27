@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>하도급 적정성 심사 계산기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-gov-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<style>:root{
+  --primary:#256EF4; --primary-h:#0B50D0; --primary-50:#ECF2FE; --primary-100:#D8E5FD;
+  --text:#1E2124; --text-2:#464C53; --text-3:#6D7882; --line:#CDD1D5; --line-2:#E6E8EA;
+  --bg:#F4F5F6; --surface:#FFFFFF;
+  --danger:#DE3412; --danger-50:#FDEFEC; --warn:#9E6A00; --warn-50:#FFF3DB; --ok:#228738; --ok-50:#EAF6EC;
+  --radius:8px; --radius-lg:12px;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --text:#E6E8EA; --text-2:#C6CACF; --text-3:#9AA3AC; --line:#3A4048; --line-2:#2C3137;
+    --bg:#131619; --surface:#1B1F23; --primary-50:#16233D; --primary-100:#1D3363;
+    --danger-50:#3A1A13; --warn-50:#3A2E12; --ok-50:#15301C; --warn:#F2B53B; --ok:#4FC26A; --danger:#FF6B4A;
+  }
+}
+:root[data-theme="dark"]{
+  --text:#E6E8EA; --text-2:#C6CACF; --text-3:#9AA3AC; --line:#3A4048; --line-2:#2C3137;
+  --bg:#131619; --surface:#1B1F23; --primary-50:#16233D; --primary-100:#1D3363;
+  --danger-50:#3A1A13; --warn-50:#3A2E12; --ok-50:#15301C; --warn:#F2B53B; --ok:#4FC26A; --danger:#FF6B4A;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:"Pretendard GOV Variable","Pretendard GOV","IBM Plex Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.num,.mono{font-family:"IBM Plex Sans KR","Pretendard GOV Variable",sans-serif;font-variant-numeric:tabular-nums}
+a{color:var(--primary)}
+.test-banner{background:var(--danger);color:#fff;text-align:center;font-size:13px;font-weight:600;padding:6px 16px;letter-spacing:.02em}
+.hd{background:var(--surface);border-bottom:1px solid var(--line)}
+.hd-in{max-width:1180px;margin:0 auto;padding:18px 16px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.hd .crumb{font-size:13px;color:var(--text-3);margin-bottom:2px}
+.hd h1{margin:0;font-size:24px;font-weight:700;letter-spacing:-.01em}
+.hd h1 .tag{display:inline-block;vertical-align:middle;margin-left:8px;font-size:12px;font-weight:600;color:var(--danger);border:1px solid var(--danger);border-radius:4px;padding:1px 6px}
+.hd .sub{font-size:14px;color:var(--text-2);margin-top:4px}
+.hd-actions{display:flex;gap:8px;flex-wrap:wrap}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+.seg{display:inline-flex;background:var(--line-2);border-radius:10px;padding:4px;gap:4px;margin-bottom:18px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;color:var(--text-2);font:inherit;font-weight:600;font-size:14px;padding:8px 16px;border-radius:7px;cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--primary);box-shadow:var(--shadow)}
+.panel[hidden]{display:none}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:20px;align-items:start}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
+.card h2{margin:0 0 4px;font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card h2 .no{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px}
+.card .desc{margin:0 0 14px;color:var(--text-3);font-size:13px}
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px 14px}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.f.wide{grid-column:1/-1}
+.f label{font-size:13px;font-weight:600;color:var(--text-2)}
+.f .hint{font-size:12px;color:var(--text-3)}
+input[type=text],input[type=number],input[type=date],select,textarea{font:inherit;font-size:15px;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:9px 11px;width:100%;min-width:0}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--primary);outline-offset:1px;border-color:var(--primary)}
+input.money,input.rate{text-align:right;font-family:"IBM Plex Sans KR",sans-serif;font-variant-numeric:tabular-nums}
+input[readonly]{background:var(--bg);color:var(--text-2)}
+.unit{position:relative}.unit input{padding-right:34px}.unit span{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text-3);pointer-events:none}
+.chk{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--text);cursor:pointer;padding:4px 0}
+.chk input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--primary);flex:none}
+.radios{display:flex;flex-wrap:wrap;gap:8px}
+.radios label{border:1px solid var(--line);border-radius:var(--radius);padding:8px 12px;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:6px;background:var(--surface)}
+.radios input{accent-color:var(--primary)}
+.radios label:has(input:checked){border-color:var(--primary);background:var(--primary-50);color:var(--primary);font-weight:600}
+.btn{font:inherit;font-size:14px;font-weight:600;border-radius:var(--radius);padding:9px 14px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--text);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--text-3)}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn.primary:hover{background:var(--primary-h)}
+.btn.sm{font-size:13px;padding:6px 10px}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--text-3)}
+.btn.ghost:hover{color:var(--danger)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{background:var(--bg);font-weight:600;color:var(--text-2);font-size:13px;text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.t td{padding:6px 8px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+table.t tr:last-child td{border-bottom:0}
+table.t td input,table.t td select{padding:7px 8px;font-size:14px}
+table.t .r{text-align:right}
+table.t tfoot td{background:var(--primary-50);font-weight:700;border-top:1px solid var(--line)}
+.tbl-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:8px;flex-wrap:wrap}
+.sticky{position:sticky;top:12px}
+/* verdict folder tab */
+.verdict{margin-bottom:16px}
+.verdict .tab{display:inline-block;padding:7px 16px 6px;border-radius:10px 10px 0 0;font-weight:700;font-size:14px;color:#fff;background:var(--text-3)}
+.verdict .body{background:var(--surface);border:2px solid var(--text-3);border-left:0;border-right:0;border-radius:0;padding:18px 4px}
+.verdict.ok .tab{background:var(--ok)}.verdict.ok .body{border-color:var(--ok)}
+.verdict.warn .tab{background:#C88A00}.verdict.warn .body{border-color:#C88A00}
+.verdict.bad .tab{background:var(--danger)}.verdict.bad .body{border-color:var(--danger)}
+.verdict.info .tab{background:var(--primary)}.verdict.info .body{border-color:var(--primary)}
+.verdict .big{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.3}
+.verdict .big small{font-size:14px;font-weight:600;color:var(--text-3);margin-left:4px}
+.verdict .lead{font-size:14px;color:var(--text-2);margin:4px 0 12px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px;margin:0}
+.kv dt{color:var(--text-3)}.kv dd{margin:0;text-align:right;font-weight:600}
+.kv .tot{border-top:1px solid var(--line);padding-top:8px;margin-top:2px;font-size:16px;color:var(--primary)}
+.checks{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.checks li{display:flex;gap:8px;font-size:13.5px;line-height:1.5;padding:8px 10px;border-radius:var(--radius);background:var(--bg)}
+.checks li .ic{flex:none;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;margin-top:1px}
+.checks li.ok .ic{background:var(--ok)}.checks li.warn .ic{background:#C88A00}.checks li.bad .ic{background:var(--danger)}.checks li.info .ic{background:var(--primary)}
+.checks li.bad{background:var(--danger-50)}.checks li.warn{background:var(--warn-50)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn-row .btn{flex:1;justify-content:center}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px}
+.pill.ok{background:var(--ok-50);color:var(--ok)}.pill.bad{background:var(--danger-50);color:var(--danger)}.pill.warn{background:var(--warn-50);color:var(--warn)}.pill.info{background:var(--primary-50);color:var(--primary)}
+.note{font-size:13px;color:var(--text-2);background:var(--primary-50);border-left:3px solid var(--primary);padding:10px 12px;border-radius:0 var(--radius) var(--radius) 0;margin:12px 0 0}
+.note.warn{background:var(--warn-50);border-color:#C88A00}
+/* guide */
+.guide h3{font-size:16px;margin:22px 0 8px}
+.guide h3:first-child{margin-top:0}
+.guide p,.guide li{font-size:14px;color:var(--text-2)}
+.guide ol,.guide ul{padding-left:20px;margin:6px 0}
+.guide .law{font-size:13px;background:var(--bg);border:1px solid var(--line-2);border-radius:var(--radius);padding:12px 14px;white-space:pre-wrap;color:var(--text-2)}
+.guide .src{font-size:12px;color:var(--text-3)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#1E2124;color:#fff;font-size:14px;padding:10px 18px;border-radius:999px;opacity:0;transition:.2s;pointer-events:none;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.ft{max-width:1180px;margin:0 auto;padding:0 16px 40px;font-size:12px;color:var(--text-3)}
+@media (max-width:600px){.hd h1{font-size:20px}.card{padding:16px}.verdict .big{font-size:22px}}
+@media print{.test-banner,.hd-actions,.seg,.btn-row,.tbl-actions,.btn{display:none!important}.grid{grid-template-columns:1fr}.sticky{position:static}body{background:#fff}}
+.pdf-dlg{border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;width:min(560px,calc(100vw - 32px));background:var(--surface);color:var(--text);box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.pdf-dlg::backdrop{background:rgba(0,0,0,.35)}
+.pdf-drop{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1.5px dashed var(--primary);background:var(--primary-50);border-radius:var(--radius);padding:12px 14px;margin:0 0 14px;font-size:13.5px;color:var(--text-2)}
+.pdf-drop b{color:var(--primary)}
+body.dragging .pdf-drop{background:var(--primary-100);border-style:solid}
+.f[hidden],[hidden]{display:none!important}
+
+.score-t td.pt{font-weight:700;text-align:right;white-space:nowrap}
+.score-t td.lim{text-align:center;color:var(--text-3)}
+.score-t td.why{font-size:12.5px;color:var(--text-3)}
+.score-t .grp td{background:var(--bg);font-weight:700;font-size:13px}
+</style>
+</head>
+<body>
+<div class="test-banner">테스트용 — 심사 결과는 참고용이며, 하도급계약심사위원회 심의와 원본 서류 확인을 거쳐 결정하십시오.</div>
+<header class="hd"><div class="hd-in">
+  <div>
+    <div class="crumb">학교시설업무 치트키 · 계약관리·정산 도구</div>
+    <h1>하도급 적정성 심사 계산기<span class="tag">테스트용</span></h1>
+    <div class="sub">건설산업기본법 제31조·시행령 제34조 · 「건설공사 하도급 심사기준」(국토교통부 고시 제2020-817호)</div>
+  </div>
+  <div class="hd-actions">
+    <button class="btn sm" type="button" data-pdf-btn>📄 계약정보 PDF</button>
+    <button class="btn sm" id="sampleBtn" type="button">예시 불러오기</button>
+    <button class="btn sm" id="resetBtn" type="button">초기화</button>
+    <button class="btn sm" id="themeBtn" type="button" aria-label="화면 테마 전환">◐ 테마</button>
+    <button class="btn sm primary" id="xlsxTop" type="button">엑셀 내보내기</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <div class="seg" role="tablist">
+    <button type="button" role="tab" data-tab="calc" aria-selected="true">심사 계산</button>
+    <button type="button" role="tab" data-tab="guide" aria-selected="false">산출기준 안내</button>
+  </div>
+
+  <section class="panel" id="calc">
+    <div class="grid">
+      <div>
+        <div class="card">
+          <h2><span class="no">1</span>원도급 공사 정보</h2>
+          <p class="desc">원도급공사의 낙찰 비율(20점) 산정에 쓰입니다. 예정가격이 없는 공사는 기초금액(추정가격 + 부가세)을 입력합니다.</p>
+          <div class="pdf-drop"><span><b>에듀파인 계약정보 PDF</b>를 끌어다 놓거나 불러오면 계약 정보가 자동 입력됩니다.</span><button class="btn sm primary" type="button" data-pdf-btn>PDF 불러오기</button></div>
+
+          <div class="fields">
+            <div class="f wide"><label for="name">공사명</label><input type="text" id="name" data-k="name" placeholder="예) ○○중학교 다목적강당 신축공사"></div>
+            <div class="f"><label for="method">낙찰자 결정방법</label>
+              <select id="method" data-k="method">
+                <option value="adq">적격심사 (기준 88%)</option>
+                <option value="comp">종합심사낙찰제 (기준 82%)</option>
+                <option value="tk">설계시공 일괄입찰 (기준 85%)</option>
+                <option value="alt">대안입찰 (기준 80%)</option>
+                <option value="tech">기술제안입찰 (기준 86%)</option>
+              </select></div>
+            <div class="f"><label for="pre">예정가격(기초금액)</label><div class="unit"><input type="text" class="money" id="pre" data-k="pre"><span>원</span></div></div>
+            <div class="f"><label for="con">원도급 계약금액</label><div class="unit"><input type="text" class="money" id="con" data-k="con"><span>원</span></div></div>
+            <div class="f"><label for="prime">수급인</label><input type="text" id="prime" data-k="prime"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="no">2</span>하도급 계약 정보</h2>
+          <p class="desc">하도급부분금액은 수급인 산출내역서 계약단가 기준 금액에 일반관리비·이윤·부가세를 더하고, 수급인 직접 지급 자재비·지급보증서 발급비를 뺀 금액입니다.</p>
+          <div class="fields">
+            <div class="f"><label for="subWork">하도급 공종</label><input type="text" id="subWork" data-k="subWork" placeholder="예) 철근콘크리트공사"></div>
+            <div class="f"><label for="subCo">하수급인</label><input type="text" id="subCo" data-k="subCo"></div>
+            <div class="f"><label for="part">하도급부분금액</label><div class="unit"><input type="text" class="money" id="part" data-k="part"><span>원</span></div><span class="hint">수급인 도급내역 기준</span></div>
+            <div class="f"><label for="partPre">하도급부분 발주자 예정가격</label><div class="unit"><input type="text" class="money" id="partPre" data-k="partPre"><span>원</span></div><span class="hint">설계단가 × 예정가격 비율 + 제경비</span></div>
+            <div class="f"><label for="sub">하도급계약금액</label><div class="unit"><input type="text" class="money" id="sub" data-k="sub"><span>원</span></div></div>
+            <div class="f"><label for="notice">하도급 통보일</label><input type="date" id="notice" data-k="notice"><span class="hint">변경요구 기한 산정 기준</span></div>
+            <div class="f"><label for="s0">하도급 계약기간 시작</label><input type="date" id="s0" data-k="s0"></div>
+            <div class="f"><label for="s1">하도급 계약기간 종료</label><input type="date" id="s1" data-k="s1"></div>
+            <div class="f wide"><label class="chk"><input type="checkbox" data-k="unfit"> 하수급인이 건설공사를 시공하기에 현저하게 부적당하다고 인정됨 (비율과 관계없이 심사)</label></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="no">3</span>하수급인 시공능력·신뢰도</h2>
+          <p class="desc">시공실적은 적격심사와 같은 방법으로 인정합니다. 배수는 하도급계약금액 대비로 계산합니다.</p>
+          <div class="fields">
+            <div class="f"><label for="cap">시공능력평가 공시액</label><div class="unit"><input type="text" class="money" id="cap" data-k="cap"><span>원</span></div><span class="hint">해당 업종 공시액</span></div>
+            <div class="f"><label for="exp3">최근 3년 동종공사 실적 합산</label><div class="unit"><input type="text" class="money" id="exp3" data-k="exp3"><span>원</span></div></div>
+            <div class="f"><label for="coop">협력업체 등록기간</label>
+              <select id="coop" data-k="coop">
+                <option value="10">3년 이상</option><option value="9">2년 6월 이상 3년 미만</option><option value="8">2년 이상 2년 6월 미만</option>
+                <option value="7">1년 6월 이상 2년 미만</option><option value="6">1년 이상 1년 6월 미만</option><option value="5">1년 미만</option><option value="4" selected>미등록</option>
+              </select></div>
+            <div class="f"><label for="regDate">전문건설업 등록일</label><input type="date" id="regDate" data-k="regDate"><span class="hint">통보일 기준 영위기간 자동 계산</span></div>
+            <div class="f wide"><label class="chk"><input type="checkbox" data-k="chronic"> 임금·대금 상습체불 공개업체 (△11점)</label></div>
+            <div class="f"><label for="arrears">대금 체불 행정처분 이력(2년 내)</label>
+              <select id="arrears" data-k="arrears"><option value="0">없음</option><option value="1">1회 (△5)</option><option value="2">2회 (△8)</option><option value="3">3회 이상 (△11)</option></select></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="no">4</span>하도급공사 여건</h2>
+          <div class="fields">
+            <div class="f"><label for="diff">하도급공사 난이도</label>
+              <select id="diff" data-k="diff"><option value="5">낮음</option><option value="4" selected>보통</option><option value="3">높음</option></select></div>
+            <div class="f"><label for="warr">하자담보책임기간</label>
+              <select id="warr" data-k="warr"><option value="5">1년 이하 공종</option><option value="4">1년 초과 3년 이하</option><option value="3">3년 초과 5년 이하</option><option value="2">5년 초과</option></select></div>
+            <div class="f wide"><label class="chk"><input type="checkbox" data-k="local"> 하수급인이 현장 소재 시·도 업체이거나, 현장 소재(인접) 시·군에서 동종공사 수행 중 (+1점)</label></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="no">5</span>변경요구 예외 및 기준</h2>
+          <p class="desc">기준점수 미만이어도 아래에 해당하면 변경요구를 하지 않을 수 있습니다(심사기준 제9조①). 국가·지방자치단체 발주는 하도급계약심사위원회 심의를 거쳐야 합니다.</p>
+          <div class="fields">
+            <div class="f"><label for="cut">변경요구 기준점수</label><div class="unit"><input type="number" id="cut" data-k="cut" value="90" min="0" max="100"><span>점</span></div><span class="hint">고시 90점 · 위원회 의결로 조정 시 변경</span></div>
+            <div class="f wide"><label class="chk"><input type="checkbox" data-k="ex1" id="ex1"> ① 공개경쟁입찰(전자입찰, 5인 이상 참여)로 하수급인 선정</label></div>
+            <div class="f"><label for="bidN">입찰 참여자 수</label><div class="unit"><input type="number" id="bidN" data-k="bidN" min="0"><span>인</span></div></div>
+            <div class="f"><label for="bidAvg">입찰자 평균금액</label><div class="unit"><input type="text" class="money" id="bidAvg" data-k="bidAvg"><span>원</span></div></div>
+            <div class="f wide">
+              <label class="chk"><input type="checkbox" data-k="ex2"> ② 하도급관리계획서상 하도급조건에 따라 계약 체결</label>
+              <label class="chk"><input type="checkbox" data-k="ex3"> ③ 신기술·특허공법을 개발자·실시권자에게 하도급하여 시공·품질에 지장이 없음</label>
+              <label class="chk"><input type="checkbox" data-k="noDoc"> 수급인이 심사자료(자기평가표 등)를 제출하지 않거나 허위로 제출함</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="sticky">
+        <div class="verdict info" id="verdict">
+          <span class="tab">입력 대기</span>
+          <div class="body">
+            <div class="big num" id="bigAmt">-<small>점</small></div>
+            <div class="lead" id="leadTxt">금액을 입력하면 심사대상 여부와 점수가 계산됩니다.</div>
+            <dl class="kv" id="kv"></dl>
+            <ul class="checks" id="checks"></ul>
+            <div class="btn-row">
+              <button class="btn" type="button" id="copyBtn">검토의견 복사</button>
+              <button class="btn primary" type="button" id="xlsxBtn">엑셀 내보내기</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="card">
+      <h2>심사 평점표</h2>
+      <p class="desc">배점은 「건설공사 하도급 심사기준」 [별표 1]을 따릅니다. 항목별 점수는 소수점 첫째 자리에서 반올림합니다.</p>
+      <div class="tbl-wrap"><table class="t score-t">
+        <thead><tr><th>심사항목</th><th>심사요소</th><th style="text-align:center">배점한도</th><th>산정 근거</th><th class="r">평점</th></tr></thead>
+        <tbody id="scoreBody"></tbody>
+        <tfoot><tr><td colspan="4">합계</td><td class="r num" id="scoreSum">0</td></tr></tfoot>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="panel card guide" id="guide" hidden>
+    <h3>1. 심사 대상 (건설산업기본법 시행령 제34조①)</h3>
+    <div class="law">다음 중 어느 하나에 해당하면 발주자는 하도급 적정성을 심사할 수 있고, 국가·지방자치단체·공공기관 발주자는 심사하여야 합니다(법 제31조①②).
+1. 하도급계약금액이 하도급부분금액의 <b>100분의 82</b>에 미달하는 경우
+2. 하도급계약금액이 하도급부분에 대한 발주자 예정가격의 <b>100분의 64</b>에 미달하는 경우
+※ 하수급인이 시공하기에 현저하게 부적당하다고 인정되는 경우에도 심사합니다.</div>
+
+    <h3>2. 심사항목 및 배점 ([별표 1])</h3>
+    <div class="tbl-wrap"><table class="t">
+      <thead><tr><th>심사항목</th><th>심사요소</th><th>배점</th><th>배점요령</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="2">하도급가격 적정성(50)</td><td>하도급공사 낙찰비율</td><td>30</td><td>30 − 2 × (82 − 하도급금액/하도급부분금액 × 100)과 30 − 2 × (64 − 하도급금액/예정가격 × 100) 중 낮은 점수</td></tr>
+        <tr><td>원도급공사 낙찰비율</td><td>20</td><td>20 − ½ × (기준율 − 원도급금액/예정가격 × 100). 기준율: 적격 88, 종심 82, 일괄 85(기초금액), 대안 80, 기술제안 86 — 기준율 이상은 만점</td></tr>
+        <tr><td rowspan="2">시공능력(20)</td><td>시공능력평가 공시액</td><td>10</td><td>공사규모 대비 3배↑10 · 2.5배↑9 · 2배↑8 · 1.5배↑7 · 1배↑6 · 1배 미만 5</td></tr>
+        <tr><td>동종공사 시공경험(최근 3년)</td><td>10</td><td>2배↑10 · 1.5배↑9 · 1배↑8 · 0.5배↑7 · 0.5배 미만 6</td></tr>
+        <tr><td rowspan="4">신뢰도(15)</td><td>협력업체 등록기간</td><td>10</td><td>3년↑10 · 2.5년↑9 · 2년↑8 · 1.5년↑7 · 1년↑6 · 1년 미만 5 · 미등록 4</td></tr>
+        <tr><td>전문건설업 영위기간</td><td>5</td><td>3년↑5 · 2년↑4 · 1년↑3 · 1년 미만 2</td></tr>
+        <tr><td>임금·대금 상습체불</td><td>△11</td><td>공개된 체불업체 감점</td></tr>
+        <tr><td>대금 체불 이력</td><td>△11</td><td>1회 △5 · 2회 △8 · 3회 △11 (행정처분일부터 2년간, 총 11점 한도)</td></tr>
+        <tr><td rowspan="4">공사여건(15)</td><td>난이도</td><td>5</td><td>낮음 5 · 보통 4 · 높음 3</td></tr>
+        <tr><td>계약기간</td><td>4</td><td>1년 이상 4 · 1년 미만 3</td></tr>
+        <tr><td>하자담보책임기간</td><td>5</td><td>1년 이하 5 · 3년 이하 4 · 5년 이하 3 · 5년 초과 2</td></tr>
+        <tr><td>시공여건</td><td>1</td><td>현장 소재 시·도 업체 또는 소재·인접 시·군 동종공사 수행</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>3. 변경요구와 예외 (심사기준 제9조)</h3>
+    <ul>
+      <li>항목별 합계가 <b>90점 미만</b>이거나 심사자료를 제출하지 않거나 허위로 제출하면 하도급계약내용 또는 하수급인 변경을 요구할 수 있습니다. 국가·지방자치단체가 심사한 경우에는 변경을 요구하여야 합니다(법 제31조③).</li>
+      <li>예외 ①: 공개경쟁 전자입찰(5인 이상)로 선정하고, 하도급금액이 (하도급부분금액 × 70% + 입찰자평균금액 × 30%)보다 20% 이상 낮지 않은 경우. 단, 예정가격 대비 원도급금액이 60% 미만이면 제외</li>
+      <li>예외 ②: 하도급관리계획서상 하도급조건에 따라 체결한 경우</li>
+      <li>예외 ③: 신기술·특허공법을 개발자·실시권자에게 하도급하여 시공·품질에 지장이 없는 경우</li>
+      <li>국가·지방자치단체 발주자는 예외 해당 여부를 하도급계약심사위원회 심의로 정합니다.</li>
+    </ul>
+
+    <h3>4. 기한</h3>
+    <ul>
+      <li>변경요구: 하도급 통보를 받은 날 또는 사유를 안 날부터 <b>30일 이내 서면</b>(시행령 제34조③)</li>
+      <li>재심사: 수급인은 통보 후 7일 이내 재심사 요구, 발주자는 7일 이내 결과 통지(심사기준 제10조)</li>
+    </ul>
+
+    <div class="note warn">학교시설업무 치트키 매뉴얼 17번(건설공사하도급 심사지침)의 <b>85점</b> 기준은 2000년 시행본입니다. 현행 국토교통부 고시(제2020-817호)는 <b>90점</b>, 시행령 제34조 예정가격 기준은 <b>64%</b>입니다. 발주기관이 위원회 의결로 배점·기준을 조정했다면 그 기준을 입력하십시오. 「지방자치단체 입찰 및 계약 집행기준」의 하도급 관련 규정도 함께 확인하십시오.</div>
+    <p class="src">법령 확인: 건설산업기본법(2025. 11. 27. 시행), 같은 법 시행령(2026. 6. 23. 시행 — 2027. 1. 23. 시행예정 개정본의 제34조도 동일), 건설공사 하도급 심사기준(국토교통부 고시 제2020-817호)</p>
+  </section>
+</main>
+<footer class="ft">학교시설업무 치트키 · 계약관리·정산 도구 시리즈 · 테스트용 · 입력값은 이 브라우저에만 저장됩니다.</footer>
+
+<script>/* ===== 공통 유틸 (테스트용 정산도구 시리즈) ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const num = v => { if (v == null) return 0; const n = parseFloat(String(v).replace(/[^0-9.\-]/g, '')); return isFinite(n) ? n : 0; };
+const won = n => (Math.round(n) || 0).toLocaleString('ko-KR');
+const pct = (n, d = 2) => (isFinite(n) ? n.toFixed(d) : '0.00') + '%';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const floor10 = n => Math.floor(n / 10) * 10; // 원 단위 절사(10원 미만)
+function parseDate(s) { if (!s) return null; const d = new Date(s + 'T00:00:00'); return isNaN(d) ? null : d; }
+function fmtDate(d) { if (!d) return '-'; const p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}. ${p(d.getMonth() + 1)}. ${p(d.getDate())}.`; }
+function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function diffDays(a, b) { return Math.round((b - a) / 86400000); }
+
+/* 금액 입력 자동 콤마 */
+function bindMoney(root = document) {
+  $$('input.money', root).forEach(el => {
+    if (el._bound) return; el._bound = true;
+    el.setAttribute('inputmode', 'numeric');
+    el.addEventListener('input', () => {
+      const pos = el.value.length - el.selectionStart;
+      const neg = el.value.trim().startsWith('-');
+      const raw = el.value.replace(/[^0-9]/g, '');
+      el.value = raw ? (neg ? '-' : '') + Number(raw).toLocaleString('ko-KR') : (neg ? '-' : '');
+      const p = Math.max(0, el.value.length - pos); try { el.setSelectionRange(p, p); } catch (e) { }
+    });
+  });
+}
+
+/* 저장소 (실패해도 동작) */
+const store = {
+  get(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } },
+  del(k) { try { localStorage.removeItem(k); } catch (e) { } }
+};
+
+function toast(msg) {
+  let t = $('.toast'); if (!t) { t = document.createElement('div'); t.className = 'toast'; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 1800);
+}
+async function copyText(text) {
+  if (!text) { toast('먼저 필요한 값을 입력하십시오'); return; }
+  try { await navigator.clipboard.writeText(text); toast('검토의견을 복사했습니다'); return; } catch (e) { }
+  const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('검토의견을 복사했습니다'); } catch (e) { toast('복사하지 못했습니다'); } ta.remove();
+}
+
+/* 탭 */
+function initTabs() {
+  $$('.seg button').forEach(b => b.addEventListener('click', () => {
+    $$('.seg button').forEach(x => x.setAttribute('aria-selected', x === b));
+    $$('.panel').forEach(p => p.hidden = p.id !== b.dataset.tab);
+  }));
+}
+
+/* 테마 */
+function initTheme() {
+  const saved = store.get('krds-theme'); if (saved) document.documentElement.dataset.theme = saved;
+  const b = $('#themeBtn'); if (!b) return;
+  b.addEventListener('click', () => {
+    const cur = document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const nx = cur === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = nx; store.set('krds-theme', nx);
+  });
+}
+
+/* 폼 직렬화: [data-k] 요소 */
+function readForm(root = document) {
+  const o = {};
+  $$('[data-k]', root).forEach(el => {
+    const k = el.dataset.k;
+    if (el.type === 'checkbox') o[k] = el.checked;
+    else if (el.type === 'radio') { if (el.checked) o[k] = el.value; }
+    else o[k] = el.value;
+  });
+  return o;
+}
+function writeForm(o, root = document) {
+  if (!o) return;
+  $$('[data-k]', root).forEach(el => {
+    const k = el.dataset.k; if (!(k in o)) return;
+    if (el.type === 'checkbox') el.checked = !!o[k];
+    else if (el.type === 'radio') el.checked = el.value === o[k];
+    else el.value = o[k];
+  });
+}
+
+/* ===== 엑셀 내보내기 (ExcelJS) =====
+   spec = { file, sheets:[{ name, title, meta:[[k,v]], blocks:[{ heading, columns:[{h,w,t}], rows:[[]], foot:[] }] }] }
+   t: 'text' | 'won' | 'pct' | 'num' | 'date' */
+async function exportXlsx(spec) {
+  if (typeof ExcelJS === 'undefined') { toast('엑셀 라이브러리를 불러오지 못했습니다(네트워크 확인)'); return; }
+  const wb = new ExcelJS.Workbook(); wb.creator = '정산도구(테스트용)'; wb.created = new Date();
+  const thin = { style: 'thin', color: { argb: 'FFCDD1D5' } };
+  const border = { top: thin, left: thin, bottom: thin, right: thin };
+  const fmtOf = t => t === 'won' ? '#,##0' : t === 'pct' ? '0.00"%"' : t === 'num' ? '#,##0.##' : '@';
+  for (const sh of spec.sheets) {
+    const ws = wb.addWorksheet(sh.name, { pageSetup: { paperSize: 9, orientation: 'portrait', fitToPage: true, fitToWidth: 1, fitToHeight: 0, margins: { left: .5, right: .5, top: .6, bottom: .6, header: .3, footer: .3 } }, views: [{ showGridLines: false }] });
+    const maxCols = Math.max(2, ...sh.blocks.map(b => b.columns.length));
+    const widths = new Array(maxCols).fill(12);
+    sh.blocks.forEach(b => b.columns.forEach((c, i) => { widths[i] = Math.max(widths[i], c.w || 12); }));
+    ws.columns = widths.map(w => ({ width: w }));
+    let r = 1;
+    ws.mergeCells(r, 1, r, maxCols); const tc = ws.getCell(r, 1); tc.value = sh.title; tc.font = { bold: true, size: 15, color: { argb: 'FF1E2124' } }; ws.getRow(r).height = 26; r++;
+    ws.mergeCells(r, 1, r, maxCols); const wc = ws.getCell(r, 1); wc.value = '※ 테스트용 — 참고용 산출 결과이며, 최종 판단은 관계 법령·계약문서와 원본 증빙으로 확인하시기 바랍니다.'; wc.font = { size: 10, bold: true, color: { argb: 'FFDE3412' } }; r++;
+    if (sh.meta && sh.meta.length) {
+      r++;
+      sh.meta.forEach(([k, v]) => {
+        const a = ws.getCell(r, 1); a.value = k; a.font = { bold: true, color: { argb: 'FF464C53' } }; a.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4F5F6' } }; a.border = border;
+        if (maxCols > 2) ws.mergeCells(r, 2, r, maxCols);
+        const b = ws.getCell(r, 2); b.value = v; b.border = border; b.alignment = { wrapText: true, vertical: 'middle' };
+        if (typeof v === 'number') b.numFmt = '#,##0';
+        r++;
+      });
+    }
+    for (const blk of sh.blocks) {
+      r++;
+      if (blk.heading) { ws.mergeCells(r, 1, r, maxCols); const h = ws.getCell(r, 1); h.value = blk.heading; h.font = { bold: true, size: 12, color: { argb: 'FF256EF4' } }; r++; }
+      blk.columns.forEach((c, i) => {
+        const cell = ws.getCell(r, i + 1); cell.value = c.h; cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF256EF4' } }; cell.border = border; cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+      });
+      ws.getRow(r).height = 22; r++;
+      const all = blk.rows.concat(blk.foot ? [blk.foot] : []);
+      all.forEach((row, ri) => {
+        const isFoot = blk.foot && ri === all.length - 1;
+        row.forEach((v, i) => {
+          const c = blk.columns[i] || {}; const cell = ws.getCell(r, i + 1);
+          cell.value = (v === '' || v == null) ? null : v; cell.border = border;
+          if (typeof v === 'number') { cell.numFmt = fmtOf(c.t); cell.alignment = { horizontal: 'right', vertical: 'middle' }; }
+          else cell.alignment = { vertical: 'middle', wrapText: true, horizontal: c.t === 'text' || !c.t ? 'left' : 'center' };
+          if (isFoot) { cell.font = { bold: true }; cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFECF2FE' } }; }
+        });
+        r++;
+      });
+    }
+  }
+  const buf = await wb.xlsx.writeBuffer();
+  const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = spec.file; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  toast('엑셀 파일을 내려받았습니다');
+}
+
+/* 판정 패널 렌더 */
+function renderChecks(ul, items) {
+  const ic = { ok: '✓', warn: '!', bad: '✕', info: 'i' };
+  ul.innerHTML = items.map(x => `<li class="${x.lv}"><span class="ic">${ic[x.lv]}</span><span>${x.html || esc(x.t)}</span></li>`).join('');
+}
+function setVerdict(el, lv, tabText) { el.className = 'verdict ' + lv; $('.tab', el).textContent = tabText; }
+
+/* ===== 에듀파인 계약정보 PDF 가져오기 =====
+   pdf.js로 텍스트를 추출해 항목명(라벨) 기준으로 값을 찾습니다. 스캔(이미지) PDF는 읽을 수 없습니다. */
+const PDFJS_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+const PDFJS_WORKER = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+function loadPdfJs() {
+  if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  return new Promise((res, rej) => {
+    const s = document.createElement('script'); s.src = PDFJS_URL;
+    s.onload = () => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER; res(window.pdfjsLib); };
+    s.onerror = () => rej(new Error('PDF 라이브러리를 불러오지 못했습니다(네트워크 확인)'));
+    document.head.appendChild(s);
+  });
+}
+async function pdfToLines(file) {
+  const lib = await loadPdfJs();
+  const doc = await lib.getDocument({ data: await file.arrayBuffer() }).promise;
+  const lines = [];
+  for (let p = 1; p <= doc.numPages; p++) {
+    const tc = await (await doc.getPage(p)).getTextContent();
+    const rows = [];
+    tc.items.forEach(it => {
+      if (!it.str || !it.str.trim()) return;
+      const y = it.transform[5], x = it.transform[4];
+      let row = rows.find(r => Math.abs(r.y - y) < 3);
+      if (!row) { row = { y, items: [] }; rows.push(row); }
+      row.items.push({ x, w: it.width || 0, h: Math.abs(it.transform[3]) || 10, s: it.str });
+    });
+    rows.sort((a, b) => b.y - a.y).forEach(r => {
+      const its = r.items.sort((a, b) => a.x - b.x); let line = '', prevEnd = null;
+      its.forEach(i => {
+        if (prevEnd != null) { const gap = i.x - prevEnd; line += gap > i.h * 1.2 ? '  ' : gap > i.h * 0.15 ? ' ' : ''; }
+        line += i.s; prevEnd = i.x + i.w;
+      });
+      lines.push(line.replace(/\s{3,}/g, '  ').trim());
+    });
+  }
+  return lines;
+}
+const PDF_LABELS = {
+  name: ['계약명', '공사명', '건명', '사업명'],
+  vendor: ['계약상대자', '계약업체명', '업체명', '상호', '계약자'],
+  amount: ['계약금액', '총계약금액', '계약총액', '금차계약금액'],
+  design: ['설계금액', '공사예정금액', '추정금액'],
+  pre: ['예정가격'],
+  base: ['기초금액'],
+  bidRate: ['낙찰률', '낙찰율', '사정률'],
+  method: ['계약방법', '낙찰자결정방법', '낙찰방법'],
+  start: ['착공일자', '착공일', '계약기간시작', '착수일자', '공사시작일'],
+  end: ['준공예정일자', '준공예정일', '준공기한', '완료예정일', '계약기간종료', '준공일자'],
+  period: ['계약기간', '공사기간', '이행기간'],
+  contractDate: ['계약일자', '계약체결일']
+};
+const DATE_RE = /(20\d{2})\s*[.\-\/년]\s*(\d{1,2})\s*[.\-\/월]\s*(\d{1,2})\s*일?\.?|(20\d{2})(\d{2})(\d{2})/g;
+function toISO(m) { const y = m[1] || m[4], mo = m[2] || m[5], d = m[3] || m[6]; return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`; }
+function parseContract(lines) {
+  const norm = s => s.replace(/\s+/g, '');
+  const out = {};
+  const after = (key) => {
+    for (const lab of PDF_LABELS[key]) {
+      for (let i = 0; i < lines.length; i++) {
+        const L = lines[i], nL = norm(L); const idx = nL.indexOf(lab);
+        if (idx < 0) continue;
+        // 라벨 이후 원문 위치 찾기
+        let cnt = 0, pos = 0;
+        for (; pos < L.length && cnt < idx + lab.length; pos++) if (!/\s/.test(L[pos])) cnt++;
+        let rest = L.slice(pos).replace(/^[\s:：)\]]+/, '');
+        if (key !== 'period') rest = rest.split(/\s{2,}/)[0];
+        // 다음 라벨이 바로 이어지면 그 앞까지
+        if (!rest || rest.length < 1) rest = lines[i + 1] || '';
+        if (rest) return rest;
+      }
+    }
+    return null;
+  };
+  const cutAtLabel = s => {
+    const all = Object.values(PDF_LABELS).flat();
+    let end = s.length;
+    all.forEach(l => { const re = new RegExp(l.split('').join('\\s*')); const m = s.slice(1).search(re); if (m >= 0 && m + 1 < end) end = m + 1; });
+    return s.slice(0, end).trim();
+  };
+  const money = s => { if (!s) return null; const m = s.match(/(?:금\s*)?([0-9]{1,3}(?:,[0-9]{3})+|[0-9]{5,})\s*원?/); return m ? Number(m[1].replace(/,/g, '')) : null; };
+  const dates = s => { if (!s) return []; const r = []; let m; DATE_RE.lastIndex = 0; while ((m = DATE_RE.exec(s))) r.push(toISO(m)); return r; };
+
+  const t = s => s ? cutAtLabel(s).replace(/\s{2,}/g, ' ').trim() : null;
+  const nm = after('name'); if (nm) out.name = t(nm);
+  const vd = after('vendor'); if (vd) out.vendor = t(vd).replace(/\s*[\(（]?\s*(대표자|대표이사|대표)(?![가-힣]).*$/, '').trim();
+  ['amount', 'design', 'pre', 'base'].forEach(k => { const v = money(after(k)); if (v) out[k] = v; });
+  const br = after('bidRate'); if (br) { const m = br.replace(/\s/g, '').match(/(\d{1,3}\.\d+|\d{2,3})%?/); if (m && +m[1] > 0 && +m[1] <= 100) out.bidRate = m[1]; }
+  const me = after('method'); if (me) out.method = t(me);
+  const st = dates(after('start')); if (st.length) out.start = st[0];
+  const en = dates(after('end')); if (en.length) out.end = en[0];
+  const pr = dates(after('period'));
+  if (pr.length >= 2) { out.start = out.start || pr[0]; out.end = out.end || pr[pr.length - 1]; }
+  const cd = dates(after('contractDate')); if (cd.length) out.contractDate = cd[0];
+  return out;
+}
+const PDF_FIELD_NAME = { name: '공사명(계약명)', vendor: '계약상대자', amount: '계약금액', design: '설계금액', pre: '예정가격', base: '기초금액', bidRate: '낙찰률', method: '계약방법', start: '착공일', end: '준공기한', contractDate: '계약일자' };
+/* map: { 추출키: 'data-k 이름' | function(value, parsed) } */
+function initPdfImport(map, onApplied) {
+  const input = document.createElement('input'); input.type = 'file'; input.accept = 'application/pdf,.pdf'; input.hidden = true; document.body.appendChild(input);
+  const dlg = document.createElement('dialog'); dlg.className = 'pdf-dlg'; document.body.appendChild(dlg);
+  $$('[data-pdf-btn]').forEach(b => b.addEventListener('click', () => input.click()));
+  input.addEventListener('change', () => { if (input.files[0]) handle(input.files[0]); input.value = ''; });
+  document.addEventListener('dragover', e => { if ([...e.dataTransfer.items].some(i => i.kind === 'file')) { e.preventDefault(); document.body.classList.add('dragging'); } });
+  document.addEventListener('dragleave', e => { if (!e.relatedTarget) document.body.classList.remove('dragging'); });
+  document.addEventListener('drop', e => { const f = [...e.dataTransfer.files].find(f => /\.pdf$/i.test(f.name)); document.body.classList.remove('dragging'); if (f) { e.preventDefault(); handle(f); } });
+  async function handle(file) {
+    toast('PDF를 읽는 중입니다…');
+    let lines;
+    try { lines = await pdfToLines(file); } catch (e) { toast(e.message || 'PDF를 읽지 못했습니다'); return; }
+    if (!lines.join('').trim()) { show(file.name, null, '텍스트가 없는 PDF(스캔 이미지)입니다. 에듀파인에서 "PDF 저장"으로 내려받은 파일을 사용하십시오.'); return; }
+    const p = parseContract(lines);
+    const keys = Object.keys(map).filter(k => p[k] != null);
+    show(file.name, p, keys.length ? '' : '계약정보 항목을 찾지 못했습니다. 에듀파인 계약정보(계약대장) 화면에서 저장한 PDF인지 확인하십시오.', lines);
+  }
+  function show(fname, p, msg, lines) {
+    const rows = p ? Object.keys(map).map(k => {
+      const v = p[k]; const has = v != null;
+      const disp = !has ? '<span style="color:var(--text-3)">찾지 못함</span>' : typeof v === 'number' ? won(v) + '원' : (k === 'bidRate' ? v + '%' : esc(v));
+      return `<tr><td><label class="chk" style="padding:0"><input type="checkbox" data-pk="${k}" ${has ? 'checked' : 'disabled'}> ${PDF_FIELD_NAME[k]}</label></td><td>${disp}</td></tr>`;
+    }).join('') : '';
+    dlg.innerHTML = `<form method="dialog">
+      <h3 style="margin:0 0 4px;font-size:17px">에듀파인 계약정보 가져오기</h3>
+      <p style="margin:0 0 12px;font-size:13px;color:var(--text-3)">${esc(fname)} · 입력할 항목을 확인하십시오. 기존 값은 덮어씁니다.</p>
+      ${msg ? `<div class="note warn" style="margin:0 0 12px">${msg}</div>` : ''}
+      ${rows ? `<div class="tbl-wrap"><table class="t"><thead><tr><th>항목</th><th>추출 값</th></tr></thead><tbody>${rows}</tbody></table></div>` : ''}
+      ${lines ? `<details style="margin-top:10px;font-size:12px;color:var(--text-3)"><summary>추출된 원문 보기</summary><pre style="white-space:pre-wrap;max-height:180px;overflow:auto;background:var(--bg);padding:8px;border-radius:6px">${esc(lines.join('\n').slice(0, 4000))}</pre></details>` : ''}
+      <div class="btn-row"><button class="btn" value="cancel">닫기</button>${rows && !msg ? '<button class="btn primary" value="ok" id="pdfApply">입력하기</button>' : ''}</div>
+    </form>`;
+    dlg.showModal();
+    const ap = $('#pdfApply', dlg);
+    if (ap) ap.addEventListener('click', () => {
+      const done = [];
+      $$('[data-pk]:checked', dlg).forEach(cb => {
+        const k = cb.dataset.pk, v = p[k], tgt = map[k];
+        if (typeof tgt === 'function') { tgt(v, p); done.push(PDF_FIELD_NAME[k]); return; }
+        $$(`[data-k="${tgt}"]`).forEach(el => {
+          if (el.type === 'radio') el.checked = el.value === v;
+          else el.value = (typeof v === 'number' && el.classList.contains('money')) ? v.toLocaleString('ko-KR') : v;
+        });
+        done.push(PDF_FIELD_NAME[k]);
+      });
+      if (onApplied) onApplied(p);
+      toast(done.length ? `${done.length}개 항목을 입력했습니다` : '입력한 항목이 없습니다');
+    });
+  }
+}
+</script>
+<script>
+const KEY = 'tool-hadogeup-simsa-v1';
+const BASE = { adq: [88, '적격심사', '예정가격'], comp: [82, '종합심사낙찰제', '예정가격'], tk: [85, '설계시공 일괄입찰', '기초금액'], alt: [80, '대안입찰', '기초금액'], tech: [86, '기술제안입찰', '기초금액'] };
+const COOP = { 10: '3년 이상', 9: '2년 6월 이상 3년 미만', 8: '2년 이상 2년 6월 미만', 7: '1년 6월 이상 2년 미만', 6: '1년 이상 1년 6월 미만', 5: '1년 미만', 4: '미등록' };
+const DIFF = { 5: '낮음', 4: '보통', 3: '높음' };
+const WARR = { 5: '1년 이하 공종', 4: '1년 초과 3년 이하', 3: '3년 초과 5년 이하', 2: '5년 초과' };
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const r1 = v => Math.round(v); // 소수점 첫째자리에서 반올림
+let last = null;
+
+function calc() {
+  const f = readForm($('#calc'));
+  const pre = num(f.pre), con = num(f.con), part = num(f.part), partPre = num(f.partPre), sub = num(f.sub);
+  const cap = num(f.cap), ex3 = num(f.exp3);
+  const notice = parseDate(f.notice), reg = parseDate(f.regDate), s0 = parseDate(f.s0), s1 = parseDate(f.s1);
+  const R1 = part ? sub / part * 100 : null;
+  const R2 = partPre ? sub / partPre * 100 : null;
+  const R3 = pre ? con / pre * 100 : null;
+  const base = BASE[f.method][0];
+
+  // 1. 가격 적정성
+  const a1 = R1 == null ? null : clamp(30 - 2 * (82 - R1), 0, 30);
+  const a2 = R2 == null ? null : clamp(30 - 2 * (64 - R2), 0, 30);
+  const sA = (a1 == null && a2 == null) ? 0 : r1(Math.min(a1 ?? 30, a2 ?? 30));
+  const sB = R3 == null ? 0 : r1(clamp(20 - 0.5 * (base - R3), 0, 20));
+  // 2. 시공능력
+  const capX = sub ? cap / sub : 0, expX = sub ? ex3 / sub : 0;
+  const sC = !sub ? 0 : capX >= 3 ? 10 : capX >= 2.5 ? 9 : capX >= 2 ? 8 : capX >= 1.5 ? 7 : capX >= 1 ? 6 : 5;
+  const sD = !sub ? 0 : expX >= 2 ? 10 : expX >= 1.5 ? 9 : expX >= 1 ? 8 : expX >= 0.5 ? 7 : 6;
+  // 3. 신뢰도
+  const sE = num(f.coop);
+  const refDay = notice || new Date();
+  const regY = reg ? (refDay - reg) / 31557600000 : null;
+  const sF = regY == null || regY < 0 ? 0 : regY >= 3 ? 5 : regY >= 2 ? 4 : regY >= 1 ? 3 : 2;
+  const sG = f.chronic ? -11 : 0;
+  const sH = ({ 0: 0, 1: -5, 2: -8, 3: -11 })[f.arrears] || 0;
+  // 4. 여건
+  const sI = num(f.diff);
+  const termD = s0 && s1 ? diffDays(s0, s1) + 1 : null;
+  const oneYear = s0 && s1 ? (s1 >= addDays(new Date(s0.getFullYear() + 1, s0.getMonth(), s0.getDate()), -1)) : false;
+  const sJ = termD == null || termD <= 0 ? 0 : oneYear ? 4 : 3;
+  const sK = num(f.warr);
+  const sL = f.local ? 1 : 0;
+  const total = sA + sB + sC + sD + sE + sF + sG + sH + sI + sJ + sK + sL;
+  const cut = num(f.cut) || 90;
+
+  const rows = [
+    ['grp', '1. 하도급가격의 적정성', '', 50],
+    ['가. 하도급공사 낙찰비율', 30, sA, R1 == null && R2 == null ? '금액 입력 필요' : `하도급/부분금액 ${R1 == null ? '-' : pct(R1, 3)} → ${a1 == null ? '-' : a1.toFixed(2)}점 · 하도급/예정가격 ${R2 == null ? '-' : pct(R2, 3)} → ${a2 == null ? '-' : a2.toFixed(2)}점 (낮은 점수)`],
+    ['나. 원도급공사 낙찰비율', 20, sB, R3 == null ? '금액 입력 필요' : `${BASE[f.method][1]} 기준 ${base}% · 원도급/${BASE[f.method][2]} ${pct(R3, 3)}`],
+    ['grp', '2. 하수급인의 시공능력', '', 20],
+    ['가. 시공능력평가 공시액', 10, sC, sub ? `하도급금액 대비 ${capX.toFixed(2)}배` : '하도급금액 입력 필요'],
+    ['나. 동종공사 시공경험', 10, sD, sub ? `최근 3년 실적 ${expX.toFixed(2)}배` : '하도급금액 입력 필요'],
+    ['grp', '3. 하수급인의 신뢰도', '', 15],
+    ['가. 협력업체 등록기간', 10, sE, COOP[f.coop]],
+    ['나. 전문건설업 영위기간', 5, sF, regY == null ? '등록일 입력 필요' : regY < 0 ? '등록일이 기준일보다 늦음' : `${regY.toFixed(1)}년 (${notice ? '통보일' : '오늘'} 기준)`],
+    ['다. 임금·대금 상습체불', '△11', sG, f.chronic ? '공개업체 해당' : '해당 없음'],
+    ['라. 대금 체불 이력', '△11', sH, f.arrears === '0' ? '해당 없음' : `${f.arrears}회`],
+    ['grp', '4. 하도급공사의 여건', '', 15],
+    ['가. 난이도', 5, sI, DIFF[f.diff]],
+    ['나. 계약기간', 4, sJ, termD == null ? '계약기간 입력 필요' : termD <= 0 ? '종료일이 시작일보다 빠름' : `${termD}일 (${oneYear ? '1년 이상' : '1년 미만'})`],
+    ['다. 하자담보책임기간', 5, sK, WARR[f.warr]],
+    ['라. 시공여건', 1, sL, f.local ? '해당' : '해당 없음']
+  ];
+  $('#scoreBody').innerHTML = rows.map(r => r[0] === 'grp'
+    ? `<tr class="grp"><td colspan="2">${r[1]}</td><td class="lim">${r[3]}</td><td colspan="2"></td></tr>`
+    : `<tr><td></td><td>${r[0]}</td><td class="lim">${r[1]}</td><td class="why">${esc(r[3])}</td><td class="pt num">${r[2]}</td></tr>`).join('');
+  $('#scoreSum').textContent = total;
+
+  // 판정
+  const hasPrice = part && sub;
+  const trig1 = R1 != null && R1 < 82, trig2 = R2 != null && R2 < 64;
+  const target = trig1 || trig2 || f.unfit;
+  const ck = [];
+  let inputErr = false;
+  let lv = 'info', tab = '입력 대기', lead = '금액을 입력하면 심사대상 여부와 점수가 계산됩니다.';
+
+  if (hasPrice) {
+    ck.push({ lv: trig1 ? 'warn' : 'ok', t: `하도급률(하도급/하도급부분금액) ${pct(R1, 2)} — 82% ${trig1 ? '미달' : '이상'}` });
+    if (R2 != null) ck.push({ lv: trig2 ? 'warn' : 'ok', t: `발주자 예정가격 대비 ${pct(R2, 2)} — 64% ${trig2 ? '미달' : '이상'}` });
+    else ck.push({ lv: 'warn', t: '하도급부분 발주자 예정가격을 입력하면 64% 요건도 확인합니다.' });
+    if (f.unfit) ck.push({ lv: 'warn', t: '하수급인이 현저하게 부적당하다고 인정되어 비율과 관계없이 심사합니다.' });
+
+    const ex1ok = f.ex1 && num(f.bidN) >= 5 && num(f.bidAvg) > 0 && sub >= (part * 0.7 + num(f.bidAvg) * 0.3) * 0.8 && (R3 == null || R3 >= 60);
+    const exApplied = !f.noDoc && (ex1ok || f.ex2 || f.ex3);
+
+    if (!target) {
+      lv = 'ok'; tab = '심사대상 아님';
+      lead = '시행령 제34조① 요건에 해당하지 않습니다. 평점은 참고용입니다.';
+    } else if (f.noDoc) {
+      lv = 'bad'; tab = '변경요구 대상';
+      lead = '심사자료 미제출 또는 허위 제출 — 점수와 관계없이 변경 요구(심사기준 제9조①)';
+    } else if (total >= cut) {
+      lv = 'ok'; tab = '적정';
+      lead = `심사대상 · 평점 ${total}점 ≥ 기준 ${cut}점`;
+    } else if (exApplied) {
+      lv = 'warn'; tab = '예외 검토';
+      lead = `평점 ${total}점 < 기준 ${cut}점 — 변경요구 예외 해당 여부 위원회 심의`;
+    } else {
+      lv = 'bad'; tab = '변경요구 대상';
+      lead = `평점 ${total}점 < 기준 ${cut}점 — 하도급계약내용 또는 하수급인 변경 요구`;
+    }
+    if (target) {
+      ck.push({ lv: 'info', t: '국가·지방자치단체 발주 공사는 하도급계약심사위원회에서 심사하여야 합니다(법 제31조②⑤, 심사기준 제4조).' });
+      if (total < cut && !f.noDoc) {
+        if (f.ex1) {
+          const need = (part * 0.7 + num(f.bidAvg) * 0.3) * 0.8;
+          ck.push({ lv: ex1ok ? 'ok' : 'bad', t: ex1ok ? `예외 ①: 하도급금액이 기준금액 ${won(need)}원 이상 (입찰 ${num(f.bidN)}인)` :
+            `예외 ① 미충족: ${num(f.bidN) < 5 ? '입찰자 5인 미만 · ' : ''}${!num(f.bidAvg) ? '입찰자 평균금액 미입력 · ' : sub < need ? `하도급금액이 기준금액 ${won(need)}원 미만 · ` : ''}${R3 != null && R3 < 60 ? '원도급 낙찰률 60% 미만' : ''}`.replace(/ · $/, '') });
+        }
+        if (f.ex2) ck.push({ lv: 'warn', t: '예외 ②: 하도급관리계획서상 하도급조건과 계약내용이 일치하는지 확인하십시오.' });
+        if (f.ex3) ck.push({ lv: 'warn', t: '예외 ③: 신기술 지정서·특허(실시권) 증빙과 시공·품질 지장 여부를 확인하십시오.' });
+        if (!exApplied) ck.push({ lv: 'bad', t: '변경요구 예외에 해당하지 않습니다. 사유를 밝혀 서면으로 변경을 요구하십시오(법 제31조③).' });
+      }
+      if (notice) ck.push({ lv: 'info', t: `변경요구 기한: ${fmtDate(addDays(notice, 30))}까지 서면 (통보일 ${fmtDate(notice)}부터 30일, 시행령 제34조③)` });
+      else ck.push({ lv: 'warn', t: '하도급 통보일을 입력하면 변경요구 기한(30일)을 계산합니다.' });
+    }
+    if (R3 == null) ck.push({ lv: 'warn', t: '예정가격(기초금액)과 원도급 계약금액을 입력하십시오(원도급 낙찰비율 20점).' });
+    if (!cap || !ex3) ck.push({ lv: 'warn', t: '시공능력평가액·동종실적을 입력하지 않으면 최저점이 적용됩니다.' });
+    if (!reg) ck.push({ lv: 'warn', t: '전문건설업 등록일이 없어 영위기간 점수가 0점입니다.' });
+    if (!termD) ck.push({ lv: 'warn', t: '하도급 계약기간이 없어 계약기간 점수가 0점입니다.' });
+    else if (termD <= 0) { ck.push({ lv: 'bad', t: '하도급 계약기간 종료일이 시작일보다 빠릅니다. 날짜를 확인하십시오(계약기간 0점 처리).' }); inputErr = true; }
+    if (regY != null && regY < 0) { ck.push({ lv: 'bad', t: '전문건설업 등록일이 통보일(기준일)보다 늦습니다. 날짜를 확인하십시오(영위기간 0점 처리).' }); inputErr = true; }
+    if (R1 > 100) ck.push({ lv: 'warn', t: `하도급계약금액이 하도급부분금액보다 큽니다(${pct(R1)}). 부분금액 산정(제경비·부가세 포함 여부)을 확인하십시오.` });
+    if (f.noDoc) ck.push({ lv: 'bad', t: '심사자료를 제출하지 않거나 허위로 제출한 경우 하도급계약내용 또는 하수급인 변경을 요구할 수 있습니다(심사기준 제9조①).' });
+    if (cut !== 90) ck.push({ lv: 'info', t: `변경요구 기준점수를 ${cut}점으로 적용했습니다(고시 90점 — 위원회 의결 근거 확인).` });
+  }
+  if (inputErr) { lv = 'warn'; tab = '입력 확인'; lead = '날짜 입력 오류를 고친 뒤 다시 판정하십시오. (현재 판정: ' + lead + ')'; }
+  setVerdict($('#verdict'), lv, tab);
+  $('#bigAmt').innerHTML = hasPrice ? `${total}<small>점 / 기준 ${cut}점</small>` : '-<small>점</small>';
+  $('#leadTxt').textContent = lead;
+  $('#kv').innerHTML = hasPrice ? [
+    ['하도급계약금액', won(sub) + '원'], ['하도급률', pct(R1)], ['예정가격 대비', R2 == null ? '-' : pct(R2)], ['원도급 낙찰률', R3 == null ? '-' : pct(R3)],
+    ['가격 적정성', `${sA + sB} / 50`], ['시공능력', `${sC + sD} / 20`], ['신뢰도', `${sE + sF + sG + sH} / 15`], ['공사여건', `${sI + sJ + sK + sL} / 15`]
+  ].map(([k, v]) => `<dt>${k}</dt><dd class="num">${v}</dd>`).join('') : '';
+  renderChecks($('#checks'), ck);
+
+  last = { f, pre, con, part, partPre, sub, R1, R2, R3, rows, total, cut, tab, lead, ck, target };
+  store.set(KEY, f);
+}
+
+function opinion() {
+  const L = last, f = L.f; if (!L) return '';
+  return [
+    '[테스트용] 하도급계약 적정성 심사 검토의견', '',
+    `1. 공 사 명: ${f.name || '-'} (${BASE[f.method][1]})`,
+    `2. 하도급 공종: ${f.subWork || '-'} / 수급인 ${f.prime || '-'} → 하수급인 ${f.subCo || '-'}`,
+    `3. 하도급계약금액: ${won(L.sub)}원 (하도급부분금액 ${won(L.part)}원, 하도급률 ${L.R1 == null ? '-' : pct(L.R1)})`,
+    `   발주자 예정가격 대비: ${L.R2 == null ? '-' : pct(L.R2)} / 원도급 낙찰률: ${L.R3 == null ? '-' : pct(L.R3)}`,
+    `4. 심사대상 여부: ${L.target ? '해당 (시행령 제34조①)' : '해당 없음'}`,
+    `5. 심사 평점: ${L.total}점 (기준 ${L.cut}점)`,
+    ...L.rows.filter(r => r[0] !== 'grp').map(r => `   - ${r[0]}: ${r[2]}점 (${r[3]})`),
+    `6. 판정: ${L.tab} — ${L.lead}`,
+    '7. 확인사항', ...L.ck.map(c => '   - ' + c.t), '',
+    '근거: 건설산업기본법 제31조, 같은 법 시행령 제34조, 건설공사 하도급 심사기준(국토교통부 고시 제2020-817호)',
+    '※ 테스트용 산출 결과이며, 하도급계약심사위원회 심의로 최종 결정하시기 바랍니다.'
+  ].join('\n');
+}
+
+function xlsx() {
+  const L = last, f = L.f;
+  const d = new Date(), ymd = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+  const body = []; let grp = '';
+  L.rows.forEach(r => { if (r[0] === 'grp') grp = `${r[1]} (${r[3]})`; else body.push([grp, r[0], typeof r[1] === 'number' ? r[1] : r[1], r[3], r[2]]); });
+  exportXlsx({
+    file: `하도급_적정성_심사_${(f.subWork || f.name || '공사').replace(/[\\/:*?"<>|]/g, '')}_${ymd}.xlsx`,
+    sheets: [{
+      name: '심사결과', title: '하도급계약 적정성 심사표',
+      meta: [['공사명', f.name || '-'], ['낙찰자 결정방법', BASE[f.method][1]], ['수급인 / 하수급인', `${f.prime || '-'} / ${f.subCo || '-'}`], ['하도급 공종', f.subWork || '-'],
+        ['예정가격(기초금액)', L.pre], ['원도급 계약금액', L.con], ['하도급부분금액', L.part], ['하도급부분 발주자 예정가격', L.partPre], ['하도급계약금액', L.sub],
+        ['하도급률 / 예정가격 대비', `${L.R1 == null ? '-' : pct(L.R1)} / ${L.R2 == null ? '-' : pct(L.R2)}`], ['심사대상 여부', L.target ? '해당(시행령 제34조①)' : '해당 없음'],
+        ['판정', `${L.tab} — ${L.lead}`]],
+      blocks: [{
+        heading: '심사 평점', columns: [{ h: '심사항목', w: 26 }, { h: '심사요소', w: 24 }, { h: '배점한도', w: 10, t: 'num' }, { h: '산정 근거', w: 50 }, { h: '평점', w: 10, t: 'num' }],
+        rows: body, foot: ['합계', '', 100, `변경요구 기준 ${L.cut}점`, L.total]
+      }]
+    }, {
+      name: '검토의견', title: '검토의견',
+      blocks: [{ columns: [{ h: '구분', w: 10 }, { h: '내용', w: 90 }], rows: L.ck.map(c => [({ ok: '적정', warn: '검토', bad: '보완', info: '안내' })[c.lv], c.t]) }]
+    }]
+  });
+}
+
+function sample() {
+  writeForm({ name: '○○중학교 다목적강당 신축공사', method: 'adq', pre: '4,120,000,000', con: '3,650,000,000', prime: '(주)○○종합건설',
+    subWork: '철근콘크리트공사', subCo: '(주)△△건설', part: '1,380,000,000', partPre: '1,540,000,000', sub: '1,090,000,000',
+    notice: '2026-09-15', s0: '2026-10-01', s1: '2027-06-30', unfit: false, cap: '2,600,000,000', exp3: '1,900,000,000',
+    coop: '8', regDate: '2021-03-10', chronic: false, arrears: '0', diff: '4', warr: '3', local: true, cut: '90', ex1: false, bidN: '', bidAvg: '', ex2: false, ex3: false }, $('#calc'));
+  bindMoney(); calc(); toast('예시를 불러왔습니다');
+}
+function reset() {
+  store.del(KEY);
+  $$('[data-k]', $('#calc')).forEach(el => { if (el.type === 'checkbox') el.checked = false; else if (el.tagName === 'SELECT') el.selectedIndex = [...el.options].findIndex(o => o.defaultSelected) >= 0 ? [...el.options].findIndex(o => o.defaultSelected) : 0; else el.value = el.dataset.k === 'cut' ? '90' : ''; });
+  calc();
+}
+(function init() {
+  initTabs(); initTheme(); bindMoney();
+  initPdfImport({ name: 'name', vendor: 'prime', amount: 'con', pre: 'pre',
+    base: (v, p) => { if (!p.pre) $('#pre').value = v.toLocaleString('ko-KR'); },
+    method: v => { v = v.replace(/\s/g, ''); const m = /종합심사/.test(v) ? 'comp' : /일괄/.test(v) ? 'tk' : /대안/.test(v) ? 'alt' : /기술제안/.test(v) ? 'tech' : /적격/.test(v) ? 'adq' : null; if (m) $('#method').value = m; } }, () => calc());
+  const s = store.get(KEY); if (s) writeForm(s, $('#calc'));
+  $('#calc').addEventListener('input', calc); $('#calc').addEventListener('change', calc);
+  $('#sampleBtn').onclick = sample; $('#resetBtn').onclick = reset;
+  $('#copyBtn').onclick = () => copyText(opinion());
+  $('#xlsxBtn').onclick = xlsx; $('#xlsxTop').onclick = xlsx;
+  calc();
+})();
+</script>
+</body>
+</html>

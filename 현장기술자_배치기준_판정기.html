@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>현장기술자 배치기준 판정기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-gov-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<style>:root{
+  --primary:#256EF4; --primary-h:#0B50D0; --primary-50:#ECF2FE; --primary-100:#D8E5FD;
+  --text:#1E2124; --text-2:#464C53; --text-3:#6D7882; --line:#CDD1D5; --line-2:#E6E8EA;
+  --bg:#F4F5F6; --surface:#FFFFFF;
+  --danger:#DE3412; --danger-50:#FDEFEC; --warn:#9E6A00; --warn-50:#FFF3DB; --ok:#228738; --ok-50:#EAF6EC;
+  --radius:8px; --radius-lg:12px;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --text:#E6E8EA; --text-2:#C6CACF; --text-3:#9AA3AC; --line:#3A4048; --line-2:#2C3137;
+    --bg:#131619; --surface:#1B1F23; --primary-50:#16233D; --primary-100:#1D3363;
+    --danger-50:#3A1A13; --warn-50:#3A2E12; --ok-50:#15301C; --warn:#F2B53B; --ok:#4FC26A; --danger:#FF6B4A;
+  }
+}
+:root[data-theme="dark"]{
+  --text:#E6E8EA; --text-2:#C6CACF; --text-3:#9AA3AC; --line:#3A4048; --line-2:#2C3137;
+  --bg:#131619; --surface:#1B1F23; --primary-50:#16233D; --primary-100:#1D3363;
+  --danger-50:#3A1A13; --warn-50:#3A2E12; --ok-50:#15301C; --warn:#F2B53B; --ok:#4FC26A; --danger:#FF6B4A;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:"Pretendard GOV Variable","Pretendard GOV","IBM Plex Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.num,.mono{font-family:"IBM Plex Sans KR","Pretendard GOV Variable",sans-serif;font-variant-numeric:tabular-nums}
+a{color:var(--primary)}
+.test-banner{background:var(--danger);color:#fff;text-align:center;font-size:13px;font-weight:600;padding:6px 16px;letter-spacing:.02em}
+.hd{background:var(--surface);border-bottom:1px solid var(--line)}
+.hd-in{max-width:1180px;margin:0 auto;padding:18px 16px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.hd .crumb{font-size:13px;color:var(--text-3);margin-bottom:2px}
+.hd h1{margin:0;font-size:24px;font-weight:700;letter-spacing:-.01em}
+.hd h1 .tag{display:inline-block;vertical-align:middle;margin-left:8px;font-size:12px;font-weight:600;color:var(--danger);border:1px solid var(--danger);border-radius:4px;padding:1px 6px}
+.hd .sub{font-size:14px;color:var(--text-2);margin-top:4px}
+.hd-actions{display:flex;gap:8px;flex-wrap:wrap}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+.seg{display:inline-flex;background:var(--line-2);border-radius:10px;padding:4px;gap:4px;margin-bottom:18px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;color:var(--text-2);font:inherit;font-weight:600;font-size:14px;padding:8px 16px;border-radius:7px;cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--primary);box-shadow:var(--shadow)}
+.panel[hidden]{display:none}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:20px;align-items:start}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
+.card h2{margin:0 0 4px;font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card h2 .no{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px}
+.card .desc{margin:0 0 14px;color:var(--text-3);font-size:13px}
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px 14px}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.f.wide{grid-column:1/-1}
+.f label{font-size:13px;font-weight:600;color:var(--text-2)}
+.f .hint{font-size:12px;color:var(--text-3)}
+input[type=text],input[type=number],input[type=date],select,textarea{font:inherit;font-size:15px;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:9px 11px;width:100%;min-width:0}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--primary);outline-offset:1px;border-color:var(--primary)}
+input.money,input.rate{text-align:right;font-family:"IBM Plex Sans KR",sans-serif;font-variant-numeric:tabular-nums}
+input[readonly]{background:var(--bg);color:var(--text-2)}
+.unit{position:relative}.unit input{padding-right:34px}.unit span{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text-3);pointer-events:none}
+.chk{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--text);cursor:pointer;padding:4px 0}
+.chk input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--primary);flex:none}
+.radios{display:flex;flex-wrap:wrap;gap:8px}
+.radios label{border:1px solid var(--line);border-radius:var(--radius);padding:8px 12px;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:6px;background:var(--surface)}
+.radios input{accent-color:var(--primary)}
+.radios label:has(input:checked){border-color:var(--primary);background:var(--primary-50);color:var(--primary);font-weight:600}
+.btn{font:inherit;font-size:14px;font-weight:600;border-radius:var(--radius);padding:9px 14px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--text);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--text-3)}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn.primary:hover{background:var(--primary-h)}
+.btn.sm{font-size:13px;padding:6px 10px}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--text-3)}
+.btn.ghost:hover{color:var(--danger)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{background:var(--bg);font-weight:600;color:var(--text-2);font-size:13px;text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.t td{padding:6px 8px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+table.t tr:last-child td{border-bottom:0}
+table.t td input,table.t td select{padding:7px 8px;font-size:14px}
+table.t .r{text-align:right}
+table.t tfoot td{background:var(--primary-50);font-weight:700;border-top:1px solid var(--line)}
+.tbl-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:8px;flex-wrap:wrap}
+.sticky{position:sticky;top:12px}
+/* verdict folder tab */
+.verdict{margin-bottom:16px}
+.verdict .tab{display:inline-block;padding:7px 16px 6px;border-radius:10px 10px 0 0;font-weight:700;font-size:14px;color:#fff;background:var(--text-3)}
+.verdict .body{background:var(--surface);border:2px solid var(--text-3);border-left:0;border-right:0;border-radius:0;padding:18px 4px}
+.verdict.ok .tab{background:var(--ok)}.verdict.ok .body{border-color:var(--ok)}
+.verdict.warn .tab{background:#C88A00}.verdict.warn .body{border-color:#C88A00}
+.verdict.bad .tab{background:var(--danger)}.verdict.bad .body{border-color:var(--danger)}
+.verdict.info .tab{background:var(--primary)}.verdict.info .body{border-color:var(--primary)}
+.verdict .big{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.3}
+.verdict .big small{font-size:14px;font-weight:600;color:var(--text-3);margin-left:4px}
+.verdict .lead{font-size:14px;color:var(--text-2);margin:4px 0 12px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px;margin:0}
+.kv dt{color:var(--text-3)}.kv dd{margin:0;text-align:right;font-weight:600}
+.kv .tot{border-top:1px solid var(--line);padding-top:8px;margin-top:2px;font-size:16px;color:var(--primary)}
+.checks{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.checks li{display:flex;gap:8px;font-size:13.5px;line-height:1.5;padding:8px 10px;border-radius:var(--radius);background:var(--bg)}
+.checks li .ic{flex:none;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;margin-top:1px}
+.checks li.ok .ic{background:var(--ok)}.checks li.warn .ic{background:#C88A00}.checks li.bad .ic{background:var(--danger)}.checks li.info .ic{background:var(--primary)}
+.checks li.bad{background:var(--danger-50)}.checks li.warn{background:var(--warn-50)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn-row .btn{flex:1;justify-content:center}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px}
+.pill.ok{background:var(--ok-50);color:var(--ok)}.pill.bad{background:var(--danger-50);color:var(--danger)}.pill.warn{background:var(--warn-50);color:var(--warn)}.pill.info{background:var(--primary-50);color:var(--primary)}
+.note{font-size:13px;color:var(--text-2);background:var(--primary-50);border-left:3px solid var(--primary);padding:10px 12px;border-radius:0 var(--radius) var(--radius) 0;margin:12px 0 0}
+.note.warn{background:var(--warn-50);border-color:#C88A00}
+/* guide */
+.guide h3{font-size:16px;margin:22px 0 8px}
+.guide h3:first-child{margin-top:0}
+.guide p,.guide li{font-size:14px;color:var(--text-2)}
+.guide ol,.guide ul{padding-left:20px;margin:6px 0}
+.guide .law{font-size:13px;background:var(--bg);border:1px solid var(--line-2);border-radius:var(--radius);padding:12px 14px;white-space:pre-wrap;color:var(--text-2)}
+.guide .src{font-size:12px;color:var(--text-3)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#1E2124;color:#fff;font-size:14px;padding:10px 18px;border-radius:999px;opacity:0;transition:.2s;pointer-events:none;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.ft{max-width:1180px;margin:0 auto;padding:0 16px 40px;font-size:12px;color:var(--text-3)}
+@media (max-width:600px){.hd h1{font-size:20px}.card{padding:16px}.verdict .big{font-size:22px}}
+@media print{.test-banner,.hd-actions,.seg,.btn-row,.tbl-actions,.btn{display:none!important}.grid{grid-template-columns:1fr}.sticky{position:static}body{background:#fff}}
+.pdf-dlg{border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;width:min(560px,calc(100vw - 32px));background:var(--surface);color:var(--text);box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.pdf-dlg::backdrop{background:rgba(0,0,0,.35)}
+.pdf-drop{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1.5px dashed var(--primary);background:var(--primary-50);border-radius:var(--radius);padding:12px 14px;margin:0 0 14px;font-size:13.5px;color:var(--text-2)}
+.pdf-drop b{color:var(--primary)}
+body.dragging .pdf-drop{background:var(--primary-100);border-style:solid}
+.f[hidden],[hidden]{display:none!important}
+
+.tier{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin:4px 0 14px}
+.tier div{font-size:12px;text-align:center;padding:8px 4px;border-radius:6px;background:var(--bg);color:var(--text-3);font-weight:600;line-height:1.35}
+.tier div.on{background:var(--primary);color:#fff}
+@media (max-width:600px){.tier{grid-template-columns:repeat(3,1fr)}}
+.path-t td:first-child{white-space:nowrap}
+.path-t tr.hit td{background:var(--ok-50)}
+</style>
+</head>
+<body>
+<div class="test-banner">테스트용 — 판정 결과는 참고용이며, 자격증·경력증명서 원본과 도급계약 조건을 확인한 뒤 결정하십시오.</div>
+<header class="hd"><div class="hd-in">
+  <div>
+    <div class="crumb">학교시설업무 치트키 · 계약관리·정산 도구</div>
+    <h1>현장기술자 배치기준 판정기<span class="tag">테스트용</span></h1>
+    <div class="sub">건설산업기본법 제40조 · 시행령 제35조 [별표 5] 공사예정금액 규모별 건설기술인 배치기준</div>
+  </div>
+  <div class="hd-actions">
+    <button class="btn sm" type="button" data-pdf-btn>📄 계약정보 PDF</button>
+    <button class="btn sm" id="sampleBtn" type="button">예시 불러오기</button>
+    <button class="btn sm" id="resetBtn" type="button">초기화</button>
+    <button class="btn sm" id="themeBtn" type="button" aria-label="화면 테마 전환">◐ 테마</button>
+    <button class="btn sm primary" id="xlsxTop" type="button">엑셀 내보내기</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <div class="seg" role="tablist">
+    <button type="button" role="tab" data-tab="calc" aria-selected="true">배치기준 판정</button>
+    <button type="button" role="tab" data-tab="guide" aria-selected="false">산출기준 안내</button>
+  </div>
+
+  <section class="panel" id="calc">
+    <div class="grid">
+      <div>
+        <div class="card">
+          <h2><span class="no">1</span>공사 정보</h2>
+          <p class="desc">공사예정금액으로 배치 구간이 정해집니다. 도급계약 당사자가 자격·등급·인원을 따로 정했다면 그 기준이 우선합니다(시행령 제35조② 단서).</p>
+          <div class="pdf-drop"><span><b>에듀파인 계약정보 PDF</b>를 끌어다 놓거나 불러오면 계약 정보가 자동 입력됩니다.</span><button class="btn sm primary" type="button" data-pdf-btn>PDF 불러오기</button></div>
+
+          <div class="tier" id="tier"><div>30억 미만</div><div>30억 이상</div><div>100억 이상</div><div>300억 이상</div><div>500억 이상</div><div>700억 이상<br>(제93조 시설물)</div></div>
+          <div class="fields">
+            <div class="f wide"><label for="name">공사명</label><input type="text" id="name" data-k="name" placeholder="예) ○○고등학교 급식실 증축공사"></div>
+            <div class="f"><label for="amt">공사예정금액</label><div class="unit"><input type="text" class="money" id="amt" data-k="amt"><span>원</span></div></div>
+            <div class="f"><label for="field">직무분야</label><input type="text" id="field" data-k="field" placeholder="예) 건축"></div>
+            <div class="f wide"><label>건설사업자 구분</label>
+              <div class="radios">
+                <label><input type="radio" name="biz" value="gen" data-k="biz" checked> 종합공사</label>
+                <label><input type="radio" name="biz" value="spec" data-k="biz"> 전문공사</label>
+              </div></div>
+            <div class="f wide">
+              <label class="chk"><input type="checkbox" data-k="f93"> 법 제93조제1항이 적용되는 시설물이 포함된 공사 (700억 이상 구간 적용)</label>
+              <label class="chk"><input type="checkbox" data-k="agreed"> 도급계약에서 배치 자격·등급·인원을 따로 정함</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="no">2</span>배치 기술인</h2>
+          <p class="desc">"해당 직무분야" 자격·경력만 인정합니다. 실무·시공관리 종사기간에는 자격취득 이전 경력이 포함됩니다([별표 5] 비고 5).</p>
+          <div class="fields">
+            <div class="f"><label for="who">성명</label><input type="text" id="who" data-k="who"></div>
+            <div class="f"><label for="lic">국가기술자격</label>
+              <select id="lic" data-k="lic"><option value="none">없음</option><option value="ind">산업기사</option><option value="eng">기사</option><option value="master">기능장</option><option value="pe">기술사</option></select></div>
+            <div class="f"><label for="yAfter">자격취득 후 해당 직무분야 종사</label><div class="unit"><input type="number" id="yAfter" data-k="yAfter" min="0" step="0.1"><span>년</span></div></div>
+            <div class="f"><label for="yPrac">해당 직무분야 실무 경력(취득 전 포함)</label><div class="unit"><input type="number" id="yPrac" data-k="yPrac" min="0" step="0.1"><span>년</span></div></div>
+            <div class="f"><label for="grade">건설기술인 등급(건설기술 진흥법)</label>
+              <select id="grade" data-k="grade"><option value="0">없음</option><option value="1">초급</option><option value="2">중급</option><option value="3">고급</option><option value="4">특급</option></select></div>
+            <div class="f"><label for="ySame">동종공사 현장 시공관리 경력</label><div class="unit"><input type="number" id="ySame" data-k="ySame" min="0" step="0.1"><span>년</span></div><span class="hint">목적물·종류·시공기술 특성이 비슷한 공사</span></div>
+            <div class="f wide">
+              <label class="chk"><input type="checkbox" data-k="match" checked> 자격·등급이 공사 공종에 상응하는 "해당 직무분야"임</label>
+              <label class="chk"><input type="checkbox" data-k="regTech"> 해당 업종 등록기준(별표 2)의 기술능력에 해당하는 사람 (5억 미만·전문 1억 미만 특례)</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="no">3</span>중복배치 검토 <span class="pill info" style="font-weight:600">선택</span></h2>
+          <p class="desc">1명의 기술인을 2개 현장에 배치하려는 경우에만 입력합니다(시행령 제35조③). 3개 이상 현장 배치는 허용되지 않습니다.</p>
+          <div class="fields">
+            <div class="f wide"><label class="chk"><input type="checkbox" data-k="dual" id="dual"> 다른 현장과 중복배치 예정</label></div>
+            <div class="f"><label for="amt2">다른 현장 공사예정금액</label><div class="unit"><input type="text" class="money" id="amt2" data-k="amt2"><span>원</span></div></div>
+            <div class="f"><label for="sites">배치 현장 수(이 현장 포함)</label><div class="unit"><input type="number" id="sites" data-k="sites" value="2" min="2"><span>개</span></div></div>
+            <div class="f wide"><label>두 현장의 관계</label>
+              <div class="radios">
+                <label><input type="radio" name="rel" value="same" data-k="rel" checked> 동일 시·군 관할</label>
+                <label><input type="radio" name="rel" value="adj" data-k="rel"> 인접 시·군(발주자가 관리 지장 없다고 인정)</label>
+                <label><input type="radio" name="rel" value="inside" data-k="rel"> 시공 중인 현장에서 새로 하는 공사</label>
+                <label><input type="radio" name="rel" value="other" data-k="rel"> 그 밖의 지역</label>
+              </div></div>
+            <div class="f wide">
+              <label class="chk"><input type="checkbox" data-k="sameKind"> 두 공사가 동일한 종류의 공사임</label>
+              <label class="chk"><input type="checkbox" data-k="consent"> 발주자의 승낙을 받음(받을 예정)</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="sticky">
+        <div class="verdict info" id="verdict">
+          <span class="tab">입력 대기</span>
+          <div class="body">
+            <div class="big" id="bigAmt">-</div>
+            <div class="lead" id="leadTxt">공사예정금액과 기술인 정보를 입력하십시오.</div>
+            <dl class="kv" id="kv"></dl>
+            <ul class="checks" id="checks"></ul>
+            <div class="btn-row">
+              <button class="btn" type="button" id="copyBtn">검토의견 복사</button>
+              <button class="btn primary" type="button" id="xlsxBtn">엑셀 내보내기</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="card">
+      <h2>해당 구간 배치요건 대조</h2>
+      <p class="desc">아래 요건 중 하나를 충족하면 배치할 수 있습니다. 충족한 요건은 초록색으로 표시됩니다.</p>
+      <div class="tbl-wrap"><table class="t path-t">
+        <thead><tr><th>호</th><th>배치요건</th><th>대조 결과</th><th style="text-align:center">판정</th></tr></thead>
+        <tbody id="pathBody"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="panel card guide" id="guide" hidden>
+    <h3>1. 근거 법령</h3>
+    <div class="law">「건설산업기본법」 제40조(건설기술인의 배치)
+① 건설사업자는 건설공사의 시공관리 등을 위하여 건설공사 현장에 건설기술인을 1명 이상 배치하여야 한다. (공종 중단 등으로 발주자가 서면 승낙하면 배치하지 않을 수 있음)
+② 배치된 건설기술인은 발주자 승낙 없이 정당한 사유 없이 현장을 이탈하여서는 아니 된다.
+③ 발주자는 배치된 건설기술인이 업무수행 능력이 없다고 인정하면 교체를 요청할 수 있다.
+
+「건설산업기본법 시행령」 제35조(건설기술인의 현장배치기준 등)
+① 해당 공사의 공종에 상응하는 건설기술인을 공사 착수와 동시에 배치하여야 한다.
+② 별표 5의 공사예정금액 규모별 배치기준에 따른다. 다만, 도급계약 당사자 간 합의로 자격종목·등급·인원수를 따로 정한 때에는 그에 따른다.
+③ 발주자 승낙을 받아 1명을 2개 현장에 배치할 수 있는 경우
+  1. 공사예정금액 5억원 미만의 동일한 종류의 공사로서 가. 동일한 시·군 관할지역 공사, 나. 인접 시·군 공사로서 발주자가 관리에 지장이 없다고 인정하는 공사
+  2. 이미 시공 중인 공사의 현장에서 새로이 행하여지는 동일한 종류의 공사
+⑤ 배치한 때에는 배치사실에 대한 발주자의 확인을 받아야 한다.</div>
+
+    <h3>2. [별표 5] 공사예정금액 규모별 배치기준</h3>
+    <div class="tbl-wrap"><table class="t">
+      <thead><tr><th>공사예정금액</th><th>배치기준 (어느 하나 충족)</th></tr></thead>
+      <tbody>
+        <tr><td>700억 이상<br><span style="font-size:12px;color:var(--text-3)">제93조① 시설물 포함 공사</span></td><td>기술사</td></tr>
+        <tr><td>500억 이상</td><td>① 기술사 또는 기능장 ② 특급기술인 + 동종공사 시공관리 5년 이상</td></tr>
+        <tr><td>300억 이상</td><td>① 기술사 또는 기능장 ② 기사 취득 후 해당 직무분야 10년 이상 ③ 특급기술인 + 동종공사 시공관리 3년 이상</td></tr>
+        <tr><td>100억 이상</td><td>① 기술사 또는 기능장 ② 기사 취득 후 5년 이상 ③ 특급기술인, 또는 고급기술인 + 동종공사 3년 이상 ④ 산업기사 취득 후 7년 이상</td></tr>
+        <tr><td>30억 이상</td><td>① 기사 이상 + 실무 3년 이상 ② 산업기사 취득 후 5년 이상 ③ 고급기술인 이상, 또는 중급기술인 + 동종공사 3년 이상</td></tr>
+        <tr><td>30억 미만</td><td>① 산업기사 이상 + 실무 3년 이상 ② 중급기술인 이상, 또는 초급기술인 + 동종공사 3년 이상</td></tr>
+      </tbody>
+    </table></div>
+    <h3>3. 비고(특례)</h3>
+    <ul>
+      <li>비고 6: 1건 공사예정금액 <b>5억 미만</b> — 해당 업종 등록기준(별표 2)의 기술능력에 해당하는 사람으로서 해당 직무분야 3년 이상 종사자 배치 가능</li>
+      <li>비고 7: 전문공사를 시공하는 업종 등록 사업자가 전문공사를 시공하고 1건 공사예정금액이 <b>1억 미만</b> — 등록기준 기술능력에 해당하는 사람 배치 가능</li>
+      <li>비고 5: "시공관리업무" 및 "실무" 종사기간에는 자격취득 이전 경력이 포함됩니다.</li>
+      <li>"기사 이상"에는 기능장·기술사를, "산업기사 이상"에는 기사·기능장·기술사를 포함하는 것으로 판정합니다(국가기술자격 등급 기준).</li>
+    </ul>
+    <h3>4. 발주자 확인사항</h3>
+    <ul>
+      <li>착공계 접수 시 배치기술인 자격증, 건설기술인 경력증명서, 재직증명(4대보험 가입)을 확인합니다.</li>
+      <li>배치 확인 후 공사 중 무단 이탈 여부를 점검하고, 교체 시에도 같은 기준을 적용합니다.</li>
+      <li>중복배치는 발주자 승낙 사항이므로 승낙 문서를 남깁니다.</li>
+    </ul>
+    <p class="src">법령 확인: 건설산업기본법(2025. 11. 27. 시행), 같은 법 시행령(2026. 6. 23. 시행, [별표 5] 2025. 6. 2. 개정). 2027. 1. 23. 시행예정 개정본의 제35조는 현행과 동일합니다.</p>
+  </section>
+</main>
+<footer class="ft">학교시설업무 치트키 · 계약관리·정산 도구 시리즈 · 테스트용 · 입력값은 이 브라우저에만 저장됩니다.</footer>
+
+<script>/* ===== 공통 유틸 (테스트용 정산도구 시리즈) ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const num = v => { if (v == null) return 0; const n = parseFloat(String(v).replace(/[^0-9.\-]/g, '')); return isFinite(n) ? n : 0; };
+const won = n => (Math.round(n) || 0).toLocaleString('ko-KR');
+const pct = (n, d = 2) => (isFinite(n) ? n.toFixed(d) : '0.00') + '%';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const floor10 = n => Math.floor(n / 10) * 10; // 원 단위 절사(10원 미만)
+function parseDate(s) { if (!s) return null; const d = new Date(s + 'T00:00:00'); return isNaN(d) ? null : d; }
+function fmtDate(d) { if (!d) return '-'; const p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}. ${p(d.getMonth() + 1)}. ${p(d.getDate())}.`; }
+function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function diffDays(a, b) { return Math.round((b - a) / 86400000); }
+
+/* 금액 입력 자동 콤마 */
+function bindMoney(root = document) {
+  $$('input.money', root).forEach(el => {
+    if (el._bound) return; el._bound = true;
+    el.setAttribute('inputmode', 'numeric');
+    el.addEventListener('input', () => {
+      const pos = el.value.length - el.selectionStart;
+      const neg = el.value.trim().startsWith('-');
+      const raw = el.value.replace(/[^0-9]/g, '');
+      el.value = raw ? (neg ? '-' : '') + Number(raw).toLocaleString('ko-KR') : (neg ? '-' : '');
+      const p = Math.max(0, el.value.length - pos); try { el.setSelectionRange(p, p); } catch (e) { }
+    });
+  });
+}
+
+/* 저장소 (실패해도 동작) */
+const store = {
+  get(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } },
+  del(k) { try { localStorage.removeItem(k); } catch (e) { } }
+};
+
+function toast(msg) {
+  let t = $('.toast'); if (!t) { t = document.createElement('div'); t.className = 'toast'; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 1800);
+}
+async function copyText(text) {
+  if (!text) { toast('먼저 필요한 값을 입력하십시오'); return; }
+  try { await navigator.clipboard.writeText(text); toast('검토의견을 복사했습니다'); return; } catch (e) { }
+  const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('검토의견을 복사했습니다'); } catch (e) { toast('복사하지 못했습니다'); } ta.remove();
+}
+
+/* 탭 */
+function initTabs() {
+  $$('.seg button').forEach(b => b.addEventListener('click', () => {
+    $$('.seg button').forEach(x => x.setAttribute('aria-selected', x === b));
+    $$('.panel').forEach(p => p.hidden = p.id !== b.dataset.tab);
+  }));
+}
+
+/* 테마 */
+function initTheme() {
+  const saved = store.get('krds-theme'); if (saved) document.documentElement.dataset.theme = saved;
+  const b = $('#themeBtn'); if (!b) return;
+  b.addEventListener('click', () => {
+    const cur = document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const nx = cur === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = nx; store.set('krds-theme', nx);
+  });
+}
+
+/* 폼 직렬화: [data-k] 요소 */
+function readForm(root = document) {
+  const o = {};
+  $$('[data-k]', root).forEach(el => {
+    const k = el.dataset.k;
+    if (el.type === 'checkbox') o[k] = el.checked;
+    else if (el.type === 'radio') { if (el.checked) o[k] = el.value; }
+    else o[k] = el.value;
+  });
+  return o;
+}
+function writeForm(o, root = document) {
+  if (!o) return;
+  $$('[data-k]', root).forEach(el => {
+    const k = el.dataset.k; if (!(k in o)) return;
+    if (el.type === 'checkbox') el.checked = !!o[k];
+    else if (el.type === 'radio') el.checked = el.value === o[k];
+    else el.value = o[k];
+  });
+}
+
+/* ===== 엑셀 내보내기 (ExcelJS) =====
+   spec = { file, sheets:[{ name, title, meta:[[k,v]], blocks:[{ heading, columns:[{h,w,t}], rows:[[]], foot:[] }] }] }
+   t: 'text' | 'won' | 'pct' | 'num' | 'date' */
+async function exportXlsx(spec) {
+  if (typeof ExcelJS === 'undefined') { toast('엑셀 라이브러리를 불러오지 못했습니다(네트워크 확인)'); return; }
+  const wb = new ExcelJS.Workbook(); wb.creator = '정산도구(테스트용)'; wb.created = new Date();
+  const thin = { style: 'thin', color: { argb: 'FFCDD1D5' } };
+  const border = { top: thin, left: thin, bottom: thin, right: thin };
+  const fmtOf = t => t === 'won' ? '#,##0' : t === 'pct' ? '0.00"%"' : t === 'num' ? '#,##0.##' : '@';
+  for (const sh of spec.sheets) {
+    const ws = wb.addWorksheet(sh.name, { pageSetup: { paperSize: 9, orientation: 'portrait', fitToPage: true, fitToWidth: 1, fitToHeight: 0, margins: { left: .5, right: .5, top: .6, bottom: .6, header: .3, footer: .3 } }, views: [{ showGridLines: false }] });
+    const maxCols = Math.max(2, ...sh.blocks.map(b => b.columns.length));
+    const widths = new Array(maxCols).fill(12);
+    sh.blocks.forEach(b => b.columns.forEach((c, i) => { widths[i] = Math.max(widths[i], c.w || 12); }));
+    ws.columns = widths.map(w => ({ width: w }));
+    let r = 1;
+    ws.mergeCells(r, 1, r, maxCols); const tc = ws.getCell(r, 1); tc.value = sh.title; tc.font = { bold: true, size: 15, color: { argb: 'FF1E2124' } }; ws.getRow(r).height = 26; r++;
+    ws.mergeCells(r, 1, r, maxCols); const wc = ws.getCell(r, 1); wc.value = '※ 테스트용 — 참고용 산출 결과이며, 최종 판단은 관계 법령·계약문서와 원본 증빙으로 확인하시기 바랍니다.'; wc.font = { size: 10, bold: true, color: { argb: 'FFDE3412' } }; r++;
+    if (sh.meta && sh.meta.length) {
+      r++;
+      sh.meta.forEach(([k, v]) => {
+        const a = ws.getCell(r, 1); a.value = k; a.font = { bold: true, color: { argb: 'FF464C53' } }; a.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4F5F6' } }; a.border = border;
+        if (maxCols > 2) ws.mergeCells(r, 2, r, maxCols);
+        const b = ws.getCell(r, 2); b.value = v; b.border = border; b.alignment = { wrapText: true, vertical: 'middle' };
+        if (typeof v === 'number') b.numFmt = '#,##0';
+        r++;
+      });
+    }
+    for (const blk of sh.blocks) {
+      r++;
+      if (blk.heading) { ws.mergeCells(r, 1, r, maxCols); const h = ws.getCell(r, 1); h.value = blk.heading; h.font = { bold: true, size: 12, color: { argb: 'FF256EF4' } }; r++; }
+      blk.columns.forEach((c, i) => {
+        const cell = ws.getCell(r, i + 1); cell.value = c.h; cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF256EF4' } }; cell.border = border; cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+      });
+      ws.getRow(r).height = 22; r++;
+      const all = blk.rows.concat(blk.foot ? [blk.foot] : []);
+      all.forEach((row, ri) => {
+        const isFoot = blk.foot && ri === all.length - 1;
+        row.forEach((v, i) => {
+          const c = blk.columns[i] || {}; const cell = ws.getCell(r, i + 1);
+          cell.value = (v === '' || v == null) ? null : v; cell.border = border;
+          if (typeof v === 'number') { cell.numFmt = fmtOf(c.t); cell.alignment = { horizontal: 'right', vertical: 'middle' }; }
+          else cell.alignment = { vertical: 'middle', wrapText: true, horizontal: c.t === 'text' || !c.t ? 'left' : 'center' };
+          if (isFoot) { cell.font = { bold: true }; cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFECF2FE' } }; }
+        });
+        r++;
+      });
+    }
+  }
+  const buf = await wb.xlsx.writeBuffer();
+  const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = spec.file; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  toast('엑셀 파일을 내려받았습니다');
+}
+
+/* 판정 패널 렌더 */
+function renderChecks(ul, items) {
+  const ic = { ok: '✓', warn: '!', bad: '✕', info: 'i' };
+  ul.innerHTML = items.map(x => `<li class="${x.lv}"><span class="ic">${ic[x.lv]}</span><span>${x.html || esc(x.t)}</span></li>`).join('');
+}
+function setVerdict(el, lv, tabText) { el.className = 'verdict ' + lv; $('.tab', el).textContent = tabText; }
+
+/* ===== 에듀파인 계약정보 PDF 가져오기 =====
+   pdf.js로 텍스트를 추출해 항목명(라벨) 기준으로 값을 찾습니다. 스캔(이미지) PDF는 읽을 수 없습니다. */
+const PDFJS_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+const PDFJS_WORKER = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+function loadPdfJs() {
+  if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  return new Promise((res, rej) => {
+    const s = document.createElement('script'); s.src = PDFJS_URL;
+    s.onload = () => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER; res(window.pdfjsLib); };
+    s.onerror = () => rej(new Error('PDF 라이브러리를 불러오지 못했습니다(네트워크 확인)'));
+    document.head.appendChild(s);
+  });
+}
+async function pdfToLines(file) {
+  const lib = await loadPdfJs();
+  const doc = await lib.getDocument({ data: await file.arrayBuffer() }).promise;
+  const lines = [];
+  for (let p = 1; p <= doc.numPages; p++) {
+    const tc = await (await doc.getPage(p)).getTextContent();
+    const rows = [];
+    tc.items.forEach(it => {
+      if (!it.str || !it.str.trim()) return;
+      const y = it.transform[5], x = it.transform[4];
+      let row = rows.find(r => Math.abs(r.y - y) < 3);
+      if (!row) { row = { y, items: [] }; rows.push(row); }
+      row.items.push({ x, w: it.width || 0, h: Math.abs(it.transform[3]) || 10, s: it.str });
+    });
+    rows.sort((a, b) => b.y - a.y).forEach(r => {
+      const its = r.items.sort((a, b) => a.x - b.x); let line = '', prevEnd = null;
+      its.forEach(i => {
+        if (prevEnd != null) { const gap = i.x - prevEnd; line += gap > i.h * 1.2 ? '  ' : gap > i.h * 0.15 ? ' ' : ''; }
+        line += i.s; prevEnd = i.x + i.w;
+      });
+      lines.push(line.replace(/\s{3,}/g, '  ').trim());
+    });
+  }
+  return lines;
+}
+const PDF_LABELS = {
+  name: ['계약명', '공사명', '건명', '사업명'],
+  vendor: ['계약상대자', '계약업체명', '업체명', '상호', '계약자'],
+  amount: ['계약금액', '총계약금액', '계약총액', '금차계약금액'],
+  design: ['설계금액', '공사예정금액', '추정금액'],
+  pre: ['예정가격'],
+  base: ['기초금액'],
+  bidRate: ['낙찰률', '낙찰율', '사정률'],
+  method: ['계약방법', '낙찰자결정방법', '낙찰방법'],
+  start: ['착공일자', '착공일', '계약기간시작', '착수일자', '공사시작일'],
+  end: ['준공예정일자', '준공예정일', '준공기한', '완료예정일', '계약기간종료', '준공일자'],
+  period: ['계약기간', '공사기간', '이행기간'],
+  contractDate: ['계약일자', '계약체결일']
+};
+const DATE_RE = /(20\d{2})\s*[.\-\/년]\s*(\d{1,2})\s*[.\-\/월]\s*(\d{1,2})\s*일?\.?|(20\d{2})(\d{2})(\d{2})/g;
+function toISO(m) { const y = m[1] || m[4], mo = m[2] || m[5], d = m[3] || m[6]; return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`; }
+function parseContract(lines) {
+  const norm = s => s.replace(/\s+/g, '');
+  const out = {};
+  const after = (key) => {
+    for (const lab of PDF_LABELS[key]) {
+      for (let i = 0; i < lines.length; i++) {
+        const L = lines[i], nL = norm(L); const idx = nL.indexOf(lab);
+        if (idx < 0) continue;
+        // 라벨 이후 원문 위치 찾기
+        let cnt = 0, pos = 0;
+        for (; pos < L.length && cnt < idx + lab.length; pos++) if (!/\s/.test(L[pos])) cnt++;
+        let rest = L.slice(pos).replace(/^[\s:：)\]]+/, '');
+        if (key !== 'period') rest = rest.split(/\s{2,}/)[0];
+        // 다음 라벨이 바로 이어지면 그 앞까지
+        if (!rest || rest.length < 1) rest = lines[i + 1] || '';
+        if (rest) return rest;
+      }
+    }
+    return null;
+  };
+  const cutAtLabel = s => {
+    const all = Object.values(PDF_LABELS).flat();
+    let end = s.length;
+    all.forEach(l => { const re = new RegExp(l.split('').join('\\s*')); const m = s.slice(1).search(re); if (m >= 0 && m + 1 < end) end = m + 1; });
+    return s.slice(0, end).trim();
+  };
+  const money = s => { if (!s) return null; const m = s.match(/(?:금\s*)?([0-9]{1,3}(?:,[0-9]{3})+|[0-9]{5,})\s*원?/); return m ? Number(m[1].replace(/,/g, '')) : null; };
+  const dates = s => { if (!s) return []; const r = []; let m; DATE_RE.lastIndex = 0; while ((m = DATE_RE.exec(s))) r.push(toISO(m)); return r; };
+
+  const t = s => s ? cutAtLabel(s).replace(/\s{2,}/g, ' ').trim() : null;
+  const nm = after('name'); if (nm) out.name = t(nm);
+  const vd = after('vendor'); if (vd) out.vendor = t(vd).replace(/\s*[\(（]?\s*(대표자|대표이사|대표)(?![가-힣]).*$/, '').trim();
+  ['amount', 'design', 'pre', 'base'].forEach(k => { const v = money(after(k)); if (v) out[k] = v; });
+  const br = after('bidRate'); if (br) { const m = br.replace(/\s/g, '').match(/(\d{1,3}\.\d+|\d{2,3})%?/); if (m && +m[1] > 0 && +m[1] <= 100) out.bidRate = m[1]; }
+  const me = after('method'); if (me) out.method = t(me);
+  const st = dates(after('start')); if (st.length) out.start = st[0];
+  const en = dates(after('end')); if (en.length) out.end = en[0];
+  const pr = dates(after('period'));
+  if (pr.length >= 2) { out.start = out.start || pr[0]; out.end = out.end || pr[pr.length - 1]; }
+  const cd = dates(after('contractDate')); if (cd.length) out.contractDate = cd[0];
+  return out;
+}
+const PDF_FIELD_NAME = { name: '공사명(계약명)', vendor: '계약상대자', amount: '계약금액', design: '설계금액', pre: '예정가격', base: '기초금액', bidRate: '낙찰률', method: '계약방법', start: '착공일', end: '준공기한', contractDate: '계약일자' };
+/* map: { 추출키: 'data-k 이름' | function(value, parsed) } */
+function initPdfImport(map, onApplied) {
+  const input = document.createElement('input'); input.type = 'file'; input.accept = 'application/pdf,.pdf'; input.hidden = true; document.body.appendChild(input);
+  const dlg = document.createElement('dialog'); dlg.className = 'pdf-dlg'; document.body.appendChild(dlg);
+  $$('[data-pdf-btn]').forEach(b => b.addEventListener('click', () => input.click()));
+  input.addEventListener('change', () => { if (input.files[0]) handle(input.files[0]); input.value = ''; });
+  document.addEventListener('dragover', e => { if ([...e.dataTransfer.items].some(i => i.kind === 'file')) { e.preventDefault(); document.body.classList.add('dragging'); } });
+  document.addEventListener('dragleave', e => { if (!e.relatedTarget) document.body.classList.remove('dragging'); });
+  document.addEventListener('drop', e => { const f = [...e.dataTransfer.files].find(f => /\.pdf$/i.test(f.name)); document.body.classList.remove('dragging'); if (f) { e.preventDefault(); handle(f); } });
+  async function handle(file) {
+    toast('PDF를 읽는 중입니다…');
+    let lines;
+    try { lines = await pdfToLines(file); } catch (e) { toast(e.message || 'PDF를 읽지 못했습니다'); return; }
+    if (!lines.join('').trim()) { show(file.name, null, '텍스트가 없는 PDF(스캔 이미지)입니다. 에듀파인에서 "PDF 저장"으로 내려받은 파일을 사용하십시오.'); return; }
+    const p = parseContract(lines);
+    const keys = Object.keys(map).filter(k => p[k] != null);
+    show(file.name, p, keys.length ? '' : '계약정보 항목을 찾지 못했습니다. 에듀파인 계약정보(계약대장) 화면에서 저장한 PDF인지 확인하십시오.', lines);
+  }
+  function show(fname, p, msg, lines) {
+    const rows = p ? Object.keys(map).map(k => {
+      const v = p[k]; const has = v != null;
+      const disp = !has ? '<span style="color:var(--text-3)">찾지 못함</span>' : typeof v === 'number' ? won(v) + '원' : (k === 'bidRate' ? v + '%' : esc(v));
+      return `<tr><td><label class="chk" style="padding:0"><input type="checkbox" data-pk="${k}" ${has ? 'checked' : 'disabled'}> ${PDF_FIELD_NAME[k]}</label></td><td>${disp}</td></tr>`;
+    }).join('') : '';
+    dlg.innerHTML = `<form method="dialog">
+      <h3 style="margin:0 0 4px;font-size:17px">에듀파인 계약정보 가져오기</h3>
+      <p style="margin:0 0 12px;font-size:13px;color:var(--text-3)">${esc(fname)} · 입력할 항목을 확인하십시오. 기존 값은 덮어씁니다.</p>
+      ${msg ? `<div class="note warn" style="margin:0 0 12px">${msg}</div>` : ''}
+      ${rows ? `<div class="tbl-wrap"><table class="t"><thead><tr><th>항목</th><th>추출 값</th></tr></thead><tbody>${rows}</tbody></table></div>` : ''}
+      ${lines ? `<details style="margin-top:10px;font-size:12px;color:var(--text-3)"><summary>추출된 원문 보기</summary><pre style="white-space:pre-wrap;max-height:180px;overflow:auto;background:var(--bg);padding:8px;border-radius:6px">${esc(lines.join('\n').slice(0, 4000))}</pre></details>` : ''}
+      <div class="btn-row"><button class="btn" value="cancel">닫기</button>${rows && !msg ? '<button class="btn primary" value="ok" id="pdfApply">입력하기</button>' : ''}</div>
+    </form>`;
+    dlg.showModal();
+    const ap = $('#pdfApply', dlg);
+    if (ap) ap.addEventListener('click', () => {
+      const done = [];
+      $$('[data-pk]:checked', dlg).forEach(cb => {
+        const k = cb.dataset.pk, v = p[k], tgt = map[k];
+        if (typeof tgt === 'function') { tgt(v, p); done.push(PDF_FIELD_NAME[k]); return; }
+        $$(`[data-k="${tgt}"]`).forEach(el => {
+          if (el.type === 'radio') el.checked = el.value === v;
+          else el.value = (typeof v === 'number' && el.classList.contains('money')) ? v.toLocaleString('ko-KR') : v;
+        });
+        done.push(PDF_FIELD_NAME[k]);
+      });
+      if (onApplied) onApplied(p);
+      toast(done.length ? `${done.length}개 항목을 입력했습니다` : '입력한 항목이 없습니다');
+    });
+  }
+}
+</script>
+<script>
+const KEY = 'tool-gisulin-baechi-v1';
+const EOK = 100000000;
+const LIC = { none: '없음', ind: '산업기사', eng: '기사', master: '기능장', pe: '기술사' };
+const LICR = { none: 0, ind: 1, eng: 2, master: 3, pe: 4 };
+const GRADE = ['없음', '초급', '중급', '고급', '특급'];
+let last = null;
+
+function tierOf(amt, f93) {
+  if (amt >= 700 * EOK && f93) return 5;
+  if (amt >= 500 * EOK) return 4; if (amt >= 300 * EOK) return 3; if (amt >= 100 * EOK) return 2; if (amt >= 30 * EOK) return 1; return 0;
+}
+const TIER_NAME = ['30억원 미만', '30억원 이상', '100억원 이상', '300억원 이상', '500억원 이상', '700억원 이상(제93조 시설물)'];
+
+function paths(t, p) {
+  const L = p.lic, lr = LICR[L], g = p.grade, yA = p.yAfter, yP = p.yPrac, yS = p.ySame;
+  const own = `자격 ${LIC[L]} · 취득 후 ${yA}년 · 실무 ${yP}년 · 등급 ${GRADE[g]} · 동종 ${yS}년`;
+  const R = (no, req, ok, got) => ({ no, req, ok, got });
+  const peOrMaster = lr >= 3;
+  switch (t) {
+    case 5: return [R('1', '기술사', L === 'pe', `자격: ${LIC[L]}`)];
+    case 4: return [R('1', '기술사 또는 기능장', peOrMaster, `자격: ${LIC[L]}`), R('2', '특급기술인 + 동종공사 시공관리 5년 이상', g >= 4 && yS >= 5, `등급 ${GRADE[g]} · 동종 ${yS}년`)];
+    case 3: return [R('1', '기술사 또는 기능장', peOrMaster, `자격: ${LIC[L]}`), R('2', '기사 취득 후 해당 직무분야 10년 이상', L === 'eng' && yA >= 10, `${LIC[L]} · 취득 후 ${yA}년`), R('3', '특급기술인 + 동종공사 시공관리 3년 이상', g >= 4 && yS >= 3, `등급 ${GRADE[g]} · 동종 ${yS}년`)];
+    case 2: return [R('1', '기술사 또는 기능장', peOrMaster, `자격: ${LIC[L]}`), R('2', '기사 취득 후 해당 직무분야 5년 이상', L === 'eng' && yA >= 5, `${LIC[L]} · 취득 후 ${yA}년`),
+      R('3가', '특급기술인', g >= 4, `등급 ${GRADE[g]}`), R('3나', '고급기술인 + 동종공사 시공관리 3년 이상', g >= 3 && yS >= 3, `등급 ${GRADE[g]} · 동종 ${yS}년`), R('4', '산업기사 취득 후 해당 직무분야 7년 이상', L === 'ind' && yA >= 7, `${LIC[L]} · 취득 후 ${yA}년`)];
+    case 1: return [R('1', '기사 이상 자격 + 해당 직무분야 실무 3년 이상', lr >= 2 && yP >= 3, `${LIC[L]} · 실무 ${yP}년`), R('2', '산업기사 취득 후 해당 직무분야 5년 이상', L === 'ind' && yA >= 5, `${LIC[L]} · 취득 후 ${yA}년`),
+      R('3가', '고급기술인 이상', g >= 3, `등급 ${GRADE[g]}`), R('3나', '중급기술인 + 동종공사 시공관리 3년 이상', g >= 2 && yS >= 3, `등급 ${GRADE[g]} · 동종 ${yS}년`)];
+    default: return [R('1', '산업기사 이상 자격 + 해당 직무분야 실무 3년 이상', lr >= 1 && yP >= 3, `${LIC[L]} · 실무 ${yP}년`),
+      R('2가', '중급기술인 이상', g >= 2, `등급 ${GRADE[g]}`), R('2나', '초급기술인 + 동종공사 시공관리 3년 이상', g >= 1 && yS >= 3, `등급 ${GRADE[g]} · 동종 ${yS}년`)];
+  }
+}
+
+function calc() {
+  const f = readForm($('#calc'));
+  const amt = num(f.amt), t = tierOf(amt, f.f93);
+  $$('#tier div').forEach((d, i) => d.classList.toggle('on', !!amt && i === t));
+  const p = { lic: f.lic, grade: +f.grade, yAfter: num(f.yAfter), yPrac: Math.max(num(f.yPrac), num(f.yAfter)), ySame: num(f.ySame) };
+  let ps = amt ? paths(t, p) : [];
+  // 특례
+  const sp6 = amt > 0 && amt < 5 * EOK, sp7 = amt > 0 && amt < 1 * EOK && f.biz === 'spec';
+  if (sp6) ps.push({ no: '비고6', req: '5억 미만: 등록기준 기술능력 해당자 + 해당 직무분야 3년 이상', ok: f.regTech && p.yPrac >= 3, got: `등록기준 ${f.regTech ? '해당' : '미해당'} · 실무 ${p.yPrac}년` });
+  if (sp7) ps.push({ no: '비고7', req: '전문공사 1억 미만: 등록기준 기술능력 해당자', ok: !!f.regTech, got: `등록기준 ${f.regTech ? '해당' : '미해당'}` });
+  if (!f.match) ps = ps.map(x => ({ ...x, ok: false, got: x.got + ' · 직무분야 불일치' }));
+  const hit = ps.filter(x => x.ok);
+  $('#pathBody').innerHTML = ps.length ? ps.map(x => `<tr class="${x.ok ? 'hit' : ''}"><td>${x.no}</td><td>${esc(x.req)}</td><td style="font-size:13px;color:var(--text-2)">${esc(x.got)}</td><td style="text-align:center"><span class="pill ${x.ok ? 'ok' : 'bad'}">${x.ok ? '충족' : '미충족'}</span></td></tr>`).join('')
+    : '<tr><td colspan="4" style="color:var(--text-3);text-align:center;padding:16px">공사예정금액을 입력하십시오.</td></tr>';
+
+  const ck = []; let lv = 'info', tab = '입력 대기', big = '-', lead = '공사예정금액과 기술인 정보를 입력하십시오.';
+  if (amt) {
+    ck.push({ lv: 'info', t: `적용 구간: ${TIER_NAME[t]} (공사예정금액 ${won(amt)}원)` });
+    if (amt >= 700 * EOK && !f.f93) ck.push({ lv: 'info', t: '700억 이상이지만 제93조① 시설물 미포함으로 500억 이상 기준을 적용했습니다.' });
+    if (!f.match) ck.push({ lv: 'bad', t: '해당 직무분야 자격·경력이 아니면 배치기준을 충족할 수 없습니다(별표 5 비고 1·2).' });
+    if (hit.length) { lv = 'ok'; tab = '배치 적합'; big = '적합'; lead = `충족 요건: ${hit.map(x => x.no + '호').join(', ')}`; ck.push({ lv: 'ok', t: `배치기준 충족 — ${hit[0].req}` }); }
+    else { lv = 'bad'; tab = '배치 부적합'; big = '부적합'; lead = `${TIER_NAME[t]} 구간 요건을 충족하지 않습니다.`; ck.push({ lv: 'bad', t: '해당 구간의 어느 요건도 충족하지 않습니다. 기술인 교체 또는 추가 배치를 요구하십시오.' }); }
+    if (f.agreed) { ck.push({ lv: 'warn', t: '도급계약에서 따로 정한 자격·등급·인원이 있으면 그 기준을 우선 적용합니다(시행령 제35조② 단서) — 계약문서와 대조하십시오.' }); if (lv === 'ok') lv = 'warn'; }
+    if (num(f.yPrac) < num(f.yAfter)) ck.push({ lv: 'info', t: '실무 경력이 취득 후 종사기간보다 짧아 취득 후 기간으로 보정했습니다.' });
+    if (p.ySame > p.yPrac) { ck.push({ lv: 'warn', t: `동종공사 시공관리 경력(${p.ySame}년)이 해당 직무분야 실무 경력(${p.yPrac}년)보다 깁니다. 경력증명서로 확인하십시오.` }); if (lv === 'ok') { lv = 'warn'; tab = '경력 확인'; } }
+
+    // 중복배치
+    if (f.dual) {
+      const a2 = num(f.amt2), sites = num(f.sites) || 2; const probs = [];
+      if (sites > 2) probs.push('3개 이상 현장 배치 불가');
+      if (!f.sameKind) probs.push('동일한 종류의 공사가 아님');
+      if (!f.consent) probs.push('발주자 승낙 없음');
+      if (f.rel === 'inside') { /* 제35조③2호: 금액 제한 없음 */ }
+      else {
+        if (!(amt < 5 * EOK)) probs.push('이 현장 공사예정금액 5억 이상');
+        if (!a2) probs.push('다른 현장 금액 미입력'); else if (!(a2 < 5 * EOK)) probs.push('다른 현장 공사예정금액 5억 이상');
+        if (f.rel === 'other') probs.push('동일·인접 시·군이 아님');
+      }
+      const basis = f.rel === 'inside' ? '제35조③제2호(시공 중 현장의 새 공사)' : f.rel === 'adj' ? '제35조③제1호나목(인접 시·군)' : '제35조③제1호가목(동일 시·군)';
+      if (probs.length) { ck.push({ lv: 'bad', t: `중복배치 불가: ${probs.join(' · ')}` }); lv = 'bad'; if (tab === '배치 적합') tab = '중복배치 불가'; }
+      else ck.push({ lv: 'ok', t: `중복배치 가능 — ${basis}, 공사품질·안전에 지장이 없는 범위에서 발주자 승낙` });
+    }
+    ck.push({ lv: 'info', t: '공사 착수와 동시에 배치하고, 배치사실에 대한 발주자 확인을 받아야 합니다(시행령 제35조①⑤).' });
+  }
+  setVerdict($('#verdict'), lv, tab);
+  $('#bigAmt').textContent = big; $('#leadTxt').textContent = lead;
+  $('#kv').innerHTML = amt ? [['적용 구간', TIER_NAME[t]], ['기술인', f.who || '-'], ['국가기술자격', LIC[f.lic]], ['건설기술인 등급', GRADE[+f.grade]], ['충족 요건 수', `${hit.length} / ${ps.length}`]]
+    .map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('') : '';
+  renderChecks($('#checks'), ck);
+  last = { f, amt, t, ps, hit, ck, tab, lead, p };
+  store.set(KEY, f);
+}
+
+function opinion() {
+  const L = last, f = L.f; if (!L || !L.amt) return '';
+  return ['[테스트용] 현장 건설기술인 배치기준 검토의견', '',
+    `1. 공 사 명: ${f.name || '-'} (${f.biz === 'spec' ? '전문공사' : '종합공사'}, 직무분야 ${f.field || '-'})`,
+    `2. 공사예정금액: ${won(L.amt)}원 → 적용 구간 ${TIER_NAME[L.t]}`,
+    `3. 배치 기술인: ${f.who || '-'} / ${LIC[f.lic]} (취득 후 ${L.p.yAfter}년, 실무 ${L.p.yPrac}년) / ${GRADE[+f.grade]} (동종 ${L.p.ySame}년)`,
+    '4. 요건 대조', ...L.ps.map(x => `   - [${x.ok ? '충족' : '미충족'}] ${x.no}: ${x.req} (${x.got})`),
+    `5. 판정: ${L.tab} — ${L.lead}`, '6. 확인사항', ...L.ck.map(c => '   - ' + c.t), '',
+    '근거: 건설산업기본법 제40조, 같은 법 시행령 제35조 및 [별표 5]',
+    '※ 테스트용 판정 결과이며, 자격증·경력증명서 원본 확인 후 최종 결정하시기 바랍니다.'].join('\n');
+}
+
+function xlsx() {
+  const L = last, f = L.f;
+  if (!L.amt) { toast('공사예정금액을 입력하십시오'); return; }
+  const d = new Date(), ymd = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+  exportXlsx({
+    file: `현장기술자_배치기준_판정_${(f.name || '공사').replace(/[\\/:*?"<>|]/g, '')}_${ymd}.xlsx`,
+    sheets: [{
+      name: '판정결과', title: '현장 건설기술인 배치기준 판정표',
+      meta: [['공사명', f.name || '-'], ['건설사업자 구분 / 직무분야', `${f.biz === 'spec' ? '전문공사' : '종합공사'} / ${f.field || '-'}`], ['공사예정금액(원)', L.amt], ['적용 구간', TIER_NAME[L.t]],
+        ['배치 기술인', f.who || '-'], ['국가기술자격', `${LIC[f.lic]} (취득 후 ${L.p.yAfter}년, 실무 ${L.p.yPrac}년)`], ['건설기술인 등급', `${GRADE[+f.grade]} (동종공사 시공관리 ${L.p.ySame}년)`],
+        ['판정', `${L.tab} — ${L.lead}`]],
+      blocks: [{ heading: '배치요건 대조', columns: [{ h: '호', w: 10 }, { h: '배치요건', w: 46 }, { h: '대조 결과', w: 40 }, { h: '판정', w: 10 }], rows: L.ps.map(x => [x.no, x.req, x.got, x.ok ? '충족' : '미충족']) }]
+    }, {
+      name: '검토의견', title: '검토의견',
+      blocks: [{ columns: [{ h: '구분', w: 10 }, { h: '내용', w: 90 }], rows: L.ck.map(c => [({ ok: '적정', warn: '검토', bad: '보완', info: '안내' })[c.lv], c.t]) }]
+    }]
+  });
+}
+
+function sample() {
+  writeForm({ name: '○○고등학교 급식실 증축공사', amt: '3,480,000,000', field: '건축', biz: 'gen', f93: false, agreed: false,
+    who: '홍길동', lic: 'eng', yAfter: '4', yPrac: '6', grade: '2', ySame: '4', match: true, regTech: false,
+    dual: false, amt2: '', sites: '2', rel: 'same', sameKind: false, consent: false }, $('#calc'));
+  bindMoney(); calc(); toast('예시를 불러왔습니다');
+}
+function reset() {
+  store.del(KEY);
+  $$('[data-k]', $('#calc')).forEach(el => { if (el.type === 'checkbox') el.checked = el.dataset.k === 'match'; else if (el.type === 'radio') el.checked = ['gen', 'same'].includes(el.value); else if (el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = el.dataset.k === 'sites' ? '2' : ''; });
+  calc();
+}
+(function init() {
+  initTabs(); initTheme(); bindMoney();
+  initPdfImport({ name: 'name', design: 'amt', amount: (v, p) => { if (!p.design) $('#amt').value = v.toLocaleString('ko-KR'); } }, () => calc());
+  const s = store.get(KEY); if (s) writeForm(s, $('#calc'));
+  $('#calc').addEventListener('input', calc); $('#calc').addEventListener('change', calc);
+  $('#sampleBtn').onclick = sample; $('#resetBtn').onclick = reset;
+  $('#copyBtn').onclick = () => copyText(opinion());
+  $('#xlsxBtn').onclick = xlsx; $('#xlsxTop').onclick = xlsx;
+  calc();
+})();
+</script>
+</body>
+</html>

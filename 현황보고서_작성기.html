@@ -885,6 +885,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       if (!$('lvl').value) $('lvl').value = d.LVL0 || '';
       if (!$('fond').value) $('fond').value = d.FOND0 || '';
       buildGradeGrid(R.parseGrades($('grades').value));
+      loadAlimi(d.SCH);
       document.body.classList.add('hasdata');
       render();
     }).catch(function (e) {
@@ -1004,6 +1005,18 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       ocrGrades(fr.result);
     };
     fr.readAsDataURL(file);
+  }
+  function loadAlimi(name) {
+    if (!name || $('grades').value) return;
+    fetch('data/alimi.json', { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
+      var s = j.schools && (j.schools[name] || j.schools[Object.keys(j.schools).filter(function (k) { return k.replace(/\s/g, '') === name.replace(/\s/g, ''); })[0]]);
+      if (!s || !s.grades || !s.grades.length) throw 0;
+      fillGrades(s.grades.map(function (g) { return g[1]; }), s.grades.map(function (g) { return g[2]; }));
+      if (s.stu && !$('stu').value) $('stu').value = s.stu;
+      if (s.cls && !$('cls').value) $('cls').value = s.cls;
+      render();
+      $('ocrState').textContent = '학교알리미 자료 자동 반영 (' + j.updated + ' 갱신)';
+    }).catch(function () {});
   }
   function nums(s) { return (String(s).replace(/\(\s*\d+\s*\)/g, '').replace(/,/g, '').match(/\d+/g) || []).map(Number); }
   function fillGrades(c, s) {

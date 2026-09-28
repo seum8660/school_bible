@@ -64,9 +64,10 @@ jobs:
           SCHOOLINFO_KEY: ${{ secrets.SCHOOLINFO_KEY }}
           MODE: ${{ github.event.inputs.alimi || 'fetch' }}
         run: |
-          node scripts/alimi_fetch.mjs
+          node scripts/alimi_fetch.mjs || echo "학교알리미 스크립트 오류"
+          ls -la data || true
           git add data
-          git diff --cached --quiet || (git commit -m "학교알리미 자료 갱신" && git pull --rebase -q && git push -q)
+          git diff --cached --quiet || (git commit -m "학교알리미 자료 갱신" && git pull --rebase && git push)
       - name: Clean
         run: rm -rf .github templates tools
       - uses: actions/configure-pages@v5

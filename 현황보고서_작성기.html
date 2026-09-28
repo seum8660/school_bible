@@ -313,9 +313,10 @@ table.gin input{border:1px solid #B1B8BE;border-radius:4px}
         <option value="gray-green">그레이 · 그린</option>
       </select>
     </label>
+    <button class="b g" id="btnReset">초기화</button>
     <button class="b" id="btnPrint">인쇄 · PDF</button>
     <button class="b g" id="btnHtml">보고서 저장(HTML)</button>
-    <span class="filebtn"><button class="b g">책자 PDF</button><input type="file" id="pdfIn" accept="application/pdf"></span>
+    <button class="b g" id="btnBooklet">책자 PDF</button>
   </div>
 </header>
 
@@ -358,7 +359,7 @@ table.gin input{border:1px solid #B1B8BE;border-radius:4px}
     </div>
 
     <p class="note">보고서의 <b>파란 밑줄 글자</b>를 눌러 학교급·설립구분·설립일·비고·기타의견을 바로 고치실 수 있습니다. 고친 값은 학교명별로 이 컴퓨터에 저장됩니다.</p>
-    <p class="note">인쇄 창에서 대상 “PDF로 저장”, 용지 A4, 여백 “없음”, 배경 그래픽 켜기로 설정하십시오. 책자 PDF는 그렇게 저장한 4쪽 PDF를 선택하시면 A3 펼침면 2장으로 만들어 드립니다.</p>
+    <p class="note">인쇄 창에서 대상 “PDF로 저장”, 용지 A4, 여백 “없음”, 배경 그래픽 켜기로 설정하십시오. 책자 PDF는 A3 가로 펼침면(뒷표지|표지, 2쪽|3쪽)으로 배치해 인쇄 창을 엽니다. 용지 A3·가로로 저장한 뒤 양면(짧은 쪽 넘김)으로 인쇄해 반으로 접으십시오.</p>
     <button class="b g" id="btnRender">미리보기 새로고침</button>
   </aside>
 
@@ -1067,6 +1068,39 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     });
   }
 
+  /* ---------- 책자 PDF — A4 여러 쪽을 A3 가로 펼침면으로 재배치해 바로 인쇄 ---------- */
+  function printBooklet() {
+    if (!STATE.data) { toast('건물정보 엑셀을 먼저 불러오십시오.', true); return; }
+    var P = [].slice.call($('paper').querySelectorAll('.page'));
+    while (P.length % 4) P.splice(P.length - 1, 0, null);
+    var n = P.length, order = [];
+    for (var i = 0; i < n / 4; i++) order.push([n - 1 - 2 * i, 2 * i], [2 * i + 1, n - 2 - 2 * i]);
+    var bk = document.createElement('div');
+    bk.id = 'booklet';
+    order.forEach(function (pr) {
+      var sh = document.createElement('div');
+      sh.className = 'bk-sheet';
+      pr.forEach(function (ix) {
+        var pg = P[ix] ? P[ix].cloneNode(true) : Object.assign(document.createElement('div'), { className: 'page' });
+        pg.querySelectorAll('[contenteditable]').forEach(function (e) { e.removeAttribute('contenteditable'); });
+        sh.appendChild(pg);
+      });
+      bk.appendChild(sh);
+    });
+    var st = document.createElement('style');
+    st.id = 'bkStyle';
+    st.textContent = '#booklet{display:none}@page{size:A3 landscape;margin:0}'
+      + '@media print{.topbar,.layout,.toast{display:none!important}#booklet{display:block}'
+      + '.bk-sheet{width:420mm;height:297mm;display:flex;overflow:hidden;break-after:page}.bk-sheet:last-child{break-after:auto}'
+      + '.bk-sheet .page{flex:none;width:210mm;height:297mm;box-shadow:none;margin:0;break-after:auto}}';
+    document.head.appendChild(st);
+    document.body.appendChild(bk);
+    var done = function () { bk.remove(); st.remove(); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done);
+    toast('인쇄 창에서 “PDF로 저장”, 용지 A3·가로, 여백 없음, 배경 그래픽 켜기로 설정하십시오.');
+    setTimeout(function () { window.print(); }, 300);
+  }
+
   /* ---------- 책자 인쇄용 PDF ---------- */
   function makeBooklet(file) {
     var A4W = 595.276, A4H = 841.89;
@@ -1142,7 +1176,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       try { localStorage.removeItem('hb:logo'); localStorage.removeItem('hb:logoName'); } catch (e) { }
       $('logo').value = ''; applyLogo('', '');
     });
-    $('pdfIn').addEventListener('change', function (e) { if (e.target.files[0]) makeBooklet(e.target.files[0]); });
+    $('btnBooklet').addEventListener('click', printBooklet);
     FIELDS.forEach(function (k) {
       var e = $(k); if (!e) return;
       e.addEventListener('change', render);
@@ -1152,6 +1186,12 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     $('btnRender').addEventListener('click', render);
     $('btnPrint').addEventListener('click', function () { window.print(); });
     $('btnHtml').addEventListener('click', saveHtml);
+    $('btnReset').addEventListener('click', function () {
+      var sch = STATE.data && STATE.data.SCH;
+      if (!confirm((sch ? sch + '의 ' : '') + '불러온 자료와 입력값을 모두 지우고 처음 화면으로 돌아갑니다. 계속하시겠습니까?')) return;
+      if (sch) { try { localStorage.removeItem('hb:' + sch); } catch (e) { } }
+      location.reload();
+    });
     $('btnSatClear').addEventListener('click', function () {
       STATE.satUrl = ''; STATE.satImg = null; $('sat').value = ''; $('satName').textContent = '선택된 파일 없음'; render();
     });

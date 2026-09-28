@@ -44,11 +44,20 @@ if (MODE === 'discover') {
   const y = new Date().getFullYear();
   for (const k of KINDS) {
     let rows = [], yrUsed = '';
-    for (const yr of [y, y - 1, y - 2]) {
-      const j = await call(MAP.apiType, k, { sidoCode: MAP.sidoCode || '46', pbanYr: String(yr) });
-      rows = rowsOf(j);
-      log.push({ kind: k, yr, code: j.resultCode, msg: String(j.resultMsg || '').slice(0, 100), n: rows.length });
-      if (rows.length) { yrUsed = yr; break; }
+    const types = [...new Set([String(MAP.apiType), String(+MAP.apiType)])];
+    const sggs = MAP.sggCode ? [MAP.sggCode] : ['', ...(MAP.sggList || [])];
+    outer: for (const yr of [y, y - 1, y - 2, y - 3]) {
+      for (const t of types) {
+        for (const sg of sggs) {
+          const q = { sidoCode: MAP.sidoCode || '46', pbanYr: String(yr) };
+          if (sg) q.sggCode = sg;
+          const j = await call(t, k, q);
+          const r = rowsOf(j);
+          log.push({ kind: k, yr, t, sg, code: j.resultCode, msg: String(j.resultMsg || '').slice(0, 100), n: r.length });
+          if (r.length) { rows = rows.concat(r); yrUsed = yr; }
+        }
+        if (rows.length) break outer;
+      }
     }
     for (const row of rows) {
       const name = row[MAP.nameField || 'SCHUL_NM'];
@@ -57,6 +66,7 @@ if (MODE === 'discover') {
       const g = [];
       for (let i = 1; i <= n; i++) g.push([i + '학년', +row['COL_C' + i] || 0, +row['COL_S' + i] || 0]);
       g.push(['특수학급', +row.COL_C7 || 0, +row.COL_S7 || 0]);
+      if ((schools[name] || []).some(c => c.code && c.code === row.SCHUL_CODE)) continue;
       (schools[name] = schools[name] || []).push({ code: row.SCHUL_CODE || '', addr: row.ADRCD_NM || row.SCHUL_RDNMA || '',
         kind: k, year: row[MAP.yearField] || '', grades: g,
         cls: +row[MAP.clsTotal] || null, stu: +row[MAP.stuTotal] || null, tch: +row[MAP.teachField] || null, pbanYr: yrUsed });

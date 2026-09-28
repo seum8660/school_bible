@@ -1,5 +1,5 @@
 {
-  "_note": "학교알리미 학년별·학급별 학생수(apiType 09). sidoCode 46 = 전라남도(기본값)",
+  "_note": "학교알리미 학년별·학급별 학생수(apiType 09). sidoCode 46 = 전라남도(기본값) / sggCode 비우면 전남 전체 + sggList(시군) 순으로 시도",
   "apiType": "09",
   "sidoCode": "46",
   "sggCode": "",
@@ -12,5 +12,8 @@
   "yearField": "",
   "clsTotal": "COL_C_SUM",
   "stuTotal": "COL_S_SUM",
-  "teachField": "TEACH_CNT"
+  "teachField": "TEACH_CNT",
+  "sggList": [
+    "46910"
+  ]
 }

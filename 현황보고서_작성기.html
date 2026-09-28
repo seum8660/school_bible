@@ -331,17 +331,18 @@ table.gin input{border:1px solid #B1B8BE;border-radius:4px}
     <p class="fname" id="fileInfo">교육시설통합정보망(KEIIS) 건물정보_YYYYMMDD_HHMMSS.xlsx</p>
     <p class="guide">교육시설통합정보망(KEIIS) <b>work.keiis.kr</b> 에 로그인하신 뒤 <b>시설현황 → 건물정보</b> 에서 학교를 조회하고 <b>엑셀 내려받기</b> 한 파일을 그대로 넣으십시오.</p>
 
-    <label class="drop" for="alimi">
+    <label class="drop" for="alimi" id="alimiDrop" tabindex="0">
       <span class="dicon">IMG</span>
       <b>학교알리미 캡처</b>
-      <em>학년별 학급수·학생수 화면 (선택)</em>
+      <em>클릭 후 Ctrl+V 붙여넣기 · 파일 선택 (선택)</em>
       <input type="file" id="alimi" accept="image/png,image/jpeg">
     </label>
     <div class="row">
       <span class="fname" id="alimiName">선택된 파일 없음</span>
       <button class="b g sm" id="btnAlimiClear">빼기</button>
     </div>
-    <p class="guide">학교알리미 <b>www.schoolinfo.go.kr</b> → <b>학교별 공시정보</b> 에서 학교를 검색하고 <b>학생현황(학년별 학급수·학생수)</b> 표를 화면 캡처해 넣으십시오. 숫자는 따로 입력하지 않으며 캡처 화면이 그대로 보고서에 들어갑니다.</p>
+    <p class="guide">학교알리미 <b>www.schoolinfo.go.kr</b> → <b>학교별 공시정보</b> 에서 <b>학생현황(학년별 학급수·학생수)</b> 표를 캡처(Win+Shift+S)한 뒤 이 화면에서 <b>Ctrl+V</b> 하십시오. 캡처 화면이 그대로 보고서에 들어갑니다.</p>
+    <div id="gradeWrap" hidden></div>
 
     <label class="drop" for="sat">
       <span class="dicon">IMG</span>
@@ -384,7 +385,6 @@ table.gin input{border:1px solid #B1B8BE;border-radius:4px}
   <input id="stu"><input id="male"><input id="female"><input id="tch"><input id="cls">
   <input id="tpr"><input id="cpr"><input id="gym"><input id="year"><input id="srcBasic" value="나이스 교육정보 개방포털">
   <input id="satSource"><input id="memo"><input id="grades"><input id="rmk">
-  <div id="gradeWrap"></div>
 </div>
 
 <div id="docTitle" hidden></div>
@@ -1000,7 +1000,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     var fr = new FileReader();
     fr.onload = function () {
       STATE.alimiUrl = fr.result;
-      $('alimiName').textContent = file.name;
+      $('alimiName').textContent = file.name || '붙여넣은 이미지';
       render();
     };
     fr.readAsDataURL(file);
@@ -1066,10 +1066,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     applyLogo(svLogo, svLogoName);
     $('xlsx').addEventListener('change', function (e) { if (e.target.files[0]) onFile(e.target.files[0]); });
     $('sat').addEventListener('change', function (e) { if (e.target.files[0]) onSat(e.target.files[0]); });
-    $('alimi').addEventListener('change', function (e) { if (e.target.files[0]) onAlimi(e.target.files[0]); });
-    $('btnAlimiClear').addEventListener('click', function () {
-      STATE.alimiUrl = ''; $('alimi').value = ''; $('alimiName').textContent = '선택된 파일 없음'; render();
-    });
+
     var th = '';
     try { th = localStorage.getItem('hb:theme') || ''; } catch (e) { }
     if ($('theme')) { $('theme').value = th; }
@@ -1090,6 +1087,17 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       e.addEventListener('change', render);
     });
     $('lvl').addEventListener('change', function () { buildGradeGrid(R.parseGrades($('grades').value)); render(); });
+    $('alimi').addEventListener('change', function (e) { if (e.target.files[0]) onAlimi(e.target.files[0]); });
+    $('btnAlimiClear').addEventListener('click', function () {
+      STATE.alimiUrl = ''; $('alimi').value = ''; $('alimiName').textContent = '선택된 파일 없음'; render();
+    });
+    document.addEventListener('paste', function (ev) {
+      var t = ev.target; if (t && (t.isContentEditable || /^(INPUT|TEXTAREA)$/.test(t.tagName) && t.type !== 'file')) return;
+      var it = [].slice.call((ev.clipboardData || {}).items || []).filter(function (x) { return /^image\//.test(x.type); })[0];
+      if (!it) return;
+      ev.preventDefault(); onAlimi(it.getAsFile()); toast('학교알리미 캡처를 붙여넣었습니다.');
+    });
+    buildGradeGrid(R.parseGrades($('grades').value));
     $('btnRender').addEventListener('click', render);
     $('btnPrint').addEventListener('click', function () { window.print(); });
     $('btnHtml').addEventListener('click', saveHtml);

@@ -13,8 +13,8 @@ fs.mkdirSync('data', { recursive: true });
 
 async function call(apiType, kind, extra = {}) {
   const q = new URLSearchParams({ apiKey: KEY, apiType: String(apiType), schulKndCode: kind, ...extra });
-  const r = await fetch(BASE + '?' + q);
-  const t = await r.text();
+  let t = '';
+  try { t = await (await fetch(BASE + '?' + q)).text(); } catch (e) { return { resultCode: 'fail', resultMsg: '요청 실패: ' + e.message }; }
   try { return JSON.parse(t); } catch { return { resultCode: 'fail', resultMsg: t.slice(0, 200) }; }
 }
 const rowsOf = j => {
@@ -40,12 +40,14 @@ if (MODE === 'discover') {
 } else if (!MAP.apiType) {
   console.log('alimi_map.json의 apiType이 비어 있어 건너뜀 — discover 먼저 실행');
 } else {
-  const schools = {};
+  const schools = {}, log = [];
   const y = new Date().getFullYear();
   for (const k of KINDS) {
     let rows = [], yrUsed = '';
     for (const yr of [y, y - 1, y - 2]) {
-      rows = rowsOf(await call(MAP.apiType, k, { sidoCode: MAP.sidoCode || '46', pbanYr: String(yr) }));
+      const j = await call(MAP.apiType, k, { sidoCode: MAP.sidoCode || '46', pbanYr: String(yr) });
+      rows = rowsOf(j);
+      log.push({ kind: k, yr, code: j.resultCode, msg: String(j.resultMsg || '').slice(0, 100), n: rows.length });
       if (rows.length) { yrUsed = yr; break; }
     }
     for (const row of rows) {
@@ -61,5 +63,5 @@ if (MODE === 'discover') {
     }
     console.log(k, yrUsed, rows.length);
   }
-  fs.writeFileSync('data/alimi.json', JSON.stringify({ updated: new Date().toISOString().slice(0, 10), schools }));
+  fs.writeFileSync('data/alimi.json', JSON.stringify({ updated: new Date().toISOString().slice(0, 10), log, schools }));
 }

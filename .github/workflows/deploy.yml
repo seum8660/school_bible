@@ -9,6 +9,9 @@ on:
       days:
         description: '일자료 받을 기간(일) — 처음 1회는 1095(3년) 권장'
         default: '1095'
+      alimi:
+        description: '학교알리미 — fetch(자료 갱신) 또는 discover(항목 ID 조사, 최초 1회)'
+        default: 'fetch'
 permissions:
   contents: write
   pages: write
@@ -54,6 +57,16 @@ jobs:
           git add wx_data
           git diff --cached --quiet || (git commit -m "기상자료 갱신 $(TZ=Asia/Seoul date +%F\ %H:%M)" && git pull --rebase -q && git push -q)
           exit 0
+      - name: Fetch 학교알리미
+        if: ${{ github.event_name != 'push' }}
+        continue-on-error: true
+        env:
+          SCHOOLINFO_KEY: ${{ secrets.SCHOOLINFO_KEY }}
+          MODE: ${{ github.event.inputs.alimi || 'fetch' }}
+        run: |
+          node scripts/alimi_fetch.mjs
+          git add data
+          git diff --cached --quiet || (git commit -m "학교알리미 자료 갱신" && git pull --rebase -q && git push -q)
       - name: Clean
         run: rm -rf .github templates tools
       - uses: actions/configure-pages@v5

@@ -17,14 +17,23 @@ async function call(apiType, kind, extra = {}) {
   const t = await r.text();
   try { return JSON.parse(t); } catch { return { resultCode: 'fail', resultMsg: t.slice(0, 200) }; }
 }
-const rowsOf = j => (Array.isArray(j.list) ? j.list.flat() : []);
+const rowsOf = j => {
+  let l = j.list ?? j.schoolinfo ?? j.data;
+  if (!l) return [];
+  if (!Array.isArray(l)) l = [l];
+  return l.flat().filter(x => x && typeof x === 'object');
+};
 
 if (MODE === 'discover') {
-  const out = {};
+  const out = { _tries: [] };
+  const regions = [{}, { sidoCode: '46', sggCode: '46910' }, { sidoCode: '11', sggCode: '11110' }];
   for (let t = 0; t <= 45; t++) {
-    const j = await call(t, '02', MAP.sidoCode ? { sidoCode: MAP.sidoCode } : {});
-    const rows = rowsOf(j);
-    if (rows.length) { out[t] = { count: rows.length, sample: rows[0] }; console.log('apiType', t, rows.length, Object.keys(rows[0]).join(',')); }
+    for (const rg of regions) {
+      const j = await call(t, '02', rg);
+      const rows = rowsOf(j);
+      out._tries.push({ t, rg, code: j.resultCode, msg: String(j.resultMsg || '').slice(0, 120), n: rows.length, keys: Object.keys(j).join(',') });
+      if (rows.length) { out[t] = { region: rg, count: rows.length, sample: rows[0] }; console.log('apiType', t, rows.length); break; }
+    }
   }
   fs.writeFileSync('data/alimi_fields.json', JSON.stringify(out, null, 1));
 } else if (!MAP.apiType) {

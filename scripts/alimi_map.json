@@ -1,7 +1,7 @@
 {
-  "_note": "discover 실행 결과(data/alimi_fields.json)를 보고 apiType과 항목 ID를 채웁니다",
+  "_note": "sidoCode 46 = 전라남도(기본값). discover 실행 결과(data/alimi_fields.json)를 보고 apiType과 항목 ID를 채웁니다",
   "apiType": "",
-  "sidoCode": "",
+  "sidoCode": "46",
   "sggCode": "",
   "schulKndCodes": ["02", "03", "04"],
   "nameField": "SCHUL_NM",

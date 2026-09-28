@@ -331,17 +331,7 @@ table.gin input{border:1px solid #B1B8BE;border-radius:4px}
     <p class="fname" id="fileInfo">교육시설통합정보망(KEIIS) 건물정보_YYYYMMDD_HHMMSS.xlsx</p>
     <p class="guide">교육시설통합정보망(KEIIS) <b>work.keiis.kr</b> 에 로그인하신 뒤 <b>시설현황 → 건물정보</b> 에서 학교를 조회하고 <b>엑셀 내려받기</b> 한 파일을 그대로 넣으십시오.</p>
 
-    <label class="drop" for="alimi" id="alimiDrop" tabindex="0">
-      <span class="dicon">IMG</span>
-      <b>학교알리미 캡처</b>
-      <em>클릭 후 Ctrl+V 붙여넣기 · 파일 선택 (선택)</em>
-      <input type="file" id="alimi" accept="image/png,image/jpeg">
-    </label>
-    <div class="row">
-      <span class="fname" id="alimiName">선택된 파일 없음</span>
-      <button class="b g sm" id="btnAlimiClear">빼기</button>
-    </div>
-    <p class="guide">학교알리미 <b>www.schoolinfo.go.kr</b> → <b>학교별 공시정보</b> 에서 <b>학생현황(학년별 학급수·학생수)</b> 표를 캡처(Win+Shift+S)한 뒤 이 화면에서 <b>Ctrl+V</b> 하십시오. 숫자를 읽어 보고서에 표로 넣습니다. 잘못 읽은 칸은 보고서의 숫자를 눌러 고치십시오.</p>
+    <p class="guide">학년별 학급수·학생수는 <b>학교알리미 공시자료</b>에서 자동으로 불러옵니다. 틀린 칸은 보고서의 숫자를 눌러 고치십시오.</p>
     <p class="fname" id="ocrState"></p>
     <div id="gradeWrap" hidden></div>
 
@@ -867,7 +857,6 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     if ($('sat')) $('sat').value = '';
     if ($('alimi')) $('alimi').value = '';
     if ($('satName')) $('satName').textContent = '선택된 파일 없음';
-    if ($('alimiName')) $('alimiName').textContent = '선택된 파일 없음';
   }
 
   function onFile(file) {
@@ -1009,7 +998,12 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
   function loadAlimi(name) {
     if (!name || $('grades').value) return;
     fetch('data/alimi.json', { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
-      var s = j.schools && (j.schools[name] || j.schools[Object.keys(j.schools).filter(function (k) { return k.replace(/\s/g, '') === name.replace(/\s/g, ''); })[0]]);
+      var nk = function (x) { return String(x).replace(/\s/g, ''); };
+      var L = j.schools && (j.schools[name] || j.schools[Object.keys(j.schools).filter(function (k) { return nk(k) === nk(name); })[0]]) || [];
+      if (!Array.isArray(L)) L = [L];
+      var ad = nk(STATE.data && STATE.data.ADDR || '');
+      var s = L.length > 1 ? L.filter(function (c) { var a = nk(c.addr).replace(/^(전라남도|전남광주통합특별시)/, ''); return a && ad.indexOf(a) >= 0; })[0] : L[0];
+      if (!s && L.length > 1) { $('ocrState').textContent = '같은 이름의 학교가 ' + L.length + '곳이라 자동 반영하지 않았습니다'; return; }
       if (!s || !s.grades || !s.grades.length) throw 0;
       fillGrades(s.grades.map(function (g) { return g[1]; }), s.grades.map(function (g) { return g[2]; }));
       if (s.stu && !$('stu').value) $('stu').value = s.stu;
@@ -1152,16 +1146,6 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       e.addEventListener('change', render);
     });
     $('lvl').addEventListener('change', function () { buildGradeGrid(R.parseGrades($('grades').value)); render(); });
-    $('alimi').addEventListener('change', function (e) { if (e.target.files[0]) onAlimi(e.target.files[0]); });
-    $('btnAlimiClear').addEventListener('click', function () {
-      $('alimi').value = ''; $('alimiName').textContent = '선택된 파일 없음'; $('ocrState').textContent = ''; fillGrades([], []);
-    });
-    document.addEventListener('paste', function (ev) {
-      var t = ev.target; if (t && (t.isContentEditable || /^(INPUT|TEXTAREA)$/.test(t.tagName) && t.type !== 'file')) return;
-      var it = [].slice.call((ev.clipboardData || {}).items || []).filter(function (x) { return /^image\//.test(x.type); })[0];
-      if (!it) return;
-      ev.preventDefault(); onAlimi(it.getAsFile());
-    });
     buildGradeGrid(R.parseGrades($('grades').value));
     $('btnRender').addEventListener('click', render);
     $('btnPrint').addEventListener('click', function () { window.print(); });

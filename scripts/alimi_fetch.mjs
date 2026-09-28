@@ -25,14 +25,15 @@ const rowsOf = j => {
 };
 
 if (MODE === 'discover') {
-  const out = { _tries: [] };
-  const regions = [{}, { sidoCode: '46', sggCode: '46910' }, { sidoCode: '11', sggCode: '11110' }];
-  for (let t = 0; t <= 45; t++) {
-    for (const rg of regions) {
-      const j = await call(t, '02', rg);
+  const out = { _fail: {} };
+  const rg = { sidoCode: MAP.sidoCode || '46', sggCode: MAP.sggCode || '46910' };
+  const y = new Date().getFullYear();
+  for (let t = 1; t <= 45; t++) {
+    for (const yr of [y, y - 1]) {
+      const j = await call(t, '02', { ...rg, pbanYr: String(yr) });
       const rows = rowsOf(j);
-      out._tries.push({ t, rg, code: j.resultCode, msg: String(j.resultMsg || '').slice(0, 120), n: rows.length, keys: Object.keys(j).join(',') });
-      if (rows.length) { out[t] = { region: rg, count: rows.length, sample: rows[0] }; console.log('apiType', t, rows.length); break; }
+      if (rows.length) { out[t] = { pbanYr: yr, count: rows.length, sample: rows[0] }; console.log('apiType', t, yr, rows.length); break; }
+      out._fail[t] = String(j.resultMsg || '').slice(0, 80);
     }
   }
   fs.writeFileSync('data/alimi_fields.json', JSON.stringify(out, null, 1));
@@ -40,19 +41,22 @@ if (MODE === 'discover') {
   console.log('alimi_map.json의 apiType이 비어 있어 건너뜀 — discover 먼저 실행');
 } else {
   const schools = {};
-  const extra = {};
-  if (MAP.sidoCode) extra.sidoCode = MAP.sidoCode;
-  if (MAP.sggCode) extra.sggCode = MAP.sggCode;
+  const y = new Date().getFullYear();
   for (const k of KINDS) {
-    const j = await call(MAP.apiType, k, extra);
-    for (const row of rowsOf(j)) {
+    let rows = [];
+    for (const yr of [y, y - 1]) {
+      rows = rowsOf(await call(MAP.apiType, k, { sidoCode: MAP.sidoCode || '46', pbanYr: String(yr) }));
+      if (rows.length) break;
+    }
+    for (const row of rows) {
       const name = row[MAP.nameField || 'SCHUL_NM'];
       if (!name) continue;
       const g = (MAP.grades || []).map(x => [x.label, +row[x.c] || 0, +row[x.s] || 0]);
-      schools[name] = { kind: k, year: row[MAP.yearField] || '', grades: g,
-        cls: +row[MAP.clsTotal] || null, stu: +row[MAP.stuTotal] || null };
+      (schools[name] = schools[name] || []).push({ code: row.SCHUL_CODE || '', addr: row.ADRCD_NM || row.SCHUL_RDNMA || '',
+        kind: k, year: row[MAP.yearField] || '', grades: g,
+        cls: +row[MAP.clsTotal] || null, stu: +row[MAP.stuTotal] || null });
     }
-    console.log(k, Object.keys(schools).length);
+    console.log(k, rows.length);
   }
   fs.writeFileSync('data/alimi.json', JSON.stringify({ updated: new Date().toISOString().slice(0, 10), schools }));
 }

@@ -1,12 +1,16 @@
 {
-  "_note": "sidoCode 46 = 전라남도(기본값). discover 실행 결과(data/alimi_fields.json)를 보고 apiType과 항목 ID를 채웁니다",
-  "apiType": "",
+  "_note": "학교알리미 학년별·학급별 학생수(apiType 09). sidoCode 46 = 전라남도(기본값)",
+  "apiType": "09",
   "sidoCode": "46",
   "sggCode": "",
-  "schulKndCodes": ["02", "03", "04"],
+  "schulKndCodes": [
+    "02",
+    "03",
+    "04"
+  ],
   "nameField": "SCHUL_NM",
   "yearField": "",
-  "clsTotal": "",
-  "stuTotal": "",
-  "grades": []
+  "clsTotal": "COL_C_SUM",
+  "stuTotal": "COL_S_SUM",
+  "teachField": "TEACH_CNT"
 }

@@ -1008,6 +1008,8 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       fillGrades(s.grades.map(function (g) { return g[1]; }), s.grades.map(function (g) { return g[2]; }));
       if (s.stu && !$('stu').value) $('stu').value = s.stu;
       if (s.cls && !$('cls').value) $('cls').value = s.cls;
+      if (s.tch && $('tch') && !$('tch').value) $('tch').value = s.tch;
+      if (s.pbanYr && $('year') && !$('year').value) $('year').value = s.pbanYr;
       render();
       $('ocrState').textContent = '학교알리미 자료 자동 반영 (' + j.updated + ' 갱신)';
     }).catch(function () {});

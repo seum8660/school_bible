@@ -43,20 +43,23 @@ if (MODE === 'discover') {
   const schools = {};
   const y = new Date().getFullYear();
   for (const k of KINDS) {
-    let rows = [];
-    for (const yr of [y, y - 1]) {
+    let rows = [], yrUsed = '';
+    for (const yr of [y, y - 1, y - 2]) {
       rows = rowsOf(await call(MAP.apiType, k, { sidoCode: MAP.sidoCode || '46', pbanYr: String(yr) }));
-      if (rows.length) break;
+      if (rows.length) { yrUsed = yr; break; }
     }
     for (const row of rows) {
       const name = row[MAP.nameField || 'SCHUL_NM'];
       if (!name) continue;
-      const g = (MAP.grades || []).map(x => [x.label, +row[x.c] || 0, +row[x.s] || 0]);
+      const n = k === '02' ? 6 : 3;
+      const g = [];
+      for (let i = 1; i <= n; i++) g.push([i + '학년', +row['COL_C' + i] || 0, +row['COL_S' + i] || 0]);
+      g.push(['특수학급', +row.COL_C7 || 0, +row.COL_S7 || 0]);
       (schools[name] = schools[name] || []).push({ code: row.SCHUL_CODE || '', addr: row.ADRCD_NM || row.SCHUL_RDNMA || '',
         kind: k, year: row[MAP.yearField] || '', grades: g,
-        cls: +row[MAP.clsTotal] || null, stu: +row[MAP.stuTotal] || null });
+        cls: +row[MAP.clsTotal] || null, stu: +row[MAP.stuTotal] || null, tch: +row[MAP.teachField] || null, pbanYr: yrUsed });
     }
-    console.log(k, rows.length);
+    console.log(k, yrUsed, rows.length);
   }
   fs.writeFileSync('data/alimi.json', JSON.stringify({ updated: new Date().toISOString().slice(0, 10), schools }));
 }

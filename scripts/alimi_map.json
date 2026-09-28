@@ -1,0 +1,12 @@
+{
+  "_note": "discover 실행 결과(data/alimi_fields.json)를 보고 apiType과 항목 ID를 채웁니다",
+  "apiType": "",
+  "sidoCode": "",
+  "sggCode": "",
+  "schulKndCodes": ["02", "03", "04"],
+  "nameField": "SCHUL_NM",
+  "yearField": "",
+  "clsTotal": "",
+  "stuTotal": "",
+  "grades": []
+}

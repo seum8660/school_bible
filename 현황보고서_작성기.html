@@ -341,7 +341,8 @@ table.gin input{border:1px solid #B1B8BE;border-radius:4px}
       <span class="fname" id="alimiName">선택된 파일 없음</span>
       <button class="b g sm" id="btnAlimiClear">빼기</button>
     </div>
-    <p class="guide">학교알리미 <b>www.schoolinfo.go.kr</b> → <b>학교별 공시정보</b> 에서 <b>학생현황(학년별 학급수·학생수)</b> 표를 캡처(Win+Shift+S)한 뒤 이 화면에서 <b>Ctrl+V</b> 하십시오. 캡처 화면이 그대로 보고서에 들어갑니다.</p>
+    <p class="guide">학교알리미 <b>www.schoolinfo.go.kr</b> → <b>학교별 공시정보</b> 에서 <b>학생현황(학년별 학급수·학생수)</b> 표를 캡처(Win+Shift+S)한 뒤 이 화면에서 <b>Ctrl+V</b> 하십시오. 숫자를 읽어 보고서에 표로 넣습니다. 잘못 읽은 칸은 보고서의 숫자를 눌러 고치십시오.</p>
+    <p class="fname" id="ocrState"></p>
     <div id="gradeWrap" hidden></div>
 
     <label class="drop" for="sat">
@@ -999,11 +1000,62 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
   function onAlimi(file) {
     var fr = new FileReader();
     fr.onload = function () {
-      STATE.alimiUrl = fr.result;
       $('alimiName').textContent = file.name || '붙여넣은 이미지';
-      render();
+      ocrGrades(fr.result);
     };
     fr.readAsDataURL(file);
+  }
+  function nums(s) { return (String(s).replace(/\(\s*\d+\s*\)/g, '').replace(/,/g, '').match(/\d+/g) || []).map(Number); }
+  function fillGrades(c, s) {
+    var L = gradeLabels();
+    L.forEach(function (x, i) {
+      if ($('gc' + i)) $('gc' + i).value = c[i] != null ? c[i] : '';
+      if ($('gs' + i)) $('gs' + i).value = s[i] != null ? s[i] : '';
+    });
+    syncGrades(); render();
+  }
+  function parseRows(text) {
+    var c = [], s = [];
+    String(text).split(/\n/).forEach(function (ln) {
+      if (/학급/.test(ln) && !c.length) c = nums(ln.replace(/^[^0-9]*/, ''));
+      else if (/학생/.test(ln) && !s.length) s = nums(ln.replace(/^[^0-9]*/, ''));
+    });
+    return { c: c, s: s };
+  }
+  function ocrByClaude(url) {
+    if (!(G.claude && G.claude.complete)) return Promise.reject('no claude');
+    var m = url.match(/^data:(image\/[a-z]+);base64,(.*)$/);
+    var L = gradeLabels();
+    return G.claude.complete({ max_tokens: 400, messages: [{ role: 'user', content: [
+      { type: 'image', source: { type: 'base64', media_type: m[1], data: m[2] } },
+      { type: 'text', text: '학교알리미 학년별 학급수·학생수 표입니다. 열 순서 [' + L.join(', ') + '] 로 값을 읽어 JSON만 답하십시오. 형식: {"c":[학급수...],"s":[학생수...]}. 합계(계) 열은 제외, 특수학급 열이 없으면 0, 괄호 안 숫자는 무시.' }
+    ] }] }).then(function (t) { var j = JSON.parse(String(t).match(/\{[\s\S]*\}/)[0]); return { c: j.c || [], s: j.s || [] }; });
+  }
+  function loadTess() {
+    if (G.Tesseract) return Promise.resolve(G.Tesseract);
+    return new Promise(function (res, rej) {
+      var sc = document.createElement('script');
+      sc.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+      sc.onload = function () { res(G.Tesseract); }; sc.onerror = rej;
+      document.head.appendChild(sc);
+    });
+  }
+  function ocrByTess(url) {
+    return loadTess().then(function (T) { return T.recognize(url, 'kor+eng'); })
+      .then(function (r) { return parseRows(r.data.text); });
+  }
+  function ocrGrades(url) {
+    $('ocrState').textContent = '이미지에서 숫자를 읽는 중…';
+    ocrByClaude(url).catch(function () { return ocrByTess(url); }).then(function (g) {
+      if (!g.c.length && !g.s.length) throw new Error('표를 찾지 못했습니다');
+      fillGrades(g.c, g.s);
+      $('ocrState').textContent = '읽기 완료 · 원본과 대조해 확인하십시오';
+      toast('캡처에서 학급수·학생수를 읽어 표에 채웠습니다.');
+    }).catch(function (e) {
+      console.error(e);
+      $('ocrState').textContent = '자동 읽기 실패 · 표에 직접 입력하십시오';
+      toast('이미지 읽기 실패: 표에 직접 입력하십시오.', true);
+    });
   }
 
   /* ---------- 책자 인쇄용 PDF ---------- */
@@ -1089,13 +1141,13 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     $('lvl').addEventListener('change', function () { buildGradeGrid(R.parseGrades($('grades').value)); render(); });
     $('alimi').addEventListener('change', function (e) { if (e.target.files[0]) onAlimi(e.target.files[0]); });
     $('btnAlimiClear').addEventListener('click', function () {
-      STATE.alimiUrl = ''; $('alimi').value = ''; $('alimiName').textContent = '선택된 파일 없음'; render();
+      $('alimi').value = ''; $('alimiName').textContent = '선택된 파일 없음'; $('ocrState').textContent = ''; fillGrades([], []);
     });
     document.addEventListener('paste', function (ev) {
       var t = ev.target; if (t && (t.isContentEditable || /^(INPUT|TEXTAREA)$/.test(t.tagName) && t.type !== 'file')) return;
       var it = [].slice.call((ev.clipboardData || {}).items || []).filter(function (x) { return /^image\//.test(x.type); })[0];
       if (!it) return;
-      ev.preventDefault(); onAlimi(it.getAsFile()); toast('학교알리미 캡처를 붙여넣었습니다.');
+      ev.preventDefault(); onAlimi(it.getAsFile());
     });
     buildGradeGrid(R.parseGrades($('grades').value));
     $('btnRender').addEventListener('click', render);

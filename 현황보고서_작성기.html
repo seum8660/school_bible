@@ -313,9 +313,10 @@ table.gin input{border:1px solid #B1B8BE;border-radius:4px}
         <option value="gray-green">그레이 · 그린</option>
       </select>
     </label>
+    <button class="b g" id="btnReset">초기화</button>
     <button class="b" id="btnPrint">인쇄 · PDF</button>
     <button class="b g" id="btnHtml">보고서 저장(HTML)</button>
-    <span class="filebtn"><button class="b g">책자 PDF</button><input type="file" id="pdfIn" accept="application/pdf"></span>
+    <button class="b g" id="btnBooklet">책자 PDF</button>
   </div>
 </header>
 
@@ -331,17 +332,9 @@ table.gin input{border:1px solid #B1B8BE;border-radius:4px}
     <p class="fname" id="fileInfo">교육시설통합정보망(KEIIS) 건물정보_YYYYMMDD_HHMMSS.xlsx</p>
     <p class="guide">교육시설통합정보망(KEIIS) <b>work.keiis.kr</b> 에 로그인하신 뒤 <b>시설현황 → 건물정보</b> 에서 학교를 조회하고 <b>엑셀 내려받기</b> 한 파일을 그대로 넣으십시오.</p>
 
-    <label class="drop" for="alimi">
-      <span class="dicon">IMG</span>
-      <b>학교알리미 캡처</b>
-      <em>학년별 학급수·학생수 화면 (선택)</em>
-      <input type="file" id="alimi" accept="image/png,image/jpeg">
-    </label>
-    <div class="row">
-      <span class="fname" id="alimiName">선택된 파일 없음</span>
-      <button class="b g sm" id="btnAlimiClear">빼기</button>
-    </div>
-    <p class="guide">학교알리미 <b>www.schoolinfo.go.kr</b> → <b>학교별 공시정보</b> 에서 학교를 검색하고 <b>학생현황(학년별 학급수·학생수)</b> 표를 화면 캡처해 넣으십시오. 숫자는 따로 입력하지 않으며 캡처 화면이 그대로 보고서에 들어갑니다.</p>
+    <p class="guide">학년별 학급수·학생수는 <b>학교알리미 공시자료</b>에서 자동으로 불러옵니다. 틀린 칸은 보고서의 숫자를 눌러 고치십시오.</p>
+    <p class="fname" id="ocrState"></p>
+    <div id="gradeWrap" hidden></div>
 
     <label class="drop" for="sat">
       <span class="dicon">IMG</span>
@@ -366,7 +359,7 @@ table.gin input{border:1px solid #B1B8BE;border-radius:4px}
     </div>
 
     <p class="note">보고서의 <b>파란 밑줄 글자</b>를 눌러 학교급·설립구분·설립일·비고·기타의견을 바로 고치실 수 있습니다. 고친 값은 학교명별로 이 컴퓨터에 저장됩니다.</p>
-    <p class="note">인쇄 창에서 대상 “PDF로 저장”, 용지 A4, 여백 “없음”, 배경 그래픽 켜기로 설정하십시오. 책자 PDF는 그렇게 저장한 4쪽 PDF를 선택하시면 A3 펼침면 2장으로 만들어 드립니다.</p>
+    <p class="note">인쇄 창에서 대상 “PDF로 저장”, 용지 A4, 여백 “없음”, 배경 그래픽 켜기로 설정하십시오. 책자 PDF는 A3 가로 펼침면(뒷표지|표지, 2쪽|3쪽)으로 배치해 인쇄 창을 엽니다. 용지 A3·가로로 저장한 뒤 양면(짧은 쪽 넘김)으로 인쇄해 반으로 접으십시오.</p>
     <button class="b g" id="btnRender">미리보기 새로고침</button>
   </aside>
 
@@ -384,7 +377,6 @@ table.gin input{border:1px solid #B1B8BE;border-radius:4px}
   <input id="stu"><input id="male"><input id="female"><input id="tch"><input id="cls">
   <input id="tpr"><input id="cpr"><input id="gym"><input id="year"><input id="srcBasic" value="나이스 교육정보 개방포털">
   <input id="satSource"><input id="memo"><input id="grades"><input id="rmk">
-  <div id="gradeWrap"></div>
 </div>
 
 <div id="docTitle" hidden></div>
@@ -866,7 +858,6 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     if ($('sat')) $('sat').value = '';
     if ($('alimi')) $('alimi').value = '';
     if ($('satName')) $('satName').textContent = '선택된 파일 없음';
-    if ($('alimiName')) $('alimiName').textContent = '선택된 파일 없음';
   }
 
   function onFile(file) {
@@ -884,6 +875,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       if (!$('lvl').value) $('lvl').value = d.LVL0 || '';
       if (!$('fond').value) $('fond').value = d.FOND0 || '';
       buildGradeGrid(R.parseGrades($('grades').value));
+      loadAlimi(d.SCH);
       document.body.classList.add('hasdata');
       render();
     }).catch(function (e) {
@@ -999,11 +991,114 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
   function onAlimi(file) {
     var fr = new FileReader();
     fr.onload = function () {
-      STATE.alimiUrl = fr.result;
-      $('alimiName').textContent = file.name;
-      render();
+      $('alimiName').textContent = file.name || '붙여넣은 이미지';
+      ocrGrades(fr.result);
     };
     fr.readAsDataURL(file);
+  }
+  function loadAlimi(name) {
+    if (!name || $('grades').value) return;
+    fetch('data/alimi.json', { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
+      var nk = function (x) { return String(x).replace(/\s/g, ''); };
+      var L = j.schools && (j.schools[name] || j.schools[Object.keys(j.schools).filter(function (k) { return nk(k) === nk(name); })[0]]) || [];
+      if (!Array.isArray(L)) L = [L];
+      var ad = nk(STATE.data && STATE.data.ADDR || '');
+      var s = L.length > 1 ? L.filter(function (c) { var a = nk(c.addr).replace(/^(전라남도|전남광주통합특별시)/, ''); return a && ad.indexOf(a) >= 0; })[0] : L[0];
+      if (!s && L.length > 1) { $('ocrState').textContent = '같은 이름의 학교가 ' + L.length + '곳이라 자동 반영하지 않았습니다'; return; }
+      if (!s || !s.grades || !s.grades.length) throw 0;
+      fillGrades(s.grades.map(function (g) { return g[1]; }), s.grades.map(function (g) { return g[2]; }));
+      if (s.stu && !$('stu').value) $('stu').value = s.stu;
+      if (s.cls && !$('cls').value) $('cls').value = s.cls;
+      if (s.tch && $('tch') && !$('tch').value) $('tch').value = s.tch;
+      if (s.pbanYr && $('year') && !$('year').value) $('year').value = s.pbanYr;
+      render();
+      $('ocrState').textContent = '학교알리미 자료 자동 반영 (' + j.updated + ' 갱신)';
+    }).catch(function () {});
+  }
+  function nums(s) { return (String(s).replace(/\(\s*\d+\s*\)/g, '').replace(/,/g, '').match(/\d+/g) || []).map(Number); }
+  function fillGrades(c, s) {
+    var L = gradeLabels();
+    L.forEach(function (x, i) {
+      if ($('gc' + i)) $('gc' + i).value = c[i] != null ? c[i] : '';
+      if ($('gs' + i)) $('gs' + i).value = s[i] != null ? s[i] : '';
+    });
+    syncGrades(); render();
+  }
+  function parseRows(text) {
+    var c = [], s = [];
+    String(text).split(/\n/).forEach(function (ln) {
+      if (/학급/.test(ln) && !c.length) c = nums(ln.replace(/^[^0-9]*/, ''));
+      else if (/학생/.test(ln) && !s.length) s = nums(ln.replace(/^[^0-9]*/, ''));
+    });
+    return { c: c, s: s };
+  }
+  function ocrByClaude(url) {
+    if (!(G.claude && G.claude.complete)) return Promise.reject('no claude');
+    var m = url.match(/^data:(image\/[a-z]+);base64,(.*)$/);
+    var L = gradeLabels();
+    return G.claude.complete({ max_tokens: 400, messages: [{ role: 'user', content: [
+      { type: 'image', source: { type: 'base64', media_type: m[1], data: m[2] } },
+      { type: 'text', text: '학교알리미 학년별 학급수·학생수 표입니다. 열 순서 [' + L.join(', ') + '] 로 값을 읽어 JSON만 답하십시오. 형식: {"c":[학급수...],"s":[학생수...]}. 합계(계) 열은 제외, 특수학급 열이 없으면 0, 괄호 안 숫자는 무시.' }
+    ] }] }).then(function (t) { var j = JSON.parse(String(t).match(/\{[\s\S]*\}/)[0]); return { c: j.c || [], s: j.s || [] }; });
+  }
+  function loadTess() {
+    if (G.Tesseract) return Promise.resolve(G.Tesseract);
+    return new Promise(function (res, rej) {
+      var sc = document.createElement('script');
+      sc.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+      sc.onload = function () { res(G.Tesseract); }; sc.onerror = rej;
+      document.head.appendChild(sc);
+    });
+  }
+  function ocrByTess(url) {
+    return loadTess().then(function (T) { return T.recognize(url, 'kor+eng'); })
+      .then(function (r) { return parseRows(r.data.text); });
+  }
+  function ocrGrades(url) {
+    $('ocrState').textContent = '이미지에서 숫자를 읽는 중…';
+    ocrByClaude(url).catch(function () { return ocrByTess(url); }).then(function (g) {
+      if (!g.c.length && !g.s.length) throw new Error('표를 찾지 못했습니다');
+      fillGrades(g.c, g.s);
+      $('ocrState').textContent = '읽기 완료 · 원본과 대조해 확인하십시오';
+      toast('캡처에서 학급수·학생수를 읽어 표에 채웠습니다.');
+    }).catch(function (e) {
+      console.error(e);
+      $('ocrState').textContent = '자동 읽기 실패 · 표에 직접 입력하십시오';
+      toast('이미지 읽기 실패: 표에 직접 입력하십시오.', true);
+    });
+  }
+
+  /* ---------- 책자 PDF — A4 여러 쪽을 A3 가로 펼침면으로 재배치해 바로 인쇄 ---------- */
+  function printBooklet() {
+    if (!STATE.data) { toast('건물정보 엑셀을 먼저 불러오십시오.', true); return; }
+    var P = [].slice.call($('paper').querySelectorAll('.page'));
+    while (P.length % 4) P.splice(P.length - 1, 0, null);
+    var n = P.length, order = [];
+    for (var i = 0; i < n / 4; i++) order.push([n - 1 - 2 * i, 2 * i], [2 * i + 1, n - 2 - 2 * i]);
+    var bk = document.createElement('div');
+    bk.id = 'booklet';
+    order.forEach(function (pr) {
+      var sh = document.createElement('div');
+      sh.className = 'bk-sheet';
+      pr.forEach(function (ix) {
+        var pg = P[ix] ? P[ix].cloneNode(true) : Object.assign(document.createElement('div'), { className: 'page' });
+        pg.querySelectorAll('[contenteditable]').forEach(function (e) { e.removeAttribute('contenteditable'); });
+        sh.appendChild(pg);
+      });
+      bk.appendChild(sh);
+    });
+    var st = document.createElement('style');
+    st.id = 'bkStyle';
+    st.textContent = '#booklet{display:none}@page{size:A3 landscape;margin:0}'
+      + '@media print{.topbar,.layout,.toast{display:none!important}#booklet{display:block}'
+      + '.bk-sheet{width:420mm;height:297mm;display:flex;overflow:hidden;break-after:page}.bk-sheet:last-child{break-after:auto}'
+      + '.bk-sheet .page{flex:none;width:210mm;height:297mm;box-shadow:none;margin:0;break-after:auto}}';
+    document.head.appendChild(st);
+    document.body.appendChild(bk);
+    var done = function () { bk.remove(); st.remove(); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done);
+    toast('인쇄 창에서 “PDF로 저장”, 용지 A3·가로, 여백 없음, 배경 그래픽 켜기로 설정하십시오.');
+    setTimeout(function () { window.print(); }, 300);
   }
 
   /* ---------- 책자 인쇄용 PDF ---------- */
@@ -1066,10 +1161,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     applyLogo(svLogo, svLogoName);
     $('xlsx').addEventListener('change', function (e) { if (e.target.files[0]) onFile(e.target.files[0]); });
     $('sat').addEventListener('change', function (e) { if (e.target.files[0]) onSat(e.target.files[0]); });
-    $('alimi').addEventListener('change', function (e) { if (e.target.files[0]) onAlimi(e.target.files[0]); });
-    $('btnAlimiClear').addEventListener('click', function () {
-      STATE.alimiUrl = ''; $('alimi').value = ''; $('alimiName').textContent = '선택된 파일 없음'; render();
-    });
+
     var th = '';
     try { th = localStorage.getItem('hb:theme') || ''; } catch (e) { }
     if ($('theme')) { $('theme').value = th; }
@@ -1084,15 +1176,22 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       try { localStorage.removeItem('hb:logo'); localStorage.removeItem('hb:logoName'); } catch (e) { }
       $('logo').value = ''; applyLogo('', '');
     });
-    $('pdfIn').addEventListener('change', function (e) { if (e.target.files[0]) makeBooklet(e.target.files[0]); });
+    $('btnBooklet').addEventListener('click', printBooklet);
     FIELDS.forEach(function (k) {
       var e = $(k); if (!e) return;
       e.addEventListener('change', render);
     });
     $('lvl').addEventListener('change', function () { buildGradeGrid(R.parseGrades($('grades').value)); render(); });
+    buildGradeGrid(R.parseGrades($('grades').value));
     $('btnRender').addEventListener('click', render);
     $('btnPrint').addEventListener('click', function () { window.print(); });
     $('btnHtml').addEventListener('click', saveHtml);
+    $('btnReset').addEventListener('click', function () {
+      var sch = STATE.data && STATE.data.SCH;
+      if (!confirm((sch ? sch + '의 ' : '') + '불러온 자료와 입력값을 모두 지우고 처음 화면으로 돌아갑니다. 계속하시겠습니까?')) return;
+      if (sch) { try { localStorage.removeItem('hb:' + sch); } catch (e) { } }
+      location.reload();
+    });
     $('btnSatClear').addEventListener('click', function () {
       STATE.satUrl = ''; STATE.satImg = null; $('sat').value = ''; $('satName').textContent = '선택된 파일 없음'; render();
     });

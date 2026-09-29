@@ -6708,5 +6708,29 @@ html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh i{display:inline-grid!im
 html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh b{font-size:19px!important;font-weight:700!important;color:#1E2124!important;letter-spacing:-.01em!important}
 html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh span{flex-basis:100%;display:block;margin-top:0!important;font-size:14px!important;font-weight:400!important;color:#464C53!important}
 </style>
+
+<style id="col-scroll-css">
+@media(min-width:861px){
+  .layout > .sidebar{position:sticky!important;top:16px!important;align-self:flex-start!important;max-height:calc(100vh - 32px)!important}
+  .sidebar .side-nav,.side-right .side-nav,.side-right .qbox-list{overscroll-behavior:contain;scroll-behavior:auto}
+}
+</style>
+<script>
+(function(){
+  if(!window.matchMedia) return;
+  var mq=window.matchMedia('(min-width:861px)');
+  function scroller(t,side){
+    while(t&&t!==side){ var cs=getComputedStyle(t); if(/(auto|scroll)/.test(cs.overflowY)&&t.scrollHeight>t.clientHeight+1) return t; t=t.parentElement; }
+    return side.querySelector('.side-nav');
+  }
+  document.addEventListener('wheel',function(e){
+    if(!mq.matches||e.ctrlKey) return;
+    var side=e.target.closest&&e.target.closest('.layout > .sidebar'); if(!side) return;
+    var t=e.target;
+    while(t&&t!==side){ var cs=getComputedStyle(t); if(/(auto|scroll)/.test(cs.overflowY)&&t.scrollHeight>t.clientHeight+1) return; t=t.parentElement; }
+    e.preventDefault();
+  },{passive:false});
+})();
+</script>
 </body>
 </html>

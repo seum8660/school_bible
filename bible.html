@@ -5286,7 +5286,7 @@ runRatioCalc();
 // ===== 드래그 스크롤 (통합자료실·질문목록) =====
 (function(){
   function drag(el){ if(!el) return; let down=false,sy,st,moved=false;
-    el.addEventListener('pointerdown',e=>{if(e.target.closest('a,button,textarea,input,select'))return;down=true;moved=false;sy=e.clientY;st=el.scrollTop;});
+    el.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.button!==0||e.target.closest('a,button,textarea,input,select'))return;down=true;moved=false;sy=e.clientY;st=el.scrollTop;});
     el.addEventListener('pointermove',e=>{if(!down)return;const d=e.clientY-sy;if(Math.abs(d)>4){moved=true;el.style.cursor='grabbing';el.scrollTop=st-d;}});
     const up=()=>{down=false;el.style.cursor='grab';};
     el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up); el.addEventListener('pointerleave',up);
@@ -6712,25 +6712,9 @@ html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh span{flex-basis:100%;dis
 <style id="col-scroll-css">
 @media(min-width:861px){
   .layout > .sidebar{position:sticky!important;top:16px!important;align-self:flex-start!important;max-height:calc(100vh - 32px)!important}
-  .sidebar .side-nav,.side-right .side-nav,.side-right .qbox-list{overscroll-behavior:contain;scroll-behavior:auto}
+  .layout > .sidebar .side-nav,.side-right .qbox-list{overscroll-behavior:contain!important;scroll-behavior:auto!important;-webkit-overflow-scrolling:touch;transition:none}
 }
 </style>
-<script>
-(function(){
-  if(!window.matchMedia) return;
-  var mq=window.matchMedia('(min-width:861px)');
-  function scroller(t,side){
-    while(t&&t!==side){ var cs=getComputedStyle(t); if(/(auto|scroll)/.test(cs.overflowY)&&t.scrollHeight>t.clientHeight+1) return t; t=t.parentElement; }
-    return side.querySelector('.side-nav');
-  }
-  document.addEventListener('wheel',function(e){
-    if(!mq.matches||e.ctrlKey) return;
-    var side=e.target.closest&&e.target.closest('.layout > .sidebar'); if(!side) return;
-    var t=e.target;
-    while(t&&t!==side){ var cs=getComputedStyle(t); if(/(auto|scroll)/.test(cs.overflowY)&&t.scrollHeight>t.clientHeight+1) return; t=t.parentElement; }
-    e.preventDefault();
-  },{passive:false});
-})();
-</script>
+
 </body>
 </html>

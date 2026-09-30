@@ -2,6 +2,7 @@ name: 접속 시험 (1회용)
 on:
   push:
     paths: ['.github/workflows/probe.yml']
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:
@@ -12,13 +13,15 @@ jobs:
       - run: |
           mkdir -p reports; o=reports/probe.txt; : > $o
           UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36'
-          for u in "https://www.koies.or.kr/00086/2895" "https://www.koies.or.kr/00087/3143" \
-                   "https://codil.or.kr/policy/read.do?bbsId=BBSMSTR_900000000006&nttId=13277" \
-                   "https://www.codil.or.kr/filebank/files/202601/helpdesk/BBS_202601021022219232.pdf?atchFileId=FILE_000000000011032&fileSn=2"; do
-            echo "=== $u" >> $o
-            curl -sL -A "$UA" --max-time 40 -o /tmp/p -w 'http=%{http_code} type=%{content_type} size=%{size_download}\n' "$u" >> $o 2>&1 || echo "curl 실패 $?" >> $o
-            grep -oiE '(href|onclick)="[^"]*(down|file|atch)[^"]*"' /tmp/p 2>/dev/null | head -15 >> $o
-            grep -oiE '<a[^>]*>[^<]*파일 다운로드[^<]*</a>' /tmp/p | head -5 >> $o
+          echo "=== codil 인증서 체인" >> $o
+          echo | timeout 20 openssl s_client -connect www.codil.or.kr:443 -servername www.codil.or.kr -showcerts 2>&1 | grep -E 's:|i:|Verify return|verify error' >> $o
+          curl -s -o /dev/null -w 'codil verbose http=%{http_code}\n' --max-time 30 https://www.codil.or.kr/ >> $o 2>&1 || echo "codil curl rc=$?" >> $o
+          echo "=== koies 상세 HTML 중 다운로드 관련" >> $o
+          curl -sL -A "$UA" --max-time 60 https://www.koies.or.kr/00087/3143 -o /tmp/k.html
+          grep -n -iE 'download|fileSn|atchFile|fileId|/file' /tmp/k.html | cut -c1-300 | head -60 >> $o
+          for js in $(grep -oE 'src="[^"]*\.js[^"]*"' /tmp/k.html | cut -d'"' -f2 | grep -viE 'jquery|swiper|gsap|lib' | head -8); do
+            echo "--- js $js" >> $o
+            curl -sL -A "$UA" --max-time 30 "https://www.koies.or.kr$js" | grep -n -iE 'downloadAllFiles|function download|fileDown|/download' | cut -c1-400 | head -15 >> $o
           done
           git config user.name github-actions; git config user.email actions@github.com
           git add $o; git commit -m "접속 시험 결과" && git pull --rebase && git push

@@ -2,7 +2,6 @@
 
 | 결과 | 파일 | 크기 | 출처 |
 |---|---|---|---|
-| 완료 | [가이드]조적조·경량철골조 학교시설 내진보강사업 가이드라인.pdf | 8.8MB | https://www.koies.or.kr/00087/3143 |
-| 완료 | [가이드]교육시설 비탈면 재해위험도평가 안내서(2026).pdf | 42.3MB | https://www.koies.or.kr/00086/2895 |
-| 실패 | 접속 실패: https://codil.or.kr/policy/read.do?bbsId=BBSMSTR_900000000006&nttId=13277 — HTTP Error 403: Forbidden | - | https://codil.or.kr/policy/read.do?bbsId=BBSMSTR_900000000006&nttId=13277 |
+| 완료 | [가이드]1._(공고문)_2026년_적정_공사기간_확보를_위한_가이드라인_공고(국토교통부_공고_제2025-1603호,_2025.12.31).pdf&nbs.pdf | 0.1MB | https://codil.or.kr/policy/read.do?bbsId=BBSMSTR_900000000006&nttId=13277 |
+| 완료 | [가이드]2._(공고자료)_2026년_적정_공사기간_확보를_위한_가이드라인.pdf&nbsp;[4.7 Mbyte].pdf | 4.7MB | https://codil.or.kr/policy/read.do?bbsId=BBSMSTR_900000000006&nttId=13277 |
 

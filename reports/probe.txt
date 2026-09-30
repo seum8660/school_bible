@@ -1,0 +1,23 @@
+=== https://www.koies.or.kr/00086/2895
+http=000 type= size=0
+curl 실패 28
+=== https://www.koies.or.kr/00087/3143
+http=200 type=text/html;charset=UTF-8 size=72632
+onclick="openDownloadModal()"
+onclick="closeDownloadModal()"
+onclick="downloadAllFiles('CHECKED', true)"
+onclick="closeDownloadModal()"
+=== https://codil.or.kr/policy/read.do?bbsId=BBSMSTR_900000000006&nttId=13277
+http=000 type= size=0
+curl 실패 60
+onclick="openDownloadModal()"
+onclick="closeDownloadModal()"
+onclick="downloadAllFiles('CHECKED', true)"
+onclick="closeDownloadModal()"
+=== https://www.codil.or.kr/filebank/files/202601/helpdesk/BBS_202601021022219232.pdf?atchFileId=FILE_000000000011032&fileSn=2
+http=000 type= size=0
+curl 실패 60
+onclick="openDownloadModal()"
+onclick="closeDownloadModal()"
+onclick="downloadAllFiles('CHECKED', true)"
+onclick="closeDownloadModal()"

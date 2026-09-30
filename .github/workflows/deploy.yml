@@ -91,10 +91,12 @@ jobs:
           # 붙여넣을 때 섞인 공백·줄바꿈·주소를 걷어내고 토큰 부분만 사용
           TOK=$(printf '%s' "$VAULT_TOKEN" | grep -oE '(github_pat_|ghp_)[A-Za-z0-9_]+' | head -1)
           [ -z "$TOK" ] && TOK=$(printf '%s' "$VAULT_TOKEN" | tr -d '[:space:]')
+          # 'github_pat_' 머리말을 빼고 붙여 넣은 경우(82자) 보정
+          case "$TOK" in github_pat_*|ghp_*) ;; *) [ ${#TOK} -eq 82 ] && TOK="github_pat_$TOK" ;; esac
           AUTH="Authorization: Basic $(printf 'x-access-token:%s' "$TOK" | base64 -w0)"
           if [ -z "$TOK" ]; then result "실패: VAULT_TOKEN 비어 있음"; else
             if ! git -c http.extraHeader="$AUTH" clone --depth 1 "https://github.com/seum8660/school_bible_vault.git" /tmp/v 2>/tmp/clone.err; then
-              result "실패: 노트 저장소 접근 불가 (토큰 형식 $(printf '%s' "$TOK" | cut -c1-11)…, 길이 ${#TOK}) — 토큰 권한(Contents 읽기·쓰기, school_bible_vault 선택) 확인 · $(sed "s/${TOK}/***/g" /tmp/clone.err | tail -1)"
+              result "실패: 노트 저장소 접근 불가 (토큰 길이 ${#TOK}자, github_pat_ 시작 $(case "$TOK" in github_pat_*) echo 예;; *) echo 아니오;; esac)) — 토큰 권한(Contents 읽기·쓰기, school_bible_vault 선택) 확인 · $(sed "s/${TOK}/***/g" /tmp/clone.err | tail -1)"
             else
               rsync -a --delete --exclude '.git' --exclude '.obsidian' --exclude '내 노트' vault/ /tmp/v/
               cd /tmp/v

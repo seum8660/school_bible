@@ -165,7 +165,8 @@ def main():
         for f in fs:
             if f.endswith('.md'):
                 p = os.path.join(dp, f)
-                if MARK in open(p, encoding='utf-8').read(2000):
+                head = open(p, encoding='utf-8').read(4000)
+                if head.startswith('---\n') and MARK in head.split('\n---', 1)[0].splitlines():  # frontmatter 안의 표시만 인정
                     old.add(os.path.relpath(p, VAULT))
     changed = 0
     for rp, txt in notes.items():

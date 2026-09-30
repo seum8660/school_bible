@@ -79,7 +79,7 @@ jobs:
           git add bible.html manuals/manifest.json vault
           git diff --cached --quiet || (git commit -m "허브·볼트 자동 갱신" && git pull --rebase && git push)
       - name: Clean
-        run: rm -rf .github templates tools vault
+        run: rm -rf .github templates tools vault inbox reports
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

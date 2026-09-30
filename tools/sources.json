@@ -1,0 +1,10 @@
+{
+ "review_page": "https://claude.ai/artifact/VkChdAAiuhqaHzbsWjJbD8",
+ "sources": [
+  {"org": "한국교육시설안전원", "board": "지침서 및 매뉴얼", "url": "https://www.koies.or.kr/00087", "method": "직접 읽기(WebFetch)", "download": "자동"},
+  {"org": "한국교육시설안전원", "board": "안전사업", "url": "https://www.koies.or.kr/00086", "method": "직접 읽기(WebFetch)", "download": "자동"},
+  {"org": "CODIL 건설기술정보시스템", "board": "건설정책", "url": "https://www.codil.or.kr/policy/search.do", "method": "웹 검색(site:codil.or.kr) — 직접 접속 불가", "download": "자동 (www 주소, 중간인증서 보정)"},
+  {"org": "건축HUB", "board": "자료실·공지사항", "url": "https://www.hub.go.kr/portal/bbs/dtr/idx-dtr-list.do", "method": "수집 금지(robots.txt) — 검토 페이지에 '직접 확인'으로만 안내", "download": "수동"}
+ ],
+ "keywords": ["학교시설", "교육시설", "공사기간", "안전관리", "내진", "설계", "감리", "건설사업관리", "계약", "원가", "품셈", "인증", "석면", "해체", "유지관리"]
+}

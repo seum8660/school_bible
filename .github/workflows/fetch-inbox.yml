@@ -1,0 +1,24 @@
+name: 승인 자료 원문 다운로드
+on:
+  push:
+    branches: [main]
+    paths: ['inbox/downloads.txt']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: fetch-inbox
+  cancel-in-progress: false
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 원문 PDF 받기
+        run: python3 tools/fetch_docs.py
+      - name: inbox 에 커밋
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add inbox reports
+          git diff --cached --quiet || (git commit -m "승인 자료 원문 다운로드" && git pull --rebase && git push)

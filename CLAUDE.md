@@ -28,4 +28,5 @@
 - 새 요약문서는 `manuals/NN_주제_요약.html` 로만 넣으면 됨. 번호는 `build_hub.py --next`
 - `vault/` 는 `tools/build_vault.py` 자동생성 (옵시디언). `vault/내 노트/` 는 수기 영역
 - 배포 시 Actions(deploy.yml)가 두 스크립트를 실행해 커밋까지 한다
-- 요약 대기 PDF는 `inbox/`, 예약작업 보고서는 `reports/`
+- 요약 대기 PDF는 `inbox/`(승인 자료는 `inbox/downloads.txt` → Actions가 PDF 저장), 예약작업 보고서는 `reports/`
+- 수집 대상 게시판·검토 페이지 주소는 `tools/sources.json`

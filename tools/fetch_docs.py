@@ -67,8 +67,9 @@ def find_files(url, page):
 
 
 def safe_name(s):
-    s = re.sub(r'^\[?붙임\]?\s*', '', s)
-    s = re.sub(r'\.(pdf|hwpx?)$', '', s, flags=re.I)
+    s = html.unescape(s).replace('\xa0', ' ')
+    s = re.sub(r'\.(pdf|hwpx?)\b.*$', '', s, flags=re.I)  # 확장자 뒤 "[4.7 Mbyte]" 등 제거
+    s = re.sub(r'^\[?붙임\]?\s*|^\d+\.\s*', '', s.replace('_', ' '))
     s = re.sub(r'[\\/:*?"<>|]+', ' ', s)
     return re.sub(r'\s+', ' ', s).strip()[:80]
 
@@ -86,17 +87,20 @@ def process(line, outdir):
     pdfs = [(n, u) for n, u in cands if not re.search(r'\.hwpx?($|\?)', n + u, re.I)]
     if not pdfs:
         return None, '첨부 PDF 없음' + (' (HWP만 있음)' if cands else '')
+    got = []  # 게시글에 PDF가 여럿이면(공고문+본문 등) 가장 큰 파일 = 본문 하나만 저장
+    for n, u in pdfs[:5]:
+        data = get(u)[0]
+        if data.startswith(b'%PDF'):
+            got.append((len(data), n, data))
     saved = []
-    for n, u in pdfs[:3]:  # 본문 PDF가 여러 개면 최대 3개
-        data, ctype, _ = get(u)
-        if not data.startswith(b'%PDF'):
-            continue
-        if len(data) > 95 * 1048576:  # GitHub 파일 한도(100MB)
-            return None, f'PDF가 너무 큼({len(data) / 1048576:.0f}MB) — 직접 업로드 필요'
-        name = safe_name(title if (title and len(pdfs) == 1) else n) or 'document'
+    if got:
+        size, n, data = max(got)
+        if size > 95 * 1048576:  # GitHub 파일 한도(100MB)
+            return None, f'PDF가 너무 큼({size / 1048576:.0f}MB) — 직접 업로드 필요'
+        name = safe_name(title or n) or 'document'
         path = os.path.join(outdir, prefix + name + '.pdf')
         open(path, 'wb').write(data)
-        saved.append((os.path.basename(path), len(data)))
+        saved.append((os.path.basename(path), size))
     return (saved, None) if saved else (None, 'PDF 형식 파일을 받지 못함')
 
 

@@ -94,3 +94,10 @@ python3 tools/build_vault.py         # 볼트 갱신 (pip install beautifulsoup4
 `no`(카드 번호) · `file` · `kind` · `title` · `name` · `sub` · `pdf` · `tags` ·
 `badges_html`(사이트 링크 등 수기 배지, 선택) · `graph_label`(그래프뷰 노드와 이름이 다를 때, 선택)
 카드 순서·문구를 바꾸려면 manifest.json 을 고치고 build_hub.py 를 실행한다.
+
+## 옵시디언 노트 저장소 동기화 (PC·아이패드)
+노트 전용 저장소 `seum8660/school_bible_vault` 는 GitHub Actions 가 아니라 **예약작업(A·P)과 Claude 세션이 직접** 갱신한다(토큰 불필요).
+1. `seum8660/school_bible_vault` 를 push 권한으로 세션에 추가(add_repo)하고 clone 한다.
+2. `python3 tools/sync_vault_repo.py <clone 경로>` 실행 — school_bible/vault/ 내용을 복사(‘내 노트’, .obsidian 은 보존), 변경이 있으면 커밋.
+3. 변경이 있으면 `git push origin HEAD:main`.
+예약작업 A 는 매일 마지막에, 게시 단계 P 는 게시 직후에 수행한다.

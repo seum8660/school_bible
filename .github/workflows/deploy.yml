@@ -78,42 +78,6 @@ jobs:
           git config user.email "actions@github.com"
           git add bible.html manuals/manifest.json vault
           git diff --cached --quiet || (git commit -m "허브·볼트 자동 갱신" && git pull --rebase && git push)
-      - name: 옵시디언 볼트 저장소 동기화 (PC·아이패드용)
-        continue-on-error: true
-        env:
-          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
-        run: |
-          # vault/ 노트만 작은 별도 저장소(seum8660/school_bible_vault)로 복사한다.
-          # '내 노트'와 .obsidian 설정은 기기에서 쓴 것을 보존한다. 결과는 reports/볼트동기화.txt 에 남긴다.
-          set +e
-          st="$GITHUB_WORKSPACE/reports/볼트동기화.txt"; mkdir -p "$(dirname "$st")"
-          result() { echo "$1" > "$st"; echo "$1"; }
-          # 붙여넣을 때 섞인 공백·줄바꿈·주소를 걷어내고 토큰 부분만 사용
-          TOK=$(printf '%s' "$VAULT_TOKEN" | grep -oE '(github_pat_|ghp_)[A-Za-z0-9_]+' | head -1)
-          [ -z "$TOK" ] && TOK=$(printf '%s' "$VAULT_TOKEN" | tr -d '[:space:]')
-          # 'github_pat_' 머리말을 빼고 붙여 넣은 경우(82자) 보정
-          case "$TOK" in github_pat_*|ghp_*) ;; *) [ ${#TOK} -eq 82 ] && TOK="github_pat_$TOK" ;; esac
-          AUTH="Authorization: Basic $(printf 'x-access-token:%s' "$TOK" | base64 -w0)"
-          if [ -z "$TOK" ]; then result "실패: VAULT_TOKEN 비어 있음"; else
-            if ! git -c http.extraHeader="$AUTH" clone --depth 1 "https://github.com/seum8660/school_bible_vault.git" /tmp/v 2>/tmp/clone.err; then
-              result "실패: 노트 저장소 접근 불가 (토큰 길이 ${#TOK}자, github_pat_ 시작 $(case "$TOK" in github_pat_*) echo 예;; *) echo 아니오;; esac)) — 토큰 권한(Contents 읽기·쓰기, school_bible_vault 선택) 확인 · $(sed "s/${TOK}/***/g" /tmp/clone.err | tail -1)"
-            else
-              rsync -a --delete --exclude '.git' --exclude '.obsidian' --exclude '내 노트' vault/ /tmp/v/
-              cd /tmp/v
-              git config user.name "github-actions"; git config user.email "actions@github.com"
-              git add -A
-              if git diff --cached --quiet; then result "정상: 변경 없음"
-              else
-                git commit -qm "치트키 노트 자동 갱신 $(TZ=Asia/Seoul date +%Y-%m-%d)"
-                if git -c http.extraHeader="$AUTH" push -q origin HEAD:main 2>/tmp/push.err; then result "정상: 노트 갱신 푸시"
-                else result "실패: 노트 저장소 푸시 거부 — 토큰에 쓰기 권한 필요 · $(sed "s/${TOK}/***/g" /tmp/push.err | tail -1)"; fi
-              fi
-              cd "$GITHUB_WORKSPACE"
-            fi
-          fi
-          git add reports/볼트동기화.txt
-          git diff --cached --quiet || (git commit -m "볼트 동기화 상태 기록" && git pull --rebase && git push)
-          exit 0
       - name: Clean
         run: rm -rf .github templates tools vault inbox reports
       - uses: actions/configure-pages@v5

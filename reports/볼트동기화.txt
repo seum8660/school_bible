@@ -1,0 +1,1 @@
+실패: 노트 저장소 접근 불가 — 토큰 권한(Contents 읽기·쓰기, school_bible_vault 선택) 확인 · fatal: Authentication failed for 'https://github.com/seum8660/school_bible_vault.git/'

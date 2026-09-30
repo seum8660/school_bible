@@ -76,6 +76,7 @@ def safe_name(s):
 def process(line, outdir):
     parts = [p.strip() for p in line.split('|')]
     url, title, kind = (parts + ['', ''])[:3]
+    url = re.sub(r'^https?://codil\.or\.kr', 'https://www.codil.or.kr', url)  # www 없는 주소는 403
     prefix = f'[{kind}]' if kind in ('지침', '가이드') else ''
     if re.search(r'\.pdf($|\?)', url, re.I) or 'filebank' in url:
         cands = [(title or os.path.basename(urllib.parse.urlparse(url).path), url)]
@@ -90,6 +91,8 @@ def process(line, outdir):
         data, ctype, _ = get(u)
         if not data.startswith(b'%PDF'):
             continue
+        if len(data) > 95 * 1048576:  # GitHub 파일 한도(100MB)
+            return None, f'PDF가 너무 큼({len(data) / 1048576:.0f}MB) — 직접 업로드 필요'
         name = safe_name(title if (title and len(pdfs) == 1) else n) or 'document'
         path = os.path.join(outdir, prefix + name + '.pdf')
         open(path, 'wb').write(data)

@@ -7,8 +7,11 @@
 예약작업 C(매주 월): tools/sources.json 게시판 탐색 ─▶ 검토 페이지(자료 검토함)에 후보 등록
                                   │ Mini 승인
                                   ▼
-예약작업 A(매일): 승인분 → inbox/downloads.txt ─▶ Actions fetch-inbox.yml 이 원문 PDF를 inbox/ 에 저장
-inbox/*.pdf ──(예약작업 A 이어서)──▶ manuals/NN_*_요약.html + PDF
+예약작업 A(매일 06:52): 승인분 → inbox/downloads.txt ─▶ Actions fetch-inbox.yml 이 원문 PDF를 inbox/ 에 저장
+inbox/*.pdf ──(예약작업 A 이어서)──▶ staging/NN_*_요약.html + PDF (미리보기, 아직 비공개 게시)
+                                  │ Mini가 검토함에서 요약 검증 → [게시 승인] 또는 [수정 요청]
+                                  ▼
+게시 단계 P(검토함 [지금 게시] 버튼 또는 다음 날 06:52): staging → manuals/
                                         │ main 푸시
                                         ▼
                      GitHub Actions deploy.yml
@@ -22,7 +25,9 @@ inbox/*.pdf ──(예약작업 A 이어서)──▶ manuals/NN_*_요약.html +
 주소는 tools/sources.json 의 review_page. ArtifactData 도구로 컬렉션 `candidates` 를 읽고 쓴다.
 문서 id: `기관-게시판-글번호` (예: koies-00087-3143, codil-policy-13277)
 필드: title · org · board · date(YYYY-MM-DD) · url · reason(요약이 필요한 이유 1~2문장) · kind(지침/가이드) · note · found ·
-status(pending→approved→queued→done | failed | rejected) · summaryUrl(게시 후)
+status(pending→approved→queued→review→publish→done | revise→review | failed | rejected) ·
+stagingFile · stagingPdf · previewUrl · pdfUrl(검토용) · reviewNote(수정 요청 내용) · summaryUrl(게시 후)
+- review: 요약이 staging 에 올라가 Mini 검증 대기 / publish: Mini가 게시 승인 / revise: Mini가 수정 요청(reviewNote)
 Mini가 페이지에서 pending 을 approved/rejected 로 바꾼다. 쓰기는 항상 읽은 version 을 if_version 으로 고정한다.
 
 ## 예약작업 C — 새 자료 탐색 (매주 월요일)
@@ -33,7 +38,15 @@ Mini가 페이지에서 pending 을 approved/rejected 로 바꾼다. 쓰기는 �
 4. 새 후보를 candidates 에 status=pending 으로 등록한다(batch). reason 은 사이트의 어떤 요약·업무와 연결되는지 구체적으로.
 5. 새 후보가 있으면 건수와 제목만 짧게 보고한다. 없으면 "새 후보 없음" 한 줄.
 
+## 게시 단계 P — 검증된 요약 게시 (검토함 버튼 또는 예약작업 A 시작 시)
+1. candidates 중 status=publish 만 대상. Mini가 승인하지 않은 staging 파일은 절대 옮기지 않는다.
+2. `git mv staging/<stagingFile> manuals/`, `git mv staging/<stagingPdf> manuals/`
+3. build_hub.py · build_vault.py 실행 → main 푸시(메시지: `요약문서 게시: NN 문서명`)
+4. status=done, summaryUrl=https://seum8660.github.io/school_bible/manuals/<파일> (if_version 고정)
+
 ## 예약작업 A — 요약문서 생성 (inbox 처리)
+-1. 게시 단계 P 를 먼저 수행한다(전날 승인분).
+-0. status=revise 후보는 reviewNote 를 반영해 staging 의 요약을 다시 만들고 status=review 로 되돌린다.
 0. 검토 페이지에서 status=approved 인 후보를 읽어 `inbox/downloads.txt` 에 `url | title | kind` 줄로 추가하고 status=queued 로 바꾼다.
    추가한 줄이 있으면 main 에 푸시한 뒤 Actions(승인 자료 원문 다운로드)가 끝날 때까지 기다린다
    (1분 간격 git pull, 최대 15분 — downloads.txt 에서 줄이 빠지고 reports/다운로드_*.md 가 생기면 완료).
@@ -50,14 +63,16 @@ Mini가 페이지에서 pending 을 approved/rejected 로 바꾼다. 쓰기는 �
      <meta name="bible:kind" content="지침|가이드">   <!-- 파일명 [지침]/[가이드] 우선 -->
      <meta name="bible:tags" content="태그1,태그2,태그3">
      ```
-   - 저장: `manuals/NN_주제_요약.html`, 원문은 `git mv inbox/원본.pdf manuals/NN_주제.pdf`
+   - 저장: **`staging/NN_주제_요약.html`**, 원문은 `git mv inbox/원본.pdf staging/NN_주제_원문종류.pdf` (manuals/ 에 직접 넣지 않는다)
+   - 번호(--next)는 staging 에 이미 있는 번호도 피한다: max(manuals, staging)+1
    - PDF가 90MB를 넘거나 스캔본이라 글자를 읽을 수 없으면 요약하지 않고 실패로 기록한다.
-3. `python3 tools/build_hub.py` 와 `python3 tools/build_vault.py` 를 실행해 결과를 확인한다(카드 추가 로그).
+3. (staging 단계에서는 허브·볼트를 갱신하지 않는다 — 게시 단계 P에서 수행)
 4. `reports/요약_YYYYMMDD.md` 에 처리 목록(번호·문서명·요약 파일·페이지 사용률)을 적는다.
 5. main 에 커밋·푸시한다(메시지: `요약문서 자동 생성: NN 문서명`). 푸시하면 Actions가 배포한다.
 6. 실패한 PDF는 `inbox/` 에 그대로 두고 보고서에 사유를 적는다.
-7. 검토 페이지 후보에서 온 문서는 status=done, summaryUrl=https://seum8660.github.io/school_bible/manuals/NN_주제_요약.html 로 바꾼다
-   (inbox 파일명은 `[구분]제목.pdf` 이므로 제목으로 짝지음).
+7. 검토 페이지 후보는 status=review 로 바꾸고 stagingFile·stagingPdf·previewUrl(https://seum8660.github.io/school_bible/staging/<파일>)·pdfUrl 을 기록한다
+   (inbox 파일명은 `[구분]제목.pdf` 이므로 제목으로 짝지음). inbox 에 직접 올린 PDF도 candidates 에 id `manual-NN` 으로 등록해 같은 검토를 거친다.
+8. 푸시 알림 보고: "검증할 요약 N건 — 자료 검토함의 [요약 검토] 탭에서 확인 후 게시 승인해 주십시오." 
 
 ## 예약작업 B — 정기 개정 점검
 1. `manuals/manifest.json` 의 각 문서에서 근거 법령·고시·지침명과 기준일(요약문서 meta 줄)을 읽는다.

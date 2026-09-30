@@ -84,7 +84,9 @@ def infer_entry(fname):
 
 def main():
     if '--next' in sys.argv:  # 새 요약문서에 붙일 다음 파일 번호
-        nums = [int(m.group()) for f in os.listdir(MAN) for m in [re.match(r'\d+', f)] if m]
+        stg = os.path.join(ROOT, 'staging')
+        files = os.listdir(MAN) + (os.listdir(stg) if os.path.isdir(stg) else [])
+        nums = [int(m.group()) for f in files for m in [re.match(r'\d+', f)] if m]
         print(max(nums, default=0) + 1); return
     check = '--check' in sys.argv
     hub = open(HUB, encoding='utf-8').read()

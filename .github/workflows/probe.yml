@@ -1,7 +1,7 @@
 name: 접속 시험 (1회용)
 on:
   push:
-    paths: ['.github/workflows/probe.yml']
+    paths: ['.github/workflows/probe.yml', 'tools/fetch_docs.py', 'tools/tests/**']
   workflow_dispatch:
 permissions:
   contents: write
@@ -12,20 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           set +e
-          mkdir -p reports; o=reports/probe.txt; : > $o
-          UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36'
-          echo "=== codil AIA" >> $o
-          echo | timeout 20 openssl s_client -connect www.codil.or.kr:443 -servername www.codil.or.kr 2>/dev/null | openssl x509 -noout -text | grep -A2 'Authority Information' >> $o
-          aia=$(echo | timeout 20 openssl s_client -connect www.codil.or.kr:443 -servername www.codil.or.kr 2>/dev/null | openssl x509 -noout -text | grep -oE 'CA Issuers - URI:[^ ]+' | sed 's/CA Issuers - URI://')
-          curl -s --max-time 30 "$aia" -o /tmp/inter.crt; file /tmp/inter.crt >> $o
-          (openssl x509 -inform der -in /tmp/inter.crt -out /tmp/inter.pem 2>/dev/null || cp /tmp/inter.crt /tmp/inter.pem)
-          cat /etc/ssl/certs/ca-certificates.crt /tmp/inter.pem > /tmp/bundle.pem
-          curl -s --cacert /tmp/bundle.pem --max-time 60 -o /tmp/c.pdf -w 'codil pdf http=%{http_code} type=%{content_type} size=%{size_download}\n' "https://www.codil.or.kr/filebank/files/202601/helpdesk/BBS_202601021022219232.pdf?atchFileId=FILE_000000000011032&fileSn=2" >> $o 2>&1 || echo "rc=$?" >> $o
-          curl -s --cacert /tmp/bundle.pem --max-time 60 -A "$UA" -o /tmp/c.html "https://www.codil.or.kr/policy/read.do?bbsId=BBSMSTR_900000000006&nttId=13277"
-          grep -oiE '(href|onclick)="[^"]*(down|file|atch)[^"]*"' /tmp/c.html | head -10 >> $o
-          echo "=== koies 스크립트 1120-1175" >> $o
-          curl -sL -A "$UA" --max-time 60 https://www.koies.or.kr/00087/3143 -o /tmp/k.html
-          sed -n '1120,1175p' /tmp/k.html | cut -c1-300 >> $o
-          grep -n -iE 'addFile|AddUploadedFile|\.pdf|\.hwp' /tmp/k.html | cut -c1-400 | head -20 >> $o
+          mkdir -p reports; o=reports/probe.txt
+          python3 tools/fetch_docs.py --dry tools/tests/probe_urls.txt > $o 2>&1
           git config user.name github-actions; git config user.email actions@github.com
           git add $o; git commit -m "접속 시험 결과" && git pull --rebase && git push

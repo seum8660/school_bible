@@ -84,16 +84,30 @@ jobs:
           VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
         run: |
           # vault/ 노트만 작은 별도 저장소(seum8660/school_bible_vault)로 복사한다.
-          # '내 노트'와 .obsidian 설정은 기기에서 쓴 것을 보존한다.
-          if [ -z "$VAULT_TOKEN" ]; then echo "VAULT_TOKEN 미설정 — 건너뜀"; exit 0; fi
-          git clone --depth 1 "https://x-access-token:${VAULT_TOKEN}@github.com/seum8660/school_bible_vault.git" /tmp/v
-          rsync -a --delete --exclude '.git' --exclude '.obsidian' --exclude '내 노트' vault/ /tmp/v/
-          cd /tmp/v
-          git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add -A
-          git diff --cached --quiet && { echo "볼트 변경 없음"; exit 0; }
-          git commit -m "치트키 노트 자동 갱신 $(TZ=Asia/Seoul date +%Y-%m-%d)"
-          git push origin HEAD:main
+          # '내 노트'와 .obsidian 설정은 기기에서 쓴 것을 보존한다. 결과는 reports/볼트동기화.txt 에 남긴다.
+          set +e
+          st="$GITHUB_WORKSPACE/reports/볼트동기화.txt"; mkdir -p "$(dirname "$st")"
+          result() { echo "$1" > "$st"; echo "$1"; }
+          if [ -z "$VAULT_TOKEN" ]; then result "실패: VAULT_TOKEN 비어 있음"; else
+            if ! git clone --depth 1 "https://x-access-token:${VAULT_TOKEN}@github.com/seum8660/school_bible_vault.git" /tmp/v 2>/tmp/clone.err; then
+              result "실패: 노트 저장소 접근 불가 — 토큰 권한(Contents 읽기·쓰기, school_bible_vault 선택) 확인 · $(sed "s/${VAULT_TOKEN}/***/g" /tmp/clone.err | tail -1)"
+            else
+              rsync -a --delete --exclude '.git' --exclude '.obsidian' --exclude '내 노트' vault/ /tmp/v/
+              cd /tmp/v
+              git config user.name "github-actions"; git config user.email "actions@github.com"
+              git add -A
+              if git diff --cached --quiet; then result "정상: 변경 없음"
+              else
+                git commit -qm "치트키 노트 자동 갱신 $(TZ=Asia/Seoul date +%Y-%m-%d)"
+                if git push -q origin HEAD:main 2>/tmp/push.err; then result "정상: 노트 갱신 푸시"
+                else result "실패: 노트 저장소 푸시 거부 — 토큰에 쓰기 권한 필요 · $(sed "s/${VAULT_TOKEN}/***/g" /tmp/push.err | tail -1)"; fi
+              fi
+              cd "$GITHUB_WORKSPACE"
+            fi
+          fi
+          git add reports/볼트동기화.txt
+          git diff --cached --quiet || (git commit -m "볼트 동기화 상태 기록" && git pull --rebase && git push)
+          exit 0
       - name: Clean
         run: rm -rf .github templates tools vault inbox reports
       - uses: actions/configure-pages@v5

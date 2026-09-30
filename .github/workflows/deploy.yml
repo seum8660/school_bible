@@ -68,8 +68,18 @@ jobs:
           ls -la data || true
           git add data
           git diff --cached --quiet || (git commit -m "학교알리미 자료 갱신" && git pull --rebase && git push)
+      - name: 허브·볼트 자동 갱신
+        continue-on-error: true
+        run: |
+          pip install -q beautifulsoup4 markdownify lxml
+          python3 tools/build_hub.py      # manuals/ 새 요약문서 → bible.html 카드·manifest.json
+          python3 tools/build_vault.py    # 사이트 문서 → vault/ 옵시디언 노트
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add bible.html manuals/manifest.json vault
+          git diff --cached --quiet || (git commit -m "허브·볼트 자동 갱신" && git pull --rebase && git push)
       - name: Clean
-        run: rm -rf .github templates tools
+        run: rm -rf .github templates tools vault
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

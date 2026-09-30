@@ -22,3 +22,10 @@
 - `graph_data.js` — 그래프뷰 데이터
 - `manuals/` — 매뉴얼·지침 요약문서 및 원문 PDF
 - `templates/` — 제작 규격서(내부용)
+
+## 자동화 (tools/AUTOMATION.md 참조)
+- 매뉴얼 카드는 `manuals/manifest.json` 이 원본 → `python3 tools/build_hub.py` 로 bible.html #manGrid 재생성 (카드 직접 수정 금지)
+- 새 요약문서는 `manuals/NN_주제_요약.html` 로만 넣으면 됨. 번호는 `build_hub.py --next`
+- `vault/` 는 `tools/build_vault.py` 자동생성 (옵시디언). `vault/내 노트/` 는 수기 영역
+- 배포 시 Actions(deploy.yml)가 두 스크립트를 실행해 커밋까지 한다
+- 요약 대기 PDF는 `inbox/`, 예약작업 보고서는 `reports/`

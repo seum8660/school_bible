@@ -1,23 +1,35 @@
-=== https://www.koies.or.kr/00086/2895
-http=000 type= size=0
-curl 실패 28
-=== https://www.koies.or.kr/00087/3143
-http=200 type=text/html;charset=UTF-8 size=72632
-onclick="openDownloadModal()"
-onclick="closeDownloadModal()"
-onclick="downloadAllFiles('CHECKED', true)"
-onclick="closeDownloadModal()"
-=== https://codil.or.kr/policy/read.do?bbsId=BBSMSTR_900000000006&nttId=13277
-http=000 type= size=0
-curl 실패 60
-onclick="openDownloadModal()"
-onclick="closeDownloadModal()"
-onclick="downloadAllFiles('CHECKED', true)"
-onclick="closeDownloadModal()"
-=== https://www.codil.or.kr/filebank/files/202601/helpdesk/BBS_202601021022219232.pdf?atchFileId=FILE_000000000011032&fileSn=2
-http=000 type= size=0
-curl 실패 60
-onclick="openDownloadModal()"
-onclick="closeDownloadModal()"
-onclick="downloadAllFiles('CHECKED', true)"
-onclick="closeDownloadModal()"
+=== codil 인증서 체인
+verify error:num=20:unable to get local issuer certificate
+verify error:num=21:unable to verify the first certificate
+ 0 s:C = KR, ST = Gyeonggi-do, O = \ED\95\9C\EA\B5\AD\EA\B1\B4\EC\84\A4\EA\B8\B0\EC\88\A0\EC\97\B0\EA\B5\AC\EC\9B\90, CN = www.codil.or.kr
+   i:C = CH, O = TuringSign Global SA, CN = TuringSign RSA Secure CA 2
+Verify return code: 21 (unable to verify the first certificate)
+codil verbose http=000
+codil curl rc=60
+=== koies 상세 HTML 중 다운로드 관련
+1035:								<button type="button" onclick="openDownloadModal()" style="padding:8px 20px; background:#318734; color:white; border:none; border-radius:4px; cursor:pointer;">파일 다운로드</button>
+1050:		<div id="downloadModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999;">
+1055:		            <button onclick="closeDownloadModal()" style="border:none; background:none; font-size:24px; cursor:pointer; color:#666;">&times;</button>
+1063:		            <button type="button" onclick="downloadAllFiles('CHECKED', true)" style="padding:8px 20px; background:#4CAF50; color:white; border:none; border-radius:4px; cursor:pointer;">파일 통합 다운로드</button>
+1064:		            <button type="button" onclick="closeDownloadModal()" style="padding:8px 20px; background:#999; color:white; border:none; border-radius:4px; cursor:pointer; margin-left:10px;">닫기</button>
+1104:		function openDownloadPopup() {
+1113:		        '/front/koies/bbs/download-popup.jsp?bbsNo=14',
+1114:		        'downloadPopup',
+1129:    dx.setLimitMultiDownloadSize(1024 * 1024 * 1024 * 20);
+1130:    dx.enableResumingDownload(true);
+1160:function downloadAllFiles(flag, isMulti) {
+1161:    var dx = dx5.get("dext5download");
+1172:    dx.download(flag, isMulti);
+1175:function openDownloadModal() {
+1183:    document.getElementById('downloadModal').style.display = 'block';
+1189:            id: "dext5download",
+1196:function closeDownloadModal() {
+1197:    document.getElementById('downloadModal').style.display = 'none';
+1203:        closeDownloadModal();
+1208:document.getElementById('downloadModal')?.addEventListener('click', function(e) {
+1210:        closeDownloadModal();
+--- js /assets/theme/koies/script/common.js?v=20221124
+--- js /assets/theme/koies/plugin/html5shiv.min.js?v=20221124
+--- js /assets/theme/koies/plugin/respond.min.js?v=20221124
+--- js /assets/dx5/dextuploadx5.js
+--- js /assets/theme/koies/script/common_bbs.js

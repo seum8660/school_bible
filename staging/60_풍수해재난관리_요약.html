@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="bible:name" content="교육시설 재난관리 핸드북(태풍·호우·강풍)">
+<meta name="bible:sub" content="한국교육시설안전원 · 2023.11. 풍수해 단계별 대비·대응·복구">
+<meta name="bible:kind" content="가이드">
+<meta name="bible:tags" content="풍수해,재난대비,계절점검,옹벽">
+<meta name="bible:pdf" content="60_풍수해재난관리_핸드북.pdf">
+
+<title>교육시설 재난관리 핸드북(풍수해) — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:14mm 12mm 0 12mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }   /* 잘라내지 않음 — overflow:hidden 금지 */
+
+  .title{ margin:0; font-size:13.1pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:6pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:7.9pt; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.7pt; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.7pt; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:7pt; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6pt; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:6pt; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+</style></head><body><div class="sheet">
+<h1 class="title">교육시설 재난관리 핸드북(풍수해) — 핵심 요약</h1>
+<p class="meta">재난대비 ｜ 태풍·호우·강풍 단계별 점검 ｜ 출처: 한국교육시설안전원(2023. 11.) · 행정실·건물내부·건물외부 역할 구분</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card"><span class="badge">1 · 기상특보 기준</span><ul class="list">
+    <li><b class="term">태풍</b> — 중심 최대풍속 <span class="num">17㎧</span> 이상, 내습기 <span class="num">7~10월</span></li>
+    <li><b class="term">태풍경보</b> — 총 강우량 <span class="num">200mm</span> 이상 예상 등</li>
+    <li><b class="term">호우주의보</b> — 3h <span class="num">60mm</span> 또는 12h <span class="num">110mm</span> 이상</li>
+    <li><b class="term">호우경보</b> — 3h <span class="num">90mm</span> 또는 12h <span class="num">180mm</span> 이상</li>
+  </ul></div>
+  <div class="card"><span class="badge">2 · 주요 피해 부위</span><ul class="list">
+    <li><b class="term">태풍</b> — 천정재·창호 파손, 바닥 침수(<span class="num">8~9월</span> 집중)</li>
+    <li><b class="term">호우</b> — 바닥 마감재 침수, 건물 침하, 산사태</li>
+    <li><b class="term">강풍</b> — 스팬드럴 천정재, 창호, 아스팔트싱글 지붕</li>
+    <li><b class="term">옥외</b> — 옹벽·축대·담장 붕괴, 수목 전도</li>
+  </ul></div>
+</div>
+
+<div class="row1">
+  <div class="card"><span class="badge rust">3 · 단계별 대응 흐름</span>
+    <div class="formula">대비(<span class="num">7월</span> 전 안전점검) → 영향권·특보 중(비상근무) → 특보 해제 후(피해 통보·복구)</div>
+    <ol class="nlist">
+      <li><span class="no">①</span><b class="term">대비</b> — 비상연락망·대피계획, 비상조명·양수기·모래주머니 비치, 배수구·홈통 이물질 제거</li>
+      <li><span class="no">②</span><b class="term">특보 중</b> — 침수 우려 시 학생 조기 대피, 침수되면 메인 전원 차단, 고가 기자재 상부층 이동</li>
+      <li><span class="no">③</span><b class="term">옥외 통제</b> — 균열·붕괴 우려 옹벽 주변 출입금지·위험표지, 가설건축물 주변 접근금지</li>
+      <li><span class="no">④</span><b class="term">복구</b> — 교육청·안전원 즉시 통보, <span class="num">2인 1조</span> 작업, 상습 피해지역은 항구복구</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card"><span class="badge">4 · 건물 점검 착안</span><ul class="list">
+    <li><b class="term">창호</b> — 금 간 유리 교체, 퇴실 시 잠금, 접합부 보수</li>
+    <li><b class="term">지붕</b> — 마감재 들뜸, 패널지붕 고정, 부식 슬레이트 교체</li>
+    <li><b class="term">외벽</b> — 치장벽돌·드라이비트 들뜸 점검·보수</li>
+    <li><b class="term">연결복도</b> — 경량철골 긴결철물 부식·풀림 보수</li>
+  </ul></div>
+  <div class="card"><span class="badge">5 · 응급·2차 피해 방지</span><ul class="list">
+    <li><b class="term">창문 파손</b> — 합판 임시복구, 유리파편 주의</li>
+    <li><b class="term">지붕 파손</b> — 천막 임시복구, 함부로 올라가지 않음</li>
+    <li><b class="term">기초 토사 유실</b> — 우선 출입 통제</li>
+    <li><b class="term">전기·가스 훼손</b> — 전기·가스안전공사 즉시 신고</li>
+  </ul></div>
+</div>
+
+<div class="row1">
+  <div class="card"><span class="badge">6 · 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>태풍</b> <span class="num">17㎧↑</span></span>
+      <span class="chip"><b>강풍</b> 10분 평균 <span class="num">14㎧↑</span></span>
+      <span class="chip"><b>강풍주의보</b> <span class="num">14</span>/순간 <span class="num">20m/s</span></span>
+      <span class="chip"><b>강풍경보</b> <span class="num">21</span>/순간 <span class="num">26m/s</span></span>
+      <span class="chip"><b>호우경보</b> 3h <span class="num">90mm</span></span>
+      <span class="chip"><b>태풍 피해(3년)</b> <span class="num">1,735건</span>·<span class="num">149억</span></span>
+      <span class="chip"><b>강풍 피해(3년)</b> <span class="num">1,436건</span>·<span class="num">93억</span></span>
+      <span class="chip"><b>호우 피해(3년)</b> <span class="num">360건</span>·<span class="num">66억</span></span>
+      <span class="chip"><b>복구 작업</b> <span class="num">2인</span> 이상</span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">본 요약은 한국교육시설안전원 「교육시설 재난관리 핸드북」(2023. 11.) 중 태풍·호우·강풍 편을 발췌·정리한 것으로, 특보 기준은 기상청 최신 기준을 확인할 것.</p>
+</div></body></html>

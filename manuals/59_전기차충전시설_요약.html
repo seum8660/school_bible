@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="bible:name" content="교육시설 전기자동차 충전시설 설치 및 유지관리 안내서">
+<meta name="bible:sub" content="한국교육시설안전원 · 2025.11. 충전구역 위치·유지관리·화재대응">
+<meta name="bible:kind" content="가이드">
+<meta name="bible:tags" content="전기차충전,화재안전,유지관리,시설안전">
+<meta name="bible:pdf" content="59_전기차충전시설_안내서.pdf">
+
+<title>교육시설 전기자동차 충전시설 설치 및 유지관리 안내서 — 핵심 요약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3A5F; --rust:#B45309; --line:#D1D5DB; --band:#EEF2F7;
+    --chip-bg:#F1F5F9; --chip-line:#CBD5E1;
+    --body:#37414F; --meta:#6B7280; --note:#9CA3AF;
+  }
+  @page{ size:A4 portrait; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    width:210mm; min-height:297mm;
+    padding:14mm 12mm 0 12mm;
+    font-family:'Noto Sans KR','Noto Sans CJK KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--body); background:#fff;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  /* 본문은 상단 약 55%(≈149mm) 사용, 하단은 여백. 잘라내지 않음 */
+  .sheet{ min-height:149mm; }   /* 잘라내지 않음 — overflow:hidden 금지 */
+
+  .title{ margin:0; font-size:13.1pt; font-weight:800; color:var(--navy); letter-spacing:-0.015em; line-height:1.2; }
+  .meta{ margin:1.4mm 0 0 0; font-size:6pt; font-weight:400; color:var(--meta); letter-spacing:0.01em; line-height:1.35; }
+  .rule-navy{ height:0.6mm; background:var(--navy); margin:2mm 0 3mm 0; }
+  .rule-gray{ height:0.25mm; background:var(--line); margin:3mm 0 1.8mm 0; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:3.4mm; margin-bottom:2.6mm; }
+  .row1{ margin-bottom:2.6mm; }
+  .row1:last-of-type{ margin-bottom:0; }
+
+  .card{ border:0.3mm solid var(--line); border-radius:1.2mm; background:none; padding:2mm 2.8mm 2.2mm 2.8mm; }
+  .badge{
+    display:inline-block; background:var(--navy); color:#fff; white-space:nowrap;
+    font-size:7.9pt; font-weight:700; letter-spacing:0; line-height:1.25;
+    padding:0.8mm 2.2mm; border-radius:0.8mm; margin-bottom:1.4mm;
+  }
+  .badge.rust{ background:var(--rust); }
+
+  .list{ margin:0; padding:0; list-style:none; }
+  .list li{ font-size:6.7pt; line-height:1.42; padding-left:2.4mm; text-indent:-2.4mm; margin-bottom:0.9mm; }
+  .list li:last-child{ margin-bottom:0; }
+  .list li::before{ content:"· "; color:var(--navy); font-weight:700; }
+
+  .nlist{ margin:0; padding:0; list-style:none; }
+  .nlist li{ font-size:6.7pt; line-height:1.42; padding-left:4.2mm; text-indent:-4.2mm; margin-bottom:0.9mm; }
+  .nlist li:last-child{ margin-bottom:0; }
+  .nlist .no{ color:var(--navy); font-weight:700; margin-right:1mm; }
+
+  .term{ color:var(--navy); font-weight:700; }
+  .num{ color:var(--rust); font-weight:700; }
+
+  .formula{
+    background:var(--band); border-radius:1mm; padding:2mm 3mm; margin:0 0 2.2mm 0;
+    text-align:center; font-size:7pt; font-weight:600; line-height:1.4;
+    color:var(--navy); letter-spacing:0;
+  }
+  .formula .num{ color:var(--rust); }
+  .formula .sub{ display:block; font-size:6pt; font-weight:500; color:var(--meta); margin-top:0.8mm; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:1.4mm; }
+  .chip{
+    font-size:6pt; line-height:1.25; background:var(--chip-bg);
+    border:0.25mm solid var(--chip-line); border-radius:1mm;
+    padding:0.9mm 1.8mm; color:var(--body); white-space:nowrap;
+  }
+  .chip b{ color:var(--navy); font-weight:700; }
+  .chip .num{ font-weight:700; }
+
+  .note{ text-align:center; font-size:5.7pt; line-height:1.4; color:var(--note); margin:0; }
+
+  @media print{ body{ width:auto; min-height:auto; } }
+</style></head><body><div class="sheet">
+<h1 class="title">교육시설 전기자동차 충전시설 설치 및 유지관리 안내서 — 핵심 요약</h1>
+<p class="meta">화재안전 ｜ 근거: 친환경자동차법 시행령 제18조의5 · 부칙 제2조 ｜ 출처: 한국교육시설안전원(2025. 11. 개정) · 법적 효력 없는 참고자료</p>
+<div class="rule-navy"></div>
+
+<div class="row2">
+  <div class="card"><span class="badge">1 · 설치 의무</span><ul class="list">
+    <li><b class="term">대상</b> — 총 주차대수 <span class="num">50대 이상</span> 교육연구시설</li>
+    <li><b class="term">충전구역</b> — 신축 <span class="num">5%</span>, 기축 <span class="num">2%</span>(소수점 반올림)</li>
+    <li><b class="term">기한</b> — 국·공립 초중고 <span class="num">’24. 1. 27.</span>까지(2년)</li>
+    <li><b class="term">개방 의무</b> — 국·공립 초중고는 미적용</li>
+  </ul></div>
+  <div class="card"><span class="badge">2 · 설치 방식</span><ul class="list">
+    <li><b class="term">자체 예산</b> — 견적→설계→입찰→계약→시공→준공</li>
+    <li><b class="term">보조사업</b> — 한국환경공단 신청, 설치 <span class="num">3개월</span> 이내</li>
+    <li><b class="term">의무 운영</b> — <span class="num">5년</span>, 기간 내 철거 시 보조금 회수</li>
+    <li><b class="term">위치</b> — 설치 후 이전 곤란, 공사 예정 부지 제외</li>
+  </ul></div>
+</div>
+
+<div class="row1">
+  <div class="card"><span class="badge rust">3 · 충전구역 위치 선정 — 일반환경 → 학생안전 → 화재안전 → 전력</span>
+    <div class="formula">지상 옥외 우선 → 불가 시 외기 2면 이상 또는 선큰 인접 → 지하는 <span class="num">지하 2층 이내</span></div>
+    <ol class="nlist">
+      <li><span class="no">①</span><b class="term">학생 안전</b> — 통학로(보도) 위 설치 제외, 차도·보행로 분리 펜스, 보안관실·출입문 인근 권장</li>
+      <li><span class="no">②</span><b class="term">옥외 이격</b> — 가연물·재활용 수거장, 전기·가스설비와 <span class="num">10m 이상</span>, 소나무 등 취약 수목 배제</li>
+      <li><span class="no">③</span><b class="term">옥내 이격</b> — 주출입구 <span class="num">10m 이상</span>, 피난계단·비상용 승강기 <span class="num">3m 이상</span>, 상부 배관·드라이비트 배제</li>
+      <li><span class="no">④</span><b class="term">소화설비</b> — 소화기·소화전은 <span class="num">5m 이상</span> 이격하되 옥외 <span class="num">40m</span>·옥내 <span class="num">25m</span> 수평거리 이내</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card"><span class="badge">4 · 유지관리</span><ul class="list">
+    <li><b class="term">충전 운영</b> — 급속 <span class="num">80%</span> 이하, 완속 최대시간 이내</li>
+    <li><b class="term">외관점검</b> — 분전반 잠금·커넥터·케이블·비상정지버튼</li>
+    <li><b class="term">부대시설</b> — 카스토퍼+볼라드 이중(벽부 <span class="num">1.2m</span> 이상 예외)</li>
+    <li><b class="term">학생 접근</b> — 경고표지 또는 <span class="num">10m</span> 이내 접근금지</li>
+  </ul></div>
+  <div class="card"><span class="badge">5 · 화재 시 비상대응</span><ul class="list">
+    <li><b class="term">전원차단</b> — 분전반 차단 또는 비상정지 버튼</li>
+    <li><b class="term">접근금지</b> — 제트화염 우려로 <span class="num">5m</span> 이내 접근 금지</li>
+    <li><b class="term">우선순위</b> — 119 신고 후 진화보다 학생 피난</li>
+    <li><b class="term">질식소화포</b> — 교직원 사용 비권장, 소방대용 배치</li>
+  </ul></div>
+</div>
+
+<div class="row1">
+  <div class="card"><span class="badge">6 · 수치 재확인</span>
+    <div class="chips">
+      <span class="chip"><b>설치대상</b> <span class="num">50대↑</span></span>
+      <span class="chip"><b>충전구역</b> 신축 <span class="num">5%</span>·기축 <span class="num">2%</span></span>
+      <span class="chip"><b>충전구역 주차제한</b> 급속 <span class="num">1h</span>·완속 <span class="num">14h</span></span>
+      <span class="chip"><b>과태료</b> <span class="num">10만원</span>(훼손 20만원)</span>
+      <span class="chip"><b>이격</b> 가연물 <span class="num">10m</span></span>
+      <span class="chip"><b>소화기</b> <span class="num">5m</span> 이상</span>
+      <span class="chip"><b>접근금지</b> <span class="num">5m</span></span>
+      <span class="chip"><b>보조금 의무운영</b> <span class="num">5년</span></span>
+      <span class="chip"><b>이행강제금</b> 설치비의 <span class="num">20%</span></span>
+    </div>
+  </div>
+</div>
+
+<div class="rule-gray"></div>
+<p class="note">본 요약은 한국교육시설안전원 「교육시설 전기자동차 충전시설 설치 및 유지관리 안내서」(2025. 11.)를 발췌·정리한 것으로, 점검표·현황표 서식은 원문을 확인할 것.</p>
+</div></body></html>

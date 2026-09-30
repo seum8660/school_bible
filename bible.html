@@ -6705,7 +6705,6 @@ html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh span{flex-basis:100%;dis
   .layout > .sidebar > .side-nav > *{flex-shrink:0!important}
   .layout > .sidebar > .qbox{flex:0 0 auto!important}
   .side-right .qbox-list{overscroll-behavior:contain!important;scroll-behavior:auto!important}
-  .layout > .sidebar{will-change:transform}
   .layout > .sidebar .tab:hover{transform:none!important}
 }
 </style>
@@ -6713,25 +6712,25 @@ html[data-skin="gov24"]:not([data-theme="dark"]) .gz-sh span{flex-basis:100%;dis
 <script id="sb-smooth-wheel">
 (function(){
   var mq=window.matchMedia('(min-width:861px)');
-  function pick(t,side){
-    for(;t&&t!==side;t=t.parentElement){ if(t.scrollHeight>t.clientHeight+1){ var o=getComputedStyle(t).overflowY; if(o==='auto'||o==='scroll') return t; } }
-    var n=side.querySelector(':scope > .side-nav'); return (n&&n.scrollHeight>n.clientHeight+1)?n:null;
+  function scrollers(t,side){
+    var a=[];
+    for(;t&&t!==side;t=t.parentElement){ if(t.scrollHeight>t.clientHeight+1){ var o=getComputedStyle(t).overflowY; if(o==='auto'||o==='scroll') a.push(t); } }
+    return a;
   }
   function bind(side){
     side.addEventListener('wheel',function(e){
-      if(!mq.matches||e.ctrlKey) return;
+      if(!mq.matches||e.ctrlKey||!e.deltaY) return;
+      var down=e.deltaY>0, top=side.getBoundingClientRect().top, stickTop=parseFloat(getComputedStyle(side).top)||16;
+      if(top>stickTop+1){
+        if(down){ e.preventDefault(); var dy=e.deltaMode===1?e.deltaY*40:e.deltaMode===2?e.deltaY*innerHeight:e.deltaY; window.scrollBy({top:Math.min(dy,top-stickTop),behavior:'instant'}); }
+        return;
+      }
+      var list=scrollers(e.target,side);
+      for(var i=0;i<list.length;i++){
+        var el=list[i];
+        if(down?el.scrollTop+el.clientHeight<el.scrollHeight-1:el.scrollTop>0) return;
+      }
       e.preventDefault();
-      var el=pick(e.target,side); if(!el) return;
-      var dy=e.deltaMode===1?e.deltaY*40:e.deltaMode===2?e.deltaY*el.clientHeight:e.deltaY;
-      var max=el.scrollHeight-el.clientHeight;
-      if(el._sbT==null||!el._sbRun) el._sbT=el.scrollTop;
-      el._sbT=Math.max(0,Math.min(max,el._sbT+dy));
-      if(el._sbRun) return; el._sbRun=true;
-      (function step(){
-        var d=el._sbT-el.scrollTop;
-        if(Math.abs(d)<0.5){ el.scrollTop=el._sbT; el._sbRun=false; return; }
-        el.scrollTop+=d*0.18; requestAnimationFrame(step);
-      })();
     },{passive:false});
   }
   document.querySelectorAll('.layout > .sidebar').forEach(bind);

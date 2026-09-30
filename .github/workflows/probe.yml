@@ -1,0 +1,24 @@
+name: 접속 시험 (1회용)
+on:
+  push:
+    paths: ['.github/workflows/probe.yml']
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p reports; o=reports/probe.txt; : > $o
+          UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36'
+          for u in "https://www.koies.or.kr/00086/2895" "https://www.koies.or.kr/00087/3143" \
+                   "https://codil.or.kr/policy/read.do?bbsId=BBSMSTR_900000000006&nttId=13277" \
+                   "https://www.codil.or.kr/filebank/files/202601/helpdesk/BBS_202601021022219232.pdf?atchFileId=FILE_000000000011032&fileSn=2"; do
+            echo "=== $u" >> $o
+            curl -sL -A "$UA" --max-time 40 -o /tmp/p -w 'http=%{http_code} type=%{content_type} size=%{size_download}\n' "$u" >> $o 2>&1 || echo "curl 실패 $?" >> $o
+            grep -oiE '(href|onclick)="[^"]*(down|file|atch)[^"]*"' /tmp/p 2>/dev/null | head -15 >> $o
+            grep -oiE '<a[^>]*>[^<]*파일 다운로드[^<]*</a>' /tmp/p | head -5 >> $o
+          done
+          git config user.name github-actions; git config user.email actions@github.com
+          git add $o; git commit -m "접속 시험 결과" && git pull --rebase && git push

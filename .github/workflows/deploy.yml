@@ -78,6 +78,22 @@ jobs:
           git config user.email "actions@github.com"
           git add bible.html manuals/manifest.json vault
           git diff --cached --quiet || (git commit -m "허브·볼트 자동 갱신" && git pull --rebase && git push)
+      - name: 옵시디언 볼트 저장소 동기화 (PC·아이패드용)
+        continue-on-error: true
+        env:
+          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+        run: |
+          # vault/ 노트만 작은 별도 저장소(seum8660/school_bible_vault)로 복사한다.
+          # '내 노트'와 .obsidian 설정은 기기에서 쓴 것을 보존한다.
+          if [ -z "$VAULT_TOKEN" ]; then echo "VAULT_TOKEN 미설정 — 건너뜀"; exit 0; fi
+          git clone --depth 1 "https://x-access-token:${VAULT_TOKEN}@github.com/seum8660/school_bible_vault.git" /tmp/v
+          rsync -a --delete --exclude '.git' --exclude '.obsidian' --exclude '내 노트' vault/ /tmp/v/
+          cd /tmp/v
+          git config user.name "github-actions"; git config user.email "actions@github.com"
+          git add -A
+          git diff --cached --quiet && { echo "볼트 변경 없음"; exit 0; }
+          git commit -m "치트키 노트 자동 갱신 $(TZ=Asia/Seoul date +%Y-%m-%d)"
+          git push origin HEAD:main
       - name: Clean
         run: rm -rf .github templates tools vault inbox reports
       - uses: actions/configure-pages@v5

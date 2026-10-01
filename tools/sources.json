@@ -1,10 +1,214 @@
 {
  "review_page": "https://claude.ai/artifact/VkChdAAiuhqaHzbsWjJbD8",
  "sources": [
-  {"org": "한국교육시설안전원", "board": "지침서 및 매뉴얼", "url": "https://www.koies.or.kr/00087", "method": "직접 읽기(WebFetch)", "download": "자동"},
-  {"org": "한국교육시설안전원", "board": "안전사업", "url": "https://www.koies.or.kr/00086", "method": "직접 읽기(WebFetch)", "download": "자동"},
-  {"org": "CODIL 건설기술정보시스템", "board": "건설정책", "url": "https://www.codil.or.kr/policy/search.do", "method": "웹 검색(site:codil.or.kr) — 직접 접속 불가", "download": "자동 (www 주소, 중간인증서 보정)"},
-  {"org": "건축HUB", "board": "자료실·공지사항", "url": "https://www.hub.go.kr/portal/bbs/dtr/idx-dtr-list.do", "method": "수집 금지(robots.txt) — 검토 페이지에 '직접 확인'으로만 안내", "download": "수동"}
+  {
+   "org": "한국교육시설안전원",
+   "board": "지침서 및 매뉴얼",
+   "url": "https://www.koies.or.kr/00087",
+   "method": "직접 읽기(WebFetch)",
+   "download": "자동"
+  },
+  {
+   "org": "한국교육시설안전원",
+   "board": "안전사업",
+   "url": "https://www.koies.or.kr/00086",
+   "method": "직접 읽기(WebFetch)",
+   "download": "자동"
+  },
+  {
+   "org": "CODIL 건설기술정보시스템",
+   "board": "건설정책",
+   "url": "https://www.codil.or.kr/policy/search.do",
+   "method": "웹 검색(site:codil.or.kr) — 직접 접속 불가",
+   "download": "자동 (www 주소, 중간인증서 보정)"
+  },
+  {
+   "org": "건축HUB",
+   "board": "자료실·공지사항",
+   "url": "https://www.hub.go.kr/portal/bbs/dtr/idx-dtr-list.do",
+   "method": "수집 금지(robots.txt) — 검토 페이지에 '직접 확인'으로만 안내",
+   "download": "수동"
+  },
+  {
+   "org": "국토교통부",
+   "board": "정책자료(업무편람 등)",
+   "url": "https://www.molit.go.kr/USR/policyData/m_34681/lst.jsp",
+   "method": "웹 검색(site:molit.go.kr)",
+   "download": "수동",
+   "used_by": "10·17·27·28·32·35·40·45 등"
+  },
+  {
+   "org": "국토교통부",
+   "board": "행정규칙(훈령·예규·고시)",
+   "url": "https://www.molit.go.kr/USR/I0204/m_45/lst.jsp?gubun=3",
+   "method": "웹 검색(site:molit.go.kr)",
+   "download": "수동",
+   "used_by": "17·24·27·28·38·45 등"
+  },
+  {
+   "org": "국토안전관리원",
+   "board": "기술자료실",
+   "url": "https://www.kalis.or.kr/www/brd/m_435/list.do",
+   "method": "직접 읽기(WebFetch)",
+   "download": "자동 시도(실패 시 수동)",
+   "used_by": "24·31·38·43·53"
+  },
+  {
+   "org": "건설공사 안전관리 종합정보망(CSI)",
+   "board": "자료실",
+   "url": "https://www.csi.go.kr/community/dataMain.do",
+   "method": "웹 검색(site:csi.go.kr) — 목록이 JS라 직접 읽기 불가",
+   "download": "수동",
+   "used_by": "38·43"
+  },
+  {
+   "org": "고용노동부",
+   "board": "정책자료실",
+   "url": "https://www.moel.go.kr/policy/policydata/list.do",
+   "method": "직접 읽기(WebFetch) — 건설·산업안전 키워드만",
+   "download": "자동 시도(실패 시 수동)",
+   "used_by": "07·08·12·14"
+  },
+  {
+   "org": "한국산업안전보건공단(KOSHA)",
+   "board": "안전보건 자료실",
+   "url": "https://portal.kosha.or.kr/archive/cent-archive/master-arch",
+   "method": "웹 검색(site:portal.kosha.or.kr) — 목록이 JS라 직접 읽기 불가",
+   "download": "수동",
+   "used_by": "07·12·14"
+  },
+  {
+   "org": "한국건설기술연구원",
+   "board": "자료실",
+   "url": "https://www.kict.re.kr/board.es?mid=a10501040000&bid=archv",
+   "method": "웹 검색(site:kict.re.kr)",
+   "download": "수동",
+   "used_by": "34·54(표준품셈)"
+  },
+  {
+   "org": "한국부동산원 공공건축지원센터",
+   "board": "정보공유(공지·자료)",
+   "url": "https://www.rebpbc.re.kr/notice",
+   "method": "직접 읽기(WebFetch)",
+   "download": "자동 시도(실패 시 수동)",
+   "used_by": "44·48·49"
+  },
+  {
+   "org": "조달청",
+   "board": "업무별자료 > 시설공사",
+   "url": "https://www.pps.go.kr/kor/bbs/list.do?key=00038",
+   "method": "직접 읽기(WebFetch)",
+   "download": "자동 시도(실패 시 수동)",
+   "used_by": "36·40·51·57"
+  },
+  {
+   "org": "교육부",
+   "board": "공지사항",
+   "url": "https://www.moe.go.kr/boardCnts/listRenew.do?boardID=333&m=020501&s=moe",
+   "method": "직접 읽기(WebFetch) — 교육시설 키워드만",
+   "download": "자동 시도(실패 시 수동)",
+   "used_by": "11·15·16·42"
+  },
+  {
+   "org": "한국장애인개발원",
+   "board": "BF 인증 자료실",
+   "url": "https://www.koddi.or.kr/bf/data/cfDataList.do",
+   "method": "직접 읽기(WebFetch)",
+   "download": "자동 시도(실패 시 수동)",
+   "used_by": "09·37"
+  },
+  {
+   "org": "한국엔지니어링협회",
+   "board": "대가산정 공지사항",
+   "url": "https://www.engcost.or.kr",
+   "method": "웹 검색(site:engcost.or.kr) — 접속 불안정",
+   "download": "수동",
+   "used_by": "29"
+  },
+  {
+   "org": "한국건설엔지니어링협회",
+   "board": "법령자료 > 건설사업관리",
+   "url": "http://www.ekacem.or.kr/storehouse/ConMangPlan_li.asp",
+   "method": "웹 검색(site:ekacem.or.kr) — SSL 오류로 직접 읽기 불가",
+   "download": "수동",
+   "used_by": "30·50"
+  },
+  {
+   "org": "건설CALS",
+   "board": "교육자료/매뉴얼",
+   "url": "https://www.calspia.go.kr/portal/data/selectManualList.do",
+   "method": "웹 검색(site:calspia.go.kr) — 목록이 JS라 직접 읽기 불가",
+   "download": "수동",
+   "used_by": "28"
+  },
+  {
+   "org": "한국에너지공단",
+   "board": "공개자료실",
+   "url": "https://www.energy.or.kr/front/board/List10.do",
+   "method": "직접 읽기(WebFetch) — 건축물 에너지 키워드만",
+   "download": "자동 시도(실패 시 수동)",
+   "used_by": "45"
+  },
+  {
+   "org": "학교공간재구조화 포털",
+   "board": "연구보고서",
+   "url": "https://www.schoolredesign.kr/portal/spacematerial/rschreportList.do",
+   "method": "직접 읽기(WebFetch)",
+   "download": "자동 시도(실패 시 수동)",
+   "used_by": "학교공간재구조화"
+  },
+  {
+   "org": "학교공간재구조화 포털",
+   "board": "공지사항",
+   "url": "https://www.schoolredesign.kr/portal/noticeyard/anncmtrList.do",
+   "method": "직접 읽기(WebFetch)",
+   "download": "자동 시도(실패 시 수동)",
+   "used_by": "학교공간재구조화"
+  },
+  {
+   "org": "녹색건축인증 G-SEED",
+   "board": "공개자료실",
+   "url": "https://www.gseed.or.kr/openFile.do",
+   "method": "수집 금지(robots.txt) — 검토 페이지에 '직접 확인'으로만 안내",
+   "download": "수동",
+   "used_by": "46"
+  },
+  {
+   "org": "건축공간연구원(auri)",
+   "board": "발간자료",
+   "url": "https://www.auri.re.kr/gallery.es?mid=a10307000000&bid=0005",
+   "method": "수집 금지(robots.txt) — 검토 페이지에 '직접 확인'으로만 안내",
+   "download": "수동",
+   "used_by": "44"
+  }
  ],
- "keywords": ["학교시설", "교육시설", "공사기간", "안전관리", "내진", "설계", "감리", "건설사업관리", "계약", "원가", "품셈", "인증", "석면", "해체", "유지관리"]
+ "keywords": [
+  "학교시설",
+  "교육시설",
+  "공사기간",
+  "안전관리",
+  "내진",
+  "설계",
+  "감리",
+  "건설사업관리",
+  "계약",
+  "원가",
+  "품셈",
+  "인증",
+  "석면",
+  "해체",
+  "유지관리",
+  "모듈러",
+  "급식",
+  "BF",
+  "장애물",
+  "녹색건축",
+  "에너지",
+  "공간재구조화",
+  "대가",
+  "조달",
+  "산업안전보건관리비",
+  "폐기물",
+  "풍수해"
+ ]
 }

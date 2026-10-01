@@ -31,8 +31,12 @@ stagingFile · stagingPdf · previewUrl · pdfUrl(검토용) · reviewNote(수�
 Mini가 페이지에서 pending 을 approved/rejected 로 바꾼다. 쓰기는 항상 읽은 version 을 if_version 으로 고정한다.
 
 ## 예약작업 C — 새 자료 탐색 (매주 월요일)
-1. tools/sources.json 의 게시판을 확인한다. '직접 읽기'는 WebFetch 로 목록을, CODIL 은 WebSearch(site:codil.or.kr ...)로 최근 게시글을 찾는다.
-   robots.txt 로 금지된 곳(건축HUB)은 접속하지 않는다.
+1. tools/sources.json 의 sources 전부를 method 에 따라 확인한다(요약문서가 근거로 삼는 발행기관 게시판 포함, used_by = 연결 카드 번호).
+   - '직접 읽기(WebFetch)': url 을 WebFetch 로 열어 게시글 목록(제목·날짜)을 읽는다. 읽히지 않으면 WebSearch(site:도메인 + keywords)로 대신한다.
+   - '웹 검색(site:…)': WebSearch 로 최근 게시글을 찾는다(직접 접속 불가·JS 목록·SSL 오류 사이트).
+   - '키워드만' 표시가 붙은 종합 게시판(고용노동부·교육부·에너지공단)은 학교시설·건설 관련 글만 고른다.
+   - '수집 금지(robots.txt)'(건축HUB·G-SEED·건축공간연구원)는 접속하지 않는다.
+   - 한 사이트가 실패해도 나머지는 계속하고, 실패한 기관명은 보고 끝에 한 줄로 적는다.
 2. 최근 12개월 게시글 중 학교시설 업무와 관련 있는 매뉴얼·지침·가이드라인·안내서만 고른다(keywords 참고). 홍보물·채용·행사·리플릿은 제외.
 3. 이미 사이트에 있는 문서(manuals/manifest.json 의 name 과 비교)와 검토 페이지에 이미 있는 id 는 제외한다.
 4. 새 후보를 candidates 에 status=pending 으로 등록한다(batch). reason 은 사이트의 어떤 요약·업무와 연결되는지 구체적으로.

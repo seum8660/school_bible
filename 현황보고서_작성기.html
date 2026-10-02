@@ -93,6 +93,23 @@ ul.leg b{color:var(--ink);font-weight:800}ul.leg em{font-style:normal;text-align
 .rgn{font-size:11.5px;color:var(--ink);font-weight:700;line-height:1.55;word-break:keep-all;margin-top:2px}
 .rgn b{display:inline-block;background:var(--blue50);color:#00429E;font-size:10.5px;font-weight:800;padding:1px 6px;margin-right:6px;vertical-align:1px}
 .ft{display:flex;justify-content:space-between;font-size:10.5px;color:var(--sub);font-weight:600;border-top:1px solid var(--line);padding-top:7px;margin-top:auto}
+.page[data-fit]{gap:calc(10px*var(--f));line-height:calc(1.1 + .35*var(--f))}
+.page[data-fit] .hd{padding-top:calc(12px*var(--f))}
+.page[data-fit] .sch{padding:calc(11px*var(--f)) 18px calc(8px*var(--f));row-gap:calc(7px*var(--f))}
+.page[data-fit] .si strong{margin:calc(3px*var(--f)) 0 calc(4px*var(--f))}
+.page[data-fit] .src{padding-top:calc(8px*var(--f))}
+.page[data-fit] .gtab th,.page[data-fit] .gtab td{padding:calc(7px*var(--f)) 3px}
+.page[data-fit] .gsrc{margin-top:calc(6px*var(--f))}
+.page[data-fit] .kpi,.page[data-fit] .two,.page[data-fit] .three{gap:calc(10px*var(--f))}
+.page[data-fit] .k{padding:calc(13px*var(--f)) 14px}
+.page[data-fit] .k strong{margin:calc(4px*var(--f)) 0 calc(2px*var(--f))}
+.page[data-fit] .box{padding:calc(14px*var(--f)) 16px}
+.page[data-fit] h2{margin-bottom:calc(10px*var(--f))}
+.page[data-fit] .key{margin-top:calc(8px*var(--f))}
+.page[data-fit] .avg{margin:calc(6px*var(--f)) 0 calc(12px*var(--f))}
+.page[data-fit] .gc{padding:calc(10px*var(--f)) 0 calc(8px*var(--f))}
+.page[data-fit] .gnote{margin-top:calc(8px*var(--f))}
+.page[data-fit] .rgn{line-height:calc(1.2 + .35*var(--f))}
 table{width:100%;border-collapse:collapse;border-spacing:0;font-size:12px;font-variant-numeric:tabular-nums}
 thead th{background:#E3E8EE;color:#1B222B;font-weight:800;font-size:11px;padding:9px 4px;white-space:nowrap;border-top:.2px solid var(--bd);border-bottom:.2px solid var(--bd)}
 
@@ -899,6 +916,8 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     } catch (e) { toast(e.message, true); return; }
     var v = R.build(STATE.data, inputs());
     $('paper').innerHTML = v.html;
+    fitFirst();
+    $('paper').querySelectorAll('.page img').forEach(function (im) { if (!im.complete) im.addEventListener('load', fitFirst); });
     flowNotes();
     applyFree();
     bindEditable();
@@ -924,6 +943,27 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       }
     };
     if (img.complete && img.naturalHeight) run(); else img.addEventListener('load', run);
+  }
+
+  /* ---------- 1쪽(현황) 내용이 많으면 줄간격·여백을 줄여 쪽 안에 맞춤 ---------- */
+  function fitFirst() {
+    var pg = $('paper').querySelector('.page:not(.cover):not(.back)');
+    if (!pg || window.matchMedia('(max-width:820px)').matches) return;
+    var ft = pg.querySelector(':scope > .ft');
+    if (!ft || !ft.previousElementSibling) return;
+    pg.removeAttribute('data-fit'); pg.style.removeProperty('--f');
+    function room() {
+      var sc = pg.getBoundingClientRect().height / pg.offsetHeight || 1;
+      var gap = parseFloat(getComputedStyle(pg).rowGap) || 0;
+      return (ft.getBoundingClientRect().top - ft.previousElementSibling.getBoundingClientRect().bottom) / sc - gap;
+    }
+    var MIN = 10;
+    if (room() >= MIN && pg.scrollHeight <= pg.clientHeight) return;
+    pg.setAttribute('data-fit', '');
+    for (var f = 0.9; f >= 0.2; f -= 0.05) {
+      pg.style.setProperty('--f', f.toFixed(2));
+      if (room() >= MIN && pg.scrollHeight <= pg.clientHeight) return;
+    }
   }
 
   /* ---------- 주요내용 공간 부족 시 다음 쪽으로 넘김 ---------- */

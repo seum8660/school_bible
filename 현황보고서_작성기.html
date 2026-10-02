@@ -256,6 +256,9 @@ body.hasdata .empty{display:none}
 .page [data-f]:hover,.page [data-g]:hover{background:var(--blue50);border-bottom-color:var(--blue)}
 .page [data-f]:focus,.page [data-g]:focus{outline:2px solid var(--blue);background:#fff}
 .nt.m p[contenteditable]{border-bottom:0}
+body.editing .page{outline:2px dashed var(--blue);outline-offset:-2px;cursor:text}
+body.editing .page *:focus{outline:1px solid var(--blue)}
+body.editing #btnEdit{background:var(--blue);color:#fff;border-color:var(--blue)}
 @media print{
   .page [data-f],.page [data-g],.nt.m p{border-bottom:0!important;background:none!important;outline:0!important}
 }
@@ -313,6 +316,7 @@ table.gin input{border:1px solid #B1B8BE;border-radius:4px}
         <option value="gray-green">그레이 · 그린</option>
       </select>
     </label>
+    <button class="b g" id="btnEdit">텍스트 편집</button>
     <button class="b g" id="btnReset">초기화</button>
     <button class="b" id="btnPrint">인쇄 · PDF</button>
     <button class="b g" id="btnHtml">보고서 저장(HTML)</button>
@@ -893,6 +897,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     var v = R.build(STATE.data, inputs());
     $('paper').innerHTML = v.html;
     bindEditable();
+    setEdit(EDIT);
     saveInputs();
     $('docTitle').textContent = STATE.data.SCH + ' 시설현황 대시보드';
     document.title = STATE.data.SCH + ' 시설현황 보고서';
@@ -916,6 +921,28 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     if (img.complete && img.naturalHeight) run(); else img.addEventListener('load', run);
   }
 
+  /* ---------- 자유 텍스트 편집 모드 ---------- */
+  var EDIT = false;
+  function setEdit(on) {
+    EDIT = on;
+    document.body.classList.toggle('editing', on);
+    $('paper').querySelectorAll('.page').forEach(function (p) {
+      if (on) { p.setAttribute('contenteditable', 'true'); p.setAttribute('spellcheck', 'false'); }
+      else p.removeAttribute('contenteditable');
+    });
+  }
+  document.addEventListener('click', function (ev) {
+    if (ev.target.id !== 'btnEdit') return;
+    if (!$('paper').querySelector('.page')) { toast('먼저 건물정보 엑셀을 불러오십시오.', true); return; }
+    setEdit(!EDIT);
+    toast(EDIT ? '편집 모드: 보고서의 모든 글자를 직접 고칠 수 있습니다. 미리보기 새로고침·자료 변경 시 자유 편집 내용은 초기화됩니다.' : '편집 모드를 끝냈습니다.');
+  });
+  $('paper').addEventListener('paste', function (ev) {
+    if (!EDIT || ev.target.closest('[data-memo]')) return;
+    ev.preventDefault();
+    document.execCommand('insertText', false, (ev.clipboardData || window.clipboardData).getData('text/plain'));
+  });
+
   /* ---------- 보고서에서 직접 고치기 ---------- */
   function bindEditable() {
     var host = $('paper');
@@ -937,7 +964,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
         var k = e.getAttribute('data-f'), t = e.innerText.trim();
         if (t === '–' || t === '확인 필요' || t === '출처 입력') t = '';
         if (k === 'stu' || k === 'cls') t = t.replace(/\(.*\)/, '').trim();   // 7(1) → 7
-        if ($(k) && $(k).value !== t) { $(k).value = t; render(); }
+        if ($(k) && $(k).value !== t) { $(k).value = t; if (EDIT) saveInputs(); else render(); }
       });
     });
     host.querySelectorAll('[data-g]').forEach(function (e) {
@@ -946,7 +973,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       e.addEventListener('blur', function () {
         var id = 'g' + e.getAttribute('data-g');
         var t = (e.innerText.match(/\d+/) || ['0'])[0];
-        if ($(id) && $(id).value !== t) { $(id).value = t; syncGrades(); render(); }
+        if ($(id) && $(id).value !== t) { $(id).value = t; syncGrades(); if (!EDIT) render(); }
       });
     });
   }
@@ -1141,7 +1168,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     var doc = '<!doctype html><html lang="ko"><head><meta charset="utf-8">'
       + '<meta name="viewport" content="width=device-width,initial-scale=1">'
       + '<title>' + R.esc(STATE.data.SCH) + ' 학교시설현황</title><style>' + css + '</style></head>'
-      + '<body' + (th ? ' data-theme="' + th + '"' : '') + '>' + $('paper').innerHTML + '</body></html>';
+      + '<body' + (th ? ' data-theme="' + th + '"' : '') + '>' + $('paper').innerHTML.replace(/ contenteditable="true"/g, '') + '</body></html>';
     save(new Blob([doc], { type: 'text/html;charset=utf-8' }), STATE.data.SCH + '_학교시설현황.html');
     toast('보고서를 HTML 파일로 저장하였습니다. 브라우저로 열어 인쇄하시면 동일하게 출력됩니다.');
   }

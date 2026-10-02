@@ -252,9 +252,10 @@ body.hasdata .empty{display:none}
 }
 
 /* 보고서에서 직접 고치는 값 */
-.page [data-f],.page [data-g]{font-style:normal;border-bottom:1px dashed #9AA5B1;cursor:text}
-.page [data-f]:hover,.page [data-g]:hover{background:var(--blue50);border-bottom-color:var(--blue)}
-.page [data-f]:focus,.page [data-g]:focus{outline:2px solid var(--blue);background:#fff}
+.page [data-f],.page [data-g],.page [data-b]{font-style:normal;border-bottom:1px dashed #9AA5B1;cursor:text}
+.page [data-f]:hover,.page [data-g]:hover,.page [data-b]:hover{background:var(--blue50);border-bottom-color:var(--blue)}
+.page [data-f]:focus,.page [data-g]:focus,.page [data-b]:focus{outline:2px solid var(--blue);background:#fff}
+body.editing .page [contenteditable]:not([data-f]):not([data-g]):not([data-b]):not([data-memo]):hover{background:var(--blue50)}
 .nt.m p[contenteditable]{border-bottom:0}
 body.editing .page{outline:2px dashed var(--blue);outline-offset:-2px;cursor:text}
 body.editing .page *:focus{outline:1px solid var(--blue)}
@@ -469,7 +470,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
         n: r[13], d: d, y: y, age: year - y, a: parseFloat(r[24]) || 0, ba: parseFloat(r[25]) || 0,
         fl: parseInt(r[27], 10) || 0, fb: parseInt(r[28], 10) || 0, u: r[29] || '',
         s: String(r[32] || '').replace('구조', ''), g: String(r[36] || '')[0] || '',
-        ins: r[38], eq: r[42], ph: r[43], ev: r[44], own: r[19]
+        ins: r[38], eq: r[42], ph: r[43], ev: r[44], own: r[19], row: r
       };
     });
     var N = B.length;
@@ -664,10 +665,11 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     var rows = '';
     B.slice().sort(function (a, b) { return a.d < b.d ? -1 : 1; }).forEach(function (b) {
       var gcls = 'CDE'.indexOf(b.g) >= 0 ? 'bC' : (b.g === 'B' ? 'bB' : 'bA');
-      rows += '<tr' + ('CDE'.indexOf(b.g) >= 0 ? ' class=hl' : '') + '><td class=l><b>' + esc(b.n) + '</b></td><td>' + esc(String(b.d).replace(/-/g, '.')) + '</td>'
-        + '<td>' + b.age + '년</td><td class=r>' + fmt(b.a, 2) + '</td><td>' + b.fl + '층' + (b.fb ? '/B' + b.fb : '') + '</td>'
-        + '<td>' + esc(b.u) + '</td><td>' + esc(b.s) + '</td><td><span class="bd ' + gcls + '">' + b.g + '</span></td>'
-        + '<td>' + (b.eq === '예' ? '적용' : '–') + '</td><td class="rm">' + remark(b) + '</td></tr>';
+      var k = B.indexOf(b), F = function (f, v) { return '<i data-b="' + k + ':' + f + '">' + v + '</i>'; };
+      rows += '<tr' + ('CDE'.indexOf(b.g) >= 0 ? ' class=hl' : '') + '><td class=l><b>' + F('n', esc(b.n)) + '</b></td><td>' + F('d', esc(String(b.d).replace(/-/g, '.'))) + '</td>'
+        + '<td>' + b.age + '년</td><td class=r>' + F('a', fmt(b.a, 2)) + '</td><td>' + F('fl', b.fl + '층' + (b.fb ? '/B' + b.fb : '')) + '</td>'
+        + '<td>' + F('u', esc(b.u) || '–') + '</td><td>' + F('s', esc(b.s) || '–') + '</td><td><span class="bd ' + gcls + '">' + F('g', b.g || '–') + '</span></td>'
+        + '<td>' + F('eq', b.eq === '예' ? '적용' : '–') + '</td><td class="rm">' + remark(b) + '</td></tr>';
     });
 
     /* 표지 */
@@ -871,6 +873,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       var changed = !STATE.data || STATE.data.SCH !== d.SCH;
       if (changed) resetInputs();
       STATE.rows = rows;
+      STATE.free = {};
       STATE.data = d;
       $('schName').textContent = d.SCH;
       $('fileInfo').textContent = d.N + '동 · 연면적 ' + R.fmt(d.T, 0) + '㎡ · 기준일 ' + R.D(d.UPD);
@@ -896,6 +899,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     } catch (e) { toast(e.message, true); return; }
     var v = R.build(STATE.data, inputs());
     $('paper').innerHTML = v.html;
+    applyFree();
     bindEditable();
     setEdit(EDIT);
     saveInputs();
@@ -922,14 +926,57 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
   }
 
   /* ---------- 자유 텍스트 편집 모드 ---------- */
-  var EDIT = false;
+  var EDIT = false, CALC = '[data-f],[data-g],[data-b],[data-memo]';
+  function freeEls() {
+    var out = [];
+    $('paper').querySelectorAll('.page *').forEach(function (e) {
+      if (e.closest('svg') || e.closest(CALC)) return;
+      if (/^(IMG|BR|TABLE|TBODY|THEAD|TFOOT|TR|FIGURE)$/.test(e.tagName)) return;
+      if (e.querySelector(CALC + ',img,svg')) return;
+      for (var i = 0; i < e.childNodes.length; i++) {
+        var n = e.childNodes[i];
+        if (n.nodeType === 3 && n.nodeValue.trim()) { out.push(e); return; }
+      }
+    });
+    return out.filter(function (e) { return !out.some(function (o) { return o !== e && o.contains(e); }); });
+  }
+  function applyFree() {
+    var M = STATE.free || {};
+    freeEls().forEach(function (e) {
+      e._o = e.textContent;
+      if (M[e._o] != null) e.textContent = M[e._o];
+    });
+  }
   function setEdit(on) {
     EDIT = on;
     document.body.classList.toggle('editing', on);
-    $('paper').querySelectorAll('.page').forEach(function (p) {
-      if (on) { p.setAttribute('contenteditable', 'true'); p.setAttribute('spellcheck', 'false'); }
-      else p.removeAttribute('contenteditable');
+    freeEls().forEach(function (e) {
+      if (!on) { e.removeAttribute('contenteditable'); return; }
+      e.setAttribute('contenteditable', 'true'); e.setAttribute('spellcheck', 'false');
+      if (e._b) return; e._b = 1;
+      if (e._o == null) e._o = e.textContent;
+      e.addEventListener('blur', function () {
+        STATE.free = STATE.free || {};
+        if (e.textContent === e._o) delete STATE.free[e._o]; else STATE.free[e._o] = e.textContent;
+      });
     });
+  }
+  function setBField(r, f, t) {
+    var m;
+    switch (f) {
+      case 'n': if (!t) return false; r[13] = t; return true;
+      case 'd': m = t.match(/(\d{4})\D*(\d{1,2})\D*(\d{1,2})/); if (!m) return false;
+        r[23] = m[1] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[3]).slice(-2); return true;
+      case 'a': m = parseFloat(t.replace(/[,\s㎡]/g, '')); if (isNaN(m) || m < 0) return false; r[24] = m; return true;
+      case 'fl': m = t.match(/\d+/); if (!m) return false; r[27] = +m[0];
+        var bm = t.match(/B\s*(\d+)/i) || t.match(/지하\s*(\d+)/); r[28] = bm ? +bm[1] : 0; return true;
+      case 'u': r[29] = t === '–' ? '' : t; return true;
+      case 's': r[32] = t === '–' ? '' : t.replace(/구조$/, ''); return true;
+      case 'g': m = t.toUpperCase().match(/[A-E]/); if (!m) return false;
+        r[36] = m[0] + String(r[36] || '').slice(1); return true;
+      case 'eq': r[42] = /적용|예|^o$|^y/i.test(t) ? '예' : '아니오'; return true;
+    }
+    return false;
   }
   document.addEventListener('click', function (ev) {
     if (ev.target.id !== 'btnEdit') return;
@@ -964,7 +1011,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
         var k = e.getAttribute('data-f'), t = e.innerText.trim();
         if (t === '–' || t === '확인 필요' || t === '출처 입력') t = '';
         if (k === 'stu' || k === 'cls') t = t.replace(/\(.*\)/, '').trim();   // 7(1) → 7
-        if ($(k) && $(k).value !== t) { $(k).value = t; if (EDIT) saveInputs(); else render(); }
+        if ($(k) && $(k).value !== t) { $(k).value = t; render(); }
       });
     });
     host.querySelectorAll('[data-g]').forEach(function (e) {
@@ -973,7 +1020,21 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
       e.addEventListener('blur', function () {
         var id = 'g' + e.getAttribute('data-g');
         var t = (e.innerText.match(/\d+/) || ['0'])[0];
-        if ($(id) && $(id).value !== t) { $(id).value = t; syncGrades(); if (!EDIT) render(); }
+        if ($(id) && $(id).value !== t) { $(id).value = t; syncGrades(); render(); }
+      });
+    });
+    host.querySelectorAll('[data-b]').forEach(function (e) {
+      var v0 = e.innerText.trim();
+      e.setAttribute('contenteditable', 'true');
+      e.setAttribute('spellcheck', 'false');
+      e.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); e.blur(); } });
+      e.addEventListener('blur', function () {
+        var t = e.innerText.trim();
+        if (t === v0) return;
+        var p = e.getAttribute('data-b').split(':'), b = STATE.data && STATE.data.B[+p[0]];
+        if (!b || !b.row) return;
+        if (!setBField(b.row, p[1], t)) { toast('입력 형식을 확인하십시오. (예: 사용승인일 2001.03.15 · 층수 3층/B1 · 안전등급 A~E)', true); e.innerText = v0; return; }
+        render();
       });
     });
   }

@@ -8,9 +8,9 @@
 <style>
 :root{--blue:#256EF4;--blue50:#ECF2FE;--ink:#1E2124;--sub:#464C53;--ter:#6D7882;--line:#CDD1D5;--bd:#8A949E;--soft:#F4F5F6;--bg:#FFFFFF;--desk:#EEF2F7;--red:#D63D4A;--redbg:#FDEFEC;--orange:#8A5C00;--orbg:#FFF3DB;--c1:#256EF4;--c2:#86AFF9;--c3:#D8E5FD;--cw:#FF4040;--s3:#8B95A1;--s4:#D1D6DB;--warn:#C2670A}
 /* 색상 모드 — 그레이/레드 */
-[data-theme="gray-red"]{--blue:#B3121B;--blue50:#FBE7E8;--c1:#4A5462;--c2:#98A2AD;--c3:#D6DBE1;--cw:#B3121B;--s3:#B7BEC7;--s4:#E3E7EB;--warn:#B3121B;--red:#B3121B;--redbg:#FBE7E8;--orange:#8A4B06;--orbg:#F6EADA}
+[data-theme="gray-red"]{--blue:#B3121B;--blue50:#FBE7E8;--c1:#8E1A20;--c2:#D9737A;--c3:#F3C9CC;--cw:#C25E00;--s3:#E8A3A8;--s4:#FBE7E8;--warn:#C25E00;--red:#B3121B;--redbg:#FBE7E8;--orange:#8A4B06;--orbg:#F6EADA}
 /* 색상 모드 — 그레이/그린 */
-[data-theme="gray-green"]{--blue:#0B6B3F;--blue50:#E2F1E9;--c1:#4A5462;--c2:#98A2AD;--c3:#D6DBE1;--cw:#0B6B3F;--s3:#B7BEC7;--s4:#E3E7EB;--warn:#8A4B06;--red:#B3121B;--redbg:#FBE7E8;--orange:#8A4B06;--orbg:#F6EADA}
+[data-theme="gray-green"]{--blue:#0B6B3F;--blue50:#E2F1E9;--c1:#0B6B3F;--c2:#5FAF85;--c3:#C4E4D2;--cw:#B3121B;--s3:#93CBAE;--s4:#E2F1E9;--warn:#8A4B06;--red:#B3121B;--redbg:#FBE7E8;--orange:#8A4B06;--orbg:#F6EADA}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--desk:#17171C}}
 :root[data-theme="dark"]{--desk:#17171C}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -313,8 +313,8 @@ table.gin input{border:1px solid #B1B8BE;border-radius:4px}
     <label class="thsel"><span>색상</span>
       <select id="theme" class="fontsel">
         <option value="">기본 (블루)</option>
-        <option value="gray-red">그레이 · 레드</option>
-        <option value="gray-green">그레이 · 그린</option>
+        <option value="gray-red">레드</option>
+        <option value="gray-green">그린</option>
       </select>
     </label>
     <button class="b g" id="btnEdit">텍스트 편집</button>

@@ -899,6 +899,7 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     } catch (e) { toast(e.message, true); return; }
     var v = R.build(STATE.data, inputs());
     $('paper').innerHTML = v.html;
+    flowNotes();
     applyFree();
     bindEditable();
     setEdit(EDIT);
@@ -924,6 +925,42 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     };
     if (img.complete && img.naturalHeight) run(); else img.addEventListener('load', run);
   }
+
+  /* ---------- 주요내용 공간 부족 시 다음 쪽으로 넘김 ---------- */
+  function notesShort(mn) {
+    var pg = mn.closest('.page'), memo = mn.querySelector('[data-memo]');
+    return pg.scrollHeight > pg.clientHeight + 1 || mn.scrollHeight > mn.clientHeight + 1
+      || (memo && memo.clientHeight < 80);
+  }
+  function flowNotes() {
+    var host = $('paper'), mn = host.querySelector('.mainnotes');
+    if (!mn || host.querySelector('.notes-pg')) return false;
+    var pg = mn.closest('.page');
+    if (!notesShort(mn)) return false;
+    var np = document.createElement('div');
+    np.className = 'page notes-pg';
+    np.appendChild(mn);
+    var ft = pg.querySelector('.ft');
+    if (ft) np.appendChild(ft.cloneNode(true));
+    pg.parentNode.insertBefore(np, pg.nextSibling);
+    var back = host.querySelector('.page.back');
+    if (back) back.remove();
+    var fts = [].slice.call(host.querySelectorAll('.page .ft'));
+    fts.forEach(function (f, i) {
+      var s = f.querySelector('span:last-child');
+      if (s) s.textContent = (i + 1) + ' / ' + fts.length;
+    });
+    return true;
+  }
+  $('paper').addEventListener('input', function (ev) {
+    var m = ev.target.closest && ev.target.closest('[data-memo]');
+    if (!m || m.closest('.notes-pg')) return;
+    if (!flowNotes()) return;
+    m.focus();
+    var r = document.createRange(); r.selectNodeContents(m); r.collapse(false);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    toast('주요내용 작성 공간이 부족하여 다음 쪽으로 넘겼습니다.');
+  });
 
   /* ---------- 자유 텍스트 편집 모드 ---------- */
   var EDIT = false, CALC = '[data-f],[data-g],[data-b],[data-memo]';
@@ -1195,21 +1232,27 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
     file.arrayBuffer().then(function (buf) {
       return PDFLib.PDFDocument.load(buf);
     }).then(function (src) {
-      if (src.getPageCount() < 4) throw new Error('4쪽짜리 보고서 PDF를 선택하십시오. (현재 ' + src.getPageCount() + '쪽)');
+      var cnt = src.getPageCount();
+      if (cnt < 4) throw new Error('보고서 PDF(4쪽 이상)를 선택하십시오. (현재 ' + cnt + '쪽)');
       var out;
       return PDFLib.PDFDocument.create().then(function (doc) {
         out = doc;
-        return doc.embedPages(src.getPages().slice(0, 4));
+        return doc.embedPages(src.getPages());
       }).then(function (pg) {
+        /* 쪽수를 4의 배수로 — 뒷표지 앞에 빈 쪽 삽입 */
+        while (pg.length % 4) pg.splice(pg.length - 1, 0, null);
+        var n = pg.length;
         /* A3 가로 펼침면 2장 — 겉장(뒷표지|표지), 속장(현황|건물현황) */
         function sheet(left, right) {
           var p = out.addPage([A4W * 2, A4H]);
           p.drawRectangle({ x: 0, y: 0, width: A4W * 2, height: A4H, color: PDFLib.rgb(1, 1, 1) });
-          p.drawPage(left, { x: 0, y: 0, width: A4W, height: A4H });
-          p.drawPage(right, { x: A4W, y: 0, width: A4W, height: A4H });
+          if (left) p.drawPage(left, { x: 0, y: 0, width: A4W, height: A4H });
+          if (right) p.drawPage(right, { x: A4W, y: 0, width: A4W, height: A4H });
         }
-        sheet(pg[3], pg[0]);
-        sheet(pg[1], pg[2]);
+        for (var i = 0; i < n / 4; i++) {
+          sheet(pg[n - 1 - 2 * i], pg[2 * i]);
+          sheet(pg[2 * i + 1], pg[n - 2 - 2 * i]);
+        }
         return out.save();
       });
     }).then(function (bytes) {

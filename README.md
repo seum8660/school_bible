@@ -13,14 +13,14 @@
 | 페이지 | 설명 |
 | --- | --- |
 | `index.html` (= `intro.html`) | 진입 랜딩 페이지 |
-| `bible_notion.html` | **본체** — 7개 장 전체 업무 레퍼런스 |
+| `bible.html` | **본체** — 7개 장 전체 업무 레퍼런스 |
 | `그래프뷰_3D.html` | 문서 간 연결을 3D로 탐색하는 자료실 |
 
 ---
 
 ## 무엇이 들어 있나
 
-### 업무 레퍼런스 (`bible_notion.html`)
+### 업무 레퍼런스 (`bible.html`)
 
 기획 → 설계 → 계약 → 시공 → 준공까지 실제 업무 순서 그대로 정리했습니다.
 
@@ -67,7 +67,7 @@ GitHub Pages로 배포하는 경우 저장소 루트를 발행 경로로 지정�
 
 ```
 index.html              진입 랜딩
-bible_notion.html       업무 레퍼런스 본체
+bible.html              업무 레퍼런스 본체
 그래프뷰_3D.html         3D 그래프 자료실
 graph_data.js           그래프 노드·연결 데이터
 *_대시보드.html          산출 도구 모음

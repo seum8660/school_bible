@@ -21,11 +21,15 @@
     --mark:#4a9eff; --mark-bg:rgba(74,158,255,.18); --code:#4a9eff; --code-bg:rgba(74,158,255,.14); --muted:#b4b2ad;
   }
   *{box-sizing:border-box;}
+  </style><script>try{if(window.self!==window.top)document.documentElement.classList.add('embed');}catch(e){document.documentElement.classList.add('embed');}</script><style>
   html,body{margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;}
   a{color:var(--accent);} a:hover{color:var(--text);}
   .wrap{max-width:1180px;margin:0 auto;padding:40px 36px 64px;}
   header{position:relative;}
+  html.embed .crumb,html.embed header h1,html.embed .theme-toggle{display:none !important;}
+  html.embed .wrap{padding:20px 24px 40px;}
+  html.embed .tabs{margin-top:0 !important;}
   .crumb{display:flex;gap:6px;font-size:12.5px;color:var(--sub);margin-bottom:18px;}
   .crumb a{color:var(--sub);text-decoration:none;} .crumb a:hover{color:var(--accent);}
   header h1{margin:0;font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.2;}
@@ -36,7 +40,12 @@
   [data-theme="dark"] .theme-toggle .tg-moon{background:var(--panel2);color:var(--text);}
 
   /* 자료 탭 */
-  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:24px;}
+  .tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:24px;}
+  .regbar{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:12px;}
+  .seg{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .seg .lb{font-size:11.5px;font-weight:700;letter-spacing:.06em;color:var(--sub);margin-right:2px;}
+  .seg .chip.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .loading{opacity:.45;pointer-events:none;}
   .tab{background:var(--panel);border:1px solid var(--line);border-radius:var(--rad);padding:14px 16px;cursor:pointer;text-align:left;font:inherit;color:var(--text);display:flex;flex-direction:column;gap:4px;}
   .tab:hover{border-color:var(--accent-line);}
   .tab .t1{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:15px;font-weight:700;letter-spacing:-.02em;}
@@ -126,6 +135,7 @@
   .toast.on{opacity:1;}
 
   @media(max-width:1080px){ table.rt td.code,table.rt th.code,table.rt td.spec,table.rt th.spec{display:none;} }
+  @media(max-width:1080px){ .tabs{grid-template-columns:repeat(3,minmax(0,1fr));} }
   @media(max-width:900px){
     .tabs{grid-template-columns:minmax(0,1fr);}
     [data-layout="B"] .layout,[data-layout="C"] .layout{grid-template-columns:minmax(0,1fr);}
@@ -141,9 +151,11 @@
   <h1>일위대가 단가 검색</h1>
   <button class="theme-toggle" id="themeToggle" title="라이트 / 다크 전환" aria-label="테마 전환"><span class="tg-sun">☀︎</span><span class="tg-moon">☾</span></button>
   <div class="tabs" id="tabs">
-    <button class="tab on" data-t="ilwi"><span class="t1">건축 일위대가 <span class="n" id="n-ilwi">0</span></span><span class="t2">전라남도교육청 건축 · 2026년 상반기</span></button>
+    <button class="tab on" data-t="ilwi" data-f="a"><span class="t1">건축 일위대가 <span class="n">4,485</span></span><span class="t2">전남광주통합특별시교육청 건축 · 2026년 하반기</span></button>
+    <button class="tab" data-t="ilwi" data-f="c"><span class="t1">토목 일위대가 <span class="n">1,246</span></span><span class="t2">전남광주통합특별시교육청 토목 · 2026년 하반기</span></button>
+    <button class="tab" data-t="ilwi" data-f="m"><span class="t1">설비 일위대가 <span class="n">1,403</span></span><span class="t2">전남광주통합특별시교육청 설비 · 2026년 하반기</span></button>
     <button class="tab" data-t="int"><span class="t1">실내건축 일위대가 <span class="n" id="n-int">0</span></span><span class="t2">2026 실내건축일위대가 · 2026.04.09</span></button>
-    <button class="tab" data-t="mat"><span class="t1">자재단가 <span class="n" id="n-mat">0</span></span><span class="t2">전라남도교육청 건축 · 2026년 상반기</span></button>
+    <button class="tab" data-t="mat"><span class="t1">자재단가 <span class="n" id="n-mat">0</span></span><span class="t2">전남광주통합특별시교육청 건축·토목·설비 · 2026년 하반기</span></button>
   </div>
   <div class="searchbar">
     <div class="sb-field"><span class="sb-ic">🔍</span><input id="q" type="text" placeholder="품명·규격으로 검색 (예: 터파기, 석고보드, 페인트)" autocomplete="off"></div>
@@ -151,6 +163,10 @@
     <span class="count" id="count"></span>
     <button class="xbtn" id="btnCopy" title="현재 결과를 엑셀에 붙여넣을 수 있게 복사">표 복사</button>
     <button class="xbtn" id="btnCsv" title="현재 결과를 CSV(엑셀)로 저장">엑셀 다운로드</button>
+  </div>
+  <div class="regbar" id="regbar">
+    <div class="seg" id="segReg"><span class="lb">적용 지역</span><span class="chip on" data-r="0">육지</span><span class="chip" data-r="5">도서 5%</span><span class="chip" data-r="15">도서 15%</span><span class="chip" data-r="25">도서 25%</span><span class="chip" data-r="35">도서 35%</span></div>
+    <div class="seg" id="segFld" style="display:none"><span class="lb">분야</span><span class="chip on" data-f="a">건축</span><span class="chip" data-f="c">토목</span><span class="chip" data-f="m">설비</span></div>
   </div>
   <div class="gjbar" id="gjbar"></div>
 </header>
@@ -162,18 +178,24 @@
   </main>
 </div>
 <footer>
-  본 검색기는 「전라남도교육청_건축(26년 상반기)」 내역 파일과 「2026 실내건축일위대가(2026.04.09, 2026년 상반기 노임단가 기준)」에서 추출한 일위대가·자재단가 자료로, 참고용입니다. 실제 설계·적산 시에는 원본 내역서와 최신 품셈·물가정보를 반드시 확인하시기 바랍니다.
+  본 검색기는 「전남광주통합특별시교육청_건축·토목·설비(26년 하반기, 육지 및 도서 5·15·25·35%)」 내역 파일과 「2026 실내건축일위대가(2026.04.09, 2026년 상반기 노임단가 기준)」에서 추출한 일위대가·자재단가 자료로, 참고용입니다. 실제 설계·적산 시에는 원본 내역서와 최신 품셈·물가정보를 반드시 확인하시기 바랍니다.
 </footer>
 </div>
 <div class="toast" id="toast"></div>
-<script src="danga_data.js"></script>
+<script src="danga/a0.js?v=20261016"></script>
 <script src="danga_int.js"></script>
 <script>
 (function(){
   var LAYOUT=document.documentElement.getAttribute('data-layout')||'A';
-  var D=window.DANGA_DATA||{ilwi:[],mat:[]};
+  var VER='20261016', FIELD='a', REG='0';
+  try{ var sr=localStorage.getItem('danga-reg'); if(/^(0|5|15|25|35)$/.test(sr||'')) REG=sr; }catch(e){}
+  var FNAME={a:'건축',c:'토목',m:'설비'};
+  function setKey(){ return FIELD+REG; }
+  var SETS=window.DANGA_SET||{};
+  var D={ilwi:[],mat:[]};
   var DI=window.DANGA_INT||{cats:[],items:[],bd:{},rm:{}};
   D.int=DI.items;
+  document.getElementById('n-int').textContent=DI.items.length.toLocaleString();
   var root=document.documentElement, $=function(id){return document.getElementById(id);};
   try{ if(localStorage.getItem('danga-theme')==='dark') root.setAttribute('data-theme','dark'); }catch(e){}
   $('themeToggle').addEventListener('click',function(){
@@ -181,7 +203,6 @@
     if(d) root.removeAttribute('data-theme'); else root.setAttribute('data-theme','dark');
     try{localStorage.setItem('danga-theme',d?'light':'dark');}catch(e){}
   });
-  ['ilwi','int','mat'].forEach(function(t){ $('n-'+t).textContent=(D[t]||[]).length.toLocaleString(); });
 
   var GJLIST=[
     {n:'가설공사',kw:['가설','비계','동바리','규준','건축물 설치 및 해체','안전시설']},
@@ -212,9 +233,32 @@
     for(var i=0;i<GJLIST.length;i++){ var kw=GJLIST[i].kw; for(var j=0;j<kw.length;j++){ if(s.indexOf(kw[j].toLowerCase())>=0) return i+1; } }
     return 0;
   }
-  (D.mat||[]).forEach(function(x){ x.k=classify(x); });
-  var GJNAMES={ilwi:GJLIST.map(function(g){return g.n;}), mat:GJLIST.map(function(g){return g.n;}), int:DI.cats};
+  var GJNAMES={ilwi:[], mat:[], int:DI.cats};
   var SRC={ilwi:'건축 일위대가',int:'실내건축 일위대가',mat:'자재단가'};
+  function regLabel(){ return REG==='0'?'육지':'도서'+REG+'%'; }
+  function applySet(){
+    var S=SETS[setKey()]; if(!S) return;
+    D.ilwi=S.ilwi; D.mat=S.mat;
+    if(!S._mk){ S.mat.forEach(function(x){ x.k=FIELD==='a'?classify(x):0; }); S._mk=1; }
+    GJNAMES.ilwi=S.meta.gj||[]; GJNAMES.mat=FIELD==='a'?GJLIST.map(function(g){return g.n;}):[];
+    SRC.ilwi=FNAME[FIELD]+' 일위대가_'+regLabel(); SRC.mat=FNAME[FIELD]+' 자재단가_'+regLabel();
+    $('n-mat').textContent=S.mat.length.toLocaleString();
+  }
+  function loadSet(cb){
+    var k=setKey(); SETS=window.DANGA_SET||{};
+    if(SETS[k]){ applySet(); cb(); return; }
+    $('content').classList.add('loading');
+    var s=document.createElement('script'); s.src='danga/'+k+'.js?v='+VER;
+    s.onload=function(){ SETS=window.DANGA_SET||{}; $('content').classList.remove('loading'); if(k===setKey()){ applySet(); cb(); } };
+    s.onerror=function(){ $('content').classList.remove('loading'); toast('자료를 불러오지 못했습니다.'); };
+    document.body.appendChild(s);
+  }
+  function syncSeg(){
+    $('regbar').style.display=TYPE==='int'?'none':'';
+    $('segFld').style.display=TYPE==='mat'?'':'none';
+    document.querySelectorAll('#segReg .chip').forEach(function(c){ c.classList.toggle('on',c.getAttribute('data-r')===REG); });
+    document.querySelectorAll('#segFld .chip').forEach(function(c){ c.classList.toggle('on',c.getAttribute('data-f')===FIELD); });
+  }
 
   var TYPE='ilwi', GJ=0, CAT='', Q='', CAP=300, lastShown=[];
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -289,15 +333,16 @@
     lastShown=shown;
   }
 
-  var bdLoading=false;
+  var bdLoading={};
+  function curBd(){ return (window.DANGA_BDS||{})[setKey()]; }
   function loadBd(cb){
-    if(TYPE==='int'||window.DANGA_BD){ cb(); return; }
-    var wait=setInterval(function(){ if(window.DANGA_BD){clearInterval(wait);cb();} },80);
-    if(bdLoading) return; bdLoading=true;
-    var s=document.createElement('script'); s.src='danga_bd.js'; s.onerror=function(){clearInterval(wait);bdLoading=false;}; document.body.appendChild(s);
+    if(TYPE==='int'||curBd()){ cb(); return; }
+    var k=setKey(), wait=setInterval(function(){ if((window.DANGA_BDS||{})[k]){clearInterval(wait);cb();} },80);
+    if(bdLoading[k]) return; bdLoading[k]=1;
+    var s=document.createElement('script'); s.src='danga/'+k+'_bd.js?v='+VER; s.onerror=function(){clearInterval(wait);bdLoading[k]=0;}; document.body.appendChild(s);
   }
   function bdHtml(item){
-    var rows=(TYPE==='int'?DI.bd:(window.DANGA_BD||{}))[item.id]||[];
+    var rows=(TYPE==='int'?DI.bd:(curBd()||{}))[item.id]||[];
     if(!rows.length) return '<div class="empty" style="padding:26px">등록된 호표 내역이 없습니다.</div>';
     var tm=0,tl=0,te=0;
     var h='<table class="bd"><thead><tr><th class="l">품명 · 규격</th><th>단위</th><th>수량</th><th>재료비</th><th>노무비</th><th>경비</th><th>합계</th><th class="l bigo">비고</th></tr></thead><tbody>';
@@ -345,11 +390,20 @@
   Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(b){
     b.addEventListener('click',function(){
       document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
-      b.classList.add('on'); TYPE=b.getAttribute('data-t'); GJ=0; CAT=''; buildNav(); render();
+      b.classList.add('on'); TYPE=b.getAttribute('data-t'); if(b.getAttribute('data-f')) FIELD=b.getAttribute('data-f'); GJ=0; CAT=''; syncSeg();
+      if(TYPE==='int'){ buildNav(); render(); } else loadSet(function(){ buildNav(); render(); });
     });
   });
+  $('regbar').addEventListener('click',function(e){
+    var r=e.target.closest('[data-r]'), f=e.target.closest('[data-f]');
+    if(r){ REG=r.getAttribute('data-r'); try{localStorage.setItem('danga-reg',REG);}catch(_){} }
+    else if(f){ FIELD=f.getAttribute('data-f'); GJ=0; CAT=''; }
+    else return;
+    closeDtl(); syncSeg();
+    loadSet(function(){ var n=(GJNAMES[TYPE]||[]).length; if(GJ>n) GJ=0; buildNav(); render(); });
+  });
   var tm; $('q').addEventListener('input',function(){ var v=this.value; clearTimeout(tm); tm=setTimeout(function(){ Q=v.trim().toLowerCase(); render(); },160); });
-  buildNav(); render();
+  syncSeg(); loadSet(function(){ buildNav(); render(); });
 })();
 </script>
 <script src="close-button.js" defer></script>

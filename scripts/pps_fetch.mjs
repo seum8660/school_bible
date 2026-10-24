@@ -45,13 +45,40 @@ for (const [k, op] of Object.entries(MTRL)) {
   meta.sets['mtrl_' + k] = data.length;
 }
 
-const LF = { id: 'prdctIdntNo', n: 'prdctClsfcNoNm', dn: 'dtilPrdctClsfcNoNm', s: 'prdctSpecNm', u: 'prdctUnit', p: 'cntrctPrceAmt', co: 'cntrctCorpNm', mk: 'prdctMakrNm', rg: 'prdctSplyRgnNm', dl: 'prdctDlvryCndtnNm', ex: 'exclncPrcrmntPrdctYn', mas: 'masYn', cm: 'cntrctMthdNm', ent: 'entrprsDivNm', cert: 'prodctCertList', end: 'cntrctEndDate', cat: 'prdctMidclsfcNm', biz: 'cntrctCorpBizno' };
+const LF = { id: 'prdctIdntNo', n: 'prdctClsfcNoNm', dn: 'dtilPrdctClsfcNoNm', s: 'prdctSpecNm', u: 'prdctUnit', p: 'cntrctPrceAmt', co: 'cntrctCorpNm', mk: 'prdctMakrNm', rg: 'prdctSplyRgnNm', dl: 'prdctDlvryCndtnNm', ex: 'exclncPrcrmntPrdctYn', mas: 'masYn', cm: 'cntrctMthdNm', ent: 'entrprsDivNm', cert: 'prodctCertList', end: 'cntrctEndDate', cat: 'prdctMidclsfcNm', biz: 'cntrctCorpBizno', rd: 'rgstDt', c: 'prdctClsfcNo' };
+// 쇼핑몰: 최근 30일 등록·변경분을 받아 기존 파일과 합침(계약기간 끝난 품목은 제외) → 물품분류별 파일 + 색인
 {
-  const { rows, total } = await all(`${B}/at/ShoppingMallPrdctInfoService/getShoppingMallPrdctInfoList`, { inqryDiv: '1' });
-  if (total >= 0 && rows.length) {
-    const data = rows.map(r => pick(r, LF));
-    await writeFile('pps_data/mall.json', JSON.stringify(data));
-    meta.sets.mall = data.length;
+  const { readFile, readdir } = await import('node:fs/promises');
+  const ymd = d => d.toISOString().slice(0, 10).replace(/-/g, '');
+  const now = new Date(Date.now() + 9 * 3600e3); const today = ymd(now);
+  const DAYS = Number(process.env.PPS_MALL_DAYS || 30);
+  const byId = new Map();
+  await mkdir('pps_data/mall', { recursive: true });
+  try { for (const f of await readdir('pps_data/mall')) { if (!/^\d+\.json$/.test(f)) continue; for (const r of JSON.parse(await readFile('pps_data/mall/' + f, 'utf8'))) byId.set(r.id + '|' + (r.biz || r.co || ''), r); } } catch (e) {}
+  console.log('기존 쇼핑몰 품목', byId.size);
+  let got = 0, ok = false;
+  for (let back = 0; back < DAYS; back += 10) {
+    const end = new Date(now - back * 864e5), bgn = new Date(now - Math.min(back + 9, DAYS - 1) * 864e5);
+    const { rows, total } = await all(`${B}/at/ShoppingMallPrdctInfoService/getShoppingMallPrdctInfoList`, { inqryDiv: '1', inqryBgnDate: ymd(bgn), inqryEndDate: ymd(end) });
+    if (total >= 0) ok = true;
+    for (const r of rows) { const o = pick(r, LF); const k = o.id + '|' + (o.biz || o.co || ''); const old = byId.get(k); if (!old || String(o.rd || '') >= String(old.rd || '')) byId.set(k, o); got++; }
+  }
+  if (ok && byId.size) {
+    const groups = new Map();
+    for (const r of byId.values()) { if (r.end && r.end < today) continue; const c = r.c || 'etc'; if (!groups.has(c)) groups.set(c, []); groups.get(c).push(r); }
+    const { rm } = await import('node:fs/promises'); await rm('pps_data/mall', { recursive: true, force: true }); await mkdir('pps_data/mall', { recursive: true });
+    const index = [], corp = {};
+    for (const [c, list] of groups) {
+      list.forEach(r => { delete r.c; });
+      await writeFile(`pps_data/mall/${c}.json`, JSON.stringify(list));
+      const names = {}; list.forEach(r => { names[r.n] = (names[r.n] || 0) + 1; if (r.co) (corp[r.co] = corp[r.co] || new Set()).add(c); });
+      index.push({ c, n: Object.entries(names).sort((a, b) => b[1] - a[1])[0][0], k: list.length, cat: list[0].cat || '' });
+    }
+    const corpOut = {}; for (const [k, v] of Object.entries(corp)) corpOut[k] = [...v];
+    await writeFile('pps_data/mall_index.json', JSON.stringify(index));
+    await writeFile('pps_data/mall_corp.json', JSON.stringify(corpOut));
+    meta.sets.mall = [...groups.values()].reduce((a, b) => a + b.length, 0); meta.sets.mall_cls = index.length; meta.sets.mall_corp = Object.keys(corpOut).length;
+    console.log('쇼핑몰 수집', got, '→ 저장', meta.sets.mall, '품목 /', index.length, '분류');
   } else console.log('mall 실패 — 기존 파일 유지');
 }
 await writeFile('pps_data/meta.json', JSON.stringify(meta));

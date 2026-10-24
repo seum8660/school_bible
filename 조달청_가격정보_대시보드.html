@@ -186,9 +186,29 @@ async function run(){
     for(const [k,l] of sets){ const d=await loadSet(k); if(!d.length) empty.push(l); d.forEach(r=>rows.push({...r,set:l})); }
     st.empty=empty;
   } else {
-    rows=(await loadSet('mall')).slice();
+    const term0=(q.q||'').trim(), co0=(q.co||'').trim();
+    if(!term0&&!co0){$('#out').innerHTML='<div class="msg">품명이나 업체명을 입력해 주세요. 쇼핑몰은 품목이 많아 분류별로 나눠 불러와요.</div>';$('#meta').innerHTML='';$('#pg').innerHTML='';return;}
+    const idx=DATA.mall_index!==undefined?DATA.mall_index:(DATA.mall_index=await getJSON('mall_index.json')||[]);
+    const cix=DATA.mall_corp!==undefined?DATA.mall_corp:(DATA.mall_corp=await getJSON('mall_corp.json')||{});
+    const w0=term0.split(/[\s,·]+/).map(norm).filter(Boolean);
+    let cls=[]; st.mallAlt=false; st.corpHit=[];
+    if(term0){
+      const sc=idx.map(i=>({c:i.c,s:score({n:i.n,s:i.cat},term0,w0)})).sort((a,b)=>b.s-a.s);
+      const strong=sc.filter(x=>x.s>=2); cls=(strong.length?strong.slice(0,15):sc.filter(x=>x.s>=0.5).slice(0,6)).map(x=>x.c);
+      if(!strong.length){ if(!cls.length) cls=sc.slice(0,6).map(x=>x.c); st.mallAlt=true; }
+    }
+    if(co0){
+      const cn=norm(co0);
+      const hits=Object.keys(cix).filter(k=>norm(k).includes(cn)||jdice(cn,norm(k))>=0.8);
+      st.corpHit=hits;
+      const fromCorp=[...new Set(hits.flatMap(k=>cix[k]))];
+      cls=term0?cls.filter(c=>fromCorp.includes(c)).concat(cls.length?[]:fromCorp):fromCorp;
+      if(term0&&!cls.length) cls=fromCorp;
+    }
+    const parts=await Promise.all([...new Set(cls)].slice(0,40).map(c=>getJSON('mall/'+c+'.json')));
+    rows=parts.flat().filter(Boolean);
+    if(co0){const hs=new Set(st.corpHit); rows=rows.filter(r=>hs.has(r.co));}
     if(q.exc) rows=rows.filter(r=>r.ex==='Y');
-    if(q.co&&q.co.trim()){const c=norm(q.co); rows=rows.filter(r=>norm(r.co).includes(c));}
     if(q.sido){
       const a=RG[q.sido].alias;
       rows=rows.filter(r=>{const t=r.rg||''; const any=/전지역|전국/.test(t);
@@ -196,7 +216,7 @@ async function run(){
         if(!a.some(x=>t.includes(x))) return false; return !q.sgg||t.includes(q.sgg);});
     }
   }
-  if(!rows.length&&!Object.values(DATA).some(d=>d&&d.length)){$('#out').innerHTML='<div class="msg err">자료 파일이 아직 없어요. 깃허브 Actions에서 「조달청 가격정보」 수집이 한 번 실행되면 표시돼요.</div>';$('#meta').innerHTML='';return;}
+  if(!rows.length&&mode==='mtrl'&&!Object.values(DATA).some(d=>d&&d.length)){$('#out').innerHTML='<div class="msg err">자료 파일이 아직 없어요. 깃허브 Actions에서 「조달청 가격정보」 수집이 한 번 실행되면 표시돼요.</div>';$('#meta').innerHTML='';return;}
   const term=(q.q||'').trim(); st.term=term; st.alt='';
   const words=term.split(/[\s,·]+/).map(norm).filter(Boolean);
   if(term){
@@ -205,6 +225,7 @@ async function run(){
     let out=strong.length?rows.filter(r=>r.__s>=0.9) : rows.filter(r=>r.__s>=0.55);
     if(!strong.length) out=(out.length?out:rows).sort((a,b)=>b.__s-a.__s).slice(0,Math.max(20,Math.min(out.length,200)));
     if(!strong.length&&out.length) st.alt='same';
+    if(mode==='mall'&&st.mallAlt) st.alt='same';
     rows=out.sort((a,b)=>b.__s-a.__s||(num(a.p)-num(b.p)));
   } else rows.sort((a,b)=>String(a.n).localeCompare(String(b.n),'ko')||(num(a.p)-num(b.p)));
   st.words=words; st.rows=rows; st.sortK=null; st.region=mode==='mall'&&q.sido?(q.sido+(q.sgg?' '+q.sgg:'')):'';

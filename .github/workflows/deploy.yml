@@ -73,7 +73,7 @@ jobs:
         env:
           PPS_KEY: ${{ secrets.DATA_GO_KR_KEY }}
         run: |
-          timeout 20m node scripts/pps_fetch.mjs || echo "조달청 수집 스크립트 오류 — 기존 자료 유지"
+          timeout 40m node scripts/pps_fetch.mjs || echo "조달청 수집 스크립트 오류 — 기존 자료 유지"
           git add pps_data || true
           git diff --cached --quiet || (git commit -m "조달청 가격정보 갱신 $(TZ=Asia/Seoul date +%F)" && git pull --rebase -q && git push -q)
       - name: Clean

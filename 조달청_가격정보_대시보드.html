@@ -205,6 +205,7 @@ async function run(){
       cls=term0?cls.filter(c=>fromCorp.includes(c)).concat(cls.length?[]:fromCorp):fromCorp;
       if(term0&&!cls.length) cls=fromCorp;
     }
+    st.co=co0;
     const parts=await Promise.all([...new Set(cls)].slice(0,40).map(c=>getJSON('mall/'+c+'.json')));
     rows=parts.flat().filter(Boolean);
     if(co0){const hs=new Set(st.corpHit); rows=rows.filter(r=>hs.has(r.co));}
@@ -239,9 +240,9 @@ function render(){
   const view=rows.slice((st.page-1)*st.size, st.page*st.size);
   const alt=st.alt?`<div class="hint">‘${esc(st.term)}’와 이름이 같은 항목은 없어요. <b>비슷한 품명</b>을 가까운 순으로 보여드려요.</div>`:'';
   const emp=mode==='mtrl'&&st.empty&&st.empty.length?`<div class="hint">${esc(st.empty.join('·'))} 분야 자료는 아직 수집되지 않았어요. 자동 수집 후 표시돼요.</div>`:'';
-  const smp=META&&META.sample?`<div class="hint">지금은 <b>예시 자료</b>만 들어 있어요. 깃허브 자동 수집이 끝나면 전체 자료(약 4만 건)로 바뀌어요.</div>`:'';
+  const smp=META&&META.sample?`<div class="hint">지금은 <b>예시 자료</b>만 들어 있어요. 깃허브 자동 수집이 끝나면 전체 자료(약 4만 건)로 바뀌어요.</div>`:(mode==='mall'&&META&&!META.mallBackfillDone?`<div class="hint">쇼핑몰 자료는 최근 등록분부터 거꾸로 채우는 중이에요${META.mallBackfill?` (현재 ${META.mallBackfill.slice(0,4)}.${META.mallBackfill.slice(4,6)}까지)`:''}. 오래전에 등록된 업체·품목은 며칠 안에 채워져요.</div>`:'');
   $('#meta').innerHTML=`${smp}${emp}${alt}<span>검색 결과 <b>${fmt(rows.length)}</b>건</span>${st.region?`<span class="tag">${esc(st.region)}</span>`:''}<span class="note">행을 체크하면 아래 비교함에 담겨요</span>`;
-  if(!rows.length){$('#meta').innerHTML=smp+emp+'<span>검색 결과 <b>0</b>건</span>';$('#out').innerHTML='<div class="msg">찾는 품명이 없어요. 낱말을 짧게 바꿔 보세요.</div>';$('#pg').innerHTML='';return;}
+  if(!rows.length){$('#meta').innerHTML=smp+emp+'<span>검색 결과 <b>0</b>건</span>';$('#out').innerHTML=mode==='mall'&&st.co&&!(st.corpHit||[]).length?`<div class="msg">‘${esc(st.co)}’ 업체는 아직 수집된 자료에 없어요. 쇼핑몰 자료를 과거 순으로 채우는 중이라 며칠 뒤 다시 찾아보세요.</div>`:'<div class="msg">찾는 품명이 없어요. 낱말을 짧게 바꿔 보세요.</div>';$('#pg').innerHTML='';return;}
   const c=COLS[mode], ids=new Set(cmp.map(x=>x.id)), w=st.words||[];
   $('#out').innerHTML=`<div class="tw"><table><thead><tr><th class="ck"></th>${c.map(([k,l])=>`<th data-k="${k}"${k==='p'?' style="text-align:right"':''}>${l}${st.sortK===k?(st.sortD>0?' ▲':' ▼'):''}</th>`).join('')}</tr></thead><tbody>${view.map((r,i)=>`<tr><td class="ck"><input type="checkbox" data-i="${(st.page-1)*st.size+i}"${ids.has(rowId(r))?' checked':''}></td>${c.map(([k,,isNum])=>{
       if(isNum) return `<td class="num">${fmt(num(r[k]))}</td>`;

@@ -182,7 +182,9 @@ async function run(){
   let rows=[];
   if(mode==='mtrl'){
     const sets=q.set?MTRL_SETS.filter(s=>s[0]===q.set):MTRL_SETS;
-    for(const [k,l] of sets){ (await loadSet(k)).forEach(r=>rows.push({...r,set:l})); }
+    const empty=[];
+    for(const [k,l] of sets){ const d=await loadSet(k); if(!d.length) empty.push(l); d.forEach(r=>rows.push({...r,set:l})); }
+    st.empty=empty;
   } else {
     rows=(await loadSet('mall')).slice();
     if(q.exc) rows=rows.filter(r=>r.ex==='Y');
@@ -215,8 +217,10 @@ function render(){
   const pages=Math.max(1,Math.ceil(rows.length/st.size)); if(st.page>pages) st.page=pages;
   const view=rows.slice((st.page-1)*st.size, st.page*st.size);
   const alt=st.alt?`<div class="hint">‘${esc(st.term)}’와 이름이 같은 항목은 없어요. <b>비슷한 품명</b>을 가까운 순으로 보여드려요.</div>`:'';
-  $('#meta').innerHTML=`${alt}<span>검색 결과 <b>${fmt(rows.length)}</b>건</span>${st.region?`<span class="tag">${esc(st.region)}</span>`:''}<span class="note">행을 체크하면 아래 비교함에 담겨요</span>`;
-  if(!rows.length){$('#out').innerHTML='<div class="msg">찾는 품명이 없어요. 낱말을 짧게 바꿔 보세요.</div>';$('#pg').innerHTML='';return;}
+  const emp=mode==='mtrl'&&st.empty&&st.empty.length?`<div class="hint">${esc(st.empty.join('·'))} 분야 자료는 아직 수집되지 않았어요. 자동 수집 후 표시돼요.</div>`:'';
+  const smp=META&&META.sample?`<div class="hint">지금은 <b>예시 자료</b>만 들어 있어요. 깃허브 자동 수집이 끝나면 전체 자료(약 4만 건)로 바뀌어요.</div>`:'';
+  $('#meta').innerHTML=`${smp}${emp}${alt}<span>검색 결과 <b>${fmt(rows.length)}</b>건</span>${st.region?`<span class="tag">${esc(st.region)}</span>`:''}<span class="note">행을 체크하면 아래 비교함에 담겨요</span>`;
+  if(!rows.length){$('#meta').innerHTML=smp+emp+'<span>검색 결과 <b>0</b>건</span>';$('#out').innerHTML='<div class="msg">찾는 품명이 없어요. 낱말을 짧게 바꿔 보세요.</div>';$('#pg').innerHTML='';return;}
   const c=COLS[mode], ids=new Set(cmp.map(x=>x.id)), w=st.words||[];
   $('#out').innerHTML=`<div class="tw"><table><thead><tr><th class="ck"></th>${c.map(([k,l])=>`<th data-k="${k}"${k==='p'?' style="text-align:right"':''}>${l}${st.sortK===k?(st.sortD>0?' ▲':' ▼'):''}</th>`).join('')}</tr></thead><tbody>${view.map((r,i)=>`<tr><td class="ck"><input type="checkbox" data-i="${(st.page-1)*st.size+i}"${ids.has(rowId(r))?' checked':''}></td>${c.map(([k,,isNum])=>{
       if(isNum) return `<td class="num">${fmt(num(r[k]))}</td>`;

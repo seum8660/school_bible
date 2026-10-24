@@ -69,7 +69,6 @@ jobs:
           git add data
           git diff --cached --quiet || (git commit -m "학교알리미 자료 갱신" && git pull --rebase && git push)
       - name: Fetch 조달청 가격정보
-        if: ${{ github.event_name != 'push' }}
         continue-on-error: true
         env:
           PPS_KEY: ${{ secrets.DATA_GO_KR_KEY }}

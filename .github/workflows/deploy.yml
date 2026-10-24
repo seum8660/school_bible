@@ -68,18 +68,17 @@ jobs:
           ls -la data || true
           git add data
           git diff --cached --quiet || (git commit -m "학교알리미 자료 갱신" && git pull --rebase && git push)
-      - name: 허브·볼트 자동 갱신
+      - name: Fetch 조달청 가격정보
+        if: ${{ github.event_name != 'push' }}
         continue-on-error: true
+        env:
+          PPS_KEY: ${{ secrets.DATA_GO_KR_KEY }}
         run: |
-          pip install -q beautifulsoup4 markdownify lxml
-          python3 tools/build_hub.py      # manuals/ 새 요약문서 → bible.html 카드·manifest.json
-          python3 tools/build_vault.py    # 사이트 문서 → vault/ 옵시디언 노트
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add bible.html manuals/manifest.json vault
-          git diff --cached --quiet || (git commit -m "허브·볼트 자동 갱신" && git pull --rebase && git push)
+          timeout 20m node scripts/pps_fetch.mjs || echo "조달청 수집 스크립트 오류 — 기존 자료 유지"
+          git add pps_data || true
+          git diff --cached --quiet || (git commit -m "조달청 가격정보 갱신 $(TZ=Asia/Seoul date +%F)" && git pull --rebase -q && git push -q)
       - name: Clean
-        run: rm -rf .github templates tools vault inbox reports
+        run: rm -rf .github templates tools
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

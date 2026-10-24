@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>조달청 가격정보 조회</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-gov.min.css">
+<style>
+:root{--bg:#F4F5F6;--surface:#FFFFFF;--s2:#F4F5F6;--s3:#E6E8EA;--ink:#1E2124;--ink2:#464C53;--muted:#6D7882;--faint:#8A949E;--line:#CDD1D5;--line2:#E6E8EA;--strong:#58616A;
+--accent:#256EF4;--accent-d:#0B50D0;--accent-p:#083891;--soft:#ECF2FE;--soft2:#D8E5FD;--info:#E7F4FE;--ok:#267337;--warn:#BD2C0F;--warnbg:#FDEFEC;--rad:12px;--radsm:8px;}
+[data-theme="dark"]{--bg:#131416;--surface:#1E2124;--s2:#26292D;--s3:#33363D;--ink:#F4F5F6;--ink2:#CDD1D5;--muted:#9EA6AE;--faint:#6D7882;--line:#3A3E44;--line2:#33363D;--strong:#8A949E;--accent:#4C87F6;--accent-d:#86AFF9;--accent-p:#B1CEFB;--soft:rgba(76,135,246,.16);--soft2:rgba(76,135,246,.3);--info:rgba(76,135,246,.1);--ok:#6fd38a;--warnbg:rgba(189,44,15,.18);--warn:#ff9d85;}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Pretendard GOV Variable','Pretendard GOV','Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+a{color:var(--accent-d)}a:hover{color:var(--accent-p)}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
+.wrap{max-width:1248px;margin:0 auto;padding:20px 24px 48px;display:flex;flex-direction:column;gap:16px}
+.bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ttl{display:flex;flex-direction:column;gap:2px}
+.ttl h1{margin:0;font-size:24px;font-weight:700;line-height:1.4}
+.ttl p{margin:0;font-size:15px;color:var(--ink2)}
+.tabs{display:flex;gap:24px;border-bottom:1px solid var(--line2)}
+.tab{border:0;border-bottom:2px solid transparent;background:transparent;padding:10px 2px 9px;font-size:17px;font-weight:700;color:var(--muted);cursor:pointer;margin-bottom:-1px;transition:color .15s}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--accent-d);border-bottom-color:var(--accent)}
+.sp{flex:1}
+.btn{border:1px solid var(--strong);background:var(--surface);color:var(--ink);height:40px;padding:0 16px;border-radius:var(--radsm);font-size:15px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;transition:background-color .15s}
+.btn:hover{background:var(--s2)}
+.btn:active{background:var(--s3)}
+.btn:focus-visible{outline:2px solid #fff;box-shadow:0 0 0 4px var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff;height:48px;padding:0 24px;font-size:17px}
+.btn.pri:hover{background:var(--accent-d);border-color:var(--accent-d)}
+.btn:disabled{background:var(--s3);border-color:var(--line);color:var(--faint);cursor:not-allowed}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--rad);padding:20px 24px}
+.keystate{display:inline-flex;align-items:center;height:24px;font-size:13px;font-weight:700;padding:0 8px;border-radius:4px;background:var(--s3);color:var(--ink2)}
+.keystate.ok{background:var(--soft);color:var(--accent-d)}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px 16px;align-items:end}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fld.wide{grid-column:span 2}
+.fld label{font-size:15px;font-weight:700;color:var(--ink)}
+.fld input,.fld select{width:100%;height:48px;border:1px solid var(--line);border-radius:var(--radsm);padding:0 14px;background:var(--surface);font-size:15px;outline:none}
+.fld input::placeholder{color:var(--muted)}
+.fld input:focus,.fld select:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--soft2)}
+.fld select:disabled{background:var(--s3);color:var(--faint)}
+.chk{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;height:48px}
+.chk input{width:20px;height:20px;accent-color:var(--accent)}
+.meta{display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:15px;color:var(--ink2)}
+.meta b{color:var(--accent-d)}
+.msg{padding:16px 20px;border-radius:var(--rad);background:var(--info);border:1px solid var(--soft2);font-size:15px;color:var(--ink);white-space:pre-wrap}
+.msg.err{background:var(--warnbg);border-color:transparent;color:var(--warn)}
+.tw{overflow:auto;border-top:2px solid var(--ink);background:var(--surface);max-height:62vh}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th{position:sticky;top:0;background:var(--s2);text-align:left;font-weight:700;color:var(--ink);padding:12px;border-bottom:1px solid var(--line);white-space:nowrap;cursor:pointer;z-index:1}
+th:hover{color:var(--accent-d)}
+td{padding:12px;border-bottom:1px solid var(--line2);vertical-align:top}
+tr:hover td{background:var(--soft)}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:700}
+td.ck,th.ck{width:44px;text-align:center}
+td.ck input{width:18px;height:18px;accent-color:var(--accent)}
+td.sm{font-size:13px;color:var(--ink2)}
+.pg{display:flex;gap:8px;align-items:center;justify-content:center}
+.tray{position:sticky;bottom:12px;background:var(--info);border:1px solid var(--soft2);border-radius:var(--rad);padding:16px;box-shadow:0 16px 24px rgba(0,0,0,.12);display:flex;flex-direction:column;gap:12px}
+.tray .tw{border-top-width:1px;border-radius:var(--radsm)}
+.tray table td,.tray table th{position:static}
+.tag{display:inline-flex;align-items:center;height:20px;font-size:13px;font-weight:700;padding:0 8px;border-radius:4px;background:var(--soft);color:var(--accent-d);white-space:nowrap}
+.lo{color:var(--ok)}.hi{color:var(--warn)}
+.hint{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:15px;color:var(--ink2);padding:12px 16px;background:var(--info);border-radius:var(--radsm);width:100%}
+.hint b{color:var(--accent-d)}
+mark{background:var(--soft2);color:inherit;padding:0 1px;border-radius:2px}
+.note{font-size:13px;color:var(--muted)}
+@media(max-width:640px){.fld.wide{grid-column:auto}.wrap{padding:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <div class="ttl"><h1>조달청 가격정보 조회</h1><p>시설공통자재 가격과 종합쇼핑몰 단가를 찾아 비교할 수 있어요</p></div>
+    <span class="sp"></span>
+    <span class="keystate" id="keystate">자료 불러오는 중</span>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-t="mtrl">시설자재 가격</button>
+    <button class="tab" data-t="mall">종합쇼핑몰·우수제품</button>
+  </div>
+  <div class="card"><form class="form" id="qform" onsubmit="return false"></form></div>
+  <div class="meta" id="meta"></div>
+  <div id="out"></div>
+  <div class="pg" id="pg"></div>
+  <div class="tray" id="tray" style="display:none"></div>
+</div>
+
+<script>
+(function(){
+const SRC=['pps_data/','https://raw.githubusercontent.com/seum8660/school_bible/main/pps_data/'];
+const LSC='pps_dash_cmp_v2';
+const MTRL_SETS=[['mtrl_bldng','건축'],['mtrl_engrk','토목'],['mtrl_mchn','기계설비'],['mtrl_elec','전기·정보통신']];
+const REGIONS=[
+  ['전남광주통합특별시',['전남광주','광주','전라남도','전남'],'동구 서구 남구 북구 광산구 목포시 여수시 순천시 나주시 광양시 담양군 곡성군 구례군 고흥군 보성군 화순군 장흥군 강진군 해남군 영암군 무안군 함평군 영광군 장성군 완도군 진도군 신안군'],
+  ['서울특별시',['서울'],'종로구 중구 용산구 성동구 광진구 동대문구 중랑구 성북구 강북구 도봉구 노원구 은평구 서대문구 마포구 양천구 강서구 구로구 금천구 영등포구 동작구 관악구 서초구 강남구 송파구 강동구'],
+  ['부산광역시',['부산'],'중구 서구 동구 영도구 부산진구 동래구 남구 북구 해운대구 사하구 금정구 강서구 연제구 수영구 사상구 기장군'],
+  ['대구광역시',['대구'],'중구 동구 서구 남구 북구 수성구 달서구 달성군 군위군'],
+  ['인천광역시',['인천'],'제물포구 영종구 미추홀구 연수구 남동구 부평구 계양구 서구 검단구 강화군 옹진군'],
+  ['대전광역시',['대전'],'동구 중구 서구 유성구 대덕구'],
+  ['울산광역시',['울산'],'중구 남구 동구 북구 울주군'],
+  ['세종특별자치시',['세종'],''],
+  ['경기도',['경기'],'수원시 성남시 의정부시 안양시 부천시 광명시 평택시 동두천시 안산시 고양시 과천시 구리시 남양주시 오산시 시흥시 군포시 의왕시 하남시 용인시 파주시 이천시 안성시 김포시 화성시 광주시 양주시 포천시 여주시 연천군 가평군 양평군'],
+  ['강원특별자치도',['강원'],'춘천시 원주시 강릉시 동해시 태백시 속초시 삼척시 홍천군 횡성군 영월군 평창군 정선군 철원군 화천군 양구군 인제군 고성군 양양군'],
+  ['충청북도',['충북'],'청주시 충주시 제천시 보은군 옥천군 영동군 증평군 진천군 괴산군 음성군 단양군'],
+  ['충청남도',['충남'],'천안시 공주시 보령시 아산시 서산시 논산시 계룡시 당진시 금산군 부여군 서천군 청양군 홍성군 예산군 태안군'],
+  ['전북특별자치도',['전북','전라북도'],'전주시 군산시 익산시 정읍시 남원시 김제시 완주군 진안군 무주군 장수군 임실군 순창군 고창군 부안군'],
+  ['경상북도',['경북'],'포항시 경주시 김천시 안동시 구미시 영주시 영천시 상주시 문경시 경산시 의성군 청송군 영양군 영덕군 청도군 고령군 성주군 칠곡군 예천군 봉화군 울진군 울릉군'],
+  ['경상남도',['경남'],'창원시 진주시 통영시 사천시 김해시 밀양시 거제시 양산시 의령군 함안군 창녕군 고성군 남해군 하동군 산청군 함양군 거창군 합천군'],
+  ['제주특별자치도',['제주'],'제주시 서귀포시']
+];
+const RG={}; REGIONS.forEach(([n,a,s])=>RG[n]={alias:[n,...a],sgg:s?s.split(' '):[]});
+const COLS={
+  mtrl:[['n','품명'],['s','규격'],['u','단위'],['p','가격',1],['set','분야'],['d','인도조건'],['t','게시일']],
+  mall:[['n','품명'],['s','규격'],['u','단위'],['p','계약단가',1],['co','업체'],['rg','공급지역'],['ex','우수제품']]
+};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=v=>{if(v==null||v==='')return null; const n=Number(String(v).replace(/,/g,'')); return isFinite(n)?n:null;};
+const fmt=n=>n==null?'':n.toLocaleString('ko-KR');
+let mode=localStorage.getItem('pps_dash_mode')==='mall'?'mall':'mtrl';
+let DATA={}, META=null, BASE=null;
+let st={rows:[],page:1,size:50,sortK:null,sortD:1,term:'',alt:'',region:''};
+let cmp=[]; try{cmp=JSON.parse(localStorage.getItem(LSC)||'[]');}catch(e){}
+
+async function getJSON(name){
+  const bases=BASE?[BASE]:SRC;
+  for(const b of bases){ try{const r=await fetch(b+name,{cache:'no-cache'}); if(r.ok){BASE=b; return await r.json();}}catch(e){} }
+  return null;
+}
+async function loadSet(k){ if(DATA[k]!==undefined) return DATA[k]; DATA[k]=await getJSON(k+'.json')||[]; return DATA[k]; }
+
+// 비슷한 이름 점수: 완전포함 > 낱말 일치 > 글자쌍(bigram) 유사도
+const norm=s=>String(s||'').replace(/[\s·,()\-_/×]+/g,'').toLowerCase();
+function bigrams(s){const g=[]; for(let i=0;i<s.length-1;i++) g.push(s.slice(i,i+2)); return g.length?g:(s?[s]:[]);}
+function dice(a,b){const A=bigrams(a),B=bigrams(b); if(!A.length||!B.length) return 0; const m=new Map(); A.forEach(x=>m.set(x,(m.get(x)||0)+1)); let h=0; B.forEach(x=>{const c=m.get(x); if(c){h++;m.set(x,c-1);}}); return 2*h/(A.length+B.length);}
+function jamo(s){let o=''; for(const ch of s){const c=ch.charCodeAt(0)-0xAC00; if(c>=0&&c<11172){o+=String.fromCharCode(0x1100+Math.floor(c/588),0x1161+Math.floor(c%588/28)); const f=c%28; if(f) o+=String.fromCharCode(0x11A7+f);} else o+=ch;} return o;}
+function jdice(a,b){ if(!a||!b) return 0; const A=jamo(a); let best=0; const B=jamo(b); const L=A.length;
+  // 길이가 비슷한 부분 문자열과 비교 (오타 허용)
+  if(B.length<=L+2) return dice(A,B);
+  for(let i=0;i+L<=B.length;i+=1){ const d=dice(A,B.slice(i,i+L)); if(d>best) best=d; if(best>0.95) break; }
+  return best*0.95; }
+function score(r,term,words){
+  const n=norm(r.n), s=norm(r.s), full=norm(term);
+  let sc=0;
+  if(n===full) sc+=4; else if(n.includes(full)) sc+=3; else if(s.includes(full)) sc+=2.4;
+  if(words.length>1){const hit=words.filter(w=>n.includes(w)||s.includes(w)).length; sc+=1.6*hit/words.length;}
+  sc+=Math.max(dice(full,n), dice(full,s)*0.8, jdice(full,n)*0.9, jdice(full,s)*0.7);
+  return sc;
+}
+function hl(text,words){const s=esc(text); if(!words.length) return s; const ws=words.filter(w=>w.length>=1).map(w=>esc(w).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')); return ws.length?s.replace(new RegExp('('+ws.join('|')+')','gi'),'<mark>$1</mark>'):s;}
+
+function sggOpts(sido,sel){
+  const list=sido&&RG[sido]?RG[sido].sgg:[];
+  return `<option value="">${sido?(list.length?'전체 시군구':'(시군구 없음)'):'시도를 먼저 고르세요'}</option>`+list.map(s=>`<option${s===sel?' selected':''}>${s}</option>`).join('');
+}
+function renderForm(){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.t===mode));
+  const sv=JSON.parse(localStorage.getItem('pps_dash_q2_'+mode)||'{}');
+  let h=`<div class="fld wide"><label>품명·규격 검색</label><input name="q" placeholder="${mode==='mtrl'?'예: 강화유리 8mm, 거푸집, 복공판':'예: 책상, 칸막이, 영상감시'}" value="${esc(sv.q||'')}"></div>`;
+  if(mode==='mtrl') h+=`<div class="fld"><label>분야</label><select name="set"><option value="">전체</option>${MTRL_SETS.map(([k,l])=>`<option value="${k}"${sv.set===k?' selected':''}>${l}</option>`).join('')}</select></div>`;
+  else h+=`<div class="fld"><label>업체명</label><input name="co" value="${esc(sv.co||'')}"></div>
+    <div class="fld"><label>공급지역 시도</label><select name="sido"><option value="">전국</option>${REGIONS.map(r=>`<option${sv.sido===r[0]?' selected':''}>${r[0]}</option>`).join('')}</select></div>
+    <div class="fld"><label>시군구</label><select name="sgg"${sv.sido&&RG[sv.sido]?.sgg.length?'':' disabled'}>${sggOpts(sv.sido,sv.sgg)}</select></div>
+    <label class="chk"><input type="checkbox" name="all"${sv.all!==false?' checked':''}>전지역 공급 포함</label>
+    <label class="chk"><input type="checkbox" name="exc"${sv.exc?' checked':''}>우수제품만</label>`;
+  h+=`<div class="fld"><button class="btn pri" id="go" type="submit">조회</button></div>`;
+  const f=$('#qform'); f.innerHTML=h;
+  const sd=f.querySelector('[name=sido]'), sg=f.querySelector('[name=sgg]');
+  if(sd) sd.onchange=()=>{sg.innerHTML=sggOpts(sd.value,''); sg.disabled=!(sd.value&&RG[sd.value].sgg.length);};
+  f.onsubmit=e=>{e.preventDefault(); st.page=1; run(); return false;};
+  $('#out').innerHTML=''; $('#meta').innerHTML=''; $('#pg').innerHTML='';
+}
+function formVals(){const o={}; new FormData($('#qform')).forEach((v,k)=>o[k]=v); $('#qform').querySelectorAll('input[type=checkbox]').forEach(c=>o[c.name]=c.checked); return o;}
+
+async function run(){
+  const q=formVals(); localStorage.setItem('pps_dash_q2_'+mode,JSON.stringify(q));
+  $('#out').innerHTML='<div class="msg">찾는 중…</div>';
+  let rows=[];
+  if(mode==='mtrl'){
+    const sets=q.set?MTRL_SETS.filter(s=>s[0]===q.set):MTRL_SETS;
+    for(const [k,l] of sets){ (await loadSet(k)).forEach(r=>rows.push({...r,set:l})); }
+  } else {
+    rows=(await loadSet('mall')).slice();
+    if(q.exc) rows=rows.filter(r=>r.ex==='Y');
+    if(q.co&&q.co.trim()){const c=norm(q.co); rows=rows.filter(r=>norm(r.co).includes(c));}
+    if(q.sido){
+      const a=RG[q.sido].alias;
+      rows=rows.filter(r=>{const t=r.rg||''; const any=/전지역|전국/.test(t);
+        if(any) return q.all && !(q.sido==='제주특별자치도'&&/제주[^)]*제외|제주,|제주 제외/.test(t)) ;
+        if(!a.some(x=>t.includes(x))) return false; return !q.sgg||t.includes(q.sgg);});
+    }
+  }
+  if(!rows.length&&!Object.values(DATA).some(d=>d&&d.length)){$('#out').innerHTML='<div class="msg err">자료 파일이 아직 없어요. 깃허브 Actions에서 「조달청 가격정보」 수집이 한 번 실행되면 표시돼요.</div>';$('#meta').innerHTML='';return;}
+  const term=(q.q||'').trim(); st.term=term; st.alt='';
+  const words=term.split(/[\s,·]+/).map(norm).filter(Boolean);
+  if(term){
+    rows.forEach(r=>r.__s=score(r,term,words));
+    const strong=rows.filter(r=>r.__s>=2);
+    let out=strong.length?rows.filter(r=>r.__s>=0.9) : rows.filter(r=>r.__s>=0.55);
+    if(!strong.length) out=(out.length?out:rows).sort((a,b)=>b.__s-a.__s).slice(0,Math.max(20,Math.min(out.length,200)));
+    if(!strong.length&&out.length) st.alt='same';
+    rows=out.sort((a,b)=>b.__s-a.__s||(num(a.p)-num(b.p)));
+  } else rows.sort((a,b)=>String(a.n).localeCompare(String(b.n),'ko')||(num(a.p)-num(b.p)));
+  st.words=words; st.rows=rows; st.sortK=null; st.region=mode==='mall'&&q.sido?(q.sido+(q.sgg?' '+q.sgg:'')):'';
+  render();
+}
+function rowId(r){return (r.set||mode)+'|'+(r.id||'')+'|'+(r.s||'')+'|'+(r.co||'');}
+function render(){
+  const rows=[...st.rows];
+  if(st.sortK){const k=st.sortK; rows.sort((a,b)=>{const x=num(a[k]),y=num(b[k]); if(k==='p'&&x!=null&&y!=null)return (x-y)*st.sortD; return String(a[k]??'').localeCompare(String(b[k]??''),'ko')*st.sortD;});}
+  const pages=Math.max(1,Math.ceil(rows.length/st.size)); if(st.page>pages) st.page=pages;
+  const view=rows.slice((st.page-1)*st.size, st.page*st.size);
+  const alt=st.alt?`<div class="hint">‘${esc(st.term)}’와 이름이 같은 항목은 없어요. <b>비슷한 품명</b>을 가까운 순으로 보여드려요.</div>`:'';
+  $('#meta').innerHTML=`${alt}<span>검색 결과 <b>${fmt(rows.length)}</b>건</span>${st.region?`<span class="tag">${esc(st.region)}</span>`:''}<span class="note">행을 체크하면 아래 비교함에 담겨요</span>`;
+  if(!rows.length){$('#out').innerHTML='<div class="msg">찾는 품명이 없어요. 낱말을 짧게 바꿔 보세요.</div>';$('#pg').innerHTML='';return;}
+  const c=COLS[mode], ids=new Set(cmp.map(x=>x.id)), w=st.words||[];
+  $('#out').innerHTML=`<div class="tw"><table><thead><tr><th class="ck"></th>${c.map(([k,l])=>`<th data-k="${k}"${k==='p'?' style="text-align:right"':''}>${l}${st.sortK===k?(st.sortD>0?' ▲':' ▼'):''}</th>`).join('')}</tr></thead><tbody>${view.map((r,i)=>`<tr><td class="ck"><input type="checkbox" data-i="${(st.page-1)*st.size+i}"${ids.has(rowId(r))?' checked':''}></td>${c.map(([k,,isNum])=>{
+      if(isNum) return `<td class="num">${fmt(num(r[k]))}</td>`;
+      if(k==='n'||k==='s') return `<td>${hl(r[k],w)}</td>`;
+      if(k==='ex') return `<td>${r.ex==='Y'?'<span class="tag">우수</span>':''}</td>`;
+      if(k==='t') return `<td class="sm">${esc(String(r.t||'').slice(0,10))}</td>`;
+      return `<td${k==='rg'||k==='d'?' class="sm"':''}>${esc(r[k])}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`;
+  st.viewRows=rows;
+  $('#out').querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{const k=th.dataset.k; st.sortD=st.sortK===k?-st.sortD:1; st.sortK=k; render();});
+  $('#out').querySelectorAll('input[data-i]').forEach(cb=>cb.onchange=()=>{const r=st.viewRows[cb.dataset.i]; const id=rowId(r);
+    if(cb.checked){if(!cmp.some(x=>x.id===id)){const {__s,...clean}=r; cmp.push({id,src:mode==='mtrl'?'시설자재 · '+(r.set||''):'종합쇼핑몰',r:clean});}} else cmp=cmp.filter(x=>x.id!==id);
+    saveCmp(); renderTray();});
+  $('#pg').innerHTML=pages>1?`<button class="btn" id="pv"${st.page<=1?' disabled':''}>이전</button><span class="note">${st.page} / ${fmt(pages)}</span><button class="btn" id="nx"${st.page>=pages?' disabled':''}>다음</button>`:'';
+  const pv=$('#pv'),nx=$('#nx'); if(pv)pv.onclick=()=>{st.page--;render();}; if(nx)nx.onclick=()=>{st.page++;render();};
+}
+function saveCmp(){localStorage.setItem(LSC,JSON.stringify(cmp));}
+function renderTray(){
+  const t=$('#tray'); if(!cmp.length){t.style.display='none';return;} t.style.display='flex';
+  const ps=cmp.map(x=>num(x.r.p)).filter(v=>v!=null);
+  const lo=ps.length?Math.min(...ps):null, hi=ps.length?Math.max(...ps):null;
+  t.innerHTML=`<div class="bar"><b style="font-size:17px">단가 비교함 ${cmp.length}건</b>${ps.length>1?`<span class="note">최저 ${fmt(lo)} · 최고 ${fmt(hi)} · 차이 ${fmt(hi-lo)} (${(((hi-lo)/lo)*100).toFixed(1)}%)</span>`:''}<span class="sp"></span><button class="btn" id="cmpCsv">CSV 내려받기</button><button class="btn" id="cmpClr">비우기</button></div>
+  <div class="tw" style="max-height:34vh"><table><thead><tr><th>출처</th><th>품명</th><th>규격</th><th>단위</th><th>업체·인도조건</th><th style="text-align:right">단가</th><th style="text-align:right">최저 대비</th><th></th></tr></thead><tbody>${cmp.map((x,i)=>{const r=x.r,p=num(r.p);
+    return `<tr><td><span class="tag">${esc(x.src)}</span></td><td>${esc(r.n)}</td><td>${esc(r.s)}</td><td>${esc(r.u)}</td><td class="sm">${esc(r.co||r.d||'')}</td><td class="num ${p===lo&&ps.length>1?'lo':p===hi&&ps.length>1?'hi':''}">${fmt(p)}</td><td class="num">${p!=null&&lo?(p===lo?'최저':'+'+(((p-lo)/lo)*100).toFixed(1)+'%'):''}</td><td><button class="btn" data-rm="${i}" style="height:32px;padding:0 10px;font-size:13px">빼기</button></td></tr>`;}).join('')}</tbody></table></div>`;
+  t.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{cmp.splice(+b.dataset.rm,1);saveCmp();renderTray();if(st.rows.length)render();});
+  $('#cmpClr').onclick=()=>{cmp=[];saveCmp();renderTray();if(st.rows.length)render();};
+  $('#cmpCsv').onclick=()=>{
+    const H=[['출처','src'],['품명','n'],['규격','s'],['단위','u'],['단가','p'],['업체','co'],['공급지역','rg'],['인도조건','d'],['물품식별번호','id']];
+    const csv=[H.map(h=>h[0]).join(','),...cmp.map(x=>H.map(([,k])=>k==='src'?x.src:(x.r[k]??'')).map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(','))].join('\r\n');
+    const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'})); a.download='조달단가_비교.csv'; a.click();
+  };
+}
+$('#tabs').onclick=e=>{const b=e.target.closest('.tab'); if(!b)return; mode=b.dataset.t; localStorage.setItem('pps_dash_mode',mode); st.rows=[]; renderForm();};
+try{const t=parent!==window&&parent.document.documentElement.getAttribute('data-theme'); if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
+renderForm(); renderTray();
+(async()=>{
+  META=await getJSON('meta.json'); const k=$('#keystate');
+  if(META){const d=new Date(META.updated); k.textContent=`공공데이터포털 자동 연결 · ${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} 기준${META.sample?' (예시 자료)':''}`; k.className='keystate ok';}
+  else {k.textContent='자료 준비 중'; $('#out').innerHTML='<div class="msg">자료 파일이 아직 없어요. 깃허브 Actions에서 「조달청 가격정보」 수집이 한 번 실행되면 표시돼요.</div>';}
+})();
+})();
+</script>
+</body>
+</html>

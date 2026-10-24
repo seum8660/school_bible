@@ -13,13 +13,13 @@ async function page(url, params, no) {
   const full = `${url}?serviceKey=${encodeURIComponent(KEY)}&${q}`;
   for (let t = 0; t < 3; t++) {
     try {
-      const r = await fetch(full, { signal: AbortSignal.timeout(30000) });
+      const r = await fetch(full, { signal: AbortSignal.timeout(90000) });
       const j = JSON.parse(await r.text());
       const b = j?.response?.body;
       if (!b) throw new Error(JSON.stringify(j).slice(0, 200));
       let it = b.items; if (it && !Array.isArray(it)) it = it.item ?? it; if (it && !Array.isArray(it)) it = [it];
       return { items: it || [], total: Number(b.totalCount || 0) };
-    } catch (e) { console.log(`  재시도 ${t + 1}: ${e.message}`); await sleep(1500); }
+    } catch (e) { console.log(`  재시도 ${t + 1} (p${no}): ${e.message}`); await sleep(3000 * (t + 1)); }
   }
   return { items: [], total: -1 };
 }
@@ -29,7 +29,7 @@ async function all(url, params = {}) {
   const todo = []; for (let p = 2; p <= pages; p++) todo.push(p);
   let failed = false;
   const worker = async () => { while (todo.length) { const p = todo.shift(); const r = await page(url, params, p); if (r.total < 0) failed = true; res[p - 1] = r.items; } };
-  await Promise.all(Array.from({ length: 6 }, worker)); // 6개 동시 요청
+  await Promise.all(Array.from({ length: 4 }, worker)); // 4개 동시 요청
   const out = res.flat();
   console.log(`${url.split('/').pop()} ${params.inqryBgnDate || ''}: ${out.length} / ${first.total}`);
   return { rows: out, total: failed ? -1 : first.total };
@@ -107,6 +107,25 @@ const LF = { id: 'prdctIdntNo', n: 'prdctClsfcNoNm', dn: 'dtilPrdctClsfcNoNm', s
     meta.sets.mall = [...groups.values()].reduce((a, b) => a + b.length, 0); meta.sets.mall_cls = index.length; meta.sets.mall_corp = Object.keys(corpOut).length;
     console.log('쇼핑몰 수집', got, '→ 저장', meta.sets.mall, '품목 /', index.length, '분류');
   } else console.log('mall 실패 — 기존 파일 유지');
+}
+// 업체 본사 소재지 (사용자정보서비스, 별도 하루 1,000회) — 사업자번호별로 저장, 새 업체만 조회
+{
+  const { readFile, readdir } = await import('node:fs/promises');
+  let addr = {}; try { addr = JSON.parse(await readFile('pps_data/corp_addr.json', 'utf8')); } catch (e) {}
+  const names = {};
+  try { for (const f of await readdir('pps_data/mall')) for (const r of JSON.parse(await readFile('pps_data/mall/' + f, 'utf8'))) if (r.biz && /^\d{10}$/.test(String(r.biz).replace(/-/g, ''))) names[String(r.biz).replace(/-/g, '')] = r.co; } catch (e) {}
+  const todo = Object.keys(names).filter(b => !addr[b]);
+  console.log('업체 소재지: 보유', Object.keys(addr).length, '/ 새로 조회', todo.length);
+  let n = 0, stop = false; const LIMIT = Number(process.env.PPS_CORP_BUDGET || 900);
+  const worker = async () => { while (todo.length && n < LIMIT && !stop) { const b = todo.shift(); n++;
+    const r = await page(`${B}/ao/UsrInfoService02/getPrcrmntCorpBasicInfo02`, { inqryDiv: '3', bizno: b }, 1);
+    if (r.total < 0) { stop = true; break; }
+    const it = r.items[0]; addr[b] = it ? { n: names[b], r: it.rgnNm || '', a: [it.adrs, it.dtlAdrs].filter(Boolean).join(' ') } : { n: names[b], r: '' }; } };
+  await Promise.all(Array.from({ length: 4 }, worker));
+  for (const b of Object.keys(addr)) if (names[b]) addr[b].n = names[b];
+  await writeFile('pps_data/corp_addr.json', JSON.stringify(addr));
+  meta.sets.corp_addr = Object.keys(addr).length; meta.sets.corp_total = Object.keys(names).length;
+  console.log('업체 소재지 저장', meta.sets.corp_addr, '/', meta.sets.corp_total, stop ? '(한도 — 다음 실행에서 계속)' : '');
 }
 await writeFile('pps_data/meta.json', JSON.stringify(meta));
 console.log(meta);

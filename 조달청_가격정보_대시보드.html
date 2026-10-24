@@ -68,6 +68,24 @@ td.sm{font-size:13px;color:var(--ink2)}
 .hint b{color:var(--accent-d)}
 mark{background:var(--soft2);color:inherit;padding:0 1px;border-radius:2px}
 .note{font-size:13px;color:var(--muted)}
+.dash{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.dash h3{margin:0;font-size:17px;font-weight:700}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;grid-column:1/-1}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--rad);padding:16px 20px;display:flex;flex-direction:column;gap:4px}
+.kpi span{font-size:13px;color:var(--ink2);font-weight:700}
+.kpi b{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.3}
+.bars{display:flex;flex-direction:column;gap:8px}
+.brow{display:grid;grid-template-columns:minmax(0,9em) minmax(0,1fr) auto;gap:10px;align-items:center;font-size:14px;border:0;background:none;padding:2px 4px;text-align:left;width:100%;color:var(--ink)}
+.brow.click{cursor:pointer;border-radius:4px}.brow.click:hover{background:var(--soft)}
+.brow .lb{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brow .tr{height:12px;background:var(--s3);border-radius:6px;overflow:hidden;display:block}
+.brow .fl{height:100%;background:var(--accent);border-radius:6px;display:block}
+.brow .vl{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap;font-size:13px;color:var(--ink2)}
+.hist{display:flex;align-items:flex-end;gap:4px;height:140px;padding-top:8px}
+.hist div{flex:1;background:var(--accent);border-radius:4px 4px 0 0;min-height:2px}
+.hax{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.dsec{display:flex;flex-direction:column;gap:12px}
+.dhead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 @media(max-width:640px){.fld.wide{grid-column:auto}.wrap{padding:16px}}
 </style>
 </head>
@@ -86,6 +104,7 @@ mark{background:var(--soft2);color:inherit;padding:0 1px;border-radius:2px}
   <div class="meta" id="meta"></div>
   <div id="out"></div>
   <div class="pg" id="pg"></div>
+  <div id="dash"></div>
   <div class="tray" id="tray" style="display:none"></div>
 </div>
 
@@ -115,7 +134,7 @@ const REGIONS=[
 const RG={}; REGIONS.forEach(([n,a,s])=>RG[n]={alias:[n,...a],sgg:s?s.split(' '):[]});
 const COLS={
   mtrl:[['n','품명'],['s','규격'],['u','단위'],['p','가격',1],['set','분야'],['d','인도조건'],['t','게시일']],
-  mall:[['n','품명'],['s','규격'],['u','단위'],['p','계약단가',1],['co','업체'],['rg','공급지역'],['ex','우수제품']]
+  mall:[['n','품명'],['s','규격'],['u','단위'],['p','계약단가',1],['co','업체'],['loc','본사 소재지'],['rg','공급지역'],['ex','우수제품']]
 };
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -163,22 +182,21 @@ function renderForm(){
   let h=`<div class="fld wide"><label>품명·규격 검색</label><input name="q" placeholder="${mode==='mtrl'?'예: 강화유리 8mm, 거푸집, 복공판':'예: 책상, 칸막이, 영상감시'}" value="${esc(sv.q||'')}"></div>`;
   if(mode==='mtrl') h+=`<div class="fld"><label>분야</label><select name="set"><option value="">전체</option>${MTRL_SETS.map(([k,l])=>`<option value="${k}"${sv.set===k?' selected':''}>${l}</option>`).join('')}</select></div>`;
   else h+=`<div class="fld"><label>업체명</label><input name="co" value="${esc(sv.co||'')}"></div>
-    <div class="fld"><label>공급지역 시도</label><select name="sido"><option value="">전국</option>${REGIONS.map(r=>`<option${sv.sido===r[0]?' selected':''}>${r[0]}</option>`).join('')}</select></div>
-    <div class="fld"><label>시군구</label><select name="sgg"${sv.sido&&RG[sv.sido]?.sgg.length?'':' disabled'}>${sggOpts(sv.sido,sv.sgg)}</select></div>
-    <label class="chk"><input type="checkbox" name="all"${sv.all!==false?' checked':''}>전지역 공급 포함</label>
+    <div class="fld"><label>본사 소재지 시도</label><select name="hsido"><option value="">전국</option>${REGIONS.map(r=>`<option${sv.hsido===r[0]?' selected':''}>${r[0]}</option>`).join('')}</select></div>
+    <div class="fld"><label>본사 시군구</label><select name="hsgg"${sv.hsido&&RG[sv.hsido]?.sgg.length?'':' disabled'}>${sggOpts(sv.hsido,sv.hsgg)}</select></div>
     <label class="chk"><input type="checkbox" name="exc"${sv.exc?' checked':''}>우수제품만</label>`;
   h+=`<div class="fld"><button class="btn pri" id="go" type="submit">조회</button></div>`;
   const f=$('#qform'); f.innerHTML=h;
-  const sd=f.querySelector('[name=sido]'), sg=f.querySelector('[name=sgg]');
-  if(sd) sd.onchange=()=>{sg.innerHTML=sggOpts(sd.value,''); sg.disabled=!(sd.value&&RG[sd.value].sgg.length);};
+  [['sido','sgg'],['hsido','hsgg']].forEach(([a,b])=>{const sd=f.querySelector(`[name=${a}]`), sg=f.querySelector(`[name=${b}]`);
+    if(sd) sd.onchange=()=>{sg.innerHTML=sggOpts(sd.value,''); sg.disabled=!(sd.value&&RG[sd.value].sgg.length);};});
   f.onsubmit=e=>{e.preventDefault(); st.page=1; run(); return false;};
-  $('#out').innerHTML=''; $('#meta').innerHTML=''; $('#pg').innerHTML='';
+  $('#out').innerHTML=''; $('#meta').innerHTML=''; $('#pg').innerHTML=''; $('#dash').innerHTML='';
 }
 function formVals(){const o={}; new FormData($('#qform')).forEach((v,k)=>o[k]=v); $('#qform').querySelectorAll('input[type=checkbox]').forEach(c=>o[c.name]=c.checked); return o;}
 
 async function run(){
   const q=formVals(); localStorage.setItem('pps_dash_q2_'+mode,JSON.stringify(q));
-  $('#out').innerHTML='<div class="msg">찾는 중…</div>';
+  $('#out').innerHTML='<div class="msg">찾는 중…</div>'; $('#dash').innerHTML='';
   let rows=[];
   if(mode==='mtrl'){
     const sets=q.set?MTRL_SETS.filter(s=>s[0]===q.set):MTRL_SETS;
@@ -187,10 +205,14 @@ async function run(){
     st.empty=empty;
   } else {
     const term0=(q.q||'').trim(), co0=(q.co||'').trim();
-    if(!term0&&!co0){$('#out').innerHTML='<div class="msg">품명이나 업체명을 입력해 주세요. 쇼핑몰은 품목이 많아 분류별로 나눠 불러와요.</div>';$('#meta').innerHTML='';$('#pg').innerHTML='';return;}
+    if(!term0&&!co0&&!q.hsido){$('#out').innerHTML='<div class="msg">품명이나 업체명을 입력해 주세요. 쇼핑몰은 품목이 많아 분류별로 나눠 불러와요.</div>';$('#meta').innerHTML='';$('#pg').innerHTML='';return;}
     const idx=DATA.mall_index!==undefined?DATA.mall_index:(DATA.mall_index=await getJSON('mall_index.json')||[]);
     const cix=DATA.mall_corp!==undefined?DATA.mall_corp:(DATA.mall_corp=await getJSON('mall_corp.json')||{});
     const w0=term0.split(/[\s,·]+/).map(norm).filter(Boolean);
+    const adr=DATA.corp_addr!==undefined?DATA.corp_addr:(DATA.corp_addr=await getJSON('corp_addr.json')||{});
+    const hm=a=>{ if(!q.hsido) return true; if(!a||!a.r) return false; if(!RG[q.hsido].alias.some(x=>a.r.startsWith(x))) return false; return !q.hsgg||a.r.includes(q.hsgg); };
+    const nA=Object.keys(adr).length, nC=Object.keys(cix).length;
+    st.addrNote=q.hsido&&nA<nC*0.95?`업체 소재지는 수집 중이에요 (${fmt(nA)} / ${fmt(nC)}곳). 아직 못 받은 업체는 소재지 검색에서 빠져요.`:'';
     let cls=[]; st.mallAlt=false; st.corpHit=[];
     if(term0){
       const sc=idx.map(i=>({c:i.c,s:score({n:i.n,s:i.cat},term0,w0)})).sort((a,b)=>b.s-a.s);
@@ -205,17 +227,14 @@ async function run(){
       cls=term0?cls.filter(c=>fromCorp.includes(c)).concat(cls.length?[]:fromCorp):fromCorp;
       if(term0&&!cls.length) cls=fromCorp;
     }
-    st.co=co0;
-    const parts=await Promise.all([...new Set(cls)].slice(0,40).map(c=>getJSON('mall/'+c+'.json')));
+    if(!term0&&!co0&&q.hsido){ const nm=new Set(Object.values(adr).filter(hm).map(a=>a.n)); st.corpHit=[...nm].filter(k=>cix[k]); cls=[...new Set(st.corpHit.flatMap(k=>cix[k]))]; }
+    st.co=co0||(q.hsido&&!term0?q.hsido+(q.hsgg?' '+q.hsgg:''):'');
+    const parts=await Promise.all([...new Set(cls)].slice(0,80).map(c=>getJSON('mall/'+c+'.json')));
     rows=parts.flat().filter(Boolean);
-    if(co0){const hs=new Set(st.corpHit); rows=rows.filter(r=>hs.has(r.co));}
+    if(co0||(!term0&&q.hsido)){const hs=new Set(st.corpHit); rows=rows.filter(r=>hs.has(r.co));}
+    rows.forEach(r=>{const a=adr[String(r.biz||'').replace(/-/g,'')]; r.loc=a&&a.r?a.r:'';});
+    if(q.hsido) rows=rows.filter(r=>hm(adr[String(r.biz||'').replace(/-/g,'')]));
     if(q.exc) rows=rows.filter(r=>r.ex==='Y');
-    if(q.sido){
-      const a=RG[q.sido].alias;
-      rows=rows.filter(r=>{const t=r.rg||''; const any=/전지역|전국/.test(t);
-        if(any) return q.all && !(q.sido==='제주특별자치도'&&/제주[^)]*제외|제주,|제주 제외/.test(t)) ;
-        if(!a.some(x=>t.includes(x))) return false; return !q.sgg||t.includes(q.sgg);});
-    }
   }
   if(!rows.length&&mode==='mtrl'&&!Object.values(DATA).some(d=>d&&d.length)){$('#out').innerHTML='<div class="msg err">자료 파일이 아직 없어요. 깃허브 Actions에서 「조달청 가격정보」 수집이 한 번 실행되면 표시돼요.</div>';$('#meta').innerHTML='';return;}
   const term=(q.q||'').trim(); st.term=term; st.alt='';
@@ -229,7 +248,7 @@ async function run(){
     if(mode==='mall'&&st.mallAlt) st.alt='same';
     rows=out.sort((a,b)=>b.__s-a.__s||(num(a.p)-num(b.p)));
   } else rows.sort((a,b)=>String(a.n).localeCompare(String(b.n),'ko')||(num(a.p)-num(b.p)));
-  st.words=words; st.rows=rows; st.sortK=null; st.region=mode==='mall'&&q.sido?(q.sido+(q.sgg?' '+q.sgg:'')):'';
+  st.words=words; st.rows=rows; st.sortK=null; st.region=mode==='mall'?(q.hsido?'본사 '+q.hsido+(q.hsgg?' '+q.hsgg:''):''):'';
   render();
 }
 function rowId(r){return (r.set||mode)+'|'+(r.id||'')+'|'+(r.s||'')+'|'+(r.co||'');}
@@ -239,7 +258,7 @@ function render(){
   const pages=Math.max(1,Math.ceil(rows.length/st.size)); if(st.page>pages) st.page=pages;
   const view=rows.slice((st.page-1)*st.size, st.page*st.size);
   const alt=st.alt?`<div class="hint">‘${esc(st.term)}’와 이름이 같은 항목은 없어요. <b>비슷한 품명</b>을 가까운 순으로 보여드려요.</div>`:'';
-  const emp=mode==='mtrl'&&st.empty&&st.empty.length?`<div class="hint">${esc(st.empty.join('·'))} 분야 자료는 아직 수집되지 않았어요. 자동 수집 후 표시돼요.</div>`:'';
+  const emp=mode==='mtrl'&&st.empty&&st.empty.length?`<div class="hint">${esc(st.empty.join('·'))} 분야 자료는 아직 수집되지 않았어요. 자동 수집 후 표시돼요.</div>`:(mode==='mall'&&st.addrNote?`<div class="hint">${st.addrNote}</div>`:'');
   const smp=META&&META.sample?`<div class="hint">지금은 <b>예시 자료</b>만 들어 있어요. 깃허브 자동 수집이 끝나면 전체 자료(약 4만 건)로 바뀌어요.</div>`:(mode==='mall'&&META&&!META.mallBackfillDone?`<div class="hint">쇼핑몰 자료는 최근 등록분부터 거꾸로 채우는 중이에요${META.mallBackfill?` (현재 ${META.mallBackfill.slice(0,4)}.${META.mallBackfill.slice(4,6)}까지)`:''}. 오래전에 등록된 업체·품목은 며칠 안에 채워져요.</div>`:'');
   $('#meta').innerHTML=`${smp}${emp}${alt}<span>검색 결과 <b>${fmt(rows.length)}</b>건</span>${st.region?`<span class="tag">${esc(st.region)}</span>`:''}<span class="note">행을 체크하면 아래 비교함에 담겨요</span>`;
   if(!rows.length){$('#meta').innerHTML=smp+emp+'<span>검색 결과 <b>0</b>건</span>';$('#out').innerHTML=mode==='mall'&&st.co&&!(st.corpHit||[]).length?`<div class="msg">‘${esc(st.co)}’ 업체는 아직 수집된 자료에 없어요. 쇼핑몰 자료를 과거 순으로 채우는 중이라 며칠 뒤 다시 찾아보세요.</div>`:'<div class="msg">찾는 품명이 없어요. 낱말을 짧게 바꿔 보세요.</div>';$('#pg').innerHTML='';return;}
@@ -249,7 +268,7 @@ function render(){
       if(k==='n'||k==='s') return `<td>${hl(r[k],w)}</td>`;
       if(k==='ex') return `<td>${r.ex==='Y'?'<span class="tag">우수</span>':''}</td>`;
       if(k==='t') return `<td class="sm">${esc(String(r.t||'').slice(0,10))}</td>`;
-      return `<td${k==='rg'||k==='d'?' class="sm"':''}>${esc(r[k])}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`;
+      return `<td${k==='rg'||k==='d'||k==='loc'?' class="sm"':''}>${esc(r[k])}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`;
   st.viewRows=rows;
   $('#out').querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{const k=th.dataset.k; st.sortD=st.sortK===k?-st.sortD:1; st.sortK=k; render();});
   $('#out').querySelectorAll('input[data-i]').forEach(cb=>cb.onchange=()=>{const r=st.viewRows[cb.dataset.i]; const id=rowId(r);
@@ -257,6 +276,42 @@ function render(){
     saveCmp(); renderTray();});
   $('#pg').innerHTML=pages>1?`<button class="btn" id="pv"${st.page<=1?' disabled':''}>이전</button><span class="note">${st.page} / ${fmt(pages)}</span><button class="btn" id="nx"${st.page>=pages?' disabled':''}>다음</button>`:'';
   const pv=$('#pv'),nx=$('#nx'); if(pv)pv.onclick=()=>{st.page--;render();}; if(nx)nx.onclick=()=>{st.page++;render();};
+  renderDash(rows);
+}
+function renderDash(rows){
+  const d=$('#dash'); if(!rows||!rows.length){d.innerHTML='';return;}
+  const cnt=f=>{const m=new Map(); rows.forEach(r=>{const k=f(r); if(k) m.set(k,(m.get(k)||0)+1);}); return [...m.entries()].sort((a,b)=>b[1]-a[1]);};
+  const bars=(list,opt={})=>{const top=list.slice(0,opt.n||8), mx=top.length?top[0][1]:1;
+    return `<div class="bars">${top.map(([k,v])=>`<button class="brow${opt.f?' click':''}" ${opt.f?`data-f="${opt.f}" data-v="${esc(k)}" title="눌러서 검색에 적용"`:'disabled'}><span class="lb">${esc(k)}</span><span class="tr"><span class="fl" style="width:${Math.max(2,v/mx*100)}%"></span></span><span class="vl">${fmt(v)}건</span></button>`).join('')}</div>`;};
+  const card=(t,body,sub='')=>`<div class="card dsec"><div class="dhead"><h3>${t}</h3>${sub?`<span class="note">${sub}</span>`:''}</div>${body}</div>`;
+  const ps=rows.map(r=>num(r.p)).filter(v=>v!=null&&v>0).sort((a,b)=>a-b);
+  const units=cnt(r=>r.u);
+  const med=ps.length?ps[Math.floor(ps.length/2)]:null, avg=ps.length?Math.round(ps.reduce((a,b)=>a+b,0)/ps.length):null;
+  let h=`<div class="kpis">${[['검색 결과',fmt(rows.length)+'건'],['최저 단가',fmt(ps[0])],['중앙값',fmt(med)],['평균',fmt(avg)],['최고 단가',fmt(ps[ps.length-1])]].map(([a,b])=>`<div class="kpi"><span>${a}</span><b>${b||'-'}</b></div>`).join('')}</div>`;
+  if(ps.length>2){
+    const lo=ps[0], hi=ps[ps.length-1], lg=hi/lo>50, B=12;
+    const tf=v=>lg?Math.log10(v):v, a=tf(lo), z=tf(hi), w=(z-a)/B||1, bins=Array(B).fill(0);
+    ps.forEach(v=>bins[Math.min(B-1,Math.floor((tf(v)-a)/w))]++); const mx=Math.max(...bins);
+    h+=card('단가 분포',`<div class="hist">${bins.map(b=>`<div style="height:${b/mx*100}%" title="${fmt(b)}건"></div>`).join('')}</div><div class="hax"><span>${fmt(lo)}</span><span>${fmt(Math.round(lg?Math.sqrt(lo*hi):(lo+hi)/2))}</span><span>${fmt(hi)}</span></div>`,(lg?'로그 눈금 · ':'')+(units.length>1?`단위 ${units.length}종 섞임`:`단위 ${esc(units[0]?.[0]||'')}`));
+  }
+  if(mode==='mall'){
+    h+=card('업체별 품목 수',bars(cnt(r=>r.co),{f:'co'}),'누르면 업체로 검색');
+    const loc=cnt(r=>{const s=r.loc||''; const g=REGIONS.find(([n,al])=>[n,...al].some(x=>s.startsWith(x))); return g?g[0]:(s?'기타':'');});
+    h+=card('본사 소재지',loc.length?bars(loc,{f:'hsido',n:10}):'<div class="note">업체 소재지 자료가 아직 없어요.</div>','누르면 소재지로 검색');
+    h+=card('품명별',bars(cnt(r=>r.n)));
+    const ex=rows.filter(r=>r.ex==='Y').length, any=rows.filter(r=>/전지역|전국/.test(r.rg||'')).length;
+    h+=card('우수제품·공급범위',bars([['우수제품',ex],['일반',rows.length-ex],['전지역 공급',any],['일부 지역 공급',rows.length-any]].filter(x=>x[1]>0)),`우수제품 ${(ex/rows.length*100).toFixed(1)}%`);
+  } else {
+    h+=card('분야별',bars(cnt(r=>r.set),{f:'set'}),'누르면 분야로 검색');
+    h+=card('품명별',bars(cnt(r=>r.n),{n:10}));
+    h+=card('단위별',bars(units,{n:6}));
+  }
+  d.innerHTML=`<div class="dash">${h}</div>`;
+  d.querySelectorAll('.brow.click').forEach(b=>b.onclick=()=>{const f=$('#qform'), k=b.dataset.f, v=b.dataset.v;
+    if(k==='set'){const s=MTRL_SETS.find(x=>x[1]===v); f.querySelector('[name=set]').value=s?s[0]:'';}
+    else if(k==='hsido'){ if(!RG[v]) return; const sd=f.querySelector('[name=hsido]'); sd.value=v; sd.onchange&&sd.onchange(); }
+    else { const el=f.querySelector(`[name=${k}]`); if(el) el.value=v; }
+    st.page=1; run(); window.scrollTo({top:0,behavior:'smooth'});});
 }
 function saveCmp(){localStorage.setItem(LSC,JSON.stringify(cmp));}
 function renderTray(){

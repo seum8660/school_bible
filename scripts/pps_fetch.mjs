@@ -6,7 +6,9 @@ const B = 'https://apis.data.go.kr/1230000';
 const ROWS = 999;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+let CALLS = 0; const BUDGET = Number(process.env.PPS_BUDGET || 850); // 개발계정 하루 1,000회 한도 안에서
 async function page(url, params, no) {
+  CALLS++;
   const q = new URLSearchParams({ ...params, pageNo: String(no), numOfRows: String(ROWS), type: 'json' });
   const full = `${url}?serviceKey=${encodeURIComponent(KEY)}&${q}`;
   for (let t = 0; t < 3; t++) {
@@ -25,11 +27,12 @@ async function all(url, params = {}) {
   const first = await page(url, params, 1);
   const pages = Math.ceil(first.total / ROWS); const res = [first.items];
   const todo = []; for (let p = 2; p <= pages; p++) todo.push(p);
-  const worker = async () => { while (todo.length) { const p = todo.shift(); res[p - 1] = (await page(url, params, p)).items; } };
+  let failed = false;
+  const worker = async () => { while (todo.length) { const p = todo.shift(); const r = await page(url, params, p); if (r.total < 0) failed = true; res[p - 1] = r.items; } };
   await Promise.all(Array.from({ length: 6 }, worker)); // 6개 동시 요청
   const out = res.flat();
   console.log(`${url.split('/').pop()} ${params.inqryBgnDate || ''}: ${out.length} / ${first.total}`);
-  return { rows: out, total: first.total };
+  return { rows: out, total: failed ? -1 : first.total };
 }
 const pick = (r, map) => { const o = {}; for (const [k, src] of Object.entries(map)) { const v = r[src]; if (v !== '' && v != null) o[k] = v; } return o; };
 
@@ -61,7 +64,7 @@ const LF = { id: 'prdctIdntNo', n: 'prdctClsfcNoNm', dn: 'dtilPrdctClsfcNoNm', s
   const now = new Date(Date.now() + 9 * 3600e3); const today = ymd(now);
   const byId = new Map();
   await mkdir('pps_data/mall', { recursive: true });
-  try { for (const f of await readdir('pps_data/mall')) { if (!/^\d+\.json$/.test(f)) continue; for (const r of JSON.parse(await readFile('pps_data/mall/' + f, 'utf8'))) byId.set(r.id + '|' + (r.biz || r.co || ''), r); } } catch (e) {}
+  try { for (const f of await readdir('pps_data/mall')) { if (!/^(\d+|etc)\.json$/.test(f)) continue; for (const r of JSON.parse(await readFile('pps_data/mall/' + f, 'utf8'))) { if (!r.c) r.c = f.replace('.json', ''); byId.set(r.id + '|' + (r.biz || r.co || ''), r); } } } catch (e) {}
   console.log('기존 쇼핑몰 품목', byId.size);
   // 처음(또는 자료가 적을 때)만 30일, 평소에는 최근 3일만 받아 합침
   const DAYS = Number(process.env.PPS_MALL_DAYS || (byId.size > 20000 ? 3 : 30));
@@ -77,16 +80,16 @@ const LF = { id: 'prdctIdntNo', n: 'prdctClsfcNoNm', dn: 'dtilPrdctClsfcNoNm', s
   const floor = new Date(now - 3 * 365 * 864e5);
   let cursor = prev.mallBackfill ? parse(prev.mallBackfill) : new Date(now - 30 * 864e5);
   const MONTHS = Number(process.env.PPS_BACKFILL_MONTHS || 6);
-  for (let i = 0; i < MONTHS && cursor > floor; i++) {
+  for (let i = 0; i < MONTHS && cursor > floor && CALLS < BUDGET - 200; i++) {
     const end = new Date(cursor - 864e5), bgn = new Date(Math.max(end - 29 * 864e5, floor));
     const { rows, total } = await all(`${B}/at/ShoppingMallPrdctInfoService/getShoppingMallPrdctInfoList`, { inqryDiv: '1', inqryBgnDate: ymd(bgn), inqryEndDate: ymd(end) });
-    if (total < 0) break;
+    if (total < 0) { for (const r of rows) { const o = pick(r, LF); const k = o.id + '|' + (o.biz || o.co || ''); if (!byId.has(k)) byId.set(k, o); } console.log('호출 실패(하루 한도 초과 가능) — 다음 실행에서 이어서'); break; }
     ok = true;
     for (const r of rows) { const o = pick(r, LF); const k = o.id + '|' + (o.biz || o.co || ''); const old = byId.get(k); if (!old || String(o.rd || '') >= String(old.rd || '')) byId.set(k, o); got++; }
     cursor = bgn;
   }
   meta.mallBackfill = ymd(cursor); meta.mallBackfillDone = cursor <= floor;
-  console.log('과거 자료 채운 날짜', meta.mallBackfill, meta.mallBackfillDone ? '(완료)' : '(다음 실행에서 계속)');
+  console.log('과거 자료 채운 날짜', meta.mallBackfill, meta.mallBackfillDone ? '(완료)' : '(다음 실행에서 계속)', '· 오늘 호출', CALLS);
   if (ok && byId.size) {
     const groups = new Map();
     for (const r of byId.values()) { if (r.end && r.end < today) continue; const c = r.c || 'etc'; if (!groups.has(c)) groups.set(c, []); groups.get(c).push(r); }

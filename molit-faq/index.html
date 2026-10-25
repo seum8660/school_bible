@@ -267,7 +267,9 @@ const isEp   = d => String(d.no).startsWith("E");
 const srcOf  = d => isEp(d) ? EP_NAME : SOURCE_NAME;
 const dateOf = d => isEp(d) ? EP_FETCHED : FETCHED_AT;
 const HISTORY_KEY = "molitqa:history";
-const TOP_K = 8;
+const TOP_K = 500;     // 저장해 두는 최대 결과 수
+const PAGE  = 20;      // 한 번에 보여 주는 결과 수
+let LAST_TOTAL = 0;
 
 let DOCS = [], BYNO = new Map(), OPINIONS = [], history = [], current = null, openDoc = null;
 let CATS = [], selected = new Set(), fmore = false;   // selected 가 비어 있으면 전체
@@ -355,6 +357,7 @@ function searchDocs(query){
   // 점수가 같으면 최근 회신을 먼저 보여 준다 (회신일자 YYYY.MM.DD 문자열 비교)
   const dk = d => String(d.date||"").replace(/[^0-9]/g,"").padEnd(8,"0");
   out.sort((a,b)=> (b.s-a.s) || (dk(b.d) < dk(a.d) ? -1 : dk(b.d) > dk(a.d) ? 1 : 0));
+  LAST_TOTAL = out.length;
   return out.slice(0,TOP_K).map(x=>x.d);
 }
 
@@ -389,7 +392,7 @@ function run(text){
   current={
     id:"q"+Date.now()+Math.random().toString(36).slice(2,6),
     query, at:Date.now(),
-    hits:hits.map(d=>d.no),
+    hits:hits.map(d=>d.no), total:LAST_TOTAL,
     themeId:theme?theme.id:null,
     cats:[...selected],
     note:hits.length?"":(selected.size
@@ -482,7 +485,9 @@ function render(){
     return;
   }
 
-  const hits=(current.hits||[]).map(n=>BYNO.get(n)).filter(Boolean);
+  const allHits=(current.hits||[]).map(n=>BYNO.get(n)).filter(Boolean);
+  const shown=Math.min(current.shown||PAGE, allHits.length);
+  const hits=allHits.slice(0,shown);
   const theme=current.themeId?OPINIONS.find(t=>t.id===current.themeId):null;
   const refs=theme?(theme.refs||[]).map(n=>BYNO.get(n)).filter(Boolean):[];
 
@@ -490,7 +495,9 @@ function render(){
   if(current.note) html+='<div class="note">'+esc(current.note)+"</div>";
 
   if(hits.length){
-    html+='<p class="count">검색어와 맞는 회신 '+hits.length+"건입니다.</p><div class=\"results\">";
+    html+='<p class="count">검색어와 맞는 회신 '+(current.total||allHits.length).toLocaleString()+"건"+
+      "입니다. 점수 높은 순(같으면 최근 회신 먼저)으로 "+shown+"건을 보여 드립니다"+
+      ((current.total||0)>TOP_K?" (상위 "+TOP_K+"건까지 넘겨 볼 수 있으니 검색어를 더 구체적으로 적어 보십시오)":"")+".</p><div class=\"results\">";
     for(const d of hits){
       html+='<div class="rescard'+(openDoc===d.no?" on":"")+'">'+
         '<div class="resline"><span class="badge">'+(isEp(d)?"국민신문고 #":"질의회신 #")+esc(d.no)+'</span>'+
@@ -503,6 +510,8 @@ function render(){
         '<button class="more" data-no="'+esc(d.no)+'">옆에서 크게 보기</button></div>';
     }
     html+="</div>";
+    if(shown<allHits.length) html+='<button class="more" data-page="1" style="display:block;margin:14px auto 0;padding:9px 22px">'+
+      '결과 더 보기 ('+shown+' / '+allHits.length.toLocaleString()+')</button>';
   }
 
   if(theme){
@@ -589,6 +598,8 @@ document.addEventListener("click",e=>{
     else render();
     return;
   }
+  const pg=e.target.closest("[data-page]");
+  if(pg&&current){ current.shown=(current.shown||PAGE)+PAGE; saveHistory(); render(); return; }
   const rn=e.target.closest("[data-run]");
   if(rn){ run(rn.dataset.run); return; }
   const no=e.target.closest("[data-no]");

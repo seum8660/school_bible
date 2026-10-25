@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>질의회신 검색 · 국토교통부 자주찾는민원 · 국민신문고</title>
-<meta name="description" content="국토교통부 자주찾는민원 질의회신 11,821건과 국민신문고 설계변경 답변원문 429건을 검색하고 원문을 확인합니다.">
+<meta name="description" content="국토교통부 자주찾는민원 질의회신 11,821건과 국민신문고 공사계약·시설 분야 답변원문 3,225건을 검색하고 원문을 확인합니다.">
 <link rel="stylesheet" as="style" crossorigin
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -222,7 +222,7 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #2
 </head>
 <body>
 
-<div id="boot"><b>회신 자료를 여는 중입니다</b><span id="bootmsg">1만2천여 건을 불러옵니다. 잠시만 기다려 주십시오.</span></div>
+<div id="boot"><b>회신 자료를 여는 중입니다</b><span id="bootmsg">1만5천여 건을 불러옵니다. 잠시만 기다려 주십시오.</span></div>
 
 <aside id="side">
   <div class="brand"><b>질의회신 검색</b><span id="brandsub"></span></div>
@@ -259,7 +259,7 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #2
 <script>
 const SOURCE_NAME = "국토교통부 자주찾는민원";
 const FETCHED_AT  = "2026. 9. 14.";
-// 추가 출처: 국민신문고 민원 질의응답·답변원문 (제목 '설계변경' 회신) — 번호 앞에 E
+// 추가 출처: 국민신문고 민원 질의응답·답변원문 (설계변경 등 공사계약·시설 분야 38개 키워드 제목 검색 회신) — 번호 앞에 E
 const EP_NAME     = "국민신문고 답변원문";
 const EP_FETCHED  = "2026. 10. 25.";
 const EP_CAT      = "국민신문고";
@@ -454,10 +454,10 @@ function render(){
   document.getElementById("sidefoot").innerHTML=
     "회신 "+DOCS.length.toLocaleString()+"건 · 정리된 주제 "+OPINIONS.length+"개"+
     '<div class="srcnote">자료 출처 '+SOURCE_NAME+" (조회 "+FETCHED_AT+")"+
-    (EPN?"<br>"+EP_NAME+" 설계변경 "+EPN.toLocaleString()+"건 (조회 "+EP_FETCHED+")":"")+"</div>";
+    (EPN?"<br>"+EP_NAME+" 공사계약·시설 "+EPN.toLocaleString()+"건 (조회 "+EP_FETCHED+")":"")+"</div>";
   document.getElementById("disc").textContent=
     SOURCE_NAME+"에 공개된 회신을 "+FETCHED_AT+" 기준으로"+
-    (EPN?", "+EP_NAME+" 중 제목에 '설계변경'이 들어간 회신을 "+EP_FETCHED+" 기준으로":"")+" 내려받아 원문 그대로 수록한 것입니다. "+
+    (EPN?", "+EP_NAME+" 중 설계변경·물가변동·하도급 등 공사계약·시설 분야 회신을 "+EP_FETCHED+" 기준으로":"")+" 내려받아 원문 그대로 수록한 것입니다. "+
     "질의회신은 개별 사안에 대한 행정 회신으로 법적 구속력이 있는 유권해석이 아니며, 조회일자 이후 변경된 "+
     "내용은 반영되어 있지 않습니다. 최종 판단은 원문과 소관 부서 확인을 거쳐 주십시오.";
 
@@ -474,7 +474,7 @@ function render(){
   if(!current){
     c.innerHTML='<div class="intro"><h2>어떤 회신을 찾으십니까</h2><p>'+
       SOURCE_NAME+"에 공개된 회신 "+(DOCS.length-EPN).toLocaleString()+"건("+FETCHED_AT+" 기준)"+
-      (EPN?"과 "+EP_NAME+"의 설계변경 회신 "+EPN.toLocaleString()+"건("+EP_FETCHED+" 기준)":"")+
+      (EPN?"과 "+EP_NAME+"의 공사계약·시설 분야 회신 "+EPN.toLocaleString()+"건("+EP_FETCHED+" 기준)":"")+
       "을 수록했습니다. 국민신문고 자료만 보시려면 아래 분야에서 '"+EP_CAT+"'를 고르십시오. 찾으시는 내용을 적으시면 제목과 본문에서 회신을 찾아 원문 그대로 보여 드립니다. "+
       "아래 주제에 해당하면 미리 정리해 둔 질의답변 의견이 함께 붙습니다.</p><div class=\"tags\">"+
       OPINIONS.map(t=>'<button class="tag" data-run="'+esc(t.keywords[0])+'">'+esc(t.title)+"</button>").join("")+

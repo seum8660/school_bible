@@ -4511,7 +4511,7 @@ document.getElementById('law-q').addEventListener('input',e=>renderLaws(e.target
 renderProc('all'); renderCheck('design'); renderLaws('');
 
 // ================= 전체 키워드 검색 =================
-const TABLABEL={plan:'제1장 기획',design:'제2장 설계',const:'제3장 시공',cm:'제4장 건설사업관리',comp:'제5장 준공',safety:'교육시설안전',cert:'인증',proc:'실무 절차',law:'법령',deleg:'위임전결',calc:'판정기',manual:'각종 매뉴얼'};
+const TABLABEL={plan:'제1장 기획',design:'제2장 설계',const:'제3장 시공',cm:'제4장 건설사업관리',comp:'제5장 준공',safety:'교육시설안전',cert:'인증',proc:'실무 절차',law:'법령',deleg:'위임전결',calc:'판정기',manual:'각종 매뉴얼',faq:'질의회신'};
 const SEARCH_INDEX=[];
 // 제도 아코디언 항목
 Object.keys(DATA).forEach(pk=>{
@@ -4643,6 +4643,9 @@ function runGlobalSearch(){
   const q=gq.value.trim().replace(/^#+/,'').toLowerCase();
   if(q.length<1){gres.classList.remove('show');gres.innerHTML='';return;}
   const hits=SEARCH_INDEX.filter(x=>x.text.toLowerCase().includes(q)).slice(0,20);
+  // 질의회신 검색(국토부 자주찾는민원 · 국민신문고 답변원문)으로 같은 검색어를 넘겨 주는 항목
+  const raw=gq.value.trim().replace(/^#+/,'');
+  if(raw.length>=2) hits.push({label:'질의회신에서 「'+raw+'」 찾기',sub:'국토부 자주찾는민원 · 국민신문고 답변원문 (새 창)',tab:'faq',kind:'faq',url:'molit-faq/index.html?q='+encodeURIComponent(raw)});
   if(!hits.length){gres.innerHTML='<div class="gres-empty">검색 결과가 없습니다.</div>';gres.classList.add('show');return;}
   gres.innerHTML='<div class="gres-head">검색 결과 '+hits.length+'건 — 클릭하면 해당 항목으로 이동</div>'+
     hits.map((h,idx)=>`<div class="gres-item" data-idx="${idx}"><span class="gk">${esc(TABLABEL[h.tab]||'').replace(/제\\d+장 /,'')}</span><div class="gt"><div class="gl">${ghl(h.label,q)}</div><div class="gs">${esc(h.sub||'')}</div></div></div>`).join('');
@@ -4650,7 +4653,7 @@ function runGlobalSearch(){
   gres._hits=hits;
 }
 function gotoResult(h){
-  if(h.kind==='wf'){gres.classList.remove('show');window.open(h.url,'_blank');return;}
+  if(h.kind==='wf'||h.kind==='faq'){gres.classList.remove('show');window.open(h.url,'_blank');return;}
   activate(h.tab);
   gres.classList.remove('show');
   setTimeout(()=>{

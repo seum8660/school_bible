@@ -323,6 +323,8 @@ async function boot(){
     history = loadHistory();
     document.getElementById("boot").style.display="none";
     render();
+    // 치트키 전체 검색에서 넘어온 검색어(?q=)가 있으면 바로 찾는다
+    try{ const pq=new URLSearchParams(location.search).get("q"); if(pq&&pq.trim()) run(pq.trim()); }catch(e){}
   }catch(e){
     document.getElementById("boot").innerHTML =
       "<b>자료를 열지 못했습니다</b><span>"+e.message+"</span>";
@@ -350,7 +352,9 @@ function searchDocs(query){
     }
     if(score>0) out.push({d,s:score*Math.pow(hit/tokens.length,1.5)});
   }
-  out.sort((a,b)=>b.s-a.s);
+  // 점수가 같으면 최근 회신을 먼저 보여 준다 (회신일자 YYYY.MM.DD 문자열 비교)
+  const dk = d => String(d.date||"").replace(/[^0-9]/g,"").padEnd(8,"0");
+  out.sort((a,b)=> (b.s-a.s) || (dk(b.d) < dk(a.d) ? -1 : dk(b.d) > dk(a.d) ? 1 : 0));
   return out.slice(0,TOP_K).map(x=>x.d);
 }
 

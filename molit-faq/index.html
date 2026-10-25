@@ -176,6 +176,18 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid va
   .reftitle{white-space:normal;flex-basis:100%}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* 결과 목록(제목 줄) */
+.results{gap:8px}
+.rescard.row{padding:0;overflow:hidden}
+.rowhead{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;text-align:left;
+  padding:12px 16px;cursor:pointer;font-family:inherit;color:var(--ink)}
+.rowhead:hover{background:#F7F9FC}
+.caret{flex-shrink:0;width:12px;color:var(--muted);font-size:12px}
+.rowtitle{flex:1;min-width:0;font-size:14.5px;font-weight:700;color:var(--nav2);line-height:1.5}
+.rowmeta{flex-shrink:0;font-size:12px;color:var(--muted);white-space:nowrap}
+.rowbody{padding:0 16px 14px 38px;border-top:1px solid #EDF0F4}
+@media (max-width:820px){.rowhead{flex-wrap:wrap}.rowtitle{flex-basis:100%;order:3}.rowbody{padding-left:16px}}
 </style>
 <style id="gov24-theme">
 /* ===== 정부24(KRDS) 디자인 ===== */
@@ -271,6 +283,7 @@ const TOP_K = 500;     // 저장해 두는 최대 결과 수
 const PAGE  = 20;      // 한 번에 보여 주는 결과 수
 let LAST_TOTAL = 0;
 
+const EXPANDED = new Set();   // 목록에서 펼친 회신 번호
 let DOCS = [], BYNO = new Map(), OPINIONS = [], history = [], current = null, openDoc = null;
 let CATS = [], selected = new Set(), fmore = false;   // selected 가 비어 있으면 전체
 
@@ -387,6 +400,7 @@ function run(text){
   document.getElementById("send").disabled=true;
   openDoc=null; closePanel(); closeSide();
 
+  EXPANDED.clear();
   const hits=searchDocs(query);
   const theme=matchTheme(query);
   current={
@@ -498,16 +512,24 @@ function render(){
     html+='<p class="count">검색어와 맞는 회신 '+(current.total||allHits.length).toLocaleString()+"건"+
       "입니다. 점수 높은 순(같으면 최근 회신 먼저)으로 "+shown+"건을 보여 드립니다"+
       ((current.total||0)>TOP_K?" (상위 "+TOP_K+"건까지 넘겨 볼 수 있으니 검색어를 더 구체적으로 적어 보십시오)":"")+".</p><div class=\"results\">";
+    // 제목 목록으로 보여 주고, 제목을 누르면 그 자리에서 질의·회신 본문을 펼친다
     for(const d of hits){
-      html+='<div class="rescard'+(openDoc===d.no?" on":"")+'">'+
-        '<div class="resline"><span class="badge">'+(isEp(d)?"국민신문고 #":"질의회신 #")+esc(d.no)+'</span>'+
-        '<button class="restitle" data-no="'+esc(d.no)+'">'+esc(d.title)+"</button></div>"+
-        (d.q?'<div class="orig"><h4>질의 원문</h4><div class="raw">'+esc(d.q)+"</div></div>"
-            :(isEp(d)?'<div class="field" style="color:var(--muted)">국민신문고는 질의 본문을 공개하지 않아 제목으로 질의 내용을 대신합니다.</div>':""))+
-        '<div class="orig"><h4>회신 원문</h4><div class="raw">'+esc(d.a)+"</div></div>"+
-        '<div class="field"><b>(출처)</b> '+esc(source(d))+" · 회신일자 "+esc(d.date||"미기재")+
-          (d.cat?" · "+esc(d.cat):"")+"</div>"+
-        '<button class="more" data-no="'+esc(d.no)+'">옆에서 크게 보기</button></div>';
+      const open=EXPANDED.has(d.no);
+      html+='<div class="rescard row'+(open?" on":"")+'">'+
+        '<button class="rowhead" data-toggle="'+esc(d.no)+'" aria-expanded="'+open+'">'+
+          '<span class="caret">'+(open?"▾":"▸")+'</span>'+
+          '<span class="badge">'+(isEp(d)?"국민신문고 #":"질의회신 #")+esc(d.no)+'</span>'+
+          '<span class="rowtitle">'+esc(d.title)+'</span>'+
+          '<span class="rowmeta">'+esc(d.org||"")+" · "+esc(d.date||"일자 미기재")+'</span>'+
+        '</button>'+
+        (open ? '<div class="rowbody">'+
+          (d.q?'<div class="orig"><h4>질의 원문</h4><div class="raw">'+esc(d.q)+"</div></div>"
+              :(isEp(d)?'<div class="field" style="color:var(--muted)">국민신문고는 질의 본문을 공개하지 않아 제목으로 질의 내용을 대신합니다.</div>':""))+
+          '<div class="orig"><h4>회신 원문</h4><div class="raw">'+esc(d.a)+"</div></div>"+
+          '<div class="field"><b>(출처)</b> '+esc(source(d))+" · 회신일자 "+esc(d.date||"미기재")+
+            (d.cat?" · "+esc(d.cat):"")+"</div>"+
+          '<button class="more" data-no="'+esc(d.no)+'">옆에서 크게 보기 · 출처와 함께 복사</button></div>' : "")+
+        '</div>';
     }
     html+="</div>";
     if(shown<allHits.length) html+='<button class="more" data-page="1" style="display:block;margin:14px auto 0;padding:9px 22px">'+
@@ -598,6 +620,8 @@ document.addEventListener("click",e=>{
     else render();
     return;
   }
+  const tg=e.target.closest("[data-toggle]");
+  if(tg){ const n=tg.dataset.toggle; EXPANDED.has(n)?EXPANDED.delete(n):EXPANDED.add(n); render(); return; }
   const pg=e.target.closest("[data-page]");
   if(pg&&current){ current.shown=(current.shown||PAGE)+PAGE; saveHistory(); render(); return; }
   const rn=e.target.closest("[data-run]");

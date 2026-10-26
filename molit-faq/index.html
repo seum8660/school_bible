@@ -348,7 +348,22 @@ async function boot(){
 
 /* ───────── 검색 ───────── */
 const tokenize = t => String(t||"").toLowerCase().replace(/[^0-9a-z가-힣]+/g," ").split(" ").filter(x=>x.length>=2);
-const variants = t => /[가-힣]/.test(t)&&t.length>=3 ? [t,t.slice(0,-1)] : [t];
+// 검색어 동의어 — 제목에 그대로 쓰이지 않는 말도 찾도록 대체어(alt)를 더하고,
+// 같은 제목이 섞일 때 본문에 근거 법령(boost)이 있는 회신을 위로 올린다
+const SYNONYMS = {
+  "건설안전관리비": {alt:["건진법안전관리비","안전관리비"], boost:["건설기술 진흥법","건설기술진흥법","건진법","별표7","별표 7","제63조","제60조"]},
+  "건진법안전관리비": {alt:["안전관리비"], boost:["건설기술 진흥법","건설기술진흥법","건진법","별표7","별표 7","제63조","제60조"]},
+  "산안비": {alt:["산업안전보건관리비","안전보건관리비"], boost:["산업안전보건법","산업안전보건관리비 계상"]},
+  "건진법": {alt:["건설기술 진흥법","건설기술진흥법"], boost:[]},
+  "에스컬레이션": {alt:["물가변동"], boost:[]},
+  "esc": {alt:["물가변동"], boost:[]},
+  "선급금": {alt:["선금"], boost:[]}
+};
+const variants = t => {
+  const base = /[가-힣]/.test(t)&&t.length>=3 ? [t,t.slice(0,-1)] : [t];
+  const sy = SYNONYMS[t];
+  return sy ? [...base, ...sy.alt] : base;
+};
 
 function searchDocs(query){
   const tokens=[...new Set(tokenize(query))];
@@ -365,7 +380,10 @@ function searchDocs(query){
       if(!m) for(const v of variants(t)) if(body.includes(v)){score+=2;m=true;break;}
       if(m) hit++;
     }
-    if(score>0) out.push({d,s:score*Math.pow(hit/tokens.length,1.5)});
+    if(score>0){
+      for(const t of tokens){ const sy=SYNONYMS[t]; if(sy&&sy.boost.some(k=>body.includes(k.toLowerCase()))) score+=3; }
+      out.push({d,s:score*Math.pow(hit/tokens.length,1.5)});
+    }
   }
   // 점수가 같으면 최근 회신을 먼저 보여 준다 (회신일자 YYYY.MM.DD 문자열 비교)
   const dk = d => String(d.date||"").replace(/[^0-9]/g,"").padEnd(8,"0");

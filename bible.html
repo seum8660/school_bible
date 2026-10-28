@@ -4511,7 +4511,7 @@ document.getElementById('law-q').addEventListener('input',e=>renderLaws(e.target
 renderProc('all'); renderCheck('design'); renderLaws('');
 
 // ================= 전체 키워드 검색 =================
-const TABLABEL={plan:'제1장 기획',design:'제2장 설계',const:'제3장 시공',cm:'제4장 건설사업관리',comp:'제5장 준공',safety:'교육시설안전',cert:'인증',proc:'실무 절차',law:'법령',deleg:'위임전결',calc:'판정기',manual:'각종 매뉴얼'};
+const TABLABEL={plan:'제1장 기획',design:'제2장 설계',const:'제3장 시공',cm:'제4장 건설사업관리',comp:'제5장 준공',safety:'교육시설안전',cert:'인증',proc:'실무 절차',law:'법령',deleg:'위임전결',calc:'판정기',manual:'각종 매뉴얼',faq:'질의회신'};
 const SEARCH_INDEX=[];
 // 제도 아코디언 항목
 Object.keys(DATA).forEach(pk=>{
@@ -4643,6 +4643,9 @@ function runGlobalSearch(){
   const q=gq.value.trim().replace(/^#+/,'').toLowerCase();
   if(q.length<1){gres.classList.remove('show');gres.innerHTML='';return;}
   const hits=SEARCH_INDEX.filter(x=>x.text.toLowerCase().includes(q)).slice(0,20);
+  // 질의회신 검색(국토부 자주찾는민원 · 국민신문고 답변원문)으로 같은 검색어를 넘겨 주는 항목
+  const raw=gq.value.trim().replace(/^#+/,'');
+  if(raw.length>=2) hits.push({label:'질의회신에서 「'+raw+'」 찾기',sub:'국토부 자주찾는민원 · 국민신문고 답변원문 (새 창)',tab:'faq',kind:'faq',url:'molit-faq/index.html?q='+encodeURIComponent(raw)});
   if(!hits.length){gres.innerHTML='<div class="gres-empty">검색 결과가 없습니다.</div>';gres.classList.add('show');return;}
   gres.innerHTML='<div class="gres-head">검색 결과 '+hits.length+'건 — 클릭하면 해당 항목으로 이동</div>'+
     hits.map((h,idx)=>`<div class="gres-item" data-idx="${idx}"><span class="gk">${esc(TABLABEL[h.tab]||'').replace(/제\\d+장 /,'')}</span><div class="gt"><div class="gl">${ghl(h.label,q)}</div><div class="gs">${esc(h.sub||'')}</div></div></div>`).join('');
@@ -4650,7 +4653,7 @@ function runGlobalSearch(){
   gres._hits=hits;
 }
 function gotoResult(h){
-  if(h.kind==='wf'){gres.classList.remove('show');window.open(h.url,'_blank');return;}
+  if(h.kind==='wf'||h.kind==='faq'){gres.classList.remove('show');window.open(h.url,'_blank');return;}
   activate(h.tab);
   gres.classList.remove('show');
   setTimeout(()=>{
@@ -5957,6 +5960,9 @@ document.querySelectorAll('.man-card[data-soon]').forEach(function(a){
 /* 인트로(히어로 공지) 자동 업데이트 — 매뉴얼/유틸 카드 수를 DOM에서 직접 집계 */
 (function(){
   var NOTICES=[
+    {d:'2026-10-27', tx:'<b>질의회신 검색</b>에 <b>총공사비 산정 기준</b> 주제 2개 추가 — 품질관리계획 대상 총공사비(관급자 설치 관급자재비·보상비 제외, 부가세 포함 당초 예정금액) · 건설사업관리 대상·대가 총공사비(시행령 제55조·제57조, 국토부 회신 근거)'},
+    {d:'2026-10-26', tx:'<b>질의회신 검색</b>에 <b>건설안전관리비(건설기술진흥법)</b> 주제 추가 — 회신 84건을 계상·신호수·가설구조물·정산·산안비 구분 등 6개 쟁점으로 정리 · \'건설안전관리비\'·\'산안비\'·\'건진법\' 같은 줄임말로도 검색'},
+    {d:'2026-10-25', tx:'<b>질의회신 검색</b> 업데이트 — <b>국민신문고 답변원문 3,225건</b> 추가(설계변경·물가변동·선금·하도급·감리·안전관리비·석면·소방 등 38개 키워드) · 주제별 의견 21개로 확대 · 결과를 <b>제목 목록</b>으로 보고 누르면 본문 펼침 · 전체 키워드 검색에서 질의회신으로 바로 연결'},
     {d:'2026-10-16', tx:'<b>일위대가 검색</b>에 <b>토목·설비</b> 일위대가 추가, <b>도서지역 할증(5·15·25·35%)</b> 선택 기능 추가'},
     {d:'2026-10-16', tx:'<b>2026년 하반기 일위대가</b> 반영 — 일위대가 검색(건축 4,485건·자재단가 828건) · 간단내역서 · 견적이 · 내역이 단가 갱신'},
     {d:'2026-09-27', tx:'<b>정산 도구</b> 메뉴 신설 — 기초파일 정산 · 선금·기성금 정산 · 물가조정 분석 · 지연배상금 계산 이동, <b>현장기술자 배치검토 · 하도급 적정성 심사 · 공기연장 간접비 검토 · 계약 해제·해지 정산</b> 4종 추가(새 창)'},

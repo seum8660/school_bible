@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>질의회신 검색 · 국토교통부 자주찾는민원 · 국민신문고</title>
-<meta name="description" content="국토교통부 자주찾는민원 질의회신 11,821건과 국민신문고 공사계약·시설 분야 답변원문 3,225건을 검색하고 원문을 확인합니다.">
+<title>질의회신 검색 · 국토교통부 자주찾는민원</title>
+<meta name="description" content="국토교통부 자주찾는민원 질의회신 11,821건을 검색하고 원문을 확인합니다.">
 <link rel="stylesheet" as="style" crossorigin
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -203,18 +203,6 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid va
   .reftitle{white-space:normal;flex-basis:100%}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-
-/* 결과 목록(제목 줄) */
-.results{gap:8px}
-.rescard.row{padding:0;overflow:hidden}
-.rowhead{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;text-align:left;
-  padding:12px 16px;cursor:pointer;font-family:inherit;color:var(--ink)}
-.rowhead:hover{background:#F7F9FC}
-.caret{flex-shrink:0;width:12px;color:var(--muted);font-size:12px}
-.rowtitle{flex:1;min-width:0;font-size:14.5px;font-weight:700;color:var(--nav2);line-height:1.5}
-.rowmeta{flex-shrink:0;font-size:12px;color:var(--muted);white-space:nowrap}
-.rowbody{padding:0 16px 14px 38px;border-top:1px solid #EDF0F4}
-@media (max-width:820px){.rowhead{flex-wrap:wrap}.rowtitle{flex-basis:100%;order:3}.rowbody{padding-left:16px}}
 </style>
 <style id="gov24-theme">
 /* ===== 정부24(KRDS) 디자인 ===== */
@@ -261,7 +249,7 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #2
 </head>
 <body>
 
-<div id="boot"><b>회신 자료를 여는 중입니다</b><span id="bootmsg">1만5천여 건을 불러옵니다. 잠시만 기다려 주십시오.</span></div>
+<div id="boot"><b>회신 자료를 여는 중입니다</b><span id="bootmsg">1만여 건을 불러옵니다. 잠시만 기다려 주십시오.</span></div>
 
 <aside id="side">
   <div class="brand"><b>질의회신 검색</b><span id="brandsub"></span></div>
@@ -302,31 +290,13 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #2
 <script>
 const SOURCE_NAME = "국토교통부 자주찾는민원";
 const FETCHED_AT  = "2026. 9. 14.";
-// 추가 출처: 국민신문고 민원 질의응답·답변원문 (설계변경 등 공사계약·시설 분야 38개 키워드 제목 검색 회신) — 번호 앞에 E
-const EP_NAME     = "국민신문고 답변원문";
-const EP_FETCHED  = "2026. 10. 25.";
-const EP_CAT      = "국민신문고";
-const isEp   = d => String(d.no).startsWith("E");
-const srcOf  = d => isEp(d) ? EP_NAME : SOURCE_NAME;
-const dateOf = d => isEp(d) ? EP_FETCHED : FETCHED_AT;
 const HISTORY_KEY = "molitqa:history";
 const TOP_K = 300, PAGE = 10;
 
-const EXPANDED = new Set();   // 목록에서 펼친 회신 번호
 let DOCS = [], BYNO = new Map(), OPINIONS = [], history = [], current = null, openDoc = null;
 let CATS = [], selected = new Set(), fmore = false;   // selected 가 비어 있으면 전체
 
 /* ───────── 자료 읽기 ───────── */
-async function unpack(buf){
-  const bytes = new Uint8Array(buf);
-  const isGzip = bytes.length>2 && bytes[0]===0x1f && bytes[1]===0x8b;
-  if (!isGzip) return new TextDecoder("utf-8").decode(bytes);
-  if (typeof DecompressionStream === "undefined")
-    throw new Error("이 브라우저에서는 자료를 풀 수 없습니다. 크롬이나 엣지 최신 버전으로 열어 주십시오.");
-  const st = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
-  return await new Response(st).text();
-}
-
 async function boot(){
   try{
     const [buf, ops] = await Promise.all([
@@ -350,14 +320,6 @@ async function boot(){
     }
 
     DOCS = JSON.parse(text).map(r=>({no:r[0],title:r[1],cat:r[2],org:r[3],dept:r[4],date:r[5],q:r[6],a:r[7]}));
-    // 국민신문고 자료는 없어도 기존 검색은 그대로 동작한다
-    try{
-      const r=await fetch("epeople.bin");
-      if(r.ok){
-        const ep=JSON.parse(await unpack(await r.arrayBuffer()));
-        DOCS = DOCS.concat(ep.map(r=>({no:r[0],title:r[1],cat:r[2]||EP_CAT,org:r[3],dept:r[4],date:r[5],q:r[6],a:r[7]})));
-      }
-    }catch(e){}
     DOCS.forEach(d=>{ if(!BYNO.has(d.no)) BYNO.set(d.no,d); });
     OPINIONS = ops;
     const cnt = new Map();
@@ -367,8 +329,6 @@ async function boot(){
     history = loadHistory();
     document.getElementById("boot").style.display="none";
     render();
-    // 치트키 전체 검색에서 넘어온 검색어(?q=)가 있으면 바로 찾는다
-    try{ const pq=new URLSearchParams(location.search).get("q"); if(pq&&pq.trim()) run(pq.trim()); }catch(e){}
   }catch(e){
     document.getElementById("boot").innerHTML =
       "<b>자료를 열지 못했습니다</b><span>"+e.message+"</span>";
@@ -377,22 +337,7 @@ async function boot(){
 
 /* ───────── 검색 ───────── */
 const tokenize = t => String(t||"").toLowerCase().replace(/[^0-9a-z가-힣]+/g," ").split(" ").filter(x=>x.length>=2);
-// 검색어 동의어 — 제목에 그대로 쓰이지 않는 말도 찾도록 대체어(alt)를 더하고,
-// 같은 제목이 섞일 때 본문에 근거 법령(boost)이 있는 회신을 위로 올린다
-const SYNONYMS = {
-  "건설안전관리비": {alt:["건진법안전관리비","안전관리비"], boost:["건설기술 진흥법","건설기술진흥법","건진법","별표7","별표 7","제63조","제60조"]},
-  "건진법안전관리비": {alt:["안전관리비"], boost:["건설기술 진흥법","건설기술진흥법","건진법","별표7","별표 7","제63조","제60조"]},
-  "산안비": {alt:["산업안전보건관리비","안전보건관리비"], boost:["산업안전보건법","산업안전보건관리비 계상"]},
-  "건진법": {alt:["건설기술 진흥법","건설기술진흥법"], boost:[]},
-  "에스컬레이션": {alt:["물가변동"], boost:[]},
-  "esc": {alt:["물가변동"], boost:[]},
-  "선급금": {alt:["선금"], boost:[]}
-};
-const variants = t => {
-  const base = /[가-힣]/.test(t)&&t.length>=3 ? [t,t.slice(0,-1)] : [t];
-  const sy = SYNONYMS[t];
-  return sy ? [...base, ...sy.alt] : base;
-};
+const variants = t => /[가-힣]/.test(t)&&t.length>=3 ? [t,t.slice(0,-1)] : [t];
 
 function searchDocs(query){
   const tokens=[...new Set(tokenize(query))];
@@ -409,15 +354,9 @@ function searchDocs(query){
       if(!m) for(const v of variants(t)) if(body.includes(v)){score+=2;m=true;break;}
       if(m) hit++;
     }
-    if(score>0){
-      for(const t of tokens){ const sy=SYNONYMS[t]; if(sy&&sy.boost.some(k=>body.includes(k.toLowerCase()))) score+=3; }
-      out.push({d,s:score*Math.pow(hit/tokens.length,1.5)});
-    }
+    if(score>0) out.push({d,s:score*Math.pow(hit/tokens.length,1.5)});
   }
-  // 점수가 같으면 최근 회신을 먼저 보여 준다 (회신일자 YYYY.MM.DD 문자열 비교)
-  const dk = d => String(d.date||"").replace(/[^0-9]/g,"").padEnd(8,"0");
-  out.sort((a,b)=> (b.s-a.s) || (dk(b.d) < dk(a.d) ? -1 : dk(b.d) > dk(a.d) ? 1 : 0));
-  LAST_TOTAL = out.length;
+  out.sort((a,b)=>b.s-a.s);
   return out.slice(0,TOP_K).map(x=>x.d);
 }
 
@@ -447,13 +386,12 @@ function run(text){
   document.getElementById("send").disabled=true;
   openDoc=null; closePanel(); closeSide();
 
-  EXPANDED.clear();
   const hits=searchDocs(query);
   const theme=matchTheme(query);
   current={
     id:"q"+Date.now()+Math.random().toString(36).slice(2,6),
     query, at:Date.now(),
-    hits:hits.map(d=>d.no), total:LAST_TOTAL,
+    hits:hits.map(d=>d.no),
     themeId:theme?theme.id:null,
     cats:[...selected],
     note:hits.length?"":(selected.size
@@ -469,8 +407,8 @@ const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const source = d => [d.org,d.dept].filter(Boolean).join(" ") || "담당부서 미기재";
 
 function withCites(text){
-  return esc(text).split(/(\[#E?\d+\])/g).map(p=>{
-    const m=/^\[#(E?\d+)\]$/.exec(p);
+  return esc(text).split(/(\[#\d+\])/g).map(p=>{
+    const m=/^\[#(\d+)\]$/.exec(p);
     return m ? '<button class="cite" data-no="'+m[1]+'">'+p+'</button>' : p;
   }).join("");
 }
@@ -481,7 +419,7 @@ function renderFilter(){
   const all = !selected.size;
   const n = all ? DOCS.length : DOCS.filter(d=>selected.has(d.cat||"미분류")).length;
 
-  const shown = fmore ? CATS : CATS.filter(([c],i)=> i<7 || selected.has(c) || c===EP_CAT);
+  const shown = fmore ? CATS : CATS.filter(([c],i)=> i<7 || selected.has(c));
   const hidden = CATS.length - shown.length;
 
   f.innerHTML =
@@ -501,10 +439,6 @@ function renderFilter(){
     "</div>";
 }
 
-function srcLabel(){
-  const n=DOCS.filter(isEp).length;
-  return n ? SOURCE_NAME+" · "+EP_NAME : SOURCE_NAME;
-}
 function render(){
   renderFilter();
   renderReview();
@@ -517,11 +451,9 @@ function render(){
   document.getElementById("psrc").textContent=hasAI()?"Claude 연결됨":"자동 요약";
   document.getElementById("sidefoot").innerHTML=
     "회신 "+DOCS.length.toLocaleString()+"건 · 정리된 주제 "+OPINIONS.length+"개"+
-    '<div class="srcnote">자료 출처 '+SOURCE_NAME+" (조회 "+FETCHED_AT+")"+
-    (EPN?"<br>"+EP_NAME+" 공사계약·시설 "+EPN.toLocaleString()+"건 (조회 "+EP_FETCHED+")":"")+"</div>";
+    '<div class="srcnote">자료 출처 '+SOURCE_NAME+"<br>조회일자 "+FETCHED_AT+"</div>";
   document.getElementById("disc").textContent=
-    SOURCE_NAME+"에 공개된 회신을 "+FETCHED_AT+" 기준으로"+
-    (EPN?", "+EP_NAME+" 중 설계변경·물가변동·하도급 등 공사계약·시설 분야 회신을 "+EP_FETCHED+" 기준으로":"")+" 내려받아 원문 그대로 수록한 것입니다. "+
+    SOURCE_NAME+"에 공개된 회신을 "+FETCHED_AT+" 기준으로 내려받아 원문 그대로 수록한 것입니다. "+
     "질의회신은 개별 사안에 대한 행정 회신으로 법적 구속력이 있는 유권해석이 아니며, 조회일자 이후 변경된 "+
     "내용은 반영되어 있지 않습니다. 최종 판단은 원문과 소관 부서 확인을 거쳐 주십시오.";
 
@@ -537,18 +469,15 @@ function render(){
 
   if(!current){
     c.innerHTML='<div class="intro"><h2>어떤 회신을 찾으십니까</h2><p>'+
-      SOURCE_NAME+"에 공개된 회신 "+(DOCS.length-EPN).toLocaleString()+"건("+FETCHED_AT+" 기준)"+
-      (EPN?"과 "+EP_NAME+"의 공사계약·시설 분야 회신 "+EPN.toLocaleString()+"건("+EP_FETCHED+" 기준)":"")+
-      "을 수록했습니다. 국민신문고 자료만 보시려면 아래 분야에서 '"+EP_CAT+"'를 고르십시오. 찾으시는 내용을 적으시면 제목과 본문에서 회신을 찾아 원문 그대로 보여 드립니다. "+
+      SOURCE_NAME+"에 공개된 회신 "+DOCS.length.toLocaleString()+"건을 "+FETCHED_AT+
+      " 기준으로 수록했습니다. 찾으시는 내용을 적으시면 제목과 본문에서 회신을 찾아 원문 그대로 보여 드립니다. "+
       "아래 주제에 해당하면 미리 정리해 둔 질의답변 의견이 함께 붙습니다.</p><div class=\"tags\">"+
       OPINIONS.map(t=>'<button class="tag" data-run="'+esc(t.keywords[0])+'">'+esc(t.title)+"</button>").join("")+
       "</div></div>";
     return;
   }
 
-  const allHits=(current.hits||[]).map(n=>BYNO.get(n)).filter(Boolean);
-  const shown=Math.min(current.shown||PAGE, allHits.length);
-  const hits=allHits.slice(0,shown);
+  const hits=(current.hits||[]).map(n=>BYNO.get(n)).filter(Boolean);
   const theme=current.themeId?OPINIONS.find(t=>t.id===current.themeId):null;
   const refs=theme?(theme.refs||[]).map(n=>BYNO.get(n)).filter(Boolean):[];
 
@@ -584,7 +513,7 @@ function render(){
         "</div>";
     }
     html+='<div class="opfoot">위에 표시된 회신만을 근거로 미리 정리해 둔 참고 의견입니다. 근거 자료는 '+
-      SRC+" 조회본입니다. 법령 해석이나 유권해석이 아니므로 적용 전 원문과 회신일자, "+
+      SOURCE_NAME+" "+FETCHED_AT+" 조회본입니다. 법령 해석이나 유권해석이 아니므로 적용 전 원문과 회신일자, "+
       "조문 개정 여부를 확인하십시오.</div></div>";
   } else if(hits.length){
     html+='<div class="nothem">이 검색어에 해당하는 정리된 의견은 아직 없습니다. 왼쪽 첫 화면의 주제 목록에서 '+
@@ -603,7 +532,7 @@ function showDoc(no){
   const b=document.getElementById("pbody");
   if(!d){ b.innerHTML='<div class="pempty">해당 회신을 찾지 못했습니다.</div>'; return; }
   b.innerHTML='<div class="pno">#'+esc(d.no)+'</div><div class="ptitle">'+esc(d.title)+"</div>"+
-    '<div class="pmeta">'+esc(srcOf(d))+" · "+esc(source(d))+" · 회신일자 "+esc(d.date||"미기재")+"</div>"+
+    '<div class="pmeta">'+esc(source(d))+" · 회신일자 "+esc(d.date||"미기재")+(d.cat?" · "+esc(d.cat):"")+"</div>"+
     (d.q?'<div class="psec"><h4>질의</h4><div>'+esc(d.q)+"</div></div>":"")+
     '<div class="psec"><h4>회신</h4><div>'+esc(d.a)+"</div></div>"+
     '<div class="psec" style="margin-top:18px;padding-top:14px;border-top:1px solid #EDF0F4"><h4 style="color:#0B50D0;font-weight:700;font-size:12.5px">AI 검토의견</h4><div data-rvfor="'+esc(d.no)+'"></div></div>'+
@@ -612,8 +541,8 @@ function showDoc(no){
   oneReview(d);
   document.getElementById("copybtn").onclick=()=>{
     const t=d.title+"\n\n[질의]\n"+d.q+"\n\n[회신]\n"+d.a+
-      "\n\n출처: "+srcOf(d)+" 질의회신 제"+d.no+"호 ("+source(d)+", "+(d.date||"일자 미기재")+
-      ") · 조회일자 "+dateOf(d);
+      "\n\n출처: "+SOURCE_NAME+" 질의회신 제"+d.no+"호 ("+source(d)+", "+(d.date||"일자 미기재")+
+      ") · 조회일자 "+FETCHED_AT;
     navigator.clipboard?.writeText(t);
     const btn=document.getElementById("copybtn");
     btn.textContent="복사했습니다";
@@ -788,10 +717,6 @@ document.addEventListener("click",e=>{
     else render();
     return;
   }
-  const tg=e.target.closest("[data-toggle]");
-  if(tg){ const n=tg.dataset.toggle; EXPANDED.has(n)?EXPANDED.delete(n):EXPANDED.add(n); render(); return; }
-  const pg=e.target.closest("[data-page]");
-  if(pg&&current){ current.shown=(current.shown||PAGE)+PAGE; saveHistory(); render(); return; }
   const rn=e.target.closest("[data-run]");
   if(rn){ run(rn.dataset.run); return; }
   const no=e.target.closest("[data-no]");

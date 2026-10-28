@@ -136,7 +136,7 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid va
 .disc{font-size:11.5px;color:var(--muted);margin:9px 4px 0;line-height:1.6}
 
 /* 우측 */
-#panel{width:348px;flex-shrink:0;padding:16px 16px 16px 4px;display:flex;transition:transform .18s}
+#panel{width:380px;flex-shrink:0;padding:16px 16px 16px 4px;display:flex;transition:transform .18s}
 .pcard{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;overflow:hidden}
 .phead{padding:14px 18px 11px;display:flex;align-items:baseline;gap:8px;font-size:14.5px;font-weight:700;
   color:var(--nav);border-bottom:1px solid #EDF0F4}
@@ -153,6 +153,33 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid va
 .copy{margin-top:16px;background:none;border:1px solid var(--line);border-radius:5px;padding:6px 12px;
   font-size:12.5px;color:var(--nav);cursor:pointer}
 .copy:hover{border-color:var(--nav)}
+
+/* AI 검토 */
+.rvintro{font-size:13px;color:var(--muted);line-height:1.75}
+.rvq{font-size:13px;font-weight:700;color:var(--nav);background:#F4F7FB;border:1px solid #E3E8EF;border-radius:8px;padding:9px 12px;margin:0 0 12px;line-height:1.55}
+.rvbtn{display:block;width:100%;margin-top:12px;background:var(--nav2);color:#fff;border:none;border-radius:8px;padding:11px 14px;font-size:14px;font-weight:700;cursor:pointer}
+.rvbtn:hover{background:#0B50D0}
+.rvbtn:disabled{background:#CDD1D5;cursor:default}
+.rvacts{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;padding-top:12px;border-top:1px solid #EDF0F4}
+.rvact{background:#fff;border:1px solid var(--line);border-radius:6px;padding:6px 11px;font-size:12.5px;color:var(--nav);cursor:pointer}
+.rvact:hover{border-color:var(--nav2);color:#0B50D0}
+.rvact.pri{background:var(--nav2);border-color:var(--nav2);color:#fff;font-weight:700}
+.rvact.pri:hover{background:#0B50D0}
+.rvtext{font-size:13.5px;line-height:1.8;color:#242A32;white-space:pre-wrap;word-break:break-word}
+.rvtext h5{margin:14px 0 4px;font-size:13px;color:#0B50D0;font-weight:700}
+.rvtext h5:first-child{margin-top:0}
+.rvmode{display:inline-block;font-size:11px;font-weight:700;border-radius:4px;padding:2px 7px;margin-bottom:10px;background:#ECF2FE;color:#0B50D0}
+.rvmode.off{background:#F1F2F3;color:#6D7882}
+.rvfoot{margin-top:12px;font-size:11.5px;color:var(--muted);line-height:1.6}
+.spin{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin-top:14px}
+.spin i{width:16px;height:16px;border:2px solid #D8E5FD;border-top-color:#256EF4;border-radius:50%;animation:sp 0.8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+#docm{display:none;position:fixed;inset:0;z-index:50;background:rgba(15,25,40,.45);align-items:center;justify-content:center;padding:24px}
+#docm.open{display:flex}
+.dmbox{background:#fff;border-radius:12px;width:min(720px,100%);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px rgba(20,30,45,.25)}
+.dmhead{display:flex;align-items:center;padding:12px 18px;border-bottom:1px solid #EDF0F4;font-size:14px;font-weight:700;color:var(--nav)}
+.dmhead button{margin-left:auto;background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;line-height:1}
+.dmbody{overflow-y:auto;padding:16px 20px 22px}
 
 #boot{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;
   background:var(--paper);z-index:60;color:var(--muted);font-size:14px;text-align:center;padding:24px}
@@ -238,7 +265,7 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #2
     <button class="toggle" id="tside">이력</button>
     <h1>질의회신 검색</h1>
     <span class="meta" id="barmeta"></span>
-    <button class="toggle" id="tpanel">원문</button>
+    <button class="toggle" id="tpanel">검토</button>
   </div>
   <div id="scroll"><div class="inner" id="content"></div></div>
   <div id="foot"><div class="footin">
@@ -252,15 +279,19 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #2
 </main>
 
 <aside id="panel"><div class="pcard">
-  <div class="phead">회신 원문 <span id="psrc"></span><button class="pclose" id="pclose" aria-label="닫기">×</button></div>
-  <div class="pbody" id="pbody"><div class="pempty">검색 결과의 제목이나 의견 속 번호를 누르시면 그 회신의 질의·회신 전문이 여기에 표시됩니다.</div></div>
+  <div class="phead">검색 관련 목록 <span id="psrc"></span><button class="pclose" id="pclose" aria-label="닫기">×</button></div>
+  <div class="pbody" id="rvbody"></div>
 </div></aside>
+<div id="docm"><div class="dmbox">
+  <div class="dmhead">회신 원문<button id="dmclose" aria-label="닫기">×</button></div>
+  <div class="dmbody" id="pbody"></div>
+</div></div>
 
 <script>
 const SOURCE_NAME = "국토교통부 자주찾는민원";
 const FETCHED_AT  = "2026. 9. 14.";
 const HISTORY_KEY = "molitqa:history";
-const TOP_K = 8;
+const TOP_K = 300, PAGE = 10;
 
 let DOCS = [], BYNO = new Map(), OPINIONS = [], history = [], current = null, openDoc = null;
 let CATS = [], selected = new Set(), fmore = false;   // selected 가 비어 있으면 전체
@@ -410,13 +441,14 @@ function renderFilter(){
 
 function render(){
   renderFilter();
+  renderReview();
   document.getElementById("brandsub").textContent=SOURCE_NAME;
   const scope = selected.size
     ? [...selected].join("·")+" 분야 "+DOCS.filter(d=>selected.has(d.cat||"미분류")).length.toLocaleString()+"건"
     : DOCS.length.toLocaleString()+"건";
   document.getElementById("barmeta").textContent=
     SOURCE_NAME+" "+scope+"에서 검색 · 조회일자 "+FETCHED_AT;
-  document.getElementById("psrc").textContent=SOURCE_NAME;
+  document.getElementById("psrc").textContent=hasAI()?"Claude 연결됨":"자동 요약";
   document.getElementById("sidefoot").innerHTML=
     "회신 "+DOCS.length.toLocaleString()+"건 · 정리된 주제 "+OPINIONS.length+"개"+
     '<div class="srcnote">자료 출처 '+SOURCE_NAME+"<br>조회일자 "+FETCHED_AT+"</div>";
@@ -453,18 +485,20 @@ function render(){
   if(current.note) html+='<div class="note">'+esc(current.note)+"</div>";
 
   if(hits.length){
-    html+='<p class="count">검색어와 맞는 회신 '+hits.length+"건입니다.</p><div class=\"results\">";
-    for(const d of hits){
-      html+='<div class="rescard'+(openDoc===d.no?" on":"")+'">'+
+    const shown=current.shown||PAGE;
+    html+='<p class="count">검색어와 맞는 회신 '+hits.length.toLocaleString()+(hits.length>=TOP_K?"건 이상":"건")+"입니다. 관련도 높은 순으로 "+Math.min(shown,hits.length)+"건을 보여 드립니다.</p><div class=\"results\">";
+    for(const d of hits.slice(0,shown)){
+      html+='<div class="rescard'+(focusDoc()===d?" on":"")+'">'+
         '<div class="resline"><span class="badge">질의회신 #'+esc(d.no)+'</span>'+
-        '<button class="restitle" data-no="'+esc(d.no)+'">'+esc(d.title)+"</button></div>"+
+        '<button class="restitle" data-no="'+esc(d.no)+'">'+esc(d.title)+"</button>"+
+        '<button class="rvact'+(focusDoc()===d?' pri':'')+'" data-focus="'+esc(d.no)+'" style="margin-left:auto">AI 검토</button></div>'+
         (d.q?'<div class="orig"><h4>질의 원문</h4><div class="raw">'+esc(d.q)+"</div></div>":"")+
         '<div class="orig"><h4>회신 원문</h4><div class="raw">'+esc(d.a)+"</div></div>"+
         '<div class="field"><b>(출처)</b> '+esc(source(d))+" · 회신일자 "+esc(d.date||"미기재")+
-          (d.cat?" · "+esc(d.cat):"")+"</div>"+
-        '<button class="more" data-no="'+esc(d.no)+'">옆에서 크게 보기</button></div>';
+          (d.cat?" · "+esc(d.cat):"")+"</div></div>";
     }
     html+="</div>";
+    if(hits.length>shown) html+='<button class="more" data-showmore="1" style="display:block;margin:14px auto 0;padding:8px 18px">'+Math.min(PAGE,hits.length-shown)+"건 더 보기 (남은 "+(hits.length-shown).toLocaleString()+"건)</button>";
   }
 
   if(theme){
@@ -486,7 +520,10 @@ function render(){
       "가까운 주제를 골라 보시거나, 위 회신 원문을 직접 확인하시기 바랍니다.</div>";
   }
 
+  const fd=focusDoc();
+  if(fd) html+=reviewBlock(fd);
   c.innerHTML=html;
+  if(fd) oneReview(fd);
 }
 
 function showDoc(no){
@@ -498,7 +535,10 @@ function showDoc(no){
     '<div class="pmeta">'+esc(source(d))+" · 회신일자 "+esc(d.date||"미기재")+(d.cat?" · "+esc(d.cat):"")+"</div>"+
     (d.q?'<div class="psec"><h4>질의</h4><div>'+esc(d.q)+"</div></div>":"")+
     '<div class="psec"><h4>회신</h4><div>'+esc(d.a)+"</div></div>"+
+    '<div class="psec" style="margin-top:18px;padding-top:14px;border-top:1px solid #EDF0F4"><h4 style="color:#0B50D0;font-weight:700;font-size:12.5px">AI 검토의견</h4><div data-rvfor="'+esc(d.no)+'"></div></div>'+
     '<button class="copy" id="copybtn">출처와 함께 복사</button>';
+  document.getElementById("docm").classList.add("open");
+  oneReview(d);
   document.getElementById("copybtn").onclick=()=>{
     const t=d.title+"\n\n[질의]\n"+d.q+"\n\n[회신]\n"+d.a+
       "\n\n출처: "+SOURCE_NAME+" 질의회신 제"+d.no+"호 ("+source(d)+", "+(d.date||"일자 미기재")+
@@ -508,8 +548,117 @@ function showDoc(no){
     btn.textContent="복사했습니다";
     setTimeout(()=>{ btn.textContent="출처와 함께 복사" },1600);
   };
-  openPanel();
-  render();
+}
+
+/* ───────── AI 검토의견 ───────── */
+const hasAI = () => !!(window.claude && window.claude.complete);
+let reviewing = false;
+const cut = (s,n) => { s=String(s||"").replace(/\s+/g," ").trim(); return s.length>n ? s.slice(0,n)+"…" : s; };
+const hitDocs = () => (current?.hits||[]).map(n=>BYNO.get(n)).filter(Boolean);
+const gist = d => { const s=String(d.a||"").replace(/\s+/g," ").trim(); const m=s.match(/^.{20,220}?(다\.|니다\.|바랍니다\.)/); return m?m[0]:cut(s,200); };
+
+const ONE_KEY="molitqa:rv1:";
+const oneBusy=new Set();
+function paintOne(no,html){ document.querySelectorAll('[data-rvfor="'+no+'"]').forEach(el=>el.innerHTML=html); }
+async function oneReview(d,force){
+  let cached=null; try{ cached=JSON.parse(localStorage.getItem(ONE_KEY+d.no)); }catch(e){}
+  const show=r=>paintOne(d.no,'<span class="rvmode'+(r.mode==="ai"?"":" off")+'">'+(r.mode==="ai"?"AI 검토":"자동 요약")+'</span>'+
+    '<div class="rvtext">'+fmtReview(r.text)+'</div>'+
+    (hasAI()?'<div style="margin-top:8px"><button class="rvact" data-one="'+esc(d.no)+'">다시 검토</button></div>':""));
+  if(cached&&!force&&(cached.mode==="ai"||!hasAI())){ show(cached); return; }
+  if(!hasAI()){ const r={mode:"auto",text:"【요지】\n"+gist(d)+"\n\n【유의사항】\n- 회신 본문 첫 문장을 뽑은 요약입니다. 원문을 확인하십시오.\n- 회신일자("+(d.date||"미기재")+") 이후 법령 개정 여부를 확인하십시오."}; show(r); return; }
+  if(oneBusy.has(d.no)) { paintOne(d.no,'<div class="spin" style="margin-top:4px"><i></i>이 회신을 검토하고 있습니다…</div>'); return; }
+  oneBusy.add(d.no);
+  paintOne(d.no,'<div class="spin" style="margin-top:4px"><i></i>이 회신을 검토하고 있습니다…</div>');
+  const body={max_tokens:1200,
+    system:"당신은 학교시설 업무(건축·건설·계약·안전) 담당 공무원을 돕는 검토 보조자입니다. 제공된 국토교통부 질의회신 1건만 근거로 검토의견을 씁니다. 회신에 없는 내용은 추측하지 않습니다. 공문체(~함, ~임)로 간결하게 쓰고 마크다운 기호(#, *, |)는 쓰지 않습니다.",
+    messages:[{role:"user",content:"제목: "+d.title+"\n회신일자: "+(d.date||"미기재")+" / 소관: "+source(d)+"\n분야: "+(d.cat||"-")+"\n\n질의:\n"+cut(d.q,1500)+"\n\n회신:\n"+cut(d.a,2500)+
+      "\n\n아래 형식 그대로 작성하십시오. 제목은 【】로 감쌉니다.\n【요지】 질의 쟁점과 회신 결론을 2문장으로\n【판단 근거】 회신이 든 법령·조문과 논리를 '- '로\n【학교시설 적용】 학교 공사·용역 실무에 적용할 점 2~3개 '- '로\n【유의사항】 적용 한계, 회신일자 이후 법령 개정 확인 필요 사항 등 '- '로"}]};
+  let text=null;
+  try{ text=await window.claude.complete({...body,model:"claude-sonnet-4-5"}); }
+  catch(e){ try{ text=await window.claude.complete(body); }catch(e2){} }
+  oneBusy.delete(d.no);
+  if(!text){ paintOne(d.no,'<div class="rvintro">검토의견을 만들지 못했습니다. 잠시 후 <button class="rvact" data-one="'+esc(d.no)+'">다시 시도</button></div>'); return; }
+  const r={mode:"ai",text,at:Date.now()};
+  try{ localStorage.setItem(ONE_KEY+d.no,JSON.stringify(r)); }catch(e){}
+  show(r);
+}
+
+function fmtReview(t){
+  return withCites(t).replace(/【([^】]+)】\s*/g,(m,h)=>"<h5>"+h+"</h5>");
+}
+
+const focusDoc = () => { if(!current) return null; const hs=current.hits||[]; const no=(current.focus&&hs.includes(current.focus))?current.focus:hs[0]; return no?BYNO.get(no):null; };
+const oneCache = no => { try{ return JSON.parse(localStorage.getItem(ONE_KEY+no)); }catch(e){ return null; } };
+
+function renderReview(){
+  const b=document.getElementById("rvbody"); if(!b) return;
+  if(!current){
+    b.innerHTML='<div class="rvintro">검색하시면 맞는 회신 목록이 여기에 관련도 순으로 표시됩니다.<br><br>· 목록에서 회신을 누르면 본문 하단의 AI 검토의견이 그 회신으로 바뀝니다.<br>· 검토의견은 한 장 검토서(A4)로 인쇄할 수 있습니다.'+
+      (hasAI()?"":"<br><br>현재 AI가 연결되지 않은 환경이라 회신 요지를 자동으로 뽑아 정리합니다.")+"</div>";
+    return;
+  }
+  const d=focusDoc();
+  b.innerHTML='<div class="rvq">'+esc(current.query)+'</div>'+(d?relList(d):'<div class="rvintro">찾은 회신이 없습니다.</div>');
+}
+
+function reviewBlock(d){
+  return '<div class="op" id="rvblock"><div class="ophead">AI 검토의견 · 회신 1건</div>'+
+    '<div class="optitle"><span style="color:#0B50D0">#'+esc(d.no)+'</span> '+esc(d.title)+
+      '<div style="font-weight:400;font-size:12px;color:#6D7882;margin-top:3px">'+esc(source(d))+' · 회신일자 '+esc(d.date||"미기재")+(d.cat?' · '+esc(d.cat):'')+'</div></div>'+
+    '<div data-rvfor="'+esc(d.no)+'"></div>'+
+    '<div class="rvacts"><button class="rvact pri" data-rv="sheet">한 장 검토서</button>'+
+      '<button class="rvact" data-rv="copy">복사</button><button class="rvact" data-no="'+esc(d.no)+'">원문 보기</button></div>'+
+    '<div class="opfoot">'+SOURCE_NAME+" "+FETCHED_AT+" 조회본 회신 1건만을 근거로 한 참고 의견이며 유권해석이 아닙니다. 다른 회신을 검토하려면 오른쪽 목록이나 결과 카드의 AI 검토를 누르십시오.</div></div>";
+}
+
+function relList(fd){
+  const hs=hitDocs(); if(!hs.length) return "";
+  return '<div style="margin:-4px 0 16px"><div style="display:flex;align-items:baseline;gap:6px;margin-bottom:6px"><b style="font-size:12.5px;color:var(--nav)">관련도 순</b>'+
+    '<span style="font-size:11px;color:var(--muted)">'+hs.length.toLocaleString()+'건 · 누르면 하단에 AI 검토</span></div>'+
+    '<div style="overflow-y:auto;border:1px solid #EDF0F4;border-radius:8px;display:flex;flex-direction:column">'+
+    hs.map((x,i)=>{ const on=x===fd;
+      return '<button data-focus="'+esc(x.no)+'" style="display:flex;gap:8px;align-items:baseline;text-align:left;width:100%;border:none;border-bottom:1px solid #F0F2F5;padding:7px 10px;font:inherit;font-size:12.5px;line-height:1.45;cursor:pointer;'+
+        (on?'background:#ECF2FE;color:#0B50D0;font-weight:700':'background:#fff;color:#1E2124')+'">'+
+        '<span style="flex-shrink:0;width:22px;color:#98A2AE;font-size:11px;font-variant-numeric:tabular-nums">'+(i+1)+'</span>'+
+        '<span style="flex:1;min-width:0">'+esc(x.title)+'<span style="display:block;font-weight:400;font-size:11px;color:#6D7882;margin-top:1px">#'+esc(x.no)+' · '+esc(x.date||"일자 미기재")+(x.cat?' · '+esc(x.cat):'')+'</span></span></button>';
+    }).join("")+'</div></div>';
+}
+
+function reviewPlain(){
+  const d=focusDoc(); if(!d) return "";
+  const r=oneCache(d.no);
+  return "검토 대상: 질의회신 제"+d.no+"호 "+d.title+"\n\n"+(r?r.text:gist(d)).replace(/【([^】]+)】/g,"■ $1")+
+    "\n\n출처: "+SOURCE_NAME+" ("+source(d)+", "+(d.date||"일자 미기재")+") · 조회일자 "+FETCHED_AT;
+}
+
+function openSheet(){
+  const d=focusDoc(); if(!d) return;
+  const r=oneCache(d.no)||{mode:"auto",text:"【요지】\n"+gist(d)};
+  const today=new Date().toLocaleDateString("ko-KR");
+  const body=esc(r.text).replace(/【([^】]+)】\s*/g,(m,h)=>'</div><h3>'+h+'</h3><div class="tx">');
+  const html='<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><title>검토서 - 질의회신 제'+esc(d.no)+'호</title>'+
+  '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">'+
+  '<style>@page{size:A4;margin:15mm 18mm}*{box-sizing:border-box}body{margin:0;font-family:"Pretendard Variable",Pretendard,sans-serif;color:#1E2124;font-size:9.6pt;line-height:1.62;background:#F4F5F6}'+
+  '.pg{width:210mm;min-height:297mm;margin:12px auto;background:#fff;padding:15mm 18mm;box-shadow:0 2px 12px rgba(0,0,0,.08)}'+
+  '.top{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #063A74;padding-bottom:6px}.top h1{margin:0;font-size:17pt;color:#063A74;letter-spacing:-.02em}.top span{font-size:8.5pt;color:#6D7882}'+
+  'table{width:100%;border-collapse:collapse;margin-top:10px;font-size:9pt}th{width:22mm;background:#ECF2FE;color:#063A74;text-align:left;padding:5px 8px;font-weight:700;border:1px solid #D8E5FD}td{padding:5px 8px;border:1px solid #DFE4EB}'+
+  'h3{margin:12px 0 3px;font-size:10.5pt;color:#063A74;border-left:3px solid #256EF4;padding-left:7px}.tx{white-space:pre-wrap}'+
+  '.orig{white-space:pre-wrap;font-size:8.6pt;line-height:1.6;background:#FAFBFC;border:1px solid #EDF0F4;border-radius:4px;padding:7px 10px;max-height:none}'+
+  '.ft{margin-top:12px;padding-top:6px;border-top:1px solid #CDD1D5;font-size:7.8pt;color:#6D7882}.pb{position:fixed;top:14px;right:14px;background:#256EF4;color:#fff;border:none;border-radius:6px;padding:9px 16px;font:inherit;font-weight:700;cursor:pointer}'+
+  '@media print{body{background:#fff}.pg{margin:0;box-shadow:none;width:auto;min-height:0;padding:0}.pb{display:none}}</style></head><body>'+
+  '<button class="pb" onclick="print()">인쇄 / PDF 저장</button><div class="pg">'+
+  '<div class="top"><h1>질의회신 검토서</h1><span>작성일 '+today+' · '+(r.mode==="ai"?"AI 검토":"자동 요약")+'</span></div>'+
+  '<table><tr><th>회신번호</th><td>제'+esc(d.no)+'호</td><th>회신일자</th><td>'+esc(d.date||"미기재")+'</td></tr>'+
+  '<tr><th>제목</th><td colspan="3">'+esc(d.title)+'</td></tr><tr><th>소관</th><td>'+esc(source(d))+'</td><th>분야</th><td>'+esc(d.cat||"-")+'</td></tr>'+
+  (current?'<tr><th>검색어</th><td colspan="3">'+esc(current.query)+'</td></tr>':'')+'</table>'+
+  '<div class="tx">'+body+'</div>'+
+  (d.q?'<h3>질의 원문</h3><div class="orig">'+esc(cut(d.q,900))+'</div>':'')+
+  '<h3>회신 원문</h3><div class="orig">'+esc(cut(d.a,1300))+'</div>'+
+  '<div class="ft">자료 출처: '+SOURCE_NAME+' 질의회신 (조회일자 '+FETCHED_AT+'). 질의회신은 개별 사안에 대한 행정 회신으로 법적 구속력이 있는 유권해석이 아니며, 본 검토서는 참고용입니다. 적용 전 원문과 현행 법령을 확인하십시오.</div>'+
+  '</div></body></html>';
+  const w=window.open("","_blank"); if(!w){ alert("팝업이 차단되었습니다. 팝업을 허용해 주십시오."); return; }
+  w.document.open(); w.document.write(html); w.document.close();
 }
 
 /* ───────── 화면 열고 닫기 ───────── */
@@ -520,6 +669,10 @@ const closeSide =()=>{ side.classList.remove("open"); scrim.classList.remove("op
 
 document.getElementById("tpanel").onclick=()=>panel.classList.toggle("open");
 document.getElementById("pclose").onclick=closePanel;
+const docm=document.getElementById("docm");
+document.getElementById("dmclose").onclick=()=>{ docm.classList.remove("open"); openDoc=null; render(); };
+docm.addEventListener("click",e=>{ if(e.target===docm){ docm.classList.remove("open"); openDoc=null; render(); } });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") docm.classList.remove("open"); });
 document.getElementById("tside").onclick=()=>{ side.classList.toggle("open"); scrim.classList.toggle("open"); };
 scrim.onclick=closeSide;
 document.getElementById("newbtn").onclick=()=>{ current=null; openDoc=null; closeSide(); render(); };
@@ -530,6 +683,19 @@ q.addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){ e.preventDef
 send.onclick=()=>run();
 
 document.addEventListener("click",e=>{
+  if(e.target.closest("[data-showmore]")){ const y=document.getElementById("scroll").scrollTop; current.shown=(current.shown||PAGE)+PAGE; saveHistory(); render(); document.getElementById("scroll").scrollTop=y; return; }
+  const fo=e.target.closest("[data-focus]");
+  if(fo){ const pb=document.getElementById("rvbody"), ly=pb.scrollTop, sy=document.getElementById("scroll").scrollTop, fromList=!!fo.closest("#rvbody");
+    current.focus=fo.dataset.focus; saveHistory(); render();
+    document.getElementById("rvbody").scrollTop=ly; const sc=document.getElementById("scroll"), rb=document.getElementById("rvblock"); sc.scrollTop = rb ? sc.scrollTop+rb.getBoundingClientRect().top-sc.getBoundingClientRect().top-16 : sy;
+    if(fromList && window.innerWidth<=1120) closePanel(); return; }
+  const one=e.target.closest("[data-one]");
+  if(one){ const d=BYNO.get(one.dataset.one); if(d){ try{localStorage.removeItem(ONE_KEY+d.no)}catch(e){} oneReview(d,true); } return; }
+  const rv=e.target.closest("[data-rv]");
+  if(rv){ const k=rv.dataset.rv;
+    if(k==="sheet") openSheet();
+    else if(k==="copy"){ navigator.clipboard?.writeText(reviewPlain()); rv.textContent="복사했습니다"; setTimeout(()=>rv.textContent="복사",1500); }
+    return; }
   const del=e.target.closest("[data-del]");
   if(del){ e.stopPropagation();
     history=history.filter(x=>x.id!==del.dataset.del); saveHistory();

@@ -31,4 +31,5 @@
 - 배포 시 Actions(deploy.yml)가 두 스크립트를 실행해 커밋까지 한다
 - 게시 전 요약은 `staging/`(미리보기, 허브 미등록) — Mini 승인 후에만 manuals/ 로 이동
 - 요약 대기 PDF는 `inbox/`(승인 자료는 `inbox/downloads.txt` → Actions가 PDF 저장), 예약작업 보고서는 `reports/`
+- 방문자 통계: 구글 애널리틱스 GA4 `G-FCC3V64RW9` — 모든 HTML <head>에 태그. 새 HTML은 배포 시 `tools/add_gtag.py`가 자동 삽입(수동: `python3 tools/add_gtag.py`)
 - 수집 대상 게시판·검토 페이지 주소는 `tools/sources.json`

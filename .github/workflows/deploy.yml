@@ -76,6 +76,8 @@ jobs:
           timeout 40m node scripts/pps_fetch.mjs || echo "조달청 수집 스크립트 오류 — 기존 자료 유지"
           git add pps_data || true
           git diff --cached --quiet || (git commit -m "조달청 가격정보 갱신 $(TZ=Asia/Seoul date +%F)" && git pull --rebase -q && git push -q)
+      - name: GA 태그 자동 삽입
+        run: python3 tools/add_gtag.py
       - name: Clean
         run: rm -rf .github templates tools
       - uses: actions/configure-pages@v5

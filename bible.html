@@ -2250,7 +2250,7 @@ html .side-nav .icon-grid.icon-grid.icon-grid > .extlink.extlink.extlink .lb{dis
       <div class="gz-sh"><i>05</i><b>유지관리</b><span>점검 · 하자 · 운영</span></div>
       <div class="gz-rh" data-row="1"><b>1,000㎡ 미만</b><span>소규모 건축 구간</span></div>
       <div class="gz-cell" data-row="1" data-stage="기획"></div>
-      <div class="gz-cell" data-row="1" data-stage="설계"><div class="gz-tile" data-ax="area" data-amt="500" data-ty="new,ext,reb"><div class="gz-t-h">에너지절약계획서</div><div class="gz-t-b">냉난방 연면적 500㎡↑ — 의무사항 전 항목 + EPI 65점(공공기관 신축 74점)↑</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="1" data-stage="설계"><div class="gz-tile" data-ax="area" data-amt="500" data-ty="new,ext,reb"><div class="gz-t-h">에너지절약계획서</div><div class="gz-t-b">연면적 합계 500㎡↑(주차장·기계실 제외, 녹색건축법 시행령 제10조) — 의무사항 전 항목 + EPI 65점(공공기관 신축 74점)↑</div><span class="gz-t-s"></span></div></div>
       <div class="gz-cell" data-row="1" data-stage="시공"><div class="gz-tile" data-ax="area" data-amt="660"><div class="gz-t-h">건설사업관리·감리(건축)</div><div class="gz-t-b">연면적 660㎡↑ 건축공사</div><span class="gz-t-s"></span></div></div>
       <div class="gz-cell" data-row="1" data-stage="준공"></div>
       <div class="gz-cell" data-row="1" data-stage="유지관리"><div class="gz-tile" data-ax="area" data-amt="200"><div class="gz-t-h">건축물 관리계획 수립</div><div class="gz-t-b">연면적 200㎡↑ 사용승인 건축물</div><span class="gz-t-s"></span></div></div>
@@ -4222,7 +4222,7 @@ const CALC_RULES=[
   {ph:'const', nm:'감독권한대행 등 건설사업관리', bs:'공사비', test:v=>v.constr>=100, thr:'100억 이상'},
   {ph:'design', nm:'제로에너지건축물(ZEB) 인증', bs:'연면적', test:v=>v.area>=1000, thr:'1,000㎡ 이상'},
   {ph:'design', nm:'녹색건축 인증', bs:'연면적', test:v=>v.area>=3000, thr:'3,000㎡ 이상'},
-  {ph:'design', nm:'에너지절약계획서·설계 검토서 제출', bs:'연면적', test:v=>v.area>=500, thr:'냉난방 연면적 500㎡ 이상'},
+  {ph:'design', nm:'에너지절약계획서·설계 검토서 제출', bs:'연면적', test:v=>v.area>=500, thr:'연면적 합계 500㎡ 이상'},
   {ph:'design', nm:'건축물 에너지 소비 총량제', bs:'연면적', test:v=>v.area>=3000, thr:'3,000㎡ 이상(교육연구·업무시설 신축)'},
   {ph:'const', nm:'BEMS(건축물에너지관리시스템) 설치', bs:'연면적', test:v=>v.area>=10000, thr:'10,000㎡ 이상'}
 ];

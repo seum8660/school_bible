@@ -2281,7 +2281,7 @@ html .side-nav .icon-grid.icon-grid.icon-grid > .extlink.extlink.extlink .lb{dis
       <div class="gz-rh" data-row="4"><b>1억 ~ 5억</b><span>소규모 사업 구간</span></div>
       <div class="gz-cell" data-row="4" data-stage="기획"><div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">사전기획</div><div class="gz-t-b">추정 설계비 1억↑(교육시설법 시행령 제23조의2)</div><span class="gz-t-s"></span></div></div>
       <div class="gz-cell" data-row="4" data-stage="설계"><div class="gz-tile" data-ax="design" data-amt="1" data-ty="new,ext,reb,rem"><div class="gz-t-h">설계공모</div><div class="gz-t-b">설계비 추정가격 1억↑ 우선적용(건축서비스산업 진흥법 시행령 제17조)</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="design" data-amt="2"><div class="gz-t-h">일상감사(설계용역)</div><div class="gz-t-b">설계·감리·기술용역 2억↑</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">일상감사(기타 용역·물품)</div><div class="gz-t-b">기타 용역 2억↑·물품 1억↑ / 둘 다 1억↑(학교 등) — 물품은 조달 구매액 제외</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="design" data-amt="2.3"><div class="gz-t-h">설계용역 평가</div><div class="gz-t-b">설계 계약금액 2억3천만원↑(국가계약법 고시금액, 2025~2026 적용) — 기본설계는 완료일부터 1개월 내 · 실시설계는 착공된 때부터 6개월 내(시행령 제82·83조)</div><span class="gz-t-s"></span></div></div>
-      <div class="gz-cell" data-row="4" data-stage="시공"><div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">설계의도 구현 용역</div><div class="gz-t-b">설계비 1억↑ — 설계자가 시공 중 설계 의도 반영 확인</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="1"><div class="gz-t-h">재해예방 기술지도</div><div class="gz-t-b">공사비 1억↑~120억 미만</div><span class="gz-t-s"></span></div></div>
+      <div class="gz-cell" data-row="4" data-stage="시공"><div class="gz-tile" data-ax="design" data-amt="1"><div class="gz-t-h">설계의도 구현 용역</div><div class="gz-t-b">설계비 추정가격 1억↑ — 설계자가 시공 중 설계 의도 반영 확인(건축서비스산업 진흥법 제22조)</div><span class="gz-t-s"></span></div><div class="gz-tile" data-ax="const" data-amt="1"><div class="gz-t-h">재해예방 기술지도</div><div class="gz-t-b">공사금액 1억~120억 미만(토목 150억 미만)·건축허가 대상, 착공 전날까지 계약 (제외: 섬 지역·1개월 미만 공사 등)</div><span class="gz-t-s"></span></div></div>
       <div class="gz-cell" data-row="4" data-stage="준공"></div>
       <div class="gz-cell" data-row="4" data-stage="유지관리"></div>
       <div class="gz-rh" data-row="5"><b>5억 ~ 25억</b><span>건설사업관리 · 품질 구간</span></div>
@@ -3783,11 +3783,11 @@ const DATA = {
        laws:[["건설폐기물의 재활용촉진에 관한 법률",""]]
      }},
     {n:"8",t:"기타용역 발주",d:"기술지도·설계의도구현·안전보건대장",
-     money:["기술지도 1억↑(토목 150억↑)"],law:["산업안전보건법 제73"],
+     money:["기술지도 1억~120억 미만(토목 150억 미만)"],law:["산업안전보건법 제73"],
      detail:{wf:"워크플로우세부_기타용역발주.html",
        deleg:{draft:"담당",review:"담당팀",final:"부서장",up:"—"},
-       obj:["건설재해예방 기술지도: 공사금액 1억원 이상 120억원 미만(토목 150억 미만)","설계의도 구현 용역: 설계비 추정가격 1억원 이상 학교","공사안전보건대장 검토 및 이행 확인 용역"],
-       laws:[["산업안전보건법 제73조","기술지도 — 시설과-○○○○(○○○○.○○.○○.)"],["건축서비스산업 진흥법 시행령 제19조","설계의도 구현 — 시설과-○○○○(○○○○.○○.○○.)"],["건설공사 안전보건대장의 작성 등에 관한 고시 제7조","안전보건대장 검토"]]
+       obj:["건설재해예방 기술지도: 공사금액 1억원 이상 120억원 미만(토목공사업 150억원 미만) 공사와 건축허가 대상 공사 — 착공 전날까지 계약 (제외: 공사기간 1개월 미만, 육지와 연결되지 않은 섬 지역, 안전관리자 전담 선임, 유해위험방지계획서 제출 대상)","설계의도 구현 용역: 설계비 추정가격 1억원 이상 건축물 등(설계공모 우선적용 대상과 같음) — 설계도서 해석·자문, 자재·장비 변경 검토, 사용승인 시 참여설계자 확인서 제출","공사안전보건대장 검토 및 이행 확인 용역: 총공사금액 50억원 이상 공사(안전보건대장 작성 대상)"],
+       laws:[["산업안전보건법 제73조 · 시행령 제59조","기술지도 대상·제외·계약 시기"],["건축서비스산업 진흥법 제22조 · 시행령 제17조·제19조","설계의도 구현 대상·업무"],["건설공사 안전보건대장의 작성 등에 관한 고시 제7조","안전보건대장 검토"]]
      }},
     {n:"9",t:"본인증 용역 발주",d:"ZEB·녹색건축·BF 본인증",
      money:["연면적 기준"],law:["녹색건축물법"],

@@ -182,7 +182,7 @@ body.dragging .pdf-drop{background:var(--primary-100);border-style:solid}
             <div class="f"><label for="d0">당초 준공기한</label><input type="date" id="d0" data-k="d0"></div>
             <div class="f"><label for="d1">변경 준공기한</label><input type="date" id="d1" data-k="d1"></div>
             <div class="f"><label for="days">연장일수</label><div class="unit"><input type="text" id="days" readonly><span>일</span></div></div>
-            <div class="f"><label for="dDesign">그중 물량증감(설계변경) 연장일수</label><div class="unit"><input type="number" id="dDesign" data-k="dDesign" min="0"><span>일</span></div><span class="hint">승률방식으로 이미 반영된 기간</span></div>
+            <div class="f"><label for="dDesign">그중 물량증감(설계변경) 연장일수</label><div class="unit"><input type="number" id="dDesign" data-k="dDesign" min="0"><span>일</span></div><span class="hint">제비율 방식으로 이미 반영된 기간</span></div>
             <div class="f"><label for="tDays">공기연장 간접비 대상일수</label><div class="unit"><input type="text" id="tDays" readonly><span>일</span></div></div>
             <div class="f wide"><label>연장 사유 구분</label>
               <div class="radios">
@@ -326,7 +326,7 @@ body.dragging .pdf-drop{background:var(--primary-100);border-style:solid}
     <ul>
       <li>예정가격 작성 공사 간접노무비 = [(연장기간 ÷ 전체계약기간) × 예정가격상 간접노무비 + (연장기간 ÷ 전체계약기간) × 예정가격상 간접노무비 × 낙찰률] ÷ 2</li>
       <li>예정가격 미작성 공사 간접노무비 = (연장기간 ÷ 전체계약기간) × 산출내역서상 간접노무비</li>
-      <li>기타경비는 위 산식의 '간접노무비'를 '경비'로 바꾸어 적용합니다. 법정경비·보험료는 계약서·고지서·영수증으로 실비를 확인하고, 일반관리비·이윤은 산출내역서상 승률을 적용합니다.</li>
+      <li>기타경비는 위 산식의 '간접노무비'를 '경비'로 바꾸어 적용합니다. 법정경비·보험료는 계약서·고지서·영수증으로 실비를 확인하고, 일반관리비·이윤은 산출내역서상 비율을 적용합니다.</li>
       <li>공사 일시정지로 인한 경우에는 발주기관이 현장유지·관리 노무량을 산정하여 정산합니다.</li>
     </ul>
     <div class="note warn">요약문서의 요율방식 산식은 "… + (…) × 낙찰률 ÷ 2"로 표기되어 있습니다. 이 도구는 이를 설계 기준액과 낙찰률 적용액의 평균([A + A × 낙찰률] ÷ 2, 시행령 제74조④제3호와 같은 구조)으로 계산합니다. 집행기준 원문으로 확인하시기 바랍니다.</div>
@@ -813,7 +813,7 @@ function calc() {
   const noEv = labor.filter(r => laborCalc(r).month && !r.ev).length + exp.filter(r => num(r.amt) && !r.ev).length;
   if (noEv) add('warn', `증빙 미확인 항목 ${noEv}건 — 급여명세서·급여지불조서, 세금계산서·이체확인증 등 연장기간 월별 거래내역으로 실비를 확인하십시오.`);
   if (laborSum > 0 && (!num(f.rInd) || !num(f.rEmp))) add('warn', '산재·고용보험료율이 비어 있습니다. 산출내역서 요율을 입력하십시오.');
-  if (laborSum > 0 && (!f.rGen || !f.rPro)) add('warn', '일반관리비율·이윤율이 비어 있습니다. 산출내역서상 승률을 입력하십시오.');
+  if (laborSum > 0 && (!f.rGen || !f.rPro)) add('warn', '일반관리비율·이윤율이 비어 있습니다. 산출내역서상 비율을 입력하십시오.');
   if (amt && num(f.rGen) > gLim) add('bad', `일반관리비율 ${num(f.rGen)}%가 규모별 한도 ${gLim}%(${f.kind === 'gen' ? '종합공사' : '전문공사 등'}, 계약금액 ${won(amt)}원 기준)를 넘습니다.`);
   if (num(f.rPro) > 15) add('bad', `이윤율 ${num(f.rPro)}%가 한도 15%를 넘습니다.`);
   if (amt >= 10000000000 && !ins) ck.push({ lv: 'info', t: '추정가격 100억 이상 공사는 공사손해보험 의무가입 대상입니다. 보험기간 연장 실비가 있으면 입력하십시오.' });

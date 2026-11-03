@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <title>학교시설업무 치트키 · SCHOOL BIBLE</title>
-<style>
+<style>.qref{color:#6B4FBB;font-weight:600;font-size:.92em}
 
   :root{
     --bg:oklch(0.955 0.016 95); --surface:#ffffff; --card:#ffffff;
@@ -4046,7 +4046,7 @@ function renderItem(it,pk){
   const dt=it.detail;
   let body='<div class="grid2">';
   // 대상 / 시기
-  body+='<div class="block"><h4>대상 · 요건</h4><ul>'+dt.obj.map(o=>`<li>${esc(o)}</li>`).join('')+'</ul>';
+  body+='<div class="block"><h4>대상 · 요건</h4><ul>'+dt.obj.map(o=>`<li>${esc(o).replace(/#질의회신\(([^)]*)\)/g,'<span class="qref">#질의회신($1)</span>')}</li>`).join('')+'</ul>';
   if(dt.timing) body+='<div style="margin-top:10px">'+dt.timing.map(t=>`<div class="law-item">${esc(t)}</div>`).join('')+'</div>';
   body+='</div>';
   // 근거법령
@@ -4075,7 +4075,7 @@ function renderItem(it,pk){
   if(dt.table){
     const tb=dt.table;
     body+='<div class="block full" style="margin-top:16px"><h4>'+esc(tb.label||'대상기관별 기준')+'</h4><div class="tbl-wrap"><table><thead><tr>'+tb.head.map((h,i)=>`<th${i===0?'':' style="text-align:center"'}>${esc(h)}</th>`).join('')+'</tr></thead><tbody>';
-    body+=tb.rows.map(r=>'<tr>'+r.map((cell,ci)=>ci===0?`<td style="font-weight:700;color:var(--navy)">${esc(cell)}</td>`:`<td style="text-align:center">${esc(cell)}</td>`).join('')+'</tr>').join('');
+    body+=tb.rows.map(r=>'<tr>'+r.map((cell,ci)=>ci===0?`<td style="font-weight:700;color:var(--navy)">${esc(cell)}</td>`:`<td style="text-align:${String(cell).length>30?'left':'center'}">${esc(cell).replace(/#질의회신\(([^)]*)\)/g,'<span class="qref">#질의회신($1)</span>')}</td>`).join('')+'</tr>').join('');
     body+='</tbody></table></div>';
     if(tb.foot) body+=`<div class="note" style="margin:10px 0 0">${esc(tb.foot)}</div>`;
     body+='</div>';

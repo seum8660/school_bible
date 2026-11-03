@@ -43,7 +43,7 @@ Process Board / 건설기술진흥법 시행령 제75조의2
 
 설계자LANE 01
 
-발주청 담당팀LANE 02
+발주청LANE 02
 
 국토안전관리원LANE 03
 

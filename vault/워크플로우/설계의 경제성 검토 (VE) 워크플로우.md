@@ -41,7 +41,7 @@ Process Board / 건설기술진흥법 시행령 제75조
 
 단계 / 담당
 
-발주청 담당팀LANE 01
+발주청LANE 01
 
 VE 검토조직LANE 02
 

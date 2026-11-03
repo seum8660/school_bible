@@ -267,7 +267,7 @@ body.dragging .pdf-drop{background:var(--primary-100);border-style:solid}
 
         <div class="card">
           <h2><span class="no" id="genNo">5</span>일반관리비·이윤·공사손해보험료</h2>
-          <p class="desc">산출내역서상 승률을 적용하되, 변경사유 발생 당시 관계 법령 요율을 넘을 수 없습니다. 공사손해보험료는 실비로 이윤 다음에 더합니다.</p>
+          <p class="desc">산출내역서상 제비율을 적용하되, 변경사유 발생 당시 관계 법령 요율을 넘을 수 없습니다. 공사손해보험료는 실비로 이윤 다음에 더합니다.</p>
           <div class="fields">
             <div class="f"><label for="rGen">일반관리비율</label><div class="unit"><input type="text" class="rate" id="rGen" data-k="rGen"><span>%</span></div><span class="hint" id="genHint">(간접노무비 + 경비) × 율</span></div>
             <div class="f"><label for="rPro">이윤율</label><div class="unit"><input type="text" class="rate" id="rPro" data-k="rPro"><span>%</span></div><span class="hint">(간접노무비 + 경비 + 일반관리비) × 율, 15% 이내</span></div>
@@ -341,7 +341,7 @@ body.dragging .pdf-drop{background:var(--primary-100);border-style:solid}
 
     <h3>5. 설계변경 간접비와의 관계</h3>
     <ul>
-      <li>공기연장 간접비는 실비 정산, 물량증감 간접비는 승률방식입니다. 분리 산출 후 중복분만 공제합니다.</li>
+      <li>공기연장 간접비는 실비 정산, 물량증감 간접비는 제비율 방식입니다. 분리 산출 후 중복분만 공제합니다.</li>
       <li>변경계약서 변경사유를 "물량증감(00일 연장) / 공기연장(00일 연장)"으로 분리 기재해 중복 여부를 문서로 특정합니다.</li>
       <li>중복 부분을 특정할 수 없으면 중복 가능성만으로 곧바로 공제할 수 없습니다(서울고법 2017나2061097). 증액과 공기연장이 함께 있으면 물량 증가에 따른 시공기간분은 이미 반영된 것이므로 공제합니다(서울고법 2018나2015763).</li>
     </ul>
@@ -775,7 +775,7 @@ function calc() {
   else {
     add('ok', `연장일수 ${days}일 (${fmtDate(d0)} → ${fmtDate(d1)})${dDes ? ` · 물량증감 ${dDes}일 제외 → 대상 ${tDays}일` : ''}`);
     if (dDes > days) add('bad', `물량증감 연장일수(${dDes}일)가 전체 연장일수(${days}일)보다 깁니다.`);
-    else if (dDes && tDays === 0) add('warn', '연장기간 전부가 물량증감(설계변경)분입니다. 승률방식으로 이미 반영되어 공기연장 간접비 대상이 없습니다.');
+    else if (dDes && tDays === 0) add('warn', '연장기간 전부가 물량증감(설계변경)분입니다. 제비율 방식으로 이미 반영되어 공기연장 간접비 대상이 없습니다.');
   }
   if (f.cause === 'vendor') add('bad', '계약상대자 책임으로 인한 연장은 간접비 조정 대상이 아닙니다. 지연배상금 부과 여부를 검토하십시오.');
   else if (f.cause === 'force') add('info', '통제범위 밖 사유(시행령 제75조의2): 법 제22조제2항에 따라 계약금액을 조정합니다. 사유 발생 기간·영향을 증빙으로 확인하십시오.');

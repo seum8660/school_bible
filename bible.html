@@ -3519,6 +3519,7 @@ const DATA = {
      money:["공사비 100억↑"],law:["건설기술진흥법 제6"],
      detail:{wf:"워크플로우세부_기술자문위원회.html",
        deleg:{draft:"담당",review:"담당팀 → 부서장",final:"상위부서장",up:"심의 결과에 따른 설계 변경이 증액을 수반하면 기관장 전결",note:"자문 의뢰(개최 요청)는 부서장 전결, 심의 결과 보고 및 반영 계획은 상위부서장 전결로 운영하는 것이 일반적입니다. 직위 표기는 비식별 처리했으며, 실제 처리 시 소속 기관 위임전결규정을 확인하십시오."},
+       obj:[],
        laws:[["건설기술진흥법 제6조 / 시행령 제19조",""]],
        groups:[{"h": "무엇을 심의받나 (「건설기술 진흥법 시행령」 제19조⑤)", "items": ["공사기간 산정의 적정성 — 총공사비 100억원↑ 공사(제3호)", "공법 변경 등 중대한 설계변경의 적정성 — 같은 금액 기준, 주로 공사 중(제4호)", "정밀안전진단의 적정성(제5호)", "용역사업자 선정 기준 — 사업수행능력 세부평가기준·기술평가 방법·입찰공고안의 적정성(제6호)", "그 밖에 설계·시공 등의 적정성 중 발주청이 자문하는 사항 — 구조·신공법·설계 내용 등(제7호)", "설계 단계에서 1회 이상 자문하고, 의견은 특별한 사유가 없으면 설계에 반영(제19조③④)"]}]
      }},
@@ -4030,9 +4031,11 @@ function renderItem(it,pk){
   const dt=it.detail;
   let body='<div class="grid2">';
   // 대상 / 시기
-  body+='<div class="block"><h4>대상 · 요건</h4><ul>'+dt.obj.map(o=>`<li>${esc(o).replace(/#질의회신\(([^)]*)\)/g,'<span class="qref">#질의회신($1)</span>')}</li>`).join('')+'</ul>';
+  if((dt.obj&&dt.obj.length)||dt.timing){
+  body+='<div class="block"><h4>대상 · 요건</h4><ul>'+(dt.obj||[]).map(o=>`<li>${esc(o).replace(/#질의회신\(([^)]*)\)/g,'<span class="qref">#질의회신($1)</span>')}</li>`).join('')+'</ul>';
   if(dt.timing) body+='<div style="margin-top:10px">'+dt.timing.map(t=>`<div class="law-item">${esc(t)}</div>`).join('')+'</div>';
   body+='</div>';
+  }
   // 근거법령
   if(dt.laws && dt.laws.length){
     body+='<div class="block"><h4>근거 법령 · 지침</h4>'+dt.laws.map(l=>`<div class="law-item"><b>${esc(l[0])}</b>${l[1]?'<br><span style="color:var(--muted);font-size:12px">'+esc(l[1])+'</span>':''}</div>`).join('')+'</div>';

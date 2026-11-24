@@ -1,10 +1,9 @@
 /* 「학교시설 치트키」 책 발간 알림 팝업 — index.html·intro.html·bible.html 공용
    - 하루 동안 보지 않기: localStorage(bookPopupHide = YYYY-MM-DD)
-   - 책 파일: book/ 폴더(HTML·PDF). EPUB(약 80MB)은 사이트 용량(1GB) 때문에 올리지 않음 */
+   - 책 파일: book/ 폴더(HTML). PDF 내려받기는 미니님 요청으로 막아 둠(버튼만 「준비 중」), EPUB은 사이트 용량 때문에 올리지 않음 */
 (function(){
   var KEY='bookPopupHide';
   var BOOK='book/학교시설_치트키_전자책_20261124.html';
-  var PDF='book/학교시설_치트키_전자책_20261124.pdf';
   var IMG='assets/학교시설_치트키_발간홍보_20261124.jpg';
 
   function today(){var d=new Date(),p=function(n){return String(n).padStart(2,'0');};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
@@ -22,6 +21,7 @@
   +'#bkPop .bk-btns a{flex:1 1 150px;text-align:center;text-decoration:none;font-size:14.5px;font-weight:700;border-radius:10px;padding:12px 14px;border:1px solid #cdd1d5;color:#1e2124;background:#fff}'
   +'#bkPop .bk-btns a.p{background:#137a2c;border-color:#137a2c;color:#fff}'
   +'#bkPop .bk-btns a:hover{filter:brightness(.96)}'
+  +'#bkPop .bk-btns a.off{color:#8a949e;background:#f4f5f6;border-color:#e6e8ea;cursor:not-allowed;filter:none}'
   +'#bkPop .bk-btns small{display:block;font-size:11.5px;font-weight:500;opacity:.75;margin-top:2px}'
   +'#bkPop .bk-f{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 22px 16px;margin-top:14px;border-top:1px solid #e6e8ea;font-size:13.5px}'
   +'#bkPop .bk-f label{display:flex;align-items:center;gap:6px;color:#6d7882;cursor:pointer}'
@@ -41,7 +41,7 @@
     +    '<p>기획·설계·시공부터 감리·준공·안전점검·계약·인허가까지, 학교시설 업무 81개를 8부로 정리했습니다. 처음 맡은 업무도 이 책 한 권으로 시작하실 수 있습니다.</p>'
     +    '<div class="bk-btns">'
     +      '<a class="p" href="'+BOOK+'" target="_blank" rel="noopener">바로 읽기<small>브라우저에서 열기</small></a>'
-    +      '<a href="'+PDF+'" download>PDF 내려받기<small>380쪽 · 약 30MB</small></a>'
+    +      '<a href="#" class="off" aria-disabled="true" onclick="return false">PDF 내려받기<small>준비 중</small></a>'
     +    '</div>'
     +  '</div>'
     +  '<div class="bk-f"><label><input type="checkbox" id="bkHide"> 오늘 하루 보지 않기</label><button type="button" id="bkX">닫기</button></div>'

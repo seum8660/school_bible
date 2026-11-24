@@ -1,11 +1,11 @@
 /* 「학교시설 치트키」 책 발간 알림 팝업 — index.html·intro.html·bible.html 공용
    - 하루 동안 보지 않기: localStorage(bookPopupHide = YYYY-MM-DD)
-   - 책 파일: book/ 폴더, EPUB은 GitHub 릴리스 */
+   - 책 파일: book/ 폴더(HTML·PDF·EPUB) */
 (function(){
   var KEY='bookPopupHide';
   var BOOK='book/학교시설_치트키_전자책_20261124.html';
   var PDF='book/학교시설_치트키_전자책_20261124.pdf';
-  var EPUB='https://github.com/seum8660/school_bible/releases/tag/book-20261124';
+  var EPUB='book/학교시설_치트키_전자책_20261124.epub';
   var IMG='assets/학교시설_치트키_발간홍보_20261124.jpg';
 
   function today(){var d=new Date(),p=function(n){return String(n).padStart(2,'0');};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
@@ -43,7 +43,7 @@
     +    '<div class="bk-btns">'
     +      '<a class="p" href="'+BOOK+'" target="_blank" rel="noopener">바로 읽기<small>브라우저에서 열기</small></a>'
     +      '<a href="'+PDF+'" download>PDF 내려받기<small>380쪽 · 약 30MB</small></a>'
-    +      '<a href="'+EPUB+'" target="_blank" rel="noopener">EPUB 내려받기<small>전자책 앱용 · 약 80MB</small></a>'
+    +      '<a href="'+EPUB+'" download>EPUB 내려받기<small>전자책 앱용 · 약 80MB</small></a>'
     +    '</div>'
     +  '</div>'
     +  '<div class="bk-f"><label><input type="checkbox" id="bkHide"> 오늘 하루 보지 않기</label><button type="button" id="bkX">닫기</button></div>'

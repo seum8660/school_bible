@@ -3,7 +3,7 @@
    - 책 파일: book/ 폴더(HTML). PDF 내려받기는 미니님 요청으로 막아 둠(버튼만 「준비 중」), EPUB은 사이트 용량 때문에 올리지 않음 */
 (function(){
   var KEY='bookPopupHide';
-  var BOOK='book/학교시설_치트키_전자책_20261124.html';
+  var BOOK='book/학교시설_치트키_전자책_20261125.html';
   var IMG='assets/학교시설_치트키_발간홍보_20261124.jpg';
 
   function today(){var d=new Date(),p=function(n){return String(n).padStart(2,'0');};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}

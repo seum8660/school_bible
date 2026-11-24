@@ -84,5 +84,7 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
+      - name: 업로드 정보 반영 대기
+        run: sleep 45   # 업로드 직후 배포가 「Found 0 artifact(s)」로 실패하는 일이 잦아 잠시 기다림
       - id: deployment
         uses: actions/deploy-pages@v4

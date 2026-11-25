@@ -868,4 +868,102 @@ img,svg,canvas{-webkit-user-drag:none!important;pointer-events:auto}
   try{window.print=function(){};}catch(e){}
 })();
 </script>
+<style id="mmStyle">
+#mmTab{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:60;writing-mode:vertical-rl;font:700 13px/1 Pretendard,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;letter-spacing:.12em;padding:14px 8px;border:1px solid #cdd1d5;border-right:0;border-radius:10px 0 0 10px;background:#fff;color:#1e2124;cursor:pointer;box-shadow:-2px 2px 10px rgba(0,0,0,.08)}
+#mmTab .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#0b50d0;margin-top:6px;visibility:hidden}
+#mmTab.has .dot{visibility:visible}
+body.mmo #mmTab{display:none}
+#mm{position:fixed;top:52px;right:0;bottom:0;width:320px;max-width:88vw;z-index:61;display:flex;flex-direction:column;background:#fff;color:#1e2124;border-left:1px solid #e1e4e8;box-shadow:-8px 0 24px rgba(0,0,0,.10);font-family:Pretendard,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;transform:translateX(105%);transition:transform .22s ease}
+body.mmo #mm{transform:none}
+#mm .mm-h{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid #eef0f2}
+#mm .mm-h b{font-size:15px;flex:1}
+#mm button{font:inherit;font-size:13px;font-weight:600;border:1px solid #d5d9dd;background:#fff;color:#1e2124;border-radius:8px;padding:6px 10px;cursor:pointer}
+#mm button:hover{background:#f4f5f6}
+#mm .mm-x{border:0;font-size:16px;padding:4px 8px}
+#mm .mm-ch{padding:10px 14px 4px;font-size:12.5px;color:#6d7882}
+#mm .mm-ch b{display:block;font-size:14px;color:#1e2124;margin-top:2px;line-height:1.4}
+#mm textarea{flex:1;margin:8px 14px;min-height:160px;resize:none;border:1px solid #d5d9dd;border-radius:10px;padding:10px 12px;font:14px/1.65 Pretendard,"Malgun Gothic",sans-serif;color:#1e2124;background:#fffef8;outline:none;-webkit-user-select:text!important;user-select:text!important}
+#mm textarea:focus{border-color:#0b50d0;box-shadow:0 0 0 3px rgba(11,80,208,.12)}
+#mm .mm-st{padding:0 14px;font-size:12px;color:#8a949e;min-height:18px}
+#mm .mm-f{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px 14px;border-top:1px solid #eef0f2}
+#mm .mm-list{display:none;flex:1;overflow:auto;margin:8px 14px;border:1px solid #eef0f2;border-radius:10px}
+#mm.lst .mm-list{display:block}
+#mm.lst textarea,#mm.lst .mm-ch,#mm.lst .mm-st{display:none}
+#mm .mm-it{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid #eef0f2;border-radius:0;padding:10px 12px;background:#fff}
+#mm .mm-it b{display:block;font-size:13.5px}
+#mm .mm-it span{display:block;font-size:12.5px;font-weight:400;color:#6d7882;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+#mm .mm-empty{padding:16px;font-size:13px;color:#8a949e}
+@media print{#mm,#mmTab{display:none!important}}
+</style>
+<button id="mmTab" type="button" aria-label="메모 열기">메모<span class="dot"></span></button>
+<aside id="mm" aria-label="메모">
+  <div class="mm-h"><b>메모</b><button type="button" id="mmAll">전체 메모</button><button type="button" class="mm-x" id="mmX" aria-label="메모 닫기">✕</button></div>
+  <div class="mm-ch">지금 보는 곳<b id="mmTitle">-</b></div>
+  <textarea id="mmText" placeholder="이 장에 대한 메모를 적으세요. 적는 대로 이 브라우저에 저장됩니다."></textarea>
+  <div class="mm-st" id="mmSt"></div>
+  <div class="mm-list" id="mmList"></div>
+  <div class="mm-f"><button type="button" id="mmOut">메모 내보내기</button><button type="button" id="mmIn">메모 불러오기</button><input type="file" id="mmFile" accept=".json,application/json" hidden></div>
+</aside>
+<script>
+/* 쪽(장)별 메모 — 이 브라우저(localStorage)에 저장, 내보내기·불러오기로 다른 기기에 옮김 */
+(function(){
+  var KEY='cheatkey-memo-v1', OPEN='cheatkey-memo-open';
+  var mm=document.getElementById('mm'), tab=document.getElementById('mmTab'), ta=document.getElementById('mmText'),
+      ti=document.getElementById('mmTitle'), st=document.getElementById('mmSt'), list=document.getElementById('mmList');
+  var data={}, cur=null, timer=null;
+  function load(){ try{ data=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ data={}; } }
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(data)); return true; }catch(e){ return false; } }
+  function curPage(){ return document.querySelector('#book .pg.cur')||document.querySelector('.pg.cur'); }
+  function titleOf(p){ if(!p) return '이 쪽'; if(p.id==='cover'||p.classList.contains('cover')) return '표지';
+    var l=p.id&&document.querySelector('#side a[href="#'+p.id+'"], nav#toc a[href="#'+p.id+'"]'); var t=''; if(l){ [].forEach.call(l.childNodes,function(n){ var x=n.textContent||''; if(n.nodeType===1&&/^\s*\d+\s*$/.test(x)) return; t+=x; }); }
+    if(!t){ var h=p.querySelector('h1,h2,h3,.title'); t=h?h.textContent:''; }
+    t=t.replace(/\s+/g,' ').trim(); var n=document.getElementById('pno'); var pg=n?n.textContent.split('/')[0].trim():'';
+    return t||(pg?pg+'쪽':'이 쪽'); }
+  function keyOf(p){ if(!p) return null; if(p.id) return p.id; var i=[].indexOf.call(document.querySelectorAll('.pg'),p); return 'pg'+i; }
+  function stamp(ts){ var d=new Date(ts),z=function(n){return String(n).padStart(2,'0');}; return (d.getMonth()+1)+'월 '+d.getDate()+'일 '+z(d.getHours())+':'+z(d.getMinutes()); }
+  function sync(){
+    var p=curPage(), k=keyOf(p); if(!k) return;
+    if(k!==cur){ flush(); cur=k; ti.textContent=titleOf(p); ta.value=(data[k]&&data[k].text)||''; st.textContent=data[k]?'저장됨 · '+stamp(data[k].at):''; }
+    tab.classList.toggle('has',!!(data[k]&&data[k].text));
+  }
+  function flush(){
+    if(!cur||timer===null) return; clearTimeout(timer); timer=null;
+    var v=ta.value; if(v.trim()){ data[cur]={t:ti.textContent,text:v,at:Date.now()}; } else { delete data[cur]; }
+    st.textContent=save()?(v.trim()?'저장됨 · '+stamp(Date.now()):'메모 없음'):'이 브라우저에서는 저장할 수 없습니다';
+    tab.classList.toggle('has',!!v.trim());
+  }
+  ta.addEventListener('input',function(){ st.textContent='저장 중…'; clearTimeout(timer); timer=setTimeout(function(){ timer=0; flush(); },500); });
+  ta.addEventListener('blur',function(){ if(timer!==null){ timer=timer||0; flush(); } });
+  /* 메모 칸 안의 키 입력이 책 넘김 단축키로 가지 않게 */
+  mm.addEventListener('keydown',function(e){ e.stopPropagation(); });
+  mm.addEventListener('keyup',function(e){ e.stopPropagation(); });
+  function open(){ document.body.classList.add('mmo'); try{localStorage.setItem(OPEN,'1');}catch(e){} sync(); }
+  function close(){ if(timer!==null){ timer=timer||0; flush(); } document.body.classList.remove('mmo'); mm.classList.remove('lst'); try{localStorage.setItem(OPEN,'0');}catch(e){} }
+  tab.onclick=open; document.getElementById('mmX').onclick=close;
+  function jump(id){ var k=document.getElementById('book'), a=document.createElement('a'); a.href='#'+id; a.style.display='none'; (k&&k.querySelector('.pg.cur')||k||document.body).appendChild(a); a.click(); a.remove(); }
+  function showList(){
+    flush(); var ks=Object.keys(data).filter(function(k){return data[k]&&data[k].text;});
+    var pages=[].slice.call(document.querySelectorAll('.pg')); ks.sort(function(a,b){ return pages.indexOf(document.getElementById(a))-pages.indexOf(document.getElementById(b)); });
+    list.innerHTML=ks.length?'':'<div class="mm-empty">아직 적은 메모가 없습니다.</div>';
+    ks.forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.className='mm-it'; var t=document.createElement('b'); t.textContent=data[k].t||k; var s=document.createElement('span'); s.textContent=data[k].text.replace(/\s+/g,' '); b.append(t,s); b.onclick=function(){ mm.classList.remove('lst'); document.getElementById('mmAll').textContent='전체 메모'; jump(k); setTimeout(sync,700); }; list.appendChild(b); });
+  }
+  document.getElementById('mmAll').onclick=function(){ var on=mm.classList.toggle('lst'); this.textContent=on?'이 장 메모':'전체 메모'; if(on) showList(); else sync(); };
+  document.getElementById('mmOut').onclick=function(){
+    flush(); var d=new Date(),z=function(n){return String(n).padStart(2,'0');};
+    var blob=new Blob([JSON.stringify({app:'학교시설 치트키 메모',ver:1,saved:d.toISOString(),memos:data},null,2)],{type:'application/json'});
+    var u=URL.createObjectURL(blob), a=document.createElement('a'); a.href=u; a.download='학교시설치트키_메모_'+d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+'.json'; document.body.appendChild(a); a.click(); setTimeout(function(){ a.remove(); URL.revokeObjectURL(u); },4000);
+  };
+  var fi=document.getElementById('mmFile');
+  document.getElementById('mmIn').onclick=function(){ fi.value=''; fi.click(); };
+  fi.onchange=function(){ var f=fi.files&&fi.files[0]; if(!f) return; var r=new FileReader(); r.onload=function(){
+    try{ var j=JSON.parse(r.result), m=(j&&j.memos)||j, n=0; Object.keys(m).forEach(function(k){ var v=m[k]; if(!v||typeof v.text!=='string'||!v.text.trim()) return; var o=data[k];
+        if(!o||!o.text) data[k]=v; else if(o.text.indexOf(v.text)<0){ data[k]={t:o.t||v.t,text:o.text+'\n\n'+v.text,at:Math.max(o.at||0,v.at||0)}; } n++; });
+      save(); cur=null; sync(); if(mm.classList.contains('lst')) showList(); st.textContent='메모 '+n+'건을 불러왔습니다';
+    }catch(e){ st.textContent='메모 파일을 읽지 못했습니다'; } }; r.readAsText(f,'utf-8'); };
+  load();
+  var pno=document.getElementById('pno'); if(pno) new MutationObserver(function(){ sync(); }).observe(pno,{childList:true,characterData:true,subtree:true});
+  var pref=null; try{ pref=localStorage.getItem(OPEN); }catch(e){}
+  setTimeout(function(){ sync(); if(pref==='1'&&window.innerWidth>=700) open(); },600);
+})();
+</script>
 </body></html>
